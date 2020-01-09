@@ -10,6 +10,12 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Migrations\20200107082942_CategoryAndCommentsTable.cs" />
+    <Compile Remove="Migrations\20200107082942_CategoryAndCommentsTable.Designer.cs" />
+    <Compile Remove="Migrations\20200107102144_TestMI.cs" />
+    <Compile Remove="Migrations\20200107102144_TestMI.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
       <PrivateAssets>all</PrivateAssets>

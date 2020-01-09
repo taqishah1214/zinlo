@@ -29,6 +29,20 @@ namespace Zinlo.Authorization
             //COMMON PERMISSIONS (FOR BOTH OF TENANTS AND HOST)
 
             var pages = context.GetPermissionOrNull(AppPermissions.Pages) ?? context.CreatePermission(AppPermissions.Pages, L("Pages"));
+
+            var tests = pages.CreateChildPermission(AppPermissions.Pages_Tests, L("Tests"));
+            tests.CreateChildPermission(AppPermissions.Pages_Tests_Create, L("CreateNewTest"));
+            tests.CreateChildPermission(AppPermissions.Pages_Tests_Edit, L("EditTest"));
+            tests.CreateChildPermission(AppPermissions.Pages_Tests_Delete, L("DeleteTest"));
+
+
+
+            var categories = pages.CreateChildPermission(AppPermissions.Pages_Categories, L("Categories"), multiTenancySides: MultiTenancySides.Tenant);
+            categories.CreateChildPermission(AppPermissions.Pages_Categories_Create, L("CreateNewCategory") ,multiTenancySides: MultiTenancySides.Tenant);
+            categories.CreateChildPermission(AppPermissions.Pages_Categories_Edit, L("EditCategory"), multiTenancySides: MultiTenancySides.Tenant);
+            categories.CreateChildPermission(AppPermissions.Pages_Categories_Delete, L("DeleteCategory"), multiTenancySides: MultiTenancySides.Tenant);
+
+
             pages.CreateChildPermission(AppPermissions.Pages_DemoUiComponents, L("DemoUiComponents"));
 
             var administration = pages.CreateChildPermission(AppPermissions.Pages_Administration, L("Administration"));

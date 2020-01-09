@@ -39,6 +39,7 @@ import { PasswordModule } from 'primeng/password';
 import { StripePaymentResultComponent } from './payment/stripe/stripe-payment-result.component';
 import { StripeCancelPaymentComponent } from './payment/stripe/stripe-cancel-payment.component';
 import { PaymentCompletedComponent } from './payment/payment-completed.component';
+import { SubDomainLoginComponent } from './sub-domain-login/sub-domain-login.component';
 
 export function getRecaptchaLanguage(): string {
     return new LocaleMappingService().map('recaptcha', abp.localization.currentLanguage.name);
@@ -83,7 +84,8 @@ export function getRecaptchaLanguage(): string {
         StripePurchaseComponent,
         StripePaymentResultComponent,
         StripeCancelPaymentComponent,
-        PaymentCompletedComponent
+        PaymentCompletedComponent,
+        SubDomainLoginComponent
     ],
     providers: [
         LoginService,
