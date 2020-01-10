@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Zinlo.Tasks.Dtos
+namespace Zinlo.Categories.Dtos
 {
   public  class CategoryDropdownDto
     {

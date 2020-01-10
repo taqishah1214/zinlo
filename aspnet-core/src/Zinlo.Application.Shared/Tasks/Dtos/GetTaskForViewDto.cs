@@ -7,5 +7,6 @@ namespace Zinlo.Tasks.Dtos
   public  class GetTaskForViewDto
     {
         public TaskDto Task { get; set; }
+
     }
 }

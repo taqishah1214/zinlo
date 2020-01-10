@@ -1,10 +1,6 @@
-﻿
-
-using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Zinlo.Categories.Exporting;
@@ -12,9 +8,9 @@ using Zinlo.Categories.Dtos;
 using Zinlo.Dto;
 using Abp.Application.Services.Dto;
 using Zinlo.Authorization;
-using Abp.Extensions;
 using Abp.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Zinlo.Categories
 {
@@ -142,7 +138,24 @@ namespace Zinlo.Categories
 
             return _categoriesExcelExporter.ExportToFile(categoryListDtos);
          }
+        
+        public async Task<List<NameValueDto<int>>> CategoryDropDown()
+        {
+           
+                var categories = _categoryRepository.GetAll();
 
+
+            var query = (from o in categories
+
+                         select new NameValueDto<int>()
+                         {
+                             Name = o.Title,
+                             Value = o.Id
+                         });
+
+            var assets = await query.ToListAsync();
+            return assets;
+        }
 
     }
 }

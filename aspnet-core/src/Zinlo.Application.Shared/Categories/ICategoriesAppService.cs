@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
@@ -20,7 +21,9 @@ namespace Zinlo.Categories
 		Task Delete(EntityDto input);
 
 		Task<FileDto> GetCategoriesToExcel(GetAllCategoriesForExcelInput input);
+		Task<List<NameValueDto<int>>> CategoryDropDown();
 
-		
-    }
+
+
+	}
 }
