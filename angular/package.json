@@ -27,6 +27,7 @@
     "@angular/router": "^8.2.5",
     "@aspnet/signalr": "^1.1.4",
     "@swimlane/ngx-charts": "^12.0.1",
+    "@yaireo/tagify": "^3.2.6",
     "abp-ng2-module": "^5.1.0",
     "abp-web-resources": "^4.2.0",
     "adal-angular": "^1.0.17",
