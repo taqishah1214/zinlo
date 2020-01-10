@@ -1,4 +1,6 @@
-﻿using Abp.IdentityServer4;
+﻿using Zinlo.Tests;
+using Zinlo.Categories;
+using Abp.IdentityServer4;
 using Abp.Zero.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -12,11 +14,18 @@ using Zinlo.MultiTenancy.Accounting;
 using Zinlo.MultiTenancy.Payments;
 using Zinlo.Storage;
 
+
 namespace Zinlo.EntityFrameworkCore
 {
     public class ZinloDbContext : AbpZeroDbContext<Tenant, Role, User, ZinloDbContext>, IAbpPersistedGrantDbContext
     {
+        public virtual DbSet<Attachment.Attachment> Attachments { get; set; }
+        public virtual DbSet<Tasks.Task> Tasks { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Comment.Comment> Comments { get; set; }
+
         /* Define an IDbSet for each entity of the application */
+        
 
         public virtual DbSet<BinaryObject> BinaryObjects { get; set; }
 
@@ -44,10 +53,25 @@ namespace Zinlo.EntityFrameworkCore
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<BinaryObject>(b =>
-            {
-                b.HasIndex(e => new { e.TenantId });
-            });
+           
+           
+           
+ //           modelBuilder.Entity<Category>(c =>
+ //           {
+ //               c.HasIndex(e => new { e.TenantId });
+ //           });
+ //modelBuilder.Entity<Test>(t =>
+ //           {
+ //               t.HasIndex(e => new { e.TenantId });
+ //           });
+ //modelBuilder.Entity<Category.Category>(c =>
+ //           {
+ //               c.HasIndex(e => new { e.TenantId });
+ //           });
+ //modelBuilder.Entity<BinaryObject>(b =>
+ //           {
+ //               b.HasIndex(e => new { e.TenantId });
+ //           });
 
             modelBuilder.Entity<ChatMessage>(b =>
             {

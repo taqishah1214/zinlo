@@ -1,4 +1,4 @@
-import { AbpHttpInterceptor, RefreshTokenService } from '@abp/abpHttpInterceptor';
+﻿import { AbpHttpInterceptor, RefreshTokenService } from '@abp/abpHttpInterceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import * as ApiServiceProxies from './service-proxies';
@@ -42,6 +42,8 @@ import { ZeroRefreshTokenService } from '@account/auth/zero-refresh-token.servic
         ApiServiceProxies.PayPalPaymentServiceProxy,
         ApiServiceProxies.StripePaymentServiceProxy,
         ApiServiceProxies.DashboardCustomizationServiceProxy,
+
+        ApiServiceProxies.CategoriesServiceProxy,
         { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]

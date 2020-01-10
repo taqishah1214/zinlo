@@ -1,3 +1,6 @@
+﻿using Zinlo.Categories.Dtos;
+using Zinlo.Tests;
+using Zinlo.Categories;
 using Abp.Application.Editions;
 using Abp.Application.Features;
 using Abp.Auditing;
@@ -41,6 +44,10 @@ namespace Zinlo
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
+            
+            configuration.CreateMap<CategoryDto, Category>().ReverseMap();
+            configuration.CreateMap<CreateOrEditCategoryDto, Category>().ReverseMap();
+
             //Inputs
             configuration.CreateMap<CheckboxInputType, FeatureInputTypeDto>();
             configuration.CreateMap<SingleLineStringInputType, FeatureInputTypeDto>();

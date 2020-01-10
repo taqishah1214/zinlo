@@ -1,6 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <localizationDictionary culture="en">
-  <texts>
+  <texts>    <text name="Tests">Tests</text>
+    <text name="Test">Test</text>
+    <text name="TestsHeaderInfo">Tests header info</text>
+    <text name="CreateNewTest">Create new test</text>
+    <text name="EditTest">Edit test</text>
+    <text name="DeleteTest">Delete test</text>
+    <text name="Categories">Categories</text>
+    <text name="Category">Category</text>
+    <text name="Description">Description</text>
+    <text name="Title">Title</text>
+    <text name="CategoriesHeaderInfo">Categories header info</text>
+    <text name="CreateNewCategory">Create new category</text>
+    <text name="EditCategory">Edit category</text>
+    <text name="DeleteCategory">Delete category</text>
+    <text name="{0}IsRequired">{0} is required.</text>
+    <text name="View">View</text>
+    <text name="Details">Details</text>
+    <text name="Pick">Pick</text>
+    <text name="True">True</text>
+    <text name="False">False</text>
+    <text name="MinValue">Min</text>
+    <text name="MaxValue">Max</text>
+
     <text name="HomePage">Home page</text>
     <text name="AboutUs">About us</text>
     <text name="Administration">Administration</text>
