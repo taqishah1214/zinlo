@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Zinlo.Migrations
 {
-    public partial class Initial_Migration : Migration
+    public partial class intial_UPTO_ClosingCheckList : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -493,6 +493,59 @@ namespace Zinlo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Attachments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    Type = table.Column<string>(nullable: true),
+                    TypeId = table.Column<int>(nullable: false),
+                    FilePath = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attachments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    Body = table.Column<string>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
+                    TypeId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AbpFeatures",
                 columns: table => new
                 {
@@ -817,6 +870,51 @@ namespace Zinlo.Migrations
                         name: "FK_AbpUserTokens_AbpUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AbpUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClosingChecklists",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    TaskName = table.Column<string>(nullable: true),
+                    CategoryId = table.Column<long>(nullable: false),
+                    AssigneeNameId = table.Column<long>(nullable: false),
+                    ClosingMonth = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    TenantId = table.Column<int>(nullable: false),
+                    Attachment = table.Column<string>(nullable: true),
+                    Instruction = table.Column<string>(nullable: true),
+                    NoOfMonths = table.Column<int>(nullable: false),
+                    DueOn = table.Column<int>(nullable: false),
+                    EndsOn = table.Column<DateTime>(nullable: false),
+                    DayBeforeAfter = table.Column<bool>(nullable: false),
+                    EndOfMonth = table.Column<bool>(nullable: false),
+                    Frequency = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClosingChecklists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClosingChecklists_AbpUsers_AssigneeNameId",
+                        column: x => x.AssigneeNameId,
+                        principalTable: "AbpUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClosingChecklists_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1233,11 +1331,6 @@ namespace Zinlo.Migrations
                 columns: new[] { "TenantId", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppBinaryObjects_TenantId",
-                table: "AppBinaryObjects",
-                column: "TenantId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AppChatMessages_TargetTenantId_TargetUserId_ReadState",
                 table: "AppChatMessages",
                 columns: new[] { "TargetTenantId", "TargetUserId", "ReadState" });
@@ -1297,6 +1390,16 @@ namespace Zinlo.Migrations
                 table: "AppSubscriptionPaymentsExtensionData",
                 columns: new[] { "SubscriptionPaymentId", "Key", "IsDeleted" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClosingChecklists_AssigneeNameId",
+                table: "ClosingChecklists",
+                column: "AssigneeNameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClosingChecklists_CategoryId",
+                table: "ClosingChecklists",
+                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -1392,6 +1495,15 @@ namespace Zinlo.Migrations
                 name: "AppSubscriptionPaymentsExtensionData");
 
             migrationBuilder.DropTable(
+                name: "Attachments");
+
+            migrationBuilder.DropTable(
+                name: "ClosingChecklists");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
                 name: "AbpEntityChanges");
 
             migrationBuilder.DropTable(
@@ -1399,6 +1511,9 @@ namespace Zinlo.Migrations
 
             migrationBuilder.DropTable(
                 name: "AbpEditions");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "AbpEntityChangeSets");
