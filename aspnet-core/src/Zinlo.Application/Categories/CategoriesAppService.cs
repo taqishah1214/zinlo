@@ -17,18 +17,18 @@ namespace Zinlo.Categories
 	[AbpAuthorize(AppPermissions.Pages_Categories)]
     public class CategoriesAppService : ZinloAppServiceBase, ICategoriesAppService
     {
-		 private readonly IRepository<Category> _categoryRepository;
+		 private readonly IRepository<Category,long> _categoryRepository;
 		 private readonly ICategoriesExcelExporter _categoriesExcelExporter;
 		 
 
-		  public CategoriesAppService(IRepository<Category> categoryRepository, ICategoriesExcelExporter categoriesExcelExporter ) 
+		  public CategoriesAppService(IRepository<Category,long> categoryRepository, ICategoriesExcelExporter categoriesExcelExporter ) 
 		  {
 			_categoryRepository = categoryRepository;
 			_categoriesExcelExporter = categoriesExcelExporter;
 			
 		  }
 
-		 public async Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input)
+	/*	 public async Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input)
          {
 			
 			var filteredCategories = _categoryRepository.GetAll()
@@ -56,7 +56,7 @@ namespace Zinlo.Categories
                 totalCount,
                 await categories.ToListAsync()
             );
-         }
+         }*/
 		 
 		 public async Task<GetCategoryForViewDto> GetCategoryForView(int id)
          {
@@ -113,49 +113,64 @@ namespace Zinlo.Categories
          public async Task Delete(EntityDto input)
          {
             await _categoryRepository.DeleteAsync(input.Id);
-         } 
-
-		public async Task<FileDto> GetCategoriesToExcel(GetAllCategoriesForExcelInput input)
-         {
-			
-			var filteredCategories = _categoryRepository.GetAll()
-						.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false  || e.Title.Contains(input.Filter) || e.Description.Contains(input.Filter))
-						.WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter),  e => e.Title == input.TitleFilter)
-						.WhereIf(!string.IsNullOrWhiteSpace(input.DescriptionFilter),  e => e.Description == input.DescriptionFilter);
-
-			var query = (from o in filteredCategories
-                         select new GetCategoryForViewDto() { 
-							Category = new CategoryDto
-							{
-                                Title = o.Title,
-                                Description = o.Description,
-                                Id = o.Id
-							}
-						 });
-
-
-            var categoryListDtos = await query.ToListAsync();
-
-            return _categoriesExcelExporter.ExportToFile(categoryListDtos);
          }
-        
-        public async Task<List<NameValueDto<int>>> CategoryDropDown()
+
+        public Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input)
         {
-           
-                var categories = _categoryRepository.GetAll();
-
-
-            var query = (from o in categories
-
-                         select new NameValueDto<int>()
-                         {
-                             Name = o.Title,
-                             Value = o.Id
-                         });
-
-            var assets = await query.ToListAsync();
-            return assets;
+            throw new System.NotImplementedException();
         }
 
+        public Task<FileDto> GetCategoriesToExcel(GetAllCategoriesForExcelInput input)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<List<NameValueDto<int>>> CategoryDropDown()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /*		public async Task<FileDto> GetCategoriesToExcel(GetAllCategoriesForExcelInput input)
+                 {
+
+                    var filteredCategories = _categoryRepository.GetAll()
+                                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false  || e.Title.Contains(input.Filter) || e.Description.Contains(input.Filter))
+                                .WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter),  e => e.Title == input.TitleFilter)
+                                .WhereIf(!string.IsNullOrWhiteSpace(input.DescriptionFilter),  e => e.Description == input.DescriptionFilter);
+
+                    var query = (from o in filteredCategories
+                                 select new GetCategoryForViewDto() { 
+                                    Category = new CategoryDto
+                                    {
+                                        Title = o.Title,
+                                        Description = o.Description,
+                                        Id = o.Id
+                                    }
+                                 });
+
+
+                    var categoryListDtos = await query.ToListAsync();
+
+                    return _categoriesExcelExporter.ExportToFile(categoryListDtos);
+                 }*/
+
+        /*      public async Task<List<NameValueDto<int>>> CategoryDropDown()
+              {
+
+                      var categories = _categoryRepository.GetAll();
+
+
+                  var query = (from o in categories
+
+                               select new NameValueDto<int>()
+                               {
+                                   Name = o.Title,
+                                   Value = o.Id
+                               });
+
+                  var assets = await query.ToListAsync();
+                  return assets;
+              }
+      */
     }
 }

@@ -37,6 +37,8 @@ using Zinlo.MultiTenancy.Payments.Dto;
 using Zinlo.Notifications.Dto;
 using Zinlo.Organizations.Dto;
 using Zinlo.Sessions.Dto;
+using Zinlo.Comment.Dtos;
+using Zinlo.Tasks.Dtos;
 
 namespace Zinlo
 {
@@ -45,8 +47,8 @@ namespace Zinlo
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
             
-            configuration.CreateMap<CategoryDto, Category>().ReverseMap();
-            configuration.CreateMap<CreateOrEditCategoryDto, Category>().ReverseMap();
+           
+           
 
             //Inputs
             configuration.CreateMap<CheckboxInputType, FeatureInputTypeDto>();
@@ -139,7 +141,17 @@ namespace Zinlo
             //OrganizationUnit
             configuration.CreateMap<OrganizationUnit, OrganizationUnitDto>();
 
+            //Comment
+            configuration.CreateMap<Comment.Comment, CreateOrEditCommentDto>().ReverseMap();
+
             /* ADD YOUR OWN CUSTOM AUTOMAPPER MAPPINGS HERE */
+            //Closing checklist
+            configuration.CreateMap<CreateOrEditClosingChecklistDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
+         
+
+            //Category
+            configuration.CreateMap<CategoryDto, Category>().ReverseMap();
+            configuration.CreateMap<CreateOrEditCategoryDto, Category>().ReverseMap();
         }
     }
 }

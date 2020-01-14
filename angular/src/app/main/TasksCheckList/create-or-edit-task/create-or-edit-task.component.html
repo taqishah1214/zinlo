@@ -5,9 +5,6 @@
             <div class="kt-portlet" id="kt_portlet">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <!-- <span class="kt-portlet__head-icon">
-                    <i class="flaticon-calendar"></i>
-                </span> -->
                         <h3 class="kt-portlet__head-title">
                             Create A Task
                         </h3>
@@ -28,98 +25,75 @@
                                 <div class="col-md-6">
 
                                     <div class="form-group">
-                                        <label>Category</label>                                    
-                                        <select id="categories" class="form-control input-medium select2-search select2-search--inline">
-                                            <option *ngFor="let item of categories; let i = index" [value]="categories[i].id">
-                                              {{categories[i].name}}
+                                        <label>Category</label>
+                                        <select id="categories"
+                                            class="form-control input-medium select2-search select2-search--inline">
+                                            <option *ngFor="let item of categories; let i = index"
+                                                [value]="categories[i].id">
+                                                {{categories[i].name}}
                                             </option>
-                                          </select>
+                                        </select>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="email"> Task Name</label>
-                                        <input type="email" class="form-control  bsDatepicker" id="email">
+                                        <input type="email" class="form-control  bsDatepicker" id="email"  [(ngModel)]="checklist.taskName" >
                                     </div>
-                                    <div class="form-group">
-                                        <label for="email">Email address:</label>
-                                        <input type="email" class="form-control" id="email">
-                                    </div>
-                                    
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="dateOfBirth">Closing Month</label>
-                                         <select class="form-control input-medium">
-                                            <option value="0">January</option>
-                                            <option value="1">Febuary</option>
-                                            <option value="2">March</option>
-                                            <option value="3">April</option>
-                                            <option value="4">May</option>
-                                            <option value="5">June</option>
-                                            <option value="6">July</option>
-                                            <option value="7">August</option>
-                                            <option value="8">September</option>
-                                            <option value="9">October</option>
-                                            <option value="10">November</option>
-                                            <option value="11">December</option>
-                                           
+                                        <select class="form-control input-medium"(change)="closingMonthSelect($event.target.value)" >
+                                            <option value="January">January</option>
+                                            <option value="Febuary">Febuary</option>
+                                            <option value="March">March</option>
+                                            <option value="April">April</option>
+                                            <option value="May">May</option>
+                                            <option value="June">June</option>
+                                            <option value="July">July</option>
+                                            <option value="August">August</option>
+                                            <option value="September">September</option>
+                                            <option value="October">October</option>
+                                            <option value="November">November</option>
+                                            <option value="December">December</option>
                                         </select>
-
-                                        <!-- <input id="dateOfBirth" name="dateOfBirth" type="text" bsDatepicker
-                                            class="form-control" /> -->
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Assignee Name</label>
-                                        <input type="email" class="form-control" id="email">
+                                        <input type="email" class="form-control" id="email" [(ngModel)]="assigneeName" > 
                                     </div>
                                     <div class="w-100"></div>
-                                    <div class="form-group">
-                                        <label for="email">Email address:</label>
-                                        <input type="email" class="form-control" id="email">
-                                    </div>
-                                   
+
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="email">Comments</label>
-                                        <input type="email" class="form-control" id="email">
+                                        <input type="email" class="form-control" id="email" [(ngModel)]="comment" >
                                     </div>
-                                            
-                                      
-
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-12">
-                                   
-                                            <div class="form-group">
-                                                <p-editor [(ngModel)]="htmlEditorInput" name="HtmlEditorInput"
-                                                    [style]="{'height':'150px'}"></p-editor>
-                                            </div>
-                                      
-
+                                    <div class="form-group">
+                                        <p-editor [(ngModel)]="htmlEditorInput" name="HtmlEditorInput"
+                                            [style]="{'height':'150px'}"></p-editor>
+                                    </div>
                                 </div>
                             </div>
-
-
-
-
-
-
                         </div>
                         <div class="col-md-4">
-
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Frequency</label>
-                                        <select class="form-control input-medium">
-                                            <option>Monthly</option>
-                                            <option>Yearly</option>
+                                        <select class="form-control input-medium" (change)="frqenceySelect($event.target.value)" > 
+                                            <option value="1">Monthly</option>
+                                            <option value="2">Quarterly</option>
+                                            <option value="3">Annually</option>
+                                            <option value="4">XNumberOfMonths</option>
 
                                         </select>
                                     </div>
@@ -142,24 +116,15 @@
 
                         </div>
                     </div>
-
-
-
-
-
-
-
-                    <!--Body End-->
-
                     <div class="kt-portlet__head">
                     </div>
                     <div class="">
-                        <a href="#" class="btn btn-brand">
+                        <a class="btn btn-brand" (click) = "onCreateTask()">
                             Create
                         </a>
                     </div>
                 </div>
-                <!--end::Portlet-->
+               
             </div>
         </div>
     </div>

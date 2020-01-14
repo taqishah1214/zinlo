@@ -17,7 +17,7 @@ export class AppNavigationService {
 
     getMenu(): AppMenu {
         return new AppMenu('MainMenu', 'MainMenu', [
-            new AppMenuItem('Closing CheckList', '','flaticon-more','/app/main/TasksCheckList/tasks'),
+            new AppMenuItem('ClosingChecklist', 'Pages.ClosingChecklist','flaticon-more','/app/main/TasksCheckList/tasks'),
           //  new AppMenuItem('Dashboard', 'Pages.Administration.Host.Dashboard', 'flaticon-line-graph', '/app/admin/hostDashboard'),
            // new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
             new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),

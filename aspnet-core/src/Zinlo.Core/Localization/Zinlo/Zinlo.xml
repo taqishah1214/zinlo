@@ -986,5 +986,11 @@
     <text name="YourPaymentHasBeenCompleted">Your payment has been completed.</text>
     <text name="ExternalPaymentId">External Payment Id</text>
     <text name="CostOfProration">Price difference during the period</text>
+    
+    <!--Checklist-->
+    <text name="ClosingChecklist">Closing Checklist</text>
+    <text name="CreateClosingChecklist">Create closing checklist</text>
+    <text name="EditClosingChecklist">Edit closing checklist</text>
+    <text name="DeleteClosingChecklist">Delete closing checklist</text>
   </texts>
 </localizationDictionary>

@@ -7,7 +7,7 @@ using Abp.Domain.Entities;
 namespace Zinlo.Categories
 {
     [Table("Categories")]
-    public class Category : CreationAuditedEntity, IMustHaveTenant
+    public class Category : CreationAuditedEntity<long>, IMustHaveTenant
     {
         public int TenantId { get; set; }
         [Required]

@@ -14,10 +14,10 @@
 
 
 
-        public const string Pages_Tests = "Pages.Tests";
-        public const string Pages_Tests_Create = "Pages.Tests.Create";
-        public const string Pages_Tests_Edit = "Pages.Tests.Edit";
-        public const string Pages_Tests_Delete = "Pages.Tests.Delete";
+        public const string Pages_ClosingChecklist = "Pages.ClosingChecklist";
+        public const string Pages_ClosingChecklist_Create = "Pages.ClosingChecklist.Create";
+        public const string Pages_ClosingChecklist_Edit = "Pages.ClosingChecklist.Edit";
+        public const string Pages_ClosingChecklist_Delete = "Pages.ClosingChecklist.Delete";
 
         public const string Pages_Categories = "Pages.Categories";
         public const string Pages_Categories_Create = "Pages.Categories.Create";

@@ -11,13 +11,15 @@ namespace Zinlo.Comment
     [Table("Comments")]
     public class Comment : CreationAuditedEntity, IMustHaveTenant
     {
+        public string Body { get; set; }
         public int TenantId { get; set; }
         [Required]
-        public string Type { get; set; }
+        public CommentType Type { get; set; }
         [Required]
-        public int TypeId { get; set; }
-        public string Body { get; set; }
-
-
+        public long TypeId { get; set; }
+    }
+    public enum CommentType
+    {
+        ClosingChecklist = 1,
     }
 }

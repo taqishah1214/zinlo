@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Zinlo.Tasks.Dtos
 {
-  public  class CreateOrEditTaskDto : TaskDto
+  public  class GetTaskForEditOutput
     {
-       
+        public CreateOrEditClosingChecklistDto Task { get; set; }
+
     }
 }

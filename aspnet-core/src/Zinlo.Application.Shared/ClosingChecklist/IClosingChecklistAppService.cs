@@ -1,15 +1,11 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Zinlo.Dto;
 using Zinlo.Tasks.Dtos;
 
-namespace Zinlo.Tasks
+namespace Zinlo.ClosingChecklist
 {
- public   interface ITaskAppService : IApplicationService
+    public interface IClosingChecklistAppService : IApplicationService
     {
         Task<PagedResultDto<GetTaskForViewDto>> GetAll(GetAllTasksInput input);
 
@@ -17,10 +13,8 @@ namespace Zinlo.Tasks
 
         Task<GetTaskForEditOutput> GetTaskForEdit(EntityDto input);
 
-        Task CreateOrEdit(CreateOrEditTaskDto input);
+        Task CreateOrEdit(CreateOrEditClosingChecklistDto input);
 
         Task Delete(EntityDto input);
-
-       // Task<FileDto> GetCategoriesToExcel(GetAllCategoriesForExcelInput input);
     }
 }

@@ -20,7 +20,7 @@ namespace Zinlo.EntityFrameworkCore
     public class ZinloDbContext : AbpZeroDbContext<Tenant, Role, User, ZinloDbContext>, IAbpPersistedGrantDbContext
     {
         public virtual DbSet<Attachment.Attachment> Attachments { get; set; }
-        public virtual DbSet<Tasks.Task> Tasks { get; set; }
+        public virtual DbSet<ClosingChecklist.ClosingChecklist> ClosingChecklists { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Comment.Comment> Comments { get; set; }
 

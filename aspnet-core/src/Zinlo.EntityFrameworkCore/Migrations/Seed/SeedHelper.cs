@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Transactions;
 using Abp.Dependency;
 using Abp.Domain.Uow;
@@ -20,6 +21,21 @@ namespace Zinlo.Migrations.Seed
 
         public static void SeedHostDb(ZinloDbContext context)
         {
+            var tenantId = 0;
+            List<string> tenantName = new List<string>();
+            tenantName.Add("Techverx 1");
+            tenantName.Add("Techverx 2");
+            tenantName.Add("Techverx 3");
+            tenantName.Add("Techverx 4");
+
+            List<string> tenantPrimaryAdmin = new List<string>();
+            tenantPrimaryAdmin.Add("hammad@techverx.com");
+            tenantPrimaryAdmin.Add("ihsan.techverx.com");
+            tenantPrimaryAdmin.Add("taqi.techverx.com");
+            tenantPrimaryAdmin.Add("shaban.techverx.com");
+
+
+
             context.SuppressAutoSetTenantId = true;
 
             //Host seed
@@ -27,7 +43,23 @@ namespace Zinlo.Migrations.Seed
 
             //Default tenant seed (in host database).
             new DefaultTenantBuilder(context).Create();
+
             new TenantRoleAndUserBuilder(context, 1).Create();
+
+
+            for (int i = 0; i<tenantName.Count; i++)
+            {
+                new DefaultTenantBuilder(context, tenantName[i]).CreateSeederTenants();
+            }
+
+            for (int i = 0; i < tenantPrimaryAdmin.Count; i++)
+            {
+                tenantId = context.Tenants.FirstAsync(p => p.Name.Equals(tenantName[i])).Result.Id;
+                new TenantRoleAndUserBuilder(context, tenantId, tenantName[i], tenantPrimaryAdmin[i]).CreateSeederAdmins();
+            }
+
+
+            
         }
 
         private static void WithDbContext<TDbContext>(IIocResolver iocResolver, Action<TDbContext> contextAction)

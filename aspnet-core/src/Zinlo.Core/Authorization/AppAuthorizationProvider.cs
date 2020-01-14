@@ -30,10 +30,10 @@ namespace Zinlo.Authorization
 
             var pages = context.GetPermissionOrNull(AppPermissions.Pages) ?? context.CreatePermission(AppPermissions.Pages, L("Pages"));
 
-            var tests = pages.CreateChildPermission(AppPermissions.Pages_Tests, L("Tests"));
-            tests.CreateChildPermission(AppPermissions.Pages_Tests_Create, L("CreateNewTest"));
-            tests.CreateChildPermission(AppPermissions.Pages_Tests_Edit, L("EditTest"));
-            tests.CreateChildPermission(AppPermissions.Pages_Tests_Delete, L("DeleteTest"));
+            var tests = pages.CreateChildPermission(AppPermissions.Pages_ClosingChecklist, L("ClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
+            tests.CreateChildPermission(AppPermissions.Pages_ClosingChecklist_Create, L("CreateClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
+            tests.CreateChildPermission(AppPermissions.Pages_ClosingChecklist_Edit, L("EditClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
+            tests.CreateChildPermission(AppPermissions.Pages_ClosingChecklist_Delete, L("DeleteClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
 
 
 
