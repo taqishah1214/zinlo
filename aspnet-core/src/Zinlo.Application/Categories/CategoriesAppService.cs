@@ -11,6 +11,7 @@ using Zinlo.Authorization;
 using Abp.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using Zinlo.Authorization.Users;
 
 namespace Zinlo.Categories
 {
@@ -18,37 +19,48 @@ namespace Zinlo.Categories
     public class CategoriesAppService : ZinloAppServiceBase, ICategoriesAppService
     {
 		 private readonly IRepository<Category,long> _categoryRepository;
-		 private readonly ICategoriesExcelExporter _categoriesExcelExporter;
+        private readonly UserManager _userManager;
+
+        private readonly ICategoriesExcelExporter _categoriesExcelExporter;
 		 
 
-		  public CategoriesAppService(IRepository<Category,long> categoryRepository, ICategoriesExcelExporter categoriesExcelExporter ) 
+		  public CategoriesAppService(IRepository<Category,long> categoryRepository, ICategoriesExcelExporter categoriesExcelExporter, UserManager userManager ) 
 		  {
 			_categoryRepository = categoryRepository;
 			_categoriesExcelExporter = categoriesExcelExporter;
-			
-		  }
+            _userManager = userManager;
+        }
+       private string getUserNameById(long UserId)
+        {
+            string userName = string.Empty;
+            userName = _userManager.GetUserById(UserId).FullName;
+            return userName;
+        }
 
-	/*	 public async Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input)
-         {
-			
-			var filteredCategories = _categoryRepository.GetAll()
-						.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false  || e.Title.Contains(input.Filter) || e.Description.Contains(input.Filter))
-						.WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter),  e => e.Title == input.TitleFilter)
-						.WhereIf(!string.IsNullOrWhiteSpace(input.DescriptionFilter),  e => e.Description == input.DescriptionFilter);
+        public async Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input)
+        {
 
-			var pagedAndFilteredCategories = filteredCategories
+            var filteredCategories = _categoryRepository.GetAll()
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Title.Contains(input.Filter) || e.Description.Contains(input.Filter))
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter), e => e.Title == input.TitleFilter)
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.DescriptionFilter), e => e.Description == input.DescriptionFilter);
+            
+            var pagedAndFilteredCategories = filteredCategories
                 .OrderBy(input.Sorting ?? "id asc")
                 .PageBy(input);
 
-			var categories = from o in pagedAndFilteredCategories
-                         select new GetCategoryForViewDto() {
-							Category = new CategoryDto
-							{
-                                Title = o.Title,
-                                Description = o.Description,
-                                Id = o.Id
-							}
-						};
+            var categories =  from o in  pagedAndFilteredCategories                           
+                              select new GetCategoryForViewDto()
+                             {
+                                 Category = new CategoryDto
+                                 {   Id = o.Id,
+                                    // CreatedBy = getUserNameById(o.Id),
+                                      CreationDate = o.CreationTime,
+                                      Title = o.Title,
+                                      Description = o.Description,
+                                   
+                                 }
+                             };
 
             var totalCount = await filteredCategories.CountAsync();
 
@@ -56,9 +68,9 @@ namespace Zinlo.Categories
                 totalCount,
                 await categories.ToListAsync()
             );
-         }*/
-		 
-		 public async Task<GetCategoryForViewDto> GetCategoryForView(int id)
+        }
+
+        public async Task<GetCategoryForViewDto> GetCategoryForView(int id)
          {
             var category = await _categoryRepository.GetAsync(id);
 
@@ -115,10 +127,10 @@ namespace Zinlo.Categories
             await _categoryRepository.DeleteAsync(input.Id);
          }
 
-        public Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input)
-        {
-            throw new System.NotImplementedException();
-        }
+        //public Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input)
+        //{
+           
+        //}
 
         public Task<FileDto> GetCategoriesToExcel(GetAllCategoriesForExcelInput input)
         {

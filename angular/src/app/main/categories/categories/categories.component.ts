@@ -1,5 +1,5 @@
 ﻿import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesServiceProxy, CategoryDto  } from '@shared/service-proxies/service-proxies';
 import { NotifyService } from '@abp/notify/notify.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -40,7 +40,8 @@ export class CategoriesComponent extends AppComponentBase {
         private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
-        private _fileDownloadService: FileDownloadService
+        private _fileDownloadService: FileDownloadService,
+        private _router:Router
     ) {
         super(injector);
     }
@@ -71,8 +72,13 @@ export class CategoriesComponent extends AppComponentBase {
         this.paginator.changePage(this.paginator.getPage());
     }
 
+    // RedirectToCreateCategory() :void {
+    //     this._router.navigate(['/app/main/TasksCheckList/create-or-edit-task']);   
+    // }
+
     createCategory(): void {
-        this.createOrEditCategoryModal.show();
+        this._router.navigate(['/app/main/categories/creat-or-edit-category']);
+       // this.createOrEditCategoryModal.show();
     }
 
     deleteCategory(category: CategoryDto): void {
