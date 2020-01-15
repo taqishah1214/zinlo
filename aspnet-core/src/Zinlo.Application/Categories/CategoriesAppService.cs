@@ -160,7 +160,7 @@ namespace Zinlo.Categories
                       var categories = _categoryRepository.GetAll();
 
 
-                  var query = (from o in categories
+                  var query = (from o in categoriesE:\Zinlo\zinlo\aspnet-core\src\Zinlo.Application.Shared\Editions\
 
                                select new NameValueDto<int>()
                                {
