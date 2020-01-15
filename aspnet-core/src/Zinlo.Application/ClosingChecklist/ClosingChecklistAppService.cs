@@ -50,9 +50,10 @@ namespace Zinlo.ClosingChecklist
             {
                 task.TenantId = (int)AbpSession.TenantId;
             }
-
-            
-            var checklistId = await _closingChecklistRepository.InsertAndGetIdAsync(task);
+            try
+            {
+                var checklistId = await _closingChecklistRepository.InsertAndGetIdAsync(task);
+           
             if(input.CommentBody != "")
             {
                 var commentDto = new CreateOrEditCommentDto() {
@@ -61,6 +62,12 @@ namespace Zinlo.ClosingChecklist
                     TypeId = checklistId
                 };
                 await _commentAppService.Create(commentDto);
+            }
+            }
+            catch (Exception e)
+            {
+
+                throw;
             }
         }
 

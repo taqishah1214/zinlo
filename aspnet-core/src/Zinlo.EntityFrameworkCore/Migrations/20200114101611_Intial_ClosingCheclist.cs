@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Zinlo.Migrations
 {
-    public partial class intial_UPTO_ClosingCheckList : Migration
+    public partial class Intial_ClosingCheclist : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

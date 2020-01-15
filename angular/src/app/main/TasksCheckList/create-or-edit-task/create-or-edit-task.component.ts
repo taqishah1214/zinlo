@@ -17,6 +17,8 @@ export class CreateOrEditTaskComponent implements OnInit {
   comment: string;
   closingMonth : string;
   frequenct : string;
+  commantModal : boolean;
+  commantBox : boolean;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
 
 
@@ -24,6 +26,8 @@ export class CreateOrEditTaskComponent implements OnInit {
     (private _router: Router,
      private _categoryService: CategoriesServiceProxy,
      private _closingChecklistService: ClosingChecklistServiceProxy) {
+
+      this.commantBox = true;
 
   }
 
@@ -41,44 +45,78 @@ export class CreateOrEditTaskComponent implements OnInit {
   }
 
   closingMonthSelect(value) : void {
-     console.log("value",value);
-     this.closingMonth = value;
+    //////////////////
+    this.checklist.closingMonth = value;
   }
 
+  onChangeAssigniName(value) : void {
+    this.checklist.assigneeNameId = value
+  }
+  onChangeFrequency(value) : void {
+    this.checklist.frequency = value;
+  }
+
+  onChangeDueOn(value) : void {
+    this.checklist.dueOn = value;
+  }
+  onChangeDaysBefore(value) : void {
+    ///////////////////////
+    this.checklist.dayBeforeAfter = false;
+  }
+  onChangeEndsOn(value): void {
+    //////////////////////////////
+    this.checklist.endsOn = value;
+  }
+  EndofMonthSelected() : void {
+    this.checklist.endOfMonth = true;
+  }
+  EndofMonthUnselected():void {
+  this.checklist.endOfMonth =false;
+  }
+
+
   onCreateTask() : void {
-    console.log("Email",this.Email)
-    console.log("assigneeName",this.assigneeName)
-    console.log("taskName",this.taskName)
-    console.log("comment",this.comment)
-
     var date = new Date();
-
-    this.checklist.frequency = 2;
-    this.checklist.assigneeNameId = 2;
+     
+    this.checklist.taskName = "hammad";
     this.checklist.categoryId = 1;
-    this.checklist.closingMonth = moment(date);
-    this.checklist.commentBody = this.comment;
-    this.checklist.instruction = "task 1";
-    this.checklist.noOfMonths = 2;
-    this.checklist.dueOn = 2;
-    this.checklist.endOfMonth = false;
+    this.checklist.assigneeNameId = 1;
+    this.checklist.closingMonth =moment(date) ;
     this.checklist.status = 1;
-    this.checklist.endsOn =moment(date);
-    this.checklist.attachment = "hammad"
+    this.checklist.attachment = "hammadfile";
+    this.checklist.instruction = "hammadtask1";
+    this.checklist.noOfMonths = 1;
+    this.checklist.dueOn = 1;
+    this.checklist.endsOn = moment(date);
+    this.checklist.dayBeforeAfter = false;
+    this.checklist.endOfMonth = false;
+    this.checklist.frequency = 1;
+    this.checklist.commentBody = "hammadcomment"
 
-debugger
+
+    debugger
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
-      debugger
+     
       console.log("done")
       });
 
   }
-  frqenceySelect(value) : void {
-    this.frequenct = value;
-    console.log("value",value);
+  
 
-
+  commentClick() : void {
+    this.commantModal = true;
+    this.commantBox = false;
   }
+
+  onComment() : void {
+    this.commantModal = false;
+    this.commantBox = true;
+  }
+  onCancelComment() : void {
+    this.commantModal = false;
+    this.commantBox = true;
+  }
+
 
 }
 

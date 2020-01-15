@@ -1,0 +1,8 @@
+<div class="form-group">
+    <label>Category</label>
+    <select id="categories" class="form-control input-medium select2-search select2-search--inline">
+        <option *ngFor="let item of categories; let i = index" [value]="categories[i].id">
+            {{categories[i].name}}
+        </option>
+    </select>
+</div>

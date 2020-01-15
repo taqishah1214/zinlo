@@ -9,8 +9,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20200114084607_intial_UPTO_ClosingCheckList")]
-    partial class intial_UPTO_ClosingCheckList
+    [Migration("20200114101611_Intial_ClosingCheclist")]
+    partial class Intial_ClosingCheclist
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

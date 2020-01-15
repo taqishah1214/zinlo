@@ -1,7 +1,6 @@
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     <div class="row">
         <div class="col-lg-12">
-            <!--begin::Portlet-->
             <div class="kt-portlet" id="kt_portlet">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
@@ -17,33 +16,22 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body">
-                    <!--Body Start-->
-
                     <div class="row">
                         <div class="col-md-8">
                             <div class="row">
                                 <div class="col-md-6">
-
-                                    <div class="form-group">
-                                        <label>Category</label>
-                                        <select id="categories"
-                                            class="form-control input-medium select2-search select2-search--inline">
-                                            <option *ngFor="let item of categories; let i = index"
-                                                [value]="categories[i].id">
-                                                {{categories[i].name}}
-                                            </option>
-                                        </select>
-                                    </div>
-
+                                    <app-categorie-drop-down></app-categorie-drop-down>
                                     <div class="form-group">
                                         <label for="email"> Task Name</label>
-                                        <input type="email" class="form-control  bsDatepicker" id="email"  [(ngModel)]="checklist.taskName" >
+                                        <input type="email" class="form-control  bsDatepicker"
+                                            [(ngModel)]="checklist.taskName">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="dateOfBirth">Closing Month</label>
-                                        <select class="form-control input-medium"(change)="closingMonthSelect($event.target.value)" >
+                                        <select class="form-control input-medium"
+                                            (change)="closingMonthSelect($event.target.value)">
                                             <option value="January">January</option>
                                             <option value="Febuary">Febuary</option>
                                             <option value="March">March</option>
@@ -57,39 +45,67 @@
                                             <option value="November">November</option>
                                             <option value="December">December</option>
                                         </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Assignee Name</label>
-                                        <input type="email" class="form-control" id="email" [(ngModel)]="assigneeName" > 
-                                    </div>
+                                    </div>       
+                                        <div class="form-group">
+                                            <label >Assignee Name</label>
+                                            <select class="form-control input-medium"
+                                                (change)="onChangeAssigniName($event.target.value)">
+                                                <option value="1">MR 1</option>
+                                                <option value="2">MR 2</option>
+                                                <option value="3">MR 3</option>
+                                                <option value="4">MR 4</option>
+                                               
+                                            </select>
+                                        </div>
+                                   
                                     <div class="w-100"></div>
 
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row">   
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="email">Comments</label>
-                                        <input type="email" class="form-control" id="email" [(ngModel)]="comment" >
+                                    
+                                    <div class="form-group" *ngIf="commantBox">
+                                        <label >Comments</label>
+                                        <div (click)="commentClick()" >
+                                            <li class="kt-user-card-v2">
+                                                <div class="kt-user-card-v2__pic">
+                                                    <img alt="photo" src="assets/media/users/100_10.jpg">
+                                                </div>
+                                            </li>  
+                                            <input  class="form-control">              
+                                        </div>
                                     </div>
+
+                                    <div class="form-group" *ngIf="commantModal">
+                                        <label >Comments</label>
+                                        <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput"
+                                            [style]="{'height':'150px'}">
+                                        </p-editor>
+                                        <button class="btn btn-brand" (click)="onComment()">Comment</button>
+                                        <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                                    </div>
+
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-md-12">
+                                    <label>Instruction</label>
                                     <div class="form-group">
-                                        <p-editor [(ngModel)]="htmlEditorInput" name="HtmlEditorInput"
+                                        <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
                                             [style]="{'height':'150px'}"></p-editor>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Frequency</label>
-                                        <select class="form-control input-medium" (change)="frqenceySelect($event.target.value)" > 
+                                        <select class="form-control input-medium"
+                                            (change)="onChangeFrequency($event.target.value)">
                                             <option value="1">Monthly</option>
                                             <option value="2">Quarterly</option>
                                             <option value="3">Annually</option>
@@ -97,19 +113,64 @@
 
                                         </select>
                                     </div>
+                                    <div class="form-group ">
+                                        <label>Due on</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label class="kt-radio kt-radio--single kt-radio--success">
+                                                        <input type="radio" checked="">
+                                                        <span></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <select class="form-control input-medium"
+                                                (change)="onChangeDueOn($event.target.value)">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="email">Due on</label>
-                                        <input type="text" class="form-control bsDatepicker" id="email">
+                                        <label>No of Months</label>
+                                        <input type="text" class="form-control bsDatepicker" [(ngModel)]="checklist.noOfMonths" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Days Before</label>
+                                        <select class="form-control input-medium"
+                                            (change)="onChangeDaysBefore($event.target.value)">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="email">Number of Months</label>
-                                        <input type="text" class="form-control bsDatepicker" id="email">
+                                        <label>Ends on</label>
+                                        <select class="form-control input-medium"
+                                            (change)="onChangeEndsOn($event.target.value)">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+
+                                        </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="email">End of Month</label>
-                                        <input type="email" class="form-control" id="email">
+                                    <div class="kt-radio-list">
+                                        <span></span>
+                                        <label class="kt-radio kt-radio--brand" name="radio5">
+                                            <input type="radio" (select)="EndofMonthSelected()" (unselect)="EndofMonthUnselected()" >End of month 
+                                            <span></span>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -119,12 +180,12 @@
                     <div class="kt-portlet__head">
                     </div>
                     <div class="">
-                        <a class="btn btn-brand" (click) = "onCreateTask()">
+                        <button class="btn btn-brand" (click)="onCreateTask()">
                             Create
-                        </a>
+                        </button>
                     </div>
                 </div>
-               
+
             </div>
         </div>
     </div>
