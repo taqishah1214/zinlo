@@ -87,9 +87,39 @@ export class CreateOrEditTaskComponent implements OnInit {
 
 
   onCreateTask() : void {
-    
-    this.checklist.assigneeNameId = this.selectedUserId.selectedUserId;
-    this.checklist.categoryId = this.selectedCategoryId.categoryId;
+    if(this.checklist.dayBeforeAfter)
+    {
+      this.checklist.dayBeforeAfter = true;
+     }
+     else
+     {
+      this.checklist.dayBeforeAfter = false;
+    }
+
+    if(this.checklist.endOfMonth)
+     {
+      this.checklist.endOfMonth = true;
+     }
+     else
+     {
+      this.checklist.endOfMonth = false;
+     }
+
+    this.checklist.dueOn = Number(this.checklist.dueOn);
+    this.checklist.frequency = Number(this.checklist.frequency);
+    this.checklist.status = 1
+    this.checklist.assigneeNameId = Number(this.selectedUserId.selectedUserId);
+    this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
+    this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
+
+
+    ////////////////////////////////////////////////////Ask from Taqi
+    //this.checklist.closingMonth = moment(date);
+    //this.checklist.endsOn = moment(date);
+    ///////////////////////////////////////////////////
+  
+
+
     debugger
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
       alert("Successfully Created!!!")
