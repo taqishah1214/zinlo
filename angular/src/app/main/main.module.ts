@@ -28,8 +28,9 @@ import { TasksComponent } from './TasksCheckList/tasks/tasks.component'
 ;
 import { CreatOrEditCategoryComponent } from './categories/creat-or-edit-category/creat-or-edit-category.component'
 import { CategorieDropDownComponent } from './categories/categorie-drop-down/categorie-drop-down.component';;
-import { UserListComponentComponent } from './TasksCheckList/user-list-component/user-list-component.component'
-import { IgxCalendarModule } from 'igniteui-angular';
+import { UserListComponentComponent } from './TasksCheckList/user-list-component/user-list-component.component';
+import { TaskDetailsComponent } from './TasksCheckList/task-details/task-details.component'
+
 
 
 
@@ -55,8 +56,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
         NgxChartsModule,
         BsDatepickerModule.forRoot(),
         BsDropdownModule.forRoot(),
-        PopoverModule.forRoot(),
-        IgxCalendarModule,
+        PopoverModule.forRoot()
     ],
     declarations: [
 		CategoriesComponent,
@@ -74,7 +74,9 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
         CreatOrEditCategoryComponent
 ,
 
-        UserListComponentComponent
+        UserListComponentComponent,
+
+        TaskDetailsComponent
        
     ],
     providers: [

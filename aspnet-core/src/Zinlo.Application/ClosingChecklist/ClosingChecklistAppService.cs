@@ -39,7 +39,8 @@ namespace Zinlo.ClosingChecklist
                                        {
                                           AssigniName = o.AssigneeName.FullName,
                                            TaskName = o.TaskName,
-                                         //  Status =  (int)o.Status,
+
+                                           Status =  (int)o.Status,
                                            Category =o.Category.Title
                                        }
                              };

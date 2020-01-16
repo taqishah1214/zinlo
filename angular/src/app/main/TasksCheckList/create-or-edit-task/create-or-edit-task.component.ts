@@ -4,7 +4,6 @@ import { CategoriesServiceProxy, NameValueDto, CreateOrEditClosingChecklistDto, 
 import * as moment from "moment";
 import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
-import { IgxMonthPickerComponent } from 'igniteui-angular';
 
 @Component({
   selector: 'app-create-or-edit-task',
@@ -28,7 +27,6 @@ export class CreateOrEditTaskComponent implements OnInit {
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent,{ static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent,{ static: false }) selectedUserId: UserListComponentComponent;
-  @ViewChild(IgxMonthPickerComponent ,{ static: false }) public monthPicker: IgxMonthPickerComponent;
 
   
 
