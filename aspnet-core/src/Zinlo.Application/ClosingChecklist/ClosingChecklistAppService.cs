@@ -12,6 +12,7 @@ using Zinlo.ClosingChecklist;
 using Zinlo.Tasks.Dtos;
 using Zinlo.Comment;
 using Zinlo.Comment.Dtos;
+using Zinlo.ClosingChecklist.Dtos;
 
 namespace Zinlo.ClosingChecklist
 {
@@ -25,7 +26,33 @@ namespace Zinlo.ClosingChecklist
             _closingChecklistRepository = closingChecklistRepository;
             _commentAppService = commentAppService;
         }
-   
+
+
+        public async Task<PagedResultDto<GetClosingCheckListTaskDto>> GetAll()
+        {
+            var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u=>u.AssigneeName);
+
+            var closingCheckList = from o in query
+                                   select new GetClosingCheckListTaskDto()
+                                   {
+                                       ClosingCheckListForViewDto = new ClosingCheckListForViewDto
+                                       {
+                                          AssigniName = o.AssigneeName.FullName,
+                                           TaskName = o.TaskName,
+                                         //  Status =  (int)o.Status,
+                                           Category =o.Category.Title
+                                       }
+                             };
+
+            var totalCount = await closingCheckList.CountAsync();
+
+            return new PagedResultDto<GetClosingCheckListTaskDto>(
+                totalCount,
+                await closingCheckList.ToListAsync()
+            );
+        }
+
+
         public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditClosingChecklistDto input)
         {
 
@@ -40,6 +67,8 @@ namespace Zinlo.ClosingChecklist
                 await Update(input);
             }*/
         }
+
+        
 
         //[AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
         protected virtual  async System.Threading.Tasks.Task Create(CreateOrEditClosingChecklistDto input)
@@ -77,30 +106,10 @@ namespace Zinlo.ClosingChecklist
             var category = await _closingChecklistRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, category);
         }
-        public System.Threading.Tasks.Task Delete(EntityDto input)
-        {
-            throw new NotImplementedException();
-        }
+       
 
        
 
-        public async Task<GetTaskForEditOutput> GetTaskForEdit(EntityDto input)
-        {
-            var task = await _closingChecklistRepository.FirstOrDefaultAsync(input.Id);
-            var output = new GetTaskForEditOutput { Task = ObjectMapper.Map<CreateOrEditClosingChecklistDto>(task) };
-            return output;
-        }
-
-        public async Task<GetTaskForViewDto> GetTaskForView(int id)
-        {
-            var task = await _closingChecklistRepository.GetAsync(id);
-            var output = new GetTaskForViewDto { Task = ObjectMapper.Map<TaskDto>(task) };
-            return output;
-        }
-
-        public Task<PagedResultDto<GetTaskForViewDto>> GetAll(GetAllTasksInput input)
-        {
-            throw new NotImplementedException();
-        }
+     
     }
 }

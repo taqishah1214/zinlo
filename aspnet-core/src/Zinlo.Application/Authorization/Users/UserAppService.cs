@@ -452,5 +452,21 @@ namespace Zinlo.Authorization.Users
 
             return query;
         }
+
+        
+        public async Task<List<NameValueDto<long>>> UserDropDown()
+        {
+            var user = _userManager.Users;
+            var query = (from o in user
+
+                         select new NameValueDto<long>()
+                         {
+                             Name = o.Name,
+                             Value = o.Id
+                         });
+
+            var assets = await query.ToListAsync();
+            return assets;
+        }
     }
 }

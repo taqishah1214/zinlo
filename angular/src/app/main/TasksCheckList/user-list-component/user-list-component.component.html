@@ -1,0 +1,9 @@
+<div class="form-group">
+    <label>Assigni Name</label>
+    <select id="categories" name="users" (change)="userOnChange()" [(ngModel)]="selectedUserId" class="form-control input-medium select2-search select2-search--inline"  >
+        <option  *ngFor="let item of users;" 
+        [value]="item.value">
+            {{item.name}}
+        </option>
+    </select>   
+</div>

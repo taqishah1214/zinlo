@@ -1,13 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { CategoriesServiceProxy, NameValueDto, TaskDto, CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CategoriesServiceProxy, NameValueDto, CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy , UserServiceProxy} from '@shared/service-proxies/service-proxies';
 import * as moment from "moment";
+import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
+import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
+import { IgxMonthPickerComponent } from 'igniteui-angular';
 
 @Component({
   selector: 'app-create-or-edit-task',
   templateUrl: './create-or-edit-task.component.html',
   styleUrls: ['./create-or-edit-task.component.css']
 })
+
 
 export class CreateOrEditTaskComponent implements OnInit {
   categories: any;
@@ -19,8 +23,14 @@ export class CreateOrEditTaskComponent implements OnInit {
   frequenct : string;
   commantModal : boolean;
   commantBox : boolean;
+  closingMonthInputBox : boolean;
+  closingMonthModalBox : boolean;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
+  @ViewChild(CategorieDropDownComponent,{ static: false }) selectedCategoryId: CategorieDropDownComponent;
+  @ViewChild(UserListComponentComponent,{ static: false }) selectedUserId: UserListComponentComponent;
+  @ViewChild(IgxMonthPickerComponent ,{ static: false }) public monthPicker: IgxMonthPickerComponent;
 
+  
 
   constructor
     (private _router: Router,
@@ -28,44 +38,44 @@ export class CreateOrEditTaskComponent implements OnInit {
      private _closingChecklistService: ClosingChecklistServiceProxy) {
 
       this.commantBox = true;
-
+      this.closingMonthInputBox = true;
+      this.closingMonthModalBox = false;
   }
 
   ngOnInit() {
 
-    //   this._categoryService.categoryDropDown().subscribe(result => {
-    //     debugger
-    //     this.categories = result;
-    // });
-    //   console.log(this.categories);
+  }
+
+  closingMonthClick() : void {
+    this.closingMonthInputBox = false;
+      this.closingMonthModalBox = true;
   }
 
   BackToTaskList(): void {
     this._router.navigate(['/app/main/TasksCheckList/tasks']);
   }
 
+  
+
   closingMonthSelect(value) : void {
-    //////////////////
-    this.checklist.closingMonth = value;
+    var date = new date();
+    ////////////////////
+    this.checklist.closingMonth = moment(date);
   }
 
   onChangeAssigniName(value) : void {
     this.checklist.assigneeNameId = value
   }
-  onChangeFrequency(value) : void {
-    this.checklist.frequency = value;
-  }
-
-  onChangeDueOn(value) : void {
-    this.checklist.dueOn = value;
-  }
+ 
   onChangeDaysBefore(value) : void {
+    console.log("onChangeDaysBefore");
     ///////////////////////
     this.checklist.dayBeforeAfter = false;
   }
   onChangeEndsOn(value): void {
+    var date = new date();
     //////////////////////////////
-    this.checklist.endsOn = value;
+    this.checklist.endsOn = moment(date);
   }
   EndofMonthSelected() : void {
     this.checklist.endOfMonth = true;
@@ -73,35 +83,18 @@ export class CreateOrEditTaskComponent implements OnInit {
   EndofMonthUnselected():void {
   this.checklist.endOfMonth =false;
   }
+ 
 
 
   onCreateTask() : void {
-    var date = new Date();
-     
-    this.checklist.taskName = "hammad";
-    this.checklist.categoryId = 1;
-    this.checklist.assigneeNameId = 1;
-    this.checklist.closingMonth =moment(date) ;
-    this.checklist.status = 1;
-    this.checklist.attachment = "hammadfile";
-    this.checklist.instruction = "hammadtask1";
-    this.checklist.noOfMonths = 1;
-    this.checklist.dueOn = 1;
-    this.checklist.endsOn = moment(date);
-    this.checklist.dayBeforeAfter = false;
-    this.checklist.endOfMonth = false;
-    this.checklist.frequency = 1;
-    this.checklist.commentBody = "hammadcomment"
-
-
+    
+    this.checklist.assigneeNameId = this.selectedUserId.selectedUserId;
+    this.checklist.categoryId = this.selectedCategoryId.categoryId;
     debugger
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
-     
-      console.log("done")
+      alert("Successfully Created!!!")
       });
-
   }
-  
 
   commentClick() : void {
     this.commantModal = true;

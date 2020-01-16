@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CategoriesServiceProxy, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { CategoriesServiceProxy, ClosingChecklistServiceProxy, NameValueDto, NameValueDtoOfInt64, } from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -8,16 +8,29 @@ import { CategoriesServiceProxy, ClosingChecklistServiceProxy } from '@shared/se
   styleUrls: ['./categorie-drop-down.component.css']
 })
 export class CategorieDropDownComponent implements OnInit {
+  public categoryValue : any;
   categories: any;
+  selectedCategorie: any;
+  category : NameValueDtoOfInt64[] = [];
+  categoryId : any;
+  
+  @Output() messageEvent = new EventEmitter<string>();
+
   constructor
   (
-   private _categoryService: CategoriesServiceProxy,
-   private _closingChecklistService: ClosingChecklistServiceProxy) {
+   private _categoryService: CategoriesServiceProxy) {
 }
   ngOnInit() {
+      this.categoryId = 0;
       this._categoryService.categoryDropDown().subscribe(result => {
-        this.categories = result;
+        this.category = result;
     });
-  }
+   
 
+  }
+  categoryValuee() : void {
+      console.log("child",this.categoryId);
+      this.messageEvent.emit(this.categoryId)
+
+  }
 }

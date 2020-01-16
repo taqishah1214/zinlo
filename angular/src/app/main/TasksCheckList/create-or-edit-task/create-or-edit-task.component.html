@@ -17,7 +17,7 @@
                 </div>
                 <div class="kt-portlet__body">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             <div class="row">
                                 <div class="col-md-6">
                                     <app-categorie-drop-down></app-categorie-drop-down>
@@ -46,17 +46,7 @@
                                             <option value="December">December</option>
                                         </select>
                                     </div>       
-                                        <div class="form-group">
-                                            <label >Assignee Name</label>
-                                            <select class="form-control input-medium"
-                                                (change)="onChangeAssigniName($event.target.value)">
-                                                <option value="1">MR 1</option>
-                                                <option value="2">MR 2</option>
-                                                <option value="3">MR 3</option>
-                                                <option value="4">MR 4</option>
-                                               
-                                            </select>
-                                        </div>
+                                    <app-user-list-component></app-user-list-component>
                                    
                                     <div class="w-100"></div>
 
@@ -68,12 +58,12 @@
                                     <div class="form-group" *ngIf="commantBox">
                                         <label >Comments</label>
                                         <div (click)="commentClick()" >
-                                            <li class="kt-user-card-v2">
+                                            <div class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic">
                                                     <img alt="photo" src="assets/media/users/100_10.jpg">
                                                 </div>
-                                            </li>  
-                                            <input  class="form-control">              
+                                                <input  class="form-control">
+                                            </div>  
                                         </div>
                                     </div>
 
@@ -99,13 +89,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Frequency</label>
                                         <select class="form-control input-medium"
-                                            (change)="onChangeFrequency($event.target.value)">
+                                        [(ngModel)]="checklist.frequency">
                                             <option value="1">Monthly</option>
                                             <option value="2">Quarterly</option>
                                             <option value="3">Annually</option>
@@ -125,7 +115,7 @@
                                                 </span>
                                             </div>
                                             <select class="form-control input-medium"
-                                                (change)="onChangeDueOn($event.target.value)">
+                                            [(ngModel)]="checklist.dueOn">
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -139,17 +129,14 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>No of Months</label>
-                                        <input type="text" class="form-control bsDatepicker" [(ngModel)]="checklist.noOfMonths" >
+                                        <input type="text" name="noOfMonths" class="form-control bsDatepicker" [(ngModel)]="checklist.noOfMonths" >
                                     </div>
                                     <div class="form-group">
                                         <label>Days Before</label>
                                         <select class="form-control input-medium"
-                                            (change)="onChangeDaysBefore($event.target.value)">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-
+                                        [(ngModel)]="checklist.dayBeforeAfter">
+                                            <option value=true>Days Before</option>
+                                            <option value=false>Days After</option>
                                         </select>
                                     </div>
                                 </div>
@@ -157,7 +144,7 @@
                                     <div class="form-group">
                                         <label>Ends on</label>
                                         <select class="form-control input-medium"
-                                            (change)="onChangeEndsOn($event.target.value)">
+                                        [(ngModel)]="checklist.endsOn">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -165,16 +152,37 @@
 
                                         </select>
                                     </div>
-                                    <div class="kt-radio-list">
+                                    <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" (select)="EndofMonthSelected()" (unselect)="EndofMonthUnselected()" >End of month 
+                                            <input type="radio" [(ngModel)]="checklist.endOfMonth" >End of month 
                                             <span></span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="col">
+                                    <div class="kt-portlet kt-portlet--height-fluid">
+                                        <div class="kt-portlet__head">
+                                            <div class="kt-portlet__head-label">
+                                                <h3 class="kt-portlet__head-title">
+                                                    Quick Drag & Drop Upload
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="kt-portlet__body">
+                                            <div class="kt-uppy" id="kt_uppy_3">
+                                                <div class="kt-uppy__drag"></div>
+                                                <div class="kt-uppy__informer"></div>
+                                                <div class="kt-uppy__progress"></div>
+                                                <div class="kt-uppy__thumbnails"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="kt-portlet__head">

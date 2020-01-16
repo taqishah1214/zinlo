@@ -42,9 +42,6 @@ import { ZeroRefreshTokenService } from '@account/auth/zero-refresh-token.servic
         ApiServiceProxies.PayPalPaymentServiceProxy,
         ApiServiceProxies.StripePaymentServiceProxy,
         ApiServiceProxies.DashboardCustomizationServiceProxy,
-
-
-        
         ApiServiceProxies.ClosingChecklistServiceProxy,
 
         ApiServiceProxies.CategoriesServiceProxy,
