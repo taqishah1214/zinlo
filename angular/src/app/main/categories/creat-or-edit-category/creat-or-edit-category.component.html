@@ -32,8 +32,10 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <p-editor [(ngModel)]="categoryobj.description" name="description"
-                                    [style]="{'height':'150px'}"></p-editor>
+                                <input type="text" class="form-control" id="description" name="description" [(ngModel)]="categoryobj.description" >
+
+                                <!-- <p-editor [(ngModel)]="categoryobj.description" name="description"
+                                    [style]="{'height':'150px'}"></p-editor> -->
                             </div>
                         </div>
                     </div>

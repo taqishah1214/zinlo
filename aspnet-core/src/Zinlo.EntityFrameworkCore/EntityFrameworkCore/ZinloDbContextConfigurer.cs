@@ -14,14 +14,26 @@ namespace Zinlo.EntityFrameworkCore
         //{
         //    builder.UseSqlServer(connection);
         //}
+        // Bellow is mysql configuration
+
+        //public static void Configure(DbContextOptionsBuilder<ZinloDbContext> builder, string connectionString)
+        //{
+        //    builder.UseMySql(connectionString);
+        //}
+
+        //public static void Configure(DbContextOptionsBuilder<ZinloDbContext> builder, DbConnection connection)
+        //{
+        //    builder.UseMySql(connection);
+        //}
+        //New PosgreSQL Configuration
         public static void Configure(DbContextOptionsBuilder<ZinloDbContext> builder, string connectionString)
         {
-            builder.UseMySql(connectionString);
+            builder.UseNpgsql(connectionString);
         }
 
         public static void Configure(DbContextOptionsBuilder<ZinloDbContext> builder, DbConnection connection)
         {
-            builder.UseMySql(connection);
+            builder.UseNpgsql(connection);
         }
     }
 }

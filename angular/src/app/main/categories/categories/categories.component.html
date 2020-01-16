@@ -14,9 +14,10 @@
         </div>
         <div class="kt-subheader__toolbar">
             <div class="kt-subheader__wrapper">
-				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+				<!-- <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button> -->
                 <button *ngIf="isGranted('Pages.Categories.Create')" (click)="createCategory()" 
-			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewCategory")}}</button>
+            class="btn btn-primary blue"><i class="fa fa-plus"></i>Add New</button>
+            <!-- {{l("CreateNewCategory")}} -->
             </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ using Zinlo.MultiTenancy;
 using Zinlo.MultiTenancy.Accounting;
 using Zinlo.MultiTenancy.Payments;
 using Zinlo.Storage;
-
+using Abp.Localization;
 
 namespace Zinlo.EntityFrameworkCore
 {
@@ -53,25 +53,28 @@ namespace Zinlo.EntityFrameworkCore
         {
             base.OnModelCreating(modelBuilder);
 
-           
-           
-           
- //           modelBuilder.Entity<Category>(c =>
- //           {
- //               c.HasIndex(e => new { e.TenantId });
- //           });
- //modelBuilder.Entity<Test>(t =>
- //           {
- //               t.HasIndex(e => new { e.TenantId });
- //           });
- //modelBuilder.Entity<Category.Category>(c =>
- //           {
- //               c.HasIndex(e => new { e.TenantId });
- //           });
- //modelBuilder.Entity<BinaryObject>(b =>
- //           {
- //               b.HasIndex(e => new { e.TenantId });
- //           });
+            //Specific for postgresql bellow 3 lines
+            modelBuilder.Entity<ApplicationLanguageText>()
+            .Property(p => p.Value)
+            .HasMaxLength(100); // any integer that is smaller than 10485760
+
+
+            //           modelBuilder.Entity<Category>(c =>
+            //           {
+            //               c.HasIndex(e => new { e.TenantId });
+            //           });
+            //modelBuilder.Entity<Test>(t =>
+            //           {
+            //               t.HasIndex(e => new { e.TenantId });
+            //           });
+            //modelBuilder.Entity<Category.Category>(c =>
+            //           {
+            //               c.HasIndex(e => new { e.TenantId });
+            //           });
+            //modelBuilder.Entity<BinaryObject>(b =>
+            //           {
+            //               b.HasIndex(e => new { e.TenantId });
+            //           });
 
             modelBuilder.Entity<ChatMessage>(b =>
             {
