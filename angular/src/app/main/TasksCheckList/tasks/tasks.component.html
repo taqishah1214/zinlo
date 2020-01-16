@@ -83,90 +83,38 @@
                                 id="column_rendering" style="">
                                 <table class="kt-datatable__table" style="display: block;">
                                     <tbody class="kt-datatable__body" style="">
-                                        <tr data-row="0" class="kt-datatable__row" style="left: 0px;">
 
-                                            <td data-field="ShipDate" class="kt-datatable__cell"><span
-                                                    style="width: 145px;">2/12/2018</span></td>
-                                            <td data-field="CompanyName" class="kt-datatable__cell"><span
-                                                    style="width: 145px;">Gleichner, Ziemann and Gutkowski</span></td>
-                                            <td data-field="Type" data-autohide-disabled="false"
-                                                class="kt-datatable__cell"><span style="width: 145px;"><span
-                                                        class="btn btn-secondary btn-sm">Retail</span></span>
+
+
+                                        <tr *ngFor="let i of ClosingCheckList"  data-row="0" class="kt-datatable__row" style="left: 0px;">
+                                        
+                                            <td data-field="ShipDate" class="kt-datatable__cell"><span style="width: 145px;">2/12/2018</span></td>
+
+                                            <td data-field="CompanyName" class="kt-datatable__cell"><span style="width: 145px;">{{i.closingCheckListForViewDto.taskName}}</span></td>
+                                            
+                                            <td data-field="Type" data-autohide-disabled="false" class="kt-datatable__cell"><span style="width: 145px;"><span
+                                                        class="btn btn-secondary btn-sm">{{i.closingCheckListForViewDto.category}}</span></span>
                                             </td>
-                                            <td data-field="Status" class="kt-datatable__cell"><span
-                                                    style="width: 145px;"><span
+                                            <td data-field="Status" class="kt-datatable__cell"><span style="width: 145px;"><span
                                                         class="kt-badge  kt-badge--primary kt-badge--inline kt-badge--pill">Canceled</span></span>
                                             </td>
-
-                                            <td data-field="OrderID" class="kt-datatable__cell"><span
-                                                    style="width: 145px;">
+                                        
+                                            <td data-field="OrderID" class="kt-datatable__cell"><span style="width: 145px;">
                                                     <div class="kt-user-card-v2">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div class="kt-badge kt-badge--xl kt-badge--primary">N</div>
                                                         </div>
-                                                        <div class="kt-user-card-v2__details"> <span
-                                                                class="kt-user-card-v2__name">Nixie Sailor</span> </div>
+                                                        <div class="kt-user-card-v2__details"> <span class="kt-user-card-v2__name">{{i.closingCheckListForViewDto.assigniName}}</span> </div>
                                                     </div>
                                                 </span>
                                             </td>
-
+                                        
                                         </tr>
 
-                                        <tr data-row="1" class="kt-datatable__row kt-datatable__row--even"
-                                            style="left: 0px;">
 
-                                            <td data-field="ShipDate" class="kt-datatable__cell"><span
-                                                    style="width: 145px;">8/6/2017</span></td>
-                                            <td data-field="CompanyName" class="kt-datatable__cell"><span
-                                                    style="width: 145px;">Rosenbaum-Reichel</span></td>
-                                            <td data-field="Type" data-autohide-disabled="false"
-                                                class="kt-datatable__cell"><span style="width: 145px;"><span
-                                                        class="btn btn-secondary btn-sm">Direct</span></span>
-                                            </td>
-                                            <td data-field="Status" class="kt-datatable__cell"><span
-                                                    style="width: 145px;"><span
-                                                        class="kt-badge  kt-badge--danger kt-badge--inline kt-badge--pill">Danger</span></span>
-                                            </td>
-                                            <td data-field="OrderID" class="kt-datatable__cell"><span
-                                                    style="width: 145px;">
-                                                    <div class="kt-user-card-v2">
-                                                        <div class="kt-user-card-v2__pic"> <img alt="photo"
-                                                                src="assets/media/users/100_10.jpg"> </div>
-                                                        <div class="kt-user-card-v2__details"> <span
-                                                                class="kt-user-card-v2__name">Emelita Giraldez</span>
-                                                        </div>
-                                                    </div>
-                                                </span>
-                                            </td>
 
-                                        </tr>
-                                        <tr data-row="2" class="kt-datatable__row" style="left: 0px;">
-
-                                            <td data-field="ShipDate" class="kt-datatable__cell"><span
-                                                    style="width: 145px;">5/26/2016</span></td>
-                                            <td data-field="CompanyName" class="kt-datatable__cell"><span
-                                                    style="width: 145px;">Kulas, Cassin and Batz</span></td>
-                                            <td data-field="Type" data-autohide-disabled="false"
-                                                class="kt-datatable__cell"><span style="width: 145px;"><span
-                                                        class="btn btn-secondary btn-sm">Retail</span></span>
-                                            </td>
-                                            <td data-field="Status" class="kt-datatable__cell"><span
-                                                    style="width: 145px;"><span
-                                                        class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill">Pending</span></span>
-                                            </td>
-                                            <td data-field="OrderID" class="kt-datatable__cell"><span
-                                                    style="width: 145px;">
-                                                    <div class="kt-user-card-v2">
-                                                        <div class="kt-user-card-v2__pic">
-                                                            <div class="kt-badge kt-badge--xl kt-badge--info">U</div>
-                                                        </div>
-                                                        <div class="kt-user-card-v2__details"> <span
-                                                                class="kt-user-card-v2__name">Ula Luckin</span></div>
-                                                    </div>
-                                                </span>
-                                            </td>
-
-                                        </tr>
+                                        
+                                        
 
                                     </tbody>
                                 </table>

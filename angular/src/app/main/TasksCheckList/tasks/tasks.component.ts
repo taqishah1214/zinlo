@@ -8,6 +8,8 @@ import {ClosingChecklistServiceProxy} from '@shared/service-proxies/service-prox
   styleUrls: ['./tasks.component.css']
 })
 export class TasksComponent implements OnInit {
+  ClosingCheckList : any
+
 
   constructor(private _router: Router,     private _closingChecklistService: ClosingChecklistServiceProxy) {
   }
@@ -15,9 +17,8 @@ export class TasksComponent implements OnInit {
   ngOnInit() {
     this._closingChecklistService.getAll().subscribe(result => {
       console.log("Done",result)
-
+       this.ClosingCheckList = result.items;
       });
-      debugger;
   }
 
   RedirectToCreateTask() :void {
