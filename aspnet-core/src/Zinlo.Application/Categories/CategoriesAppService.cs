@@ -30,36 +30,37 @@ namespace Zinlo.Categories
 			_categoriesExcelExporter = categoriesExcelExporter;
             _userManager = userManager;
         }
-       private string getUserNameById(long UserId)
+       private string GetUserNameById(long UserId)
         {
             string userName = string.Empty;
             userName = _userManager.GetUserById(UserId).FullName;
             return userName;
         }
-
-        public async Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input)
+        //GetAllCategoriesInput input
+        public async Task<PagedResultDto<GetCategoryForViewDto>> GetAll()
         {
 
-            var filteredCategories = _categoryRepository.GetAll()
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Title.Contains(input.Filter) || e.Description.Contains(input.Filter))
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter), e => e.Title == input.TitleFilter)
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.DescriptionFilter), e => e.Description == input.DescriptionFilter);
+            var filteredCategories = _categoryRepository.GetAll();
+                        //.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Title.Contains(input.Filter) || e.Description.Contains(input.Filter))
+                        //.WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter), e => e.Title == input.TitleFilter)
+                        //.WhereIf(!string.IsNullOrWhiteSpace(input.DescriptionFilter), e => e.Description == input.DescriptionFilter);
             
-            var pagedAndFilteredCategories = filteredCategories
-                .OrderBy(input.Sorting ?? "id asc")
-                .PageBy(input);
+            var pagedAndFilteredCategories = filteredCategories;
+                //.OrderBy(input.Sorting ?? "id asc")
+                //.PageBy(input);
 
-            var categories =  from o in  pagedAndFilteredCategories                           
+            var categories =  from o in  pagedAndFilteredCategories                         
                               select new GetCategoryForViewDto()
                              {
                                  Category = new CategoryDto
                                  {   Id = o.Id,
-                                    // CreatedBy = getUserNameById(o.Id),
+                                   //  CreatedBy = _userManager.GetUserById(o.CreatorUserId.HasValue ? o.CreatorUserId.Value : 0).FullName,
                                       CreationDate = o.CreationTime,
                                       Title = o.Title,
                                       Description = o.Description,
                                    
                                  }
+                                
                              };
 
             var totalCount = await filteredCategories.CountAsync();

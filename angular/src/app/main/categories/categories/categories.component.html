@@ -1,4 +1,4 @@
-﻿<!-- 
+﻿
 <div [@routerTransition]>
   <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
     <div class="kt-subheader kt-grid__item">
@@ -92,6 +92,10 @@
                                         {{l('Description')}}
                                         <p-sortIcon field="category.description"></p-sortIcon>
                                     </th>
+                                    <th style="width: 150px" pSortableColumn="description">
+                                        {{l('CreationDate')}}
+                                        <p-sortIcon field="category.creationDate"></p-sortIcon>
+                                    </th>
 
                                 </tr>
                             </ng-template>                           
@@ -108,9 +112,13 @@
 													<a href="javascript:;"
 														(click)="viewCategoryModal.show(record)">{{l('View')}}</a>
 												</li>
-												<li>
+												<!-- <li>
 													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Categories.Edit')"
 														(click)="createOrEditCategoryModal.show(record.category.id)">{{l('Edit')}}</a>
+                                                </li> -->
+                                                <li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Categories.Edit')"
+														(click)="editCategory(record.category.id)">{{l('Edit')}}</a>
 												</li>
 												<li>
 											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Categories.Delete')"
@@ -126,6 +134,10 @@
                                     <td style="width:150px">
 											<span  class="ui-column-title"> {{l('Description')}}</span>
                                         <div innerHTML="{{record.category.description}}"></div>
+                                        </td>
+                                        <td style="width:150px">
+											<!-- <span class="ui-column-creationDate"> {{l('CreationDate')}}</span> -->
+											{{record.category.creationDate | date:'medium'}}
 										</td>
 
                                 </tr>
@@ -156,160 +168,6 @@
     <viewCategoryModal #viewCategoryModal></viewCategoryModal>
     
   </div>
-</div> -->
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-    <div class="row">
-        <div class="col-lg-12">
-
-<div class="kt-portlet kt-portlet--mobile">
-	<div class="kt-portlet__head kt-portlet__head--lg">
-		<div class="kt-portlet__head-label">
-			<span class="kt-portlet__head-icon">
-				<i class="kt-font-brand flaticon2-line-chart"></i>
-			</span>
-			<h3 class="kt-portlet__head-title">
-				Task Categories
-			</h3>
-		</div>
-		<div class="kt-portlet__head-toolbar">
-            <div class="kt-portlet__head-wrapper">
-	<!-- <a href="#" class="btn btn-clean btn-icon-sm">
-		<i class="la la-long-arrow-left"></i>
-		Back
-	</a> -->
-	&nbsp;
-	<div class="dropdown dropdown-inline">
-		<button type="button" (click)="createCategory()" class="btn btn-brand btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			<i class="flaticon2-plus"></i> Add New  	
-		</button>
-		
-	</div>
-</div>		</div>
-	</div>
-
-	<div class="kt-portlet__body">
-		<!--begin: Search Form -->
-		<div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">
-	<div class="row align-items-center">
-		<div class="col-xl-8 order-2 order-xl-1">
-			<div class="row align-items-center">				
-				<div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-					<div class="kt-input-icon kt-input-icon--left">
-						<input type="text" class="form-control" placeholder="Search..." id="generalSearch">
-						<span class="kt-input-icon__icon kt-input-icon__icon--left">
-							<span><i class="la la-search"></i></span>
-						</span>
-					</div>
-				</div>
-                				
-			
-                			</div>
-		</div>
-		<div class="col-xl-4 order-1 order-xl-2 kt-align-right">
-			<a href="#" class="btn btn-default kt-hidden">
-				<i class="la la-cart-plus"></i> New Order
-			</a>
-			<!-- <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"></div> -->
-		</div>
-	</div>
-</div>		<!--end: Search Form -->
-    </div>
-    <table class="table">
-        <thead>
-            <th>First</th>
-            <th>First</th>
-            <th>First</th>
-            <th>First</th>
-        </thead>
-        <tbody>
-            <tr>
-                <td>ihsan</td>
-                <td>ihsan</td>
-                <td>ihsan</td>
-                <td>ihsan</td>
-            </tr>
-            <tr>
-                <td>ihsan</td>
-                <td>ihsan</td>
-                <td>ihsan</td>
-                <td>ihsan</td>
-            </tr>
-            <tr>
-                <td>ihsan</td>
-                <td>ihsan</td>
-                <td>ihsan</td>
-                <td>ihsan</td>
-            </tr>
-            <tr>
-                <td>ihsan</td>
-                <td>ihsan</td>
-                <td>ihsan</td>
-                <td>ihsan</td>
-            </tr>
-        </tbody>
-    </table>
-
-      <!--begin: Pagination-->
-      <div class="kt-pagination  kt-pagination--info"  style="margin-bottom: 20px !important;">
-        <ul class="kt-pagination__links">
-            <li class="kt-pagination__link--first">
-                <a href="#"><i class="fa fa-angle-double-left kt-font-info"></i></a>
-            </li>
-            <li class="kt-pagination__link--next">
-                <a href="#"><i class="fa fa-angle-left kt-font-info"></i></a>
-            </li>
-
-            <li>
-                <a href="#">...</a>
-            </li>
-            <li>
-                <a href="#">29</a>
-            </li>
-            <li>
-                <a href="#">30</a>
-            </li>
-            <li>
-                <a href="#">31</a>
-            </li>
-            <li class="kt-pagination__link--active">
-                <a href="#">32</a>
-            </li>
-            <li>
-                <a href="#">33</a>
-            </li>
-            <li>
-                <a href="#">34</a>
-            </li>
-            <li>
-                <a href="#">...</a>
-            </li>
-
-            <li class="kt-pagination__link--prev">
-                <a href="#"><i class="fa fa-angle-right kt-font-info"></i></a>
-            </li>
-            <li class="kt-pagination__link--last">
-                <a href="#"><i class="fa fa-angle-double-right kt-font-info"></i></a>
-            </li>
-        </ul>
-
-        <div class="kt-pagination__toolbar">
-            <select class="form-control kt-font-info" style="width: 60px">
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-            <span class="pagination__desc">
-                Displaying 10 of 230 records
-            </span>
-        </div>
-    </div>
-    <!--end: Pagination-->
-	
-</div>
-        </div>
-        </div>
 </div>
 
 
@@ -319,3 +177,4 @@
 
 
 
+ 

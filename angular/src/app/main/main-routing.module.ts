@@ -12,7 +12,7 @@ import { CreatOrEditCategoryComponent } from './categories/creat-or-edit-categor
             {
                 path: '',
                 children: [
-                    { path: 'categories/creat-or-edit-category', component: CreatOrEditCategoryComponent, data: { permission: 'Pages.Categories.Create' }  },
+                    { path: 'categories/creat-or-edit-category', component: CreatOrEditCategoryComponent, data: { permission: 'Pages.Categories.Create', id : 'id' }  },
 
                     { path: 'TasksCheckList/tasks', component: TasksComponent, data: { permission: 'Pages.ClosingChecklist' }  },
                     { path: 'TasksCheckList/create-or-edit-task', component: CreateOrEditTaskComponent, data: { permission: 'Pages.ClosingChecklist.Create' }  },

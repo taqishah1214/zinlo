@@ -1,6 +1,6 @@
-﻿import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
+﻿import { Component, Injector, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CategoriesServiceProxy, CategoryDto  } from '@shared/service-proxies/service-proxies';
+import { CategoriesServiceProxy, CategoryDto, GetCategoryForViewDto  } from '@shared/service-proxies/service-proxies';
 import { NotifyService } from '@abp/notify/notify.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -13,6 +13,7 @@ import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { CreatOrEditCategoryComponent } from '../creat-or-edit-category/creat-or-edit-category.component';
 
 @Component({
     templateUrl: './categories.component.html',
@@ -21,16 +22,22 @@ import * as moment from 'moment';
 })
 export class CategoriesComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditCategoryModal', { static: true }) createOrEditCategoryModal: CreateOrEditCategoryModalComponent;
     @ViewChild('viewCategoryModalComponent', { static: true }) viewCategoryModal: ViewCategoryModalComponent;
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
+
+    @Output() recordid = new EventEmitter<number>();
+
+   // RId: EventEmitter<number> = new EventEmitter<number>();
+
+   
 
     advancedFiltersAreShown = false;
     filterText = '';
     titleFilter = '';
     descriptionFilter = '';
-
+ categoriesList :any;
+   public EditRecordId :number = 0;
 
 
 
@@ -44,27 +51,45 @@ export class CategoriesComponent extends AppComponentBase {
         private _router:Router
     ) {
         super(injector);
+        
+    }
+    ngOnInit() {
+        this.loadGrid();
     }
 
-    getCategories(event?: LazyLoadEvent) {
-        if (this.primengTableHelper.shouldResetPaging(event)) {
-            this.paginator.changePage(0);
-            return;
-        }
+    // getCategories(event?: LazyLoadEvent) {
+    //     if (this.primengTableHelper.shouldResetPaging(event)) {
+    //         this.paginator.changePage(0);
+    //         return;
+    //     }
 
-        this.primengTableHelper.showLoadingIndicator();
+    //     this.primengTableHelper.showLoadingIndicator();
 
-        this._categoriesServiceProxy.getAll(
-            this.filterText,
-            this.titleFilter,
-            this.descriptionFilter,
-            this.primengTableHelper.getSorting(this.dataTable),
-            this.primengTableHelper.getSkipCount(this.paginator, event),
-            this.primengTableHelper.getMaxResultCount(this.paginator, event)
-        ).subscribe(result => {
+    //     this._categoriesServiceProxy.getAll(
+    //         this.filterText,
+    //         this.titleFilter,
+    //         this.descriptionFilter,
+    //         this.primengTableHelper.getSorting(this.dataTable),
+    //         this.primengTableHelper.getSkipCount(this.paginator, event),
+    //         this.primengTableHelper.getMaxResultCount(this.paginator, event)
+    //     ).subscribe(result => {
+    //         this.primengTableHelper.totalRecordsCount = result.totalCount;
+    //         this.primengTableHelper.records = result.items;
+    //         this.primengTableHelper.hideLoadingIndicator();
+    //         console.log(this.primengTableHelper.records)
+    //     });
+    // }
+    
+    loadGrid(){
+        this._categoriesServiceProxy.getAll().subscribe(result=>{
+
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
-            this.primengTableHelper.hideLoadingIndicator();
+             this.primengTableHelper.hideLoadingIndicator();
+
+            this.categoriesList = result.items;
+            console.log(this.categoriesList)
+            console.log(this.categoriesList[0].category.title)
         });
     }
 
@@ -77,8 +102,14 @@ export class CategoriesComponent extends AppComponentBase {
     // }
 
     createCategory(): void {
+        this.EditRecordId = 0;
         this._router.navigate(['/app/main/categories/creat-or-edit-category']);
-       // this.createOrEditCategoryModal.show();
+    }
+
+    editCategory(id:any): void {
+        debugger;
+        this.recordid = id;
+        this._router.navigate(['/app/main/categories/creat-or-edit-category',{ id : id}]);
     }
 
     deleteCategory(category: CategoryDto): void {
