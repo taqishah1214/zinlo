@@ -10,7 +10,8 @@ namespace Zinlo.Categories
 {
     public interface ICategoriesAppService : IApplicationService 
     {
-        Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input);
+		//GetAllCategoriesInput input
+		Task<PagedResultDto<GetCategoryForViewDto>> GetAll();
 
         Task<GetCategoryForViewDto> GetCategoryForView(int id);
 
