@@ -80,6 +80,7 @@ import { NgxSpinnerModule, NgxSpinnerComponent } from 'ngx-spinner';
 import { ScrollTopComponent } from './shared/layout/scroll-top.component';
 
 
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -158,8 +159,8 @@ import { ScrollTopComponent } from './shared/layout/scroll-top.component';
         TextMaskModule,
         ImageCropperModule,
         AutoCompleteModule,
-        NgxSpinnerModule
-
+        NgxSpinnerModule,
+       
     ],
     providers: [
         ImpersonationService,

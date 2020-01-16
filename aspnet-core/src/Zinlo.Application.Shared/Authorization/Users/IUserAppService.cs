@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using Zinlo.Authorization.Users.Dto;
@@ -25,5 +26,7 @@ namespace Zinlo.Authorization.Users
         Task DeleteUser(EntityDto<long> input);
 
         Task UnlockUser(EntityDto<long> input);
+
+        Task<List<NameValueDto<long>>> UserDropDown();
     }
 }

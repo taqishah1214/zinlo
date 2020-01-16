@@ -21,7 +21,7 @@ namespace Zinlo.Categories
 		Task Delete(EntityDto input);
 
 		Task<FileDto> GetCategoriesToExcel(GetAllCategoriesForExcelInput input);
-		Task<List<NameValueDto<int>>> CategoryDropDown();
+		Task<List<NameValueDto<long>>> CategoryDropDown();
 
 
 

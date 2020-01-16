@@ -137,10 +137,6 @@ namespace Zinlo.Categories
             throw new System.NotImplementedException();
         }
 
-        public Task<List<NameValueDto<int>>> CategoryDropDown()
-        {
-            throw new System.NotImplementedException();
-        }
 
         /*		public async Task<FileDto> GetCategoriesToExcel(GetAllCategoriesForExcelInput input)
                  {
@@ -166,23 +162,20 @@ namespace Zinlo.Categories
                     return _categoriesExcelExporter.ExportToFile(categoryListDtos);
                  }*/
 
-        /*      public async Task<List<NameValueDto<int>>> CategoryDropDown()
-              {
+        public async Task<List<NameValueDto<long>>> CategoryDropDown()
+        {
+            var categories = _categoryRepository.GetAll();
+            var query = (from o in categories
 
-                      var categories = _categoryRepository.GetAll();
-
-
-                  var query = (from o in categoriesE:\Zinlo\zinlo\aspnet-core\src\Zinlo.Application.Shared\Editions\
-
-                               select new NameValueDto<int>()
+                               select new NameValueDto<long>()
                                {
                                    Name = o.Title,
                                    Value = o.Id
                                });
 
-                  var assets = await query.ToListAsync();
-                  return assets;
-              }
-      */
+            var assets = await query.ToListAsync();
+            return assets;
+        }
+
     }
 }

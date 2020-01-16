@@ -24,8 +24,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BsDatepickerModule, BsDatepickerConfig, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';;
 import { CreateOrEditTaskComponent } from './TasksCheckList/create-or-edit-task/create-or-edit-task.component';;
-import { TasksComponent } from './TasksCheckList/tasks/tasks.component';
+import { TasksComponent } from './TasksCheckList/tasks/tasks.component'
+;
 import { CreatOrEditCategoryComponent } from './categories/creat-or-edit-category/creat-or-edit-category.component'
+import { CategorieDropDownComponent } from './categories/categorie-drop-down/categorie-drop-down.component';;
+import { UserListComponentComponent } from './TasksCheckList/user-list-component/user-list-component.component'
+import { IgxCalendarModule } from 'igniteui-angular';
 
 
 
@@ -51,21 +55,26 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
         NgxChartsModule,
         BsDatepickerModule.forRoot(),
         BsDropdownModule.forRoot(),
-        PopoverModule.forRoot()
+        PopoverModule.forRoot(),
+        IgxCalendarModule,
     ],
     declarations: [
 		CategoriesComponent,
 		ViewCategoryModalComponent,		CreateOrEditCategoryModalComponent,
-
+        CategorieDropDownComponent,
         DashboardComponent
 ,
 
         CreateOrEditTaskComponent
 ,
 
-        TasksComponent,
+        TasksComponent
+,
 
         CreatOrEditCategoryComponent
+,
+
+        UserListComponentComponent
        
     ],
     providers: [
