@@ -7,6 +7,7 @@ import { CreateOrEditTaskComponent } from './TasksCheckList/create-or-edit-task/
 import { CreatOrEditCategoryComponent } from './categories/creat-or-edit-category/creat-or-edit-category.component';
 import { TaskDetailsComponent } from './TasksCheckList/task-details/task-details.component';
 
+
 @NgModule({
     imports: [
         RouterModule.forChild([

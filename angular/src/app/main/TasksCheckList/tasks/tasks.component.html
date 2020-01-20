@@ -39,8 +39,7 @@
                                 </div>
                                 <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
                                     <div class="kt-input-icon kt-input-icon--left">
-                                        <input type="text" class="form-control" placeholder="Search..."
-                                            id="generalSearch">
+                                        <app-user-list-component></app-user-list-component>
                                         <span class="kt-input-icon__icon kt-input-icon__icon--left">
                                             <span><i class="la la-search"></i></span>
                                         </span>
@@ -95,8 +94,21 @@
                                             <td data-field="Type" data-autohide-disabled="false" class="kt-datatable__cell"><span style="width: 145px;"><span
                                                         class="btn btn-secondary btn-sm">{{i.closingCheckListForViewDto.category}}</span></span>
                                             </td>
+
+
                                             <td data-field="Status" class="kt-datatable__cell"><span style="width: 145px;"><span
-                                                        class="kt-badge  kt-badge--primary kt-badge--inline kt-badge--pill">Canceled</span></span>
+                                                        class="kt-badge  kt-badge--primary kt-badge--inline kt-badge--pill">
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                 {{i.closingCheckListForViewDto.status}}
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                <a class="dropdown-item" href="#">Action</a>
+                                                                <a class="dropdown-item" href="#">Another action</a>
+                                                                <a class="dropdown-item" href="#">Something else here</a>
+                                                            </div>
+                                                        </div>
+                                                    </span></span>
                                             </td>
                                         
                                             <td data-field="OrderID" class="kt-datatable__cell"><span style="width: 145px;">

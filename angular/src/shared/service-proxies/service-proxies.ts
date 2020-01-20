@@ -13552,7 +13552,7 @@ export interface IMarkAllUnreadMessagesOfUserAsReadInput {
 export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
     taskName!: string | undefined;
     category!: string | undefined;
-    status!: number;
+    status!: string | undefined;
     assigniName!: string | undefined;
 
     constructor(data?: IClosingCheckListForViewDto) {
@@ -13593,7 +13593,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
 export interface IClosingCheckListForViewDto {
     taskName: string | undefined;
     category: string | undefined;
-    status: number;
+    status: string | undefined;
     assigniName: string | undefined;
 }
 

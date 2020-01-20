@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import {ClosingChecklistServiceProxy} from '@shared/service-proxies/service-proxies';
+import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
+
 
 @Component({
   selector: 'app-tasks',
@@ -8,6 +10,9 @@ import {ClosingChecklistServiceProxy} from '@shared/service-proxies/service-prox
   styleUrls: ['./tasks.component.css']
 })
 export class TasksComponent implements OnInit {
+  @ViewChild(UserListComponentComponent,{ static: false }) selectedUserId: UserListComponentComponent;
+
+  
   ClosingCheckList : any
 
 

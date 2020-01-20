@@ -10,7 +10,7 @@ namespace Zinlo.ClosingChecklist.Dtos
 
         public string Category { get; set; }
 
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         public string AssigniName { get; set; }
     }

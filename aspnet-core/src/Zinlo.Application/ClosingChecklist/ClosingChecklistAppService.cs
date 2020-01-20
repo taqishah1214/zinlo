@@ -31,6 +31,13 @@ namespace Zinlo.ClosingChecklist
         }
 
 
+        public enum Status
+        {
+            Open = 1,
+            Complete = 2,
+            Inprogress = 3
+        }
+
         public async Task<PagedResultDto<GetClosingCheckListTaskDto>> GetAll()
         {
             var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u=>u.AssigneeName);
@@ -42,7 +49,7 @@ namespace Zinlo.ClosingChecklist
                                        {
                                           AssigniName = o.AssigneeName.FullName,
                                            TaskName = o.TaskName,
-                                          // Status =  (int)o.Status,
+                                           Status =  o.Status.ToString(),
                                            Category =o.Category.Title
                                        }
                              };

@@ -1,4 +1,5 @@
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
     <div class="row">
         <div class="col-lg-12">
             <div class="kt-portlet" id="kt_portlet">
@@ -21,40 +22,38 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <app-categorie-drop-down></app-categorie-drop-down>
-                                    <div class="form-group">
-                                        <label for="email"> Task Name</label>
-                                        <input type="email" class="form-control  bsDatepicker"
-                                            [(ngModel)]="checklist.taskName">
-                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="dateOfBirth">Closing Month</label>
-                                        <select class="form-control input-medium"
-                                            (change)="closingMonthSelect($event.target.value)">
-                                            <option value="January">January</option>
-                                            <option value="Febuary">Febuary</option>
-                                            <option value="March">March</option>
-                                            <option value="April">April</option>
-                                            <option value="May">May</option>
-                                            <option value="June">June</option>
-                                            <option value="July">July</option>
-                                            <option value="August">August</option>
-                                            <option value="September">September</option>
-                                            <option value="October">October</option>
-                                            <option value="November">November</option>
-                                            <option value="December">December</option>
-                                        </select>
-                                    </div>       
+                                        <div class="month-calender">
+                                            <form class="container">
+                                                <input [(ngModel)]="checklist.closingMonth" autocomplete="off" class="form-control" name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}" (onShown)="onOpenCalendar($event)">
+                                                </form>
+                                        </div>
+                                    </div> 
+                                </div>
+                               
+                                
+                            </div>
+                            <div class="row"> 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email"> Task Name</label>
+                                        <input type="email" class="form-control  bsDatepicker"
+                                            [(ngModel)]="checklist.taskName">
+                                            
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label>Assignee</label>
                                     <app-user-list-component></app-user-list-component>
-                                   
-                                    <div class="w-100"></div>
-
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">   
                                 <div class="col-md-12">
-                                    
                                     <div class="form-group" *ngIf="commantBox">
                                         <label >Comments</label>
                                         <div (click)="commentClick()" >
@@ -62,7 +61,7 @@
                                                 <div class="kt-user-card-v2__pic">
                                                     <img alt="photo" src="assets/media/users/100_10.jpg">
                                                 </div>
-                                                <input  class="form-control">
+                                                <input [(ngModel)]="checklist.commentBody"  class="form-control">
                                             </div>  
                                         </div>
                                     </div>
@@ -143,46 +142,23 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Ends on</label>
-                                        <select class="form-control input-medium"
-                                        [(ngModel)]="checklist.endsOn">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-
-                                        </select>
+                                        <form class="container">
+                                            <input [(ngModel)]="checklist.endsOn" autocomplete="off" class="form-control" name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}" (onShown)="onOpenCalendar($event)">
+                                            </form>
                                     </div>
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" [(ngModel)]="checklist.endOfMonth" >End of month 
+                                            <input type="radio" value="checklist.endOfMonth" [(ngModel)]="checklist.endOfMonth" >End of month 
                                             <span></span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="kt-portlet kt-portlet--height-fluid">
-                                        <div class="kt-portlet__head">
-                                            <div class="kt-portlet__head-label">
-                                                <h3 class="kt-portlet__head-title">
-                                                    Quick Drag & Drop Upload
-                                                </h3>
-                                            </div>
-                                        </div>
-                                        <div class="kt-portlet__body">
-                                            <div class="kt-uppy" id="kt_uppy_3">
-                                                <div class="kt-uppy__drag"></div>
-                                                <div class="kt-uppy__informer"></div>
-                                                <div class="kt-uppy__progress"></div>
-                                                <div class="kt-uppy__thumbnails"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
+                            <div class="drag_drop_box" >
+                                <label>Attachments</label>
+                            <ng-uppy [config]="settings" (onFileUpload)="onFileUpload($event)"></ng-uppy>
+                        </div>
                         </div>
                     </div>
                     <div class="kt-portlet__head">

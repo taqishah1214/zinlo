@@ -1,5 +1,5 @@
 ﻿
-﻿import { CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
@@ -11,7 +11,7 @@ import { CreateOrEditCategoryModalComponent } from './categories/categories/crea
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PaginatorModule } from 'primeng/paginator';
 import { EditorModule } from 'primeng/editor';
-import { InputMaskModule } from 'primeng/inputmask';import { FileUploadModule } from 'primeng/fileupload';
+import { InputMaskModule } from 'primeng/inputmask'; import { FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
 
 import { UtilsModule } from '@shared/utils/utils.module';
@@ -25,64 +25,58 @@ import { BsDatepickerModule, BsDatepickerConfig, BsDaterangepickerConfig, BsLoca
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';;
 import { CreateOrEditTaskComponent } from './TasksCheckList/create-or-edit-task/create-or-edit-task.component';;
 import { TasksComponent } from './TasksCheckList/tasks/tasks.component'
-;
+        ;
 import { CreatOrEditCategoryComponent } from './categories/creat-or-edit-category/creat-or-edit-category.component'
 import { CategorieDropDownComponent } from './categories/categorie-drop-down/categorie-drop-down.component';;
-import { UserListComponentComponent } from './TasksCheckList/user-list-component/user-list-component.component';
+import { UserListComponentComponent } from './TasksCheckList/user-list-component/user-list-component.component'
+        ;
 import { TaskDetailsComponent } from './TasksCheckList/task-details/task-details.component'
 
-
+import { IgxCalendarModule } from 'igniteui-angular';
+import { UppyAngularModule } from 'uppy-angular';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
 @NgModule({
-    imports: [
-		FileUploadModule,
-		AutoCompleteModule,
-		PaginatorModule,
-		EditorModule,
-		InputMaskModule,		TableModule,
+        imports: [
+                FileUploadModule,
+                AutoCompleteModule,
+                PaginatorModule,
+                EditorModule,
+                InputMaskModule, TableModule,
 
-        CommonModule,
-        FormsModule,
-        ModalModule,
-        TabsModule,
-        TooltipModule,
-        AppCommonModule,
-        UtilsModule,
-        MainRoutingModule,
-        CountoModule,
-        NgxChartsModule,
-        BsDatepickerModule.forRoot(),
-        BsDropdownModule.forRoot(),
-        PopoverModule.forRoot()
-    ],
-    declarations: [
-		CategoriesComponent,
-		ViewCategoryModalComponent,		CreateOrEditCategoryModalComponent,
-        CategorieDropDownComponent,
-        DashboardComponent
-,
-
-        CreateOrEditTaskComponent
-,
-
-        TasksComponent
-,
-
-        CreatOrEditCategoryComponent
-,
-
-        UserListComponentComponent,
-
-        TaskDetailsComponent
-       
-    ],
-    providers: [
-        { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
-        { provide: BsDaterangepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDaterangepickerConfig },
-        { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale }
-    ]
+                CommonModule,
+                FormsModule,
+                ModalModule,
+                TabsModule,
+                TooltipModule,
+                AppCommonModule,
+                UtilsModule,
+                MainRoutingModule,
+                CountoModule,
+                NgxChartsModule,
+                BsDatepickerModule.forRoot(),
+                BsDropdownModule.forRoot(),
+                PopoverModule.forRoot(),
+                IgxCalendarModule,
+                UppyAngularModule
+        ],
+        declarations: [
+                CategoriesComponent,
+                ViewCategoryModalComponent, CreateOrEditCategoryModalComponent,
+                CategorieDropDownComponent,
+                DashboardComponent,
+                CreateOrEditTaskComponent,
+                TasksComponent,
+                CreatOrEditCategoryComponent,
+                UserListComponentComponent,
+                TaskDetailsComponent
+        ],
+        providers: [
+                { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
+                { provide: BsDaterangepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDaterangepickerConfig },
+                { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale }
+        ]
 })
 export class MainModule { }

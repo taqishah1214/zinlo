@@ -4,6 +4,8 @@ import { CategoriesServiceProxy, NameValueDto, CreateOrEditClosingChecklistDto, 
 import * as moment from "moment";
 import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
+import { IgxMonthPickerComponent } from "igniteui-angular";
+import { UppyConfig } from 'uppy-angular';
 
 @Component({
   selector: 'app-create-or-edit-task',
@@ -28,6 +30,8 @@ export class CreateOrEditTaskComponent implements OnInit {
   @ViewChild(CategorieDropDownComponent,{ static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent,{ static: false }) selectedUserId: UserListComponentComponent;
 
+  @ViewChild(IgxMonthPickerComponent, {static :true  })  monthPicker: IgxMonthPickerComponent;
+
   
 
   constructor
@@ -43,10 +47,19 @@ export class CreateOrEditTaskComponent implements OnInit {
   ngOnInit() {
 
   }
-
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };     
+    container.setViewMode('month');
+  }
   closingMonthClick() : void {
     this.closingMonthInputBox = false;
       this.closingMonthModalBox = true;
+  }
+  closingMonthModal() :void {
+    this.closingMonthInputBox = true;
+    this.closingMonthModalBox = false;
   }
 
   BackToTaskList(): void {
@@ -137,6 +150,17 @@ export class CreateOrEditTaskComponent implements OnInit {
     this.commantModal = false;
     this.commantBox = true;
   }
+  settings: UppyConfig = {
+    uploadAPI: {
+        endpoint: ``,
+        headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('userToken')
+        }
+    },
+    plugins: {
+        Webcam: false
+    }
+}
 
 
 }

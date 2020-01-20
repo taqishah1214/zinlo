@@ -185,7 +185,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ],
     exports: [
         AddMemberModalComponent,
-        AddRoleModalComponent
+        AddRoleModalComponent,
     ],
     providers: [
         ImpersonationService,
