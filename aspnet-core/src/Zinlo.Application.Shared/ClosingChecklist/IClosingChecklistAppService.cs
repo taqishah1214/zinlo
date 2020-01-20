@@ -15,6 +15,8 @@ namespace Zinlo.ClosingChecklist
       ///  Task <GetClosingCheckListTaskDto> GetClosingCheckListTask();
         Task<PagedResultDto<GetClosingCheckListTaskDto>> GetAll();
         Task<List<NameValueDto<string>>> UserAutoFill(string searchTerm);
+        Task<DetailsClosingCheckListDto> getDetails(long id);
+
 
     }
 }

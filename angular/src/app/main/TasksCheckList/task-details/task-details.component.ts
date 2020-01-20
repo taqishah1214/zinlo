@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-details',
@@ -6,10 +7,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./task-details.component.css']
 })
 export class TaskDetailsComponent implements OnInit {
-
-  constructor() { }
+ taskObject : any;
+ 
+  constructor(private _router: Router) { }
 
   ngOnInit() {
+    history.state.data;
   }
+
+  BackToTaskList(): void {
+    this._router.navigate(['/app/main/TasksCheckList/tasks']);
+  }
+
+
 
 }

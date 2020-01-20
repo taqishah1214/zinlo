@@ -85,7 +85,7 @@
 
 
 
-                                        <tr *ngFor="let i of ClosingCheckList"  data-row="0" class="kt-datatable__row" style="left: 0px;">
+                                        <tr *ngFor="let i of ClosingCheckList" (click)="RedirectToDetail($event)" data-row="0"  class="kt-datatable__row clickable-row" style="left: 0px;">
                                         
                                             <td data-field="ShipDate" class="kt-datatable__cell"><span style="width: 145px;">2/12/2018</span></td>
 
