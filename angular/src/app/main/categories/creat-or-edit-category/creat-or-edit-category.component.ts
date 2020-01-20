@@ -36,6 +36,10 @@ export class CreatOrEditCategoryComponent implements OnInit {
   ngOnInit() {
     debugger;
     this.id = parseInt(this._activateRouter.snapshot.params.id);
+    if(this.id == NaN)
+    {
+      this.id = 0;
+    }
     if (this.id != 0) {
      
       this._categoriesServiceProxy.getCategoryForEdit(this.id).subscribe(result => {

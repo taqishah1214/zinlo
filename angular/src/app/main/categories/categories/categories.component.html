@@ -1,181 +1,563 @@
-﻿
-<div [@routerTransition]>
-  <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
-    <div class="kt-subheader kt-grid__item">
-      <div [class]="containerClass">
-        <div class="kt-subheader__main">
-            <h3 class="kt-subheader__title">
-                <span>{{l("Categories")}}</span>
-            </h3>
-            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-            <span class="kt-subheader__desc">
-                {{l("CategoriesHeaderInfo")}}
-            </span>
-        </div>
-        <div class="kt-subheader__toolbar">
-            <div class="kt-subheader__wrapper">
-				<!-- <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button> -->
-                <button *ngIf="isGranted('Pages.Categories.Create')" (click)="createCategory()" 
-            class="btn btn-primary blue"><i class="fa fa-plus"></i>Add New</button>
-            <!-- {{l("CreateNewCategory")}} -->
-            </div>
-        </div>
-      </div>
-    </div>
-    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
-        <div class="kt-portlet kt-portlet--mobile">
-            <div class="kt-portlet__body">
-                <form class="kt-form" autocomplete="off">
-                    <div>
-                        <div class="row align-items-center">
-                            <div class="col-xl-12">
-                                <div class="form-group m-form__group align-items-center">
-                                    <div class="input-group">
-                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
-                                        <span class="input-group-btn">
-                                            <button (click)="getCategories()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-						 <div class="row" [hidden]="!advancedFiltersAreShown">
-						 	<div class="col-md-12">
-						         <div class="kt-separator kt-separator--border-dashed"></div>
-						     </div>
+﻿<style>
+    .filter-by-user {
+        list-style-type: none;
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    .filter-by-user li {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: -15px;
+    }
+
+    .fc-unthemed .fc-toolbar .fc-button {
+        color: #74788d;
+        background: transparent;
+        border: 1px solid #ebedf2;
+    }
+
+    .custom-categories-table tr td,
+    .custom-categories-table tr th {
+        padding: 8px 15px !important;
+        max-width: 200px;
+        width: 20%;
+    }
+
+    .custom-categories-table tr td .btn-group .btn {
+        padding: 0 10px 0 0;
+    }
+</style>
 
 
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="TitleFilter">{{l("Title")}}</label>
-									<input type="text" class="form-control" id="TitleFilter" name="titleFilter" [(ngModel)]="titleFilter">
-								</div>
-                            </div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="DescriptionFilter">{{l("Description")}}</label>
-									<input type="text" class="form-control" id="DescriptionFilter" name="descriptionFilter" [(ngModel)]="descriptionFilter">
-								</div>
-                            </div>
 
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-12">
-                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
-                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
-                            </div>
-                        </div>
+
+
+
+
+
+
+
+<!-- <div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{l("Categories")}}</span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        {{l("CategoriesHeaderInfo")}}
+                    </span>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button *ngIf="isGranted('Pages.Categories.Create')" (click)="createCategory()"
+                            class="btn btn-primary blue"><i class="fa fa-plus"></i>Add New</button>
                     </div>
-                </form>
-
-                <div class="row align-items-center">
-                   
-                    <div class="primeng-datatable-container col-12"
-                         [busyIf]="primengTableHelper.isLoading">
-                        <p-table #dataTable
-                                     (onLazyLoad)="getCategories($event)"
-                                     [value]="primengTableHelper.records"
-                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
-                                     [paginator]="false"
-                                     [lazy]="true"
-                                     [scrollable]="true"
-                                     ScrollWidth="100%"
-                                     [responsive]="primengTableHelper.isResponsive"
-                                     [resizableColumns]="primengTableHelper.resizableColumns">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.Categories.Edit', 'Pages.Categories.Delete')">{{l('Actions')}}</th>
-                                    <th style="width: 150px" pSortableColumn="title">
-                                        {{l('Title')}}
-                                        <p-sortIcon field="category.title"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="description">
-                                        {{l('Description')}}
-                                        <p-sortIcon field="category.description"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="description">
-                                        {{l('CreationDate')}}
-                                        <p-sortIcon field="category.creationDate"></p-sortIcon>
-                                    </th>
-
-                                </tr>
-                            </ng-template>                           
-							<ng-template pTemplate="body" let-record="$implicit">
-                                <tr>
-                                    <td style="width: 130px"
-                                        [hidden]="!isGrantedAny('Pages.Categories.Edit', 'Pages.Categories.Delete')">
-                                       <div class="btn-group dropdown" dropdown container="body">
-                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
-                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
-                                            </button>
-												<ul class="dropdown-menu"  *dropdownMenu>
-												<li>
-													<a href="javascript:;"
-														(click)="viewCategoryModal.show(record)">{{l('View')}}</a>
-												</li>
-												<!-- <li>
-													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Categories.Edit')"
-														(click)="createOrEditCategoryModal.show(record.category.id)">{{l('Edit')}}</a>
-                                                </li> -->
-                                                <li>
-													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Categories.Edit')"
-														(click)="editCategory(record.category.id)">{{l('Edit')}}</a>
-												</li>
-												<li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Categories.Delete')"
-														(click)="deleteCategory(record.category)">{{l('Delete')}}</a>
-												</li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    <td style="width:150px">
-											<span class="ui-column-title"> {{l('Title')}}</span>
-											{{record.category.title}}
-										</td>
-                                    <td style="width:150px">
-											<span  class="ui-column-title"> {{l('Description')}}</span>
-                                        <div innerHTML="{{record.category.description}}"></div>
-                                        </td>
-                                        <td style="width:150px">
-											<!-- <span class="ui-column-creationDate"> {{l('CreationDate')}}</span> -->
-											{{record.category.creationDate | date:'medium'}}
-										</td>
-
-                                </tr>
-                            </ng-template>
-                        </p-table>
-						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
-                            {{l('NoData')}}
-                        </div>
-                        <div class="primeng-paging-container">
-                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
-                                         #paginator
-                                         (onPageChange)="getCategories($event)"
-                                         [totalRecords]="primengTableHelper.totalRecordsCount"
-                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
-                            </p-paginator>
-                            <span class="total-records-count">
-                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
-                            </span>
-                        </div>
-                    </div>
-                
                 </div>
             </div>
         </div>
-    </div>
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <form class="kt-form" autocomplete="off">
+                        <div>
+                            <div class="row align-items-center">
+                                <div class="col-xl-12">
+                                    <div class="form-group m-form__group align-items-center">
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                                class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                                type="text">
+                                            <span class="input-group-btn">
+                                                <button (click)="getCategories()" class="btn btn-primary"
+                                                    type="submit"><i class="flaticon-search-1"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" [hidden]="!advancedFiltersAreShown">
+                                <div class="col-md-12">
+                                    <div class="kt-separator kt-separator--border-dashed"></div>
+                                </div>
 
-    <createOrEditCategoryModal #createOrEditCategoryModal (modalSave)="getCategories()"></createOrEditCategoryModal>
-    <viewCategoryModal #viewCategoryModal></viewCategoryModal>
-    
-  </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="TitleFilter">{{l("Title")}}</label>
+                                        <input type="text" class="form-control" id="TitleFilter" name="titleFilter"
+                                            [(ngModel)]="titleFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="DescriptionFilter">{{l("Description")}}</label>
+                                        <input type="text" class="form-control" id="DescriptionFilter"
+                                            name="descriptionFilter" [(ngModel)]="descriptionFilter">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+
+                        <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getCategories($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.Categories.Edit', 'Pages.Categories.Delete')">
+                                            {{l('Actions')}}</th>
+                                        <th style="width: 150px" pSortableColumn="title">
+                                            {{l('Title')}}
+                                            <p-sortIcon field="category.title"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="description">
+                                            {{l('Description')}}
+                                            <p-sortIcon field="category.description"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="description">
+                                            {{l('CreationDate')}}
+                                            <p-sortIcon field="category.creationDate"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.Categories.Edit', 'Pages.Categories.Delete')">
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                    {{l("Actions")}}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;"
+                                                            (click)="viewCategoryModal.show(record)">{{l('View')}}</a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="javascript:;"
+                                                            *ngIf="permission.isGranted('Pages.Categories.Edit')"
+                                                            (click)="editCategory(record.category.id)">{{l('Edit')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;"
+                                                            *ngIf="permission.isGranted('Pages.Categories.Delete')"
+                                                            (click)="deleteCategory(record.category)">{{l('Delete')}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Title')}}</span>
+                                            {{record.category.title}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Description')}}</span>
+                                            <div innerHTML="{{record.category.description}}"></div>
+                                        </td>
+                                        <td style="width:150px">
+                                            {{record.category.creationDate | date:'medium'}}
+                                        </td>
+
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getCategories($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <createOrEditCategoryModal #createOrEditCategoryModal (modalSave)="getCategories()"></createOrEditCategoryModal>
+        <viewCategoryModal #viewCategoryModal></viewCategoryModal>
+
+    </div>
+</div> -->
+
+
+
+
+
+
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="kt-portlet" id="kt_portlet">
+
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <span class="kt-portlet__head-icon">
+                                <i class="flaticon-calendar"></i>
+                            </span>
+                            <h3 class="kt-portlet__head-title">
+                                Categories
+                            </h3>
+                        </div>
+                        <div class="kt-subheader__toolbar">
+                            <div class="kt-subheader__wrapper">
+                                <button *ngIf="isGranted('Pages.Categories.Create')" (click)="createCategory()"
+                                    class="btn btn-primary blue"><i class="fa fa-plus"></i>Add New</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="kt-portlet__body">
+                        <div class="fc fc-ltr fc-unthemed">
+                            <div class="fc-toolbar fc-header-toolbar">
+
+                                <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
+                                    <div class="kt-input-icon kt-input-icon--left">
+                                        <input type="text" class="form-control" placeholder="Search..."
+                                            id="generalSearch">
+                                        <span class="kt-input-icon__icon kt-input-icon__icon--left">
+                                            <span><i class="la la-search"></i></span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body kt-portlet__body--fit">
+                            <div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded"
+                                id="column_rendering" >
+                                <p-table class="custom-categories-table kt-datatable__table" [value]="categoriesList"
+                                #dataTable (onLazyLoad)="getCategories($event)" [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]=""
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns"
+                                >
+                                    <thead class="kt-datatable__head">
+                                        <tr class="kt-datatable__row"> 
+                                            <th data-field="OrderID"
+                                                class="kt-datatable__cell kt-datatable__cell--sort"><span>Title</span>
+                                            </th>
+                                            <th data-field="Country"
+                                                class="kt-datatable__cell kt-datatable__cell--sort">
+                                                <span>Description</span></th>
+                                            <th data-field="ShipDate"
+                                                class="kt-datatable__cell kt-datatable__cell--sort"><span>Creation
+                                                    On</span></th>
+                                            <th data-field="CompanyName"
+                                                class="kt-datatable__cell kt-datatable__cell--sort"><span>Created
+                                                    By</span></th>
+                                            <th data-field="Status" class="kt-datatable__cell kt-datatable__cell--sort">
+                                                <span>Actions</span></th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="kt-datatable__body">
+                                        <tr *ngFor="let category of categoriesList" data-row="0"
+                                            class="kt-datatable__row" style="left: 0px;">
+
+                                            <td data-field="ShipDate" class="kt-datatable__cell">
+                                                <span>{{category.category.title}}</span></td>
+
+                                            <td data-field="CompanyName" class="kt-datatable__cell">
+                                                <span>{{category.category.description}}</span></td>
+                                            <td data-field="CompanyName" class="kt-datatable__cell">
+                                                <span>{{category.category.creationDate | date:'medium'}}</span>
+                                            </td>
+                                            <td data-field="OrderID" class="kt-datatable__cell"><span>
+                                                    <div class="kt-user-card-v2">
+                                                        <div class="kt-user-card-v2__pic">
+                                                            <div class="kt-badge kt-badge--xl kt-badge--primary">N</div>
+                                                        </div>
+                                                        <div class="kt-user-card-v2__details"> <span
+                                                                class="kt-user-card-v2__name">Ihsan</span> </div>
+                                                    </div>
+                                                </span>
+                                            </td>
+
+
+                                            <td>
+                                                <div class="btn-group">
+
+                                                    <a class="btn" href="javascript:;"
+                                                        (click)="editCategory(category.category.id)">
+                                                        <i class="fas fa-edit" style="color: #5867dd;"></i></a>
+                                                    <a class="btn" href="javascript:;"
+                                                        (click)="deleteCategory(category.category)">
+                                                        <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+
+
+                                                </div>
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+                                </p-table>
+
+                                <table class="table table-sm">
+                                    <thead>
+                                      <tr>
+                                       
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Creation By</th>
+                                        <th scope="col">Created By</th>
+                                        <th scope="col">Actions</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let category of categoriesList" data-row="0"
+                                        class="kt-datatable__row" style="left: 0px;">
+
+                                        <td data-field="ShipDate" class="kt-datatable__cell">
+                                            <span>{{category.category.title}}</span></td>
+
+                                        <td data-field="CompanyName" class="kt-datatable__cell">
+                                            <span>{{category.category.description}}</span></td>
+                                        <td data-field="CompanyName" class="kt-datatable__cell">
+                                            <span>{{category.category.creationDate | date:'medium'}}</span>
+                                        </td>
+                                        <td data-field="OrderID" class="kt-datatable__cell"><span>
+                                                <div class="kt-user-card-v2">
+                                                    <div class="kt-user-card-v2__pic">
+                                                        <div class="kt-badge kt-badge--xl kt-badge--primary">N</div>
+                                                    </div>
+                                                    <div class="kt-user-card-v2__details"> <span
+                                                            class="kt-user-card-v2__name">{{category.category.createdBy}}</span> </div>
+                                                </div>
+                                            </span>
+                                        </td>
+
+
+                                        <td>
+                                            <div class="btn-group">
+
+                                                <a class="btn" href="javascript:;"
+                                                    (click)="editCategory(category.category.id)">
+                                                    <i class="fas fa-edit" style="color: #5867dd;"></i></a>
+                                                <a class="btn" href="javascript:;"
+                                                    (click)="deleteCategory(category.category)">
+                                                    <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+
+
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                     
+                                    </tbody>
+                                  </table>
+
+                                 
+
+
+                                
+
+                                    
+                                  
+
+                                       
+
+                                <div class="kt-datatable__pager kt-datatable--paging-loaded">
+
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                        {{'NoData' | localize}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                            (onPageChange)="getCategories($event)"
+                                            [totalRecords]="primengTableHelper.totalRecordsCount"
+                                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+        
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                        </span>
+                                    </div>
+
+
+                                    <!-- <ul class="kt-datatable__pager-nav">
+                                        <li><a title="First"
+                                                class="kt-datatable__pager-link kt-datatable__pager-link--first kt-datatable__pager-link--disabled"
+                                                data-page="1" disabled="disabled"><i
+                                                    class="flaticon2-fast-back"></i></a></li>
+                                        <li><a title="Previous"
+                                                class="kt-datatable__pager-link kt-datatable__pager-link--prev kt-datatable__pager-link--disabled"
+                                                data-page="1" disabled="disabled"><i class="flaticon2-back"></i></a>
+                                        </li>
+                                        <li style=""></li>
+                                        <li style="display: none;">
+                                            <input type="text" class="kt-pager-input form-control" title="Page number">
+                                        </li>
+                                        <li><a class="kt-datatable__pager-link kt-datatable__pager-link-number kt-datatable__pager-link--active"
+                                                data-page="1" title="1">1</a></li>
+                                        <li><a class="kt-datatable__pager-link kt-datatable__pager-link-number"
+                                                data-page="2" title="2">2</a></li>
+                                        <li><a class="kt-datatable__pager-link kt-datatable__pager-link-number"
+                                                data-page="3" title="3">3</a></li>
+                                        <li><a class="kt-datatable__pager-link kt-datatable__pager-link-number"
+                                                data-page="4" title="4">4</a></li>
+                                        <li style=""></li>
+                                        <li><a title="Next"
+                                                class="kt-datatable__pager-link kt-datatable__pager-link--next"
+                                                data-page="2"><i class="flaticon2-next"></i></a></li>
+                                        <li><a title="Last"
+                                                class="kt-datatable__pager-link kt-datatable__pager-link--last"
+                                                data-page="4"><i class="flaticon2-fast-next"></i></a></li>
+                                    </ul>
+                                    <div class="kt-datatable__pager-info">
+                                        <div class="dropdown bootstrap-select kt-datatable__pager-size"
+                                            style="width: 60px;">
+                                            <select class="selectpicker kt-datatable__pager-size"
+                                                title="Select page size" data-width="60px" data-container="body"
+                                                data-selected="10" tabindex="-98">
+                                                <option class="bs-title-option" value=""></option>
+                                                <option value="10">10</option>
+                                                <option value="20">20</option>
+                                                <option value="30">30</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+
+
+                                        </div><span class="kt-datatable__pager-detail">Showing 1 - 10 of 40</span>
+                                    </div> -->
+                                </div>
+                           
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
 </div>
 
 
 
 
 
+<!-- <div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="kt-portlet" id="kt_portlet">
+
+<div class="row align-items-center">
+    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+        <p-table #dataTable (onLazyLoad)="getCategories($event)" [value]="primengTableHelper.records"
+            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+            [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+            [responsive]="primengTableHelper.isResponsive"
+            [resizableColumns]="primengTableHelper.resizableColumns">
+            <ng-template pTemplate="header">
+                <tr>
+                  
+                    <th style="width: 150px" pSortableColumn="username">
+                       first
+                    </th>
+                    <th style="width: 150px" pSortableColumn="name">
+                        first
+                    </th>
+                    <th style="width: 150px" pSortableColumn="surname">
+                        first
+                    </th>
+                    <th style="width: 150px">
+                        first
+                    </th>
+                   
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-category="$implicit">
+                <tr>
+                    
+                    <td style="width: 150px">
+                        {{category.category.title}}
+                    </td>
+                    <td style="width: 150px">
+                        {{category.category.title}}
+                    </td>
+                    <td style="width: 150px">
+                        {{category.category.title}}
+                    </td>
+                    <td style="width: 150px">
+                        {{category.category.title}}
+                    </td>
+                  
+                </tr>
+            </ng-template>
+        </p-table>
+        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+            {{'NoData' | localize}}
+        </div>
+        <div class="primeng-paging-container">
+            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                (onPageChange)="getCategories($event)"
+                [totalRecords]="primengTableHelper.totalRecordsCount"
+                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+
+            </p-paginator>
+            <span class="total-records-count">
+                {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+            </span>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+        </div>
+    </div>
+</div>
+    </div>
+</div> -->
 
 
 
- 
+

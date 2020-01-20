@@ -13,6 +13,8 @@ using Zinlo.Tasks.Dtos;
 using Zinlo.Comment;
 using Zinlo.Comment.Dtos;
 using Zinlo.ClosingChecklist.Dtos;
+using System.Collections.Generic;
+using Zinlo.Authorization.Users;
 
 namespace Zinlo.ClosingChecklist
 {
@@ -20,11 +22,12 @@ namespace Zinlo.ClosingChecklist
     {
         private readonly IRepository<ClosingChecklist,long> _closingChecklistRepository;
         private readonly ICommentAppService _commentAppService;
-
-        public ClosingChecklistAppService(IRepository<ClosingChecklist,long> closingChecklistRepository, ICommentAppService commentAppService)
+        private readonly IRepository<User,long> _userRepository;
+        public ClosingChecklistAppService(IRepository<ClosingChecklist,long> closingChecklistRepository, ICommentAppService commentAppService, IRepository<User,long> userRepository)
         {
             _closingChecklistRepository = closingChecklistRepository;
             _commentAppService = commentAppService;
+            _userRepository = userRepository;
         }
 
 
@@ -106,10 +109,29 @@ namespace Zinlo.ClosingChecklist
             var category = await _closingChecklistRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, category);
         }
-       
 
-       
+        public async Task<List<NameValueDto<string>>> UserAutoFill(string searchTerm)
+        {
+            var filteredAssets = _userRepository.GetAll()
+                .WhereIf(!string.IsNullOrWhiteSpace(searchTerm),
+                    e => true || e.FullName.ToLower().Contains(searchTerm.ToLower()));
 
-     
+
+            var query = (from o in filteredAssets
+
+                         select new NameValueDto<string>()
+                         {
+                             Name = o.FullName,
+                             Value = o.Id.ToString()
+                         });
+
+            var assets = await query.ToListAsync();
+            return assets;
+        }
+
+
+
+
+
     }
 }

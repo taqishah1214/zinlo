@@ -1342,10 +1342,40 @@ export class CategoriesServiceProxy {
     }
 
     /**
+     * @param filter (optional) 
+     * @param titleFilter (optional) 
+     * @param descriptionFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(): Observable<PagedResultDtoOfGetCategoryForViewDto> {
-        let url_ = this.baseUrl + "/api/services/app/Categories/GetAll";
+    getAll(filter: string | undefined, titleFilter: string | undefined, descriptionFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetCategoryForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Categories/GetAll?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (titleFilter === null)
+            throw new Error("The parameter 'titleFilter' cannot be null.");
+        else if (titleFilter !== undefined)
+            url_ += "TitleFilter=" + encodeURIComponent("" + titleFilter) + "&"; 
+        if (descriptionFilter === null)
+            throw new Error("The parameter 'descriptionFilter' cannot be null.");
+        else if (descriptionFilter !== undefined)
+            url_ += "DescriptionFilter=" + encodeURIComponent("" + descriptionFilter) + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2023,6 +2053,66 @@ export class ClosingChecklistServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param searchTerm (optional) 
+     * @return Success
+     */
+    userAutoFill(searchTerm: string | undefined): Observable<NameValueDtoOfString[]> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/UserAutoFill?";
+        if (searchTerm === null)
+            throw new Error("The parameter 'searchTerm' cannot be null.");
+        else if (searchTerm !== undefined)
+            url_ += "searchTerm=" + encodeURIComponent("" + searchTerm) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUserAutoFill(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUserAutoFill(<any>response_);
+                } catch (e) {
+                    return <Observable<NameValueDtoOfString[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<NameValueDtoOfString[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUserAutoFill(response: HttpResponseBase): Observable<NameValueDtoOfString[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(NameValueDtoOfString.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<NameValueDtoOfString[]>(<any>null);
     }
 }
 
@@ -12917,6 +13007,7 @@ export class CategoryDto implements ICategoryDto {
     description!: string | undefined;
     creationDate!: moment.Moment;
     createdBy!: string | undefined;
+    userId!: number | undefined;
     id!: number;
 
     constructor(data?: ICategoryDto) {
@@ -12934,6 +13025,7 @@ export class CategoryDto implements ICategoryDto {
             this.description = data["description"];
             this.creationDate = data["creationDate"] ? moment(data["creationDate"].toString()) : <any>undefined;
             this.createdBy = data["createdBy"];
+            this.userId = data["userId"];
             this.id = data["id"];
         }
     }
@@ -12951,6 +13043,7 @@ export class CategoryDto implements ICategoryDto {
         data["description"] = this.description;
         data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
+        data["userId"] = this.userId;
         data["id"] = this.id;
         return data; 
     }
@@ -12961,6 +13054,7 @@ export interface ICategoryDto {
     description: string | undefined;
     creationDate: moment.Moment;
     createdBy: string | undefined;
+    userId: number | undefined;
     id: number;
 }
 
@@ -13714,6 +13808,46 @@ export interface ICreateOrEditClosingChecklistDto {
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
+}
+
+export class NameValueDtoOfString implements INameValueDtoOfString {
+    name!: string | undefined;
+    value!: string | undefined;
+
+    constructor(data?: INameValueDtoOfString) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.value = data["value"];
+        }
+    }
+
+    static fromJS(data: any): NameValueDtoOfString {
+        data = typeof data === 'object' ? data : {};
+        let result = new NameValueDtoOfString();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["value"] = this.value;
+        return data; 
+    }
+}
+
+export interface INameValueDtoOfString {
+    name: string | undefined;
+    value: string | undefined;
 }
 
 export enum CommentTypeDto {

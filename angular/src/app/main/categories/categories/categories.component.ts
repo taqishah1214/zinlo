@@ -54,44 +54,63 @@ export class CategoriesComponent extends AppComponentBase {
         
     }
     ngOnInit() {
-        this.loadGrid();
+      //  this.loadGrid();
     }
 
-    // getCategories(event?: LazyLoadEvent) {
-    //     if (this.primengTableHelper.shouldResetPaging(event)) {
-    //         this.paginator.changePage(0);
-    //         return;
-    //     }
+    getCategories(event?: LazyLoadEvent) {
+        debugger;
+        if (this.primengTableHelper.shouldResetPaging(event)) {
+            this.paginator.changePage(0);
+            return;
+        }
 
-    //     this.primengTableHelper.showLoadingIndicator();
+        this.primengTableHelper.showLoadingIndicator();
 
-    //     this._categoriesServiceProxy.getAll(
-    //         this.filterText,
-    //         this.titleFilter,
-    //         this.descriptionFilter,
-    //         this.primengTableHelper.getSorting(this.dataTable),
-    //         this.primengTableHelper.getSkipCount(this.paginator, event),
-    //         this.primengTableHelper.getMaxResultCount(this.paginator, event)
-    //     ).subscribe(result => {
-    //         this.primengTableHelper.totalRecordsCount = result.totalCount;
-    //         this.primengTableHelper.records = result.items;
-    //         this.primengTableHelper.hideLoadingIndicator();
-    //         console.log(this.primengTableHelper.records)
-    //     });
-    // }
-    
-    loadGrid(){
-        this._categoriesServiceProxy.getAll().subscribe(result=>{
-
+        this._categoriesServiceProxy.getAll(
+            this.filterText,
+            this.titleFilter,
+            this.descriptionFilter,
+            this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getSkipCount(this.paginator, event),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event)
+        ).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
-             this.primengTableHelper.hideLoadingIndicator();
-
+            this.primengTableHelper.hideLoadingIndicator();
             this.categoriesList = result.items;
-            console.log(this.categoriesList)
-            console.log(this.categoriesList[0].category.title)
+            console.log(this.categoriesList);
         });
     }
+    
+    // loadGrid(event?: LazyLoadEvent){
+    //     debugger;
+
+    //     if (this.primengTableHelper.shouldResetPaging(event)) {
+    //                 this.paginator.changePage(0);
+    //                  return;
+    //              }
+        
+    //              this.primengTableHelper.showLoadingIndicator();
+
+
+    //     this._categoriesServiceProxy.getAll(
+
+    //         this.filterText,
+    //                  this.titleFilter,
+    //                 this.descriptionFilter,
+    //                 this.primengTableHelper.getSorting(this.dataTable),
+    //                  this.primengTableHelper.getSkipCount(this.paginator, event),
+    //                  this.primengTableHelper.getMaxResultCount(this.paginator, event)
+
+    //     ).subscribe(result=>{
+
+    //         this.primengTableHelper.totalRecordsCount = result.totalCount;
+    //         this.primengTableHelper.records = result.items;
+    //          this.primengTableHelper.hideLoadingIndicator();
+
+    //         this.categoriesList = result.items;
+    //     });
+    // }
 
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
