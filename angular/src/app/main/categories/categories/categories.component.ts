@@ -1,6 +1,6 @@
 ﻿import { Component, Injector, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CategoriesServiceProxy, CategoryDto, GetCategoryForViewDto  } from '@shared/service-proxies/service-proxies';
+import { CategoriesServiceProxy, CategoryDto, GetCategoryForViewDto } from '@shared/service-proxies/service-proxies';
 import { NotifyService } from '@abp/notify/notify.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -28,19 +28,13 @@ export class CategoriesComponent extends AppComponentBase {
 
     @Output() recordid = new EventEmitter<number>();
 
-   // RId: EventEmitter<number> = new EventEmitter<number>();
-
-   
-
+    // RId: EventEmitter<number> = new EventEmitter<number>();
     advancedFiltersAreShown = false;
     filterText = '';
     titleFilter = '';
     descriptionFilter = '';
- categoriesList :any;
-   public EditRecordId :number = 0;
-
-
-
+    categoriesList: any;
+    public EditRecordId: number = 0;
     constructor(
         injector: Injector,
         private _categoriesServiceProxy: CategoriesServiceProxy,
@@ -48,13 +42,13 @@ export class CategoriesComponent extends AppComponentBase {
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService,
-        private _router:Router
+        private _router: Router
     ) {
         super(injector);
-        
+
     }
     ngOnInit() {
-      //  this.loadGrid();
+        //  this.loadGrid();
     }
 
     getCategories(event?: LazyLoadEvent) {
@@ -81,54 +75,19 @@ export class CategoriesComponent extends AppComponentBase {
             console.log(this.categoriesList);
         });
     }
-    
-    // loadGrid(event?: LazyLoadEvent){
-    //     debugger;
-
-    //     if (this.primengTableHelper.shouldResetPaging(event)) {
-    //                 this.paginator.changePage(0);
-    //                  return;
-    //              }
-        
-    //              this.primengTableHelper.showLoadingIndicator();
-
-
-    //     this._categoriesServiceProxy.getAll(
-
-    //         this.filterText,
-    //                  this.titleFilter,
-    //                 this.descriptionFilter,
-    //                 this.primengTableHelper.getSorting(this.dataTable),
-    //                  this.primengTableHelper.getSkipCount(this.paginator, event),
-    //                  this.primengTableHelper.getMaxResultCount(this.paginator, event)
-
-    //     ).subscribe(result=>{
-
-    //         this.primengTableHelper.totalRecordsCount = result.totalCount;
-    //         this.primengTableHelper.records = result.items;
-    //          this.primengTableHelper.hideLoadingIndicator();
-
-    //         this.categoriesList = result.items;
-    //     });
-    // }
-
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
     }
 
-    // RedirectToCreateCategory() :void {
-    //     this._router.navigate(['/app/main/TasksCheckList/create-or-edit-task']);   
-    // }
-
     createCategory(): void {
         this.EditRecordId = 0;
-        this._router.navigate(['/app/main/categories/creat-or-edit-category']);
+        this._router.navigate(['/app/main/categories/creat-or-edit-category'], { state: { data: { id: 0 } } });
     }
 
-    editCategory(id:any): void {
+    editCategory(id: any): void {
         debugger;
         this.recordid = id;
-        this._router.navigate(['/app/main/categories/creat-or-edit-category',{ id : id}]);
+        this._router.navigate(['/app/main/categories/creat-or-edit-category'], { state: { data: { id: this.recordid } } });
     }
 
     deleteCategory(category: CategoryDto): void {
@@ -149,12 +108,12 @@ export class CategoriesComponent extends AppComponentBase {
 
     exportToExcel(): void {
         this._categoriesServiceProxy.getCategoriesToExcel(
-        this.filterText,
+            this.filterText,
             this.titleFilter,
             this.descriptionFilter,
         )
-        .subscribe(result => {
-            this._fileDownloadService.downloadTempFile(result);
-         });
+            .subscribe(result => {
+                this._fileDownloadService.downloadTempFile(result);
+            });
     }
 }

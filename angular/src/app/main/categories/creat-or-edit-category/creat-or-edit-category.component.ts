@@ -12,8 +12,8 @@ import { state } from '@angular/animations';
 })
 export class CreatOrEditCategoryComponent implements OnInit {
   getCaregoryId: string = "";
-  public saveBtnText : string = "Create";
-  public formTitle : string = "Create a Category";
+  public saveBtnText: string = "Create";
+  public formTitle: string = "Create a Category";
   @ViewChild(CategoriesComponent, { static: false }) child: CategoriesComponent;
   categoryobj: CreateOrEditCategoryDto = new CreateOrEditCategoryDto();
   editId: any;
@@ -22,26 +22,26 @@ export class CreatOrEditCategoryComponent implements OnInit {
     private _router: Router,
     private _activateRouter: ActivatedRoute,
     private _categoriesServiceProxy: CategoriesServiceProxy) {
-      this.id = parseInt(this._activateRouter.snapshot.params.id);
-      if (this.id > 0) {
-        this.saveBtnText = "Update";
-        this.formTitle = "Update Category";
-      }
-      else{
-        this.saveBtnText = "Create";
-        this.formTitle = "Create a Category";
-      }
-     }
+    this.id = history.state.data.id;
+    if (this.id > 0) {
+
+      this.saveBtnText = "Update";
+      this.formTitle = "Update Category";
+    }
+    else {
+      this.saveBtnText = "Create";
+      this.formTitle = "Create a Category";
+    }
+
+  }
 
   ngOnInit() {
-    debugger;
-    this.id = parseInt(this._activateRouter.snapshot.params.id);
-    if(this.id == NaN)
-    {
+    this.id = history.state.data.id;
+    if (this.id == NaN) {
       this.id = 0;
     }
     if (this.id != 0) {
-     
+
       this._categoriesServiceProxy.getCategoryForEdit(this.id).subscribe(result => {
         this.categoryobj = result.category;
 

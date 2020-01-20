@@ -9,6 +9,7 @@ import {ClosingChecklistServiceProxy} from '@shared/service-proxies/service-prox
 })
 export class TasksComponent implements OnInit {
   ClosingCheckList : any
+  id:number;
 
 
   constructor(private _router: Router,     private _closingChecklistService: ClosingChecklistServiceProxy) {
@@ -25,8 +26,10 @@ export class TasksComponent implements OnInit {
     this._router.navigate(['/app/main/TasksCheckList/create-or-edit-task']);   
 }
 RedirectToDetail() :void{
-  this._router.navigate(['/app/main/TasksCheckList/task-details']);   
+  this._router.navigate(['/app/main/TasksCheckList/task-details'],{state: {data: {id:this.id}}});   
 }
+
+
 
 
 }

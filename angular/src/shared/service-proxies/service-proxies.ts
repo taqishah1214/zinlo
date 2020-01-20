@@ -2114,6 +2114,62 @@ export class ClosingChecklistServiceProxy {
         }
         return _observableOf<NameValueDtoOfString[]>(<any>null);
     }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getDetails(id: number | undefined): Observable<DetailsClosingCheckListDto> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/getDetails?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDetails(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDetails(<any>response_);
+                } catch (e) {
+                    return <Observable<DetailsClosingCheckListDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DetailsClosingCheckListDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDetails(response: HttpResponseBase): Observable<DetailsClosingCheckListDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DetailsClosingCheckListDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DetailsClosingCheckListDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -13848,6 +13904,114 @@ export class NameValueDtoOfString implements INameValueDtoOfString {
 export interface INameValueDtoOfString {
     name: string | undefined;
     value: string | undefined;
+}
+
+export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
+    assigneeName!: string | undefined;
+    taskName!: string | undefined;
+    categoryId!: number;
+    assigneeNameId!: number;
+    closingMonth!: moment.Moment;
+    status!: StatusDto;
+    tenantId!: number;
+    attachment!: string | undefined;
+    instruction!: string | undefined;
+    noOfMonths!: number;
+    dueOn!: number;
+    endsOn!: moment.Moment;
+    dayBeforeAfter!: boolean;
+    endOfMonth!: boolean;
+    frequency!: FrequencyDto;
+    commentBody!: string | undefined;
+    creationTime!: moment.Moment;
+    creatorUserId!: number | undefined;
+    id!: number;
+
+    constructor(data?: IDetailsClosingCheckListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.assigneeName = data["assigneeName"];
+            this.taskName = data["taskName"];
+            this.categoryId = data["categoryId"];
+            this.assigneeNameId = data["assigneeNameId"];
+            this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
+            this.status = data["status"];
+            this.tenantId = data["tenantId"];
+            this.attachment = data["attachment"];
+            this.instruction = data["instruction"];
+            this.noOfMonths = data["noOfMonths"];
+            this.dueOn = data["dueOn"];
+            this.endsOn = data["endsOn"] ? moment(data["endsOn"].toString()) : <any>undefined;
+            this.dayBeforeAfter = data["dayBeforeAfter"];
+            this.endOfMonth = data["endOfMonth"];
+            this.frequency = data["frequency"];
+            this.commentBody = data["commentBody"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = data["creatorUserId"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): DetailsClosingCheckListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DetailsClosingCheckListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["assigneeName"] = this.assigneeName;
+        data["taskName"] = this.taskName;
+        data["categoryId"] = this.categoryId;
+        data["assigneeNameId"] = this.assigneeNameId;
+        data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["tenantId"] = this.tenantId;
+        data["attachment"] = this.attachment;
+        data["instruction"] = this.instruction;
+        data["noOfMonths"] = this.noOfMonths;
+        data["dueOn"] = this.dueOn;
+        data["endsOn"] = this.endsOn ? this.endsOn.toISOString() : <any>undefined;
+        data["dayBeforeAfter"] = this.dayBeforeAfter;
+        data["endOfMonth"] = this.endOfMonth;
+        data["frequency"] = this.frequency;
+        data["commentBody"] = this.commentBody;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IDetailsClosingCheckListDto {
+    assigneeName: string | undefined;
+    taskName: string | undefined;
+    categoryId: number;
+    assigneeNameId: number;
+    closingMonth: moment.Moment;
+    status: StatusDto;
+    tenantId: number;
+    attachment: string | undefined;
+    instruction: string | undefined;
+    noOfMonths: number;
+    dueOn: number;
+    endsOn: moment.Moment;
+    dayBeforeAfter: boolean;
+    endOfMonth: boolean;
+    frequency: FrequencyDto;
+    commentBody: string | undefined;
+    creationTime: moment.Moment;
+    creatorUserId: number | undefined;
+    id: number;
 }
 
 export enum CommentTypeDto {

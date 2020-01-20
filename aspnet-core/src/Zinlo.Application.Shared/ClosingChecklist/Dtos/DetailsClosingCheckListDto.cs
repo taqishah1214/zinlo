@@ -7,6 +7,6 @@ namespace Zinlo.ClosingChecklist.Dtos
 {
   public  class DetailsClosingCheckListDto : CreateOrEditClosingChecklistDto
     {
-        
+        public string AssigneeName { get; set; }
     }
 }
