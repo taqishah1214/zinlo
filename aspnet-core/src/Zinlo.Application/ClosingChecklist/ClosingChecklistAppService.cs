@@ -129,9 +129,17 @@ namespace Zinlo.ClosingChecklist
             return assets;
         }
 
+        //public Task<DetailsClosingCheckListDto> getDetails(long id)
+        //{
+        //    var task = _closingChecklistRepository.GetAll().Where(x => x.Id == id).FirstOrDefault();
+        //    DetailsClosingCheckListDto detailsClosingCheckListDto = new DetailsClosingCheckListDto();
+        //    detailsClosingCheckListDto.Id = task.Id;
+        //    detailsClosingCheckListDto.TaskName = task.TaskName;
+        //    detailsClosingCheckListDto.Instruction = task.Instruction;
+        //    detailsClosingCheckListDto.ClosingMonth = task.Id;
+        //    detailsClosingCheckListDto.Id = task.Id;
+        //    detailsClosingCheckListDto.Id = task.Id;
 
-
-
-
+        //}
     }
 }

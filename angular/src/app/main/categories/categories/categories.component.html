@@ -1,4 +1,4 @@
-﻿<style>
+﻿ <style>
     .filter-by-user {
         list-style-type: none;
         display: inline-block;
@@ -27,7 +27,7 @@
     .custom-categories-table tr td .btn-group .btn {
         padding: 0 10px 0 0;
     }
-</style>
+</style> 
 
 
 
@@ -217,264 +217,6 @@
 
 
 
-<div [@routerTransition]>
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
-
-<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="kt-portlet" id="kt_portlet">
-
-                    <div class="kt-portlet__head">
-                        <div class="kt-portlet__head-label">
-                            <span class="kt-portlet__head-icon">
-                                <i class="flaticon-calendar"></i>
-                            </span>
-                            <h3 class="kt-portlet__head-title">
-                                Categories
-                            </h3>
-                        </div>
-                        <div class="kt-subheader__toolbar">
-                            <div class="kt-subheader__wrapper">
-                                <button *ngIf="isGranted('Pages.Categories.Create')" (click)="createCategory()"
-                                    class="btn btn-primary blue"><i class="fa fa-plus"></i>Add New</button>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="kt-portlet__body">
-                        <div class="fc fc-ltr fc-unthemed">
-                            <div class="fc-toolbar fc-header-toolbar">
-
-                                <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
-                                    <div class="kt-input-icon kt-input-icon--left">
-                                        <input type="text" class="form-control" placeholder="Search..."
-                                            id="generalSearch">
-                                        <span class="kt-input-icon__icon kt-input-icon__icon--left">
-                                            <span><i class="la la-search"></i></span>
-                                        </span>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="kt-portlet__body kt-portlet__body--fit">
-                            <div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded"
-                                id="column_rendering" >
-                                <p-table class="custom-categories-table kt-datatable__table" [value]="categoriesList"
-                                #dataTable (onLazyLoad)="getCategories($event)" [value]="primengTableHelper.records"
-                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]=""
-                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
-                                [responsive]="primengTableHelper.isResponsive"
-                                [resizableColumns]="primengTableHelper.resizableColumns"
-                                >
-                                    <thead class="kt-datatable__head">
-                                        <tr class="kt-datatable__row"> 
-                                            <th data-field="OrderID"
-                                                class="kt-datatable__cell kt-datatable__cell--sort"><span>Title</span>
-                                            </th>
-                                            <th data-field="Country"
-                                                class="kt-datatable__cell kt-datatable__cell--sort">
-                                                <span>Description</span></th>
-                                            <th data-field="ShipDate"
-                                                class="kt-datatable__cell kt-datatable__cell--sort"><span>Creation
-                                                    On</span></th>
-                                            <th data-field="CompanyName"
-                                                class="kt-datatable__cell kt-datatable__cell--sort"><span>Created
-                                                    By</span></th>
-                                            <th data-field="Status" class="kt-datatable__cell kt-datatable__cell--sort">
-                                                <span>Actions</span></th>
-
-                                        </tr>
-                                    </thead>
-
-                                    <tbody class="kt-datatable__body">
-                                        <tr *ngFor="let category of categoriesList" data-row="0"
-                                            class="kt-datatable__row" style="left: 0px;">
-
-                                            <td data-field="ShipDate" class="kt-datatable__cell">
-                                                <span>{{category.category.title}}</span></td>
-
-                                            <td data-field="CompanyName" class="kt-datatable__cell">
-                                                <span>{{category.category.description}}</span></td>
-                                            <td data-field="CompanyName" class="kt-datatable__cell">
-                                                <span>{{category.category.creationDate | date:'medium'}}</span>
-                                            </td>
-                                            <td data-field="OrderID" class="kt-datatable__cell"><span>
-                                                    <div class="kt-user-card-v2">
-                                                        <div class="kt-user-card-v2__pic">
-                                                            <div class="kt-badge kt-badge--xl kt-badge--primary">N</div>
-                                                        </div>
-                                                        <div class="kt-user-card-v2__details"> <span
-                                                                class="kt-user-card-v2__name">Ihsan</span> </div>
-                                                    </div>
-                                                </span>
-                                            </td>
-
-
-                                            <td>
-                                                <div class="btn-group">
-
-                                                    <a class="btn" href="javascript:;"
-                                                        (click)="editCategory(category.category.id)">
-                                                        <i class="fas fa-edit" style="color: #5867dd;"></i></a>
-                                                    <a class="btn" href="javascript:;"
-                                                        (click)="deleteCategory(category.category)">
-                                                        <i class="fa fa-trash" style="color: #5867dd;"></i></a>
-
-
-                                                </div>
-                                            </td>
-
-                                        </tr>
-
-                                    </tbody>
-                                </p-table>
-
-                                <table class="table table-sm">
-                                    <thead>
-                                      <tr>
-                                       
-                                        <th scope="col">Title</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Creation By</th>
-                                        <th scope="col">Created By</th>
-                                        <th scope="col">Actions</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let category of categoriesList" data-row="0"
-                                        class="kt-datatable__row" style="left: 0px;">
-
-                                        <td data-field="ShipDate" class="kt-datatable__cell">
-                                            <span>{{category.category.title}}</span></td>
-
-                                        <td data-field="CompanyName" class="kt-datatable__cell">
-                                            <span>{{category.category.description}}</span></td>
-                                        <td data-field="CompanyName" class="kt-datatable__cell">
-                                            <span>{{category.category.creationDate | date:'medium'}}</span>
-                                        </td>
-                                        <td data-field="OrderID" class="kt-datatable__cell"><span>
-                                                <div class="kt-user-card-v2">
-                                                    <div class="kt-user-card-v2__pic">
-                                                        <div class="kt-badge kt-badge--xl kt-badge--primary">N</div>
-                                                    </div>
-                                                    <div class="kt-user-card-v2__details"> <span
-                                                            class="kt-user-card-v2__name">{{category.category.createdBy}}</span> </div>
-                                                </div>
-                                            </span>
-                                        </td>
-
-
-                                        <td>
-                                            <div class="btn-group">
-
-                                                <a class="btn" href="javascript:;"
-                                                    (click)="editCategory(category.category.id)">
-                                                    <i class="fas fa-edit" style="color: #5867dd;"></i></a>
-                                                <a class="btn" href="javascript:;"
-                                                    (click)="deleteCategory(category.category)">
-                                                    <i class="fa fa-trash" style="color: #5867dd;"></i></a>
-
-
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                     
-                                    </tbody>
-                                  </table>
-
-                                 
-
-
-                                
-
-                                    
-                                  
-
-                                       
-
-                                <div class="kt-datatable__pager kt-datatable--paging-loaded">
-
-                                    <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
-                                        {{'NoData' | localize}}
-                                    </div>
-                                    <div class="primeng-paging-container">
-                                        <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
-                                            (onPageChange)="getCategories($event)"
-                                            [totalRecords]="primengTableHelper.totalRecordsCount"
-                                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
-        
-                                        </p-paginator>
-                                        <span class="total-records-count">
-                                            {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
-                                        </span>
-                                    </div>
-
-
-                                    <!-- <ul class="kt-datatable__pager-nav">
-                                        <li><a title="First"
-                                                class="kt-datatable__pager-link kt-datatable__pager-link--first kt-datatable__pager-link--disabled"
-                                                data-page="1" disabled="disabled"><i
-                                                    class="flaticon2-fast-back"></i></a></li>
-                                        <li><a title="Previous"
-                                                class="kt-datatable__pager-link kt-datatable__pager-link--prev kt-datatable__pager-link--disabled"
-                                                data-page="1" disabled="disabled"><i class="flaticon2-back"></i></a>
-                                        </li>
-                                        <li style=""></li>
-                                        <li style="display: none;">
-                                            <input type="text" class="kt-pager-input form-control" title="Page number">
-                                        </li>
-                                        <li><a class="kt-datatable__pager-link kt-datatable__pager-link-number kt-datatable__pager-link--active"
-                                                data-page="1" title="1">1</a></li>
-                                        <li><a class="kt-datatable__pager-link kt-datatable__pager-link-number"
-                                                data-page="2" title="2">2</a></li>
-                                        <li><a class="kt-datatable__pager-link kt-datatable__pager-link-number"
-                                                data-page="3" title="3">3</a></li>
-                                        <li><a class="kt-datatable__pager-link kt-datatable__pager-link-number"
-                                                data-page="4" title="4">4</a></li>
-                                        <li style=""></li>
-                                        <li><a title="Next"
-                                                class="kt-datatable__pager-link kt-datatable__pager-link--next"
-                                                data-page="2"><i class="flaticon2-next"></i></a></li>
-                                        <li><a title="Last"
-                                                class="kt-datatable__pager-link kt-datatable__pager-link--last"
-                                                data-page="4"><i class="flaticon2-fast-next"></i></a></li>
-                                    </ul>
-                                    <div class="kt-datatable__pager-info">
-                                        <div class="dropdown bootstrap-select kt-datatable__pager-size"
-                                            style="width: 60px;">
-                                            <select class="selectpicker kt-datatable__pager-size"
-                                                title="Select page size" data-width="60px" data-container="body"
-                                                data-selected="10" tabindex="-98">
-                                                <option class="bs-title-option" value=""></option>
-                                                <option value="10">10</option>
-                                                <option value="20">20</option>
-                                                <option value="30">30</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select>
-
-
-                                        </div><span class="kt-datatable__pager-detail">Showing 1 - 10 of 40</span>
-                                    </div> -->
-                                </div>
-                           
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-</div>
-</div>
 
 
 
@@ -559,5 +301,117 @@
 </div> -->
 
 
+
+
+<!--Last-->
+
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="kt-portlet" id="kt_portlet">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Categories
+                        </h3>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+                            <button *ngIf="isGranted('Pages.Categories.Create')" (click)="createCategory()"
+                                class="btn btn-primary blue"><i class="fa fa-plus"></i>Add New</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="kt-portlet__body">
+                 <!--start-->
+
+                 <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getCategories($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                            [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                            [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Creation On</th>
+                                    <th>Created By</th>
+                                    <th>Actions</th>
+                                </tr>
+
+                              
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                 <tr>
+                                   
+                                    <td style="width: 20%">
+                                        <span class="ui-column-title"> {{'UserName' | localize}}</span>
+                                        {{record.category.title}}
+                                    </td>
+                                    <td style="width: 20%">
+                                        <span class="ui-column-title"> {{'Name' | localize}}</span>
+                                        {{record.category.description}}
+                                    </td>
+                                    <td style="width: 20%">
+                                        <span class="ui-column-title"> {{'Name' | localize}}</span>
+                                        {{record.category.creationDate | date:'medium'}}
+                                    </td>
+                                   
+                                    <td data-field="OrderID" class="kt-datatable__cell"><span>
+                                        <div class="kt-user-card-v2">
+                                            <div class="kt-user-card-v2__pic">
+                                                <div class="kt-badge kt-badge--xl kt-badge--primary">N</div>
+                                            </div>
+                                            <div class="kt-user-card-v2__details"> <span
+                                                    class="kt-user-card-v2__name"> {{record.category.createdBy}}</span> </div>
+                                        </div>
+                                    </span>
+                                </td>
+                                    <td>
+                                        <div class="btn-group">
+
+                                            <a class="btn" href="javascript:;"
+                                                (click)="editCategory(record.category.id)">
+                                                <i class="fas fa-edit" style="color: #5867dd;"></i></a>
+                                            <a class="btn" href="javascript:;"
+                                                (click)="deleteCategory(record.category)">
+                                                <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+
+
+                                        </div>
+                                    </td>
+                                  
+                                   
+                                </tr> 
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{'NoData' | localize}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getCategories($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+
+                 <!--End-->
+                
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 
