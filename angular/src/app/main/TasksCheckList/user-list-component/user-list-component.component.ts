@@ -29,7 +29,11 @@ export class UserListComponentComponent implements OnInit {
   onSearchUsers(event): void {
     this._closingChecklistService.userAutoFill(event.query).subscribe(result => {
         this.users = result;
+        this.messageEvent.emit(this.users.value);
     });
+  
+    
+
 }
 
 }

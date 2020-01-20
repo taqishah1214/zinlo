@@ -106,7 +106,7 @@ export class CreateOrEditTaskComponent implements OnInit {
     this.checklist.dueOn = Number(this.checklist.dueOn);
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
-    this.checklist.assigneeNameId = Number(this.selectedUserId.selectedUserId);
+    this.checklist.assigneeNameId = Number(this.selectedUserId.selectedUserId.value);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
     this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
 
