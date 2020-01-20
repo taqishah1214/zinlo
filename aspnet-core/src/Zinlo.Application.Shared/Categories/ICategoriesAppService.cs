@@ -20,9 +20,7 @@ namespace Zinlo.Categories
 		Task CreateOrEdit(CreateOrEditCategoryDto input);
 
 		Task Delete(EntityDto input);
-
-		Task<FileDto> GetCategoriesToExcel(GetAllCategoriesForExcelInput input);
-		Task<List<NameValueDto<long>>> CategoryDropDown();
+        Task<List<NameValueDto<long>>> CategoryDropDown();
 
 
 
