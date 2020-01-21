@@ -1,3 +1,12 @@
 .bagesTextColor{
     color: blue !important;
 }
+.comment-wrapper > img{
+    display: block;
+    border-radius: 100%;
+    height: 35px;
+    max-width: 55px;
+}
+.comment-wrapper > p{
+    padding-left: 60px;
+}

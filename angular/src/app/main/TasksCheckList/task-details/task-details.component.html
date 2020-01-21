@@ -18,7 +18,7 @@
                 <div class="kt-portlet__body">
                  
                  <div class="row">
-                     <div class="col-md-6">
+                     <div class="col-md-7">
                          <div class="row">
                             <h5>Some task name col6</h5>
                             <div class="row">
@@ -40,12 +40,33 @@
                                     </p>
                              </div>
                          </div>
+                         <div class="row">
+                             <div class="col-5">
+                                <select class="form-control input-medium"
+                                (change)="closingMonthSelect($event.target.value)">
+                                <option value="January">Comments</option>
+                                <option value="Febuary">History</option>                          
+                            </select>
+                             </div>
+                            
+                         </div>
+                         <div class="row">
+                             <div class="col comment-section mt-5">
+                                 <div class="row comment-wrapper border-bottom pb-3 mb-3">
+                                    <img alt="photo" class="col-2" src="assets/media/users/100_10.jpg">
+                                     <div class="col-10 comments-text d-flex mb-4">
+                                         <h5 class="col-6 p-0 text-left">asdfdsf</h5>
+                                         <h5 class="col-6 p-0 text-right">20 Jan, 2020</h5>
+                                    </div>
+                                    <p class="col">asdfghjkw fghjk thj krtyuiolu</p>
+
+                                 </div>
+                             </div>
+                         </div>
                      
                      </div>
-                     <div class="col-md-6">
-                     task details col6
-                     <div class="row">
-                        
+                     <div class="col-md-5">
+                     <div class="row">                      
                          <div class="col-md-4">
                             <select class="form-control input-medium"
                             (change)="closingMonthSelect($event.target.value)">
