@@ -46,11 +46,15 @@ namespace Zinlo.ClosingChecklist
                                    select new GetClosingCheckListTaskDto()
                                    {
                                        ClosingCheckListForViewDto = new ClosingCheckListForViewDto
-                                       {
+                                       {     Id = o.Id,
+                                            AssigneeId = o.AssigneeName.Id,
+                                             StatusId = (int) o.Status,
                                           AssigniName = o.AssigneeName.FullName,
                                            TaskName = o.TaskName,
                                            Status =  o.Status.ToString(),
-                                           Category =o.Category.Title
+                                           Category =o.Category.Title,
+                                           
+                                          
                                        }
                              };
 

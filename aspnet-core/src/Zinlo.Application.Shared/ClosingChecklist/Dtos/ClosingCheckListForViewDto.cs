@@ -13,6 +13,9 @@ namespace Zinlo.ClosingChecklist.Dtos
         public string Status { get; set; }
 
         public string AssigniName { get; set; }
+        public long Id { get; set; }
+        public long StatusId { get; set; }
+        public long AssigneeId { get; set; }
     }
 
    
