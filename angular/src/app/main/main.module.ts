@@ -33,7 +33,8 @@ import { UserListComponentComponent } from './TasksCheckList/user-list-component
 import { TaskDetailsComponent } from './TasksCheckList/task-details/task-details.component'
 
 import { IgxCalendarModule } from 'igniteui-angular';
-import { UppyAngularModule } from 'uppy-angular';
+import { UppyAngularModule } from 'uppy-angular';;
+import { StatusComponent } from './TasksCheckList/status/status.component'
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -71,7 +72,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 TasksComponent,
                 CreatOrEditCategoryComponent,
                 UserListComponentComponent,
-                TaskDetailsComponent
+                TaskDetailsComponent,
+                StatusComponent
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

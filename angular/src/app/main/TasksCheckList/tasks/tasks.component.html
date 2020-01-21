@@ -85,7 +85,7 @@
 
 
 
-                                        <tr *ngFor="let i of ClosingCheckList" (click)="RedirectToDetail($event)" data-row="0"  class="kt-datatable__row clickable-row" style="left: 0px;">
+                                        <tr *ngFor="let i of ClosingCheckList" data-row="0"  class="kt-datatable__row clickable-row" style="left: 0px;">
                                         
                                             <td data-field="ShipDate" class="kt-datatable__cell"><span style="width: 145px;">2/12/2018</span></td>
 
@@ -96,27 +96,22 @@
                                             </td>
 
 
-                                            <td data-field="Status" class="kt-datatable__cell"><span style="width: 145px;"><span
-                                                        class="kt-badge  kt-badge--primary kt-badge--inline kt-badge--pill">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                 {{i.closingCheckListForViewDto.status}}
-                                                            </button>
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                <a class="dropdown-item" href="#">Action</a>
-                                                                <a class="dropdown-item" href="#">Another action</a>
-                                                                <a class="dropdown-item" href="#">Something else here</a>
-                                                            </div>
-                                                        </div>
-                                                    </span></span>
-                                            </td>
+                                          
+                                                        
+                                            <app-status [TaskId] = i.closingCheckListForViewDto.id [StatusList] = i.closingCheckListForViewDto.status ></app-status>
+
+                                            
                                         
                                             <td data-field="OrderID" class="kt-datatable__cell"><span style="width: 145px;">
-                                                    <div class="kt-user-card-v2">
+                                                    <div class="kt-user-card-v2" *ngIf="rowId != i.closingCheckListForViewDto.id" (click)="ChangeAssigniBox(i.closingCheckListForViewDto.id)">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div class="kt-badge kt-badge--xl kt-badge--primary">N</div>
                                                         </div>
                                                         <div class="kt-user-card-v2__details"> <span class="kt-user-card-v2__name">{{i.closingCheckListForViewDto.assigniName}}</span> </div>
+                                                    </div>
+                                                   
+                                                    <div class="kt-user-card-v2" *ngIf="rowId === i.closingCheckListForViewDto.id ">
+                                                        <app-user-list-component></app-user-list-component>
                                                     </div>
                                                 </span>
                                             </td>

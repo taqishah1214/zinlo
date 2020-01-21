@@ -15,17 +15,30 @@ export class TasksComponent implements OnInit {
   
   ClosingCheckList : any
   id:number;
+  AssigniInputBox : boolean;
+  AssigniBoxView : boolean;
+  public rowId : number = 0;
 
 
   constructor(private _router: Router,     private _closingChecklistService: ClosingChecklistServiceProxy) {
   }
 
   ngOnInit() {
+    this.AssigniInputBox = false;
+    this.AssigniBoxView = true;
     this._closingChecklistService.getAll().subscribe(result => {
       console.log("Done",result)
        this.ClosingCheckList = result.items;
       });
   }
+  ChangeAssigniBox (id) : void {
+    this.rowId = id;
+    
+    
+    
+  }
+
+ 
 
   RedirectToCreateTask() :void {
     this._router.navigate(['/app/main/TasksCheckList/create-or-edit-task']);   
@@ -33,6 +46,8 @@ export class TasksComponent implements OnInit {
 RedirectToDetail() :void{
   this._router.navigate(['/app/main/TasksCheckList/task-details'],{state: {data: {id:this.id}}});   
 }
+
+
 
 
 

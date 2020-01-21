@@ -107,13 +107,13 @@ export class CategoriesComponent extends AppComponentBase {
     }
 
     exportToExcel(): void {
-        this._categoriesServiceProxy.getCategoriesToExcel(
-            this.filterText,
-            this.titleFilter,
-            this.descriptionFilter,
-        )
-            .subscribe(result => {
-                this._fileDownloadService.downloadTempFile(result);
-            });
+        // this._categoriesServiceProxy.getCategoriesToExcel(
+        //     this.filterText,
+        //     this.titleFilter,
+        //     this.descriptionFilter,
+        // )
+        //     .subscribe(result => {
+        //         this._fileDownloadService.downloadTempFile(result);
+        //     });
     }
 }

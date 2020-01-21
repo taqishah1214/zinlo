@@ -1639,72 +1639,6 @@ export class CategoriesServiceProxy {
     }
 
     /**
-     * @param filter (optional) 
-     * @param titleFilter (optional) 
-     * @param descriptionFilter (optional) 
-     * @return Success
-     */
-    getCategoriesToExcel(filter: string | undefined, titleFilter: string | undefined, descriptionFilter: string | undefined): Observable<FileDto> {
-        let url_ = this.baseUrl + "/api/services/app/Categories/GetCategoriesToExcel?";
-        if (filter === null)
-            throw new Error("The parameter 'filter' cannot be null.");
-        else if (filter !== undefined)
-            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
-        if (titleFilter === null)
-            throw new Error("The parameter 'titleFilter' cannot be null.");
-        else if (titleFilter !== undefined)
-            url_ += "TitleFilter=" + encodeURIComponent("" + titleFilter) + "&"; 
-        if (descriptionFilter === null)
-            throw new Error("The parameter 'descriptionFilter' cannot be null.");
-        else if (descriptionFilter !== undefined)
-            url_ += "DescriptionFilter=" + encodeURIComponent("" + descriptionFilter) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetCategoriesToExcel(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetCategoriesToExcel(<any>response_);
-                } catch (e) {
-                    return <Observable<FileDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<FileDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetCategoriesToExcel(response: HttpResponseBase): Observable<FileDto> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<FileDto>(<any>null);
-    }
-
-    /**
      * @return Success
      */
     categoryDropDown(): Observable<NameValueDtoOfInt64[]> {
@@ -13610,6 +13544,9 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
     category!: string | undefined;
     status!: string | undefined;
     assigniName!: string | undefined;
+    id!: number;
+    statusId!: number;
+    assigneeId!: number;
 
     constructor(data?: IClosingCheckListForViewDto) {
         if (data) {
@@ -13626,6 +13563,9 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
             this.category = data["category"];
             this.status = data["status"];
             this.assigniName = data["assigniName"];
+            this.id = data["id"];
+            this.statusId = data["statusId"];
+            this.assigneeId = data["assigneeId"];
         }
     }
 
@@ -13642,6 +13582,9 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
         data["category"] = this.category;
         data["status"] = this.status;
         data["assigniName"] = this.assigniName;
+        data["id"] = this.id;
+        data["statusId"] = this.statusId;
+        data["assigneeId"] = this.assigneeId;
         return data; 
     }
 }
@@ -13651,6 +13594,9 @@ export interface IClosingCheckListForViewDto {
     category: string | undefined;
     status: string | undefined;
     assigniName: string | undefined;
+    id: number;
+    statusId: number;
+    assigneeId: number;
 }
 
 export class GetClosingCheckListTaskDto implements IGetClosingCheckListTaskDto {
