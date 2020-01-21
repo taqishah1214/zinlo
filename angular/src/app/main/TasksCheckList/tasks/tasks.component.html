@@ -111,7 +111,7 @@
                                                     </div>
                                                    
                                                     <div class="kt-user-card-v2" *ngIf="rowId === i.closingCheckListForViewDto.id ">
-                                                        <app-user-list-component></app-user-list-component>
+                                                        <app-user-list-component [TaskId] = i.closingCheckListForViewDto.id ></app-user-list-component>
                                                     </div>
                                                 </span>
                                             </td>
