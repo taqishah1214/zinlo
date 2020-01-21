@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { UserServiceProxy, ClosingChecklistServiceProxy} from '@shared/service-proxies/service-proxies';
 
 
@@ -11,6 +11,7 @@ export class UserListComponentComponent implements OnInit {
 
   users : any;
   public selectedUserId:any;
+  @Input() TaskId : any;
   @Output() messageEvent = new EventEmitter<string>();
   constructor( private userService :UserServiceProxy,private _closingChecklistService: ClosingChecklistServiceProxy ) {
 
@@ -24,12 +25,15 @@ export class UserListComponentComponent implements OnInit {
 
   userOnChange() : void {
     this.messageEvent.emit(this.selectedUserId);
+    debugger;
+    console.log("TaskId", this.TaskId);
   }
 
   onSearchUsers(event): void {
     this._closingChecklistService.userAutoFill(event.query).subscribe(result => {
         this.users = result;
         this.messageEvent.emit(this.users.value);
+        console.log("task id ",this.users.value)
     });
   
     

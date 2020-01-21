@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {ClosingChecklistServiceProxy,ChangeStatusDto}from '@shared/service-proxies/service-proxies';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-status',
@@ -9,16 +11,20 @@ export class StatusComponent implements OnInit {
 
   @Input() StatusList: any;
   @Input() TaskId : any;
+  _changeStatus: ChangeStatusDto = new ChangeStatusDto();
 
-
-  constructor() { }
+  constructor( private _closingChecklistService: ClosingChecklistServiceProxy ,private _router: Router) { }
 
   ngOnInit() {
   }
 
   ChangeStatus(value) : void {
-    console.log("value",value)
-    console.log("id", this.TaskId)
+    this._changeStatus.statusId = value;
+    this._changeStatus.taskId = this.TaskId;
+   this._closingChecklistService.changeStatus(this._changeStatus).subscribe(result => 
+    {
+      this._router.navigate(['/app/main/TasksCheckList/tasks']);
+    });
   }
 
 }

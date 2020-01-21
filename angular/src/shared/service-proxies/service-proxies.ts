@@ -2050,6 +2050,61 @@ export class ClosingChecklistServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getUsersDropdown(): Observable<NameValueDtoOfString[]> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/getUsersDropdown";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUsersDropdown(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUsersDropdown(<any>response_);
+                } catch (e) {
+                    return <Observable<NameValueDtoOfString[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<NameValueDtoOfString[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUsersDropdown(response: HttpResponseBase): Observable<NameValueDtoOfString[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(NameValueDtoOfString.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<NameValueDtoOfString[]>(<any>null);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -2103,6 +2158,110 @@ export class ClosingChecklistServiceProxy {
             }));
         }
         return _observableOf<DetailsClosingCheckListDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    changeAssignee(body: ChangeAssigneeDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/ChangeAssignee";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangeAssignee(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangeAssignee(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processChangeAssignee(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    changeStatus(body: ChangeStatusDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/ChangeStatus";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangeStatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangeStatus(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processChangeStatus(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
     }
 }
 
@@ -13958,6 +14117,86 @@ export interface IDetailsClosingCheckListDto {
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
+}
+
+export class ChangeAssigneeDto implements IChangeAssigneeDto {
+    taskId!: number;
+    assigneeId!: number;
+
+    constructor(data?: IChangeAssigneeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.taskId = data["taskId"];
+            this.assigneeId = data["assigneeId"];
+        }
+    }
+
+    static fromJS(data: any): ChangeAssigneeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChangeAssigneeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["taskId"] = this.taskId;
+        data["assigneeId"] = this.assigneeId;
+        return data; 
+    }
+}
+
+export interface IChangeAssigneeDto {
+    taskId: number;
+    assigneeId: number;
+}
+
+export class ChangeStatusDto implements IChangeStatusDto {
+    statusId!: number;
+    taskId!: number;
+
+    constructor(data?: IChangeStatusDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.statusId = data["statusId"];
+            this.taskId = data["taskId"];
+        }
+    }
+
+    static fromJS(data: any): ChangeStatusDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChangeStatusDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["statusId"] = this.statusId;
+        data["taskId"] = this.taskId;
+        return data; 
+    }
+}
+
+export interface IChangeStatusDto {
+    statusId: number;
+    taskId: number;
 }
 
 export enum CommentTypeDto {

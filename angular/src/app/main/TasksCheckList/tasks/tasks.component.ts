@@ -27,18 +27,12 @@ export class TasksComponent implements OnInit {
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
     this._closingChecklistService.getAll().subscribe(result => {
-      console.log("Done",result)
        this.ClosingCheckList = result.items;
       });
   }
   ChangeAssigniBox (id) : void {
-    this.rowId = id;
-    
-    
-    
+    this.rowId = id; 
   }
-
- 
 
   RedirectToCreateTask() :void {
     this._router.navigate(['/app/main/TasksCheckList/create-or-edit-task']);   
