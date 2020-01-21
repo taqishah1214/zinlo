@@ -15,7 +15,7 @@ using Zinlo.Comment.Dtos;
 using Zinlo.ClosingChecklist.Dtos;
 using System.Collections.Generic;
 using Zinlo.Authorization.Users;
-
+using Zinlo.ClosingChecklist;
 namespace Zinlo.ClosingChecklist
 {
     public class ClosingChecklistAppService : ZinloAppServiceBase, IClosingChecklistAppService
@@ -140,6 +140,22 @@ namespace Zinlo.ClosingChecklist
             return assets;
         }
 
+        public async Task<List<NameValueDto<string>>> getUsersDropdown()
+        {
+            var filteredUsers = _userRepository.GetAll();
+
+            var query = (from o in filteredUsers
+
+                         select new NameValueDto<string>()
+                         {
+                             Value = o.Id.ToString(),
+                             Name = o.FullName                         
+                         });
+
+            var users = await query.ToListAsync();
+            return users;
+        }
+
         public async Task<DetailsClosingCheckListDto> getDetails(long id)
         {
             var task = _closingChecklistRepository.GetAll().Include(u=>u.AssigneeName).Where(x => x.Id == id).FirstOrDefault();
@@ -154,5 +170,27 @@ namespace Zinlo.ClosingChecklist
             return detailsClosingCheckListDto;
 
         }
+
+        public async Task ChangeAssignee(ChangeAssigneeDto changeAssigneeDto)
+        {
+            var task = await _closingChecklistRepository.FirstOrDefaultAsync(changeAssigneeDto.TaskId);
+            if(task != null)
+            {
+                task.AssigneeNameId = changeAssigneeDto.AssigneeId;
+                _closingChecklistRepository.Update(task);
+            }
+        }
+
+        public async Task ChangeStatus(ChangeStatusDto changeStatusDto)
+        {
+            var task = await _closingChecklistRepository.FirstOrDefaultAsync(changeStatusDto.TaskId);
+            if (task != null)
+            {
+                task.Status =  (Zinlo.ClosingChecklist.Status)changeStatusDto.StatusId;
+                _closingChecklistRepository.Update(task);
+            }
+        }
+
+      
     }
 }
