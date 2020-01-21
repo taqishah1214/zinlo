@@ -4,9 +4,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
 import { CategoriesComponent } from './categories/categories/categories.component';
-import { ViewCategoryModalComponent } from './categories/categories/view-category-modal.component';
-import { CreateOrEditCategoryModalComponent } from './categories/categories/create-or-edit-category-modal.component';
-
 
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PaginatorModule } from 'primeng/paginator';
@@ -23,10 +20,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { BsDatepickerModule, BsDatepickerConfig, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';;
-import { CreateOrEditTaskComponent } from './TasksCheckList/create-or-edit-task/create-or-edit-task.component';;
-import { TasksComponent } from './TasksCheckList/tasks/tasks.component'
-        ;
-import { CreatOrEditCategoryComponent } from './categories/creat-or-edit-category/creat-or-edit-category.component'
+import { CreateOrEditTaskComponent } from './TasksCheckList/create-or-edit-task/create-or-edit-task.component';
+import { TasksComponent } from './TasksCheckList/tasks/tasks.component';
+import { CreateOrEditCategoryComponent } from './categories/create-or-edit-category/create-or-edit-category.component'
 import { CategorieDropDownComponent } from './categories/categorie-drop-down/categorie-drop-down.component';;
 import { UserListComponentComponent } from './TasksCheckList/user-list-component/user-list-component.component'
         ;
@@ -65,14 +61,14 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
         ],
         declarations: [
                 CategoriesComponent,
-                ViewCategoryModalComponent, CreateOrEditCategoryModalComponent,
                 CategorieDropDownComponent,
                 DashboardComponent,
                 CreateOrEditTaskComponent,
                 TasksComponent,
-                CreatOrEditCategoryComponent,
+                CreateOrEditCategoryComponent,
                 UserListComponentComponent,
-                TaskDetailsComponent,
+                TaskDetailsComponent
+,
                 StatusComponent
         ],
         providers: [

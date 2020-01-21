@@ -16,9 +16,4 @@ export class StatusComponent implements OnInit {
   ngOnInit() {
   }
 
-  ChangeStatus(value) : void {
-    console.log("value",value)
-    console.log("id", this.TaskId)
-  }
-
 }
