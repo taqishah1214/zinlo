@@ -9,7 +9,7 @@ namespace Zinlo.Tasks.Dtos
     {
         public virtual string TaskName { get; set; }
         public virtual long CategoryId { get; set; }
-        public virtual long AssigneeNameId { get; set; }
+        public virtual long AssigneeId { get; set; }
         public virtual DateTime ClosingMonth { get; set; }
         public StatusDto Status { get; set; }
         public int TenantId { get; set; }

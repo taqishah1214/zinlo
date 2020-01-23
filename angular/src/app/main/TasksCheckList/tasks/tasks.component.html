@@ -87,10 +87,10 @@
 
                                         <tr *ngFor="let i of ClosingCheckList" data-row="0"  class="kt-datatable__row clickable-row" style="left: 0px;">
                                         
-                                            <td data-field="ShipDate" class="kt-datatable__cell"><span style="width: 145px;">2/12/2018</span></td>
+                                            <td (click)="RedirectToEditTaskPage(i.closingCheckListForViewDto.id)" data-field="ShipDate" class="kt-datatable__cell"><span style="width: 145px;">2/12/2018</span></td>
 
                                             <td data-field="CompanyName" (click)="RedirectToDetail(i.closingCheckListForViewDto.id)" class="kt-datatable__cell"><span style="width: 145px;">{{i.closingCheckListForViewDto.taskName}}</span></td>
-                                            
+                           
                                             <td data-field="Type" data-autohide-disabled="false" class="kt-datatable__cell"><span style="width: 145px;"><span
                                                         class="btn btn-secondary btn-sm">{{i.closingCheckListForViewDto.category}}</span></span>
                                             </td>

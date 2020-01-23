@@ -2263,6 +2263,62 @@ export class ClosingChecklistServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getTaskForEdit(id: number | undefined): Observable<GetTaskForEditDto> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetTaskForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTaskForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTaskForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetTaskForEditDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetTaskForEditDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTaskForEdit(response: HttpResponseBase): Observable<GetTaskForEditDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetTaskForEditDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetTaskForEditDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -2326,6 +2382,71 @@ export class CommentServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param type (optional) 
+     * @param typeId (optional) 
+     * @return Success
+     */
+    getComments(type: number | undefined, typeId: number | undefined): Observable<CommentDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Comment/GetComments?";
+        if (type === null)
+            throw new Error("The parameter 'type' cannot be null.");
+        else if (type !== undefined)
+            url_ += "type=" + encodeURIComponent("" + type) + "&"; 
+        if (typeId === null)
+            throw new Error("The parameter 'typeId' cannot be null.");
+        else if (typeId !== undefined)
+            url_ += "typeId=" + encodeURIComponent("" + typeId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetComments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetComments(<any>response_);
+                } catch (e) {
+                    return <Observable<CommentDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CommentDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetComments(response: HttpResponseBase): Observable<CommentDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CommentDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CommentDto[]>(<any>null);
     }
 }
 
@@ -13870,7 +13991,7 @@ export enum FrequencyDto {
 export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChecklistDto {
     taskName!: string | undefined;
     categoryId!: number;
-    assigneeNameId!: number;
+    assigneeId!: number;
     closingMonth!: moment.Moment;
     status!: StatusDto;
     tenantId!: number;
@@ -13900,7 +14021,7 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
         if (data) {
             this.taskName = data["taskName"];
             this.categoryId = data["categoryId"];
-            this.assigneeNameId = data["assigneeNameId"];
+            this.assigneeId = data["assigneeId"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.status = data["status"];
             this.tenantId = data["tenantId"];
@@ -13930,7 +14051,7 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
         data = typeof data === 'object' ? data : {};
         data["taskName"] = this.taskName;
         data["categoryId"] = this.categoryId;
-        data["assigneeNameId"] = this.assigneeNameId;
+        data["assigneeId"] = this.assigneeId;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["tenantId"] = this.tenantId;
@@ -13953,7 +14074,7 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
 export interface ICreateOrEditClosingChecklistDto {
     taskName: string | undefined;
     categoryId: number;
-    assigneeNameId: number;
+    assigneeId: number;
     closingMonth: moment.Moment;
     status: StatusDto;
     tenantId: number;
@@ -14064,7 +14185,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     comments!: CommentDto[] | undefined;
     taskName!: string | undefined;
     categoryId!: number;
-    assigneeNameId!: number;
+    assigneeId!: number;
     closingMonth!: moment.Moment;
     status!: StatusDto;
     tenantId!: number;
@@ -14100,7 +14221,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             }
             this.taskName = data["taskName"];
             this.categoryId = data["categoryId"];
-            this.assigneeNameId = data["assigneeNameId"];
+            this.assigneeId = data["assigneeId"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.status = data["status"];
             this.tenantId = data["tenantId"];
@@ -14136,7 +14257,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         }
         data["taskName"] = this.taskName;
         data["categoryId"] = this.categoryId;
-        data["assigneeNameId"] = this.assigneeNameId;
+        data["assigneeId"] = this.assigneeId;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["tenantId"] = this.tenantId;
@@ -14161,7 +14282,7 @@ export interface IDetailsClosingCheckListDto {
     comments: CommentDto[] | undefined;
     taskName: string | undefined;
     categoryId: number;
-    assigneeNameId: number;
+    assigneeId: number;
     closingMonth: moment.Moment;
     status: StatusDto;
     tenantId: number;
@@ -14257,6 +14378,102 @@ export class ChangeStatusDto implements IChangeStatusDto {
 export interface IChangeStatusDto {
     statusId: number;
     taskId: number;
+}
+
+export class GetTaskForEditDto implements IGetTaskForEditDto {
+    taskName!: string | undefined;
+    closingMonth!: moment.Moment;
+    category!: string | undefined;
+    assigniName!: string | undefined;
+    status!: string | undefined;
+    attachment!: string | undefined;
+    instruction!: string | undefined;
+    noOfMonths!: number;
+    dueOn!: number;
+    endsOn!: moment.Moment;
+    dayBeforeAfter!: boolean;
+    endOfMonth!: boolean;
+    frequency!: string | undefined;
+    comments!: CommentDto[] | undefined;
+
+    constructor(data?: IGetTaskForEditDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.taskName = data["taskName"];
+            this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
+            this.category = data["category"];
+            this.assigniName = data["assigniName"];
+            this.status = data["status"];
+            this.attachment = data["attachment"];
+            this.instruction = data["instruction"];
+            this.noOfMonths = data["noOfMonths"];
+            this.dueOn = data["dueOn"];
+            this.endsOn = data["endsOn"] ? moment(data["endsOn"].toString()) : <any>undefined;
+            this.dayBeforeAfter = data["dayBeforeAfter"];
+            this.endOfMonth = data["endOfMonth"];
+            this.frequency = data["frequency"];
+            if (Array.isArray(data["comments"])) {
+                this.comments = [] as any;
+                for (let item of data["comments"])
+                    this.comments!.push(CommentDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GetTaskForEditDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTaskForEditDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["taskName"] = this.taskName;
+        data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
+        data["category"] = this.category;
+        data["assigniName"] = this.assigniName;
+        data["status"] = this.status;
+        data["attachment"] = this.attachment;
+        data["instruction"] = this.instruction;
+        data["noOfMonths"] = this.noOfMonths;
+        data["dueOn"] = this.dueOn;
+        data["endsOn"] = this.endsOn ? this.endsOn.toISOString() : <any>undefined;
+        data["dayBeforeAfter"] = this.dayBeforeAfter;
+        data["endOfMonth"] = this.endOfMonth;
+        data["frequency"] = this.frequency;
+        if (Array.isArray(this.comments)) {
+            data["comments"] = [];
+            for (let item of this.comments)
+                data["comments"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGetTaskForEditDto {
+    taskName: string | undefined;
+    closingMonth: moment.Moment;
+    category: string | undefined;
+    assigniName: string | undefined;
+    status: string | undefined;
+    attachment: string | undefined;
+    instruction: string | undefined;
+    noOfMonths: number;
+    dueOn: number;
+    endsOn: moment.Moment;
+    dayBeforeAfter: boolean;
+    endOfMonth: boolean;
+    frequency: string | undefined;
+    comments: CommentDto[] | undefined;
 }
 
 export enum CommentTypeDto {

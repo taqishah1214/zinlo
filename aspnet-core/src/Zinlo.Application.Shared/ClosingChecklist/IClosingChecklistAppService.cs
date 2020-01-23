@@ -19,6 +19,8 @@ namespace Zinlo.ClosingChecklist
         Task ChangeAssignee(ChangeAssigneeDto changeAssigneeDto);
         Task ChangeStatus(ChangeStatusDto changeStatusDto);
 
+        Task <GetTaskForEditDto>GetTaskForEdit(long id);
+
 
     }
 }

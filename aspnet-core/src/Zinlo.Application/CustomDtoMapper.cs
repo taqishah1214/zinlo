@@ -39,6 +39,7 @@ using Zinlo.Organizations.Dto;
 using Zinlo.Sessions.Dto;
 using Zinlo.Comment.Dtos;
 using Zinlo.Tasks.Dtos;
+using Zinlo.ClosingChecklist.Dtos;
 
 namespace Zinlo
 {
@@ -147,7 +148,9 @@ namespace Zinlo
             /* ADD YOUR OWN CUSTOM AUTOMAPPER MAPPINGS HERE */
             //Closing checklist
             configuration.CreateMap<CreateOrEditClosingChecklistDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
-         
+            configuration.CreateMap<Comment.Comment, CommentDto>().ReverseMap();
+
+
 
             //Category
             configuration.CreateMap<CategoryDto, Category>().ReverseMap();
