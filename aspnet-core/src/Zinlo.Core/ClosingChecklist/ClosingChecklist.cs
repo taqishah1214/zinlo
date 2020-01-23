@@ -11,8 +11,8 @@ namespace Zinlo.ClosingChecklist
         public virtual string TaskName { get; set; }
         public Category Category { get; set; }
         public virtual long CategoryId { get; set; }
-        public User AssigneeName { get; set; }
-        public virtual long AssigneeNameId { get; set; }
+        public User Assignee { get; set; }
+        public virtual long AssigneeId { get; set; }
         public virtual DateTime ClosingMonth { get; set; }
         public Status Status { get; set; }
         public int TenantId { get; set; }

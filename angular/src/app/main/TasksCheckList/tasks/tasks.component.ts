@@ -37,13 +37,13 @@ export class TasksComponent implements OnInit {
   RedirectToCreateTask() :void {
   this._router.navigate(['/app/main/TasksCheckList/create-or-edit-task']);   
 }
-RedirectToDetail() :void{
+RedirectToDetail(id) :void{
+  
   this._router.navigate(['/app/main/TasksCheckList/task-details'],{state: {data: {id:this.id}}});   
 }
-
-
-
-
+RedirectToEditTaskPage(id) : void {
+  this._router.navigate(['/app/main/TasksCheckList/edit-task'], { state: { data: { id: id } } })
+}
 
 
 }

@@ -21,7 +21,6 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
   categories: any;
   Email: string;
   taskName: string;
-  assigneeName: string;
   comment: string;
   closingMonth: string;
   frequenct: string;
@@ -71,11 +70,6 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     this._router.navigate(['/app/main/TasksCheckList/tasks']);
   }
 
-
-  onChangeAssigniName(value): void {
-    this.checklist.assigneeNameId = value
-  }
-
   EndofMonthSelected(): void {
     this.checklist.endOfMonth = true;
   }
@@ -101,7 +95,7 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     this.checklist.dueOn = Number(this.checklist.dueOn);
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
-    this.checklist.assigneeNameId = Number(this.selectedUserId.selectedUserId.value);
+    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
     this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(() => {
