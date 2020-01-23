@@ -15,7 +15,6 @@ using Zinlo.Comment.Dtos;
 using Zinlo.ClosingChecklist.Dtos;
 using System.Collections.Generic;
 using Zinlo.Authorization.Users;
-using Zinlo.ClosingChecklist;
 namespace Zinlo.ClosingChecklist
 {
     public class ClosingChecklistAppService : ZinloAppServiceBase, IClosingChecklistAppService
@@ -23,11 +22,19 @@ namespace Zinlo.ClosingChecklist
         private readonly IRepository<ClosingChecklist,long> _closingChecklistRepository;
         private readonly ICommentAppService _commentAppService;
         private readonly IRepository<User,long> _userRepository;
-        public ClosingChecklistAppService(IRepository<ClosingChecklist,long> closingChecklistRepository, ICommentAppService commentAppService, IRepository<User,long> userRepository)
+        private readonly IRepository<Comment.Comment, int> _commentRepository;
+        public ClosingChecklistAppService
+            (    
+        IRepository<ClosingChecklist,long> closingChecklistRepository, 
+        ICommentAppService commentAppService, 
+        IRepository<User,long> userRepository,
+        IRepository<Comment.Comment, int> commentRepository
+            )
         {
             _closingChecklistRepository = closingChecklistRepository;
             _commentAppService = commentAppService;
             _userRepository = userRepository;
+            _commentRepository = commentRepository;
         }
 
 
@@ -167,8 +174,28 @@ namespace Zinlo.ClosingChecklist
             detailsClosingCheckListDto.EndsOn = task.EndsOn;
             detailsClosingCheckListDto.DayBeforeAfter = task.DayBeforeAfter;
             detailsClosingCheckListDto.AssigneeName = task.AssigneeName.Name;
+            detailsClosingCheckListDto.comments = await GetTaskCommentById(task.Id);
             return detailsClosingCheckListDto;
 
+        }
+        protected  async Task<List<CommentDto>> GetTaskCommentById(long id) {
+            List<CommentDto> commentList = new List<CommentDto>();
+            var taskComments = await  _commentRepository.GetAll().Where(x => x.Type == CommentType.ClosingChecklist && x.TypeId == id).ToListAsync();
+            if(taskComments.Count > 0)
+            {
+                foreach (var comment in taskComments)
+                {
+                    var commentObj = ObjectMapper.Map<CommentDto>(comment);
+                    commentList.Add(commentObj);
+                }
+                return commentList;
+            }
+            else
+            {
+                return new List<CommentDto>();
+            }
+
+            
         }
 
         public async Task ChangeAssignee(ChangeAssigneeDto changeAssigneeDto)

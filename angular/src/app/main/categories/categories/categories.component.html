@@ -40,7 +40,7 @@
 
                     <div class="row align-items-center">
                         <!--<Primeng-TurboTable-Start>-->
-                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <div class="categories-table primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
                             <p-table #dataTable (onLazyLoad)="getCategories($event)"
                                 [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"

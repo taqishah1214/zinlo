@@ -100,6 +100,17 @@ body.swal2-height-auto {
 .swal2-popup.swal2-toast .swal2-title {
     margin-bottom: 4px !important; 
 }
+
+/*  global styles for tables */
+
+/* body .ui-table .ui-table-thead > tr > th,
+body .ui-table .ui-table-tbody > tr:nth-child(even){
+    background-color: transparent;
+} */
+.kt-user-card-v2 .kt-user-card-v2__pic .kt-badge{
+    margin-right: 10px;
+}
+/*  global styles ends here */
 @keyframes glowing {
     0% {
         opacity: .3;

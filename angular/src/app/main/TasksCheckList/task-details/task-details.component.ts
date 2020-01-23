@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UppyConfig } from 'uppy-angular';
 
 @Component({
   selector: 'app-task-details',
@@ -17,6 +18,18 @@ export class TaskDetailsComponent implements OnInit {
 
   BackToTaskList(): void {
     this._router.navigate(['/app/main/TasksCheckList/tasks']);
+  }
+
+  settings: UppyConfig = {
+    uploadAPI: {
+      endpoint: ``,
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('userToken')
+      }
+    },
+    plugins: {
+      Webcam: false
+    }
   }
 
 
