@@ -9,16 +9,19 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Zinlo.Authorization.Users;
 
 namespace Zinlo.Comment
 {
     public class CommentAppService : ZinloAppServiceBase, ICommentAppService
     {
         private readonly IRepository<Comment> _commentRepository;
+        private readonly IRepository<User, long> _userRepository;
 
-        public CommentAppService(IRepository<Comment> commentRepository)
+        public CommentAppService(IRepository<Comment> commentRepository, IRepository<User, long> userRepository)
         {
             _commentRepository = commentRepository;
+            _userRepository = userRepository;
         }
 
         public async Task Create(CreateOrEditCommentDto request)
@@ -32,12 +35,19 @@ namespace Zinlo.Comment
         {
             List<CommentDto> commentList = new List<CommentDto>();
             var taskComments = await _commentRepository.GetAll().Where(x => x.Type== (CommentType)type && x.TypeId == typeId).ToListAsync();
+
             if (taskComments.Count > 0)
             {
                 foreach (var comment in taskComments)
                 {
-                    var commentObj = ObjectMapper.Map<CommentDto>(comment);
-                    commentList.Add(commentObj);
+                    CommentDto commentDto = new CommentDto();
+                    commentDto.Id = comment.Id;
+                    commentDto.Type = comment.Type.ToString();
+                    commentDto.TypeId = (int)comment.TypeId;
+                    commentDto.UserName = _userRepository.FirstOrDefaultAsync((long)comment.CreatorUserId).Result.FullName;
+                    commentDto.Body = comment.Body;
+                    commentDto.UserProfilePath = ""; // Will pass profile url from s3 in future.
+                    commentList.Add(commentDto);
                 }
                 return commentList;
             }
@@ -48,6 +58,7 @@ namespace Zinlo.Comment
 
 
         }
+        
 
     }
 }

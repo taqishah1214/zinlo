@@ -14136,6 +14136,9 @@ export class CommentDto implements ICommentDto {
     type!: string | undefined;
     typeId!: number;
     body!: string | undefined;
+    userName!: string | undefined;
+    creationDateTime!: moment.Moment | undefined;
+    userProfilePath!: string | undefined;
     id!: number;
 
     constructor(data?: ICommentDto) {
@@ -14152,6 +14155,9 @@ export class CommentDto implements ICommentDto {
             this.type = data["type"];
             this.typeId = data["typeId"];
             this.body = data["body"];
+            this.userName = data["userName"];
+            this.creationDateTime = data["creationDateTime"] ? moment(data["creationDateTime"].toString()) : <any>undefined;
+            this.userProfilePath = data["userProfilePath"];
             this.id = data["id"];
         }
     }
@@ -14168,6 +14174,9 @@ export class CommentDto implements ICommentDto {
         data["type"] = this.type;
         data["typeId"] = this.typeId;
         data["body"] = this.body;
+        data["userName"] = this.userName;
+        data["creationDateTime"] = this.creationDateTime ? this.creationDateTime.toISOString() : <any>undefined;
+        data["userProfilePath"] = this.userProfilePath;
         data["id"] = this.id;
         return data; 
     }
@@ -14177,6 +14186,9 @@ export interface ICommentDto {
     type: string | undefined;
     typeId: number;
     body: string | undefined;
+    userName: string | undefined;
+    creationDateTime: moment.Moment | undefined;
+    userProfilePath: string | undefined;
     id: number;
 }
 

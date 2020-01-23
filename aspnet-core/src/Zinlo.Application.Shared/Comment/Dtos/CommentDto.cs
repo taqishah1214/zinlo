@@ -10,5 +10,8 @@ namespace Zinlo.Comment.Dtos
         public string Type { get; set; }
         public int TypeId { get; set; }
         public string Body { get; set; }
+        public string UserName { get; set; }
+        public DateTime? CreationDateTime { get; set; }
+        public string UserProfilePath { get; set; }
     }
 }

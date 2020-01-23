@@ -40,16 +40,16 @@ namespace Zinlo.ClosingChecklist
 
         public async Task<PagedResultDto<GetClosingCheckListTaskDto>> GetAll()
         {
-            var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u=>u.Assignee);
+            var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category);
 
             var closingCheckList = from o in query
                                    select new GetClosingCheckListTaskDto()
                                    {
                                        ClosingCheckListForViewDto = new ClosingCheckListForViewDto
                                        {     Id = o.Id,
-                                            AssigneeId = o.Assignee.Id,
+                                            AssigneeId = o.AssigneeId,
                                              StatusId = (int) o.Status,
-                                          AssigniName = o.Assignee.FullName,
+                                          AssigniName =  _userRepository.FirstOrDefaultAsync(o.AssigneeId).Result.FullName,
                                            TaskName = o.TaskName,
                                            Status =  o.Status.ToString(),
                                            Category =o.Category.Title,
@@ -167,6 +167,10 @@ namespace Zinlo.ClosingChecklist
             detailsClosingCheckListDto.EndsOn = task.EndsOn;
             detailsClosingCheckListDto.DayBeforeAfter = task.DayBeforeAfter;
             detailsClosingCheckListDto.AssigneeName = task.Assignee.Name;
+            detailsClosingCheckListDto.DueOn = task.DueOn;
+            detailsClosingCheckListDto.NoOfMonths = task.NoOfMonths;
+            detailsClosingCheckListDto.Status = (StatusDto)task.Status;
+            detailsClosingCheckListDto.Instruction = task.Instruction;
             detailsClosingCheckListDto.comments = await _commentAppService.GetComments(1, task.Id);
             return detailsClosingCheckListDto;
 
