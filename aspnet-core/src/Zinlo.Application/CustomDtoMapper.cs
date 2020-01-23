@@ -152,6 +152,9 @@ namespace Zinlo
             //Category
             configuration.CreateMap<CategoryDto, Category>().ReverseMap();
             configuration.CreateMap<CreateOrEditCategoryDto, Category>().ReverseMap();
+
+            //Comment
+            configuration.CreateMap<CommentDto, Comment.Comment>().ReverseMap();
         }
     }
 }

@@ -14011,8 +14011,57 @@ export interface INameValueDtoOfString {
     value: string | undefined;
 }
 
+export class CommentDto implements ICommentDto {
+    type!: string | undefined;
+    typeId!: number;
+    body!: string | undefined;
+    id!: number;
+
+    constructor(data?: ICommentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.type = data["type"];
+            this.typeId = data["typeId"];
+            this.body = data["body"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): CommentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CommentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["typeId"] = this.typeId;
+        data["body"] = this.body;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICommentDto {
+    type: string | undefined;
+    typeId: number;
+    body: string | undefined;
+    id: number;
+}
+
 export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     assigneeName!: string | undefined;
+    comments!: CommentDto[] | undefined;
     taskName!: string | undefined;
     categoryId!: number;
     assigneeNameId!: number;
@@ -14044,6 +14093,11 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     init(data?: any) {
         if (data) {
             this.assigneeName = data["assigneeName"];
+            if (Array.isArray(data["comments"])) {
+                this.comments = [] as any;
+                for (let item of data["comments"])
+                    this.comments!.push(CommentDto.fromJS(item));
+            }
             this.taskName = data["taskName"];
             this.categoryId = data["categoryId"];
             this.assigneeNameId = data["assigneeNameId"];
@@ -14075,6 +14129,11 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["assigneeName"] = this.assigneeName;
+        if (Array.isArray(this.comments)) {
+            data["comments"] = [];
+            for (let item of this.comments)
+                data["comments"].push(item.toJSON());
+        }
         data["taskName"] = this.taskName;
         data["categoryId"] = this.categoryId;
         data["assigneeNameId"] = this.assigneeNameId;
@@ -14099,6 +14158,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
 
 export interface IDetailsClosingCheckListDto {
     assigneeName: string | undefined;
+    comments: CommentDto[] | undefined;
     taskName: string | undefined;
     categoryId: number;
     assigneeNameId: number;

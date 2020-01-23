@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UppyConfig } from 'uppy-angular';
+import { ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-task-details',
@@ -9,17 +10,29 @@ import { UppyConfig } from 'uppy-angular';
 })
 export class TaskDetailsComponent implements OnInit {
  taskObject : any;
- 
-  constructor(private _router: Router) { }
+ taskDetailObject :any;
+ recordId : number = 0;
+  constructor(private _router: Router,
+    private _closingChecklistService: ClosingChecklistServiceProxy
+    ) { }
 
   ngOnInit() {
-    history.state.data;
+    debugger;
+     this.recordId = history.state.data.id;
+     this.getTaskDetails(this.recordId);
   }
 
   BackToTaskList(): void {
     this._router.navigate(['/app/main/TasksCheckList/tasks']);
   }
+getTaskDetails(id) : void{
 
+   this._closingChecklistService.getDetails(id).subscribe(result=>{
+   this.taskDetailObject = result;
+   console.log(this.taskDetailObject);
+
+   });
+}
   settings: UppyConfig = {
     uploadAPI: {
       endpoint: ``,
