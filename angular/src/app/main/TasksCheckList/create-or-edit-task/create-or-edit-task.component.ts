@@ -98,6 +98,8 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
     this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
+
+    debugger;
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(() => {
       this.notify.success(this.l('SavedSuccessfully'));
     });

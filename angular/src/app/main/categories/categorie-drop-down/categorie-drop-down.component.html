@@ -1,7 +1,7 @@
 
     <div class="form-group">
         <label>Category</label>
-        <select id="categories" (change)="categoryValuee()" value = "1" name="categories" [(ngModel)]="SelectedCategory" class="form-control input-medium select2-search select2-search--inline"  >
+        <select id="categories" (change)="categoryValuee()" value = "1" name="categories" [(ngModel)]="categoryId" class="form-control input-medium select2-search select2-search--inline"  >
             <option  *ngFor="let item of category;" 
             [value]="item.value">
                 {{item.name}}
