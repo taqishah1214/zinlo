@@ -40,16 +40,16 @@ namespace Zinlo.ClosingChecklist
 
         public async Task<PagedResultDto<GetClosingCheckListTaskDto>> GetAll()
         {
-            var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category);
+            var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u=>u.Assignee);
 
             var closingCheckList = from o in query
                                    select new GetClosingCheckListTaskDto()
                                    {
                                        ClosingCheckListForViewDto = new ClosingCheckListForViewDto
-                                       {     Id = o.Id,
-                                            AssigneeId = o.AssigneeId,
-                                             StatusId = (int) o.Status,
-                                          AssigniName =  _userRepository.FirstOrDefaultAsync(o.AssigneeId).Result.FullName,
+                                       { Id = o.Id,
+                                           AssigneeId = o.AssigneeId,
+                                           StatusId = (int)o.Status,
+                                           AssigniName = o.Assignee.FullName,      //_userRepository.FirstOrDefaultAsync(o.AssigneeId).Result.FullName,
                                            TaskName = o.TaskName,
                                            Status =  o.Status.ToString(),
                                            Category =o.Category.Title,
