@@ -7,9 +7,8 @@ namespace Zinlo.ClosingChecklist.Dtos
 {
     public class GetTaskForEditDto
     {
-        public virtual string TaskName { get; set; }
-        public virtual DateTime ClosingMonth { get; set; }
-
+        public  string TaskName { get; set; }
+        public DateTime ClosingMonth { get; set; }
         public string Category { get; set; }
         public string AssigniName { get; set; }
         public string Status { get; set; }

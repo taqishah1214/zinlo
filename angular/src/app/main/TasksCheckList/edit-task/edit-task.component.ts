@@ -15,6 +15,7 @@ checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto
 commantBox : boolean
 userSignInName : string
 taskId : any;
+closingMonth : Date
 getTaskForEdit : GetTaskForEditDto = new GetTaskForEditDto();
 
   constructor(injector: Injector,private _closingChecklistService: ClosingChecklistServiceProxy) {
@@ -28,6 +29,10 @@ getTaskForEdit : GetTaskForEditDto = new GetTaskForEditDto();
      this.taskId=history.state.data.id;
      this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
        console.log("hammad",result);
+       this.getTaskForEdit = result;
+      
+
+
      })
 
   }

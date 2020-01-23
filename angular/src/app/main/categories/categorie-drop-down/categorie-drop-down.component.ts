@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { CategoriesServiceProxy, ClosingChecklistServiceProxy, NameValueDto, NameValueDtoOfInt64, } from '@shared/service-proxies/service-proxies';
 
 
@@ -10,10 +10,10 @@ import { CategoriesServiceProxy, ClosingChecklistServiceProxy, NameValueDto, Nam
 export class CategorieDropDownComponent implements OnInit {
   public categoryValue : any;
   categories: any;
-  selectedCategorie: any;
   category : NameValueDtoOfInt64[] = [];
   categoryId : any;
   
+  @Input() SelectedCategory: any;
   @Output() messageEvent = new EventEmitter<string>();
 
   constructor
