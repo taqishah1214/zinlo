@@ -14382,7 +14382,7 @@ export interface IChangeStatusDto {
 
 export class GetTaskForEditDto implements IGetTaskForEditDto {
     taskName!: string | undefined;
-    closingMonth!: moment.Moment;
+    closingMonth!: string | undefined;
     category!: string | undefined;
     assigniName!: string | undefined;
     status!: string | undefined;
@@ -14408,7 +14408,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     init(data?: any) {
         if (data) {
             this.taskName = data["taskName"];
-            this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
+            this.closingMonth = data["closingMonth"];
             this.category = data["category"];
             this.assigniName = data["assigniName"];
             this.status = data["status"];
@@ -14438,7 +14438,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["taskName"] = this.taskName;
-        data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
+        data["closingMonth"] = this.closingMonth;
         data["category"] = this.category;
         data["assigniName"] = this.assigniName;
         data["status"] = this.status;
@@ -14461,7 +14461,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
 
 export interface IGetTaskForEditDto {
     taskName: string | undefined;
-    closingMonth: moment.Moment;
+    closingMonth: string | undefined;
     category: string | undefined;
     assigniName: string | undefined;
     status: string | undefined;
