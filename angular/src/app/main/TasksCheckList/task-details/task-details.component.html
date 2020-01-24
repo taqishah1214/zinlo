@@ -28,16 +28,18 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    Category <span class="badge badge-secondary bagesTextColor">Secondary</span>
+                                    Category <span class="badge badge-secondary bagesTextColor">{{taskDetailObject.categoryName}}</span>
                                     Closing Month <span
-                                        class="badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth}}</span>
-                                    Due By <span class="badge badge-secondary bagesTextColor">{{taskDetailObject.endsOn}}</span>
+                                        class="badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth | date:'MMM:y'}}</span>
+                                    Due By <span class="badge badge-secondary bagesTextColor">{{taskDetailObject.endsOn | date:'d,MMMM, y'}}</span>
                                 </div>
 
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-
+<p>
+    {{taskDetailObject.instruction}}   
+</p>
                                     <p>If Step 1 doesn't work, try changing your Windows appearance settings.
                                         This step is most helpful for displays with high resolution.
                                         If Step 1 doesn't work, try changing your Windows appearance settings.If Step 1

@@ -158,7 +158,7 @@ namespace Zinlo.ClosingChecklist
 
         public async Task<DetailsClosingCheckListDto> getDetails(long id)
         {
-            var task = _closingChecklistRepository.GetAll().Include(u=>u.Assignee).Where(x => x.Id == id).FirstOrDefault();
+            var task = _closingChecklistRepository.GetAll().Include(u=>u.Assignee).Include(c=>c.Category).Where(x => x.Id == id).FirstOrDefault();
             DetailsClosingCheckListDto detailsClosingCheckListDto = new DetailsClosingCheckListDto();
             detailsClosingCheckListDto.Id = task.Id;
             detailsClosingCheckListDto.TaskName = task.TaskName;
@@ -171,6 +171,7 @@ namespace Zinlo.ClosingChecklist
             detailsClosingCheckListDto.NoOfMonths = task.NoOfMonths;
             detailsClosingCheckListDto.Status = (StatusDto)task.Status;
             detailsClosingCheckListDto.Instruction = task.Instruction;
+            detailsClosingCheckListDto.CategoryName = task.Category.Title;
             detailsClosingCheckListDto.comments = await _commentAppService.GetComments(1, task.Id);
             return detailsClosingCheckListDto;
 

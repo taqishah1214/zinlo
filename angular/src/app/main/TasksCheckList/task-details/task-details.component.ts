@@ -29,7 +29,7 @@ getTaskDetails(id) : void{
 
    this._closingChecklistService.getDetails(id).subscribe(result=>{
    this.taskDetailObject = result;
-   console.log(this.taskDetailObject);
+   console.log(this.taskDetailObject.categoryName);
 
    });
 }

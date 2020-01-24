@@ -9,6 +9,7 @@ namespace Zinlo.ClosingChecklist.Dtos
   public  class DetailsClosingCheckListDto : CreateOrEditClosingChecklistDto
     {
         public string AssigneeName { get; set; }
+        public string CategoryName { get; set; }
         public  List<CommentDto>  comments { get; set; }
     }
     
