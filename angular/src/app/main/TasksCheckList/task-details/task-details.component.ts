@@ -22,6 +22,10 @@ export class TaskDetailsComponent implements OnInit {
      this.getTaskDetails(this.recordId);
   }
 
+  RedirectToEditTaskPage() : void {
+    this._router.navigate(['/app/main/TasksCheckList/edit-task'], { state: { data: { id: this.recordId } } })
+  }
+
   BackToTaskList(): void {
     this._router.navigate(['/app/main/TasksCheckList/tasks']);
   }
