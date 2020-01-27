@@ -27,7 +27,7 @@
     padding: 0 10px 0 0;
 }
 
-.categories-table .ui-table .ui-table-thead > tr > th, 
+/* .categories-table .ui-table .ui-table-thead > tr > th,  */
 .categories-table .ui-table .ui-table-tbody > tr:nth-child(even),
 .categories-table .ui-table .ui-table-tbody > tr:nth-child(odd) {
     background-color: transparent;

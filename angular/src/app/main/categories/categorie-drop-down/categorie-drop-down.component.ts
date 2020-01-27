@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { CategoriesServiceProxy, ClosingChecklistServiceProxy, NameValueDto, NameValueDtoOfInt64, } from '@shared/service-proxies/service-proxies';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -18,7 +19,9 @@ export class CategorieDropDownComponent implements OnInit {
 
   constructor
   (
-   private _categoryService: CategoriesServiceProxy) {
+   private _categoryService: CategoriesServiceProxy,
+   private _router:Router
+   ) {
 }
   ngOnInit() {
       this.categoryId = 0;
@@ -33,4 +36,8 @@ export class CategorieDropDownComponent implements OnInit {
       this.messageEvent.emit(this.categoryId)
 
   }
+  createCategory(): void {
+
+    this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 } } });
+}
 }
