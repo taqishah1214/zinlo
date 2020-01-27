@@ -48,22 +48,21 @@ namespace Zinlo.Categories
 
             var pagedAndFilteredCategories = filteredCategories.OrderBy(input.Sorting ?? "id asc").PageBy(input);
 
-
-            var categories = from o in pagedAndFilteredCategories
+            var categories = (from o in pagedAndFilteredCategories
                              select new GetCategoryForViewDto()
                              {
                                  Category = new CategoryDto
                                  {
                                      Id = o.Id,
                                      UserId = o.CreatorUserId,
-                                     CreatedBy = _userRepository.GetAll().Where(x => x.Id == o.CreatorUserId).FirstOrDefault().Name,
+                                     CreatedBy = _userRepository.GetAll().Where(x => x.Id == o.CreatorUserId).FirstOrDefault().FullName,
                                      CreationDate = o.CreationTime,
                                      Title = o.Title,
                                      Description = o.Description,
 
                                  }
 
-                             };
+                             });
 
 
             var totalCount = await filteredCategories.CountAsync();

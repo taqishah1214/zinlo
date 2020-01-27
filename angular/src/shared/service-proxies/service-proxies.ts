@@ -2448,6 +2448,62 @@ export class CommentServiceProxy {
         }
         return _observableOf<CommentDto[]>(<any>null);
     }
+
+    /**
+     * @param dateTime (optional) 
+     * @return Success
+     */
+    calculateDays(dateTime: moment.Moment | undefined): Observable<string> {
+        let url_ = this.baseUrl + "/api/services/app/Comment/CalculateDays?";
+        if (dateTime === null)
+            throw new Error("The parameter 'dateTime' cannot be null.");
+        else if (dateTime !== undefined)
+            url_ += "dateTime=" + encodeURIComponent(dateTime ? "" + dateTime.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCalculateDays(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCalculateDays(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCalculateDays(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
+    }
 }
 
 @Injectable()
@@ -14139,6 +14195,7 @@ export class CommentDto implements ICommentDto {
     userName!: string | undefined;
     creationDateTime!: moment.Moment | undefined;
     userProfilePath!: string | undefined;
+    daysCount!: string | undefined;
     id!: number;
 
     constructor(data?: ICommentDto) {
@@ -14158,6 +14215,7 @@ export class CommentDto implements ICommentDto {
             this.userName = data["userName"];
             this.creationDateTime = data["creationDateTime"] ? moment(data["creationDateTime"].toString()) : <any>undefined;
             this.userProfilePath = data["userProfilePath"];
+            this.daysCount = data["daysCount"];
             this.id = data["id"];
         }
     }
@@ -14177,6 +14235,7 @@ export class CommentDto implements ICommentDto {
         data["userName"] = this.userName;
         data["creationDateTime"] = this.creationDateTime ? this.creationDateTime.toISOString() : <any>undefined;
         data["userProfilePath"] = this.userProfilePath;
+        data["daysCount"] = this.daysCount;
         data["id"] = this.id;
         return data; 
     }
@@ -14189,6 +14248,7 @@ export interface ICommentDto {
     userName: string | undefined;
     creationDateTime: moment.Moment | undefined;
     userProfilePath: string | undefined;
+    daysCount: string | undefined;
     id: number;
 }
 

@@ -10,6 +10,8 @@ namespace Zinlo.ClosingChecklist.Dtos
     {
         public string AssigneeName { get; set; }
         public string CategoryName { get; set; }
+        public string TaskStatus { get; set; }
+
         public  List<CommentDto>  comments { get; set; }
     }
     

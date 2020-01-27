@@ -170,6 +170,7 @@ namespace Zinlo.ClosingChecklist
             detailsClosingCheckListDto.DueOn = task.DueOn;
             detailsClosingCheckListDto.NoOfMonths = task.NoOfMonths;
             detailsClosingCheckListDto.Status = (StatusDto)task.Status;
+            detailsClosingCheckListDto.TaskStatus = task.Status.ToString();
             detailsClosingCheckListDto.Instruction = task.Instruction;
             detailsClosingCheckListDto.CategoryName = task.Category.Title;
             detailsClosingCheckListDto.comments = await _commentAppService.GetComments(1, task.Id);
@@ -219,5 +220,6 @@ namespace Zinlo.ClosingChecklist
 
 
         }
+       
     }
 }

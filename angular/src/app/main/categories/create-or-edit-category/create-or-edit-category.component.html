@@ -19,7 +19,7 @@
                 <div class="kt-portlet__body">
                     <form (ngSubmit)="onSubmit()">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="title">Title</label>
                                     <input autofocus type="text" class="form-control" id="title" name="title"
@@ -31,8 +31,10 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="description">Description</label>
-                                    <input type="text" class="form-control" id="description" name="description"
-                                        [(ngModel)]="categoryobj.description">
+                                    <!-- <input type="text" class="form-control" id="description" name="description"
+                                        [(ngModel)]="categoryobj.description"> -->
+
+                                        <textarea class="form-control" [(ngModel)]="categoryobj.description"  id="description" name="description"></textarea>
                                 </div>
                             </div>
                         </div>

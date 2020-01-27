@@ -47,6 +47,8 @@ namespace Zinlo.Comment
                     commentDto.UserName = _userRepository.FirstOrDefaultAsync((long)comment.CreatorUserId).Result.FullName;
                     commentDto.Body = comment.Body;
                     commentDto.UserProfilePath = ""; // Will pass profile url from s3 in future.
+                    commentDto.CreationDateTime = comment.CreationTime;
+                    commentDto.DaysCount = CalculateDays(comment.CreationTime);
                     commentList.Add(commentDto);
                 }
                 return commentList;
@@ -58,7 +60,14 @@ namespace Zinlo.Comment
 
 
         }
-        
+        public string CalculateDays(DateTime dateTime)
+        {
+            double COUNT = (dateTime - DateTime.Now).TotalDays +2;
+            COUNT = Math.Ceiling(COUNT);
+
+            return COUNT + " "+"days ago".ToString();
+        }
+
 
     }
 }

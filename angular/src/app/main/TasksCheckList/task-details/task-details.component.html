@@ -23,29 +23,24 @@
                                 <div class="col-md-12">
                                     <h5>{{taskDetailObject.taskName}}</h5>
                                 </div>
-                               
-                                
+
+
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    Category <span class="badge badge-secondary bagesTextColor">{{taskDetailObject.categoryName}}</span>
+                                    Category <span
+                                        class="badge badge-secondary bagesTextColor">{{taskDetailObject.categoryName}}</span>
                                     Closing Month <span
                                         class="badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth | date:'MMM:y'}}</span>
-                                    Due By <span class="badge badge-secondary bagesTextColor">{{taskDetailObject.endsOn | date:'d,MMMM, y'}}</span>
+                                    Due By <span
+                                        class="badge badge-secondary bagesTextColor">{{taskDetailObject.endsOn | date:'d,MMMM, y'}}</span>
                                 </div>
 
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-<p>
-    {{taskDetailObject.instruction}}   
-</p>
-                                    <p>If Step 1 doesn't work, try changing your Windows appearance settings.
-                                        This step is most helpful for displays with high resolution.
-                                        If Step 1 doesn't work, try changing your Windows appearance settings.If Step 1
-                                        doesn't work, try changing your Windows appearance settings.
-                                        This step is most helpful for displays with high resolution.
-                                    </p>
+
+                                    <div innerHTML="{{taskDetailObject.instruction}} "></div>
                                 </div>
                             </div>
                             <div class="row">
@@ -58,15 +53,15 @@
                                 </div>
 
                             </div>
-                            <div class="row"  >
-                                <div class="col comment-section mt-5">
+                            <div class="row">
+                                <div *ngFor="let comm of taskDetailObject.comments" class="col comment-section mt-5">
                                     <div class="row comment-wrapper border-bottom pb-3 mb-3">
                                         <img alt="photo" class="col-2" src="assets/media/users/100_10.jpg">
                                         <div class="col-10 comments-text d-flex mb-4">
-                                            <h5 class="col-6 p-0 text-left">UserName</h5>
-                                            <h5 class="col-6 p-0 text-right">20 Jan, 2020</h5>
+                                            <h5 class="col-6 p-0 text-left">{{comm.userName}}</h5>
+                                            <h5 class="col-6 p-0 text-right">{{comm.daysCount}}</h5>
                                         </div>
-                                        <p class="col">asdfghjkw fghjk thj krtyuiolu</p>
+                                         <div class="col" innerHTML="{{comm.body}}"></div> 
 
                                     </div>
                                 </div>
@@ -76,36 +71,43 @@
                         <div class="col-md-5">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <select class="form-control input-medium"
+                                    <!-- <select class="form-control input-medium"
                                         (change)="closingMonthSelect($event.target.value)">
                                         <option value="January">Ihsan</option>
                                         <option value="Febuary">Imad</option>
 
-                                    </select>
+                                    </select> -->
+
+                                    <app-user-list-component></app-user-list-component>
 
                                 </div>
                                 <div class="col-md-4">
-                                    <select class="form-control input-medium"
+                                    <!-- <select class="form-control input-medium"
                                         (change)="closingMonthSelect($event.target.value)">
                                         <option value="January">InProgress</option>
                                         <option value="Febuary">Complete</option>
-                                    </select>
+                                    </select> -->
+                                    <div class="">
+                                        <app-status [StatusList] = taskDetailObject.taskStatus ></app-status>
+                                        
+                                    </div>
                                 </div>
                                 <div class="col-md-4">
                                     <i class="fa fa-trash" style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <i class="fas fa-edit" (click)="RedirectToEditTaskPage()" style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <i class="fas fa-edit" (click)="RedirectToEditTaskPage()"
+                                        style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <i class="fa fa-clone" aria-hidden="true"></i>
 
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="drag_drop_box" >
+                                    <div class="drag_drop_box">
                                         <label>Attachments</label>
-                                    <ng-uppy [config]="settings" (onFileUpload)="onFileUpload($event)"></ng-uppy>
+                                        <ng-uppy [config]="settings" (onFileUpload)="onFileUpload($event)"></ng-uppy>
+                                    </div>
                                 </div>
-                                </div>
-                               
+
                             </div>
                         </div>
                     </div>

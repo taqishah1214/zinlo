@@ -49,10 +49,26 @@
                                 [resizableColumns]="primengTableHelper.resizableColumns">
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th>Creation On</th>
-                                        <th>Created By</th>
+                                        <th pSortableColumn="title">
+                                            {{'Title' | localize}}
+                                            <p-sortIcon field="title"></p-sortIcon>
+                                        </th>
+                                     
+                                        <th pSortableColumn="description">
+                                            Description
+                                             <p-sortIcon field="description"></p-sortIcon>
+                                         </th> 
+                                         <th pSortableColumn="creationDate">
+                                            Created On
+                                             <p-sortIcon field="creationDate"></p-sortIcon>
+                                         </th> 
+                                        
+                                         <th pSortableColumn="createdBy">
+                                            Created By
+                                             <p-sortIcon field="createdBy"></p-sortIcon>
+                                         </th>
+                                        
+                                        
                                         <th [hidden]="!(['Pages.Categories.Edit', 'Pages.Categories.Delete'] | permissionAny)">Actions</th>
                                     </tr>
 
@@ -71,9 +87,10 @@
                                         </td>
                                         <td style="width: 20%">
                                             <span class="ui-column-title"> {{'Name' | localize}}</span>
-                                            {{record.category.creationDate | date:'medium'}}
+                                            <!-- {{record.category.creationDate | date:'MMM d, y, h:mm a'}} -->
+                                            {{record.category.creationDate | momentFormat:'L'}}
                                         </td>
-
+                                       
                                         <td data-field="OrderID" class="kt-datatable__cell"><span>
                                                 <div class="kt-user-card-v2">
                                                     <div class="kt-user-card-v2__pic">
