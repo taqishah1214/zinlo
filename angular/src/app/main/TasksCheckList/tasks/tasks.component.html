@@ -60,9 +60,9 @@
                                             </div>
                                             
 
-                                            <div *ngFor="let i of ClosingCheckList" class="user-image-box">
-                                                <div class="user-image bg-sea-green  text-white">
-                                                    <span>{{i.closingCheckListForViewDto.NameAvatar}}</span>
+                                            <div *ngFor="let i of assigniNameForHeader " (click)="GetUserTasks(i.assigneeId)" class="user-image-box">
+                                                <div  class="user-image bg-sea-green  text-white">
+                                                    <span>{{i.nameAvatar}}</span>
                                                 </div>
                                             </div>
 
@@ -152,7 +152,7 @@
 
                                         <td>
                                             <form class="task-report-form">
-                                                <select (click)="ChangeStatus(value)" class="form-control border-0 {{i.closingCheckListForViewDto.StatusColor}} text-white" >
+                                                <select onclick="console.log('test')" (change)="ChangeStatus($event.target.value,i.closingCheckListForViewDto.id)" class="form-control border-0 {{i.closingCheckListForViewDto.StatusColor}} text-white" >
                                                     <option value="" selected disabled hidden>{{i.closingCheckListForViewDto.status}}</option>
                                                     <option value="1" >Open</option>
                                                     <option value="2" >Complete</option>
