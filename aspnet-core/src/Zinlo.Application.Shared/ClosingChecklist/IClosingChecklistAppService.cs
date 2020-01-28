@@ -21,6 +21,7 @@ namespace Zinlo.ClosingChecklist
 
         Task <GetTaskForEditDto>GetTaskForEdit(long id);
 
+        Task Delete(long id);
 
     }
 }

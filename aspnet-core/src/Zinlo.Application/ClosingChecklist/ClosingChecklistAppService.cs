@@ -125,7 +125,7 @@ namespace Zinlo.ClosingChecklist
         {
             var filteredAssets = _userRepository.GetAll()
                 .WhereIf(!string.IsNullOrWhiteSpace(searchTerm),
-                    e => true || e.FullName.ToLower().Contains(searchTerm.ToLower()));
+                    e => false || e.FullName.ToLower().Contains(searchTerm.ToLower()));
 
 
             var query = (from o in filteredAssets
@@ -220,6 +220,12 @@ namespace Zinlo.ClosingChecklist
 
 
         }
+
        
+        public async Task Delete(long id)
+        {
+            await _closingChecklistRepository.DeleteAsync(id);
+        }
+
     }
 }

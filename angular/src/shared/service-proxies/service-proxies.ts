@@ -2319,6 +2319,58 @@ export class ClosingChecklistServiceProxy {
         }
         return _observableOf<GetTaskForEditDto>(<any>null);
     }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -14255,6 +14307,7 @@ export interface ICommentDto {
 export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     assigneeName!: string | undefined;
     categoryName!: string | undefined;
+    taskStatus!: string | undefined;
     comments!: CommentDto[] | undefined;
     taskName!: string | undefined;
     categoryId!: number;
@@ -14288,6 +14341,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         if (data) {
             this.assigneeName = data["assigneeName"];
             this.categoryName = data["categoryName"];
+            this.taskStatus = data["taskStatus"];
             if (Array.isArray(data["comments"])) {
                 this.comments = [] as any;
                 for (let item of data["comments"])
@@ -14325,6 +14379,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data = typeof data === 'object' ? data : {};
         data["assigneeName"] = this.assigneeName;
         data["categoryName"] = this.categoryName;
+        data["taskStatus"] = this.taskStatus;
         if (Array.isArray(this.comments)) {
             data["comments"] = [];
             for (let item of this.comments)
@@ -14355,6 +14410,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
 export interface IDetailsClosingCheckListDto {
     assigneeName: string | undefined;
     categoryName: string | undefined;
+    taskStatus: string | undefined;
     comments: CommentDto[] | undefined;
     taskName: string | undefined;
     categoryId: number;

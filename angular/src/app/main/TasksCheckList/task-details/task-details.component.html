@@ -93,7 +93,10 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <i class="fa fa-trash" style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a class="btn" href="javascript:;"
+                                                    (click)="deleteTask(taskDetailObject.id)">
+                                                    <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+                                    <!-- <i class="fa fa-trash" style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
                                     <i class="fas fa-edit" (click)="RedirectToEditTaskPage()"
                                         style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <i class="fa fa-clone" aria-hidden="true"></i>
