@@ -16,6 +16,10 @@ using Zinlo.ClosingChecklist.Dtos;
 using System.Collections.Generic;
 using Zinlo.Authorization.Users;
 using Zinlo.ClosingChecklist;
+using Zinlo.Attachments;
+using Zinlo.Attachments.Dtos;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Zinlo.ClosingChecklist
 {
     public class ClosingChecklistAppService : ZinloAppServiceBase, IClosingChecklistAppService
@@ -23,6 +27,9 @@ namespace Zinlo.ClosingChecklist
         private readonly IRepository<ClosingChecklist,long> _closingChecklistRepository;
         private readonly ICommentAppService _commentAppService;
         private readonly IRepository<User,long> _userRepository;
+        private readonly IAttachmentAppService _attachmentAppService;
+
+
         public ClosingChecklistAppService(IRepository<ClosingChecklist,long> closingChecklistRepository, ICommentAppService commentAppService, IRepository<User,long> userRepository)
         {
             _closingChecklistRepository = closingChecklistRepository;
@@ -49,7 +56,7 @@ namespace Zinlo.ClosingChecklist
                                        { Id = o.Id,
                                            AssigneeId = o.AssigneeId,
                                            StatusId = (int)o.Status,
-                                           AssigniName = o.Assignee.FullName,      //_userRepository.FirstOrDefaultAsync(o.AssigneeId).Result.FullName,
+                                           AssigniName = o.Assignee.FullName,      
                                            TaskName = o.TaskName,
                                            Status =  o.Status.ToString(),
                                            Category =o.Category.Title,
@@ -85,7 +92,7 @@ namespace Zinlo.ClosingChecklist
         
 
         //[AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
-        protected virtual  async System.Threading.Tasks.Task Create(CreateOrEditClosingChecklistDto input)
+        protected virtual  async System.Threading.Tasks.Task Create([FromForm]CreateOrEditClosingChecklistDto input)
         {
             var task = ObjectMapper.Map<ClosingChecklist>(input);
 
@@ -96,7 +103,7 @@ namespace Zinlo.ClosingChecklist
             try
             {
                 var checklistId = await _closingChecklistRepository.InsertAndGetIdAsync(task);
-           
+          
             if(input.CommentBody != "")
             {
                 var commentDto = new CreateOrEditCommentDto() {
@@ -106,6 +113,8 @@ namespace Zinlo.ClosingChecklist
                 };
                 await _commentAppService.Create(commentDto);
             }
+             
+
             }
             catch (Exception e)
             {
@@ -217,11 +226,8 @@ namespace Zinlo.ClosingChecklist
             getTaskForEditDto.Status = task.Status.ToString();
 
             return getTaskForEditDto;
-
-
         }
 
-       
         public async Task Delete(long id)
         {
             await _closingChecklistRepository.DeleteAsync(id);

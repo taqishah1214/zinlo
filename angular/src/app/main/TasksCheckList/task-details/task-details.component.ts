@@ -54,15 +54,16 @@ getTaskDetails(id) : void{
     }
   }
   
-  deleteTask(id): void {
+  deleteTask(): void {
     this.message.confirm(
         '',
         this.l('AreYouSure'),
         (isConfirmed) => {
             if (isConfirmed) {
-                this._closingChecklistService.delete(id)
+                this._closingChecklistService.delete(this.recordId)
                     .subscribe(() => {
                         this.notify.success(this.l('SuccessfullyDeleted'));
+                        this._router.navigate(['/app/main/TasksCheckList/tasks']);
                     });
             }
         }
