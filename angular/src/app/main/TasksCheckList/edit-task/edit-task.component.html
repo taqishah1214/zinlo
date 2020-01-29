@@ -21,14 +21,27 @@
                         <div class="col-md-7">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <app-categorie-drop-down [SelectedCategory] = 2 ></app-categorie-drop-down>
+                                    <!-- <div class="form-group">
+                                        <label>Category</label>
+                                        <select [(ngModel)]="getTaskForEdit.category" id="categories" name="categories" class="form-control input-medium select2-search select2-search--inline"  >
+                                            <option  *ngFor="let item of category;" 
+                                            [value]="item.value">
+                                                {{item.name}}
+                                            </option>
+                                            <option>
+                                            <button (click)="addNew()" type="button">Addnew</button>
+                                            </option>
+                                        </select>   
+                                    </div> -->
+                                     
+                                    <app-categorie-drop-down [SelectedCategory] = getTaskForEdit.category ></app-categorie-drop-down>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="dateOfBirth">Closing Month</label>
                                         <div class="form-group">
                                             <form class="container">
-                                                <input [(ngModel)]="getTaskForEdit.closingMonth" autocomplete="off" class="form-control" name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}" (onShown)="onOpenCalendar($event)">
+                                                <input [(ngModel)]="getTaskForEdit.closingMonth._d" autocomplete="off" class="form-control" name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}" (onShown)="onOpenCalendar($event)">
                                                 </form>
                                         </div>
                                     </div> 
@@ -46,7 +59,16 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                     <label>Assignee</label>
-                                    <app-user-list-component></app-user-list-component>
+                                        <div class="form-group">
+                                            <div>
+                                                <p-autoComplete [(ngModel)]="assigniName" [suggestions]="users" (completeMethod)="onSearchUsers($event)" field="name"
+                                                    placeholder="Search..." [minLength]="1" name="SingleSelectInput" id="SingleSelectInput" [multiple]="false"
+                                                    inputStyleClass="form-control" styleClass="width-percent-100" [forceSelection]="true" required
+                                                    >
+                                                </p-autoComplete>
+                                            </div>
+                                        </div>
+                                    <!-- <app-user-list-component [assigneName]=getTaskForEdit.assigniName ></app-user-list-component> -->
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +206,7 @@
                                     <div class="form-group">
                                         <label>Days Before</label>
                                         <select class="form-control input-medium"
-                                        [(ngModel)]="checklist.dayBeforeAfter">
+                                        [(ngModel)]="getTaskForEdit.dayBeforeAfter">
                                             <option value=true>Days Before</option>
                                             <option value=false>Days After</option>
                                         </select>
@@ -197,7 +219,7 @@
                                     <div class="form-group">
                                         <label>Ends on</label>
                                         <form class="container">
-                                            <input [(ngModel)]="getTaskForEdit.endsOn" autocomplete="off" class="form-control" name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}" (onShown)="onOpenCalendar($event)">
+                                            <input [(ngModel)]="getTaskForEdit.endsOn._d" autocomplete="off" class="form-control" name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}" (onShown)="onOpenCalendar($event)">
                                             </form>
                                     </div>
                                     <div class="kt-radio-list eom-radio">

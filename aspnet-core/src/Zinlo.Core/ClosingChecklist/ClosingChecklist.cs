@@ -1,6 +1,7 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using System;
+using System.Collections.Generic;
 using Zinlo.Authorization.Users;
 using Zinlo.Categories;
 
@@ -16,7 +17,6 @@ namespace Zinlo.ClosingChecklist
         public virtual DateTime ClosingMonth { get; set; }
         public Status Status { get; set; }
         public int TenantId { get; set; }
-        public string Attachment { get; set; }
         public string Instruction { get; set; }
         public int NoOfMonths { get; set; }
         public int DueOn { get; set; }

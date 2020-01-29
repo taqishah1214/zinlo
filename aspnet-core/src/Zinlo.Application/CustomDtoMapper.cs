@@ -40,6 +40,7 @@ using Zinlo.Sessions.Dto;
 using Zinlo.Comment.Dtos;
 using Zinlo.Tasks.Dtos;
 using Zinlo.ClosingChecklist.Dtos;
+using Zinlo.Attachments.Dtos;
 
 namespace Zinlo
 {
@@ -150,6 +151,8 @@ namespace Zinlo
             configuration.CreateMap<CreateOrEditClosingChecklistDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
             configuration.CreateMap<Comment.Comment, CommentDto>().ReverseMap();
 
+            //Attachment
+            configuration.CreateMap<Attachment.Attachment, AttachmentsDto>().ReverseMap();
 
 
             //Category
