@@ -14558,6 +14558,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     categoryId!: number;
     assigneeId!: number;
     frequencyId!: number;
+
     comments!: CommentDto[] | undefined;
 
     constructor(data?: IGetTaskForEditDto) {
@@ -14631,7 +14632,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
 
 export interface IGetTaskForEditDto {
     taskName: string | undefined;
-    closingMonth: moment.Moment;
+    closingMonth: any;
     category: string | undefined;
     assigniName: string | undefined;
     status: string | undefined;
@@ -14646,6 +14647,7 @@ export interface IGetTaskForEditDto {
     categoryId: number;
     assigneeId: number;
     frequencyId: number;
+
     comments: CommentDto[] | undefined;
 }
 
