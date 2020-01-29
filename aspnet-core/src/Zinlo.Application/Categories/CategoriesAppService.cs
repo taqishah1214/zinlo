@@ -40,7 +40,6 @@ namespace Zinlo.Categories
 
         public async Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input)
         {
-
             var filteredCategories = _categoryRepository.GetAll()
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Title.Contains(input.Filter) || e.Description.Contains(input.Filter))
                         .WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter), e => e.Title == input.TitleFilter)
@@ -59,7 +58,6 @@ namespace Zinlo.Categories
                                      CreationDate = o.CreationTime,
                                      Title = o.Title,
                                      Description = o.Description,
-
                                  }
 
                              });

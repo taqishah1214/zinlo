@@ -45,11 +45,13 @@ namespace Zinlo.ClosingChecklist
             Inprogress = 3
         }
 
-        public async Task<PagedResultDto<GetClosingCheckListTaskDto>> GetAll()
+        public async Task<PagedResultDto<GetClosingCheckListTaskDto>> GetAll(GetAllClosingCheckListInput input)
         {
-            var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u=>u.Assignee);
-
-            var closingCheckList = from o in query
+            var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u => u.Assignee)
+                                    .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Category.Title.Contains(input.Filter) || e.Category.Title.Contains(input.Filter));
+            var totalCount = await query.CountAsync();
+            var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+            var closingCheckList = from o in pagedAndFilteredTasks
                                    select new GetClosingCheckListTaskDto()
                                    {
                                        ClosingCheckListForViewDto = new ClosingCheckListForViewDto
@@ -60,12 +62,11 @@ namespace Zinlo.ClosingChecklist
                                            TaskName = o.TaskName,
                                            Status =  o.Status.ToString(),
                                            Category =o.Category.Title,
-                                           
-                                          
+                                          CreationTime = o.CreationTime
                                        }
                              };
 
-            var totalCount = await closingCheckList.CountAsync();
+
 
             return new PagedResultDto<GetClosingCheckListTaskDto>(
                 totalCount,
@@ -134,11 +135,8 @@ namespace Zinlo.ClosingChecklist
         {
             var filteredAssets = _userRepository.GetAll()
                 .WhereIf(!string.IsNullOrWhiteSpace(searchTerm),
-                    e => false || e.FullName.ToLower().Contains(searchTerm.ToLower()));
-
-
-            var query = (from o in filteredAssets
-
+                   e => true || e.FullName.ToLower().StartsWith(searchTerm.ToLower()));
+            var query = (from o in  filteredAssets
                          select new NameValueDto<string>()
                          {
                              Name = o.FullName,
@@ -148,7 +146,6 @@ namespace Zinlo.ClosingChecklist
             var assets = await query.ToListAsync();
             return assets;
         }
-
         public async Task<List<NameValueDto<string>>> getUsersDropdown()
         {
             var filteredUsers = _userRepository.GetAll();
@@ -223,6 +220,9 @@ namespace Zinlo.ClosingChecklist
             getTaskForEditDto.comments = await _commentAppService.GetComments(1, id);
             getTaskForEditDto.NoOfMonths = task.NoOfMonths;
             getTaskForEditDto.TaskName = task.TaskName;
+            getTaskForEditDto.AssigneeId = task.AssigneeId;
+            getTaskForEditDto.CategoryId = task.CategoryId;
+            getTaskForEditDto.FrequencyId = (int)task.Frequency;
             getTaskForEditDto.Status = task.Status.ToString();
 
             return getTaskForEditDto;

@@ -1951,10 +1951,35 @@ export class ClosingChecklistServiceProxy {
     }
 
     /**
+     * @param filter (optional) 
+     * @param titleFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(): Observable<PagedResultDtoOfGetClosingCheckListTaskDto> {
-        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll";
+    getAll(filter: string | undefined, titleFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetClosingCheckListTaskDto> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (titleFilter === null)
+            throw new Error("The parameter 'titleFilter' cannot be null.");
+        else if (titleFilter !== undefined)
+            url_ += "TitleFilter=" + encodeURIComponent("" + titleFilter) + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -14003,6 +14028,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
     id!: number;
     statusId!: number;
     assigneeId!: number;
+    creationTime!: moment.Moment;
 
     constructor(data?: IClosingCheckListForViewDto) {
         if (data) {
@@ -14022,6 +14048,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
             this.id = data["id"];
             this.statusId = data["statusId"];
             this.assigneeId = data["assigneeId"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
         }
     }
 
@@ -14041,6 +14068,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
         data["id"] = this.id;
         data["statusId"] = this.statusId;
         data["assigneeId"] = this.assigneeId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         return data; 
     }
 }
@@ -14053,6 +14081,7 @@ export interface IClosingCheckListForViewDto {
     id: number;
     statusId: number;
     assigneeId: number;
+    creationTime: moment.Moment;
 }
 
 export class GetClosingCheckListTaskDto implements IGetClosingCheckListTaskDto {
@@ -14586,6 +14615,9 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     dayBeforeAfter!: boolean;
     endOfMonth!: boolean;
     frequency!: string | undefined;
+    categoryId!: number;
+    assigneeId!: number;
+    frequencyId!: number;
     comments!: CommentDto[] | undefined;
 
     constructor(data?: IGetTaskForEditDto) {
@@ -14612,6 +14644,9 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
             this.dayBeforeAfter = data["dayBeforeAfter"];
             this.endOfMonth = data["endOfMonth"];
             this.frequency = data["frequency"];
+            this.categoryId = data["categoryId"];
+            this.assigneeId = data["assigneeId"];
+            this.frequencyId = data["frequencyId"];
             if (Array.isArray(data["comments"])) {
                 this.comments = [] as any;
                 for (let item of data["comments"])
@@ -14642,6 +14677,9 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
         data["dayBeforeAfter"] = this.dayBeforeAfter;
         data["endOfMonth"] = this.endOfMonth;
         data["frequency"] = this.frequency;
+        data["categoryId"] = this.categoryId;
+        data["assigneeId"] = this.assigneeId;
+        data["frequencyId"] = this.frequencyId;
         if (Array.isArray(this.comments)) {
             data["comments"] = [];
             for (let item of this.comments)
@@ -14665,6 +14703,9 @@ export interface IGetTaskForEditDto {
     dayBeforeAfter: boolean;
     endOfMonth: boolean;
     frequency: string | undefined;
+    categoryId: number;
+    assigneeId: number;
+    frequencyId: number;
     comments: CommentDto[] | undefined;
 }
 
