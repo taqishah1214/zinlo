@@ -132,12 +132,12 @@
                                     [responsive]="primengTableHelper.isResponsive"
                                     [resizableColumns]="primengTableHelper.resizableColumns">
                                     <ng-template pTemplate="header">
-                                        <tr>
+                                        <tr class="task-table-inner">
                                             <th scope="col" pSortableColumn="CreationTime">
                                                 Date
                                                 <p-sortIcon field="CreationTime"></p-sortIcon>
                                             </th>
-                                            <th scope="col">Task Name</th>
+                                            <th scope="col" class="task-task-name">Task Name</th>
                                             <th scope="col" pSortableColumn="CategoryId">
                                                 Category
                                                 <p-sortIcon field="CategoryId"></p-sortIcon>
@@ -158,8 +158,8 @@
                             <!--<Primeng-TurboTable-End>-->
                             <table class="table record-table">
                                 <tbody>
-                                    <tr>
-                                    <tr *ngFor="let i of ClosingCheckList">
+                                    <tr >
+                                    <tr *ngFor="let i of ClosingCheckList" class="task-table-inner">
 
                                         <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
                                             <div class="num-n-date">
