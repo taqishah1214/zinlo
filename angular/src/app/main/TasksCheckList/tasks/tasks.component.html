@@ -58,10 +58,11 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            
 
-                                            <div *ngFor="let i of assigniNameForHeader " (click)="GetUserTasks(i.assigneeId)" class="user-image-box">
-                                                <div  class="user-image bg-sea-green  text-white">
+
+                                            <div *ngFor="let i of assigniNameForHeader "
+                                                (click)="GetUserTasks(i.assigneeId)" class="user-image-box">
+                                                <div class="user-image bg-sea-green  text-white">
                                                     <span>{{i.nameAvatar}}</span>
                                                 </div>
                                             </div>
@@ -109,7 +110,7 @@
                                             </select>
                                         </div>
                                         <div class="block-btn">
-                                            <button  class="btn btn-square bg-lightgrey">
+                                            <button class="btn btn-square bg-lightgrey">
                                                 <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
                                             </button>
                                         </div>
@@ -118,21 +119,46 @@
                             </div>
                         </div>
                     </div>
-                    <div class="record-card-body border-bottom-grey">
-                        <div class="table-box">
+                    <div class="primeng-paging-container">
+                        <div class="">
+
+                            <!--<Primeng-TurboTable-Start>-->
+                            <div class="task-table" [busyIf]="primengTableHelper.isLoading">
+                                <p-table #dataTable class=" record-table"
+                                    (onLazyLoad)="getClosingCheckListAllTasks($event)"
+                                    [value]="primengTableHelper.records"
+                                    rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                    [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                    [responsive]="primengTableHelper.isResponsive"
+                                    [resizableColumns]="primengTableHelper.resizableColumns">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th scope="col" pSortableColumn="CreationTime">
+                                                Date
+                                                <p-sortIcon field="CreationTime"></p-sortIcon>
+                                            </th>
+                                            <th scope="col">Task Name</th>
+                                            <th scope="col" pSortableColumn="CategoryId">
+                                                Category
+                                                <p-sortIcon field="CategoryId"></p-sortIcon>
+                                            </th>
+                                            <th scope="col" pSortableColumn="Status">
+                                                Status
+                                                <p-sortIcon field="Status"></p-sortIcon>
+                                            </th>
+                                            <th scope="col" pSortableColumn="AssigneeId">
+                                                Assignee
+                                                <p-sortIcon field="AssigneeId"></p-sortIcon>
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+
+                            </div>
+                            <!--<Primeng-TurboTable-End>-->
                             <table class="table record-table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Task Name</th>
-                                        <th scope="col">Category</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Assignee</th>
-                                    </tr>
-                                </thead>
                                 <tbody>
                                     <tr>
-
                                     <tr *ngFor="let i of ClosingCheckList">
 
                                         <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
@@ -149,90 +175,45 @@
                                             <span
                                                 class="category-name bg-lightgrey">{{i.closingCheckListForViewDto.category}}</span>
                                         </td>
-
                                         <td>
                                             <form class="task-report-form">
-                                                <select onclick="console.log('test')" (change)="ChangeStatus($event.target.value,i.closingCheckListForViewDto.id)" class="form-control border-0 {{i.closingCheckListForViewDto.StatusColor}} text-white" >
-                                                    <option value="" selected disabled hidden>{{i.closingCheckListForViewDto.status}}</option>
-                                                    <option value="1" >Open</option>
-                                                    <option value="2" >Complete</option>
-                                                    <option value="3" >Inprogress</option>
+                                                <select onclick="console.log('test')"
+                                                    (change)="ChangeStatus($event.target.value,i.closingCheckListForViewDto.id)"
+                                                    class="form-control border-0 {{i.closingCheckListForViewDto.StatusColor}} text-white">
+                                                    <option value="" selected disabled hidden>
+                                                        {{i.closingCheckListForViewDto.status}}</option>
+                                                    <option value="1">Open</option>
+                                                    <option value="2">Complete</option>
+                                                    <option value="3">Inprogress</option>
                                                 </select>
                                             </form>
                                         </td>
                                         <td>
                                             <div class="assignee-info">
-                                                <span class="assignee-image bg-sea-green">{{i.closingCheckListForViewDto.NameAvatar}}</span>
+                                                <span
+                                                    class="assignee-image bg-sea-green">{{i.closingCheckListForViewDto.NameAvatar}}</span>
                                                 <span
                                                     class="assignee-name">{{i.closingCheckListForViewDto.assigniName}}</span>
                                             </div>
                                         </td>
                                     </tr>
-
-
-
-
-
-
-
-
-
-
                                     <tr>
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                    <div class="record-card-footer">
-                        <div class="record-card-footer-inner1">
-                            <nav aria-label="Page-navigation">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link previous-all bg-lightgrey" href="#"
-                                            aria-label="Previous_all">
-                                            <span aria-hidden="true">&laquo;</span>
-                                            <span class="sr-only">Previous all</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link previous bg-lightgrey" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&#x2039;</span>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link next bg-lightgrey" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&#x203A;</span>
-                                            <span class="sr-only">Next</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link next-all bg-lightgrey" href="#" aria-label="Next_all">
-                                            <span aria-hidden="true">&raquo;</span>
-                                            <span class="sr-only">Next all</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="record-card-footer-inner2">
-                            <form>
-                                <div class="form-group m-0">
-                                    <select class="form-control border-grey">
-                                        <option>All</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                    </select>
-                                </div>
-                            </form>
-                            <span class="display-record-result">Displaying 1 - 10 of 100 records</span>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                            <div class="pagination-block">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getClosingCheckListAllTasks($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                    class="paginator-counter">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

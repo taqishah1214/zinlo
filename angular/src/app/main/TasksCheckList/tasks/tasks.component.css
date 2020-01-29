@@ -541,3 +541,22 @@ form.assignee-info-form input{
     background-color: #f1f2fc;
     font-size: 14px;
 }
+.primeng-paging-container{
+    padding:0 20px 40px;
+}
+.primeng-paging-container .ui-paginator {
+    background:transparent !important;
+    border:1px solid #f1f2fc !important;
+}
+
+.primeng-paging-container .paginator-counter{
+    display: inline-block;
+    align-items: center;
+}
+.primeng-paging-container .total-records-count{
+    float: right;
+    line-height: 34px;
+}
+.primeng-paging-container .record-table tbody tr{
+    border-bottom: 1px solid #f1f2fc;
+}
