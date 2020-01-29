@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Zinlo.EntityFrameworkCore;
@@ -9,9 +10,10 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    partial class ZinloDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200128115335_Attachments_Added")]
+    partial class Attachments_Added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1166,9 +1168,6 @@ namespace Zinlo.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("text");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
                     b.Property<long>("TypeId")
                         .HasColumnType("bigint");
 
@@ -1480,6 +1479,9 @@ namespace Zinlo.Migrations
                     b.Property<long>("AssigneeId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("AttachmentsId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("CategoryId")
                         .HasColumnType("bigint");
 
@@ -1540,6 +1542,8 @@ namespace Zinlo.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AssigneeId");
+
+                    b.HasIndex("AttachmentsId");
 
                     b.HasIndex("CategoryId");
 
@@ -2070,6 +2074,10 @@ namespace Zinlo.Migrations
                         .HasForeignKey("AssigneeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Zinlo.Attachment.Attachment", "Attachments")
+                        .WithMany()
+                        .HasForeignKey("AttachmentsId");
 
                     b.HasOne("Zinlo.Categories.Category", "Category")
                         .WithMany()

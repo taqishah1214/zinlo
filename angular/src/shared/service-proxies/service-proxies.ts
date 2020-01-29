@@ -572,6 +572,70 @@ export class AccountServiceProxy {
 }
 
 @Injectable()
+export class AttachmentsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    postAttachment(body: Blob | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Attachments/PostAttachment";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = body;
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "multipart/form-data", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostAttachment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostAttachment(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPostAttachment(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
 export class AuditLogServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -12887,6 +12951,10 @@ export interface ISwitchToLinkedAccountOutput {
     tenancyName: string | undefined;
 }
 
+export enum AttachmentType {
+    ClosingChecklist = 1,
+}
+
 export class AuditLogListDto implements IAuditLogListDto {
     userId!: number | undefined;
     userName!: string | undefined;
@@ -14132,7 +14200,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
     closingMonth!: moment.Moment;
     status!: StatusDto;
     tenantId!: number;
-    attachment!: string | undefined;
     instruction!: string | undefined;
     noOfMonths!: number;
     dueOn!: number;
@@ -14162,7 +14229,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.status = data["status"];
             this.tenantId = data["tenantId"];
-            this.attachment = data["attachment"];
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
@@ -14192,7 +14258,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["tenantId"] = this.tenantId;
-        data["attachment"] = this.attachment;
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
@@ -14215,7 +14280,6 @@ export interface ICreateOrEditClosingChecklistDto {
     closingMonth: moment.Moment;
     status: StatusDto;
     tenantId: number;
-    attachment: string | undefined;
     instruction: string | undefined;
     noOfMonths: number;
     dueOn: number;
@@ -14344,7 +14408,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     closingMonth!: moment.Moment;
     status!: StatusDto;
     tenantId!: number;
-    attachment!: string | undefined;
     instruction!: string | undefined;
     noOfMonths!: number;
     dueOn!: number;
@@ -14382,7 +14445,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.status = data["status"];
             this.tenantId = data["tenantId"];
-            this.attachment = data["attachment"];
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
@@ -14420,7 +14482,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["tenantId"] = this.tenantId;
-        data["attachment"] = this.attachment;
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
@@ -14447,7 +14508,6 @@ export interface IDetailsClosingCheckListDto {
     closingMonth: moment.Moment;
     status: StatusDto;
     tenantId: number;
-    attachment: string | undefined;
     instruction: string | undefined;
     noOfMonths: number;
     dueOn: number;

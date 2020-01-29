@@ -7,12 +7,15 @@ using System.Text;
 
 namespace Zinlo.Attachment
 {
-    [Table("Attachments")]
-    public class Attachment : CreationAuditedEntity, IMustHaveTenant
+    public class Attachment : CreationAuditedEntity<long>
     {
-        public int TenantId { get; set; }
-        public string Type { get; set; }
-        public int TypeId { get; set; }
+        public long TypeId { get; set; }
+        public AttachmentType Type { get; set; }
         public string FilePath { get; set; }
+    }
+
+    public enum AttachmentType
+    {
+        ClosingChecklist = 1,
     }
 }
