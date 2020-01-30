@@ -15,6 +15,8 @@ export class UserListComponentComponent implements OnInit {
   @Input() TaskId : any;
   @Input('assigneName') assigneName;
   @Output() messageEvent = new EventEmitter<string>();
+   
+
   constructor( private userService :UserServiceProxy,
     private cdf: ChangeDetectorRef,
     private _closingChecklistService: ClosingChecklistServiceProxy ) {
@@ -25,22 +27,18 @@ export class UserListComponentComponent implements OnInit {
     this.userService.userDropDown().subscribe(result => {
       this.users = result;
       this.assigneName = this.users;
-      console.log("jhvjhdjh",this.assigneName)
 
   });
-  console.log("child",this.assigneName)
   }
 
   userOnChange() : void {
     this.messageEvent.emit(this.selectedUserId);
-    debugger;
-    console.log("TaskId", this.selectedUserId);
   }
 
   onSearchUsers(event): void {
     this._closingChecklistService.userAutoFill(event.query).subscribe(result => {
         this.users = result;
-        // this.messageEvent.emit(this.users.value);
+        this.messageEvent.emit(this.users.value);
         console.log("task id ",this.users.value);
     });
 }

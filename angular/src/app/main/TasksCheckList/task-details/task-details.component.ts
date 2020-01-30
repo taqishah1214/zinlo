@@ -22,7 +22,6 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
      }
 
   ngOnInit() {
-    debugger;
      this.recordId = history.state.data.id;
      this.getTaskDetails(this.recordId);
   }

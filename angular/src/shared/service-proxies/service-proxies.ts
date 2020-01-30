@@ -14620,6 +14620,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     frequencyId!: number;
 
     comments!: CommentDto[] | undefined;
+  assignee: any;
 
     constructor(data?: IGetTaskForEditDto) {
         if (data) {

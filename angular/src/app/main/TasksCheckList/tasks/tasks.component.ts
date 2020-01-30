@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto } from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto ,ChangeAssigneeDto} from '@shared/service-proxies/service-proxies';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent } from 'primeng/api';
@@ -29,8 +29,17 @@ export class TasksComponent extends AppComponentBase implements OnInit {
   FilterBoxOpen: boolean;
   public rowId: number = 0;
   changeStatus: ChangeStatusDto = new ChangeStatusDto();
+  changeAssigniDto : ChangeAssigneeDto = new ChangeAssigneeDto();
   assigniNameForHeader: any = [];
   newArray: any = [];
+  assigneeId: any;
+  users: any;
+  updatedAssigneeId: any;
+  getTaskForEdit: void;
+  userName: string[];
+  taskId;
+  text;
+  rowid: number;
   constructor(private _router: Router,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector) {
     super(injector)
@@ -39,6 +48,40 @@ export class TasksComponent extends AppComponentBase implements OnInit {
   ngOnInit() {
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
+
+    
+  }
+  openFieldUpdateAssignee(record) {
+    this.rowid = record;
+  }
+  addInput(i) {
+    this.rowid =0;
+    i.closingCheckListForViewDto.assigniName = i.text;
+    i.closingCheckListForViewDto.assigneeId = this.assigneeId;
+    this.openFieldUpdateAssignee;
+    if (this.users) {
+      this.assigneeId = this.users.filter(a => {
+        if (a.name == i.closingCheckListForViewDto.assigniName) {
+          return a.value;
+        }
+      });
+      this.taskId = i.closingCheckListForViewDto.id;
+      this.updatedAssigneeId = this.assigneeId[0].value;
+
+      this.changeAssigniDto.assigneeId = this.updatedAssigneeId;
+      this.changeAssigniDto.taskId = this.taskId;
+      this._closingChecklistService.changeAssignee(this.changeAssigniDto).subscribe(result => {
+      this.getTaskForEdit = result;
+      });
+    }
+  }
+  
+  onSearchUsers(event): void {
+    this._closingChecklistService.userAutoFill(event.query).subscribe(result => {
+      this.users = result;
+      this.userName = result.map(a => a.name);
+    });
+
   }
 
   //Start
@@ -87,7 +130,6 @@ export class TasksComponent extends AppComponentBase implements OnInit {
 
   //End
   GetUserTasks(userId) {
-    debugger;
     this.ClosingCheckList.forEach(i => {
 
       if (i.closingCheckListForViewDto.assigneeId === userId) {
@@ -97,10 +139,8 @@ export class TasksComponent extends AppComponentBase implements OnInit {
         console.log("not match")
       }
 
-      debugger;
     });
     this.ClosingCheckList = this.UserSpecficClosingCheckList
-    debugger;
   }
 
   getUnique(arr, comp) {
@@ -108,10 +148,8 @@ export class TasksComponent extends AppComponentBase implements OnInit {
     const unique = arr
       .map(e => e[comp])
 
-      // store the keys of the unique objects
       .map((e, i, final) => final.indexOf(e) === i && i)
 
-      // eliminate the dead keys & store unique objects
       .filter(e => arr[e]).map(e => arr[e]);
 
     return unique;
