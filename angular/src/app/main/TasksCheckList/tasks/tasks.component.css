@@ -195,6 +195,7 @@ button.btn-square{
     cursor: pointer;
 }
 .member-count .member-dropdown {
+    z-index: 9;
     position: absolute;
     top: 40px;
     right: 0;

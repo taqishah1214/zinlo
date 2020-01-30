@@ -127,24 +127,50 @@ namespace Zinlo.ClosingChecklist
         //[AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
         protected virtual async System.Threading.Tasks.Task Update(CreateOrEditClosingChecklistDto input)
         {
-            var category = await _closingChecklistRepository.FirstOrDefaultAsync((int)input.Id);
-            ObjectMapper.Map(input, category);
+            var task = await _closingChecklistRepository.FirstOrDefaultAsync((int)input.Id);
+
+          var data =  ObjectMapper.Map(input, task);
+           await _closingChecklistRepository.UpdateAsync(data);
+            foreach (var item in input.comments)
+            {
+                var commentDto = new CreateOrEditCommentDto()
+                {
+                    Body = item.Body,
+                    Type = CommentTypeDto.ClosingChecklist,
+                    TypeId = input.Id
+                };
+                if (item.Id == null)
+                {
+                    await _commentAppService.Create(commentDto);
+                }
+                else
+                {
+                    await _commentAppService.Update(commentDto);
+                }
+              
+            }
+
         }
 
         public async Task<List<NameValueDto<string>>> UserAutoFill(string searchTerm)
         {
-            var filteredAssets = _userRepository.GetAll()
-                .WhereIf(!string.IsNullOrWhiteSpace(searchTerm),
-                   e => true || e.FullName.ToLower().StartsWith(searchTerm.ToLower()));
-            var query = (from o in  filteredAssets
+            List<User> list = await _userRepository.GetAll().ToListAsync();
+            if(!String.IsNullOrEmpty(searchTerm))
+            {
+                list = list.Where(x => x.FullName.ToLower().Contains(searchTerm.Trim().ToLower())).ToList();
+            }
+            else
+            {
+                list = new List<User>();
+            }
+            var query = (from o in list
                          select new NameValueDto<string>()
                          {
                              Name = o.FullName,
                              Value = o.Id.ToString()
-                         });
-
-            var assets = await query.ToListAsync();
-            return assets;
+                         }).ToList();
+            var assets =  query;
+            return assets; 
         }
         public async Task<List<NameValueDto<string>>> getUsersDropdown()
         {
