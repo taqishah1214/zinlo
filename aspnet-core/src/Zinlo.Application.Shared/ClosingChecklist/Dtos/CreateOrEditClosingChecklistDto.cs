@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Zinlo.Attachments.Dtos;
+using Zinlo.Comment.Dtos;
 
 namespace Zinlo.Tasks.Dtos
 {
@@ -22,7 +23,7 @@ namespace Zinlo.Tasks.Dtos
         public bool EndOfMonth { get; set; }
         public FrequencyDto Frequency { get; set; }
         public string CommentBody { get; set; }
-
+        public List<CommentDto> comments { get; set; }
     }
     public enum StatusDto
     {
