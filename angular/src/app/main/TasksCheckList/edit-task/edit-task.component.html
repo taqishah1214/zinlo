@@ -28,9 +28,12 @@
                                             [value]="item.value">
                                                 {{item.name}}
                                             </option>
-                                            <option>
+                                            <div class="divider dropdown-divider"></div>
+                                            <a class="dropdown-item" href="" (click)="addNew()">Addnew</a>
+                                          </div>
+                                            <!-- <option>
                                             <button (click)="addNew()" type="button">Addnew</button>
-                                            </option>
+                                            </option> -->
                                         </select>   
                                     </div>
                                      
@@ -61,7 +64,7 @@
                                     <label>Assignee</label>
                                         <div class="form-group">
                                             <div>
-                                                <p-autoComplete [(ngModel)]="getTaskForEdit.assigniName" [suggestions]="users" (completeMethod)="onSearchUsers($event)" field="name"
+                                                <p-autoComplete [(ngModel)]="getTaskForEdit.assigneeId" [suggestions]="users" (completeMethod)="onSearchUsers($event)" field="name"
                                                     placeholder="Search..." [multiple]="false" inputStyleClass="form-control" styleClass="width-percent-100"
                                                      [forceSelection]="true" required>
                                                 </p-autoComplete>
