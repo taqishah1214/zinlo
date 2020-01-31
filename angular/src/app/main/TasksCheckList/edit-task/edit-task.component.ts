@@ -121,6 +121,7 @@ onCreateTask(){
   this.checklist.instruction = this.getTaskForEdit.instruction;
   // this.checklist. = this.getTaskForEdit.comments
   // this.checklist.assigneeId = this.getTaskForEdit.assigniName
+  console.log("Edited for status ",this.checklist.status)
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
     this.createOrEdit = result;
     console.log("this.createOrEdit ",result)
