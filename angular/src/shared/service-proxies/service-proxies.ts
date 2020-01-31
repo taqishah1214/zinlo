@@ -14710,6 +14710,7 @@ export interface IChangeStatusDto {
 }
 
 export class GetTaskForEditDto implements IGetTaskForEditDto {
+    id!: number;
     taskName!: string | undefined;
     closingMonth!: moment.Moment;
     category!: string | undefined;
@@ -14727,7 +14728,6 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     assigneeId!: number;
     frequencyId!: number;
     comments!: CommentDto[] | undefined;
-  assignee: any;
 
     constructor(data?: IGetTaskForEditDto) {
         if (data) {
@@ -14740,6 +14740,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
 
     init(data?: any) {
         if (data) {
+            this.id = data["id"];
             this.taskName = data["taskName"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.category = data["category"];
@@ -14773,6 +14774,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
         data["taskName"] = this.taskName;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["category"] = this.category;
@@ -14799,6 +14801,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
 }
 
 export interface IGetTaskForEditDto {
+    id: number;
     taskName: string | undefined;
     closingMonth: moment.Moment;
     category: string | undefined;

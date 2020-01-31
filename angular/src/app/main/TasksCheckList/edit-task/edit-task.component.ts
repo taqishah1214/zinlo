@@ -42,6 +42,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
    }
 
   ngOnInit() {
+   
       this.userSignInName =  this.appSession.user.name.toString().charAt(0).toUpperCase();
       this.taskId=history.state.data.id;
       this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
@@ -107,6 +108,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 }
 onCreateTask(){
+ this.checklist.id = this.getTaskForEdit.id;
   this.checklist.frequency = this.getTaskForEdit.frequencyId;
   this.checklist.closingMonth = this.getTaskForEdit.closingMonth;
   this.checklist.endsOn = this.getTaskForEdit.endsOn;
