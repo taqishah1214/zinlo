@@ -80,7 +80,7 @@ namespace Zinlo.ClosingChecklist
 
           
 
-            if (input.Id == null)
+            if (input.Id == 0 || input.Id == null)
             {
                 await Create(input);
             }

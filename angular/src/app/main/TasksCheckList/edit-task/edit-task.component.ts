@@ -97,8 +97,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
    
   }
-
-  
   onSearchUsers(event): void {
     this._closingChecklistService.userAutoFill(event.query).subscribe(result => {
       this.users = result;

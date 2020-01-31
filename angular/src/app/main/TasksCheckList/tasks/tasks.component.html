@@ -162,11 +162,8 @@
                                     <tr *ngFor="let i of ClosingCheckList" class="task-table-inner">
 
                                         <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
-                                            <div class="num-n-date">
-                                                <span class="record-num">8</span>
-                                                <span class="month">Jan</span>,
-                                                <span class="day">Wed</span>
-                                            </div>
+                                           
+                                            <span class="task-box">{{i.closingCheckListForViewDto.creationTime | date:'EEE  MMMM d'}}</span>
                                         </td>
                                         <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
                                             <span class="task-box">{{i.closingCheckListForViewDto.taskName}}</span>
