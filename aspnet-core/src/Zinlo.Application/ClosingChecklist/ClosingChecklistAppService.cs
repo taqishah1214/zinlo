@@ -133,6 +133,7 @@ namespace Zinlo.ClosingChecklist
                 //   var data = ObjectMapper.Map(input, task);
                 task.TaskName = input.TaskName;
                 task.CategoryId = input.CategoryId;
+                task.NoOfMonths = input.NoOfMonths;
                 task.DayBeforeAfter = input.DayBeforeAfter;
                 task.EndOfMonth = input.EndOfMonth;
                 task.Instruction = input.Instruction;
