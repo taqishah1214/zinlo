@@ -55,11 +55,11 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.frequencyId = this.getTaskForEdit.frequency;
       this.getTaskForEdit.closingMonth=moment().startOf('day');
       this.getTaskForEdit.endsOn=moment().startOf('day');
-      this.assigniName = this.getTaskForEdit.assigniName;
+      this.assigneeId = this.getTaskForEdit.assigneeId;
       this.parentassigneName = result;
       this.categoryId = this.getTaskForEdit.categoryId;
       this.comment = this.getTaskForEdit.comments;
-      console.log("shdshsdhshkhs",this.assigniName)
+      console.log("shdshsdhshkhs",this.assigneeId)
       
       this.comment.forEach(i => {
         i.userName;
@@ -97,8 +97,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
    
   }
-
-  
   onSearchUsers(event): void {
     this._closingChecklistService.userAutoFill(event.query).subscribe(result => {
       this.users = result;
@@ -109,7 +107,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
           if (a.name == this.getTaskForEdit.assigniName) {
             return a.value;
           }
-          this.checklist.assigneeId = this.getTaskForEdit.assigneeId;
         });
 
   }
@@ -124,6 +121,11 @@ commentClick(){
 }
 onCancelComment(){
   this.commantBox = false;
+  
+}
+onComment(){
+  this.commantBox = false;
+  this.checklist.commentBody;
 
 }
 
@@ -138,13 +140,16 @@ onUpdateTask(){
   this.checklist.noOfMonths = this.getTaskForEdit.noOfMonths;
   this.checklist.taskName = this.getTaskForEdit.taskName;
   this.checklist.instruction = this.getTaskForEdit.instruction;
-  this.checklist.id = this.taskId;
-  this.checklist.comments = [];
-  debugger;
-  this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
-  this.createOrEdit = result;
-  console.log("this.createOrEdit ",result)
 
+  // this.checklist. = this.getTaskForEdit.comments
+  // this.checklist.assigneeId = this.getTaskForEdit.assigniName
+  console.log("Edited for status ",this.checklist.status)
+    this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
+    this.createOrEdit = result;
+    console.log("this.createOrEdit ",result)
+  this.checklist.id = this.taskId;
+  this.checklist.assigneeId = this.getTaskForEdit.assigneeId;
+  this.checklist.comments = [];
     });
 }
 
