@@ -61,7 +61,7 @@
                                     <label>Assignee</label>
                                         <div class="form-group">
                                             <div>
-                                                <p-autoComplete [(ngModel)]="getTaskForEdit.assigniName" [suggestions]="users" (completeMethod)="onSearchUsers($event)" field="name"
+                                                <p-autoComplete [(ngModel)]="getTaskForEdit.assigneeId" [suggestions]="users" (completeMethod)="onSearchUsers($event)" field="name"
                                                     placeholder="Search..." [multiple]="false" inputStyleClass="form-control" styleClass="width-percent-100"
                                                      [forceSelection]="true" required>
                                                 </p-autoComplete>
