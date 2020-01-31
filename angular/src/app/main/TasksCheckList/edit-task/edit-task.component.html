@@ -119,7 +119,7 @@
 
 
 
-                                    <div class="form-group giveCommentView" *ngIf="commantBox">
+                                    <div class="form-group giveCommentView" *ngIf="!commantBox">
                                         <label >Comments</label>
                                         <div (click)="commentClick()" >
                                             <div class="kt-user-card-v2">
@@ -131,7 +131,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group " *ngIf="commantModal">
+                                    <div class="form-group " *ngIf="commantBox">
                                         <label >Comments</label>
                                         <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
@@ -248,7 +248,7 @@
                     <div class="kt-portlet__head">
                     </div>
                     <div class="">
-                        <button class="btn btn-brand" (click)="onCreateTask()">
+                        <button class="btn btn-brand" (click)="onUpdateTask()">
                             Update
                         </button>
                     </div>
