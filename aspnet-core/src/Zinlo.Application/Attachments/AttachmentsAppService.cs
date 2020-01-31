@@ -26,22 +26,24 @@ namespace Zinlo.Attachments
         }
 
        
-        public async Task<string> PostAttachmentFile()
+        public async Task<List<string>> PostAttachmentFile()
         {
             var file= (IFormFile)null;
+            List<string> finalFilePath = new List<string>();
             var ctx = _httpContextAccessor.HttpContext.Request.Form.Files;
             foreach(var item in ctx)
             {
                file =   item;
+                var path = Path.Combine(Path.Combine(_env.WebRootPath, "Uploads-Attachments"), file.FileName);
+                using (var fc = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(fc);
+                }
+                var filePath = "http://localhost:22742/Uploads-Attachments/" + file.FileName;
+                finalFilePath.Add(filePath);
             }
-            var path = Path.Combine(Path.Combine(_env.WebRootPath, "Uploads-Attachments"), file.FileName);
-            using (var fc = new FileStream(path, FileMode.Create))
-            {
-                await file.CopyToAsync(fc);
-            }
-
-            var filePath = "http://localhost:22742/Uploads-Attachments/" + file.FileName;
-            return filePath;    
+           
+            return finalFilePath;    
         }
 
         public async Task PostAttachmentsPath(PostAttachmentsPathDto input)

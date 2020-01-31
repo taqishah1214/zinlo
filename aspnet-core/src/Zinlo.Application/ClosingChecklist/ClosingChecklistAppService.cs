@@ -30,12 +30,13 @@ namespace Zinlo.ClosingChecklist
         private readonly IAttachmentAppService _attachmentAppService;
 
 
-        public ClosingChecklistAppService(IRepository<ClosingChecklist,long> closingChecklistRepository, ICommentAppService commentAppService, IRepository<User,long> userRepository)
+        public ClosingChecklistAppService(IRepository<ClosingChecklist,long> closingChecklistRepository, ICommentAppService commentAppService, IRepository<User,long> userRepository, IAttachmentAppService attachmentAppService)
         {
             _closingChecklistRepository = closingChecklistRepository;
             _commentAppService = commentAppService;
             _userRepository = userRepository;
-        }
+            _attachmentAppService = attachmentAppService;
+    }
 
 
         public enum Status
@@ -114,8 +115,14 @@ namespace Zinlo.ClosingChecklist
                 };
                 await _commentAppService.Create(commentDto);
             }
-             
-
+            if (input.AttachmentsPath != null)
+                {
+                    PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
+                    postAttachmentsPathDto.FilePath = input.AttachmentsPath;
+                    postAttachmentsPathDto.TypeId = checklistId;
+                    postAttachmentsPathDto.Type = 1;
+                    await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
+                }
             }
             catch (Exception e)
             {
