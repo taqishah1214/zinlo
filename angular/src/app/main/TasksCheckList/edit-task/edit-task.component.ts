@@ -15,7 +15,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   parentassigneName;
   SelectedCategory;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto()
-  commantBox : boolean
+  commantBox : boolean 
   userSignInName : string
   taskId : any;
   closingMonth : Date
@@ -34,19 +34,21 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   createOrEdit: void;
   userName: string[];
   assigneeId: any;
+  status: number;
 
   constructor( private _categoryService: CategoriesServiceProxy,injector: Injector,private _closingChecklistService: ClosingChecklistServiceProxy) {
     super(injector)
-    this.commantBox = true;
     
    }
 
   ngOnInit() {
-   
+    this.taskId = history.state.data.id;
+    this.commantBox = false;
       this.userSignInName =  this.appSession.user.name.toString().charAt(0).toUpperCase();
       this.taskId=history.state.data.id;
       this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
+      console.log("gettaskforedit",this.getTaskForEdit)
       this.closingMonthValue = this.getTaskForEdit.closingMonth.toDate();
 
 
@@ -76,20 +78,24 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   ChangeStatus (value) : void {
     if (value === 1)
   {
-    this.statusValue = 1;
-    this.getTaskForEdit.status = "Open"
+    this.status = 1;
+    this.getTaskForEdit.status = "Open";
+    this.checklist.status = 1;
+
   }
   if (value === 2)
   {
-    this.statusValue = 2;
+    this.status = 2;
     this.getTaskForEdit.status = "Complete"
+    this.checklist.status = 2;
   } 
   if (value === 3)
   {
-    this.statusValue = 3;
+    this.status = 3;
     this.getTaskForEdit.status = "Inprogress"
+    this.checklist.status = 3;
   }
-  // this.checklist = this.getTaskForEdit;
+   
   }
 
   
@@ -103,29 +109,44 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
           if (a.name == this.getTaskForEdit.assigniName) {
             return a.value;
           }
+          this.checklist.assigneeId = this.getTaskForEdit.assigneeId;
         });
-        
+
   }
 }
+
 onCreateTask(){
  this.checklist.id = this.getTaskForEdit.id;
+
+}
+commentClick(){
+  this.commantBox = true;
+}
+onCancelComment(){
+  this.commantBox = false;
+
+}
+
+onUpdateTask(){
   this.checklist.frequency = this.getTaskForEdit.frequencyId;
   this.checklist.closingMonth = this.getTaskForEdit.closingMonth;
   this.checklist.endsOn = this.getTaskForEdit.endsOn;
-  this.checklist.status = this.statusValue;
+  this.checklist.status = 1;
   this.checklist.categoryId = this.getTaskForEdit.categoryId;
   this.checklist.dueOn = this.getTaskForEdit.dueOn;
   this.checklist.endOfMonth  = this.getTaskForEdit.endOfMonth;
   this.checklist.noOfMonths = this.getTaskForEdit.noOfMonths;
   this.checklist.taskName = this.getTaskForEdit.taskName;
   this.checklist.instruction = this.getTaskForEdit.instruction;
+
   // this.checklist. = this.getTaskForEdit.comments
   // this.checklist.assigneeId = this.getTaskForEdit.assigniName
   console.log("Edited for status ",this.checklist.status)
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
     this.createOrEdit = result;
     console.log("this.createOrEdit ",result)
-
+  this.checklist.id = this.taskId;
+  this.checklist.comments = [];
     });
 }
 
