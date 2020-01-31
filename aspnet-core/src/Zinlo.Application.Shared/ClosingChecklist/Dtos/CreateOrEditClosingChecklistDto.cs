@@ -24,6 +24,9 @@ namespace Zinlo.Tasks.Dtos
         public FrequencyDto Frequency { get; set; }
         public string CommentBody { get; set; }
         public List<CommentDto> comments { get; set; }
+        public List<string> AttachmentsPath { get; set; }
+
+
     }
     public enum StatusDto
     {

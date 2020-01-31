@@ -10,7 +10,7 @@ namespace Zinlo.Attachments
 {
     public interface IAttachmentAppService : IApplicationService
     {
-        Task<string> PostAttachmentFile();
+        Task<List<string>> PostAttachmentFile();
 
         Task PostAttachmentsPath(PostAttachmentsPathDto input);
 

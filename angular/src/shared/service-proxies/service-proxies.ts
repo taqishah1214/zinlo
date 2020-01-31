@@ -583,30 +583,85 @@ export class AttachmentsServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    postAttachmentFile(): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/Attachments/PostAttachmentFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostAttachmentFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostAttachmentFile(<any>response_);
+                } catch (e) {
+                    return <Observable<string[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPostAttachmentFile(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string[]>(<any>null);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
-    postAttachment(body: Blob | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Attachments/PostAttachment";
+    postAttachmentsPath(body: PostAttachmentsPathDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Attachments/PostAttachmentsPath";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = body;
+        const content_ = JSON.stringify(body);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "multipart/form-data", 
+                "Content-Type": "application/json-patch+json", 
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processPostAttachment(response_);
+            return this.processPostAttachmentsPath(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processPostAttachment(<any>response_);
+                    return this.processPostAttachmentsPath(<any>response_);
                 } catch (e) {
                     return <Observable<void>><any>_observableThrow(e);
                 }
@@ -615,7 +670,7 @@ export class AttachmentsServiceProxy {
         }));
     }
 
-    protected processPostAttachment(response: HttpResponseBase): Observable<void> {
+    protected processPostAttachmentsPath(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -13003,16 +13058,12 @@ export interface ISwitchToLinkedAccountOutput {
     tenancyName: string | undefined;
 }
 
-export enum AttachmentType {
-    ClosingChecklist = 1,
-}
-
-export class PostAttachmentsDto implements IPostAttachmentsDto {
-    type!: AttachmentType;
+export class PostAttachmentsPathDto implements IPostAttachmentsPathDto {
+    type!: number;
     typeId!: number;
-    file!: string | undefined;
+    filePath!: string[] | undefined;
 
-    constructor(data?: IPostAttachmentsDto) {
+    constructor(data?: IPostAttachmentsPathDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -13025,13 +13076,17 @@ export class PostAttachmentsDto implements IPostAttachmentsDto {
         if (data) {
             this.type = data["type"];
             this.typeId = data["typeId"];
-            this.file = data["file"];
+            if (Array.isArray(data["filePath"])) {
+                this.filePath = [] as any;
+                for (let item of data["filePath"])
+                    this.filePath!.push(item);
+            }
         }
     }
 
-    static fromJS(data: any): PostAttachmentsDto {
+    static fromJS(data: any): PostAttachmentsPathDto {
         data = typeof data === 'object' ? data : {};
-        let result = new PostAttachmentsDto();
+        let result = new PostAttachmentsPathDto();
         result.init(data);
         return result;
     }
@@ -13040,15 +13095,19 @@ export class PostAttachmentsDto implements IPostAttachmentsDto {
         data = typeof data === 'object' ? data : {};
         data["type"] = this.type;
         data["typeId"] = this.typeId;
-        data["file"] = this.file;
+        if (Array.isArray(this.filePath)) {
+            data["filePath"] = [];
+            for (let item of this.filePath)
+                data["filePath"].push(item);
+        }
         return data; 
     }
 }
 
-export interface IPostAttachmentsDto {
-    type: AttachmentType;
+export interface IPostAttachmentsPathDto {
+    type: number;
     typeId: number;
-    file: string | undefined;
+    filePath: string[] | undefined;
 }
 
 export class AuditLogListDto implements IAuditLogListDto {
@@ -14369,6 +14428,7 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
     frequency!: FrequencyDto;
     commentBody!: string | undefined;
     comments!: CommentDto[] | undefined;
+    attachmentsPath!: string[] | undefined;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -14402,6 +14462,11 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
                 this.comments = [] as any;
                 for (let item of data["comments"])
                     this.comments!.push(CommentDto.fromJS(item));
+            }
+            if (Array.isArray(data["attachmentsPath"])) {
+                this.attachmentsPath = [] as any;
+                for (let item of data["attachmentsPath"])
+                    this.attachmentsPath!.push(item);
             }
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
@@ -14437,6 +14502,11 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
             for (let item of this.comments)
                 data["comments"].push(item.toJSON());
         }
+        if (Array.isArray(this.attachmentsPath)) {
+            data["attachmentsPath"] = [];
+            for (let item of this.attachmentsPath)
+                data["attachmentsPath"].push(item);
+        }
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -14460,6 +14530,7 @@ export interface ICreateOrEditClosingChecklistDto {
     frequency: FrequencyDto;
     commentBody: string | undefined;
     comments: CommentDto[] | undefined;
+    attachmentsPath: string[] | undefined;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
@@ -14524,6 +14595,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     endOfMonth!: boolean;
     frequency!: FrequencyDto;
     commentBody!: string | undefined;
+    attachmentsPath!: string[] | undefined;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -14561,6 +14633,11 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             this.endOfMonth = data["endOfMonth"];
             this.frequency = data["frequency"];
             this.commentBody = data["commentBody"];
+            if (Array.isArray(data["attachmentsPath"])) {
+                this.attachmentsPath = [] as any;
+                for (let item of data["attachmentsPath"])
+                    this.attachmentsPath!.push(item);
+            }
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -14598,6 +14675,11 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data["endOfMonth"] = this.endOfMonth;
         data["frequency"] = this.frequency;
         data["commentBody"] = this.commentBody;
+        if (Array.isArray(this.attachmentsPath)) {
+            data["attachmentsPath"] = [];
+            for (let item of this.attachmentsPath)
+                data["attachmentsPath"].push(item);
+        }
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -14624,6 +14706,7 @@ export interface IDetailsClosingCheckListDto {
     endOfMonth: boolean;
     frequency: FrequencyDto;
     commentBody: string | undefined;
+    attachmentsPath: string[] | undefined;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;

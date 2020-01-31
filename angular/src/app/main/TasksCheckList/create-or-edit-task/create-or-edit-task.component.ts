@@ -29,6 +29,7 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
   enableValue: boolean = false;
   endOnIsEnabled:boolean = true;
   SelectionMsg: string = "";
+  attachmentPaths : any = [];
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -90,6 +91,11 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
 
+    if (this.attachmentPaths != null)
+    {
+     this.checklist.attachmentsPath = this.attachmentPaths;
+    }
+
     if (this.checklist.noOfMonths != undefined && this.checklist.noOfMonths != null) {
       this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
     }
@@ -127,7 +133,14 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
   }
 
   fileUploadedResponse(value) : void {
-    console.log("Response", value.successful[0].response.body.result)
+    var response = value.successful
+    response.forEach(i => {
+  
+      this.attachmentPaths.push(i.response.body.result);  
+    });
+    this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
+    
+   
   }
 
   onChange(val) {
