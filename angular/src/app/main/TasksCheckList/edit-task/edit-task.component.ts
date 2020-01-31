@@ -123,6 +123,11 @@ commentClick(){
 }
 onCancelComment(){
   this.commantBox = false;
+  
+}
+onComment(){
+  this.commantBox = false;
+  this.checklist.commentBody;
 
 }
 

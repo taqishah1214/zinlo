@@ -28,9 +28,12 @@
                                             [value]="item.value">
                                                 {{item.name}}
                                             </option>
-                                            <option>
+                                            <div class="divider dropdown-divider"></div>
+                                            <a class="dropdown-item" href="" (click)="addNew()">Addnew</a>
+                                          </div>
+                                            <!-- <option>
                                             <button (click)="addNew()" type="button">Addnew</button>
-                                            </option>
+                                            </option> -->
                                         </select>   
                                     </div>
                                      
