@@ -153,6 +153,7 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
   handleRadioChange(val) {
     this.checklist.dayBeforeAfter = null;
     this.checklist.dueOn = 0;
+    this.SelectionMsg = "";
   }
   onDaysClick(valu) {
     if (valu == "true") {

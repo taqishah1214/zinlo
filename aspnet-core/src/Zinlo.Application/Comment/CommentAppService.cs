@@ -30,6 +30,13 @@ namespace Zinlo.Comment
             await _commentRepository.InsertAsync(comment);
         }
 
+        public async Task Update(CreateOrEditCommentDto request)
+        {
+            var comment = await _commentRepository.FirstOrDefaultAsync((int)request.Id);
+            var data = ObjectMapper.Map(request, comment);
+            await _commentRepository.UpdateAsync(data);
+        }
+
 
         public async Task<List<CommentDto>> GetComments(int type, long typeId)
         {

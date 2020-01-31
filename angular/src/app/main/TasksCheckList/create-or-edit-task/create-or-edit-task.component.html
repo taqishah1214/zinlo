@@ -61,7 +61,7 @@
                                                     <div class="kt-badge kt-badge--xl kt-badge--warning">
                                                         {{userSignInName}}</div>
                                                 </div>
-                                                <input [(ngModel)]="checklist.commentBody" class="form-control">
+                                                <div innerHTML="{{checklist.commentBody}}" class="form-control"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -111,7 +111,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <label class="kt-radio kt-radio--single kt-radio--success">
-                                                        <input type="radio" checked="">
+                                                        <input type="radio" name="radioButton">
                                                         <span></span>
                                                     </label>
                                                 </span>
@@ -157,7 +157,7 @@
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" value="true"
+                                            <input type="radio" value="true" name="radioButton"
                                                 (change)="handleRadioChange($event.target.value)"
                                                 [(ngModel)]="checklist.endOfMonth">End of month
                                             <span></span>

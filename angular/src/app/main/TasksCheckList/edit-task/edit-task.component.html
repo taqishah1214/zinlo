@@ -21,9 +21,9 @@
                         <div class="col-md-7">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <!-- <div class="form-group">
+                                    <div class="form-group">
                                         <label>Category</label>
-                                        <select [(ngModel)]="getTaskForEdit.category" id="categories" name="categories" class="form-control input-medium select2-search select2-search--inline"  >
+                                        <select [(ngModel)]="getTaskForEdit.categoryId" id="categories" name="categories" class="form-control input-medium select2-search select2-search--inline"  >
                                             <option  *ngFor="let item of category;" 
                                             [value]="item.value">
                                                 {{item.name}}
@@ -32,16 +32,16 @@
                                             <button (click)="addNew()" type="button">Addnew</button>
                                             </option>
                                         </select>   
-                                    </div> -->
+                                    </div>
                                      
-                                    <app-categorie-drop-down [SelectedCategory] = getTaskForEdit.category ></app-categorie-drop-down>
+                                    <!-- <app-categorie-drop-down [SelectedCategory] = getTaskForEdit.categoryId ></app-categorie-drop-down> -->
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="dateOfBirth">Closing Month</label>
                                         <div class="form-group">
                                             <form class="container">
-                                                <input [(ngModel)]="getTaskForEdit.closingMonth._d" autocomplete="off" class="form-control" name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}" (onShown)="onOpenCalendar($event)">
+                                                <input [(ngModel)]="getTaskForEdit.closingMonth._d" class="form-control" name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}" (onShown)="onOpenCalendar($event)">
                                                 </form>
                                         </div>
                                     </div> 
@@ -61,14 +61,12 @@
                                     <label>Assignee</label>
                                         <div class="form-group">
                                             <div>
-                                                <p-autoComplete [(ngModel)]="assigniName" [suggestions]="users" (completeMethod)="onSearchUsers($event)" field="name"
-                                                    placeholder="Search..." [minLength]="1" name="SingleSelectInput" id="SingleSelectInput" [multiple]="false"
-                                                    inputStyleClass="form-control" styleClass="width-percent-100" [forceSelection]="true" required
-                                                    >
+                                                <p-autoComplete [(ngModel)]="getTaskForEdit.assigniName" [suggestions]="users" (completeMethod)="onSearchUsers($event)" field="name"
+                                                    placeholder="Search..." [multiple]="false" inputStyleClass="form-control" styleClass="width-percent-100"
+                                                     [forceSelection]="true" required>
                                                 </p-autoComplete>
                                             </div>
                                         </div>
-                                    <!-- <app-user-list-component [assigneName]=getTaskForEdit.assigniName ></app-user-list-component> -->
                                     </div>
                                 </div>
                             </div>
@@ -88,24 +86,25 @@
                                         <div class="kt-widget3 ">
 
 
-                                            <div class="kt-widget3__item ">
+                                            <div *ngFor="let i of comment" class="kt-widget3__item ">
                                                 <div class="kt-widget3__header">
                                                     <div class="kt-widget3__user-img">
-                                                        <img class="kt-widget3__img" src="./assets/media/users/user1.jpg" alt="">
+                                                        <div class="kt-user-card-v2__pic">
+                                                            <div class="kt-badge kt-badge--xl kt-badge--warning">{{i.NameAvatar}}</div>
+                                                        </div>   
                                                     </div>
                                                     <div class="kt-widget3__info">
                                                         <a class="kt-widget3__username">
-                                                        Melania Trump
+                                                        {{i.userName}}
                                                         </a><br>
                                                         
                                                     </div>
                                                     <span class="kt-widget3__status kt-font-info">
-                                                    2 Days Ago
+                                                       {{i.daysCount}}
                                                     </span>
                                                 </div>
                                                 <div class="kt-widget3__body">
-                                                    <p class="kt-widget3__text commentViewBox">
-                                                   hammad
+                                                    <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">   
                                                     </p>
                                                 </div>
                                             </div>
@@ -161,7 +160,7 @@
                                     <div class="form-group">
                                         <label>Frequency</label>
                                         <select class="form-control input-medium"
-                                        [(ngModel)]="getTaskForEdit.frequency">
+                                        [(ngModel)]="getTaskForEdit.frequencyId">
                                             <option value="1">Monthly</option>
                                             <option value="2">Quarterly</option>
                                             <option value="3">Annually</option>
@@ -192,11 +191,17 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Status</label>
-                                        <app-status [StatusList] = getTaskForEdit.status ></app-status>
-                                        
+                                        <div class="kt-datatable__cell ">
+                                            <button class="btn btn-primary dropdown-toggle drop_down_class" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{getTaskForEdit.status}}
+                                            </button>
+                                            <div class="dropdown-menu drop_down_class"  aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" (click)="ChangeStatus(1)" >Open</a>
+                                                <a class="dropdown-item" (click)="ChangeStatus(2)" >Complete</a>
+                                                <a class="dropdown-item" (click)="ChangeStatus(3)" >Inprogress</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    
-
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">

@@ -188,12 +188,14 @@
                                                 </select>
                                             </form>
                                         </td>
-                                        <td>
-                                            <div class="assignee-info">
-                                                <span
-                                                    class="assignee-image bg-sea-green">{{i.closingCheckListForViewDto.NameAvatar}}</span>
-                                                <span
-                                                    class="assignee-name">{{i.closingCheckListForViewDto.assigniName}}</span>
+                                        <td> 
+                                            <div *ngIf="i.closingCheckListForViewDto.id != rowid" class="assignee-info" (click)="openFieldUpdateAssignee(i.closingCheckListForViewDto.id)">
+                                                <span class="assignee-image bg-sea-green">{{i.closingCheckListForViewDto.NameAvatar}}</span>
+                                                <span class="assignee-name">{{i.closingCheckListForViewDto.assigniName}}</span>
+                                            </div>
+                                            <div *ngIf="i.closingCheckListForViewDto.id == rowid" >
+                                                <p-autoComplete placeholder="Search..." [(ngModel)]="i.text" [suggestions]="userName" (completeMethod)="onSearchUsers($event)" 
+                                                (keyup.enter)="addInput(i)" [forceSelection]="true" required></p-autoComplete>
                                             </div>
                                         </td>
                                     </tr>
