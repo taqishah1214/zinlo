@@ -274,6 +274,7 @@ namespace Zinlo.ClosingChecklist
             getTaskForEditDto.CategoryId = task.CategoryId;
             getTaskForEditDto.FrequencyId = (int)task.Frequency;
             getTaskForEditDto.Status = task.Status.ToString();
+            getTaskForEditDto.StatusId = (int)task.Status;
             return getTaskForEditDto;
         }
 

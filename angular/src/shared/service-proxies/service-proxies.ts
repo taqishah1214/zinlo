@@ -14716,6 +14716,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     category!: string | undefined;
     assigniName!: string | undefined;
     status!: string | undefined;
+    statusId!: number;
     attachment!: string | undefined;
     instruction!: string | undefined;
     noOfMonths!: number;
@@ -14746,6 +14747,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
             this.category = data["category"];
             this.assigniName = data["assigniName"];
             this.status = data["status"];
+            this.statusId = data["statusId"];
             this.attachment = data["attachment"];
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
@@ -14780,6 +14782,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
         data["category"] = this.category;
         data["assigniName"] = this.assigniName;
         data["status"] = this.status;
+        data["statusId"] = this.statusId;
         data["attachment"] = this.attachment;
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
@@ -14807,6 +14810,7 @@ export interface IGetTaskForEditDto {
     category: string | undefined;
     assigniName: string | undefined;
     status: string | undefined;
+    statusId: number;
     attachment: string | undefined;
     instruction: string | undefined;
     noOfMonths: number;

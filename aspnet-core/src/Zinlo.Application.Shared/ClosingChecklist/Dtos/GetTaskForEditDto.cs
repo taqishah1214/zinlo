@@ -13,6 +13,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public string Category { get; set; }
         public string AssigniName { get; set; }
         public string Status { get; set; }
+        public int StatusId { get; set; }
         public string Attachment { get; set; }
         public string Instruction { get; set; }
         public int NoOfMonths { get; set; }
