@@ -119,15 +119,17 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
   }
   settings: UppyConfig = {
     uploadAPI: {
-      endpoint: ``,
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('userToken')
-      }
+      endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",
     },
     plugins: {
       Webcam: false
     }
   }
+
+  fileUploadedResponse(value) : void {
+    console.log("Response", value.successful[0].response.body.result)
+  }
+
   onChange(val) {
     if(val == 5)
     {
