@@ -30,7 +30,7 @@
                                             </option>
                                             <div class="divider dropdown-divider"></div>
                                             <a class="dropdown-item" href="" (click)="addNew()">Addnew</a>
-                                          </div>
+                                        
                                             <!-- <option>
                                             <button (click)="addNew()" type="button">Addnew</button>
                                             </option> -->
@@ -62,14 +62,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                     <label>Assignee</label>
-                                        <div class="form-group">
-                                            <div>
-                                                <p-autoComplete [(ngModel)]="getTaskForEdit.assigneeId" [suggestions]="users" (completeMethod)="onSearchUsers($event)" field="name"
-                                                    placeholder="Search..." [multiple]="false" inputStyleClass="form-control" styleClass="width-percent-100"
-                                                     [forceSelection]="true" required>
-                                                </p-autoComplete>
-                                            </div>
-                                        </div>
+                                    <app-user-list-component></app-user-list-component>
                                     </div>
                                 </div>
                             </div>
