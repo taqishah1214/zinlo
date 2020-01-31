@@ -93,7 +93,7 @@ namespace Zinlo.ClosingChecklist
         
 
         //[AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
-        protected virtual  async System.Threading.Tasks.Task Create([FromForm]CreateOrEditClosingChecklistDto input)
+        protected virtual  async System.Threading.Tasks.Task Create(CreateOrEditClosingChecklistDto input)
         {
             var task = ObjectMapper.Map<ClosingChecklist>(input);
 
