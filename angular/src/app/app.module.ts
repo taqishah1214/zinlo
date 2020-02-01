@@ -78,6 +78,8 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MenuSearchBarComponent } from './shared/layout/nav/menu-search-bar/menu-search-bar.component';
 import { NgxSpinnerModule, NgxSpinnerComponent } from 'ngx-spinner';
 import { ScrollTopComponent } from './shared/layout/scroll-top.component';
+import { TagifyComponent } from 'assets/vendors/general/@yaireo/tagify/dist/angular-tagify.component';
+
 
 
 
@@ -130,7 +132,8 @@ import { ScrollTopComponent } from './shared/layout/scroll-top.component';
         Theme12BrandComponent,
         SessionTimeoutModalComponent,
         SessionTimeoutComponent,
-        MenuSearchBarComponent
+        MenuSearchBarComponent,
+        TagifyComponent
     ],
     imports: [
         ngCommon.CommonModule,
@@ -159,7 +162,7 @@ import { ScrollTopComponent } from './shared/layout/scroll-top.component';
         TextMaskModule,
         ImageCropperModule,
         AutoCompleteModule,
-        NgxSpinnerModule,
+        NgxSpinnerModule
        
     ],
     providers: [
