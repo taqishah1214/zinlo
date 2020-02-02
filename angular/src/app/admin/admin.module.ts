@@ -1,7 +1,9 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
+import { CreateOrEditTimeManagementModalComponent } from './management/create-or-edit-timeManagement-modal.component';
+
 import { UtilsModule } from '@shared/utils/utils.module';
 import { AddMemberModalComponent } from 'app/admin/organization-units/add-member-modal.component';
 import { AddRoleModalComponent } from 'app/admin/organization-units/add-role-modal.component';
@@ -86,6 +88,7 @@ import { DropdownModule } from 'primeng/dropdown';
 // Metronic
 import { PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { PermissionTreeModalComponent } from './shared/permission-tree-modal.component';
+import { ManagementComponent } from './management/management.component';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
 };
@@ -122,6 +125,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         DropdownModule
     ],
     declarations: [
+		ManagementComponent,
+		CreateOrEditTimeManagementModalComponent,
         UsersComponent,
         PermissionComboComponent,
         RoleComboComponent,

@@ -1,4 +1,6 @@
-﻿using Zinlo.Categories.Dtos;
+﻿using Zinlo.TimeManagements.Dtos;
+using Zinlo.TimeManagements;
+using Zinlo.Categories.Dtos;
 using Zinlo.Tests;
 using Zinlo.Categories;
 using Abp.Application.Editions;
@@ -48,6 +50,8 @@ namespace Zinlo
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
+            configuration.CreateMap<CreateOrEditTimeManagementDto, TimeManagement>().ReverseMap();
+            configuration.CreateMap<TimeManagementDto, TimeManagement>().ReverseMap();
             
            
            

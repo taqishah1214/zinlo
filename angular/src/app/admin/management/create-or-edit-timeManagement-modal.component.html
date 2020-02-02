@@ -1,0 +1,48 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #timeManagementForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="timeManagement.id">{{l("EditTimeManagement")}}</span>
+                        <span *ngIf="!timeManagement.id">{{l("DefineClosingMonth")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+								<div class="form-group">
+									<label for="TimeManagement_Month">{{l("SelectMonth")}}</label>
+                                     <input [(ngModel)]="timeManagement.month._d" autocomplete="off"
+                                     class="form-control" name="date" bsDatepicker
+                                     [bsConfig]="{dateInputFormat: 'MMM/YYYY'}"
+                                     (onShown)="onOpenCalendar($event)">
+								</div>
+                                <div class="form-group">
+                                    <label for="TimeManagement_Month">{{l("DefineOpenClose")}}</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control  date-range-filter"
+                                        value="{{selectedDateRange[0] | momentFormat: 'LL'}} - {{selectedDateRange[1] | momentFormat: 'LL'}}"
+                                        disabled="disabled" #dateRangePicker="bsDaterangepicker" bsDaterangepicker dateRangePickerMomentModifier
+                                        placement="bottom" [(date)]="selectedDateRange" (dateChange)="onChange()">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" (click)="dateRangePicker.toggle()">
+                                                <i class="fa fa-calendar-day p-0" style="color:white;" aria-hidden="true"></i></button>
+                                    </div>
+                                    </div>
+                                   
+                                </div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!timeManagementForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

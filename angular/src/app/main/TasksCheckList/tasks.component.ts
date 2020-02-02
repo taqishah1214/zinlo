@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto ,ChangeAssigneeDto} from '@shared/service-proxies/service-proxies';
-import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
+import { UserListComponentComponent } from './user-list-component/user-list-component.component';
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',

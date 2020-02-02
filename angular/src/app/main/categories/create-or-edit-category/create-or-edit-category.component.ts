@@ -2,9 +2,8 @@ import { Component, OnInit, ViewChild, Input, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { CategoriesServiceProxy, CreateOrEditCategoryDto } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
-import { CategoriesComponent } from '../categories/categories.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
-
+import { CategoriesComponent } from '../categories.component';
 @Component({
   selector: 'app-create-or-edit-category',
   templateUrl: './create-or-edit-category.component.html',
@@ -35,7 +34,7 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
 
 
   BackToCategoriesList(): void {
-    this._router.navigate(['/app/main/categories/categories']);
+    this._router.navigate(['/app/main/categories']);
   }
 
   onSubmit(): void {
