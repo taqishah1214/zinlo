@@ -26,7 +26,7 @@ export class AppNavigationService {
             
             
             new AppMenuItem('Closing Checklist', '', 'flaticon-interface-8', '', [
-                new AppMenuItem('Checklist', 'Pages.ClosingChecklist','flaticon-more','/app/main/TasksCheckList'),
+                new AppMenuItem('Checklist', 'Pages.ClosingChecklist','flaticon-more','/app/main/checklist'),
                 new AppMenuItem('Task Categories', 'Pages.Categories', 'flaticon-more', '/app/main/categories'),
             ]),
             

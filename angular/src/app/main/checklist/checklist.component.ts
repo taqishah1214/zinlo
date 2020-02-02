@@ -8,10 +8,10 @@ import { Table } from 'primeng/table';
 import { UserListComponentComponent } from './user-list-component/user-list-component.component';
 @Component({
   selector: 'app-tasks',
-  templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.css']
+  templateUrl: './checklist.component.html',
+  styleUrls: ['./checklist.component.css']
 })
-export class TasksComponent extends AppComponentBase implements OnInit {
+export class Checklist extends AppComponentBase implements OnInit {
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
@@ -170,11 +170,11 @@ export class TasksComponent extends AppComponentBase implements OnInit {
   }
 
   RedirectToCreateTask(): void {
-    this._router.navigate(['/app/main/TasksCheckList/create-or-edit-task']);
+    this._router.navigate(['/app/main/checklist/create-or-edit-task']);
   }
 
   RedirectToDetail(recordId): void {
-    this._router.navigate(['/app/main/TasksCheckList/task-details'], { state: { data: { id: recordId } } });
+    this._router.navigate(['/app/main/checklist/task-details'], { state: { data: { id: recordId } } });
 
   }
 

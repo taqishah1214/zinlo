@@ -1,14 +1,11 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { CategoriesServiceProxy, CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
-import * as moment from "moment";
+import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
 import { IgxMonthPickerComponent } from "igniteui-angular";
 import { UppyConfig } from 'uppy-angular';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { AbpSessionService } from 'abp-ng2-module/dist/src/session/abp-session.service';
-import { AppSessionService } from '@shared/common/session/app-session.service';
 @Component({
   selector: 'app-create-or-edit-task',
   templateUrl: './create-or-edit-task.component.html',
@@ -161,9 +158,9 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
   onValueChange() {
     this.checklist.endOfMonth = false;
   }
-  handleChange(evt) {
+  handleChange() {
   }
-  handleRadioChange(val) {
+  handleRadioChange() {
     this.checklist.dayBeforeAfter = null;
     this.checklist.dueOn = 0;
     this.SelectionMsg = "";
