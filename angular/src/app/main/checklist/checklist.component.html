@@ -33,28 +33,20 @@
                                     </form>
                                     <div class="users-box-parent">
                                         <div class="users-box">
-                                            <div class="member-count bg-lightgrey text-blue">
-                                                <span>+3</span>
+                                            <div *ngIf="plusUserBadgeForHeader" class="member-count bg-lightgrey text-blue">
+                                                <span>+{{remainingUserForHeader.length}}</span>
                                                 <div class="member-dropdown">
                                                     <ul>
-                                                        <li>
-                                                            <span class="mem-img"><img
-                                                                    src="./assets/media/ClosingCheckList/girl2.png"
-                                                                    alt="member-image"></span>
-                                                            <span class="mem-nm">Sara</span>
+                                                        <li *ngFor="let item of remainingUserForHeader">
+                                                            <span  class="mem-img">
+                                                                <div class="user-image bg-sea-green text-white">
+                                                                    <span>{{item.nameAvatar}}</span>
+                                                                </div>
+                                                                <!-- <img src="./assets/media/ClosingCheckList/girl2.png" alt="member-image"> -->
+                                                            </span>
+                                                            <span class="mem-nm">{{item.nameAvatar}}</span>
                                                         </li>
-                                                        <li>
-                                                            <span class="mem-img"><img
-                                                                    src="./assets/media/ClosingCheckList/girl2.png"
-                                                                    alt="member-image"></span>
-                                                            <span class="mem-nm">Sara</span>
-                                                        </li>
-                                                        <li>
-                                                            <span class="mem-img"><img
-                                                                    src="./assets/media/ClosingCheckList/girl2.png"
-                                                                    alt="member-image"></span>
-                                                            <span class="mem-nm">Sara</span>
-                                                        </li>
+                                                        
                                                     </ul>
                                                 </div>
                                             </div>

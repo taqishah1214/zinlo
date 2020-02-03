@@ -37,9 +37,11 @@ export class Checklist extends AppComponentBase implements OnInit {
   updatedAssigneeId: any;
   getTaskForEdit: void;
   userName: string[];
+  plusUserBadgeForHeader : boolean;
   taskId;
   text;
   rowid: number;
+  remainingUserForHeader : any = [];
   constructor(private _router: Router,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector) {
     super(injector)
@@ -125,6 +127,22 @@ export class Checklist extends AppComponentBase implements OnInit {
       });
 
       this.assigniNameForHeader = this.getUnique(this.assigniNameForHeader, "assigneeId")
+      if (this.assigniNameForHeader.length > 5)
+      {
+        var limitedUserNameForHeader = [];
+        for (var i = 0 ; i < 5 ; i++)
+        {
+          limitedUserNameForHeader.push(this.assigniNameForHeader[i])
+
+        }
+        for (let index = 5; index < this.assigniNameForHeader.length; index++) {
+          this.remainingUserForHeader.push(this.assigniNameForHeader[index])   
+        }
+       this.assigniNameForHeader =  limitedUserNameForHeader
+
+        debugger
+          this.plusUserBadgeForHeader = true
+      }
     });
   }
 
