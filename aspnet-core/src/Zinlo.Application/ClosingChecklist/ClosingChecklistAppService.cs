@@ -150,7 +150,18 @@ namespace Zinlo.ClosingChecklist
                 task.AssigneeId = input.AssigneeId;
                 task.DueOn = input.DueOn;
               var result =   _closingChecklistRepository.Update(task);
-                var r = result;
+                //Save Comments
+                if (input.CommentBody.Trim() != "")
+                {
+                    var commentDto = new CreateOrEditCommentDto()
+                    {
+                        Body = input.CommentBody,
+                        Type = CommentTypeDto.ClosingChecklist,
+                        TypeId = input.Id
+                    };
+                    await _commentAppService.Create(commentDto);
+                }
+                //Save Comments list for future use.may
                 if (input.comments != null)
                 {
                     foreach (var item in input.comments)

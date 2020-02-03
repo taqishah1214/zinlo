@@ -24,7 +24,7 @@
             <div class="kt-portlet__body">
                 <div class="row align-items-center">
                     <!--<Primeng-Datatable-Start>-->
-                    <div class="primeng-datatable-container col-12"
+                    <div class="primeng-datatable-container col-12 managment-table"
                          [busyIf]="primengTableHelper.isLoading">
                         <p-table #dataTable
                                      (onLazyLoad)="getTimeManagements($event)"
@@ -44,12 +44,12 @@
                                         <p-sortIcon field="timeManagement.month"></p-sortIcon>
                                     </th>
 
-                                    <th style="width: 150px" pSortableColumn="openDate">
+                                    <th style="width: 375px" pSortableColumn="openDate">
                                         {{l('OpenCloseDate')}}
                                         <p-sortIcon field="timeManagement.openDate"></p-sortIcon>
                                     </th>
                                     
-                                    <th style="width: 150px" pSortableColumn="status">
+                                    <th style="width: 45px" pSortableColumn="status">
                                         {{l('Status')}}
                                         <p-sortIcon field="timeManagement.status"></p-sortIcon>
                                     </th>
@@ -84,14 +84,14 @@
                                         </span>
                                         <span *ngIf="!record.timeManagement.month">-</span>
                                     </td>
-                                    <td style="width:150px">
+                                    <td style="width:375px">
 										<span class="ui-column-title"> {{l('OpenCloseDate')}}</span>
                                         <span *ngIf="record.timeManagement.openDate && record.timeManagement.closeDate">
 											{{record.timeManagement.openDate | momentFormat:'MMM Do YYYY'}} - {{record.timeManagement.closeDate | momentFormat:'MMM Do YYYY'}}
                                         </span>
                                         <span *ngIf="!record.timeManagement.openDate">-</span>
                                     </td>
-                                    <td style="width:150px">
+                                    <td style="width:45px">
                                         <span class="ui-column-title"> {{l('Status')}}</span>
                                         <label class="switch">
                                             <input type="checkbox" [checked]="record.timeManagement.status" (change)="changeStatus(record.timeManagement.id)">

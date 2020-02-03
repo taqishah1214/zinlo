@@ -117,6 +117,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 
   onUpdateTask() {
+    debugger;
     this.checklist.frequency = this.getTaskForEdit.frequencyId;
     this.checklist.closingMonth = this.getTaskForEdit.closingMonth;
     this.checklist.endsOn = this.getTaskForEdit.endsOn;
@@ -131,9 +132,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.id = this.taskId;
     this.checklist.comments = [];
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
-
       this.notify.success(this.l('SavedSuccessfully Updated'));
-      this._router.navigate(['/app/main/TasksCheckList/tasks']);
+      this._router.navigate(['/app/main/checklist']);
     });
   }
 
