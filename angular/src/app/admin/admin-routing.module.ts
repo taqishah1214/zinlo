@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { AuditLogsComponent } from './audit-logs/audit-logs.component';
 import { HostDashboardComponent } from './dashboard/host-dashboard.component';
@@ -17,13 +17,14 @@ import { SubscriptionManagementComponent } from './subscription-management/subsc
 import { TenantsComponent } from './tenants/tenants.component';
 import { UiCustomizationComponent } from './ui-customization/ui-customization.component';
 import { UsersComponent } from './users/users.component';
-
+import { ManagementComponent } from './management/management.component';
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
                 path: '',
                 children: [
+                    { path: 'management', component: ManagementComponent, data: { permission: 'Pages.Administration.TimeManagements' }  },
                     { path: 'users', component: UsersComponent, data: { permission: 'Pages.Administration.Users' } },
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Administration.Roles' } },
                     { path: 'auditLogs', component: AuditLogsComponent, data: { permission: 'Pages.Administration.AuditLogs' } },

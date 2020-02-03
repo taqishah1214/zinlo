@@ -16,6 +16,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public long Id { get; set; }
         public long StatusId { get; set; }
         public long AssigneeId { get; set; }
+        public DateTime CreationTime { get; set; }
     }
 
    

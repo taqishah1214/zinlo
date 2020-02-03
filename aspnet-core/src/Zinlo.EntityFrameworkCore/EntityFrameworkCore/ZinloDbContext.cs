@@ -1,4 +1,5 @@
-﻿using Zinlo.Tests;
+﻿using Zinlo.TimeManagements;
+using Zinlo.Tests;
 using Zinlo.Categories;
 using Abp.IdentityServer4;
 using Abp.Zero.EntityFrameworkCore;
@@ -19,6 +20,8 @@ namespace Zinlo.EntityFrameworkCore
 {
     public class ZinloDbContext : AbpZeroDbContext<Tenant, Role, User, ZinloDbContext>, IAbpPersistedGrantDbContext
     {
+        public virtual DbSet<TimeManagement> TimeManagements { get; set; }
+
         public virtual DbSet<Attachment.Attachment> Attachments { get; set; }
         public virtual DbSet<ClosingChecklist.ClosingChecklist> ClosingChecklists { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
@@ -54,7 +57,12 @@ namespace Zinlo.EntityFrameworkCore
             base.OnModelCreating(modelBuilder);
 
             //Specific for postgresql bellow 3 lines
-            modelBuilder.Entity<ApplicationLanguageText>()
+           
+            modelBuilder.Entity<TimeManagement>(t =>
+            {
+                t.HasIndex(e => new { e.TenantId });
+            });
+ modelBuilder.Entity<ApplicationLanguageText>()
             .Property(p => p.Value)
             .HasMaxLength(100); // any integer that is smaller than 10485760
 

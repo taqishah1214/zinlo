@@ -100,6 +100,17 @@ body.swal2-height-auto {
 .swal2-popup.swal2-toast .swal2-title {
     margin-bottom: 4px !important; 
 }
+
+/*  global styles for tables */
+
+/* body .ui-table .ui-table-thead > tr > th,
+body .ui-table .ui-table-tbody > tr:nth-child(even){
+    background-color: transparent;
+} */
+.kt-user-card-v2 .kt-user-card-v2__pic .kt-badge{
+    margin-right: 10px;
+}
+/*  global styles ends here */
 @keyframes glowing {
     0% {
         opacity: .3;
@@ -118,3 +129,45 @@ body.swal2-height-auto {
     animation: glowing 2s infinite;
 }
 
+.primeng-paging-container .paginator-counter .ui-paginator{
+    background-color: transparent !important;
+    border: 1px solid transparent !important;
+}
+.primeng-paging-container .paginator-counter .ui-inputtext{
+    border: 1px solid transparent;
+    align-items: center;
+}
+.primeng-paging-container .paginator-counter .ui-corner-right{
+    margin-top: 2px;
+    margin-right: 2px;
+}
+.primeng-paging-container .paginator-counter .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active{
+    border-radius: 30px;
+}
+.primeng-paging-container .paginator-counter .ui-dropdown-label {
+    border:1px solid  #a6a6a6; 
+}
+.task-table-inner th{
+    background-color: transparent !important; 
+    font-weight: 500 !important;  
+    color:#575962 !important;
+    width:20%;
+}
+.task-table-inner th:focus{ 
+    color:#8397ff!important;
+    border:1px solid transparent !important;
+    outline:none !important;
+}
+.task-table-inner td{ 
+    width: 20%!important;
+}
+.task-table-inner .task-task-name:focus{ 
+    color:#121213!important;
+    border:1px solid transparent !important;
+    outline:none !important;
+}
+.task-table-inner .task-task-name:active{ 
+    color:#575962!important;
+    border:1px solid transparent !important;
+    outline:none !important;
+}

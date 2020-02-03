@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
-import { CategoriesComponent } from './categories/categories/categories.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PaginatorModule } from 'primeng/paginator';
@@ -20,17 +20,18 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { BsDatepickerModule, BsDatepickerConfig, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';;
-import { CreateOrEditTaskComponent } from './TasksCheckList/create-or-edit-task/create-or-edit-task.component';
-import { TasksComponent } from './TasksCheckList/tasks/tasks.component';
+import { CreateOrEditTaskComponent } from './checklist/create-or-edit-task/create-or-edit-task.component';
 import { CreateOrEditCategoryComponent } from './categories/create-or-edit-category/create-or-edit-category.component'
 import { CategorieDropDownComponent } from './categories/categorie-drop-down/categorie-drop-down.component';;
-import { UserListComponentComponent } from './TasksCheckList/user-list-component/user-list-component.component'
+import { UserListComponentComponent } from './checklist/user-list-component/user-list-component.component'
         ;
-import { TaskDetailsComponent } from './TasksCheckList/task-details/task-details.component'
+import { TaskDetailsComponent } from './checklist/task-details/task-details.component'
 
 import { IgxCalendarModule } from 'igniteui-angular';
 import { UppyAngularModule } from 'uppy-angular';;
-import { StatusComponent } from './TasksCheckList/status/status.component'
+import { StatusComponent } from './checklist/status/status.component';
+import { EditTaskComponent } from './checklist/edit-task/edit-task.component';
+import { Checklist } from './checklist/checklist.component';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -64,12 +65,14 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 CategorieDropDownComponent,
                 DashboardComponent,
                 CreateOrEditTaskComponent,
-                TasksComponent,
+                Checklist,
                 CreateOrEditCategoryComponent,
                 UserListComponentComponent,
                 TaskDetailsComponent
 ,
                 StatusComponent
+,
+                EditTaskComponent
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

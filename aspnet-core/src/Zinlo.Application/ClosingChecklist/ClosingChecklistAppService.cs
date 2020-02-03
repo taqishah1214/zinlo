@@ -16,6 +16,10 @@ using Zinlo.ClosingChecklist.Dtos;
 using System.Collections.Generic;
 using Zinlo.Authorization.Users;
 using Zinlo.ClosingChecklist;
+using Zinlo.Attachments;
+using Zinlo.Attachments.Dtos;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Zinlo.ClosingChecklist
 {
     public class ClosingChecklistAppService : ZinloAppServiceBase, IClosingChecklistAppService
@@ -23,12 +27,16 @@ namespace Zinlo.ClosingChecklist
         private readonly IRepository<ClosingChecklist,long> _closingChecklistRepository;
         private readonly ICommentAppService _commentAppService;
         private readonly IRepository<User,long> _userRepository;
+        //private readonly IAttachmentAppService _attachmentAppService;
+
+
         public ClosingChecklistAppService(IRepository<ClosingChecklist,long> closingChecklistRepository, ICommentAppService commentAppService, IRepository<User,long> userRepository)
         {
             _closingChecklistRepository = closingChecklistRepository;
             _commentAppService = commentAppService;
             _userRepository = userRepository;
-        }
+           // _attachmentAppService = attachmentAppService;
+    }
 
 
         public enum Status
@@ -38,27 +46,28 @@ namespace Zinlo.ClosingChecklist
             Inprogress = 3
         }
 
-        public async Task<PagedResultDto<GetClosingCheckListTaskDto>> GetAll()
+        public async Task<PagedResultDto<GetClosingCheckListTaskDto>> GetAll(GetAllClosingCheckListInput input)
         {
-            var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u=>u.AssigneeName);
-
-            var closingCheckList = from o in query
+            var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u => u.Assignee)
+                                    .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Category.Title.Contains(input.Filter) || e.Category.Title.Contains(input.Filter));
+            var totalCount = await query.CountAsync();
+            var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+            var closingCheckList = from o in pagedAndFilteredTasks
                                    select new GetClosingCheckListTaskDto()
                                    {
                                        ClosingCheckListForViewDto = new ClosingCheckListForViewDto
-                                       {     Id = o.Id,
-                                            AssigneeId = o.AssigneeName.Id,
-                                             StatusId = (int) o.Status,
-                                          AssigniName = o.AssigneeName.FullName,
+                                       { Id = o.Id,
+                                           AssigneeId = o.AssigneeId,
+                                           StatusId = (int)o.Status,
+                                           AssigniName = o.Assignee.FullName,      
                                            TaskName = o.TaskName,
                                            Status =  o.Status.ToString(),
                                            Category =o.Category.Title,
-                                           
-                                          
+                                          CreationTime = o.CreationTime
                                        }
                              };
 
-            var totalCount = await closingCheckList.CountAsync();
+
 
             return new PagedResultDto<GetClosingCheckListTaskDto>(
                 totalCount,
@@ -70,16 +79,16 @@ namespace Zinlo.ClosingChecklist
         public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditClosingChecklistDto input)
         {
 
-            await Create(input);
+          
 
-            /*if (input.Id == null)
+            if (input.Id == 0 || input.Id == null)
             {
                 await Create(input);
             }
             else
             {
                 await Update(input);
-            }*/
+            }
         }
 
         
@@ -96,7 +105,7 @@ namespace Zinlo.ClosingChecklist
             try
             {
                 var checklistId = await _closingChecklistRepository.InsertAndGetIdAsync(task);
-           
+          
             if(input.CommentBody != "")
             {
                 var commentDto = new CreateOrEditCommentDto() {
@@ -106,6 +115,14 @@ namespace Zinlo.ClosingChecklist
                 };
                 await _commentAppService.Create(commentDto);
             }
+           // if (input.AttachmentsPath != null)
+             //   {
+                  //  PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
+                   // postAttachmentsPathDto.FilePath = input.AttachmentsPath;
+                   // postAttachmentsPathDto.TypeId = checklistId;
+                   // postAttachmentsPathDto.Type = 1;
+                    //await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
+               // }
             }
             catch (Exception e)
             {
@@ -117,29 +134,75 @@ namespace Zinlo.ClosingChecklist
         //[AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
         protected virtual async System.Threading.Tasks.Task Update(CreateOrEditClosingChecklistDto input)
         {
-            var category = await _closingChecklistRepository.FirstOrDefaultAsync((int)input.Id);
-            ObjectMapper.Map(input, category);
+            try
+            {
+                var task = await _closingChecklistRepository.FirstOrDefaultAsync((int)input.Id);
+                //   var data = ObjectMapper.Map(input, task);
+                task.TaskName = input.TaskName;
+                task.CategoryId = input.CategoryId;
+                task.NoOfMonths = input.NoOfMonths;
+                task.DayBeforeAfter = input.DayBeforeAfter;
+                task.EndOfMonth = input.EndOfMonth;
+                task.Instruction = input.Instruction;
+                task.ClosingMonth = input.ClosingMonth;
+                task.Status = (Zinlo.ClosingChecklist.Status) input.Status;
+                task.Frequency = (Zinlo.ClosingChecklist.Frequency)input.Frequency;
+                task.AssigneeId = input.AssigneeId;
+                task.DueOn = input.DueOn;
+              var result =   _closingChecklistRepository.Update(task);
+                var r = result;
+                if (input.comments != null)
+                {
+                    foreach (var item in input.comments)
+                    {
+                        var commentDto = new CreateOrEditCommentDto()
+                        {
+                            Body = item.Body,
+                            Type = CommentTypeDto.ClosingChecklist,
+                            TypeId = input.Id
+                        };
+                        if (item.Id == null)
+                        {
+                            await _commentAppService.Create(commentDto);
+                        }
+                        else
+                        {
+                            await _commentAppService.Update(commentDto);
+                        }
+
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error");
+
+            }
+           
+           
+
         }
 
         public async Task<List<NameValueDto<string>>> UserAutoFill(string searchTerm)
         {
-            var filteredAssets = _userRepository.GetAll()
-                .WhereIf(!string.IsNullOrWhiteSpace(searchTerm),
-                    e => true || e.FullName.ToLower().Contains(searchTerm.ToLower()));
-
-
-            var query = (from o in filteredAssets
-
+            List<User> list = await _userRepository.GetAll().ToListAsync();
+            if(!String.IsNullOrEmpty(searchTerm))
+            {
+                list = list.Where(x => x.FullName.ToLower().Contains(searchTerm.Trim().ToLower())).ToList();
+            }
+            else
+            {
+                list = new List<User>();
+            }
+            var query = (from o in list
                          select new NameValueDto<string>()
                          {
                              Name = o.FullName,
                              Value = o.Id.ToString()
-                         });
-
-            var assets = await query.ToListAsync();
-            return assets;
+                         }).ToList();
+            var assets =  query;
+            return assets; 
         }
-
         public async Task<List<NameValueDto<string>>> getUsersDropdown()
         {
             var filteredUsers = _userRepository.GetAll();
@@ -158,7 +221,7 @@ namespace Zinlo.ClosingChecklist
 
         public async Task<DetailsClosingCheckListDto> getDetails(long id)
         {
-            var task = _closingChecklistRepository.GetAll().Include(u=>u.AssigneeName).Where(x => x.Id == id).FirstOrDefault();
+            var task = _closingChecklistRepository.GetAll().Include(u=>u.Assignee).Include(c=>c.Category).Where(x => x.Id == id).FirstOrDefault();
             DetailsClosingCheckListDto detailsClosingCheckListDto = new DetailsClosingCheckListDto();
             detailsClosingCheckListDto.Id = task.Id;
             detailsClosingCheckListDto.TaskName = task.TaskName;
@@ -166,7 +229,14 @@ namespace Zinlo.ClosingChecklist
             detailsClosingCheckListDto.ClosingMonth = task.ClosingMonth;
             detailsClosingCheckListDto.EndsOn = task.EndsOn;
             detailsClosingCheckListDto.DayBeforeAfter = task.DayBeforeAfter;
-            detailsClosingCheckListDto.AssigneeName = task.AssigneeName.Name;
+            detailsClosingCheckListDto.AssigneeName = task.Assignee.Name;
+            detailsClosingCheckListDto.DueOn = task.DueOn;
+            detailsClosingCheckListDto.NoOfMonths = task.NoOfMonths;
+            detailsClosingCheckListDto.Status = (StatusDto)task.Status;
+            detailsClosingCheckListDto.TaskStatus = task.Status.ToString();
+            detailsClosingCheckListDto.Instruction = task.Instruction;
+            detailsClosingCheckListDto.CategoryName = task.Category.Title;
+            detailsClosingCheckListDto.comments = await _commentAppService.GetComments(1, task.Id);
             return detailsClosingCheckListDto;
 
         }
@@ -176,7 +246,7 @@ namespace Zinlo.ClosingChecklist
             var task = await _closingChecklistRepository.FirstOrDefaultAsync(changeAssigneeDto.TaskId);
             if(task != null)
             {
-                task.AssigneeNameId = changeAssigneeDto.AssigneeId;
+                task.AssigneeId = changeAssigneeDto.AssigneeId;
                 _closingChecklistRepository.Update(task);
             }
         }
@@ -191,6 +261,35 @@ namespace Zinlo.ClosingChecklist
             }
         }
 
-      
+        public async Task<GetTaskForEditDto> GetTaskForEdit(long id)
+        {
+            var task = await _closingChecklistRepository.GetAll().Where(x => x.Id == id).Include(a => a.Assignee).Include(a => a.Category).FirstOrDefaultAsync();
+
+            GetTaskForEditDto getTaskForEditDto = new GetTaskForEditDto();
+            getTaskForEditDto.Id = task.Id;
+            getTaskForEditDto.AssigniName = task.Assignee.FullName;
+            getTaskForEditDto.Category = task.Category.Title;
+            getTaskForEditDto.ClosingMonth = task.ClosingMonth;
+            getTaskForEditDto.DayBeforeAfter = task.DayBeforeAfter;
+            getTaskForEditDto.DueOn = task.DueOn;
+            getTaskForEditDto.EndsOn = task.EndsOn;
+            getTaskForEditDto.Frequency = task.Frequency.ToString();
+            getTaskForEditDto.Instruction = task.Instruction;
+            getTaskForEditDto.comments = await _commentAppService.GetComments(1, id);
+            getTaskForEditDto.NoOfMonths = task.NoOfMonths;
+            getTaskForEditDto.TaskName = task.TaskName;
+            getTaskForEditDto.AssigneeId = task.AssigneeId;
+            getTaskForEditDto.CategoryId = task.CategoryId;
+            getTaskForEditDto.FrequencyId = (int)task.Frequency;
+            getTaskForEditDto.Status = task.Status.ToString();
+            getTaskForEditDto.StatusId = (int)task.Status;
+            return getTaskForEditDto;
+        }
+
+        public async Task Delete(long id)
+        {
+            await _closingChecklistRepository.DeleteAsync(id);
+        }
+
     }
 }

@@ -1,4 +1,6 @@
-﻿using Zinlo.Categories.Dtos;
+﻿using Zinlo.TimeManagements.Dtos;
+using Zinlo.TimeManagements;
+using Zinlo.Categories.Dtos;
 using Zinlo.Tests;
 using Zinlo.Categories;
 using Abp.Application.Editions;
@@ -39,6 +41,8 @@ using Zinlo.Organizations.Dto;
 using Zinlo.Sessions.Dto;
 using Zinlo.Comment.Dtos;
 using Zinlo.Tasks.Dtos;
+using Zinlo.ClosingChecklist.Dtos;
+using Zinlo.Attachments.Dtos;
 
 namespace Zinlo
 {
@@ -46,6 +50,8 @@ namespace Zinlo
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
+            configuration.CreateMap<CreateOrEditTimeManagementDto, TimeManagement>().ReverseMap();
+            configuration.CreateMap<TimeManagementDto, TimeManagement>().ReverseMap();
             
            
            
@@ -147,11 +153,18 @@ namespace Zinlo
             /* ADD YOUR OWN CUSTOM AUTOMAPPER MAPPINGS HERE */
             //Closing checklist
             configuration.CreateMap<CreateOrEditClosingChecklistDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
-         
+            configuration.CreateMap<Comment.Comment, CommentDto>().ReverseMap();
+
+            //Attachment
+            configuration.CreateMap<Attachment.Attachment, AttachmentsDto>().ReverseMap();
+
 
             //Category
             configuration.CreateMap<CategoryDto, Category>().ReverseMap();
             configuration.CreateMap<CreateOrEditCategoryDto, Category>().ReverseMap();
+
+            //Comment
+            configuration.CreateMap<CommentDto, Comment.Comment>().ReverseMap();
         }
     }
 }

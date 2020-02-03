@@ -1,0 +1,13 @@
+<div class="kt-datatable__cell ">
+
+    <button class="btn btn-primary dropdown-toggle drop_down_class" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{StatusList}}
+    </button>
+    <div class="dropdown-menu drop_down_class"  aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" (click)="ChangeStatus(1)" >Open</a>
+        <a class="dropdown-item" (click)="ChangeStatus(2)" >Complete</a>
+        <a class="dropdown-item" (click)="ChangeStatus(3)" >Inprogress</a>
+    </div>
+</div>
+
+

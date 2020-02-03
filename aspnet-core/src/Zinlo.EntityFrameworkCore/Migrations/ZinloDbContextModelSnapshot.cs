@@ -1152,9 +1152,9 @@ namespace Zinlo.Migrations
 
             modelBuilder.Entity("Zinlo.Attachment.Attachment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("CreationTime")
@@ -1166,14 +1166,11 @@ namespace Zinlo.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("text");
 
-                    b.Property<int>("TenantId")
+                    b.Property<int>("Type")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TypeId")
-                        .HasColumnType("integer");
+                    b.Property<long>("TypeId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1480,11 +1477,8 @@ namespace Zinlo.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("AssigneeNameId")
+                    b.Property<long>("AssigneeId")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("Attachment")
-                        .HasColumnType("text");
 
                     b.Property<long>("CategoryId")
                         .HasColumnType("bigint");
@@ -1545,7 +1539,7 @@ namespace Zinlo.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssigneeNameId");
+                    b.HasIndex("AssigneeId");
 
                     b.HasIndex("CategoryId");
 
@@ -1870,6 +1864,41 @@ namespace Zinlo.Migrations
                     b.ToTable("AppBinaryObjects");
                 });
 
+            modelBuilder.Entity("Zinlo.TimeManagements.TimeManagement", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CloseDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Month")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("OpenDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("TimeManagements");
+                });
+
             modelBuilder.Entity("Zinlo.Editions.SubscribableEdition", b =>
                 {
                     b.HasBaseType("Abp.Application.Editions.Edition");
@@ -2071,9 +2100,9 @@ namespace Zinlo.Migrations
 
             modelBuilder.Entity("Zinlo.ClosingChecklist.ClosingChecklist", b =>
                 {
-                    b.HasOne("Zinlo.Authorization.Users.User", "AssigneeName")
+                    b.HasOne("Zinlo.Authorization.Users.User", "Assignee")
                         .WithMany()
-                        .HasForeignKey("AssigneeNameId")
+                        .HasForeignKey("AssigneeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

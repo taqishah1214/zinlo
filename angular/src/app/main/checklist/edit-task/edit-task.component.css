@@ -1,0 +1,37 @@
+.eom-radio {
+    margin-top: 60px;
+}
+.form-group{
+    position: relative;
+}
+.igx-calender{
+    position: absolute;
+    z-index: 1;
+    top: 80px;
+    box-shadow: 0 0 20px #ccc;
+    width: 180px;
+    height: 170px;
+    overflow: auto;
+}
+.duplicate_box {
+    margin-left: 75px;
+    margin-top: 50px
+}
+.commentViewBox {
+    margin-left: 50px;
+}
+.commentmainView {
+    border: 1px solid #e2e5ec;
+    margin-top: 20px;
+    max-height: 300px;
+    overflow-x: hidden
+}
+.giveCommentView {
+    margin-top: 20px;
+}
+.drop_down_class {
+    width: 175px;
+}
+.drop_down_arrow {
+    margin-left: 135px;
+}

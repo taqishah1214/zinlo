@@ -1,0 +1,142 @@
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="kt-portlet" id="kt_portlet">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Task Details
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <a href="javascript: void(0);" (click)="BackToTaskList()">
+                            <i class="la la-arrow-left"></i>
+                            Back
+                        </a>
+                    </div>
+                </div>
+                <div class="kt-portlet__body">
+
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>{{taskDetailObject.taskName}}</h5>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    Category <span
+                                        class="badge badge-secondary bagesTextColor">{{taskDetailObject.categoryName}}</span>
+                                    Closing Month <span
+                                        class="badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth | date:'MMM:y'}}</span>
+                                    Due By <span
+                                        class="badge badge-secondary bagesTextColor">{{taskDetailObject.endsOn | date:'d,MMMM, y'}}</span>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div innerHTML="{{taskDetailObject.instruction}} "></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5">
+                                    <select class="form-control input-medium">
+                                        <option value="January">Comments</option>
+                                        <option value="Febuary">History</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div *ngFor="let comm of taskDetailObject.comments" class="col comment-section mt-5">
+                                    <div class="row comment-wrapper border-bottom pb-3 mb-3">
+                                        <img alt="photo" class="col-2" src="assets/media/users/100_10.jpg">
+                                        <div class="col-10 comments-text d-flex mb-4">
+                                            <h5 class="col-6 p-0 text-left">{{comm.userName}}</h5>
+                                            <h5 class="col-6 p-0 text-right">{{comm.daysCount}}</h5>
+                                        </div>
+                                         <div class="col" innerHTML="{{comm.body}}"></div> 
+
+                                    </div>
+                                </div>
+                               
+
+
+                            </div>
+                            <div class="form-group giveCommentView" *ngIf="commantBox">
+                                <label >Comments</label>
+                                <div (click)="commentClick()" >
+                                    <div class="kt-user-card-v2">
+                                        <div class="kt-user-card-v2__pic">
+                                            <div class="kt-badge kt-badge--xl kt-badge--warning">{{userSignInName}}</div>
+                                        </div>
+                                        <input class="form-control">
+                                    </div>  
+                                </div>
+                            </div>
+
+                            <div class="form-group " *ngIf="!commantBox">
+                                <label >Comments</label>
+                                <p-editor name="HtmlEditorInput"
+                                    [style]="{'height':'150px'}">
+                                </p-editor>
+                                <button class="btn btn-brand" (click)="onComment()">Comment</button>
+                                <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <!-- <select class="form-control input-medium"
+                                        (change)="closingMonthSelect($event.target.value)">
+                                        <option value="January">Ihsan</option>
+                                        <option value="Febuary">Imad</option>
+
+                                    </select> -->
+
+                                    <app-user-list-component></app-user-list-component>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <!-- <select class="form-control input-medium"
+                                        (change)="closingMonthSelect($event.target.value)">
+                                        <option value="January">InProgress</option>
+                                        <option value="Febuary">Complete</option>
+                                    </select> -->
+                                    <div class="">
+                                        <app-status [StatusList] = taskDetailObject.taskStatus ></app-status>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <a class="btn" href="javascript:;"
+                                                    (click)="deleteTask()">
+                                                    <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+                                    <!-- <i class="fa fa-trash" style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                                    <i class="fas fa-edit" (click)="RedirectToEditTaskPage()"
+                                        style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <i class="fa fa-clone" aria-hidden="true"></i>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="drag_drop_box">
+                                        <label>Attachments</label>
+                                        <ng-uppy [config]="settings" ></ng-uppy>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>

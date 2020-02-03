@@ -40,7 +40,6 @@ namespace Zinlo.Categories
 
         public async Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input)
         {
-
             var filteredCategories = _categoryRepository.GetAll()
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Title.Contains(input.Filter) || e.Description.Contains(input.Filter))
                         .WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter), e => e.Title == input.TitleFilter)
@@ -48,22 +47,20 @@ namespace Zinlo.Categories
 
             var pagedAndFilteredCategories = filteredCategories.OrderBy(input.Sorting ?? "id asc").PageBy(input);
 
-
-            var categories = from o in pagedAndFilteredCategories
+            var categories = (from o in pagedAndFilteredCategories
                              select new GetCategoryForViewDto()
                              {
                                  Category = new CategoryDto
                                  {
                                      Id = o.Id,
                                      UserId = o.CreatorUserId,
-                                     CreatedBy = _userRepository.GetAll().Where(x => x.Id == o.CreatorUserId).FirstOrDefault().Name,
+                                     CreatedBy = _userRepository.GetAll().Where(x => x.Id == o.CreatorUserId).FirstOrDefault().FullName,
                                      CreationDate = o.CreationTime,
                                      Title = o.Title,
                                      Description = o.Description,
-
                                  }
 
-                             };
+                             });
 
 
             var totalCount = await filteredCategories.CountAsync();

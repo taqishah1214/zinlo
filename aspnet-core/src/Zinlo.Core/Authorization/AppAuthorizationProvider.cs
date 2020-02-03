@@ -47,6 +47,14 @@ namespace Zinlo.Authorization
 
             var administration = pages.CreateChildPermission(AppPermissions.Pages_Administration, L("Administration"));
 
+            var timeManagements = administration.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements, L("Management"), multiTenancySides: MultiTenancySides.Tenant);
+            timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Create, L("DefineClosingMonth"), multiTenancySides: MultiTenancySides.Tenant);
+            //timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Edit, L("EditTimeManagement"), multiTenancySides: MultiTenancySides.Tenant);
+            //timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Delete, L("DeleteTimeManagement"), multiTenancySides: MultiTenancySides.Tenant);
+            timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Status, L("ChangeStatus"), multiTenancySides: MultiTenancySides.Tenant);
+
+
+
             var roles = administration.CreateChildPermission(AppPermissions.Pages_Administration_Roles, L("Roles"));
             roles.CreateChildPermission(AppPermissions.Pages_Administration_Roles_Create, L("CreatingNewRole"));
             roles.CreateChildPermission(AppPermissions.Pages_Administration_Roles_Edit, L("EditingRole"));

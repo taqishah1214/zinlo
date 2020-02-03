@@ -1,0 +1,222 @@
+<div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+    <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
+        <section class="zinlo-records">
+            <div class="custom-container">
+                <div class="card">
+                    <div class="record-card-header">
+                        <div class="record-card-header-top border-bottom-grey">
+                            <div class="record-card-header-top-inner1">
+                                <img src="./assets/media/ClosingCheckList/clipboard.svg" alt="clipboard">
+                                <h6>Checklist</h6>
+                            </div>
+                            <div class="record-card-header-top-inner2">
+                                <button (click)="RedirectToCreateTask()" type="button" class="btn bg-blue text-white">+
+                                    Add new</button>
+                            </div>
+                        </div>
+                        <div class="record-card-header-bottom">
+                            <div class="record-card-header-bottom-inner1">
+                                <button class="btn arrow-btn left-arrow-btn btn-square">
+                                    <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
+                                </button>
+                                <button class="btn arrow-btn right-arrow-btn btn-square">
+                                    <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
+                                </button>
+                                <h5>January 2020</h5>
+                            </div>
+                            <div class="record-card-header-bottom-inner2">
+                                <div class="upper-content">
+                                    <form class="search-form">
+                                        <div class="form-group">
+                                            <input type="text" name="search" placeholder="Search" class="border-grey">
+                                        </div>
+                                    </form>
+                                    <div class="users-box-parent">
+                                        <div class="users-box">
+                                            <div class="member-count bg-lightgrey text-blue">
+                                                <span>+3</span>
+                                                <div class="member-dropdown">
+                                                    <ul>
+                                                        <li>
+                                                            <span class="mem-img"><img
+                                                                    src="./assets/media/ClosingCheckList/girl2.png"
+                                                                    alt="member-image"></span>
+                                                            <span class="mem-nm">Sara</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="mem-img"><img
+                                                                    src="./assets/media/ClosingCheckList/girl2.png"
+                                                                    alt="member-image"></span>
+                                                            <span class="mem-nm">Sara</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="mem-img"><img
+                                                                    src="./assets/media/ClosingCheckList/girl2.png"
+                                                                    alt="member-image"></span>
+                                                            <span class="mem-nm">Sara</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+
+                                            <div *ngFor="let i of assigniNameForHeader "
+                                                (click)="GetUserTasks(i.assigneeId)" class="user-image-box">
+                                                <div class="user-image bg-sea-green text-white">
+                                                    <span>{{i.nameAvatar}}</span>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="date-picker">
+                                        <button class="btn btn-light"><img
+                                                src="./assets/media/ClosingCheckList/calendar.svg" alt="calender">
+                                            january 2020</button>
+                                    </div>
+                                    <div class="dropdown-btn-box">
+                                        <button (click)="openFilterClick()" class="btn btn-square"><img
+                                                src="./assets/media/ClosingCheckList/filter.png" alt="filter"></button>
+                                    </div>
+                                </div>
+                                <div *ngIf="FilterBoxOpen" class="lower-content">
+                                    <form>
+                                        <div class="form-group">
+                                            <select class="form-control border-grey" id="exampleFormControlSelect1">
+                                                <option>Status</option>
+                                                <option>option2</option>
+                                                <option>option3</option>
+                                                <option>option4</option>
+                                                <option>option5</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control border-grey" id="exampleFormControlSelect2">
+                                                <option>Category</option>
+                                                <option>option2</option>
+                                                <option>option3</option>
+                                                <option>option4</option>
+                                                <option>option5</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control border-grey" id="exampleFormControlSelect3">
+                                                <option>Date</option>
+                                                <option>option2</option>
+                                                <option>option3</option>
+                                                <option>option4</option>
+                                                <option>option5</option>
+                                            </select>
+                                        </div>
+                                        <div class="block-btn">
+                                            <button class="btn btn-square bg-lightgrey">
+                                                <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="primeng-paging-container">
+                        <div class="">
+
+                            <!--<Primeng-TurboTable-Start>-->
+                            <div class="task-table" [busyIf]="primengTableHelper.isLoading">
+                                <p-table #dataTable class=" record-table"
+                                    (onLazyLoad)="getClosingCheckListAllTasks($event)"
+                                    [value]="primengTableHelper.records"
+                                    rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                    [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                    [responsive]="primengTableHelper.isResponsive"
+                                    [resizableColumns]="primengTableHelper.resizableColumns">
+                                    <ng-template pTemplate="header">
+                                        <tr class="task-table-inner">
+                                            <th scope="col" pSortableColumn="CreationTime">
+                                                Date
+                                                <p-sortIcon field="CreationTime"></p-sortIcon>
+                                            </th>
+                                            <th scope="col" class="task-task-name">Task Name</th>
+                                            <th scope="col" pSortableColumn="CategoryId">
+                                                Category
+                                                <p-sortIcon field="CategoryId"></p-sortIcon>
+                                            </th>
+                                            <th scope="col" pSortableColumn="Status">
+                                                Status
+                                                <p-sortIcon field="Status"></p-sortIcon>
+                                            </th>
+                                            <th scope="col" pSortableColumn="AssigneeId">
+                                                Assignee
+                                                <p-sortIcon field="AssigneeId"></p-sortIcon>
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+
+                            </div>
+                            <!--<Primeng-TurboTable-End>-->
+                            <table class="table record-table">
+                                <tbody>
+                                    <tr >
+                                    <tr *ngFor="let i of ClosingCheckList" class="task-table-inner">
+
+                                        <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
+                                           
+                                            <span class="task-box">{{i.closingCheckListForViewDto.creationTime | date:'EEE  MMMM d'}}</span>
+                                        </td>
+                                        <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
+                                            <span class="task-box">{{i.closingCheckListForViewDto.taskName}}</span>
+                                        </td>
+                                        <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
+                                            <span
+                                                class="category-name bg-lightgrey">{{i.closingCheckListForViewDto.category}}</span>
+                                        </td>
+                                        <td>
+                                            <form class="task-report-form">
+                                                <select onclick="console.log('test')"
+                                                    (change)="ChangeStatus($event.target.value,i.closingCheckListForViewDto.id)"
+                                                    class="form-control border-0 {{i.closingCheckListForViewDto.StatusColor}} text-white">
+                                                    <option value="" selected disabled hidden>
+                                                        {{i.closingCheckListForViewDto.status}}</option>
+                                                    <option value="1">Open</option>
+                                                    <option value="2">Complete</option>
+                                                    <option value="3">Inprogress</option>
+                                                </select>
+                                            </form>
+                                        </td>
+                                        <td> 
+                                            <div *ngIf="i.closingCheckListForViewDto.id != rowid" class="assignee-info" (click)="openFieldUpdateAssignee(i.closingCheckListForViewDto.id)">
+                                                <span class="assignee-image bg-sea-green">{{i.closingCheckListForViewDto.NameAvatar}}</span>
+                                                <span class="assignee-name">{{i.closingCheckListForViewDto.assigniName}}</span>
+                                            </div>
+                                            <div *ngIf="i.closingCheckListForViewDto.id == rowid" >
+                                                <p-autoComplete placeholder="Search..." [(ngModel)]="i.text" [suggestions]="userName" (completeMethod)="onSearchUsers($event)" 
+                                                (keyup.enter)="addInput(i)" [forceSelection]="true" required></p-autoComplete>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                </tbody>
+                            </table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                            <div class="pagination-block">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getClosingCheckListAllTasks($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                    class="paginator-counter">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

@@ -1,7 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <localizationDictionary culture="en">
-  <texts>
+  <texts>    <text name="TimeManagements">Time managements</text>
+    <text name="TimeManagement">Time management</text>
+    <text name="OpenDate">Open date</text>
+    <text name="CloseDate">Close date</text>
+    <text name="OpenCloseDate">Open/Close date</text>
+    <text name="DefineOpenClose">Define Open/Close</text>
+    <text name="SelectMonth">Select Month</text>
+    <text name="Month">Month</text>
+    <text name="DefineClosingMonth">Define Closing Month</text>
+    <text name="NotStatus">Not status</text>
+    <text name="TimeManagementsHeaderInfo">Time managements header info</text>
+    <text name="CreateNewTimeManagement">Create new time management</text>
+    <text name="EditTimeManagement">Edit time management</text>
+    <text name="DeleteTimeManagement">Delete time management</text>
+    <text name="OpenDateRange">Open date range</text>
+    <text name="CloseDateRange">Close date range</text>
+    <text name="MonthRange">Month range</text>
+    <text name="Management">Management</text>
+    <text name="ThisMonthIsAlreadyDefined">This month is already defined.</text>
+
     <text name="Tests">Tests</text>
+    <text name="CreateNew">Create new</text>
     <text name="Test">Test</text>
     <text name="TestsHeaderInfo">Tests header info</text>
     <text name="CreateNewTest">Create new test</text>

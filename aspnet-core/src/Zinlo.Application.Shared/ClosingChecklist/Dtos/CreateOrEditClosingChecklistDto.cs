@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Zinlo.Attachments.Dtos;
+using Zinlo.Comment.Dtos;
 
 namespace Zinlo.Tasks.Dtos
 {
@@ -9,11 +11,10 @@ namespace Zinlo.Tasks.Dtos
     {
         public virtual string TaskName { get; set; }
         public virtual long CategoryId { get; set; }
-        public virtual long AssigneeNameId { get; set; }
+        public virtual long AssigneeId { get; set; }
         public virtual DateTime ClosingMonth { get; set; }
         public StatusDto Status { get; set; }
         public int TenantId { get; set; }
-        public string Attachment { get; set; }
         public string Instruction { get; set; }
         public int NoOfMonths { get; set; }
         public int DueOn { get; set; }
@@ -22,6 +23,10 @@ namespace Zinlo.Tasks.Dtos
         public bool EndOfMonth { get; set; }
         public FrequencyDto Frequency { get; set; }
         public string CommentBody { get; set; }
+        public List<CommentDto> comments { get; set; }
+        public List<string> AttachmentsPath { get; set; }
+
+
     }
     public enum StatusDto
     {

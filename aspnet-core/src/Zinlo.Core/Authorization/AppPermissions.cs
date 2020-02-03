@@ -6,6 +6,12 @@
     /// </summary>
     public static class AppPermissions
     {
+        public const string Pages_Administration_TimeManagements = "Pages.Administration.TimeManagements";
+        public const string Pages_Administration_TimeManagements_Create = "Pages.Administration.TimeManagements.Create";
+        public const string Pages_Administration_TimeManagements_Edit = "Pages.Administration.TimeManagements.Edit";
+        public const string Pages_Administration_TimeManagements_Delete = "Pages.Administration.TimeManagements.Delete";
+        public const string Pages_Administration_TimeManagements_Status = "Pages.Administration.TimeManagements.Status";
+
 
         public const string Pages_Tasks = "Pages.Tasks";
         public const string Pages_Tasks_Create = "Pages.Tasks.Create";
