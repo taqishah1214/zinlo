@@ -105,7 +105,7 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     });
   }
   RedirectToList(): void {
-    this._router.navigate(['/app/main/TasksCheckList/tasks']);
+    this._router.navigate(['/app/main/checklist']);
   }
   commentClick(): void {
     this.commantModal = true;
