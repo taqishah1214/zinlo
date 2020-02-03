@@ -58,7 +58,7 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     this.closingMonthInputBox = true;
     this.closingMonthModalBox = false;
   }
-  BackToTaskList(): void {
+  backToTaskList(): void {
     this._router.navigate(['/app/main/checklist']);
   }
   EndofMonthSelected(): void {
