@@ -170,7 +170,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   }
 
   RedirectToCreateTask(): void {
-    this._router.navigate(['/app/main/checklist/create-or-edit-task']);
+    this._router.navigate(['/app/main/checklist/createtask']);
   }
 
   RedirectToDetail(recordId): void {
