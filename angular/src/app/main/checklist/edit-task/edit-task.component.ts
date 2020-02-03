@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 })
 export class EditTaskComponent extends AppComponentBase implements OnInit {
   parentassigneName;
+  endOnIsEnabled:boolean = true;
+
   SelectedCategory;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto()
   commantBox: boolean
@@ -57,6 +59,12 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
 
       this.frequencyId = this.getTaskForEdit.frequency;
+      if(this.frequencyId == "5"){
+        this.endOnIsEnabled = false;
+      }
+      else{
+        this.endOnIsEnabled = true;
+      }
       this.getTaskForEdit.closingMonth = moment().startOf('day');
       this.getTaskForEdit.endsOn = moment().startOf('day');
       this.assigneeId = this.getTaskForEdit.assigneeId;

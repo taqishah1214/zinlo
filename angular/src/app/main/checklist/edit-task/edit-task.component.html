@@ -23,21 +23,16 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Category</label>
-                                        <select [(ngModel)]="getTaskForEdit.categoryId" id="categories" name="categories" class="form-control input-medium select2-search select2-search--inline"  >
+                                        <select (change)="routerEvent(value)" [(ngModel)]="getTaskForEdit.categoryId" id="categories" name="categories" class="form-control input-medium select2-search select2-search--inline"  >
                                             <option  *ngFor="let item of category;" 
                                             [value]="item.value">
                                                 {{item.name}}
                                             </option>
-                                            <div class="divider dropdown-divider"></div>
-                                            <a class="dropdown-item" href="" (click)="addNew()">Addnew</a>
-                                        
-                                            <!-- <option>
-                                            <button (click)="addNew()" type="button">Addnew</button>
-                                            </option> -->
+                                            <option [value]="-1">
+                                                <button class="btn btn-primary" >+AddNew</button>
+                                            </option>
                                         </select>   
                                     </div>
-                                     
-                                    <!-- <app-categorie-drop-down [SelectedCategory] = getTaskForEdit.categoryId ></app-categorie-drop-down> -->
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -108,13 +103,6 @@
 
                                         </div>
                                     </div>
-
-                                    
-
-
-
-
-
                                     <div class="form-group giveCommentView" *ngIf="!commantBox">
                                         <label >Comments</label>
                                         <div (click)="commentClick()" >
@@ -161,6 +149,8 @@
                                             <option value="2">Quarterly</option>
                                             <option value="3">Annually</option>
                                             <option value="4">XNumberOfMonths</option>
+                                            <option value="5">None</option>
+
 
                                         </select>
                                     </div>
@@ -202,7 +192,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>No of Months</label>
-                                        <input type="text" name="noOfMonths" class="form-control bsDatepicker" [(ngModel)]="getTaskForEdit.noOfMonths" >
+                                        <input type="text" name="noOfMonths" class="form-control bsDatepicker" [(ngModel)]="getTaskForEdit.noOfMonths" [disabled]="enableValue == true">
                                     </div>
                                     <div class="form-group">
                                         <label>Days Before</label>
@@ -220,7 +210,9 @@
                                     <div class="form-group">
                                         <label>Ends on</label>
                                         <form class="container">
-                                            <input [(ngModel)]="getTaskForEdit.endsOn._d" autocomplete="off" class="form-control" name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}" (onShown)="onOpenCalendar($event)">
+                                            <input [(ngModel)]="getTaskForEdit.endsOn._d" autocomplete="off" class="form-control" name="date" 
+                                            bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}" (onShown)="onOpenCalendar($event)"
+                                            [disabled]="endOnIsEnabled == true">
                                             </form>
                                     </div>
                                     <div class="kt-radio-list eom-radio">

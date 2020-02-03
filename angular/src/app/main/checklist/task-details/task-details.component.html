@@ -65,8 +65,30 @@
 
                                     </div>
                                 </div>
+                               
+
+
+                            </div>
+                            <div class="form-group giveCommentView" *ngIf="commantBox">
+                                <label >Comments</label>
+                                <div (click)="commentClick()" >
+                                    <div class="kt-user-card-v2">
+                                        <div class="kt-user-card-v2__pic">
+                                            <div class="kt-badge kt-badge--xl kt-badge--warning">{{userSignInName}}</div>
+                                        </div>
+                                        <input class="form-control">
+                                    </div>  
+                                </div>
                             </div>
 
+                            <div class="form-group " *ngIf="!commantBox">
+                                <label >Comments</label>
+                                <p-editor name="HtmlEditorInput"
+                                    [style]="{'height':'150px'}">
+                                </p-editor>
+                                <button class="btn btn-brand" (click)="onComment()">Comment</button>
+                                <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                            </div>
                         </div>
                         <div class="col-md-5">
                             <div class="row">
@@ -88,7 +110,7 @@
                                         <option value="Febuary">Complete</option>
                                     </select> -->
                                     <div class="">
-                                        <!-- <app-status [StatusList] = taskDetailObject.taskStatus ></app-status> -->
+                                        <app-status [StatusList] = taskDetailObject.taskStatus ></app-status>
                                         
                                     </div>
                                 </div>
