@@ -38,6 +38,7 @@ using Zinlo.Configure;
 using Zinlo.Schemas;
 using Zinlo.Web.HealthCheck;
 using HealthChecksUISettings = HealthChecks.UI.Configuration.Settings;
+using Zinlo.Attachments;
 
 namespace Zinlo.Web.Startup
 {
@@ -63,7 +64,7 @@ namespace Zinlo.Web.Startup
             }).AddNewtonsoftJson();
 
             services.AddSignalR(options => { options.EnableDetailedErrors = true; });
-
+            services.AddTransient<IAttachmentAppService, AttachmentsAppService>();
             //Configure CORS for angular2 UI
             services.AddCors(options =>
             {

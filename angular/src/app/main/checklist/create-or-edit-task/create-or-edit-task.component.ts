@@ -27,6 +27,7 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
   endOnIsEnabled:boolean = true;
   SelectionMsg: string = "";
   attachmentPaths : any = [];
+  newAttachementPath : string[]=[];
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -87,12 +88,14 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     this.checklist.status = 1
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
-    // debugger;
-    // if (this.attachmentPaths != null)
-    // {
-    //  this.checklist.attachmentsPath = this.attachmentPaths;
-    // }
-
+    if (this.attachmentPaths != null)
+    {
+      this.attachmentPaths.forEach(element => {
+        this.newAttachementPath.push(element.toString())
+      });
+    
+      this.checklist.attachmentsPath = this.newAttachementPath;
+    }
     if (this.checklist.noOfMonths != undefined && this.checklist.noOfMonths != null) {
       this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
     }
