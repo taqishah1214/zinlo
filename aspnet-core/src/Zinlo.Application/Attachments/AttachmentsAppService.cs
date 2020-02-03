@@ -39,7 +39,7 @@ namespace Zinlo.Attachments
                 {
                     await file.CopyToAsync(fc);
                 }
-                var filePath = "http://localhost:22742/Uploads-Attachments/" + file.FileName;
+                var filePath = "Uploads-Attachments/" + file.FileName;
                 finalFilePath.Add(filePath);
             }
            
@@ -48,9 +48,10 @@ namespace Zinlo.Attachments
 
         public async Task PostAttachmentsPath(PostAttachmentsPathDto input)
         {
-            Attachment.Attachment attachment = new Attachment.Attachment();
+            
             foreach (var item in input.FilePath)
             {
+                Attachment.Attachment attachment = new Attachment.Attachment();
                 attachment.FilePath = item;
                 attachment.TypeId = input.TypeId;
                 attachment.Type =(AttachmentType)input.Type;

@@ -38,6 +38,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   assigneeId: any;
   status: number;
   public userId: number;
+  active =false;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
 
   constructor(private _categoryService: CategoriesServiceProxy, injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy,private _router: Router) {
@@ -50,6 +51,10 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.commantBox = false;
     this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
     this.taskId = history.state.data.id;
+    this.getTaskForEdit =  new GetTaskForEditDto();
+    this.getTaskForEdit.closingMonth = moment().startOf('day');
+      this.getTaskForEdit.endsOn = moment().startOf('day');
+    this.active = true;
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
       console.log("gettaskforedit", this.getTaskForEdit)
@@ -57,8 +62,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
 
       this.frequencyId = this.getTaskForEdit.frequency;
-      this.getTaskForEdit.closingMonth = moment().startOf('day');
-      this.getTaskForEdit.endsOn = moment().startOf('day');
       this.assigneeId = this.getTaskForEdit.assigneeId;
       this.parentassigneName = result;
       this.categoryId = this.getTaskForEdit.categoryId;

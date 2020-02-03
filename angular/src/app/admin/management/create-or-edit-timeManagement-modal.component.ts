@@ -35,10 +35,6 @@ export class CreateOrEditTimeManagementModalComponent extends AppComponentBase {
         };
         container.setViewMode('month');
       }
-    onChange() {
-        debugger
-        abp.event.trigger('app.dashboardFilters.dateRangePicker.onDateChange', this.selectedDateRange);
-      }
     show(timeManagementId?: number): void {
 
         if (!timeManagementId) {

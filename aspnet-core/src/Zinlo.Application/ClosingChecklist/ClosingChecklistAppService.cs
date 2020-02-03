@@ -115,14 +115,14 @@ namespace Zinlo.ClosingChecklist
                 };
                 await _commentAppService.Create(commentDto);
             }
-           // if (input.AttachmentsPath != null)
-             //   {
-                  //  PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
-                   // postAttachmentsPathDto.FilePath = input.AttachmentsPath;
-                   // postAttachmentsPathDto.TypeId = checklistId;
-                   // postAttachmentsPathDto.Type = 1;
-                    //await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
-               // }
+                if (input.AttachmentsPath != null)
+                {
+                    PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
+                    postAttachmentsPathDto.FilePath = input.AttachmentsPath;
+                    postAttachmentsPathDto.TypeId = checklistId;
+                    postAttachmentsPathDto.Type = 1;
+                    await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
+                }
             }
             catch (Exception e)
             {
