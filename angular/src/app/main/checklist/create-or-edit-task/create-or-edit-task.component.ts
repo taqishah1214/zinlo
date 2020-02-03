@@ -27,6 +27,7 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
   endOnIsEnabled:boolean = true;
   SelectionMsg: string = "";
   attachmentPaths : any = [];
+  newattachmentPaths : string[] = [];
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -68,6 +69,18 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     this.checklist.endOfMonth = false;
   }
   onCreateTask(): void {
+
+
+    if (this.attachmentPaths != null)
+    {
+
+      this.attachmentPaths.forEach(i => {
+        var temp =  i.toString()
+        this.newattachmentPaths.push(temp)
+
+      });
+    }
+    this.checklist.attachmentsPath=this.newattachmentPaths;
     if (this.checklist.dayBeforeAfter) {
       this.checklist.dayBeforeAfter = true;
     }
@@ -87,12 +100,7 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     this.checklist.status = 1
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
-    // debugger;
-    // if (this.attachmentPaths != null)
-    // {
-    //  this.checklist.attachmentsPath = this.attachmentPaths;
-    // }
-
+    
     if (this.checklist.noOfMonths != undefined && this.checklist.noOfMonths != null) {
       this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
     }
@@ -130,6 +138,7 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
   }
 
   fileUploadedResponse(value) : void {
+    console.log("value",value)
     var response = value.successful
     response.forEach(i => {
   
@@ -137,7 +146,6 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     });
     this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
     
-   
   }
 
   onChange(val) {
