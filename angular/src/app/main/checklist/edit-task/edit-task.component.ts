@@ -39,6 +39,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   userName: string[];
   assigneeId: any;
   status: number;
+  active =false;
   public userId: number;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
 
@@ -52,6 +53,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.commantBox = false;
     this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
     this.taskId = history.state.data.id;
+    this.getTaskForEdit = new GetTaskForEditDto();
+    this.active = true;
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
       console.log("gettaskforedit", this.getTaskForEdit)
