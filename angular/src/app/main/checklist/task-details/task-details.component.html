@@ -45,7 +45,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-5">
-                                    <select class="form-control input-medium">
+                                    <select class="form-control input-medium"
+                                        (change)="closingMonthSelect($event.target.value)">
                                         <option value="January">Comments</option>
                                         <option value="Febuary">History</option>
                                     </select>
@@ -64,8 +65,30 @@
 
                                     </div>
                                 </div>
+                               
+
+
+                            </div>
+                            <div class="form-group giveCommentView" *ngIf="commantBox">
+                                <label >Comments</label>
+                                <div (click)="commentClick()" >
+                                    <div class="kt-user-card-v2">
+                                        <div class="kt-user-card-v2__pic">
+                                            <div class="kt-badge kt-badge--xl kt-badge--warning">{{userSignInName}}</div>
+                                        </div>
+                                        <input class="form-control">
+                                    </div>  
+                                </div>
                             </div>
 
+                            <div class="form-group " *ngIf="!commantBox">
+                                <label >Comments</label>
+                                <p-editor name="HtmlEditorInput"
+                                    [style]="{'height':'150px'}">
+                                </p-editor>
+                                <button class="btn btn-brand" (click)="onComment()">Comment</button>
+                                <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                            </div>
                         </div>
                         <div class="col-md-5">
                             <div class="row">
@@ -87,13 +110,13 @@
                                         <option value="Febuary">Complete</option>
                                     </select> -->
                                     <div class="">
-                                        <!-- <app-status [StatusList] = taskDetailObject.taskStatus ></app-status> -->
+                                        <app-status [StatusList] = taskDetailObject.taskStatus ></app-status>
                                         
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <a class="btn" href="javascript:;"
-                                                    (click)="deleteTask()">
+                                                    (click)="deleteTask(taskDetailObject.id)">
                                                     <i class="fa fa-trash" style="color: #5867dd;"></i></a>
                                     <!-- <i class="fa fa-trash" style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
                                     <i class="fas fa-edit" (click)="RedirectToEditTaskPage()"
@@ -106,7 +129,7 @@
                                 <div class="col-md-12">
                                     <div class="drag_drop_box">
                                         <label>Attachments</label>
-                                        <ng-uppy [config]="settings" ></ng-uppy>
+                                        <ng-uppy [config]="settings" (onFileUpload)="onFileUpload($event)"></ng-uppy>
                                     </div>
                                 </div>
 

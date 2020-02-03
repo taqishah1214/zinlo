@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 })
 export class EditTaskComponent extends AppComponentBase implements OnInit {
   parentassigneName;
+  endOnIsEnabled:boolean = true;
+
   SelectedCategory;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto()
   commantBox: boolean
@@ -38,7 +40,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   assigneeId: any;
   status: number;
   public userId: number;
-  active =false;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
 
   constructor(private _categoryService: CategoriesServiceProxy, injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy,private _router: Router) {
@@ -51,10 +52,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.commantBox = false;
     this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
     this.taskId = history.state.data.id;
-    this.getTaskForEdit =  new GetTaskForEditDto();
-    this.getTaskForEdit.closingMonth = moment().startOf('day');
-      this.getTaskForEdit.endsOn = moment().startOf('day');
-    this.active = true;
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
       console.log("gettaskforedit", this.getTaskForEdit)
@@ -62,6 +59,14 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
 
       this.frequencyId = this.getTaskForEdit.frequency;
+      if(this.frequencyId == "5"){
+        this.endOnIsEnabled = false;
+      }
+      else{
+        this.endOnIsEnabled = true;
+      }
+      this.getTaskForEdit.closingMonth = moment().startOf('day');
+      this.getTaskForEdit.endsOn = moment().startOf('day');
       this.assigneeId = this.getTaskForEdit.assigneeId;
       this.parentassigneName = result;
       this.categoryId = this.getTaskForEdit.categoryId;
@@ -120,7 +125,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 
   onUpdateTask() {
-    debugger;
     this.checklist.frequency = this.getTaskForEdit.frequencyId;
     this.checklist.closingMonth = this.getTaskForEdit.closingMonth;
     this.checklist.endsOn = this.getTaskForEdit.endsOn;
@@ -135,8 +139,9 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.id = this.taskId;
     this.checklist.comments = [];
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
+
       this.notify.success(this.l('SavedSuccessfully Updated'));
-      this._router.navigate(['/app/main/checklist']);
+      this._router.navigate(['/app/main/checklist/tasks']);
     });
   }
 

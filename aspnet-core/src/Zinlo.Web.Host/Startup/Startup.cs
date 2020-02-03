@@ -38,7 +38,6 @@ using Zinlo.Configure;
 using Zinlo.Schemas;
 using Zinlo.Web.HealthCheck;
 using HealthChecksUISettings = HealthChecks.UI.Configuration.Settings;
-using Zinlo.Attachments;
 
 namespace Zinlo.Web.Startup
 {
@@ -62,8 +61,6 @@ namespace Zinlo.Web.Startup
             {
                 options.Filters.Add(new AbpAutoValidateAntiforgeryTokenAttribute());
             }).AddNewtonsoftJson();
-            services.AddTransient<IAttachmentAppService, AttachmentsAppService>();
-
 
             services.AddSignalR(options => { options.EnableDetailedErrors = true; });
 

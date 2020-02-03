@@ -158,7 +158,7 @@
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
                                             <input type="radio" value="true" name="radioButton"
-                                                (change)="handleRadioChange()"
+                                                (change)="handleRadioChange($event.target.value)"
                                                 [(ngModel)]="checklist.endOfMonth">End of month
                                             <span></span>
                                         </label>

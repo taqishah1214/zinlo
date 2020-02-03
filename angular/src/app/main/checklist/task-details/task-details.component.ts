@@ -13,6 +13,8 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
  taskObject : any;
  taskDetailObject :any;
  recordId : number = 0;
+ commantBox: boolean;
+
   constructor(
     injector: Injector,
     private _router: Router,
@@ -22,8 +24,20 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
      }
 
   ngOnInit() {
+    this.commantBox = true;
+
      this.recordId = history.state.data.id;
      this.getTaskDetails(this.recordId);
+  }
+  commentClick(): void {
+    this.commantBox = false;
+  }
+
+  onComment(): void {
+    this.commantBox = true;
+  }
+  onCancelComment(): void {
+    this.commantBox = true;
   }
 
   RedirectToEditTaskPage() : void {

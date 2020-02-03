@@ -34,7 +34,6 @@ import { EditTaskComponent } from './checklist/edit-task/edit-task.component';
 import { Checklist } from './checklist/checklist.component';
 
 
-
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
 @NgModule({
@@ -73,11 +72,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 ,
                 StatusComponent
 ,
-                EditTaskComponent,
-               
-        ],
-        exports : [
-               
+                EditTaskComponent
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

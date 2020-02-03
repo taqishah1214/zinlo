@@ -1513,6 +1513,11 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
+"@yaireo/tagify@^3.2.6":
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-3.2.6.tgz#2acdc813c49d3b59593044b79d1e17ccd07e2d25"
+  integrity sha512-IfLDoz/SEQw/0OzMWam9GoT5pqVfm4tvSl3J5eHJMGg1YcRR2Me4TKksxZHnVBpzODFq0abUKDUel8p7d55NJA==
+
 "@yarnpkg/lockfile@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"

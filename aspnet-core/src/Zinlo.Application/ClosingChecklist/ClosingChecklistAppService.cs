@@ -27,15 +27,15 @@ namespace Zinlo.ClosingChecklist
         private readonly IRepository<ClosingChecklist,long> _closingChecklistRepository;
         private readonly ICommentAppService _commentAppService;
         private readonly IRepository<User,long> _userRepository;
-        private readonly IAttachmentAppService _attachmentAppService;
+        //private readonly IAttachmentAppService _attachmentAppService;
 
 
-        public ClosingChecklistAppService(IRepository<ClosingChecklist,long> closingChecklistRepository, ICommentAppService commentAppService, IRepository<User,long> userRepository, IAttachmentAppService attachmentAppService)
+        public ClosingChecklistAppService(IRepository<ClosingChecklist,long> closingChecklistRepository, ICommentAppService commentAppService, IRepository<User,long> userRepository)
         {
             _closingChecklistRepository = closingChecklistRepository;
             _commentAppService = commentAppService;
             _userRepository = userRepository;
-           _attachmentAppService = attachmentAppService;
+           // _attachmentAppService = attachmentAppService;
     }
 
 
@@ -115,14 +115,14 @@ namespace Zinlo.ClosingChecklist
                 };
                 await _commentAppService.Create(commentDto);
             }
-                if (input.AttachmentsPath != null)
-                {
-                    PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
-                    postAttachmentsPathDto.FilePath = input.AttachmentsPath;
-                    postAttachmentsPathDto.TypeId = checklistId;
-                    postAttachmentsPathDto.Type = 1;
-                    await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
-                }
+           // if (input.AttachmentsPath != null)
+             //   {
+                  //  PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
+                   // postAttachmentsPathDto.FilePath = input.AttachmentsPath;
+                   // postAttachmentsPathDto.TypeId = checklistId;
+                   // postAttachmentsPathDto.Type = 1;
+                    //await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
+               // }
             }
             catch (Exception e)
             {
@@ -150,18 +150,7 @@ namespace Zinlo.ClosingChecklist
                 task.AssigneeId = input.AssigneeId;
                 task.DueOn = input.DueOn;
               var result =   _closingChecklistRepository.Update(task);
-                //Save Comments
-                if (input.CommentBody.Trim() != "")
-                {
-                    var commentDto = new CreateOrEditCommentDto()
-                    {
-                        Body = input.CommentBody,
-                        Type = CommentTypeDto.ClosingChecklist,
-                        TypeId = input.Id
-                    };
-                    await _commentAppService.Create(commentDto);
-                }
-                //Save Comments list for future use.may
+                var r = result;
                 if (input.comments != null)
                 {
                     foreach (var item in input.comments)
