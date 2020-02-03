@@ -108,9 +108,9 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.ClosingCheckList = result.items;
       this.ClosingCheckList.forEach(i => {
 
-        var a = i.closingCheckListForViewDto.assigniName[0].toUpperCase();
-        var b = i.closingCheckListForViewDto.assigniName.substr(i.closingCheckListForViewDto.assigniName.indexOf(' ') + 1)[0].toUpperCase();
-        i.closingCheckListForViewDto["NameAvatar"] = a + b;
+        var firstCharacterForAvatar = i.closingCheckListForViewDto.assigniName[0].toUpperCase();
+        var lastCharacterForAvatar = i.closingCheckListForViewDto.assigniName.substr(i.closingCheckListForViewDto.assigniName.indexOf(' ') + 1)[0].toUpperCase();
+        i.closingCheckListForViewDto["NameAvatar"] = firstCharacterForAvatar + lastCharacterForAvatar;
         if (i.closingCheckListForViewDto.status === "Inprogress") {
           i.closingCheckListForViewDto["StatusColor"] = this.StatusColorBox[0]
         }
