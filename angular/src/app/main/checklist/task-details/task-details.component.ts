@@ -45,7 +45,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   }
 
   BackToTaskList(): void {
-    this._router.navigate(['/app/main/TasksCheckList/tasks']);
+    this._router.navigate(['/app/main/checklist/tasks']);
   }
 getTaskDetails(id) : void{
 

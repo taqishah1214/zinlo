@@ -7,11 +7,11 @@ import { IgxMonthPickerComponent } from "igniteui-angular";
 import { UppyConfig } from 'uppy-angular';
 import { AppComponentBase } from '@shared/common/app-component-base';
 @Component({
-  selector: 'app-create-or-edit-task',
-  templateUrl: './create-or-edit-task.component.html',
-  styleUrls: ['./create-or-edit-task.component.css']
+  selector: 'app-createtask',
+  templateUrl: './createtask.component.html',
+  styleUrls: ['./createtask.component.css']
 })
-export class CreateOrEditTaskComponent extends AppComponentBase implements OnInit {
+export class CreatetaskComponent extends AppComponentBase implements OnInit {
   categories: any;
   Email: string;
   taskName: string;
@@ -24,9 +24,11 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
   closingMonthModalBox: boolean;
   userSignInName: string;
   enableValue: boolean = false;
-  endOnIsEnabled:boolean = true;
+  endOnIsEnabled: boolean = true;
   SelectionMsg: string = "";
-  attachmentPaths : any = [];
+  attachmentPaths: any = [];
+  newAttachementPath: string[] = [];
+  public isChecked :boolean = false;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -43,6 +45,7 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     this.closingMonthInputBox = true;
     this.closingMonthModalBox = false;
     this.enableValue = false;
+    this.isChecked = true;
   }
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
@@ -87,25 +90,23 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     this.checklist.status = 1
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
-    // debugger;
-    // if (this.attachmentPaths != null)
-    // {
-    //  this.checklist.attachmentsPath = this.attachmentPaths;
-    // }
+    if (this.attachmentPaths != null) {
+      this.attachmentPaths.forEach(element => {
+        this.newAttachementPath.push(element.toString())
+      });
 
+      this.checklist.attachmentsPath = this.newAttachementPath;
+    }
     if (this.checklist.noOfMonths != undefined && this.checklist.noOfMonths != null) {
       this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
     }
     else {
       this.checklist.noOfMonths = 0;
     }
-   this._closingChecklistService.createOrEdit(this.checklist).subscribe(() => {
-      this.RedirectToList();
+    this._closingChecklistService.createOrEdit(this.checklist).subscribe(() => {
+      this.backToTaskList();
       this.notify.success(this.l('SavedSuccessfully'));
     });
-  }
-  RedirectToList(): void {
-    this._router.navigate(['/app/main/TasksCheckList/tasks']);
   }
   commentClick(): void {
     this.commantModal = true;
@@ -129,23 +130,22 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     }
   }
 
-  fileUploadedResponse(value) : void {
+  fileUploadedResponse(value): void {
     var response = value.successful
     response.forEach(i => {
-  
-      this.attachmentPaths.push(i.response.body.result);  
+
+      this.attachmentPaths.push(i.response.body.result);
     });
     this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
-    
-   
+
+
   }
 
   onChange(val) {
-    if(val == 5)
-    {
+    if (val == 5) {
       this.endOnIsEnabled = false;
     }
-    else{
+    else {
       this.endOnIsEnabled = true;
     }
     if (val == 4) {
@@ -157,6 +157,7 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
   }
   onValueChange() {
     this.checklist.endOfMonth = false;
+    this.isChecked = true;
   }
   handleChange() {
   }
@@ -164,8 +165,10 @@ export class CreateOrEditTaskComponent extends AppComponentBase implements OnIni
     this.checklist.dayBeforeAfter = null;
     this.checklist.dueOn = 0;
     this.SelectionMsg = "";
+    this.isChecked = false;
   }
   onDaysClick(valu) {
+    this.isChecked = true;
     if (valu == "true") {
       this.SelectionMsg = "Days Before";
     }

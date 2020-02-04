@@ -30,7 +30,8 @@ import { IgxCalendarModule } from 'igniteui-angular';
 import { UppyAngularModule } from 'uppy-angular';
 import { StatusComponent } from './checklist/status/status.component';
 import { EditTaskComponent } from './checklist/edit-task/edit-task.component';
-import { Checklist } from './checklist/checklist.component';
+import { Checklist } from './checklist/checklist.component';;
+import { CreatetaskComponent } from './checklist/createtask/createtask.component'
 import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';
 
 
@@ -65,7 +66,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 CategoriesComponent,
                 CategorieDropDownComponent,
                 DashboardComponent,
-                CreateOrEditTaskComponent,
+                
                 Checklist,
                 CreateOrEditCategoryComponent,
                 UserListComponentComponent,
