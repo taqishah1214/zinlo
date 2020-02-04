@@ -20,7 +20,6 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { BsDatepickerModule, BsDatepickerConfig, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';;
-import { CreateOrEditTaskComponent } from './checklist/create-or-edit-task/create-or-edit-task.component';
 import { CreateOrEditCategoryComponent } from './categories/create-or-edit-category/create-or-edit-category.component';
 import { CategorieDropDownComponent } from './categories/categorie-drop-down/categorie-drop-down.component';
 import { UserListComponentComponent } from './checklist/user-list-component/user-list-component.component';
@@ -66,7 +65,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 CategoriesComponent,
                 CategorieDropDownComponent,
                 DashboardComponent,
-                
+                CreatetaskComponent,
                 Checklist,
                 CreateOrEditCategoryComponent,
                 UserListComponentComponent,
