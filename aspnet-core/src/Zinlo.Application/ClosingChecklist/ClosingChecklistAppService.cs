@@ -53,8 +53,10 @@ namespace Zinlo.ClosingChecklist
             var totalCount = await query.CountAsync();
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var closingCheckList = from o in pagedAndFilteredTasks
+                                   
                                    select new GetClosingCheckListTaskDto()
                                    {
+
                                        ClosingCheckListForViewDto = new ClosingCheckListForViewDto
                                        { Id = o.Id,
                                            AssigneeId = o.AssigneeId,
