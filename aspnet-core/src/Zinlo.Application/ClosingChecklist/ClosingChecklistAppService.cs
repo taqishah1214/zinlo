@@ -55,19 +55,18 @@ namespace Zinlo.ClosingChecklist
             query = query.Where(x => x.CreationTime.Month == DateTime.Today.Month && x.CreationTime.Year == DateTime.Today.Year);
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var closingCheckList = from o in pagedAndFilteredTasks
+
                                    select new ClosingCheckListForViewDto()
-                                   {
-                                     //  ClosingCheckListForViewDto = new ClosingCheckListForViewDto
-                                        Id = o.Id,
+                                   {                                     
+                                           Id = o.Id,
                                            AssigneeId = o.AssigneeId,
                                            StatusId = (int)o.Status,
-                                           AssigniName = o.Assignee.FullName,      
+                                           AssigniName = o.Assignee.FullName,
                                            TaskName = o.TaskName,
-                                           Status =  o.Status.ToString(),
-                                           Category =o.Category.Title,
-                                          CreationTime = o.CreationTime
-                                       
-                             };
+                                           Status = o.Status.ToString(),
+                                           Category = o.Category.Title,
+                                           CreationTime = o.CreationTime                                      
+                                   };
             var result = await closingCheckList.ToListAsync();
            var response= result.GroupBy(x => x.CreationTime.Date).Select(x => new TasksGroup
             {

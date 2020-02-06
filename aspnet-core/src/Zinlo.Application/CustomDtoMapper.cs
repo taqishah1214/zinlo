@@ -162,6 +162,10 @@ namespace Zinlo
             //Category
             configuration.CreateMap<CategoryDto, Category>().ReverseMap();
             configuration.CreateMap<CreateOrEditCategoryDto, Category>().ReverseMap();
+            configuration.CreateMap<GetCategoryForViewDto, Category>().ReverseMap()
+                .ForMember(dto=>dto.UserId, entity=> entity.MapFrom(p=>p.CreatorUserId))
+                .ForMember(dto=>dto.CreationDate, entity=> entity.MapFrom(p=>p.CreationTime))
+                ;
 
             //Comment
             configuration.CreateMap<CommentDto, Comment.Comment>().ReverseMap();

@@ -6,7 +6,7 @@ import { Table } from 'primeng/components/table/table';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import * as _ from 'lodash';
-import { CategoriesServiceProxy, CategoryDto } from '@shared/service-proxies/service-proxies';
+import { CategoriesServiceProxy } from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -78,13 +78,13 @@ export class CategoriesComponent extends AppComponentBase {
         this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: this.recordid } } });
     }
 
-    deleteCategory(category: CategoryDto): void {
+    deleteCategory(id: number): void {
         this.message.confirm(
             '',
             this.l('AreYouSure'),
             (isConfirmed) => {
                 if (isConfirmed) {
-                    this._categoriesServiceProxy.delete(category.id)
+                    this._categoriesServiceProxy.delete(id)
                         .subscribe(() => {
                             this.reloadPage();
                             this.notify.success(this.l('SuccessfullyDeleted'));
