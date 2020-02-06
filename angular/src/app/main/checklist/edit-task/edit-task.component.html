@@ -73,12 +73,12 @@
                                         </div>
                                     </div>
 
-                                    <div class="kt-portlet__body commentmainView">
+                                    <div class="commentmainView show-comments">
                                         <div class="kt-widget3 ">
 
 
                                             <div *ngFor="let i of comment" class="kt-widget3__item ">
-                                                <div class="kt-widget3__header">
+                                                <div class="comments-header kt-widget3__header">
                                                     <div class="kt-widget3__user-img">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div class="kt-badge kt-badge--xl kt-badge--warning">{{i.NameAvatar}}</div>
@@ -178,7 +178,7 @@
                                     <div class="form-group">
                                         <label>Status</label>
                                         <div class="kt-datatable__cell ">
-                                            <button class="btn btn-primary dropdown-toggle drop_down_class" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <button class="text-left custom-d-btn btn btn-primary dropdown-toggle drop_down_class" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 {{getTaskForEdit.status}}
                                             </button>
                                             <div class="dropdown-menu drop_down_class"  aria-labelledby="dropdownMenuButton">

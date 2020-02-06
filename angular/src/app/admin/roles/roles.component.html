@@ -1,3 +1,12 @@
+<style>
+/* .categories-table .ui-table .ui-table-thead > tr > th,  */
+.roles-table .ui-table .ui-table-tbody > tr:nth-child(even),
+.roles-table .ui-table .ui-table-tbody > tr:nth-child(odd) {
+    background-color: transparent;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+</style>
 <div [@routerTransition]>
     <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
         <div class="kt-subheader kt-grid__item">
@@ -39,7 +48,7 @@
                     </div>
                     <div class="row align-items-center">
                         <!--<Primeng-TurboTable-Start>-->
-                        <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <div class="roles-table col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
                             <p-table #dataTable (onLazyLoad)="getRoles()" [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [responsive]="primengTableHelper.isResponsive">
