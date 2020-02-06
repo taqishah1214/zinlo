@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { UppyConfig } from 'uppy-angular';
-import { ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy,AttachmentsServiceProxy, PostAttachmentsPathDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 
 @Component({
@@ -14,11 +14,16 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
  taskDetailObject :any;
  recordId : number = 0;
  commantBox: boolean;
+ attachments : any;
+ newAttachmentPaths : any =[]
+ postAttachment: PostAttachmentsPathDto = new PostAttachmentsPathDto();
+
 
   constructor(
     injector: Injector,
     private _router: Router,
-    private _closingChecklistService: ClosingChecklistServiceProxy
+    private _closingChecklistService: ClosingChecklistServiceProxy,
+    private _attachmentService : AttachmentsServiceProxy
     ) {
       super(injector);
      }
@@ -51,16 +56,63 @@ getTaskDetails(id) : void{
 
    this._closingChecklistService.getDetails(id).subscribe(result=>{
    this.taskDetailObject = result;
-   console.log(this.taskDetailObject);
-
+   
+   this.attachments = result.attachments;
+   this.attachments.forEach(element => {
+    var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("#"));
+    element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
+    element["attachmentName"] = attachmentName
+    });
    });
 }
+
+fileUploadedResponse(value) :void {
+
+  
+  var response = value.successful
+  response.forEach(i => {
+    var resp = i.response.body.result
+    this.newAttachmentPaths.push(resp.toString());
+  });
+
+  this.postAttachment.filePath = this.newAttachmentPaths;
+  this.postAttachment.typeId = this.recordId;
+  this.postAttachment.type = 1;
+  debugger;
+  this._attachmentService.postAttachmentsPath(this.postAttachment).subscribe(response => {
+    this.notify.success(this.l('Attachment is successfully Uploaded'));
+    this.getTaskDetails(this.recordId);
+  })
+}
+
+deleteAttachment(id) : void {
+  this.message.confirm(
+    '',
+    this.l('AreYouSure'),
+    (isConfirmed) => {
+        if (isConfirmed) {
+            this._attachmentService.deleteAttachmentPath(id)
+                .subscribe(() => {
+                    this.notify.success(this.l('Attachment is successfully removed'));
+                    this.getTaskDetails(this.recordId);
+                   
+                });
+        }
+    }
+);
+
+}
+
+getExtensionImagePath(str){
+
+ var extension =  str.split('.')[1];
+   extension = extension+".png";
+  return extension;
+}
+
   settings: UppyConfig = {
     uploadAPI: {
-      endpoint: ``,
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('userToken')
-      }
+      endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",
     },
     plugins: {
       Webcam: false
