@@ -19,3 +19,5 @@ aspnet-core/src/Zinlo.Web.Public/healthchecksdb
 aspnet-core/src/Zinlo.Web.Mvc/healthchecksdb
 **/appsettings.*
 **/appconfig.*
+
+robots.txt

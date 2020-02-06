@@ -1,9 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
-using Zinlo.Categories.Exporting;
 using Zinlo.Categories.Dtos;
 using Zinlo.Dto;
 using Abp.Application.Services.Dto;
@@ -12,6 +12,7 @@ using Abp.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Zinlo.Authorization.Users;
+using Zinlo.Authorization.Users.Profile;
 
 namespace Zinlo.Categories
 {
@@ -20,16 +21,15 @@ namespace Zinlo.Categories
     {
         private readonly IRepository<Category, long> _categoryRepository;
         private readonly UserManager _userManager;
-        private readonly IRepository<User, long> _userRepository;
-        private readonly ICategoriesExcelExporter _categoriesExcelExporter;
+        private readonly IProfileAppService _profileAppService;
 
 
-        public CategoriesAppService(IRepository<Category, long> categoryRepository, ICategoriesExcelExporter categoriesExcelExporter, UserManager userManager, IRepository<User, long> userRepository)
+
+        public CategoriesAppService(IRepository<Category, long> categoryRepository, UserManager userManager, IRepository<User, long> userRepository, IProfileAppService profileAppService)
         {
             _categoryRepository = categoryRepository;
-            _categoriesExcelExporter = categoriesExcelExporter;
             _userManager = userManager;
-            _userRepository = userRepository;
+            _profileAppService = profileAppService;
         }
         private string GetUserNameById(long UserId)
         {
@@ -45,29 +45,19 @@ namespace Zinlo.Categories
                         .WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter), e => e.Title == input.TitleFilter)
                         .WhereIf(!string.IsNullOrWhiteSpace(input.DescriptionFilter), e => e.Description == input.DescriptionFilter);
 
-            var pagedAndFilteredCategories = filteredCategories.OrderBy(input.Sorting ?? "id asc").PageBy(input);
-
-            var categories = (from o in pagedAndFilteredCategories
-                             select new GetCategoryForViewDto()
-                             {
-                                 Category = new CategoryDto
-                                 {
-                                     Id = o.Id,
-                                     UserId = o.CreatorUserId,
-                                     CreatedBy = _userRepository.GetAll().Where(x => x.Id == o.CreatorUserId).FirstOrDefault().FullName,
-                                     CreationDate = o.CreationTime,
-                                     Title = o.Title,
-                                     Description = o.Description,
-                                 }
-
-                             });
-
+            var pagedAndFilteredCategories = filteredCategories.OrderBy(input.Sorting ?? "id asc").PageBy(input).ToList();
 
             var totalCount = await filteredCategories.CountAsync();
-
+            var mappedData = ObjectMapper.Map<List<GetCategoryForViewDto>>(pagedAndFilteredCategories);
+            foreach (var data in mappedData)
+            {
+                var userDetail = UserManager.GetUserById((long) data.UserId);
+                data.CreatedBy = userDetail.FullName;
+                data.ProfilePicture = userDetail.ProfilePictureId.HasValue ? "data:image/jpeg;base64,"+_profileAppService.GetProfilePictureById((Guid) userDetail.ProfilePictureId).Result.ProfilePicture : "";
+            }
             return new PagedResultDto<GetCategoryForViewDto>(
                 totalCount,
-                await categories.ToListAsync()
+                 mappedData
             );
         }
 
@@ -75,7 +65,7 @@ namespace Zinlo.Categories
         {
             var category = await _categoryRepository.GetAsync(id);
 
-            var output = new GetCategoryForViewDto { Category = ObjectMapper.Map<CategoryDto>(category) };
+            var output = ObjectMapper.Map<GetCategoryForViewDto>(category);
 
             return output;
         }

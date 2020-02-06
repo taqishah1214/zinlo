@@ -8307,6 +8307,62 @@ export class ProfileServiceProxy {
     }
 
     /**
+     * @param userId (optional) 
+     * @return Success
+     */
+    getProfilePictureByUserId(userId: number | undefined): Observable<GetProfilePictureOutput> {
+        let url_ = this.baseUrl + "/api/services/app/Profile/GetProfilePictureByUserId?";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProfilePictureByUserId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProfilePictureByUserId(<any>response_);
+                } catch (e) {
+                    return <Observable<GetProfilePictureOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetProfilePictureOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProfilePictureByUserId(response: HttpResponseBase): Observable<GetProfilePictureOutput> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetProfilePictureOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetProfilePictureOutput>(<any>null);
+    }
+
+    /**
      * @param profilePictureId (optional) 
      * @param userId (optional) 
      * @param tenantId (optional) 
@@ -13923,15 +13979,16 @@ export interface IEntityDtoOfString {
     id: string | undefined;
 }
 
-export class CategoryDto implements ICategoryDto {
+export class GetCategoryForViewDto implements IGetCategoryForViewDto {
     title!: string | undefined;
     description!: string | undefined;
     creationDate!: moment.Moment;
     createdBy!: string | undefined;
     userId!: number | undefined;
+    profilePicture!: string | undefined;
     id!: number;
 
-    constructor(data?: ICategoryDto) {
+    constructor(data?: IGetCategoryForViewDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -13947,53 +14004,8 @@ export class CategoryDto implements ICategoryDto {
             this.creationDate = data["creationDate"] ? moment(data["creationDate"].toString()) : <any>undefined;
             this.createdBy = data["createdBy"];
             this.userId = data["userId"];
+            this.profilePicture = data["profilePicture"];
             this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): CategoryDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CategoryDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["title"] = this.title;
-        data["description"] = this.description;
-        data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
-        data["createdBy"] = this.createdBy;
-        data["userId"] = this.userId;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface ICategoryDto {
-    title: string | undefined;
-    description: string | undefined;
-    creationDate: moment.Moment;
-    createdBy: string | undefined;
-    userId: number | undefined;
-    id: number;
-}
-
-export class GetCategoryForViewDto implements IGetCategoryForViewDto {
-    category!: CategoryDto;
-
-    constructor(data?: IGetCategoryForViewDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.category = data["category"] ? CategoryDto.fromJS(data["category"]) : <any>undefined;
         }
     }
 
@@ -14006,13 +14018,25 @@ export class GetCategoryForViewDto implements IGetCategoryForViewDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["category"] = this.category ? this.category.toJSON() : <any>undefined;
+        data["title"] = this.title;
+        data["description"] = this.description;
+        data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["userId"] = this.userId;
+        data["profilePicture"] = this.profilePicture;
+        data["id"] = this.id;
         return data; 
     }
 }
 
 export interface IGetCategoryForViewDto {
-    category: CategoryDto;
+    title: string | undefined;
+    description: string | undefined;
+    creationDate: moment.Moment;
+    createdBy: string | undefined;
+    userId: number | undefined;
+    profilePicture: string | undefined;
+    id: number;
 }
 
 export class PagedResultDtoOfGetCategoryForViewDto implements IPagedResultDtoOfGetCategoryForViewDto {

@@ -1,8 +1,17 @@
-﻿namespace Zinlo.Categories.Dtos
+﻿using System;
+using Abp.Application.Services.Dto;
+
+namespace Zinlo.Categories.Dtos
 {
-    public class GetCategoryForViewDto
+    public class GetCategoryForViewDto : EntityDto<long>
     {
-		public CategoryDto Category { get; set; }
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+        public DateTime CreationDate { get; set; }
+        public string CreatedBy { get; set; }
+        public long? UserId { get; set; }
+        public string ProfilePicture { get; set; }
 
 
     }

@@ -27,8 +27,9 @@
                             <div class="row align-items-center mb-4">
                                 <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
                                     <div class="kt-input-icon kt-input-icon--left">
-                                        <input (input)="getCategories()" [(ngModel)]="filterText" name="filterText" autoFocus
-                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <input (input)="getCategories()" [(ngModel)]="filterText" name="filterText"
+                                            autoFocus class="form-control m-input"
+                                            [placeholder]="l('SearchWithThreeDot')" type="text">
                                         <span class="kt-input-icon__icon kt-input-icon__icon--left">
                                             <span><i class="la la-search"></i></span>
                                         </span>
@@ -40,7 +41,8 @@
 
                     <div class="row align-items-center">
                         <!--<Primeng-TurboTable-Start>-->
-                        <div class="categories-table primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <div class="categories-table primeng-datatable-container"
+                            [busyIf]="primengTableHelper.isLoading">
                             <p-table #dataTable (onLazyLoad)="getCategories($event)"
                                 [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
@@ -53,63 +55,72 @@
                                             {{'Title' | localize}}
                                             <p-sortIcon field="title"></p-sortIcon>
                                         </th>
-                                     
+
                                         <th>
                                             Description
-                                            
-                                         </th> 
-                                         <th pSortableColumn="CreationTime">
+
+                                        </th>
+                                        <th pSortableColumn="CreationTime">
                                             Created On
-                                             <p-sortIcon field="CreationTime"></p-sortIcon>
-                                         </th> 
-                                        
-                                         <th pSortableColumn="CreatorUserId">
+                                            <p-sortIcon field="CreationTime"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="CreatorUserId">
                                             Created By
-                                             <p-sortIcon field="CreatorUserId"></p-sortIcon>
-                                         </th>
-                                        
-                                        
-                                        <th [hidden]="!(['Pages.Categories.Edit', 'Pages.Categories.Delete'] | permissionAny)">Actions</th>
+                                            <p-sortIcon field="CreatorUserId"></p-sortIcon>
+                                        </th>
+
+
+                                        <th
+                                            [hidden]="!(['Pages.Categories.Edit', 'Pages.Categories.Delete'] | permissionAny)">
+                                            Actions</th>
                                     </tr>
 
 
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit">
                                     <tr>
-                                      
+
                                         <td style="width: 20%">
                                             <span class="ui-column-title"> {{'UserName' | localize}}</span>
-                                            {{record.category.title}}
+                                            {{record.title}}
                                         </td>
                                         <td style="width: 20%">
                                             <span class="ui-column-title"> {{'Name' | localize}}</span>
-                                            {{record.category.description}}
+                                            {{record.description}}
                                         </td>
                                         <td style="width: 20%">
                                             <span class="ui-column-title"> {{'Name' | localize}}</span>
                                             <!-- {{record.category.creationDate | date:'MMM d, y, h:mm a'}} -->
-                                            {{record.category.creationDate | momentFormat:'L'}}
+                                            {{record.creationDate | momentFormat:'L'}}
                                         </td>
-                                       
+
                                         <td data-field="OrderID" class="kt-datatable__cell"><span>
                                                 <div class="kt-user-card-v2">
                                                     <div class="kt-user-card-v2__pic">
-                                                        <div class="kt-badge kt-badge--xl kt-badge--primary">N</div>
+                                                        <div  *ngIf="record.profilePicture" class="kt-badge kt-badge--xl">
+                                                            <img
+                                                            class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                            alt="Pic" [src]="record.profilePicture">
+                                                        </div>
+                                                        
+                                                        <div  *ngIf="!record.profilePicture"class="kt-badge kt-badge--xl kt-badge--primary">{{record.createdBy | firstLetterOfWords}}</div>
                                                     </div>
                                                     <div class="kt-user-card-v2__details"> <span
                                                             class="kt-user-card-v2__name">
-                                                            {{record.category.createdBy}}</span> </div>
+                                                            {{record.createdBy}}</span> </div>
                                                 </div>
                                             </span>
                                         </td>
-                                        <td [hidden]="!(['Pages.Categories.Edit', 'Pages.Categories.Delete'] | permissionAny)">
+                                        <td
+                                            [hidden]="!(['Pages.Categories.Edit', 'Pages.Categories.Delete'] | permissionAny)">
                                             <div class="btn-group">
 
-                                                <a *ngIf="'Pages.Categories.Edit' | permission" class="btn" href="javascript:;"
-                                                    (click)="editCategory(record.category.id)">
+                                                <a *ngIf="'Pages.Categories.Edit' | permission" class="btn"
+                                                    href="javascript:;" (click)="editCategory(record.id)">
                                                     <i class="fas fa-edit" style="color: #5867dd;"></i></a>
-                                                <a *ngIf="'Pages.Categories.Delete' | permission" class="btn" href="javascript:;"
-                                                    (click)="deleteCategory(record.category)">
+                                                <a *ngIf="'Pages.Categories.Delete' | permission" class="btn"
+                                                    href="javascript:;" (click)="deleteCategory(record.id)">
                                                     <i class="fa fa-trash" style="color: #5867dd;"></i></a>
 
 
