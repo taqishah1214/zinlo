@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto ,ChangeAssigneeDto} from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
@@ -29,7 +29,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   FilterBoxOpen: boolean;
   public rowId: number = 0;
   changeStatus: ChangeStatusDto = new ChangeStatusDto();
-  changeAssigniDto : ChangeAssigneeDto = new ChangeAssigneeDto();
+  changeAssigniDto: ChangeAssigneeDto = new ChangeAssigneeDto();
   assigniNameForHeader: any = [];
   newArray: any = [];
   assigneeId: any;
@@ -37,7 +37,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   updatedAssigneeId: any;
   getTaskForEdit: void;
   userName: string[];
-  plusUserBadgeForHeader : boolean;
+  plusUserBadgeForHeader: boolean;
   taskId;
   text;
   currentDate : Date;
@@ -58,7 +58,6 @@ export class Checklist extends AppComponentBase implements OnInit {
   ngOnInit() {
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
-
     this.currentDate = new Date();
     this.currentYear = this.currentDate.getFullYear()
     var curr_month = this.currentDate.getMonth();
@@ -100,27 +99,27 @@ export class Checklist extends AppComponentBase implements OnInit {
   }
 
   addInput(i) {
-    this.rowid =0;
-    i.closingCheckListForViewDto.assigniName = i.text;
-    i.closingCheckListForViewDto.assigneeId = this.assigneeId;
+    this.rowid = 0;
+    i.assigniName = i.text;
+    i.assigneeId = this.assigneeId;
     this.openFieldUpdateAssignee;
     if (this.users) {
       this.assigneeId = this.users.filter(a => {
-        if (a.name == i.closingCheckListForViewDto.assigniName) {
+        if (a.name == i.assigniName) {
           return a.value;
         }
       });
-      this.taskId = i.closingCheckListForViewDto.id;
+      this.taskId = i.id;
       this.updatedAssigneeId = this.assigneeId[0].value;
-
       this.changeAssigniDto.assigneeId = this.updatedAssigneeId;
       this.changeAssigniDto.taskId = this.taskId;
       this._closingChecklistService.changeAssignee(this.changeAssigniDto).subscribe(result => {
-      this.getTaskForEdit = result;
+        this.getTaskForEdit = result;
+        this.getClosingCheckListAllTasks();
       });
     }
   }
-  
+
   onSearchUsers(event): void {
     this._closingChecklistService.userAutoFill(event.query).subscribe(result => {
       this.users = result;
@@ -128,7 +127,6 @@ export class Checklist extends AppComponentBase implements OnInit {
     });
 
   }
-
   //Start
   getClosingCheckListAllTasks(event?: LazyLoadEvent) {
 
@@ -138,7 +136,6 @@ export class Checklist extends AppComponentBase implements OnInit {
     }
 
     this.primengTableHelper.showLoadingIndicator();
-
     this._closingChecklistService.getAll(
       this.filterText,
       this.titleFilter,
@@ -150,23 +147,23 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
-      this.ClosingCheckList = result.items;
-      this.ClosingCheckList.forEach(i => {
-
-        var firstCharacterForAvatar = i.closingCheckListForViewDto.assigniName[0].toUpperCase();
-        var lastCharacterForAvatar = i.closingCheckListForViewDto.assigniName.substr(i.closingCheckListForViewDto.assigniName.indexOf(' ') + 1)[0].toUpperCase();
-        i.closingCheckListForViewDto["NameAvatar"] = firstCharacterForAvatar + lastCharacterForAvatar;
-        if (i.closingCheckListForViewDto.status === "Inprogress") {
-          i.closingCheckListForViewDto["StatusColor"] = this.StatusColorBox[0]
-        }
-        else if (i.closingCheckListForViewDto.status === "Open") {
-          i.closingCheckListForViewDto["StatusColor"] = this.StatusColorBox[1]
-        }
-        else if (i.closingCheckListForViewDto.status === "Complete") {
-          i.closingCheckListForViewDto["StatusColor"] = this.StatusColorBox[2]
-        }
-        this.assigniNameForHeader.push({ nameAvatar: i.closingCheckListForViewDto.NameAvatar, assigneeId: i.closingCheckListForViewDto.assigneeId });
-
+      this.ClosingCheckList = result.items
+      this.ClosingCheckList.forEach(j => {
+        j.group.forEach(i => {
+          var firstCharacterForAvatar = i.assigniName[0].toUpperCase();
+          var lastCharacterForAvatar = i.assigniName.substr(i.assigniName.indexOf(' ') + 1)[0].toUpperCase();
+          i["NameAvatar"] = firstCharacterForAvatar + lastCharacterForAvatar;
+          if (i.status === "Inprogress") {
+            i["StatusColor"] = this.StatusColorBox[0]
+          }
+          else if (i.status === "Open") {
+            i["StatusColor"] = this.StatusColorBox[1]
+          }
+          else if (i.status === "Complete") {
+            i["StatusColor"] = this.StatusColorBox[2]
+          }
+          this.assigniNameForHeader.push({ nameAvatar: i.NameAvatar, assigneeId: i.assigneeId });
+        });
       });
 
       this.assigniNameForHeader = this.getUnique(this.assigniNameForHeader, "assigneeId")
@@ -174,21 +171,18 @@ export class Checklist extends AppComponentBase implements OnInit {
       {
         this.remainingUserForHeader = [];
         var limitedUserNameForHeader = [];
-        for (var i = 0 ; i < 5 ; i++)
-        {
+        for (var i = 0; i < 5; i++) {
           limitedUserNameForHeader.push(this.assigniNameForHeader[i])
-
         }
         for (let index = 5; index < this.assigniNameForHeader.length; index++) {
-          this.remainingUserForHeader.push(this.assigniNameForHeader[index])   
+          this.remainingUserForHeader.push(this.assigniNameForHeader[index])
         }
-       this.assigniNameForHeader =  limitedUserNameForHeader
-
-          this.plusUserBadgeForHeader = true
+        this.assigniNameForHeader = limitedUserNameForHeader
+        this.plusUserBadgeForHeader = true
+      
       }
     });
   }
-
   //End
   GetUserTasks(userId) {
     this.ClosingCheckList.forEach(i => {
@@ -197,9 +191,8 @@ export class Checklist extends AppComponentBase implements OnInit {
         this.UserSpecficClosingCheckList.push(this.ClosingCheckList[i])
       }
       else {
-        console.log("not match")
-      }
 
+      }
     });
     this.ClosingCheckList = this.UserSpecficClosingCheckList
   }
@@ -208,11 +201,8 @@ export class Checklist extends AppComponentBase implements OnInit {
 
     const unique = arr
       .map(e => e[comp])
-
       .map((e, i, final) => final.indexOf(e) === i && i)
-
       .filter(e => arr[e]).map(e => arr[e]);
-
     return unique;
   }
 
@@ -227,9 +217,9 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.changeStatus.taskId = TaskId;
     this._closingChecklistService.changeStatus(this.changeStatus).subscribe(result => {
       this.notify.success(this.l("Status Successfully Changed"));
+      this.getClosingCheckListAllTasks();
     });
   }
-
   RedirectToCreateTask(): void {
     this._router.navigate(['/app/main/checklist/createtask']);
   }

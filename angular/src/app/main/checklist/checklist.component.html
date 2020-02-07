@@ -150,41 +150,43 @@
                             </div>
                             <!--<Primeng-TurboTable-End>-->
                             <table class="table record-table">
-                                <tbody>
-                                   
-                                    <tr *ngFor="let i of ClosingCheckList" class="task-table-inner">
-                                        <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
-                                           
-                                            <span class="task-box">{{i.closingCheckListForViewDto.creationTime | date:'EEE  MMMM d'}}</span>
+                                <tbody *ngFor="let i of ClosingCheckList">
+                                
+                                    <tr *ngFor="let j of i.group ; let value = index" class="task-table-inner">
+                                    
+                                        <td (click)="RedirectToDetail(j.id)" *ngIf ="value === 0">
+                                            <span class="task-box">{{i.creationTime | date:'d MMM EEE'}}</span>
                                         </td>
-                                        <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
-                                            <span class="task-box">{{i.closingCheckListForViewDto.taskName}}</span>
+                                        <td  (click)="RedirectToDetail(j.id)" *ngIf ="value != 0">
+                                            <span class="task-box">{{""}}</span>                        
                                         </td>
-                                        <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
-                                            <span
-                                                class="category-name bg-lightgrey">{{i.closingCheckListForViewDto.category}}</span>
+                                        <td (click)="RedirectToDetail(j.id)">
+                                            <span class="task-box">{{j.taskName}}</span>
+                                        </td>
+                                        <td (click)="RedirectToDetail(j.id)">
+                                            <span class="category-name bg-lightgrey">{{j.category}}</span>
                                         </td>
                                         <td>
                                             <form class="task-report-form">
-                                                <select onclick="console.log('test')"
-                                                    (change)="ChangeStatus($event.target.value,i.closingCheckListForViewDto.id)"
-                                                    class="form-control border-0 {{i.closingCheckListForViewDto.StatusColor}} text-white">
+                                                <select onclick="console.log('test')" (change)="ChangeStatus($event.target.value,j.id)"
+                                                    class="form-control border-0 {{j.StatusColor}} text-white">
                                                     <option value="" selected disabled hidden>
-                                                        {{i.closingCheckListForViewDto.status}}</option>
+                                                        {{j.status}}</option>
                                                     <option value="1">Open</option>
                                                     <option value="2">Complete</option>
                                                     <option value="3">Inprogress</option>
                                                 </select>
                                             </form>
                                         </td>
-                                        <td> 
-                                            <div *ngIf="i.closingCheckListForViewDto.id != rowid" class="assignee-info" (click)="openFieldUpdateAssignee(i.closingCheckListForViewDto.id)">
-                                                <span class="assignee-image bg-sea-green">{{i.closingCheckListForViewDto.NameAvatar}}</span>
-                                                <span class="assignee-name">{{i.closingCheckListForViewDto.assigniName}}</span>
+                                        <td>
+                                            <div *ngIf="j.id != rowid" class="assignee-info" (click)="openFieldUpdateAssignee(j.id)">
+                                                <span class="assignee-image bg-sea-green">{{j.NameAvatar}}</span>
+                                                <span class="assignee-name">{{j.assigniName}}</span>
                                             </div>
-                                            <div *ngIf="i.closingCheckListForViewDto.id == rowid" >
-                                                <p-autoComplete placeholder="Search..." [(ngModel)]="i.text" [suggestions]="userName" (completeMethod)="onSearchUsers($event)" 
-                                                (keyup.enter)="addInput(i)" [forceSelection]="true" required></p-autoComplete>
+                                            <div *ngIf="j.id == rowid">
+                                                <p-autoComplete placeholder="Search..." [(ngModel)]="j.text" [suggestions]="userName"
+                                                    (completeMethod)="onSearchUsers($event)" (keyup.enter)="addInput(j)" [forceSelection]="true" required>
+                                                </p-autoComplete>
                                             </div>
                                         </td>
                                     </tr>
