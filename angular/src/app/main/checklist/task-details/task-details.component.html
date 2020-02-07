@@ -4,7 +4,7 @@
             <div class="kt-portlet" id="kt_portlet">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
+                        <h3 class="text-navyblue kt-portlet__head-title">
                             Task Details
                         </h3>
                     </div>
@@ -21,7 +21,7 @@
                         <div class="col-md-7">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h5>{{taskDetailObject.taskName}}</h5>
+                                    <h5 class="text-navyblue">{{taskDetailObject.taskName}}</h5>
                                 </div>
 
 
@@ -29,18 +29,26 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     Category <span
-                                        class="badge badge-secondary bagesTextColor">{{taskDetailObject.categoryName}}</span>
+                                        class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.categoryName}}</span>
                                     Closing Month <span
-                                        class="badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth | date:'MMM:y'}}</span>
+                                        class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth | date:'MMM:y'}}</span>
                                     Due By <span
-                                        class="badge badge-secondary bagesTextColor">{{taskDetailObject.endsOn | date:'d,MMMM, y'}}</span>
+                                        class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.endsOn | date:'d,MMMM, y'}}</span>
                                 </div>
 
                             </div>
+                            
                             <div class="row">
                                 <div class="col-md-12">
 
-                                    <div innerHTML="{{taskDetailObject.instruction}} "></div>
+                                    <div class="custom-text-area" innerHTML="{{taskDetailObject.instruction}} "></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                   <div class="attachment-box">
+                                       ksuhgukjbhsdilcfhril
+                                   </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -52,19 +60,22 @@
                                 </div>
 
                             </div>
-                            <div class="row">
-                                <div *ngFor="let comm of taskDetailObject.comments" class="col comment-section mt-5">
-                                    <div class="row comment-wrapper border-bottom pb-3 mb-3">
+                            <div class="row show-comments-parent">
+                                <div *ngFor="let comm of taskDetailObject.comments" class="col comment-section mt-5 show-comments">
+                                    <div class=" comment-wrapper border-bottom pb-3 mb-3">
+                                       <div class="row comments-header">
                                         <img alt="photo" class="col-2" src="assets/media/users/100_10.jpg">
                                         <div class="col-10 comments-text d-flex mb-4">
                                             <h5 class="col-6 p-0 text-left">{{comm.userName}}</h5>
-                                            <h5 class="col-6 p-0 text-right">{{comm.daysCount}}</h5>
+                                            <h6 class="col-6 p-0 text-right">{{comm.daysCount}}</h6>
                                         </div>
+                                       </div>
                                          <div class="col" innerHTML="{{comm.body}}"></div> 
 
                                     </div>
                                 </div>
-                               
+                                <!-- <span class="show-more-btn">▼</span> -->
+                                <!-- <span class="show-more-btn">show more</span> -->
 
 
                             </div>
@@ -114,13 +125,13 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <a class="btn" href="javascript:;"
+                                    <a class="action-btn" href="javascript:;"
                                                     (click)="deleteTask()">
                                                     <i class="fa fa-trash" style="color: #5867dd;"></i></a>
                                     <!-- <i class="fa fa-trash" style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-                                    <i class="fas fa-edit" (click)="RedirectToEditTaskPage()"
-                                        style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <i class="fa fa-clone" aria-hidden="true"></i>
+                                    <a class="action-btn"><i class="fas fa-edit" (click)="RedirectToEditTaskPage()"
+                                        style="color: #5867dd;"></i></a>
+                                    <a class="action-btn"><i class="fa fa-clone" aria-hidden="true"></i></a>
 
                                 </div>
                             </div>
@@ -128,7 +139,16 @@
                                 <div class="col-md-12">
                                     <div class="drag_drop_box">
                                         <label>Attachments</label>
-                                        <ng-uppy [config]="settings" ></ng-uppy>
+                                        <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)" ></ng-uppy>
+                                        <div *ngFor="let item of attachments" class="attachments_section">
+                                            <button class="attachement_btn">
+                                                <img src="../../../../assets/img/{{item.attachmentExtension}}">
+                                                <span>{{item.attachmentName}}</span>
+                                            </button>
+                                            <button class="cross-btn" (click)="deleteAttachment(item.id)" >
+                                                <span class="fa fa-window-close"></span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 

@@ -44,6 +44,7 @@ import { ZeroRefreshTokenService } from '@account/auth/zero-refresh-token.servic
         ApiServiceProxies.StripePaymentServiceProxy,
         ApiServiceProxies.DashboardCustomizationServiceProxy,
         ApiServiceProxies.ClosingChecklistServiceProxy,
+        ApiServiceProxies.AttachmentsServiceProxy,
 
         ApiServiceProxies.CategoriesServiceProxy,
         { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },

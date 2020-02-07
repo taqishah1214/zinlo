@@ -14,7 +14,11 @@ namespace Zinlo.Attachments
 
         Task PostAttachmentsPath(PostAttachmentsPathDto input);
 
-        
+        Task<List<GetAttachmentsDto>> GetAttachmentsPath(long typeId, long type);
+
+        Task DeleteAttachmentPath(long id);
+
+
 
     }
 }

@@ -255,6 +255,7 @@ namespace Zinlo.ClosingChecklist
             detailsClosingCheckListDto.Instruction = task.Instruction;
             detailsClosingCheckListDto.CategoryName = task.Category.Title;
             detailsClosingCheckListDto.comments = await _commentAppService.GetComments(1, task.Id);
+            detailsClosingCheckListDto.Attachments =  await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
             return detailsClosingCheckListDto;
 
         }
@@ -301,6 +302,7 @@ namespace Zinlo.ClosingChecklist
             getTaskForEditDto.FrequencyId = (int)task.Frequency;
             getTaskForEditDto.Status = task.Status.ToString();
             getTaskForEditDto.StatusId = (int)task.Status;
+            getTaskForEditDto.Attachments =  await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
             return getTaskForEditDto;
         }
 

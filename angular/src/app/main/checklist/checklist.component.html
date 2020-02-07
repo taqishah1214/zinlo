@@ -16,13 +16,14 @@
                         </div>
                         <div class="record-card-header-bottom">
                             <div class="record-card-header-bottom-inner1">
-                                <button class="btn arrow-btn left-arrow-btn btn-square">
+                                <button class="btn arrow-btn left-arrow-btn btn-square" (click)="monthChangeHeader(0)">
                                     <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
                                 </button>
-                                <button class="btn arrow-btn right-arrow-btn btn-square">
+                                <button class="btn arrow-btn right-arrow-btn btn-square" (click)="monthChangeHeader(1)">
                                     <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
                                 </button>
-                                <h5>January 2020</h5>
+                                <h5>{{currentMonth}} {{currentYear}}</h5>
+                               
                             </div>
                             <div class="record-card-header-bottom-inner2">
                                 <div class="upper-content">
@@ -112,7 +113,7 @@
                         </div>
                     </div>
                     <div class="primeng-paging-container">
-                        <div class="">
+                        <div class="table-box">
 
                             <!--<Primeng-TurboTable-Start>-->
                             <div class="task-table" [busyIf]="primengTableHelper.isLoading">
@@ -150,7 +151,7 @@
                             <!--<Primeng-TurboTable-End>-->
                             <table class="table record-table">
                                 <tbody>
-                                    <tr >
+                                   
                                     <tr *ngFor="let i of ClosingCheckList" class="task-table-inner">
 
                                         <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
@@ -188,7 +189,6 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
                                 </tbody>
                             </table>
                             <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">

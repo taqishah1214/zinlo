@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, Output, ViewChild } from '@angular/core';
-import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy, GetTaskForEditDto, CategoriesServiceProxy, ChangeStatusDto } from '@shared/service-proxies/service-proxies';
+import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy, GetTaskForEditDto, CategoriesServiceProxy, ChangeStatusDto, PostAttachmentsPathDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UppyConfig } from 'uppy-angular';
 
@@ -41,6 +41,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   status: number;
   active =false;
   public userId: number;
+
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
 
   constructor(private _categoryService: CategoriesServiceProxy, injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy,private _router: Router) {
@@ -77,9 +78,9 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
       this.comment.forEach(i => {
         i.userName;
-        var a = i.userName[0].toUpperCase();
-        var b = i.userName.substr(i.userName.indexOf(' ') + 1)[0].toUpperCase();
-        i["NameAvatar"] = a + b;
+        var firstCharacterForAvatar = i.userName[0].toUpperCase();
+        var lastCharacterForAvatar = i.userName.substr(i.userName.indexOf(' ') + 1)[0].toUpperCase();
+        i["NameAvatar"] = firstCharacterForAvatar + lastCharacterForAvatar;
       });
     });
     this._categoryService.categoryDropDown().subscribe(result => {
