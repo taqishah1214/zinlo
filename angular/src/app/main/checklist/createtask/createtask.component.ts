@@ -29,6 +29,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   attachmentPaths: any = [];
   newAttachementPath: string[] = [];
   public isChecked :boolean = false;
+  days:any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -46,6 +47,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.closingMonthModalBox = false;
     this.enableValue = false;
     this.isChecked = true;
+    this.loadDaysDropdown();
   }
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
@@ -130,6 +132,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       Webcam: false
     }
   }
+  
 
   fileUploadedResponse(value): void {
     var response = value.successful
@@ -155,7 +158,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.enableValue = false;
     }
   }
-  onValueChange() {
+  onDayChange() {
     this.checklist.endOfMonth = false;
     this.isChecked = true;
   }
@@ -175,6 +178,11 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     else if (valu == "false") {
       this.SelectionMsg = "Days After";
     }
+  }
+  loadDaysDropdown():void{
+    this._closingChecklistService.getCurrentMonthDays().subscribe(result=>{
+      this.days = result;
+    });
   }
 }
 
