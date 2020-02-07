@@ -2013,7 +2013,7 @@ export class ClosingChecklistServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetClosingCheckListTaskDto> {
+    getAll(filter: string | undefined, titleFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -2052,14 +2052,14 @@ export class ClosingChecklistServiceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<PagedResultDtoOfGetClosingCheckListTaskDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfTasksGroup>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PagedResultDtoOfGetClosingCheckListTaskDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfTasksGroup>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfGetClosingCheckListTaskDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfTasksGroup> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -2070,7 +2070,7 @@ export class ClosingChecklistServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetClosingCheckListTaskDto.fromJS(resultData200);
+            result200 = PagedResultDtoOfTasksGroup.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2078,7 +2078,7 @@ export class ClosingChecklistServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PagedResultDtoOfGetClosingCheckListTaskDto>(<any>null);
+        return _observableOf<PagedResultDtoOfTasksGroup>(<any>null);
     }
 
     /**
@@ -8362,62 +8362,6 @@ export class ProfileServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
-     */
-    getProfilePictureByUserId(userId: number | undefined): Observable<GetProfilePictureOutput> {
-        let url_ = this.baseUrl + "/api/services/app/Profile/GetProfilePictureByUserId?";
-        if (userId === null)
-            throw new Error("The parameter 'userId' cannot be null.");
-        else if (userId !== undefined)
-            url_ += "userId=" + encodeURIComponent("" + userId) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetProfilePictureByUserId(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetProfilePictureByUserId(<any>response_);
-                } catch (e) {
-                    return <Observable<GetProfilePictureOutput>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<GetProfilePictureOutput>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetProfilePictureByUserId(response: HttpResponseBase): Observable<GetProfilePictureOutput> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetProfilePictureOutput.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<GetProfilePictureOutput>(<any>null);
-    }
-
-    /**
      * @param profilePictureId (optional) 
      * @param userId (optional) 
      * @param tenantId (optional) 
@@ -14613,13 +14557,15 @@ export interface IClosingCheckListForViewDto {
     creationTime: moment.Moment;
 }
 
-export class GetClosingCheckListTaskDto implements IGetClosingCheckListTaskDto {
+export class TasksGroup implements ITasksGroup {
+    creationTime!: moment.Moment;
+    group!: ClosingCheckListForViewDto[] | undefined;
     closingCheckListForViewDto!: ClosingCheckListForViewDto;
     sorting!: string | undefined;
     skipCount!: number;
     maxResultCount!: number;
 
-    constructor(data?: IGetClosingCheckListTaskDto) {
+    constructor(data?: ITasksGroup) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -14630,6 +14576,12 @@ export class GetClosingCheckListTaskDto implements IGetClosingCheckListTaskDto {
 
     init(data?: any) {
         if (data) {
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            if (Array.isArray(data["group"])) {
+                this.group = [] as any;
+                for (let item of data["group"])
+                    this.group!.push(ClosingCheckListForViewDto.fromJS(item));
+            }
             this.closingCheckListForViewDto = data["closingCheckListForViewDto"] ? ClosingCheckListForViewDto.fromJS(data["closingCheckListForViewDto"]) : <any>undefined;
             this.sorting = data["sorting"];
             this.skipCount = data["skipCount"];
@@ -14637,15 +14589,21 @@ export class GetClosingCheckListTaskDto implements IGetClosingCheckListTaskDto {
         }
     }
 
-    static fromJS(data: any): GetClosingCheckListTaskDto {
+    static fromJS(data: any): TasksGroup {
         data = typeof data === 'object' ? data : {};
-        let result = new GetClosingCheckListTaskDto();
+        let result = new TasksGroup();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        if (Array.isArray(this.group)) {
+            data["group"] = [];
+            for (let item of this.group)
+                data["group"].push(item.toJSON());
+        }
         data["closingCheckListForViewDto"] = this.closingCheckListForViewDto ? this.closingCheckListForViewDto.toJSON() : <any>undefined;
         data["sorting"] = this.sorting;
         data["skipCount"] = this.skipCount;
@@ -14654,18 +14612,20 @@ export class GetClosingCheckListTaskDto implements IGetClosingCheckListTaskDto {
     }
 }
 
-export interface IGetClosingCheckListTaskDto {
+export interface ITasksGroup {
+    creationTime: moment.Moment;
+    group: ClosingCheckListForViewDto[] | undefined;
     closingCheckListForViewDto: ClosingCheckListForViewDto;
     sorting: string | undefined;
     skipCount: number;
     maxResultCount: number;
 }
 
-export class PagedResultDtoOfGetClosingCheckListTaskDto implements IPagedResultDtoOfGetClosingCheckListTaskDto {
+export class PagedResultDtoOfTasksGroup implements IPagedResultDtoOfTasksGroup {
     totalCount!: number;
-    items!: GetClosingCheckListTaskDto[] | undefined;
+    items!: TasksGroup[] | undefined;
 
-    constructor(data?: IPagedResultDtoOfGetClosingCheckListTaskDto) {
+    constructor(data?: IPagedResultDtoOfTasksGroup) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -14680,14 +14640,14 @@ export class PagedResultDtoOfGetClosingCheckListTaskDto implements IPagedResultD
             if (Array.isArray(data["items"])) {
                 this.items = [] as any;
                 for (let item of data["items"])
-                    this.items!.push(GetClosingCheckListTaskDto.fromJS(item));
+                    this.items!.push(TasksGroup.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): PagedResultDtoOfGetClosingCheckListTaskDto {
+    static fromJS(data: any): PagedResultDtoOfTasksGroup {
         data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfGetClosingCheckListTaskDto();
+        let result = new PagedResultDtoOfTasksGroup();
         result.init(data);
         return result;
     }
@@ -14704,9 +14664,9 @@ export class PagedResultDtoOfGetClosingCheckListTaskDto implements IPagedResultD
     }
 }
 
-export interface IPagedResultDtoOfGetClosingCheckListTaskDto {
+export interface IPagedResultDtoOfTasksGroup {
     totalCount: number;
-    items: GetClosingCheckListTaskDto[] | undefined;
+    items: TasksGroup[] | undefined;
 }
 
 export enum StatusDto {

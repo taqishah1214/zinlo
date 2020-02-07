@@ -69,7 +69,7 @@ namespace Zinlo.Comment
         }
         public string CalculateDays(DateTime dateTime)
         {
-            double COUNT = (dateTime - DateTime.Now).TotalDays +2;
+            double COUNT = (DateTime.Now - dateTime).TotalDays;
             COUNT = Math.Ceiling(COUNT);
 
             return COUNT + " "+"days ago".ToString();
