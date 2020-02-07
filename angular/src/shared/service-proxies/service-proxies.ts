@@ -688,6 +688,123 @@ export class AttachmentsServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param typeId (optional) 
+     * @param type (optional) 
+     * @return Success
+     */
+    getAttachmentsPath(typeId: number | undefined, type: number | undefined): Observable<GetAttachmentsDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Attachments/GetAttachmentsPath?";
+        if (typeId === null)
+            throw new Error("The parameter 'typeId' cannot be null.");
+        else if (typeId !== undefined)
+            url_ += "typeId=" + encodeURIComponent("" + typeId) + "&"; 
+        if (type === null)
+            throw new Error("The parameter 'type' cannot be null.");
+        else if (type !== undefined)
+            url_ += "type=" + encodeURIComponent("" + type) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAttachmentsPath(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAttachmentsPath(<any>response_);
+                } catch (e) {
+                    return <Observable<GetAttachmentsDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetAttachmentsDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAttachmentsPath(response: HttpResponseBase): Observable<GetAttachmentsDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetAttachmentsDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetAttachmentsDto[]>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    deleteAttachmentPath(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Attachments/DeleteAttachmentPath?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteAttachmentPath(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteAttachmentPath(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteAttachmentPath(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -2514,6 +2631,61 @@ export class ClosingChecklistServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getCurrentMonthDays(): Observable<NameValueDtoOfString[]> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/getCurrentMonthDays";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCurrentMonthDays(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCurrentMonthDays(<any>response_);
+                } catch (e) {
+                    return <Observable<NameValueDtoOfString[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<NameValueDtoOfString[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCurrentMonthDays(response: HttpResponseBase): Observable<NameValueDtoOfString[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(NameValueDtoOfString.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<NameValueDtoOfString[]>(<any>null);
     }
 }
 
@@ -13461,6 +13633,46 @@ export interface IPostAttachmentsPathDto {
     filePath: string[] | undefined;
 }
 
+export class GetAttachmentsDto implements IGetAttachmentsDto {
+    id!: number;
+    attachmentPath!: string | undefined;
+
+    constructor(data?: IGetAttachmentsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.attachmentPath = data["attachmentPath"];
+        }
+    }
+
+    static fromJS(data: any): GetAttachmentsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAttachmentsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["attachmentPath"] = this.attachmentPath;
+        return data; 
+    }
+}
+
+export interface IGetAttachmentsDto {
+    id: number;
+    attachmentPath: string | undefined;
+}
+
 export class AuditLogListDto implements IAuditLogListDto {
     userId!: number | undefined;
     userName!: string | undefined;
@@ -14900,6 +15112,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     categoryName!: string | undefined;
     taskStatus!: string | undefined;
     comments!: CommentDto[] | undefined;
+    attachments!: GetAttachmentsDto[] | undefined;
     taskName!: string | undefined;
     categoryId!: number;
     assigneeId!: number;
@@ -14937,6 +15150,11 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
                 this.comments = [] as any;
                 for (let item of data["comments"])
                     this.comments!.push(CommentDto.fromJS(item));
+            }
+            if (Array.isArray(data["attachments"])) {
+                this.attachments = [] as any;
+                for (let item of data["attachments"])
+                    this.attachments!.push(GetAttachmentsDto.fromJS(item));
             }
             this.taskName = data["taskName"];
             this.categoryId = data["categoryId"];
@@ -14980,6 +15198,11 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             for (let item of this.comments)
                 data["comments"].push(item.toJSON());
         }
+        if (Array.isArray(this.attachments)) {
+            data["attachments"] = [];
+            for (let item of this.attachments)
+                data["attachments"].push(item.toJSON());
+        }
         data["taskName"] = this.taskName;
         data["categoryId"] = this.categoryId;
         data["assigneeId"] = this.assigneeId;
@@ -15011,6 +15234,7 @@ export interface IDetailsClosingCheckListDto {
     categoryName: string | undefined;
     taskStatus: string | undefined;
     comments: CommentDto[] | undefined;
+    attachments: GetAttachmentsDto[] | undefined;
     taskName: string | undefined;
     categoryId: number;
     assigneeId: number;
@@ -15119,7 +15343,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     assigniName!: string | undefined;
     status!: string | undefined;
     statusId!: number;
-    attachment!: string | undefined;
+    attachments!: GetAttachmentsDto[] | undefined;
     instruction!: string | undefined;
     noOfMonths!: number;
     dueOn!: number;
@@ -15150,7 +15374,11 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
             this.assigniName = data["assigniName"];
             this.status = data["status"];
             this.statusId = data["statusId"];
-            this.attachment = data["attachment"];
+            if (Array.isArray(data["attachments"])) {
+                this.attachments = [] as any;
+                for (let item of data["attachments"])
+                    this.attachments!.push(GetAttachmentsDto.fromJS(item));
+            }
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
@@ -15185,7 +15413,11 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
         data["assigniName"] = this.assigniName;
         data["status"] = this.status;
         data["statusId"] = this.statusId;
-        data["attachment"] = this.attachment;
+        if (Array.isArray(this.attachments)) {
+            data["attachments"] = [];
+            for (let item of this.attachments)
+                data["attachments"].push(item.toJSON());
+        }
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
@@ -15213,7 +15445,7 @@ export interface IGetTaskForEditDto {
     assigniName: string | undefined;
     status: string | undefined;
     statusId: number;
-    attachment: string | undefined;
+    attachments: GetAttachmentsDto[] | undefined;
     instruction: string | undefined;
     noOfMonths: number;
     dueOn: number;

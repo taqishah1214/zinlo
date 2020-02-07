@@ -40,7 +40,15 @@ export class Checklist extends AppComponentBase implements OnInit {
   plusUserBadgeForHeader : boolean;
   taskId;
   text;
+  currentDate : Date;
+  currentMonth : string
+  currentYear : Number;
   rowid: number;
+  yearCount : number;
+  monthCount : number =1;
+  monthsArray = new Array("January", "February", "March",
+    "April", "May", "June", "July", "August", "September",
+    "October", "Novemeber", "December");
   remainingUserForHeader : any = [];
   constructor(private _router: Router,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector) {
@@ -51,11 +59,46 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
 
-    
+    this.currentDate = new Date();
+    this.currentYear = this.currentDate.getFullYear()
+    var curr_month = this.currentDate.getMonth();
+    this.monthCount = curr_month;
+    this.currentMonth = this.monthsArray[curr_month]
+    this.yearCount = 1;
   }
   openFieldUpdateAssignee(record) {
     this.rowid = record;
   }
+
+  monthChangeHeader (operation) : void {
+
+    if (this.monthCount  == -1)
+    {
+      this.monthCount = 12;
+      this.currentYear = this.currentDate.getFullYear()-(Math.abs(this.yearCount));
+      --this.yearCount;
+      
+    } 
+    if (operation == 1)
+    {   
+    this.currentMonth = this.monthsArray[this.monthCount] 
+    ++this.monthCount  
+    }
+    else{   
+      --this.monthCount
+      this.currentMonth = this.monthsArray[this.monthCount]
+     
+    }
+    if (this.monthCount == 12)
+    {   
+      this.monthCount = 0;
+      this.currentYear = this.currentDate.getFullYear()+this.yearCount;
+      ++this.yearCount;
+     
+    }
+
+  }
+
   addInput(i) {
     this.rowid =0;
     i.closingCheckListForViewDto.assigniName = i.text;
@@ -129,6 +172,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.assigniNameForHeader = this.getUnique(this.assigniNameForHeader, "assigneeId")
       if (this.assigniNameForHeader.length > 5)
       {
+        this.remainingUserForHeader = [];
         var limitedUserNameForHeader = [];
         for (var i = 0 ; i < 5 ; i++)
         {
@@ -140,7 +184,6 @@ export class Checklist extends AppComponentBase implements OnInit {
         }
        this.assigniNameForHeader =  limitedUserNameForHeader
 
-        debugger
           this.plusUserBadgeForHeader = true
       }
     });

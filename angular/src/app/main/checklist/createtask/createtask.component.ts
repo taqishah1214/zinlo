@@ -29,6 +29,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   attachmentPaths: any = [];
   newAttachementPath: string[] = [];
   public isChecked :boolean = false;
+  days:any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -46,6 +47,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.closingMonthModalBox = false;
     this.enableValue = false;
     this.isChecked = true;
+    this.loadDaysDropdown();
   }
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
@@ -90,7 +92,8 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.status = 1
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
-    if (this.attachmentPaths != null) {
+    if (this.attachmentPaths != null){
+      this.newAttachementPath = [];
       this.attachmentPaths.forEach(element => {
         this.newAttachementPath.push(element.toString())
       });
@@ -129,11 +132,11 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       Webcam: false
     }
   }
+  
 
   fileUploadedResponse(value): void {
     var response = value.successful
     response.forEach(i => {
-
       this.attachmentPaths.push(i.response.body.result);
     });
     this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
@@ -155,7 +158,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.enableValue = false;
     }
   }
-  onValueChange() {
+  onDayChange() {
     this.checklist.endOfMonth = false;
     this.isChecked = true;
   }
@@ -175,6 +178,11 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     else if (valu == "false") {
       this.SelectionMsg = "Days After";
     }
+  }
+  loadDaysDropdown():void{
+    this._closingChecklistService.getCurrentMonthDays().subscribe(result=>{
+      this.days = result;
+    });
   }
 }
 

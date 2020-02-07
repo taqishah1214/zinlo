@@ -22,6 +22,7 @@
 .attachment-box{
   padding: 20px 0;
 }
+
 ::ng-deep .uppy-Dashboard-inner {
     min-height:220px !important;
     height: 220px !important;
@@ -29,4 +30,29 @@
 
 .drop_drop_box {
     margin-top: 40px;
+}
+.attachments_section{
+    display: inline-block;
+    background-color: #45414E14;
+    max-width: 197px;
+    width: 100%;
+    margin: 20px 0;
+    height: 42px;
+}
+.attachments_section .attachement_btn{
+    background: transparent;
+    border: none;
+    color: #606060;
+}
+.attachments_section .attachement_btn img{
+    max-width: 100%;
+    width: 40px;
+}
+.attachments_section .cross-btn{
+    background: transparent;
+    border: none;
+    color: #606060;
+    float: right;
+    line-height: 41px;
+
 }
