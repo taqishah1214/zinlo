@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Zinlo.Attachments.Dtos;
 using Zinlo.Comment.Dtos;
 
 namespace Zinlo.ClosingChecklist.Dtos
@@ -14,7 +15,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public string AssigniName { get; set; }
         public string Status { get; set; }
         public int StatusId { get; set; }
-        public string Attachment { get; set; }
+        public List<GetAttachmentsDto> Attachments { get; set; }
         public string Instruction { get; set; }
         public int NoOfMonths { get; set; }
         public int DueOn { get; set; }

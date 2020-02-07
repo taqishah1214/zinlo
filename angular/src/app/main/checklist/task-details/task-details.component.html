@@ -139,7 +139,16 @@
                                 <div class="col-md-12">
                                     <div class="drag_drop_box">
                                         <label>Attachments</label>
-                                        <ng-uppy [config]="settings" ></ng-uppy>
+                                        <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)" ></ng-uppy>
+                                        <div *ngFor="let item of attachments" class="attachments_section">
+                                            <button class="attachement_btn">
+                                                <img src="../../../../assets/img/{{item.attachmentExtension}}">
+                                                <span>{{item.attachmentName}}</span>
+                                            </button>
+                                            <button class="cross-btn" (click)="deleteAttachment(item.id)" >
+                                                <span class="fa fa-window-close"></span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
