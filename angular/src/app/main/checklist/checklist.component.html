@@ -113,7 +113,7 @@
                         </div>
                     </div>
                     <div class="primeng-paging-container">
-                        <div class="">
+                        <div class="table-box">
 
                             <!--<Primeng-TurboTable-Start>-->
                             <div class="task-table" [busyIf]="primengTableHelper.isLoading">
@@ -151,7 +151,7 @@
                             <!--<Primeng-TurboTable-End>-->
                             <table class="table record-table">
                                 <tbody>
-                                    <tr >
+                                   
                                     <tr *ngFor="let i of ClosingCheckList" class="task-table-inner">
 
                                         <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
@@ -189,7 +189,6 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
                                 </tbody>
                             </table>
                             <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">

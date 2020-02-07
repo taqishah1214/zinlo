@@ -26,7 +26,7 @@
                                     <div class="form-group">
                                         <label for="dateOfBirth">Closing Month</label>
                                         <div class="month-calender">
-                                            <form class="container">
+                                            <form class="input-arrow">
                                                 <input [(ngModel)]="checklist.closingMonth" autocomplete="off"
                                                     class="form-control" name="date" bsDatepicker
                                                     [bsConfig]="{dateInputFormat: 'MMM/YYYY'}"
@@ -61,7 +61,7 @@
                                                     <div class="kt-badge kt-badge--xl kt-badge--warning">
                                                         {{userSignInName}}</div>
                                                 </div>
-                                                <div innerHTML="{{checklist.commentBody}}" class="form-control"></div>
+                                                <div innerHTML="{{checklist.commentBody}}" class="form-control create-comments"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -93,7 +93,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Frequency</label>
-                                        <select class="form-control input-medium"
+                                        <select class="bg-white border form-control input-medium"
                                             (change)="onChange($event.target.value)" [(ngModel)]="checklist.frequency">
                                             <option [ngValue]="undefined" hidden>Criteria</option>
                                             <option value="5">None</option>
@@ -116,7 +116,7 @@
                                                     </label>
                                                 </span>
                                             </div>
-                                            <select class="form-control input-medium" (change)="onValueChange()"
+                                            <select class="bg-white border border-left-0 form-control input-medium" (change)="onValueChange()"
                                                 [(ngModel)]="checklist.dueOn">
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -163,7 +163,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>&nbsp;&nbsp;</label>
-                                        <select class="form-control input-medium"
+                                        <select class="bg-white border form-control input-medium"
                                             (change)="onDaysClick($event.target.value)"
                                             [(ngModel)]="checklist.dayBeforeAfter">
                                             <option value=true>Days Before</option>
@@ -174,9 +174,9 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Ends on</label>
-                                        <form class="container">
-                                            <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false"
-                                                autocomplete="off" class="form-control" name="date" bsDatepicker
+                                        <form class="input-arrow">
+                                            <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false" autocomplete="off"
+                                                class="form-control" name="date" bsDatepicker
                                                 [bsConfig]="{dateInputFormat: 'MM/YYYY'}"
                                                 (onShown)="onOpenCalendar($event)">
                                         </form>
