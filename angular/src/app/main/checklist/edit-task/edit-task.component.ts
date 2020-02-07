@@ -89,7 +89,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
 
   }
-
+  
   ChangeStatus(value): void {
     if (value === 1) {
       this.status = 1;

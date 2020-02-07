@@ -22,6 +22,15 @@
 .attachment-box{
   padding: 20px 0;
 }
+
+::ng-deep .uppy-Dashboard-inner {
+    min-height:220px !important;
+    height: 220px !important;
+}
+
+.drop_drop_box {
+    margin-top: 40px;
+}
 .attachments_section{
     display: inline-block;
     background-color: #45414E14;
@@ -45,4 +54,5 @@
     color: #606060;
     float: right;
     line-height: 41px;
+
 }

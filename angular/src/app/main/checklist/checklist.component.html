@@ -153,7 +153,6 @@
                                 <tbody>
                                    
                                     <tr *ngFor="let i of ClosingCheckList" class="task-table-inner">
-
                                         <td (click)="RedirectToDetail(i.closingCheckListForViewDto.id)">
                                            
                                             <span class="task-box">{{i.closingCheckListForViewDto.creationTime | date:'EEE  MMMM d'}}</span>
@@ -194,17 +193,17 @@
                             <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
                                 {{'NoData' | localize}}
                             </div>
-                            <div class="pagination-block">
-                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
-                                    (onPageChange)="getClosingCheckListAllTasks($event)"
-                                    [totalRecords]="primengTableHelper.totalRecordsCount"
-                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
-                                    class="paginator-counter">
-                                </p-paginator>
-                                <span class="total-records-count">
-                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
-                                </span>
-                            </div>
+                        </div>
+                        <div class="pagination-block">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getClosingCheckListAllTasks($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                class="paginator-counter">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                            </span>
                         </div>
                     </div>
                 </div>
