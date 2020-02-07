@@ -338,8 +338,8 @@ form.search-form input::after{
     -webkit-box-pack: end;
         -ms-flex-pack: end;
             justify-content: flex-end;
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
+    /* -ms-flex-wrap: wrap;
+        flex-wrap: wrap; */
 }
 .lower-content form > div{
     margin-left: 12px;
@@ -574,6 +574,9 @@ form.assignee-info-form input{
     background-color: #f8f9fa;
     border-color: #f8f9fa;
 }
+table.table.record-table td, table.table.record-table th {
+    border-bottom: 1px solid #dee2e6;
+}
 @media only screen and (max-width:1366px){
     .table-box{
         overflow-x: scroll;
@@ -657,6 +660,9 @@ form.assignee-info-form input{
 	}
 	.record-card-header-bottom{
 		padding: 15px 13px;
+    }
+    .lower-content form{
+        flex-wrap:wrap;
     }
 }
 

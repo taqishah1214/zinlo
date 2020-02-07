@@ -79,7 +79,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label>Instruction</label>
+                                    <label class="bg-color">Instruction</label>
                                     <div class="form-group">
                                         <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
                                             [style]="{'height':'150px'}"></p-editor>
@@ -197,7 +197,7 @@
                             </div>
 
                             <div class="drag_drop_box">
-                                <label>Attachments</label>
+                                <label class="bg-color">Attachments</label>
                                 <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
                             </div>
                         </div>
