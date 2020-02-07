@@ -16,13 +16,14 @@
                         </div>
                         <div class="record-card-header-bottom">
                             <div class="record-card-header-bottom-inner1">
-                                <button class="btn arrow-btn left-arrow-btn btn-square">
+                                <button class="btn arrow-btn left-arrow-btn btn-square" (click)="monthChangeHeader(0)">
                                     <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
                                 </button>
-                                <button class="btn arrow-btn right-arrow-btn btn-square">
+                                <button class="btn arrow-btn right-arrow-btn btn-square" (click)="monthChangeHeader(1)">
                                     <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
                                 </button>
-                                <h5>January 2020</h5>
+                                <h5>{{currentMonth}} {{currentYear}}</h5>
+                               
                             </div>
                             <div class="record-card-header-bottom-inner2">
                                 <div class="upper-content">
@@ -112,7 +113,7 @@
                         </div>
                     </div>
                     <div class="primeng-paging-container">
-                        <div class="">
+                        <div class="table-box">
 
                             <!--<Primeng-TurboTable-Start>-->
                             <div class="task-table" [busyIf]="primengTableHelper.isLoading">
@@ -157,7 +158,7 @@
                                             <span class="task-box">{{i.creationTime | date:'d MMM EEE'}}</span>
                                         </td>
                                         <td  (click)="RedirectToDetail(j.id)" *ngIf ="value != 0">
-                                            <span class="task-box">{{""}}</span>
+                                            <span class="task-box">{{""}}</span>                        
                                         </td>
                                         <td (click)="RedirectToDetail(j.id)">
                                             <span class="task-box">{{j.taskName}}</span>
@@ -189,23 +190,22 @@
                                             </div>
                                         </td>
                                     </tr>
-                                
                                 </tbody>
                             </table>
                             <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
                                 {{'NoData' | localize}}
                             </div>
-                            <div class="pagination-block">
-                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
-                                    (onPageChange)="getClosingCheckListAllTasks($event)"
-                                    [totalRecords]="primengTableHelper.totalRecordsCount"
-                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
-                                    class="paginator-counter">
-                                </p-paginator>
-                                <span class="total-records-count">
-                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
-                                </span>
-                            </div>
+                        </div>
+                        <div class="pagination-block">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getClosingCheckListAllTasks($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                class="paginator-counter">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                            </span>
                         </div>
                     </div>
                 </div>

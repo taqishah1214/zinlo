@@ -92,7 +92,8 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.status = 1
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
-    if (this.attachmentPaths != null) {
+    if (this.attachmentPaths != null){
+      this.newAttachementPath = [];
       this.attachmentPaths.forEach(element => {
         this.newAttachementPath.push(element.toString())
       });
@@ -136,7 +137,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   fileUploadedResponse(value): void {
     var response = value.successful
     response.forEach(i => {
-
       this.attachmentPaths.push(i.response.body.result);
     });
     this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));

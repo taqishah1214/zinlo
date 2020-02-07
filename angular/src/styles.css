@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 body,html{
     overflow: auto !important;
+    color: #B5B7C7 !important;
 }
 .margin-left-5 {
     margin-left: 5px !important;
@@ -102,11 +103,20 @@ body.swal2-height-auto {
 }
 
 /*  global styles for tables */
-
-/* body .ui-table .ui-table-thead > tr > th,
+body .ui-table .ui-table-thead > tr,
+body .ui-table .ui-table-tbody > tr{
+    border-bottom: 1px solid #f1f2fc !important;
+}
+body .ui-table .ui-table-tbody > tr td,
+body .ui-table .ui-table-thead > tr th{
+    padding: 10px 30px !important;
+    vertical-align: middle;
+}
+body .ui-table .ui-table-thead > tr > th,
 body .ui-table .ui-table-tbody > tr:nth-child(even){
     background-color: transparent;
-} */
+}
+
 .kt-user-card-v2 .kt-user-card-v2__pic .kt-badge{
     margin-right: 10px;
 }
@@ -170,4 +180,159 @@ body .ui-table .ui-table-tbody > tr:nth-child(even){
     color:#575962!important;
     border:1px solid transparent !important;
     outline:none !important;
+}
+.btn.btn-primary::after {
+    top: 0;
+    right: -20px;
+}
+.search-field{
+    margin-bottom: 0 !important;
+}
+/* .kt-portlet__body >.row > .col-md-5 .col-md-4:last-child{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+} */
+.kt-portlet__body >.row > .col-md-5 .col-md-4 a.action-btn {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    margin-top: 4px;
+    padding: 5px 9px;
+    border-radius: 2px;
+    background-color: #F7F8FA;
+}
+.kt-portlet__body >.row > .col-md-5 .row {
+    margin-bottom: 2rem;
+}
+.show-comments {
+    height: 100px;
+    overflow: auto;
+    margin-bottom: 20px;
+    position: relative;
+    word-break: break-all;
+}
+.create-comments {
+    height: 130px;
+    overflow: auto;
+    word-break: break-all;
+}
+.comments-header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
+}
+.show-comments-parent {
+    position: relative;
+}
+/* .show-more-btn {
+    position: absolute;
+    bottom: 0px;
+    background: #568cde;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    padding: 0 5px;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    font-size: 11px;
+    cursor: pointer;
+} */
+/* .show-more-btn {
+    position: absolute;
+    bottom: 0px;
+    background: #568cde;
+    left: calc(50% - 35px);
+    color: #fff;
+    padding: 0 5px;
+    border-radius: 4px;
+    line-height: 20px;
+    font-size: 11px;
+    cursor: pointer;
+} */
+
+
+/*colors*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+    color: #0F2757 !important;;
+}
+.bg-lightgrey{
+    background-color: #F1F2FC !important;
+}
+.text-bluegrey{
+    color: #575962 !important;
+}
+.text-darkgrey{
+    color: #3F4047 !important;
+}
+.text-navyblue{
+    color: #0F2757 !important;
+}
+.text-sky{
+    color: #3F94FD !important;
+}
+.comments-header .kt-badge{
+    width:35px !important;
+    height: 35px !important;
+}
+.custom-d-btn {
+    position: relative;
+}
+.custom-d-btn::after {
+    right: 20px !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%);
+}
+.select2-search option:last-child {
+    background-color: #5866dd;
+    color: #fff;
+}
+.comments-text h5 {
+    font-size: 14px;
+    color: #575962;
+}
+.comments-text h6 {
+    font-size: 12px;
+    color: #575962;
+}
+.bg-color{
+    color: #606060 !important;
+
+}
+select {
+    background-color: #F1F2FC !important;
+    color: #606060 !important;
+    border: 0 !important;
+}
+form.task-report-form{
+    position: relative;
+}
+form.task-report-form::after{
+    /* content: "▼"; */
+    content: ">";
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    transform: rotate(90deg);
+    color: #fff;
+}
+.form-group label {
+    color: #606060;
+}
+@media only screen and (max-width:40em){
+    .table-box .task-table .ui-table-responsive .ui-table-thead>tr>th{
+        display: table-cell !important;
+    }
+
 }

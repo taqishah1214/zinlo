@@ -123,6 +123,7 @@ span{
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
+            height: fit-content;
 }
 .record-card-header-bottom-inner1 h5{
     margin: 0; 
@@ -293,7 +294,7 @@ form.search-form .form-group,
     margin-left: 0; 
 }
 .lower-content form .form-group:nth-child(2){
-    max-width: 215px;
+    max-width: 147px;
 }
 .lower-content form .form-group:nth-child(3){
     max-width: 135px;
@@ -337,8 +338,8 @@ form.search-form input::after{
     -webkit-box-pack: end;
         -ms-flex-pack: end;
             justify-content: flex-end;
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
+    /* -ms-flex-wrap: wrap;
+        flex-wrap: wrap; */
 }
 .lower-content form > div{
     margin-left: 12px;
@@ -350,12 +351,14 @@ form.search-form input::after{
 .lower-content form .form-control {
     font-size: 14px;
 }
-table.table.record-table{
+table.table.record-table,
+.task-table{
     min-width: 991px;
 }
 .record-table th,
 .record-table td{
     padding: 10px 30px;
+    vertical-align: middle;
 }
 .record-table th{
     border: 0;
@@ -479,10 +482,14 @@ span.assignee-image img {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    flex-wrap: wrap;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
     position: relative;
+}
+.assignee-info .assignee-name{
+    width: calc(100% - 50px);
 }
 form.assignee-info-form {
     position: absolute;
@@ -561,5 +568,103 @@ form.assignee-info-form input{
 .primeng-paging-container .record-table tbody tr{
     border-bottom: 1px solid #f1f2fc;
 }
+
+
+.record-card-header .btn.btn-light{
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+table.table.record-table td, table.table.record-table th {
+    border-bottom: 1px solid #dee2e6;
+}
+@media only screen and (max-width:1366px){
+    .table-box{
+        overflow-x: scroll;
+    }
+}
+
+
+@media only screen and (max-width:1140px){
+    button.btn.arrow-btn{
+		margin: 0 10px; 
+	}
+	.record-card-header-bottom-inner1 .right-arrow-btn{
+		order: 3;
+	}
+	.record-card-header-bottom-inner1{
+		width: 100%;
+		-webkit-box-pack: center;
+		    -ms-flex-pack: center;
+                justify-content: center;
+                height: fit-content;
+		margin-bottom: 30px;
+	}
+	.record-card-header-bottom-inner2{
+		width: 100%;
+	}
+	.record-card-header-bottom-inner2 .upper-content,
+	.lower-content form{
+		-webkit-box-pack: center;
+		    -ms-flex-pack: center;
+		        justify-content: center;
+	}
+}
+
+@media only screen and (max-width:640px){
+    form.search-form{
+		width: 100%;
+	}
+	form.search-form .form-group{
+	    width: 100%;
+	    max-width: 290px;
+		margin: 0 auto 10px;
+	}
+	.record-card-header-bottom-inner2 .upper-content{
+		-ms-flex-wrap: wrap;
+		    flex-wrap: wrap;
+	}
+	.users-box-parent{
+		width: 100%;
+	}
+	.record-card-header-bottom-inner2 .upper-content > div,
+	.lower-content form .form-group:nth-child(2),
+	.lower-content form > div.block-btn{
+		margin-left: 0;
+	}
+	.users-box {
+	    margin: 0 auto 10px;
+	}
+	.date-picker button {
+	    margin-right: 10px;
+	    width: 245px;
+	}
+	.lower-content form {
+	    width: 290px;
+	    margin: auto;
+	}
+	.lower-content form .form-group:nth-child(1),
+	.lower-content form .form-group:nth-child(2){
+		max-width: 100%;
+		width: 100%;
+	}
+	.lower-content form .form-group:nth-child(3){
+		max-width: 245px;
+		margin:0 10px 0 0;
+	}
+	.record-card-footer ul.pagination li a{
+		width: 25px;
+		height: 25px;
+	}
+		.record-card-footer-inner2 form {
+	    margin-right: 10px;
+	}
+	.record-card-header-bottom{
+		padding: 15px 13px;
+    }
+    .lower-content form{
+        flex-wrap:wrap;
+    }
+}
+
 
 
