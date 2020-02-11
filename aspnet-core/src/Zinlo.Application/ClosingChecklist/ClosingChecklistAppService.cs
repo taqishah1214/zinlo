@@ -18,6 +18,7 @@ using Zinlo.Authorization.Users;
 using Zinlo.Attachments;
 using Zinlo.Attachments.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace Zinlo.ClosingChecklist
 {
@@ -44,12 +45,14 @@ namespace Zinlo.ClosingChecklist
             Complete = 2,
             Inprogress = 3
         }
-
-
         public async Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input)
-        {
+     {
             var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u => u.Assignee)
-                                    .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Category.Title.Contains(input.Filter) || e.Category.Title.Contains(input.Filter));
+                                    .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.TaskName.Contains(input.Filter))
+                                    .WhereIf(input.StatusFilter != 0, e => false || e.Status == (Zinlo.ClosingChecklist.Status)input.StatusFilter)
+                                    .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
+                                    .WhereIf(input.DateFilter != null && input.DateFilter.Value.Date.Year != 2000, e => false || e.CreationTime.Date == input.DateFilter.Value.Date);
+
             query = query.Where(x => x.CreationTime.Month == DateTime.Today.Month && x.CreationTime.Year == DateTime.Today.Year);
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var closingCheckList = from o in pagedAndFilteredTasks
@@ -79,7 +82,6 @@ namespace Zinlo.ClosingChecklist
                     AssigniName = y.AssigniName,
                     Status = y.Status,
                     TaskName = y.TaskName
-
                 }
                 )
             });
@@ -94,9 +96,6 @@ namespace Zinlo.ClosingChecklist
 
         public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditClosingChecklistDto input)
         {
-
-
-
             if (input.Id == 0 || input.Id == null)
             {
                 await Create(input);
@@ -106,8 +105,6 @@ namespace Zinlo.ClosingChecklist
                 await Update(input);
             }
         }
-
-
 
         //[AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
         protected virtual async System.Threading.Tasks.Task Create(CreateOrEditClosingChecklistDto input)
@@ -148,26 +145,14 @@ namespace Zinlo.ClosingChecklist
             }
         }
 
-        //[AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
-        protected virtual async System.Threading.Tasks.Task Update(CreateOrEditClosingChecklistDto input)
+    
+        protected virtual async Task Update(CreateOrEditClosingChecklistDto input)
         {
-            try
-            {
                 var task = await _closingChecklistRepository.FirstOrDefaultAsync((int)input.Id);
-                //   var data = ObjectMapper.Map(input, task);
-                task.TaskName = input.TaskName;
-                task.CategoryId = input.CategoryId;
-                task.NoOfMonths = input.NoOfMonths;
-                task.DayBeforeAfter = input.DayBeforeAfter;
-                task.EndOfMonth = input.EndOfMonth;
-                task.Instruction = input.Instruction;
-                task.ClosingMonth = input.ClosingMonth;
+                 var data = ObjectMapper.Map(input, task);
                 task.Status = (Zinlo.ClosingChecklist.Status)input.Status;
                 task.Frequency = (Zinlo.ClosingChecklist.Frequency)input.Frequency;
-                task.AssigneeId = input.AssigneeId;
-                task.DueOn = input.DueOn;
                 var result = _closingChecklistRepository.Update(task);
-                var r = result;
                 if (input.comments != null)
                 {
                     foreach (var item in input.comments)
@@ -189,15 +174,6 @@ namespace Zinlo.ClosingChecklist
 
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error");
-
-            }
-
-
-
         }
 
         public async Task<List<NameValueDto<string>>> UserAutoFill(string searchTerm)
@@ -236,27 +212,17 @@ namespace Zinlo.ClosingChecklist
             return users;
         }
 
-        public async Task<DetailsClosingCheckListDto> getDetails(long id)
+        public async Task<DetailsClosingCheckListDto> GetDetails(long id)
         {
             var task = _closingChecklistRepository.GetAll().Include(u => u.Assignee).Include(c => c.Category).Where(x => x.Id == id).FirstOrDefault();
-            DetailsClosingCheckListDto detailsClosingCheckListDto = new DetailsClosingCheckListDto();
-            detailsClosingCheckListDto.Id = task.Id;
-            detailsClosingCheckListDto.TaskName = task.TaskName;
-            detailsClosingCheckListDto.Instruction = task.Instruction;
-            detailsClosingCheckListDto.ClosingMonth = task.ClosingMonth;
-            detailsClosingCheckListDto.EndsOn = task.EndsOn;
-            detailsClosingCheckListDto.DayBeforeAfter = task.DayBeforeAfter;
-            detailsClosingCheckListDto.AssigneeName = task.Assignee.Name;
-            detailsClosingCheckListDto.DueOn = task.DueOn;
-            detailsClosingCheckListDto.NoOfMonths = task.NoOfMonths;
-            detailsClosingCheckListDto.Status = (StatusDto)task.Status;
-            detailsClosingCheckListDto.TaskStatus = task.Status.ToString();
-            detailsClosingCheckListDto.Instruction = task.Instruction;
-            detailsClosingCheckListDto.CategoryName = task.Category.Title;
-            detailsClosingCheckListDto.comments = await _commentAppService.GetComments(1, task.Id);
-            detailsClosingCheckListDto.Attachments =  await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
-            return detailsClosingCheckListDto;
-
+            var output = ObjectMapper.Map<DetailsClosingCheckListDto>(task);
+            output.AssigneeName = task.Assignee.Name;
+            output.TaskStatus = task.Status.ToString();
+            output.Status = (StatusDto)task.Status;
+            output.CategoryName = task.Category.Title;
+            output.comments = await _commentAppService.GetComments(1, task.Id);
+            output.Attachments =  await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
+            return output;
         }
 
         public async Task ChangeAssignee(ChangeAssigneeDto changeAssigneeDto)
@@ -283,26 +249,16 @@ namespace Zinlo.ClosingChecklist
         {
             var task = await _closingChecklistRepository.GetAll().Where(x => x.Id == id).Include(a => a.Assignee).Include(a => a.Category).FirstOrDefaultAsync();
 
-            GetTaskForEditDto getTaskForEditDto = new GetTaskForEditDto();
-            getTaskForEditDto.Id = task.Id;
-            getTaskForEditDto.AssigniName = task.Assignee.FullName;
-            getTaskForEditDto.Category = task.Category.Title;
-            getTaskForEditDto.ClosingMonth = task.ClosingMonth;
-            getTaskForEditDto.DayBeforeAfter = task.DayBeforeAfter;
-            getTaskForEditDto.DueOn = task.DueOn;
-            getTaskForEditDto.EndsOn = task.EndsOn;
-            getTaskForEditDto.Frequency = task.Frequency.ToString();
-            getTaskForEditDto.Instruction = task.Instruction;
-            getTaskForEditDto.comments = await _commentAppService.GetComments(1, id);
-            getTaskForEditDto.NoOfMonths = task.NoOfMonths;
-            getTaskForEditDto.TaskName = task.TaskName;
-            getTaskForEditDto.AssigneeId = task.AssigneeId;
-            getTaskForEditDto.CategoryId = task.CategoryId;
-            getTaskForEditDto.FrequencyId = (int)task.Frequency;
-            getTaskForEditDto.Status = task.Status.ToString();
-            getTaskForEditDto.StatusId = (int)task.Status;
-            getTaskForEditDto.Attachments =  await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
-            return getTaskForEditDto;
+            var output = ObjectMapper.Map<GetTaskForEditDto>(task);
+            output.AssigniName = task.Assignee.FullName;
+            output.Category = task.Category.Title;
+            output.Frequency = task.Frequency.ToString();
+            output.FrequencyId = (int)task.Frequency;
+            output.Status = task.Status.ToString();
+            output.StatusId = (int)task.Status;
+            output.comments = await _commentAppService.GetComments(1, id);
+            output.Attachments =  await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
+            return output;
         }
 
         public async Task Delete(long id)
@@ -310,7 +266,7 @@ namespace Zinlo.ClosingChecklist
             await _closingChecklistRepository.DeleteAsync(id);
         }
 
-        public async Task<List<NameValueDto<string>>> getCurrentMonthDays()
+        public async Task<List<NameValueDto<string>>> GetCurrentMonthDays()
         {
             List<NameValueDto<string>> list = new List<NameValueDto<string>>();
             DateTime now = DateTime.Now;

@@ -14,7 +14,6 @@ namespace Zinlo.Tasks.Dtos
         public virtual long AssigneeId { get; set; }
         public virtual DateTime ClosingMonth { get; set; }
         public StatusDto Status { get; set; }
-        public int TenantId { get; set; }
         public string Instruction { get; set; }
         public int NoOfMonths { get; set; }
         public int DueOn { get; set; }
@@ -25,14 +24,13 @@ namespace Zinlo.Tasks.Dtos
         public string CommentBody { get; set; }
         public List<CommentDto> comments { get; set; }
         public List<string> AttachmentsPath { get; set; }
-
-
     }
     public enum StatusDto
     {
-        Open = 1,
-        Complete = 2,
-        Inprogress = 3
+        NotStarted = 1,
+        InProcess = 2,
+        OnHold = 3,
+        Completed = 4
     }
     public enum FrequencyDto
     {

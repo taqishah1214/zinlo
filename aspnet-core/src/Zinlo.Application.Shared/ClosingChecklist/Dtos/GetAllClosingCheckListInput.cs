@@ -9,5 +9,8 @@ namespace Zinlo.ClosingChecklist.Dtos
     {
         public string Filter { get; set; }
         public string TitleFilter { get; set; }
+        public int CategoryFilter { get; set; }
+        public int StatusFilter { get; set; }      
+        public DateTime? DateFilter { get; set; }
     }
 }

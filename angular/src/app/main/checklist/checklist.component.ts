@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto } from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto, CategoriesServiceProxy, NameValueDtoOfInt64 } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { UserListComponentComponent } from './user-list-component/user-list-component.component';
+import * as moment from 'moment';
 @Component({
   selector: 'app-tasks',
   templateUrl: './checklist.component.html',
@@ -18,6 +19,10 @@ export class Checklist extends AppComponentBase implements OnInit {
   advancedFiltersAreShown = false;
   filterText = '';
   titleFilter = '';
+  categoryFilter:number = 0;
+  statusFilter :number = 0;
+  dateFilter : Date = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
+ // dateForFilter:Date;
   tasksList: any;
   list: any = []
   ClosingCheckList: any = []
@@ -50,7 +55,9 @@ export class Checklist extends AppComponentBase implements OnInit {
     "April", "May", "June", "July", "August", "September",
     "October", "Novemeber", "December");
   remainingUserForHeader : any = [];
+  category : NameValueDtoOfInt64[] = [];
   constructor(private _router: Router,
+    private _categoryService: CategoriesServiceProxy,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector) {
     super(injector)
     this.FilterBoxOpen = false;
@@ -64,6 +71,7 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.monthCount = curr_month;
     this.currentMonth = this.monthsArray[curr_month]
     this.yearCount = 1;
+    this.loadCategories();
   }
   openFieldUpdateAssignee(record) {
     this.rowid = record;
@@ -139,6 +147,9 @@ export class Checklist extends AppComponentBase implements OnInit {
     this._closingChecklistService.getAll(
       this.filterText,
       this.titleFilter,
+      this.categoryFilter,
+      this.statusFilter,
+      moment(this.dateFilter),
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -228,7 +239,30 @@ export class Checklist extends AppComponentBase implements OnInit {
     this._router.navigate(['/app/main/checklist/task-details'], { state: { data: { id: recordId } } });
 
   }
-
-
+  //Filters
+  filterByStatus(event):void{
+    this.statusFilter = event.target.value.toString();
+    this.getClosingCheckListAllTasks();
+  }
+  filterByCategory(event):void{
+    this.categoryFilter = event.target.value.toString();
+    this.getClosingCheckListAllTasks();
+ }
+ filterByDate(event):void{
+   this.dateFilter = event;
+   console.log("datedd",event);
+  this.getClosingCheckListAllTasks();
+ }
+ loadCategories():void{
+  this._categoryService.categoryDropDown().subscribe(result => {
+    this.category = result;
+});
+}
+ResetGrid():void{
+  this.statusFilter = 0;
+  this.categoryFilter = 0;
+  this.dateFilter = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
+  this.getClosingCheckListAllTasks();
+}
 
 }

@@ -27,11 +27,11 @@
                             </div>
                             <div class="record-card-header-bottom-inner2">
                                 <div class="upper-content">
-                                    <form class="search-form">
+                                     <form class="search-form">
                                         <div class="form-group">
-                                            <input type="text" name="search" placeholder="Search" class="border-grey">
+                                            <input type="text" autoFocus (input)="getClosingCheckListAllTasks()" [(ngModel)]="filterText" name="filterText" [placeholder]="l('SearchWithThreeDot')" class="border-grey">
                                         </div>
-                                    </form>
+                                    </form> 
                                     <div class="users-box-parent">
                                         <div class="users-box">
                                             <div *ngIf="plusUserBadgeForHeader" class="member-count bg-lightgrey text-blue">
@@ -76,34 +76,36 @@
                                 <div *ngIf="FilterBoxOpen" class="lower-content">
                                     <form>
                                         <div class="form-group">
-                                            <select class="form-control border-grey" id="exampleFormControlSelect1">
-                                                <option>Status</option>
-                                                <option>option2</option>
-                                                <option>option3</option>
-                                                <option>option4</option>
-                                                <option>option5</option>
+                                            <select class="form-control border-grey" (change)="filterByStatus($event)" id="exampleFormControlSelect1">
+                                                <option value="0">Status</option>
+                                                <option value="1">Open</option>
+                                                <option value="2">Complete</option>
+                                                <option value="3">Inprogress</option>
+                                            </select>
+                                           
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control border-grey" (change)="filterByCategory($event)" id="exampleFormControlSelect2">
+                                                <option value="0">Category</option>
+                                                <option  *ngFor="let item of category;" [value]="item.value"> 
+                                                      {{item.name}}
+                                                </option>
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <select class="form-control border-grey" id="exampleFormControlSelect2">
-                                                <option>Category</option>
-                                                <option>option2</option>
-                                                <option>option3</option>
-                                                <option>option4</option>
-                                                <option>option5</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-control border-grey" id="exampleFormControlSelect3">
+                                            <!-- <select class="form-control border-grey" id="exampleFormControlSelect3">
                                                 <option>Date</option>
                                                 <option>option2</option>
                                                 <option>option3</option>
                                                 <option>option4</option>
                                                 <option>option5</option>
-                                            </select>
-                                        </div>
+                                            </select> -->
+                                            <input id="titleFilter" (ngModelChange)="filterByDate($event)" class="form-control border-grey"
+                                             name="titleFilter" [(ngModel)]="titleFilter"
+                                            type="text" bsDatepicker class="form-control" />
+                                        </div> 
                                         <div class="block-btn">
-                                            <button class="btn btn-square bg-lightgrey">
+                                            <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()" >
                                                 <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
                                             </button>
                                         </div>

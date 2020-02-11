@@ -2125,12 +2125,15 @@ export class ClosingChecklistServiceProxy {
     /**
      * @param filter (optional) 
      * @param titleFilter (optional) 
+     * @param categoryFilter (optional) 
+     * @param statusFilter (optional) 
+     * @param dateFilter (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
+    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -2140,6 +2143,18 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'titleFilter' cannot be null.");
         else if (titleFilter !== undefined)
             url_ += "TitleFilter=" + encodeURIComponent("" + titleFilter) + "&"; 
+        if (categoryFilter === null)
+            throw new Error("The parameter 'categoryFilter' cannot be null.");
+        else if (categoryFilter !== undefined)
+            url_ += "CategoryFilter=" + encodeURIComponent("" + categoryFilter) + "&"; 
+        if (statusFilter === null)
+            throw new Error("The parameter 'statusFilter' cannot be null.");
+        else if (statusFilter !== undefined)
+            url_ += "StatusFilter=" + encodeURIComponent("" + statusFilter) + "&"; 
+        if (dateFilter === null)
+            throw new Error("The parameter 'dateFilter' cannot be null.");
+        else if (dateFilter !== undefined)
+            url_ += "DateFilter=" + encodeURIComponent(dateFilter ? "" + dateFilter.toJSON() : "") + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -15297,6 +15312,7 @@ export interface IChangeStatusDto {
 
 export class GetTaskForEditDto implements IGetTaskForEditDto {
     id!: number;
+    tenantId!: number;
     taskName!: string | undefined;
     closingMonth!: moment.Moment;
     category!: string | undefined;
@@ -15328,6 +15344,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     init(data?: any) {
         if (data) {
             this.id = data["id"];
+            this.tenantId = data["tenantId"];
             this.taskName = data["taskName"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.category = data["category"];
@@ -15367,6 +15384,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["tenantId"] = this.tenantId;
         data["taskName"] = this.taskName;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["category"] = this.category;
@@ -15399,6 +15417,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
 
 export interface IGetTaskForEditDto {
     id: number;
+    tenantId: number;
     taskName: string | undefined;
     closingMonth: moment.Moment;
     category: string | undefined;
