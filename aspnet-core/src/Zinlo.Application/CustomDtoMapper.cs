@@ -43,6 +43,7 @@ using Zinlo.Comment.Dtos;
 using Zinlo.Tasks.Dtos;
 using Zinlo.ClosingChecklist.Dtos;
 using Zinlo.Attachments.Dtos;
+using Zinlo.AccountSubType.Dtos;
 
 namespace Zinlo
 {
@@ -147,9 +148,6 @@ namespace Zinlo
             //OrganizationUnit
             configuration.CreateMap<OrganizationUnit, OrganizationUnitDto>();
 
-            //Comment
-            configuration.CreateMap<Comment.Comment, CreateOrEditCommentDto>().ReverseMap();
-
             /* ADD YOUR OWN CUSTOM AUTOMAPPER MAPPINGS HERE */
             //Closing checklist
             configuration.CreateMap<CreateOrEditClosingChecklistDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
@@ -167,8 +165,16 @@ namespace Zinlo
                 .ForMember(dto=>dto.CreationDate, entity=> entity.MapFrom(p=>p.CreationTime))
                 ;
 
+            //AccountSubType
+            configuration.CreateMap<CreateOrEditAccountSubTypeDto,AccountSubType.AccountSubType>().ReverseMap();
+            configuration.CreateMap<GetAccountSubTypeForViewDto, AccountSubType.AccountSubType>().ReverseMap()
+               .ForMember(dto => dto.UserId, entity => entity.MapFrom(p => p.CreatorUserId))
+               .ForMember(dto => dto.CreationDate, entity => entity.MapFrom(p => p.CreationTime))
+               ;
+
             //Comment
             configuration.CreateMap<CommentDto, Comment.Comment>().ReverseMap();
+            configuration.CreateMap<Comment.Comment, CreateOrEditCommentDto>().ReverseMap();
         }
     }
 }

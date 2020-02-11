@@ -351,10 +351,10 @@ form.search-form input::after{
 .lower-content form .form-control {
     font-size: 14px;
 }
-table.table.record-table,
+/* table.table.record-table,
 .task-table{
     min-width: 991px;
-}
+} */
 .record-table th,
 .record-table td{
     padding: 10px 30px;
@@ -368,18 +368,20 @@ table.table.record-table,
 .record-card-body table td{
     vertical-align: middle;
 }
-.record-table tr td:nth-child(1) {
+/* .record-table tr td:nth-child(1) {
     min-width: 150px;
-}
+} */
 .record-card-body > table .record-num {
     font-weight: bold;
     margin-right: 10px;
 }
-.record-card-body table .task-box {
+.task-box {
     padding: 2px 20px;
     border-radius: 20px;
     width: 100%;
     position: relative;
+    word-break: break-all;
+    color: #575962;
 }
 .task-report-form{
     width: 100px;
@@ -422,7 +424,8 @@ form.task-report-form select:focus option {
     background-color: #fff;
     color: #000;
 }
-.record-card-body table .task-box::after {
+
+.task-box::after {
     content: "";
     width: 5px;
     height: 5px;
@@ -435,7 +438,7 @@ form.task-report-form select:focus option {
             transform: translateY(-50%);
     border-radius: 50%;
 }
-.record-card-body table .task-box:hover{
+.task-box:hover{
     background-color: #F1F2FC;
 }
 .record-card-body table span.category-name {
@@ -577,13 +580,81 @@ form.assignee-info-form input{
 table.table.record-table td, table.table.record-table th {
     border-bottom: 1px solid #dee2e6;
 }
-@media only screen and (max-width:1366px){
-    .table-box{
-        overflow-x: scroll;
+.table-row-collapsible td{
+    border-top: 0;
+}
+.thead-box {
+    margin-right: 10px;
+}
+.thead-box, .tdata-box {
+    display: inline-block;
+}
+
+.assignee-cell-item,
+.status-cell-item,
+.category-cell-item{
+    display: none;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.tdata-box .assignee-name {
+    width: auto;
+}
+.table-row-collapsible ul li{
+    margin-bottom: 5px;
+}
+.table-row-collapsible{
+    display: none;
+}
+@media only screen and (max-width:1600px){
+    .assignee-cell {
+        width: 250px;
+    }
+    .record-table td{
+        padding: 10px;
+    }
+    .record-table th, .record-table td{
+        padding: 10px;
     }
 }
 
+@media only screen and (max-width:1470px){
+    .date-cell {
+        width: 110px;
+    }
+    .cat-cell {
+        width: 130px;
+    }
+    .status-cell {
+        width: 140px;
+    }
+    .assignee-cell{
+        width: 200px;
+    }
+}
+@media only screen and (max-width:1366px){
+    /* .table-box{
+        overflow-x: scroll;
+    } */
+}
 
+@media only screen and (max-width:1279px){
+    .table-row-collapsible{
+        display: table-row;
+    }
+    .assignee-cell{
+        display: none;
+    }
+    .assignee-cell-item{
+        display: flex;
+    }
+    .date-cell {
+        width: 120px;
+    }
+    .toggle-btn-cell .taggle-btn{
+        display: block;
+    }
+}
 @media only screen and (max-width:1140px){
     button.btn.arrow-btn{
 		margin: 0 10px; 
@@ -608,6 +679,15 @@ table.table.record-table td, table.table.record-table th {
 		    -ms-flex-pack: center;
 		        justify-content: center;
 	}
+}
+
+@media only screen and (max-width:767px){
+    .status-cell{
+        display: none;
+    }
+    .status-cell-item{
+        display: flex;
+    }
 }
 
 @media only screen and (max-width:640px){

@@ -69,6 +69,13 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.rowid = record;
   }
 
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
+  }
+
   monthChangeHeader (operation) : void {
 
     if (this.monthCount  == -1)
@@ -80,12 +87,20 @@ export class Checklist extends AppComponentBase implements OnInit {
     } 
     if (operation == 1)
     {   
+      debugger
     this.currentMonth = this.monthsArray[this.monthCount] 
     ++this.monthCount  
     }
-    else{   
-      --this.monthCount
+    else{  
+      debugger 
+      if (this.monthCount  == 0)
+      {
+        this.monthCount = 12;
+        this.currentYear = this.currentDate.getFullYear()-(Math.abs(this.yearCount));
+        --this.yearCount;
+      }
       this.currentMonth = this.monthsArray[this.monthCount]
+      --this.monthCount
      
     }
     if (this.monthCount == 12)

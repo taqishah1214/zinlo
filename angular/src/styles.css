@@ -2,6 +2,7 @@
 body,html{
     overflow: auto !important;
     color: #B5B7C7 !important;
+    word-wrap: break-word;
 }
 .margin-left-5 {
     margin-left: 5px !important;
@@ -109,7 +110,7 @@ body .ui-table .ui-table-tbody > tr{
 }
 body .ui-table .ui-table-tbody > tr td,
 body .ui-table .ui-table-thead > tr th{
-    padding: 10px 30px !important;
+    /* padding: 10px 30px !important; */
     vertical-align: middle;
 }
 body .ui-table .ui-table-thead > tr > th,
@@ -159,18 +160,18 @@ body .ui-table .ui-table-tbody > tr:nth-child(even){
 }
 .task-table-inner th{
     background-color: transparent !important; 
-    font-weight: 500 !important;  
+    /* font-weight: 500 !important;   */
     color:#575962 !important;
-    width:20%;
+    /* width:20%; */
 }
 .task-table-inner th:focus{ 
     color:#8397ff!important;
     border:1px solid transparent !important;
     outline:none !important;
 }
-.task-table-inner td{ 
+/* .task-table-inner td{ 
     width: 20%!important;
-}
+} */
 .task-table-inner .task-task-name:focus{ 
     color:#121213!important;
     border:1px solid transparent !important;
@@ -330,9 +331,79 @@ form.task-report-form::after{
 .form-group label {
     color: #606060;
 }
+
+
+
+.date-cell {
+    width: 160px;
+}
+.cat-cell {
+    width: 160px;
+}
+.status-cell {
+    width: 160px;
+}
+.assignee-cell {
+    width: 300px;
+}
+.category-name {
+    max-width: 85px;
+    width: 100%;
+    text-align: center;
+    border-radius: 4px;
+    padding: 2px;
+}
+
+.table-repeater {
+    border: 0 !important;
+}
+.toggle-btn-cell{
+    position: relative;
+    width:16px;
+}
+.toggle-btn-cell .taggle-btn{
+    position: absolute;
+    top: 14px;
+    left: 0px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #0abb87;
+    display: none;
+    cursor: pointer;
+
+}
+.taggle-btn::before {
+    content: "";
+    width: 5px;
+    height: 1px;
+    position: absolute;
+    top: 7px;
+    left: 3px;
+    background: #0abb87;
+    transform: rotate(45deg);
+}
+.taggle-btn::after {
+    content: "";
+    width: 5px;
+    height: 1px;
+    position: absolute;
+    top: 7px;
+    left: 6px;
+    transform: rotate(-45deg);
+    background: #0abb87;
+}
+.table-repeater th,
+.table-repeater td {
+    border: 0 !important;
+}
 @media only screen and (max-width:40em){
     .table-box .task-table .ui-table-responsive .ui-table-thead>tr>th{
         display: table-cell !important;
+    }
+    .table-box .task-table .ui-table-responsive .ui-table-thead>tr>th.assignee-cell,
+    .table-box .task-table .ui-table-responsive .ui-table-thead>tr>th.status-cell {
+        display: none !important;
     }
 
 }

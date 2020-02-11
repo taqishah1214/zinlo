@@ -151,14 +151,10 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
   settings: UppyConfig = {
     uploadAPI: {
-      endpoint: ``,
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('userToken')
-      }
+      endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",
     },
     plugins: {
       Webcam: false
     }
   }
-
 }

@@ -141,7 +141,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     });
     this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
 
-
   }
 
   onChange(val) {

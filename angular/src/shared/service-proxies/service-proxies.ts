@@ -572,6 +572,259 @@ export class AccountServiceProxy {
 }
 
 @Injectable()
+export class AccountSubTypeServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditAccountSubTypeDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/AccountSubType/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAccountSubTypeForEdit(id: number | undefined): Observable<CreateOrEditAccountSubTypeDto> {
+        let url_ = this.baseUrl + "/api/services/app/AccountSubType/GetAccountSubTypeForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAccountSubTypeForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAccountSubTypeForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<CreateOrEditAccountSubTypeDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CreateOrEditAccountSubTypeDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAccountSubTypeForEdit(response: HttpResponseBase): Observable<CreateOrEditAccountSubTypeDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CreateOrEditAccountSubTypeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CreateOrEditAccountSubTypeDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/AccountSubType/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param titleFilter (optional) 
+     * @param descriptionFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | undefined, titleFilter: string | undefined, descriptionFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetAccountSubTypeForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/AccountSubType/GetAll?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (titleFilter === null)
+            throw new Error("The parameter 'titleFilter' cannot be null.");
+        else if (titleFilter !== undefined)
+            url_ += "TitleFilter=" + encodeURIComponent("" + titleFilter) + "&"; 
+        if (descriptionFilter === null)
+            throw new Error("The parameter 'descriptionFilter' cannot be null.");
+        else if (descriptionFilter !== undefined)
+            url_ += "DescriptionFilter=" + encodeURIComponent("" + descriptionFilter) + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfGetAccountSubTypeForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfGetAccountSubTypeForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfGetAccountSubTypeForViewDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetAccountSubTypeForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfGetAccountSubTypeForViewDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class AttachmentsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -13523,6 +13776,158 @@ export class SwitchToLinkedAccountOutput implements ISwitchToLinkedAccountOutput
 export interface ISwitchToLinkedAccountOutput {
     switchAccountToken: string | undefined;
     tenancyName: string | undefined;
+}
+
+export class CreateOrEditAccountSubTypeDto implements ICreateOrEditAccountSubTypeDto {
+    title!: string | undefined;
+    description!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditAccountSubTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.title = data["title"];
+            this.description = data["description"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditAccountSubTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditAccountSubTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["description"] = this.description;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditAccountSubTypeDto {
+    title: string | undefined;
+    description: string | undefined;
+    id: number | undefined;
+}
+
+export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto {
+    title!: string | undefined;
+    description!: string | undefined;
+    creationDate!: moment.Moment;
+    createdBy!: string | undefined;
+    userId!: number | undefined;
+    profilePicture!: string | undefined;
+    id!: number;
+
+    constructor(data?: IGetAccountSubTypeForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.title = data["title"];
+            this.description = data["description"];
+            this.creationDate = data["creationDate"] ? moment(data["creationDate"].toString()) : <any>undefined;
+            this.createdBy = data["createdBy"];
+            this.userId = data["userId"];
+            this.profilePicture = data["profilePicture"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): GetAccountSubTypeForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAccountSubTypeForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["description"] = this.description;
+        data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["userId"] = this.userId;
+        data["profilePicture"] = this.profilePicture;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IGetAccountSubTypeForViewDto {
+    title: string | undefined;
+    description: string | undefined;
+    creationDate: moment.Moment;
+    createdBy: string | undefined;
+    userId: number | undefined;
+    profilePicture: string | undefined;
+    id: number;
+}
+
+export class PagedResultDtoOfGetAccountSubTypeForViewDto implements IPagedResultDtoOfGetAccountSubTypeForViewDto {
+    totalCount!: number;
+    items!: GetAccountSubTypeForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetAccountSubTypeForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items!.push(GetAccountSubTypeForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetAccountSubTypeForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetAccountSubTypeForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfGetAccountSubTypeForViewDto {
+    totalCount: number;
+    items: GetAccountSubTypeForViewDto[] | undefined;
 }
 
 export class PostAttachmentsPathDto implements IPostAttachmentsPathDto {

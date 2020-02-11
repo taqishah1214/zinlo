@@ -31,7 +31,9 @@ import { StatusComponent } from './checklist/status/status.component';
 import { EditTaskComponent } from './checklist/edit-task/edit-task.component';
 import { Checklist } from './checklist/checklist.component';;
 import { CreatetaskComponent } from './checklist/createtask/createtask.component'
-import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';
+import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';;
+import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
+import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component'
 
 
 
@@ -73,6 +75,9 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 StatusComponent,
                 EditTaskComponent,
                 FirstLetterOfWords
+,
+                CreateOrEditAccountsubtypeComponent,
+                AccountsubtypeComponent
                 
         ],
         providers: [

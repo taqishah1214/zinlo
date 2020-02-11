@@ -64,7 +64,11 @@
                                         </div>
                                     </div>
                                     <div class="date-picker">
-                                        <button class="btn btn-light"><img
+
+                                        <button autocomplete="off"
+                                        class="form-control" name="date" bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'MMM/YYYY'}"
+                                        (onShown)="onOpenCalendar($event)" class="btn btn-light"><img
                                                 src="./assets/media/ClosingCheckList/calendar.svg" alt="calender">
                                             january 2020</button>
                                     </div>
@@ -126,20 +130,20 @@
                                     [resizableColumns]="primengTableHelper.resizableColumns">
                                     <ng-template pTemplate="header">
                                         <tr class="task-table-inner">
-                                            <th scope="col" pSortableColumn="CreationTime">
+                                            <th class="date-cell" scope="col" pSortableColumn="CreationTime">
                                                 Date
                                                 <p-sortIcon field="CreationTime"></p-sortIcon>
                                             </th>
-                                            <th scope="col" class="task-task-name">Task Name</th>
-                                            <th scope="col" pSortableColumn="CategoryId">
+                                            <th class="task-cell" scope="col" class="task-task-name">Task Name</th>
+                                            <th class="cat-cell" scope="col" pSortableColumn="CategoryId">
                                                 Category
                                                 <p-sortIcon field="CategoryId"></p-sortIcon>
                                             </th>
-                                            <th scope="col" pSortableColumn="Status">
+                                            <th class="status-cell" scope="col" pSortableColumn="Status">
                                                 Status
                                                 <p-sortIcon field="Status"></p-sortIcon>
                                             </th>
-                                            <th scope="col" pSortableColumn="AssigneeId">
+                                            <th class="assignee-cell" scope="col" pSortableColumn="AssigneeId">
                                                 Assignee
                                                 <p-sortIcon field="AssigneeId"></p-sortIcon>
                                             </th>
@@ -152,21 +156,21 @@
                             <table class="table record-table">
                                 <tbody *ngFor="let i of ClosingCheckList">
                                 
-                                    <tr *ngFor="let j of i.group ; let value = index" class="task-table-inner">
+                                    <tr *ngFor="let j of i.group ; let value = index" class="task-table-inner table-repeater">
                                     
-                                        <td (click)="RedirectToDetail(j.id)" *ngIf ="value === 0">
-                                            <span class="task-box">{{i.creationTime | date:'d MMM EEE'}}</span>
+                                        <td class="date-cell" (click)="RedirectToDetail(j.id)" *ngIf ="value === 0">
+                                            <span class="">{{i.creationTime | date:'d MMM EEE'}}</span>
                                         </td>
                                         <td  (click)="RedirectToDetail(j.id)" *ngIf ="value != 0">
-                                            <span class="task-box">{{""}}</span>                        
+                                            <span class="">{{""}}</span>                        
                                         </td>
-                                        <td (click)="RedirectToDetail(j.id)">
-                                            <span class="task-box">{{j.taskName}}</span>
+                                        <td class="task-cell" (click)="RedirectToDetail(j.id)">
+                                            <span class="task-box"><b>{{j.taskName}}</b></span>
                                         </td>
-                                        <td (click)="RedirectToDetail(j.id)">
+                                        <td class="cat-cell" (click)="RedirectToDetail(j.id)">
                                             <span class="category-name bg-lightgrey">{{j.category}}</span>
                                         </td>
-                                        <td>
+                                        <td class="status-cell">
                                             <form class="task-report-form">
                                                 <select onclick="console.log('test')" (change)="ChangeStatus($event.target.value,j.id)"
                                                     class="form-control border-0 {{j.StatusColor}} text-white">
@@ -178,7 +182,7 @@
                                                 </select>
                                             </form>
                                         </td>
-                                        <td>
+                                        <td class="assignee-cell">
                                             <div *ngIf="j.id != rowid" class="assignee-info" (click)="openFieldUpdateAssignee(j.id)">
                                                 <span class="assignee-image bg-sea-green">{{j.NameAvatar}}</span>
                                                 <span class="assignee-name">{{j.assigniName}}</span>
@@ -189,7 +193,55 @@
                                                 </p-autoComplete>
                                             </div>
                                         </td>
+                                        <td class="toggle-btn-cell">
+                                            <div class="taggle-btn"></div>
+                                        </td>
                                     </tr>
+                                    <!-- show-collapsible-row -->
+                                    <tr class="table-row-collapsible " *ngFor="let j of i.group ; let value = index">
+                                        <td colspan="6">
+                                            <ul>
+                                                <li class="assignee-cell-item">
+                                                    <div class="thead-box"><b>Assignee : </b></div>
+                                                    <div class="tdata-box">
+                                                        <div *ngIf="j.id != rowid" class="assignee-info" (click)="openFieldUpdateAssignee(j.id)">
+                                                            <span class="assignee-image bg-sea-green">{{j.NameAvatar}}</span>
+                                                            <span class="assignee-name">{{j.assigniName}}</span>
+                                                        </div>
+                                                        <div *ngIf="j.id == rowid">
+                                                            <p-autoComplete placeholder="Search..." [(ngModel)]="j.text" [suggestions]="userName"
+                                                                (completeMethod)="onSearchUsers($event)" (keyup.enter)="addInput(j)" [forceSelection]="true" required>
+                                                            </p-autoComplete>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <li class="status-cell-item">
+                                                    <div class="thead-box"><b>Status : </b></div>
+                                                    <div class="tdata-box">
+                                                        <form class="task-report-form">
+                                                            <select onclick="console.log('test')" (change)="ChangeStatus($event.target.value,j.id)"
+                                                                class="form-control border-0 {{j.StatusColor}} text-white">
+                                                                <option value="" selected disabled hidden>
+                                                                    {{j.status}}</option>
+                                                                <option value="1">Open</option>
+                                                                <option value="2">Complete</option>
+                                                                <option value="3">Inprogress</option>
+                                                            </select>
+                                                        </form>
+                                                    </div>
+                                                </li>
+
+                                                <li class="category-cell-item">
+                                                    <div class="thead-box"><b>Category : </b></div>
+                                                    <div class="tdata-box">
+                                                        <span class="category-name bg-lightgrey">{{j.category}}</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+
                                 </tbody>
                             </table>
                             <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
