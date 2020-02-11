@@ -42,6 +42,7 @@ export class CategoriesComponent extends AppComponentBase {
     }
 
     getCategories(event?: LazyLoadEvent) {
+        
       
         if (this.primengTableHelper.shouldResetPaging(event)) {
             this.paginator.changePage(0);

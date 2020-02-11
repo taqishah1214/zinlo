@@ -27,9 +27,10 @@ namespace Zinlo.ClosingChecklist
     }
     public enum Status
     {
-        Open = 1,
-        Complete = 2,
-        Inprogress = 3
+        NotStarted = 1,
+        InProcess = 2,
+        OnHold = 3,
+        Completed = 4
     }
     public enum Frequency
     {

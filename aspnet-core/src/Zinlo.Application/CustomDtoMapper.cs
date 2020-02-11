@@ -151,6 +151,8 @@ namespace Zinlo
             /* ADD YOUR OWN CUSTOM AUTOMAPPER MAPPINGS HERE */
             //Closing checklist
             configuration.CreateMap<CreateOrEditClosingChecklistDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
+            configuration.CreateMap<DetailsClosingCheckListDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
+            configuration.CreateMap<GetTaskForEditDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
             configuration.CreateMap<Comment.Comment, CommentDto>().ReverseMap();
 
             //Attachment

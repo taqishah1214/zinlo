@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { UppyConfig } from 'uppy-angular';
-import { ClosingChecklistServiceProxy,AttachmentsServiceProxy, PostAttachmentsPathDto } from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy,AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 
 @Component({
@@ -15,14 +15,15 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
  recordId : number = 0;
  commantBox: boolean;
  attachments : any;
- newAttachmentPaths : any =[]
+ newAttachmentPaths : any =[];
+ comment: CreateOrEditCommentDto = new CreateOrEditCommentDto();
  postAttachment: PostAttachmentsPathDto = new PostAttachmentsPathDto();
-
 
   constructor(
     injector: Injector,
     private _router: Router,
     private _closingChecklistService: ClosingChecklistServiceProxy,
+    private    _commentServiceProxy :CommentServiceProxy,
     private _attachmentService : AttachmentsServiceProxy
     ) {
       super(injector);
@@ -40,6 +41,14 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
 
   onComment(): void {
     this.commantBox = true;
+    this.SaveComments();
+    this.getTaskDetails(this.recordId);
+  }
+  SaveComments():void{
+    this.comment.typeId = this.recordId;
+    this._commentServiceProxy.create(this.comment).subscribe(result=>{
+      this.comment.body = "";
+    });
   }
   onCancelComment(): void {
     this.commantBox = true;

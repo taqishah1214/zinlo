@@ -37,7 +37,7 @@
                                 </div>
 
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-md-12">
 
@@ -46,9 +46,9 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                   <div class="attachment-box">
-                                       ksuhgukjbhsdilcfhril
-                                   </div>
+                                    <div class="attachment-box">
+                                        {{taskDetailObject.instruction}}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -60,40 +60,50 @@
                                 </div>
 
                             </div>
-                            <div class="row show-comments-parent">
-                                <div *ngFor="let comm of taskDetailObject.comments" class="col comment-section mt-5 show-comments">
-                                    <div class=" comment-wrapper border-bottom pb-3 mb-3">
-                                       <div class="row comments-header">
-                                        <img alt="photo" class="col-2" src="assets/media/users/100_10.jpg">
-                                        <div class="col-10 comments-text d-flex mb-4">
-                                            <h5 class="col-6 p-0 text-left">{{comm.userName}}</h5>
-                                            <h6 class="col-6 p-0 text-right">{{comm.daysCount}}</h6>
-                                        </div>
-                                       </div>
-                                         <div class="col" innerHTML="{{comm.body}}"></div> 
+                            <div class="commentmainView show-comments">
+                                <div class="kt-widget3 ">
 
+                                    <div *ngFor="let i of taskDetailObject.comments" class="kt-widget3__item ">
+                                        <div class="comments-header kt-widget3__header">
+                                            <div class="kt-widget3__user-img">
+                                                <div class="kt-user-card-v2__pic">
+                                                    <div class="kt-badge kt-badge--xl kt-badge--warning">
+                                                        {{i.NameAvatar}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget3__info">
+                                                <a class="kt-widget3__username">
+                                                    {{i.userName}}
+                                                </a><br>
+
+                                            </div>
+                                            <span class="kt-widget3__status kt-font-info">
+                                                {{i.daysCount}}
+                                            </span>
+                                        </div>
+                                        <div class="kt-widget3__body">
+                                            <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- <span class="show-more-btn">▼</span> -->
-                                <!-- <span class="show-more-btn">show more</span> -->
-
-
                             </div>
                             <div class="form-group giveCommentView" *ngIf="commantBox">
-                                <label >Comments</label>
-                                <div (click)="commentClick()" >
+                                <label>Comments</label>
+                                <div (click)="commentClick()">
                                     <div class="kt-user-card-v2">
                                         <div class="kt-user-card-v2__pic">
-                                            <div class="kt-badge kt-badge--xl kt-badge--warning">{{userSignInName}}</div>
+                                            <div class="kt-badge kt-badge--xl kt-badge--warning">{{userSignInName}}
+                                            </div>
                                         </div>
-                                        <input class="form-control">
-                                    </div>  
+                                        <input [(ngModel)]="comment.body" class="form-control">
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group " *ngIf="!commantBox">
-                                <label >Comments</label>
-                                <p-editor name="HtmlEditorInput"
+                                <label>Comments</label>
+                                <p-editor [(ngModel)]="comment.body" name="HtmlEditorInput"
                                     [style]="{'height':'150px'}">
                                 </p-editor>
                                 <button class="btn btn-brand" (click)="onComment()">Comment</button>
@@ -120,17 +130,16 @@
                                         <option value="Febuary">Complete</option>
                                     </select> -->
                                     <div class="">
-                                        <app-status [StatusList] = taskDetailObject.taskStatus ></app-status>
-                                        
+                                        <app-status [StatusList]=taskDetailObject.taskStatus></app-status>
+
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <a class="action-btn" href="javascript:;"
-                                                    (click)="deleteTask()">
-                                                    <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+                                    <a class="action-btn" href="javascript:;" (click)="deleteTask()">
+                                        <i class="fa fa-trash" style="color: #5867dd;"></i></a>
                                     <!-- <i class="fa fa-trash" style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
                                     <a class="action-btn"><i class="fas fa-edit" (click)="RedirectToEditTaskPage()"
-                                        style="color: #5867dd;"></i></a>
+                                            style="color: #5867dd;"></i></a>
                                     <a class="action-btn"><i class="fa fa-clone" aria-hidden="true"></i></a>
 
                                 </div>
@@ -139,13 +148,14 @@
                                 <div class="col-md-12">
                                     <div class="drag_drop_box">
                                         <label>Attachments</label>
-                                        <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)" ></ng-uppy>
+                                        <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
+                                        </ng-uppy>
                                         <div *ngFor="let item of attachments" class="attachments_section">
                                             <button class="attachement_btn">
                                                 <img src="../../../../assets/img/{{item.attachmentExtension}}">
                                                 <span>{{item.attachmentName}}</span>
                                             </button>
-                                            <button class="cross-btn" (click)="deleteAttachment(item.id)" >
+                                            <button class="cross-btn" (click)="deleteAttachment(item.id)">
                                                 <span class="fa fa-window-close"></span>
                                             </button>
                                         </div>
