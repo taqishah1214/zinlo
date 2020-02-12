@@ -2381,12 +2381,13 @@ export class ClosingChecklistServiceProxy {
      * @param categoryFilter (optional) 
      * @param statusFilter (optional) 
      * @param dateFilter (optional) 
+     * @param monthFilter (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
+    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, monthFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -2408,6 +2409,10 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'dateFilter' cannot be null.");
         else if (dateFilter !== undefined)
             url_ += "DateFilter=" + encodeURIComponent(dateFilter ? "" + dateFilter.toJSON() : "") + "&"; 
+        if (monthFilter === null)
+            throw new Error("The parameter 'monthFilter' cannot be null.");
+        else if (monthFilter !== undefined)
+            url_ += "MonthFilter=" + encodeURIComponent("" + monthFilter) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)

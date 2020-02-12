@@ -53,13 +53,21 @@ namespace Zinlo.ClosingChecklist
         }
         public async Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input)
      {
+           
+                int index = input.MonthFilter.IndexOf('/');
+                int month = Convert.ToInt32( input.MonthFilter.Substring(0, index));
+                int year =  Convert.ToInt32( input.MonthFilter.Substring(index+1, 4));
+
             var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u => u.Assignee)
                                     .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.TaskName.Contains(input.Filter))
                                     .WhereIf(input.StatusFilter != 0, e => false || e.Status == (Zinlo.ClosingChecklist.Status)input.StatusFilter)
                                     .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
-                                    .WhereIf(input.DateFilter != null && input.DateFilter.Value.Date.Year != 2000, e => false || e.CreationTime.Date == input.DateFilter.Value.Date);
+                                     .WhereIf(month != 00 && year != 0, e => false || e.CreationTime.Month == month && e.CreationTime.Year == year)
+                                    .WhereIf(input.DateFilter != null && input.DateFilter.Value.Date.Year != 2000, e => false || e.CreationTime.Date == input.DateFilter.Value.Date)
+                                    .WhereIf(month == 00 && year == 0, e => false || e.CreationTime.Month == DateTime.Today.Month && e.CreationTime.Year == DateTime.Today.Year);
 
-            query = query.Where(x => x.CreationTime.Month == DateTime.Today.Month && x.CreationTime.Year == DateTime.Today.Year);
+
+          //  query = query.Where(x => x.CreationTime.Month == DateTime.Today.Month && x.CreationTime.Year == DateTime.Today.Year);
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var closingCheckList = from o in pagedAndFilteredTasks.ToList()
 
