@@ -50,6 +50,8 @@ export class Checklist extends AppComponentBase implements OnInit {
   currentYear : Number;
   rowid: number;
   yearCount : number;
+  collapsibleRow : boolean
+  collapsibleRowId : number;
   monthCount : number =1;
   monthsArray = new Array("January", "February", "March",
     "April", "May", "June", "July", "August", "September",
@@ -71,10 +73,15 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.monthCount = curr_month;
     this.currentMonth = this.monthsArray[curr_month]
     this.yearCount = 1;
+    this.collapsibleRow = false
     this.loadCategories();
   }
   openFieldUpdateAssignee(record) {
     this.rowid = record;
+  }
+  collapsibleRowClick(id) {
+    this.collapsibleRowId = id;
+    this.collapsibleRow = !this.collapsibleRow;
   }
 
   onOpenCalendar(container) {
@@ -188,11 +195,15 @@ export class Checklist extends AppComponentBase implements OnInit {
           else if (i.status === "Complete") {
             i["StatusColor"] = this.StatusColorBox[2]
           }
-          this.assigniNameForHeader.push({ nameAvatar: i.NameAvatar, assigneeId: i.assigneeId });
-        });
+         
+            this.assigniNameForHeader.push({ assigniName: i.assigniName, assigneeId: i.assigneeId,profilePicture : i.profilePicture});
+          
+         
+        });       
       });
 
       this.assigniNameForHeader = this.getUnique(this.assigniNameForHeader, "assigneeId")
+
       if (this.assigniNameForHeader.length > 5)
       {
         this.remainingUserForHeader = [];
@@ -207,6 +218,7 @@ export class Checklist extends AppComponentBase implements OnInit {
         this.plusUserBadgeForHeader = true
       
       }
+       debugger;
     });
   }
   //End

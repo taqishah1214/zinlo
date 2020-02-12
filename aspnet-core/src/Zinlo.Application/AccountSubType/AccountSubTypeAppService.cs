@@ -30,8 +30,14 @@ namespace Zinlo.AccountSubType
         public async Task CreateOrEdit(CreateOrEditAccountSubTypeDto input)
         {
 
-            if (input.Id == null) await Create(input);
-            else await Update(input);
+            if (input.Id == null)
+            {
+                await Create(input);
+            }
+            else
+            {
+                await Update(input);
+            }
 
         }
 

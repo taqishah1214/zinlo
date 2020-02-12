@@ -2638,7 +2638,7 @@ export class ClosingChecklistServiceProxy {
      * @return Success
      */
     getDetails(id: number | undefined): Observable<DetailsClosingCheckListDto> {
-        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/getDetails?";
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetDetails?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -2905,7 +2905,7 @@ export class ClosingChecklistServiceProxy {
      * @return Success
      */
     getCurrentMonthDays(): Observable<NameValueDtoOfString[]> {
-        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/getCurrentMonthDays";
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetCurrentMonthDays";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -15079,6 +15079,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
     statusId!: number;
     assigneeId!: number;
     creationTime!: moment.Moment;
+    profilePicture!: string | undefined;
 
     constructor(data?: IClosingCheckListForViewDto) {
         if (data) {
@@ -15099,6 +15100,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
             this.statusId = data["statusId"];
             this.assigneeId = data["assigneeId"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.profilePicture = data["profilePicture"];
         }
     }
 
@@ -15119,6 +15121,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
         data["statusId"] = this.statusId;
         data["assigneeId"] = this.assigneeId;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["profilePicture"] = this.profilePicture;
         return data; 
     }
 }
@@ -15132,6 +15135,7 @@ export interface IClosingCheckListForViewDto {
     statusId: number;
     assigneeId: number;
     creationTime: moment.Moment;
+    profilePicture: string | undefined;
 }
 
 export class TasksGroup implements ITasksGroup {
@@ -15247,9 +15251,10 @@ export interface IPagedResultDtoOfTasksGroup {
 }
 
 export enum StatusDto {
-    Open = 1,
-    Complete = 2,
-    Inprogress = 3,
+    NotStarted = 1,
+    InProcess = 2,
+    OnHold = 3,
+    Completed = 4,
 }
 
 export enum FrequencyDto {
@@ -15329,7 +15334,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
     assigneeId!: number;
     closingMonth!: moment.Moment;
     status!: StatusDto;
-    tenantId!: number;
     instruction!: string | undefined;
     noOfMonths!: number;
     dueOn!: number;
@@ -15360,7 +15364,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
             this.assigneeId = data["assigneeId"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.status = data["status"];
-            this.tenantId = data["tenantId"];
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
@@ -15399,7 +15402,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
         data["assigneeId"] = this.assigneeId;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["status"] = this.status;
-        data["tenantId"] = this.tenantId;
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
@@ -15431,7 +15433,6 @@ export interface ICreateOrEditClosingChecklistDto {
     assigneeId: number;
     closingMonth: moment.Moment;
     status: StatusDto;
-    tenantId: number;
     instruction: string | undefined;
     noOfMonths: number;
     dueOn: number;
@@ -15498,7 +15499,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     assigneeId!: number;
     closingMonth!: moment.Moment;
     status!: StatusDto;
-    tenantId!: number;
     instruction!: string | undefined;
     noOfMonths!: number;
     dueOn!: number;
@@ -15541,7 +15541,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             this.assigneeId = data["assigneeId"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.status = data["status"];
-            this.tenantId = data["tenantId"];
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
@@ -15588,7 +15587,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data["assigneeId"] = this.assigneeId;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["status"] = this.status;
-        data["tenantId"] = this.tenantId;
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
@@ -15620,7 +15618,6 @@ export interface IDetailsClosingCheckListDto {
     assigneeId: number;
     closingMonth: moment.Moment;
     status: StatusDto;
-    tenantId: number;
     instruction: string | undefined;
     noOfMonths: number;
     dueOn: number;

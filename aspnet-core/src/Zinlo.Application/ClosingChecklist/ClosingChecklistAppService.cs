@@ -19,6 +19,7 @@ using Zinlo.Attachments;
 using Zinlo.Attachments.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
+using Zinlo.Authorization.Users.Profile;
 
 namespace Zinlo.ClosingChecklist
 {
@@ -28,14 +29,19 @@ namespace Zinlo.ClosingChecklist
         private readonly ICommentAppService _commentAppService;
         private readonly IRepository<User, long> _userRepository;
         private readonly IAttachmentAppService _attachmentAppService;
+        private readonly UserManager _userManager;
+        private readonly IProfileAppService _profileAppService;
 
 
-        public ClosingChecklistAppService(IRepository<ClosingChecklist, long> closingChecklistRepository, ICommentAppService commentAppService, IRepository<User, long> userRepository, IAttachmentAppService attachmentAppService)
+
+        public ClosingChecklistAppService(IProfileAppService profileAppService, IRepository<ClosingChecklist, long> closingChecklistRepository, UserManager userManager, ICommentAppService commentAppService, IRepository<User, long> userRepository, IAttachmentAppService attachmentAppService)
         {
             _closingChecklistRepository = closingChecklistRepository;
             _commentAppService = commentAppService;
             _userRepository = userRepository;
             _attachmentAppService = attachmentAppService;
+            _userManager = userManager;
+            _profileAppService = profileAppService;
         }
 
 
@@ -55,7 +61,7 @@ namespace Zinlo.ClosingChecklist
 
             query = query.Where(x => x.CreationTime.Month == DateTime.Today.Month && x.CreationTime.Year == DateTime.Today.Year);
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
-            var closingCheckList = from o in pagedAndFilteredTasks
+            var closingCheckList = from o in pagedAndFilteredTasks.ToList()
 
                                    select new ClosingCheckListForViewDto()
                                    {
@@ -66,9 +72,11 @@ namespace Zinlo.ClosingChecklist
                                        TaskName = o.TaskName,
                                        Status = o.Status.ToString(),
                                        Category = o.Category.Title,
-                                       CreationTime = o.CreationTime
-                                   };
-            var result = await closingCheckList.ToListAsync();
+                                       CreationTime = o.CreationTime,
+                                       ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
+
+        };
+            var result =  closingCheckList.ToList();
             var response = result.GroupBy(x => x.CreationTime.Date).Select(x => new TasksGroup
             {
                 CreationTime = x.Key,
@@ -81,10 +89,11 @@ namespace Zinlo.ClosingChecklist
                     Id = y.Id,
                     AssigniName = y.AssigniName,
                     Status = y.Status,
-                    TaskName = y.TaskName
+                    TaskName = y.TaskName,
+                    ProfilePicture = y.ProfilePicture
                 }
                 )
-            });
+            }); ;
             var totalCount = response.Count();
 
             return new PagedResultDto<TasksGroup>(
