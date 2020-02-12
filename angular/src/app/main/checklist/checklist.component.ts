@@ -19,10 +19,10 @@ export class Checklist extends AppComponentBase implements OnInit {
   advancedFiltersAreShown = false;
   filterText = '';
   titleFilter = '';
-  categoryFilter:number = 0;
-  statusFilter :number = 0;
-  dateFilter : Date = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
- // dateForFilter:Date;
+  categoryFilter: number = 0;
+  statusFilter: number = 0;
+  dateFilter: Date = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
+  monthFilter = '00/0000';
   tasksList: any;
   list: any = []
   ClosingCheckList: any = []
@@ -45,17 +45,17 @@ export class Checklist extends AppComponentBase implements OnInit {
   plusUserBadgeForHeader: boolean;
   taskId;
   text;
-  currentDate : Date;
-  currentMonth : string
-  currentYear : Number;
+  currentDate: Date;
+  currentMonth: string
+  currentYear: Number;
   rowid: number;
-  yearCount : number;
-  monthCount : number =1;
+  yearCount: number;
+  monthCount: number = 1;
   monthsArray = new Array("January", "February", "March",
     "April", "May", "June", "July", "August", "September",
     "October", "Novemeber", "December");
-  remainingUserForHeader : any = [];
-  category : NameValueDtoOfInt64[] = [];
+  remainingUserForHeader: any = [];
+  category: NameValueDtoOfInt64[] = [];
   constructor(private _router: Router,
     private _categoryService: CategoriesServiceProxy,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector) {
@@ -83,40 +83,40 @@ export class Checklist extends AppComponentBase implements OnInit {
     };
     container.setViewMode('month');
   }
+  monthChangeHeader(operation): void {
 
-  monthChangeHeader (operation) : void {
-
-    if (this.monthCount  == -1)
-    {
+    if (this.monthCount == -1) {
       this.monthCount = 12;
-      this.currentYear = this.currentDate.getFullYear()-(Math.abs(this.yearCount));
+      this.currentYear = this.currentDate.getFullYear() - (Math.abs(this.yearCount));
       --this.yearCount;
-      
-    } 
-    if (operation == 1)
-    {   
-      debugger
-    this.currentMonth = this.monthsArray[this.monthCount] 
-    ++this.monthCount  
+
     }
-    else{  
-      debugger 
-      if (this.monthCount  == 0)
-      {
+    if (operation == 1) {
+      debugger
+      this.currentMonth = this.monthsArray[this.monthCount];
+      console.log("logged date change by ihsan",this.currentMonth);
+      console.log("Current year",this.currentYear);
+      var index = this.monthsArray.indexOf(this.currentMonth);
+      this.monthFilter = index + "/"+ this.currentYear;
+      this.getClosingCheckListAllTasks();
+      ++this.monthCount
+    }
+    else {
+      debugger
+      if (this.monthCount == 0) {
         this.monthCount = 12;
-        this.currentYear = this.currentDate.getFullYear()-(Math.abs(this.yearCount));
+        this.currentYear = this.currentDate.getFullYear() - (Math.abs(this.yearCount));
         --this.yearCount;
       }
       this.currentMonth = this.monthsArray[this.monthCount]
       --this.monthCount
-     
+
     }
-    if (this.monthCount == 12)
-    {   
+    if (this.monthCount == 12) {
       this.monthCount = 0;
-      this.currentYear = this.currentDate.getFullYear()+this.yearCount;
+      this.currentYear = this.currentDate.getFullYear() + this.yearCount;
       ++this.yearCount;
-     
+
     }
 
   }
@@ -165,6 +165,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.categoryFilter,
       this.statusFilter,
       moment(this.dateFilter),
+      this.monthFilter,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -179,22 +180,36 @@ export class Checklist extends AppComponentBase implements OnInit {
           var firstCharacterForAvatar = i.assigniName[0].toUpperCase();
           var lastCharacterForAvatar = i.assigniName.substr(i.assigniName.indexOf(' ') + 1)[0].toUpperCase();
           i["NameAvatar"] = firstCharacterForAvatar + lastCharacterForAvatar;
-          if (i.status === "Inprogress") {
+          if (i.status === "NotStarted") {
             i["StatusColor"] = this.StatusColorBox[0]
           }
-          else if (i.status === "Open") {
+          else if (i.status === "InProcess") {
             i["StatusColor"] = this.StatusColorBox[1]
           }
-          else if (i.status === "Complete") {
+          else if (i.status === "OnHold") {
+            i["StatusColor"] = this.StatusColorBox[2]
+          }
+          else if (i.status === "Completed") {
             i["StatusColor"] = this.StatusColorBox[2]
           }
           this.assigniNameForHeader.push({ nameAvatar: i.NameAvatar, assigneeId: i.assigneeId });
+          if (i.statusId == 1) {
+            i.status = "Not Started";
+          }
+          else if (i.statusId == 2) {
+            i.status = "In Process";
+          }
+          if (i.statusId == 3) {
+            i.status = "On Hold";
+          }
+          else if (i.statusId == 4) {
+            i.status = "Completed";
+          }
         });
       });
 
       this.assigniNameForHeader = this.getUnique(this.assigniNameForHeader, "assigneeId")
-      if (this.assigniNameForHeader.length > 5)
-      {
+      if (this.assigniNameForHeader.length > 5) {
         this.remainingUserForHeader = [];
         var limitedUserNameForHeader = [];
         for (var i = 0; i < 5; i++) {
@@ -205,7 +220,7 @@ export class Checklist extends AppComponentBase implements OnInit {
         }
         this.assigniNameForHeader = limitedUserNameForHeader
         this.plusUserBadgeForHeader = true
-      
+
       }
     });
   }
@@ -255,29 +270,29 @@ export class Checklist extends AppComponentBase implements OnInit {
 
   }
   //Filters
-  filterByStatus(event):void{
+  filterByStatus(event): void {
     this.statusFilter = event.target.value.toString();
     this.getClosingCheckListAllTasks();
   }
-  filterByCategory(event):void{
+  filterByCategory(event): void {
     this.categoryFilter = event.target.value.toString();
     this.getClosingCheckListAllTasks();
- }
- filterByDate(event):void{
-   this.dateFilter = event;
-   console.log("datedd",event);
-  this.getClosingCheckListAllTasks();
- }
- loadCategories():void{
-  this._categoryService.categoryDropDown().subscribe(result => {
-    this.category = result;
-});
-}
-ResetGrid():void{
-  this.statusFilter = 0;
-  this.categoryFilter = 0;
-  this.dateFilter = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
-  this.getClosingCheckListAllTasks();
-}
+  }
+  filterByDate(event): void {
+    this.dateFilter = event;
+    console.log("datedd", event);
+    this.getClosingCheckListAllTasks();
+  }
+  loadCategories(): void {
+    this._categoryService.categoryDropDown().subscribe(result => {
+      this.category = result;
+    });
+  }
+  ResetGrid(): void {
+    this.statusFilter = 0;
+    this.categoryFilter = 0;
+    this.dateFilter = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
+    this.getClosingCheckListAllTasks();
+  }
 
 }

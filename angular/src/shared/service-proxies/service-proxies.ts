@@ -2381,12 +2381,13 @@ export class ClosingChecklistServiceProxy {
      * @param categoryFilter (optional) 
      * @param statusFilter (optional) 
      * @param dateFilter (optional) 
+     * @param monthFilter (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
+    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, monthFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -2408,6 +2409,10 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'dateFilter' cannot be null.");
         else if (dateFilter !== undefined)
             url_ += "DateFilter=" + encodeURIComponent(dateFilter ? "" + dateFilter.toJSON() : "") + "&"; 
+        if (monthFilter === null)
+            throw new Error("The parameter 'monthFilter' cannot be null.");
+        else if (monthFilter !== undefined)
+            url_ += "MonthFilter=" + encodeURIComponent("" + monthFilter) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -2638,7 +2643,7 @@ export class ClosingChecklistServiceProxy {
      * @return Success
      */
     getDetails(id: number | undefined): Observable<DetailsClosingCheckListDto> {
-        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/getDetails?";
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetDetails?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -2905,7 +2910,7 @@ export class ClosingChecklistServiceProxy {
      * @return Success
      */
     getCurrentMonthDays(): Observable<NameValueDtoOfString[]> {
-        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/getCurrentMonthDays";
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetCurrentMonthDays";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -15247,9 +15252,10 @@ export interface IPagedResultDtoOfTasksGroup {
 }
 
 export enum StatusDto {
-    Open = 1,
-    Complete = 2,
-    Inprogress = 3,
+    NotStarted = 1,
+    InProcess = 2,
+    OnHold = 3,
+    Completed = 4,
 }
 
 export enum FrequencyDto {
@@ -15329,7 +15335,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
     assigneeId!: number;
     closingMonth!: moment.Moment;
     status!: StatusDto;
-    tenantId!: number;
     instruction!: string | undefined;
     noOfMonths!: number;
     dueOn!: number;
@@ -15360,7 +15365,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
             this.assigneeId = data["assigneeId"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.status = data["status"];
-            this.tenantId = data["tenantId"];
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
@@ -15399,7 +15403,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
         data["assigneeId"] = this.assigneeId;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["status"] = this.status;
-        data["tenantId"] = this.tenantId;
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
@@ -15431,7 +15434,6 @@ export interface ICreateOrEditClosingChecklistDto {
     assigneeId: number;
     closingMonth: moment.Moment;
     status: StatusDto;
-    tenantId: number;
     instruction: string | undefined;
     noOfMonths: number;
     dueOn: number;
@@ -15498,7 +15500,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     assigneeId!: number;
     closingMonth!: moment.Moment;
     status!: StatusDto;
-    tenantId!: number;
     instruction!: string | undefined;
     noOfMonths!: number;
     dueOn!: number;
@@ -15541,7 +15542,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             this.assigneeId = data["assigneeId"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.status = data["status"];
-            this.tenantId = data["tenantId"];
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
@@ -15588,7 +15588,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data["assigneeId"] = this.assigneeId;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["status"] = this.status;
-        data["tenantId"] = this.tenantId;
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
@@ -15620,7 +15619,6 @@ export interface IDetailsClosingCheckListDto {
     assigneeId: number;
     closingMonth: moment.Moment;
     status: StatusDto;
-    tenantId: number;
     instruction: string | undefined;
     noOfMonths: number;
     dueOn: number;
