@@ -31,9 +31,9 @@
                                     Category <span
                                         class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.categoryName}}</span>
                                     Closing Month <span
-                                        class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth | date:'MMM:y'}}</span>
+                                        class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth | date:'MMMM,yyyy'}}</span>
                                     Due By <span
-                                        class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.endsOn | date:'d,MMMM, y'}}</span>
+                                        class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.endsOn | date:'d MMMM, yyyy'}}</span>
                                 </div>
 
                             </div>
@@ -47,7 +47,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="attachment-box">
-                                        {{taskDetailObject.instruction}}
+                                        <!-- {{taskDetailObject.instruction}} -->
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                                             <div class="kt-widget3__user-img">
                                                 <div class="kt-user-card-v2__pic">
                                                     <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                        {{i.NameAvatar}}</div>
+                                                        {{i.userName | firstLetterOfWords}}</div>
                                                 </div>
                                             </div>
                                             <div class="kt-widget3__info">
@@ -93,8 +93,7 @@
                                 <div (click)="commentClick()">
                                     <div class="kt-user-card-v2">
                                         <div class="kt-user-card-v2__pic">
-                                            <div class="kt-badge kt-badge--xl kt-badge--warning">{{userSignInName}}
-                                            </div>
+                                            <div class="kt-badge kt-badge--xl kt-badge--warning">{{userSignInName | firstLetterOfWords}}                                            </div>
                                         </div>
                                         <input [(ngModel)]="comment.body" class="form-control">
                                     </div>

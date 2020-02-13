@@ -41,6 +41,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   status: number;
   active = false;
   public userId: number;
+  categoriesList : any;
+  categoryName: any;
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
 
@@ -61,6 +63,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.ChangeStatus(result.statusId);
       this.closingMonthValue = this.getTaskForEdit.closingMonth.toDate();
       this.frequencyId = this.getTaskForEdit.frequency;
+      this.categoryName = this.getTaskForEdit.category;
       if (this.frequencyId == "5") {
         this.endOnIsEnabled = false;
       }
@@ -82,11 +85,21 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       });
     });
     this._categoryService.categoryDropDown().subscribe(result => {
-      this.category = result;
+      this.categoriesList = result;
     });
 
 
   }
+
+  categoryClick(id,name) : void {
+    this.categoryName = name;
+    this.getTaskForEdit.categoryId = id; 
+  }
+
+  routeToAddNewCategory() : void {
+    this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 ,redirectPath : "editChecklist","checklistTask" : this.taskId } } });   
+  }
+
   ChangeStatus(value): void {
     if (value === 1) {
       this.status = 1;
@@ -139,7 +152,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
 
       this.notify.success(this.l('SavedSuccessfully Updated'));
-      this._router.navigate(['/app/main/checklist/tasks']);
+      this._router.navigate(['/app/main/checklist']);
     });
   }
 
