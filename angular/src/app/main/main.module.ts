@@ -1,4 +1,3 @@
-﻿
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -32,10 +31,9 @@ import { EditTaskComponent } from './checklist/edit-task/edit-task.component';
 import { Checklist } from './checklist/checklist.component';;
 import { CreatetaskComponent } from './checklist/createtask/createtask.component'
 import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';;
-import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
-import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component'
-
-
+import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
+import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component';
+import { DuplicateTaskComponent } from './duplicate-task/duplicate-task.component'
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -74,10 +72,10 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 TaskDetailsComponent,
                 StatusComponent,
                 EditTaskComponent,
-                FirstLetterOfWords
-,
-                CreateOrEditAccountsubtypeComponent,
-                AccountsubtypeComponent
+                FirstLetterOfWords,
+                CreateOrEditAccountsubtypeComponent,
+                AccountsubtypeComponent,
+                DuplicateTaskComponent
                 
         ],
         providers: [
@@ -86,4 +84,5 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale }
         ]
 })
+
 export class MainModule { }

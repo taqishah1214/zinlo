@@ -32,6 +32,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   categoryName: any;
   public isChecked :boolean = false;
   days:any;
+  duplicateCheck: boolean;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;

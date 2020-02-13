@@ -14,8 +14,10 @@
     overflow: auto;
 }
 .duplicate_box {
-    margin-left: 75px;
     margin-top: 50px
+}
+.duplicate_box button{
+    width:100%;
 }
 .commentViewBox {
     margin-left: 50px;
@@ -30,7 +32,7 @@
     margin-top: 20px;
 }
 .drop_down_class {
-    width: 175px;
+    width: 100%;
 }
 .drop_down_arrow {
     margin-left: 135px;
@@ -54,4 +56,13 @@
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
+}
+.btn.dropdown-toggle{
+    position: relative;
+}
+.btn.dropdown-toggle::after{
+    position: absolute !important;
+    right: 5px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
 }

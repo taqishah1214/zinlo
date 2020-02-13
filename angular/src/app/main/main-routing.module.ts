@@ -9,6 +9,8 @@ import { Checklist } from './checklist/checklist.component';
 import { CreatetaskComponent } from './checklist/createtask/createtask.component';
 import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
 import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component';
+import { DuplicateTaskComponent } from './duplicate-task/duplicate-task.component';
+
 
 
 @NgModule({
@@ -27,6 +29,8 @@ import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                     { path: 'account/accountsubtype/create-or-edit-accountsubtype', component: CreateOrEditAccountsubtypeComponent , data: { permission: '' }  },
                     { path: 'account/accountsubtype', component: AccountsubtypeComponent , data: { permission: '' }  },
+                    { path: 'duplicate-task', component : DuplicateTaskComponent , data: {permission:""}}
+                   
                 ]
             }
         ])
