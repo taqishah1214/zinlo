@@ -30,7 +30,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   id: number;
   AssigniInputBox: boolean;
   AssigniBoxView: boolean;
-  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-magenta","bg-sea-green"]
+  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green"]
   FilterBoxOpen: boolean;
   public rowId: number = 0;
   changeStatus: ChangeStatusDto = new ChangeStatusDto();
@@ -99,6 +99,7 @@ export class Checklist extends AppComponentBase implements OnInit {
 
     }
     if (operation == 1) {
+      debugger
       this.currentMonth = this.monthsArray[this.monthCount];
       console.log("logged date change by ihsan",this.currentMonth);
       console.log("Current year",this.currentYear);
@@ -108,6 +109,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       ++this.monthCount
     }
     else {
+      debugger
       if (this.monthCount == 0) {
         this.monthCount = 12;
         this.currentYear = this.currentDate.getFullYear() - (Math.abs(this.yearCount));
@@ -195,7 +197,7 @@ export class Checklist extends AppComponentBase implements OnInit {
             i["StatusColor"] = this.StatusColorBox[2]
           }
           else if (i.status === "Completed") {
-            i["StatusColor"] = this.StatusColorBox[3]
+            i["StatusColor"] = this.StatusColorBox[2]
           }
          
             this.assigniNameForHeader.push({ assigniName: i.assigniName, assigneeId: i.assigneeId,profilePicture : i.profilePicture});

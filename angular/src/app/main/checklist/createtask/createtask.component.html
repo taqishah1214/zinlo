@@ -39,19 +39,7 @@
                         <div class="col-md-7">
                             <div class="row">
                                 <div class="col-md-6">
-
-                                    <div class="form-group category-selector">
-                                        <label>Category</label>
-                                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{categoryName}}</button>
-                                        <div class="dropdown-menu" [(ngModel)]="categoryName" >
-                                            <a class="dropdown-item" *ngFor="let item of categoriesList" (click)="categoryClick(item.value,item.name)" >
-                                                {{item.name}}</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" (click)="routeToAddNewCategory()">+AddNew</a>
-                                        </div>
-                                    </div>
-
-                                    <!-- <app-categorie-drop-down></app-categorie-drop-down> -->
+                                    <app-categorie-drop-down></app-categorie-drop-down>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -60,7 +48,7 @@
                                             <form class="input-arrow">
                                                 <input [(ngModel)]="checklist.closingMonth" autocomplete="off"
                                                     class="form-control" name="date" bsDatepicker
-                                                    [bsConfig]="{dateInputFormat: 'MMMM'}"
+                                                    [bsConfig]="{dateInputFormat: 'MMM/YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
                                         </div>
@@ -90,7 +78,7 @@
                                             <div class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic">
                                                     <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                        {{userSignInName | firstLetterOfWords}}</div>
+                                                        {{userSignInName}}</div>
                                                 </div>
                                                 <div innerHTML="{{checklist.commentBody}}" class="form-control create-comments"></div>
                                             </div>
@@ -181,7 +169,7 @@
                                         <form class="input-arrow">
                                             <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false" autocomplete="off"
                                                 class="form-control" name="date" bsDatepicker
-                                                [bsConfig]="{dateInputFormat: 'MMMM'}"
+                                                [bsConfig]="{dateInputFormat: 'MM/YYYY'}"
                                                 (onShown)="onOpenCalendar($event)">
                                         </form>
                                     </div>

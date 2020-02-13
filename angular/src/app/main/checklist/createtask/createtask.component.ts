@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy, CategoriesServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
 import { IgxMonthPickerComponent } from "igniteui-angular";
@@ -28,8 +28,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   SelectionMsg: string = "";
   attachmentPaths: any = [];
   newAttachementPath: string[] = [];
-  categoriesList : any;
-  categoryName: any;
   public isChecked :boolean = false;
   days:any;
   duplicateCheck: boolean;
@@ -40,23 +38,17 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   constructor
     (private _router: Router,
       private _closingChecklistService: ClosingChecklistServiceProxy,
-      private _categoryService: CategoriesServiceProxy,
       injector: Injector) {
     super(injector)
   }
   ngOnInit() {
-    this.userSignInName = this.appSession.user.name.toString().toUpperCase();
+    this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
     this.commantBox = true;
     this.closingMonthInputBox = true;
     this.closingMonthModalBox = false;
     this.enableValue = false;
     this.isChecked = true;
     this.loadDaysDropdown();
-
-    this._categoryService.categoryDropDown().subscribe(result => {
-      this.categoriesList = result;
-  });
-
   }
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
@@ -64,14 +56,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     };
     container.setViewMode('month');
   }
-  routeToAddNewCategory() : void {
-    this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 ,redirectPath : "checkList"} } });   
-  }
-  categoryClick(id,name) : void {
-    this.categoryName = name;
-    this.checklist.categoryId = id; 
-  }
-
   closingMonthClick(): void {
     this.closingMonthInputBox = false;
     this.closingMonthModalBox = true;
@@ -82,7 +66,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   }
   backToTaskList(): void {
     this._router.navigate(['/app/main/checklist']);
-   }
+  }
   EndofMonthSelected(): void {
     this.checklist.endOfMonth = true;
   }
@@ -108,6 +92,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
+    this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
     if (this.attachmentPaths != null){
       this.newAttachementPath = [];
       this.attachmentPaths.forEach(element => {

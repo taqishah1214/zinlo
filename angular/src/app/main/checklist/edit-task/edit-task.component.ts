@@ -42,8 +42,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   status: number;
   active = false;
   public userId: number;
-  categoriesList : any;
-  categoryName: any;
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   SelectionMsg: string;
@@ -69,7 +67,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.ChangeStatus(result.statusId);
       this.closingMonthValue = this.getTaskForEdit.closingMonth.toDate();
       this.frequencyId = this.getTaskForEdit.frequency;
-      this.categoryName = this.getTaskForEdit.category;
       if (this.frequencyId == "5") {
         this.endOnIsEnabled = false;
       }
@@ -91,7 +88,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       });
     });
     this._categoryService.categoryDropDown().subscribe(result => {
-      this.categoriesList = result;
+      this.category = result;
     });
 
 
@@ -198,7 +195,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
 
       this.notify.success(this.l('SavedSuccessfully Updated'));
-      this._router.navigate(['/app/main/checklist']);
+      this._router.navigate(['/app/main/checklist/tasks']);
     });
   }
  

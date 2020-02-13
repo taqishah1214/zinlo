@@ -16,7 +16,6 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
   @ViewChild(CategoriesComponent, { static: false }) child: CategoriesComponent;
   categoryobj: CreateOrEditCategoryDto = new CreateOrEditCategoryDto();
   categoryId: number = 0;
-  redirectPath : string
   constructor(private _router: Router,
     private _categoriesServiceProxy: CategoriesServiceProxy,
     injector: Injector) {
@@ -26,7 +25,6 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
 
   ngOnInit() {
     this.categoryId = history.state.data.id;
-    this.redirectPath= history.state.data.redirectPath;
     if (this.categoryId > 0) {
       this._categoriesServiceProxy.getCategoryForEdit(this.categoryId).subscribe(result => {
         this.categoryobj = result.category;
@@ -35,21 +33,8 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
   }
 
 
-  backToRoute(): void {
-
-    if( this.redirectPath === "checkList")
-    {
-      this._router.navigate(['/app/main/checklist/createtask']);
-    }
-    else if (this.redirectPath === "editChecklist")
-    {
-      var closingChecklistId = history.state.data.checklistTask;
-      this._router.navigate(['/app/main/checklist/edit-task'], { state: { data: { id: closingChecklistId } } })
-    }
-    else
-    {
-      this._router.navigate(['/app/main/categories']);
-    }    
+  BackToCategoriesList(): void {
+    this._router.navigate(['/app/main/categories']);
   }
 
   onSubmit(): void {
@@ -57,7 +42,7 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
       .pipe(finalize(() => { }))
       .subscribe(() => {
 
-        this.backToRoute();
+        this.BackToCategoriesList();
         this.notify.info(this.l('SavedSuccessfully'));
       });
   }
