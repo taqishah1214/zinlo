@@ -7,6 +7,7 @@ import { CreateOrEditCategoryComponent } from './categories/create-or-edit-categ
 import { EditTaskComponent } from './checklist/edit-task/edit-task.component';
 import { Checklist } from './checklist/checklist.component';
 import { CreatetaskComponent } from './checklist/createtask/createtask.component';
+import { DuplicateTaskComponent } from './duplicate-task/duplicate-task.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { CreatetaskComponent } from './checklist/createtask/createtask.component
                     { path: 'checklist/createtask', component: CreatetaskComponent, data: { permission: 'Pages.ClosingChecklist.Create' }  },
                     { path: 'categories', component: CategoriesComponent, data: { permission: 'Pages.Categories' }  },
                     { path: 'dashboard', component: DashboardComponent, data: { permission: 'Pages.Tenant.Dashboard' } },
-                    { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+                    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+                    { path: 'duplicate-task', component : DuplicateTaskComponent , data: {permission:""}}
                 ]
             }
         ])

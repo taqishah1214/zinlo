@@ -115,17 +115,18 @@
                                                         <span></span>
                                                     </label>
                                                 </span>
+                                                <select class=" border border-default bg-white form-control input-medium" (change)="onDayChange()"
+                                                    [(ngModel)]="checklist.dueOn">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>                                              
+                                                </select>
                                             </div>
-                                            <select class="form-control input-medium" (change)="onDayChange()"
-                                                [(ngModel)]="checklist.dueOn">
-                                                <option  *ngFor="let item of days;" 
-                                                 [value]="item.value">
-                                                      {{item.name}} 
-                                                      </option>                                              
-                                            </select>
+                                            
                                         </div>
                                     </div>
-
+                                
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">

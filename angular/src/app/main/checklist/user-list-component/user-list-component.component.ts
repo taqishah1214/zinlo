@@ -11,12 +11,11 @@ import { OnChange } from 'ngx-bootstrap';
 export class UserListComponentComponent implements OnInit {
 
   users : any;
+
   public selectedUserId:any;
   @Input() TaskId : any;
   @Input('assigneName') assigneName;
   @Output() messageEvent = new EventEmitter<string>();
-   
-
   constructor( private userService :UserServiceProxy,
     private cdf: ChangeDetectorRef,
     private _closingChecklistService: ClosingChecklistServiceProxy ) {
@@ -29,6 +28,7 @@ export class UserListComponentComponent implements OnInit {
       this.assigneName = this.users;
 
   });
+  // this.brand.image =this.brands[0];
   }
 
   userOnChange() : void {
@@ -43,6 +43,7 @@ export class UserListComponentComponent implements OnInit {
     });
 }
 
+}
 // ngOnChanges(changes: SimpleChanges){
 //   if(changes.currentValue != undefined )
 //     this.assigneName= changes.currentValue;
@@ -51,4 +52,4 @@ export class UserListComponentComponent implements OnInit {
 //   console.log("===> ",changes)
 // }
 
-}
+

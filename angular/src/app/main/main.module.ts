@@ -32,7 +32,7 @@ import { EditTaskComponent } from './checklist/edit-task/edit-task.component';
 import { Checklist } from './checklist/checklist.component';;
 import { CreatetaskComponent } from './checklist/createtask/createtask.component'
 import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';
-
+import { DuplicateTaskComponent } from './duplicate-task/duplicate-task.component'
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -72,7 +72,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 TaskDetailsComponent,
                 StatusComponent,
                 EditTaskComponent,
-                FirstLetterOfWords
+                FirstLetterOfWords,
+                DuplicateTaskComponent
                 
         ],
         providers: [

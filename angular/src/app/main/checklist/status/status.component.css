@@ -1,5 +1,12 @@
 .drop_down_class {
     width: 100%;
+    position: relative;
+}
+.drop_down_class::after{
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 .drop_down_arrow {
     margin-left: 135px;

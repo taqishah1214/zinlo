@@ -13,21 +13,18 @@
     height: 170px;
     overflow: auto;
 }
-.drag_drop_box {
-    margin-top: -50px;
+.giveCommentView {
+    margin-top: 20px;
 }
-.input-arrow{
-    position: relative;
+.drop_down_class {
+    width: 175px;
 }
-.input-arrow::after{
-    content: "▼";
-    position: absolute;
-    top: 50%;
-    right: 5px;
-    transform: translateY(-50%);
-    font-size: 11px;
-    color: #606060;
-}  
+.drag_drop_box{
+    margin-top: 112px;
+}
+.drop_down_arrow {
+    margin-left: 135px;
+}
 ::ng-deep .uppy-Dashboard-inner {
     min-height:220px !important;
     height: 220px !important;

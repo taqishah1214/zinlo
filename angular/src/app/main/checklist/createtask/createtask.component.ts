@@ -30,6 +30,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   newAttachementPath: string[] = [];
   public isChecked :boolean = false;
   days:any;
+  duplicateCheck: boolean;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -41,6 +42,9 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     super(injector)
   }
   ngOnInit() {
+
+    this.duplicateCheck = history.state.data.duplicateCheck;
+    console.log("his.duplicateCheck",this.duplicateCheck);
     this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
     this.commantBox = true;
     this.closingMonthInputBox = true;
@@ -92,6 +96,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.status = 1
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
+    
     if (this.attachmentPaths != null){
       this.newAttachementPath = [];
       this.attachmentPaths.forEach(element => {

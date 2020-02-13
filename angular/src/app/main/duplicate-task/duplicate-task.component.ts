@@ -1,23 +1,23 @@
+
 import { Component, OnInit, Injector, Output, ViewChild } from '@angular/core';
 import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy, GetTaskForEditDto, CategoriesServiceProxy, ChangeStatusDto, PostAttachmentsPathDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UppyConfig } from 'uppy-angular';
 
 import * as moment from 'moment';
-import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
+import { UserListComponentComponent } from '../checklist/user-list-component/user-list-component.component';
 import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-edit-task',
-  templateUrl: './edit-task.component.html',
-  styleUrls: ['./edit-task.component.css']
+  selector: 'app-duplicate-task',
+  templateUrl: './duplicate-task.component.html',
+  styleUrls: ['./duplicate-task.component.css']
 })
-export class EditTaskComponent extends AppComponentBase implements OnInit {
+export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
   parentassigneName;
   endOnIsEnabled:boolean = true;
-  enableValue: boolean = false;
-  isChecked :boolean = false;
+
   SelectedCategory;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto()
   commantBox: boolean
@@ -32,7 +32,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   users;
   frequency;
   frequencyId: string;
-  categoryId: any;
+  categoryId: number;
   comment;
   statusValue: any;
   public closingMonthValue: Date;
@@ -41,11 +41,10 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   assigneeId: any;
   status: number;
   active =false;
+  duplicateData;
   public userId: number;
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
-  SelectionMsg: string;
-  days: import("/home/techverx/Desktop/zinlo/angular/src/shared/service-proxies/service-proxies").NameValueDtoOfString[];
 
   constructor(private _categoryService: CategoriesServiceProxy, injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy,private _router: Router) {
     super(injector)
@@ -53,9 +52,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit() {
-    this.enableValue = false;
-    this.isChecked = true;
-    
     this.taskId = history.state.data.id;
     this.commantBox = false;
     this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
@@ -64,7 +60,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.active = true;
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
-      console.log("gettaskforedit", this.getTaskForEdit)
       this.closingMonthValue = this.getTaskForEdit.closingMonth.toDate();
 
 
@@ -72,97 +67,16 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       if(this.frequencyId == "5"){
         this.endOnIsEnabled = false;
       }
-      else{
-        this.endOnIsEnabled = true;
-      }
       this.getTaskForEdit.closingMonth = moment().startOf('day');
       this.getTaskForEdit.endsOn = moment().startOf('day');
       this.assigneeId = this.getTaskForEdit.assigneeId;
       this.parentassigneName = result;
       this.categoryId = this.getTaskForEdit.categoryId;
-      this.comment = this.getTaskForEdit.comments;
-
-      this.comment.forEach(i => {
-        i.userName;
-        var firstCharacterForAvatar = i.userName[0].toUpperCase();
-        var lastCharacterForAvatar = i.userName.substr(i.userName.indexOf(' ') + 1)[0].toUpperCase();
-        i["NameAvatar"] = firstCharacterForAvatar + lastCharacterForAvatar;
-      });
     });
     this._categoryService.categoryDropDown().subscribe(result => {
       this.category = result;
     });
-
-
-  }
-  routerEvent(value){
-    if(this.getTaskForEdit.categoryId == -1){
-      console.log("this.checklist.categoryId",this.getTaskForEdit.categoryId)
-  this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 } } });
-  }
-}
-  onChange(val) {
-    if (val == 5) {
-      this.endOnIsEnabled = false;
-    }
-    else {
-      this.endOnIsEnabled = true;
-    }
-    if (val == 4) {
-      this.enableValue = true;
-    }
-    else {
-      this.enableValue = false;
-    }
-  }
-  onDayChange() {
-    this.checklist.endOfMonth = false;
-    this.isChecked = true;
-  }
-  
-  ChangeStatus(value): void {
-    if (value === 1) {
-      this.status = 1;
-      this.getTaskForEdit.status = "Open";
-      this.checklist.status = 1;
-
-    }
-    if (value === 2) {
-      this.status = 2;
-      this.getTaskForEdit.status = "Complete"
-      this.checklist.status = 2;
-    }
-    if (value === 3) {
-      this.status = 3;
-      this.getTaskForEdit.status = "Inprogress"
-      this.checklist.status = 3;
-    }
-
-  }
-  handleRadioChange() {
-    this.checklist.dayBeforeAfter = null;
-    this.checklist.dueOn = 0;
-    this.SelectionMsg = "";
-    this.isChecked = false;
-  }
-  onDaysClick(valu) {
-    this.isChecked = true;
-    if (valu == "true") {
-      this.SelectionMsg = "Days Before";
-    }
-    else if (valu == "false") {
-      this.SelectionMsg = "Days After";
-    }
-  }
-  loadDaysDropdown():void{
-    this._closingChecklistService.getCurrentMonthDays().subscribe(result=>{
-      this.days = result;
-    });
-  }
-
-  onCreateTask() {
-    this.checklist.id = this.getTaskForEdit.id;
-
+    
   }
   commentClick() {
     this.commantBox = true;
@@ -177,11 +91,10 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
   }
 
-  onUpdateTask() {
+  duplicateTask() {
     this.checklist.frequency = this.getTaskForEdit.frequencyId;
     this.checklist.closingMonth = this.getTaskForEdit.closingMonth;
     this.checklist.endsOn = this.getTaskForEdit.endsOn;
-    this.checklist.status = 1;
     this.checklist.categoryId = this.getTaskForEdit.categoryId;
     this.checklist.dueOn = this.getTaskForEdit.dueOn;
     this.checklist.endOfMonth = this.getTaskForEdit.endOfMonth;
@@ -189,20 +102,22 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.taskName = this.getTaskForEdit.taskName;
     this.checklist.instruction = this.getTaskForEdit.instruction;
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
-    this.checklist.id = this.taskId;
+    this.checklist.status = 1;
     this.checklist.comments = [];
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
 
-      this.notify.success(this.l('SavedSuccessfully Updated'));
+      this.notify.success(this.l('Successfully Duplicated'));
       this._router.navigate(['/app/main/checklist/tasks']);
+
     });
+    
   }
- 
-  duplicateBtn(){
-    this._router.navigate(['/app/main/duplicate-task'], { state: { data: { id: this.taskId } } });
+  routerEvent(value){
+    if(value = -1)
+  this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 } } });
   }
   back(){
-    this._router.navigate(['/app/main/checklist/task-details'])
+    this._router.navigate(['/app/main/checklist'])
   }
   settings: UppyConfig = {
     uploadAPI: {
