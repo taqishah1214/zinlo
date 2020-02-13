@@ -41,7 +41,9 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   assigneeId: any;
   status: number;
   active = false;
+  categoryName : any;
   public userId: number;
+  categoriesList : any;
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   SelectionMsg: string;
@@ -77,7 +79,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.getTaskForEdit.endsOn = moment().startOf('day');
       this.assigneeId = this.getTaskForEdit.assigneeId;
       this.parentassigneName = result;
-      this.categoryId = this.getTaskForEdit.categoryId;
+      this.categoryName = this.getTaskForEdit.category;
       this.comment = this.getTaskForEdit.comments;
 
       this.comment.forEach(i => {
@@ -88,9 +90,9 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       });
     });
     this._categoryService.categoryDropDown().subscribe(result => {
-      this.category = result;
+      this.categoriesList = result;
     });
-
+    this.loadDaysDropdown();
 
   }
 
@@ -120,6 +122,12 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   onDayChange() {
     this.checklist.endOfMonth = false;
     this.isChecked = true;
+  }
+
+  loadDaysDropdown():void{
+    this._closingChecklistService.getCurrentMonthDays().subscribe(result=>{
+      this.days = result;
+    });
   }
   
   ChangeStatus(value): void {
@@ -160,11 +168,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     else if (valu == "false") {
       this.SelectionMsg = "Days After";
     }
-  }
-  loadDaysDropdown():void{
-    this._closingChecklistService.getCurrentMonthDays().subscribe(result=>{
-      this.days = result;
-    });
   }
   onCreateTask() {
     this.checklist.id = this.getTaskForEdit.id;

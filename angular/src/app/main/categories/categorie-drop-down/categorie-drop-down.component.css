@@ -47,3 +47,19 @@
     border-left: 7px solid rgba(0, 0, 0, 0.0);
     cursor: pointer;
 }	
+.category-selector button {
+    width: 100%;
+    text-align: left;
+    padding: 9px 15px 8px 15px;
+    height: calc(1.5em + 1.3rem + 2px);
+
+}
+.category-selector button::after {
+    content: "▼";
+    position: absolute;
+    font-size: 11px;
+    color: #313030;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}

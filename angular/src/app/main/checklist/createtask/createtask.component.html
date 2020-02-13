@@ -1,4 +1,4 @@
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid"> 
+<div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
     <div class="row">
         <div class="kt-subheader kt-grid__item">
             <div [class]="containerClass">
@@ -48,7 +48,7 @@
                                             <form class="input-arrow">
                                                 <input [(ngModel)]="checklist.closingMonth" autocomplete="off"
                                                     class="form-control" name="date" bsDatepicker
-                                                    [bsConfig]="{dateInputFormat: 'MMM/YYYY'}"
+                                                    [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
                                         </div>
@@ -59,7 +59,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email"> Task Name</label>
-                                        <input type="email" class="form-control  bsDatepicker"
+                                        <input type="text" class="form-control bsDatepicker"
                                             [(ngModel)]="checklist.taskName">
                                     </div>
                                 </div>
@@ -80,7 +80,8 @@
                                                     <div class="kt-badge kt-badge--xl kt-badge--warning">
                                                         {{userSignInName}}</div>
                                                 </div>
-                                                <div innerHTML="{{checklist.commentBody}}" class="form-control create-comments"></div>
+                                                <div innerHTML="{{checklist.commentBody}}"
+                                                    class="form-control create-comments"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -134,18 +135,21 @@
                                                         <span></span>
                                                     </label>
                                                 </span>
-                                                <select class=" border border-default bg-white form-control input-medium" (change)="onDayChange()"
-                                                    [(ngModel)]="checklist.dueOn">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>                                              
-                                                </select>
                                             </div>
-                                            
+                                            <select class="form-control input-medium" (change)="onDayChange()"
+                                                [(ngModel)]="checklist.dueOn">
+                                                <option *ngFor="let item of days;" [value]="item.value">
+                                                    {{item.name}}
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
-                                
+                                    <div class="row">
+                                       <div class="col-12">
+                                            <span>{{SelectionMsg}}</span>
+                                       </div>
+                                    </div>
+
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -167,9 +171,9 @@
                                     <div class="form-group">
                                         <label>Ends on</label>
                                         <form class="input-arrow">
-                                            <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false" autocomplete="off"
-                                                class="form-control" name="date" bsDatepicker
-                                                [bsConfig]="{dateInputFormat: 'MM/YYYY'}"
+                                            <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false"
+                                                autocomplete="off" class="form-control" name="date" bsDatepicker
+                                                [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                 (onShown)="onOpenCalendar($event)">
                                         </form>
                                     </div>
@@ -184,10 +188,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <span style="padding-left: 10px;">{{SelectionMsg}}</span>
-                            </div>
-           
+                            
+
                             <div class="drag_drop_box">
                                 <label class="bg-color">Attachments</label>
                                 <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>

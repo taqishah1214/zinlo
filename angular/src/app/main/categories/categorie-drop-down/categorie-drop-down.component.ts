@@ -13,9 +13,11 @@ export class CategorieDropDownComponent implements OnInit {
   categories: any;
   category : NameValueDtoOfInt64[] = [];
   categoryId : any;
+  categoryName : any;
+  categoriesList:any;
   
   @Input() SelectedCategory;
-  @Output() messageEvent = new EventEmitter<string>();
+  @Output() messageEvent = new EventEmitter<number>();
 
   constructor
   (
@@ -24,35 +26,19 @@ export class CategorieDropDownComponent implements OnInit {
    ) {
 }
   ngOnInit() {
-      this.categoryId = 0;
-      this._categoryService.categoryDropDown().subscribe(result => {
-        this.category = result;
-        console.log("selected catogery",result)
+    this._categoryService.categoryDropDown().subscribe(result => {
+      this.categoriesList = result;
     });
-   
+  }
+  categoryClick(id,name) : void {
+    this.categoryId = id;
+    this.categoryName = name;
+    this.messageEvent.emit(this.categoryId);
+  }
+  routeToAddNewCategory() :void {
+    this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 ,redirectPath : "checkList" } } });   
 
   }
-  categoryValuee() : void {
-      console.log("child",this.categoryId);
-      this.messageEvent.emit(this.categoryId);
-      console.log("catogery",this.categoryId);
 
-  }
 
-  addNew(){
-    console.log("=-=-=-=-=")
-    // this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 } } });
-
-  }
-  createCategory(): void {
-
-    this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 } } });
-}
-ngOnChanges(changes: SimpleChanges){
-  if(changes.currentValue != undefined )
-    this.SelectedCategory= changes.currentValue;
-    this.cdf.detectChanges()
-    console.log("agchjdbshdb",this.SelectedCategory);
-  console.log("===> ",changes)
-}
 }

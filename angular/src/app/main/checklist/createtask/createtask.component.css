@@ -20,15 +20,32 @@
     position: relative;
 }
 .input-arrow::after{
-    content: "▼";
-    position: absolute;
-    top: 50%;
-    right: 5px;
-    transform: translateY(-50%);
-    font-size: 11px;
-    color: #606060;
+    content: "▼"  !important ;
+    position: absolute  !important;
+    top: 50%  !important;
+    right: 5px  !important;
+    transform: translateY(-50%)  !important;
+    font-size: 11px  !important;
+    color: #606060  !important;
 }  
+
 ::ng-deep .uppy-Dashboard-inner {
     min-height:220px !important;
     height: 220px !important;
+}
+.category-selector button {
+    width: 100%;
+    text-align: left;
+    padding: 9px 15px 8px 15px;
+    height: calc(1.5em + 1.3rem + 2px);
+
+}
+.category-selector button::after {
+    content: "▼" !important;
+    position: absolute !important;
+    font-size: 11px !important;
+    color: #313030 !important;
+    right: 15px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
 }

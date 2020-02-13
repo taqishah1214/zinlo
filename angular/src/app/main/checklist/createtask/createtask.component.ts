@@ -28,9 +28,8 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   SelectionMsg: string = "";
   attachmentPaths: any = [];
   newAttachementPath: string[] = [];
-  public isChecked :boolean = false;
-  days:any;
-  duplicateCheck: boolean;
+  public isChecked: boolean = false;
+  days: any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -92,8 +91,9 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
+    debugger;
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
-    if (this.attachmentPaths != null){
+    if (this.attachmentPaths != null) {
       this.newAttachementPath = [];
       this.attachmentPaths.forEach(element => {
         this.newAttachementPath.push(element.toString())
@@ -133,7 +133,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       Webcam: false
     }
   }
-  
+
 
   fileUploadedResponse(value): void {
     var response = value.successful
@@ -179,10 +179,9 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.SelectionMsg = "Days After";
     }
   }
-  loadDaysDropdown():void{
-    this._closingChecklistService.getCurrentMonthDays().subscribe(result=>{
+  loadDaysDropdown(): void {
+    this._closingChecklistService.getCurrentMonthDays().subscribe(result => {
       this.days = result;
     });
   }
 }
-
