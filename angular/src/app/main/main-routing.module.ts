@@ -10,9 +10,8 @@ import { CreatetaskComponent } from './checklist/createtask/createtask.component
 import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
 import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component';
 import { DuplicateTaskComponent } from './duplicate-task/duplicate-task.component';
-
-
-
+import { AccountsComponent } from './Account/accounts/accounts.component';
+import { CreateEditAccountsComponent } from './Account/Accounts/create-edit-accounts/create-edit-accounts.component';
 @NgModule({
     imports: [
         RouterModule.forChild([
@@ -29,8 +28,9 @@ import { DuplicateTaskComponent } from './duplicate-task/duplicate-task.componen
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                     { path: 'account/accountsubtype/create-or-edit-accountsubtype', component: CreateOrEditAccountsubtypeComponent , data: { permission: '' }  },
                     { path: 'account/accountsubtype', component: AccountsubtypeComponent , data: { permission: '' }  },
-                    { path: 'duplicate-task', component : DuplicateTaskComponent , data: {permission:""}}
-                   
+                    { path: 'duplicate-task', component : DuplicateTaskComponent , data: {permission:""}},
+                    { path: 'account/accounts', component: AccountsComponent , data: { permission: '' }  },
+                    { path: 'account/accounts/create-edit-accounts', component: CreateEditAccountsComponent , data: { permission: '' }  },
                 ]
             }
         ])

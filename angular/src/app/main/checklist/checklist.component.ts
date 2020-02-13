@@ -22,7 +22,10 @@ export class Checklist extends AppComponentBase implements OnInit {
   categoryFilter: number = 0;
   statusFilter: number = 0;
   dateFilter: Date = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
-  monthFilter = '00/0000';
+  monthFilter = '100/2000';
+  monthValue:Date = new Date();
+  minDate:Date;
+  maxDate:Date;               
   tasksList: any;
   list: any = []
   ClosingCheckList: any = []
@@ -65,6 +68,8 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.FilterBoxOpen = false;
   }
   ngOnInit() {
+    this.minDate = new Date(new Date().getFullYear(), 0O0, 0O5, 17, 23, 42, 11);
+    this.maxDate = new Date(new Date().getFullYear(), 0O11, 0O5, 17, 23, 42, 11);
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
     this.currentDate = new Date();
@@ -103,7 +108,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.currentMonth = this.monthsArray[this.monthCount];
       console.log("logged date change by ihsan",this.currentMonth);
       console.log("Current year",this.currentYear);
-      var index = this.monthsArray.indexOf(this.currentMonth);
+      var index = this.monthsArray.indexOf(this.currentMonth) + 1;
       this.monthFilter = index + "/"+ this.currentYear;
       this.getClosingCheckListAllTasks();
       ++this.monthCount
@@ -291,8 +296,12 @@ export class Checklist extends AppComponentBase implements OnInit {
   }
   filterByDate(event): void {
     this.dateFilter = event;
-    console.log("datedd", event);
     this.getClosingCheckListAllTasks();
+  }
+  filterByMonth(event):void{
+   var month =  event.getMonth() + 1;
+   this.monthFilter = month +"/"+ new Date().getFullYear()
+   this.getClosingCheckListAllTasks();
   }
   loadCategories(): void {
     this._categoryService.categoryDropDown().subscribe(result => {

@@ -12,10 +12,8 @@
     padding-left: 60px;
 }
 .custom-text-area{
-    /* border: 1px solid red; */
     height: 100px;
     border-radius: 4px;
-    /* padding: 10px; */
     overflow: auto;
     margin-top: 5px;
 }
@@ -66,4 +64,13 @@
     vertical-align: middle;
 }
 
-/* //row > col-12 > label */
+.show-comments{
+    margin-top: 10px;
+}
+statusBox{
+    width: 114% !important;
+}
+
+/* .drop_down_arrow {
+    margin-left: 135px;
+} */
