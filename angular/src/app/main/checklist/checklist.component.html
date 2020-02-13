@@ -93,12 +93,20 @@
                                         </div>
                                     </div>
                                     <div class="date-picker">
-
-                                        <button autocomplete="off" class="form-control" name="date" bsDatepicker
+                                        <!-- <input type="text" value="january 2020" class="date-field"> -->
+                                        <input id="monthValue" (ngModelChange)="filterByMonth($event)" value="january 2020" class="date-field"
+                                        name="monthValue" [(ngModel)]="monthValue"
+                                        [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                        (onShown)="onOpenCalendar($event)"
+                                       type="text" bsDatepicker />
+                                        <!-- <button autocomplete="off" class="form-control" name="date" bsDatepicker
                                             [bsConfig]="{dateInputFormat: 'MMM/YYYY'}"
-                                            (onShown)="onOpenCalendar($event)" class="btn btn-light"><img
+
+                                            (onShown)="onOpenCalendar($event)" class="btn btn-light" [(ngModel)]="dateee"  (click)="filterByMonth($event)" ><img
                                                 src="./assets/media/ClosingCheckList/calendar.svg" alt="calender">
-                                            january 2020</button>
+                                            january 2020
+                                            
+                                        </button> -->
                                     </div>
                                     <div class="dropdown-btn-box">
                                         <button (click)="openFilterClick()" class="btn btn-square"><img
