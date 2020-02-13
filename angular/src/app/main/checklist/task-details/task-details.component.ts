@@ -18,6 +18,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
  newAttachmentPaths : any =[];
  comment: CreateOrEditCommentDto = new CreateOrEditCommentDto();
  postAttachment: PostAttachmentsPathDto = new PostAttachmentsPathDto();
+ userSignInName : any;
 
   constructor(
     injector: Injector,
@@ -30,6 +31,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
      }
 
   ngOnInit() {
+    this.userSignInName = this.appSession.user.name.toString().toUpperCase();
     this.commantBox = true;
 
      this.recordId = history.state.data.id;

@@ -12,10 +12,8 @@
     padding-left: 60px;
 }
 .custom-text-area{
-    /* border: 1px solid red; */
     height: 100px;
     border-radius: 4px;
-    /* padding: 10px; */
     overflow: auto;
     margin-top: 5px;
 }
@@ -56,3 +54,13 @@
     line-height: 41px;
 
 }
+.show-comments{
+    margin-top: 10px;
+}
+statusBox{
+    width: 114% !important;
+}
+
+/* .drop_down_arrow {
+    margin-left: 135px;
+} */

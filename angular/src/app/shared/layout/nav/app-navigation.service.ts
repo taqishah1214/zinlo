@@ -31,8 +31,9 @@ export class AppNavigationService {
             ]),
             
             new AppMenuItem('Charts of Accounts', '', 'flaticon-interface-8', '', [
-                new AppMenuItem('Charts of Accounts', 'Pages.ClosingChecklist','flaticon-more',''),
+                new AppMenuItem('Charts of Accounts', '','flaticon-more','/app/main/account/accounts'),
                 new AppMenuItem('Account Sub Type', 'Pages.Categories', 'flaticon-more', '/app/main/account/accountsubtype'),
+                
             ]),
 
            // new AppMenuItem('Tests', 'Pages.Tests', 'flaticon-more', '/app/main/tests/tests'),
