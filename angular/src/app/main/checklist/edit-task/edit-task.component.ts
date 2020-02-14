@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, Output, ViewChild } from '@angular/core';
-import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy, GetTaskForEditDto, CategoriesServiceProxy, ChangeStatusDto, PostAttachmentsPathDto } from '@shared/service-proxies/service-proxies';
+import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy, GetTaskForEditDto, CategoriesServiceProxy, ChangeStatusDto, PostAttachmentsPathDto, AttachmentsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UppyConfig } from 'uppy-angular';
 
@@ -44,12 +44,15 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   categoryName : any;
   public userId: number;
   categoriesList : any;
+  attachments :any;
+  attachmentPaths: any = [];
+  newAttachementPath: string[] = [];
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   SelectionMsg: string;
   days: any;
 
-  constructor(private _categoryService: CategoriesServiceProxy, injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy, private _router: Router) {
+  constructor(private _categoryService: CategoriesServiceProxy, private _attachmentService : AttachmentsServiceProxy,injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy, private _router: Router) {
     super(injector)
 
   }
@@ -66,6 +69,14 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.active = true;
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
+      this.attachments = result.attachments;
+   this.attachments.forEach(element => {
+    var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
+    element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
+    element["attachmentName"] = attachmentName
+    element["attachmentUrl"] = "http://localhost:22742/"+element.attachmentPath
+    });
+
       this.ChangeStatus(result.statusId);
       this.closingMonthValue = this.getTaskForEdit.closingMonth.toDate();
       this.frequencyId = this.getTaskForEdit.frequency;
@@ -96,6 +107,13 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
   }
 
+  getExtensionImagePath(str){
+
+    var extension =  str.split('.')[1];
+      extension = extension+".png";
+     return extension;
+   }
+
   categoryClick(id,name) : void {
     this.categoryName = name;
     this.getTaskForEdit.categoryId = id; 
@@ -103,6 +121,36 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
   routeToAddNewCategory() : void {
     this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 ,redirectPath : "editChecklist","checklistTask" : this.taskId } } });   
+  }
+
+  fileUploadedResponse(value): void {
+    var response = value.successful
+    response.forEach(i => {
+      this.attachmentPaths.push(i.response.body.result);
+    });
+    this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
+
+  }
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
+  }
+  deleteAttachment(id) : void {
+    this.message.confirm(
+      '',
+      this.l('AreYouSure'),
+      (isConfirmed) => {
+          if (isConfirmed) {
+              this._attachmentService.deleteAttachmentPath(id)
+                  .subscribe(() => {
+                      this.notify.success(this.l('Attachment is successfully removed'));
+                      this.attachments = this.attachments.filter(function( obj ) {
+                        return obj.id !== id;
+                    })
+                  });
+          }});
   }
 
   onChange(val) {
@@ -169,9 +217,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.SelectionMsg = "Days After";
     }
   }
-  onCreateTask() {
-    this.checklist.id = this.getTaskForEdit.id;
-  }
   commentClick() {
     this.commantBox = true;
   }
@@ -180,7 +225,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
   onComment() {
     this.commantBox = false;
-    this.checklist.commentBody;
   }
   onUpdateTask() {
     this.checklist.frequency = this.getTaskForEdit.frequencyId;
@@ -194,19 +238,26 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.instruction = this.getTaskForEdit.instruction;
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this.checklist.id = this.taskId;
+    if (this.attachmentPaths != null) {
+      this.newAttachementPath = [];
+      this.attachmentPaths.forEach(element => {
+        this.newAttachementPath.push(element.toString())
+      });
+
+      this.checklist.attachmentsPath = this.newAttachementPath;
+    }
     this.checklist.comments = [];
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
-
       this.notify.success(this.l('SavedSuccessfully Updated'));
-      this._router.navigate(['/app/main/checklist/tasks']);
+      this._router.navigate(['/app/main/checklist']);
     });
   }
  
   duplicateBtn(){
-    this._router.navigate(['/app/main/duplicate-task'], { state: { data: { id: this.taskId } } });
+    this._router.navigate(['/app/main/checklist/duplicate-task'], { state: { data: { id: this.taskId } } });
   }
   back(){
-    this._router.navigate(['/app/main/checklist/task-details'])
+    this._router.navigate(['/app/main/checklist/task-details'], { state: { data: { id: this.taskId } } });
   }
   settings: UppyConfig = {
     uploadAPI: {

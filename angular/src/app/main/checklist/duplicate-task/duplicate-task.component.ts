@@ -1,17 +1,17 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy, CategoriesServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
-import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
 import { IgxMonthPickerComponent } from "igniteui-angular";
 import { UppyConfig } from 'uppy-angular';
 import { AppComponentBase } from '@shared/common/app-component-base';
+import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
 @Component({
-  selector: 'app-createtask',
-  templateUrl: './createtask.component.html',
-  styleUrls: ['./createtask.component.css']
+  selector: 'app-duplicate-task',
+  templateUrl: './duplicate-task.component.html',
+  styleUrls: ['./duplicate-task.component.css']
 })
-export class CreatetaskComponent extends AppComponentBase implements OnInit {
+export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
   categories: any;
   Email: string;
   taskName: string;
@@ -28,6 +28,10 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   SelectionMsg: string = "";
   attachmentPaths: any = [];
   newAttachementPath: string[] = [];
+  taskId : any;
+  taskDetails : any;
+  categoriesList : any;
+  categoryName:any;
   public isChecked: boolean = false;
   days: any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
@@ -37,10 +41,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   constructor
     (private _router: Router,
       private _closingChecklistService: ClosingChecklistServiceProxy,
-      injector: Injector) {
+      injector: Injector,
+      private _categoryService: CategoriesServiceProxy) {
     super(injector)
   }
   ngOnInit() {
+    this.getDetailsOfTasks();
     this.userSignInName = this.appSession.user.name.toString();
     this.commantBox = true;
     this.closingMonthInputBox = true;
@@ -48,6 +54,21 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.enableValue = false;
     this.isChecked = true;
     this.loadDaysDropdown();
+  }
+  getDetailsOfTasks() : void {
+    this.taskId = history.state.data.id;
+    this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
+      this.taskDetails = result;
+      this.checklist.categoryId = this.taskDetails.categoryId;
+      this._categoryService.categoryDropDown().subscribe(result => {
+        this.categoriesList = result;
+      });
+    })
+  }
+
+  categoryClick(id,name) : void {
+    this.categoryName = name;
+    this.checklist.categoryId = id; 
   }
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
@@ -72,7 +93,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   EndofMonthUnselected(): void {
     this.checklist.endOfMonth = false;
   }
-  onCreateTask(): void {
+  onDuplicateTask(): void {
     if (this.checklist.dayBeforeAfter) {
       this.checklist.dayBeforeAfter = true;
     }
@@ -91,7 +112,8 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
-    this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
+    this.checklist.taskName = this.taskDetails.taskName;
+    this.checklist.instruction = this.taskDetails.instruction;
     if (this.attachmentPaths != null) {
       this.newAttachementPath = [];
       this.attachmentPaths.forEach(element => {
@@ -106,7 +128,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     else {
       this.checklist.noOfMonths = 0;
     }
-    debugger;
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(() => {
       this.backToTaskList();
       this.notify.success(this.l('SavedSuccessfully'));
@@ -185,3 +206,4 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     });
   }
 }
+

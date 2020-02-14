@@ -33,7 +33,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   id: number;
   AssigniInputBox: boolean;
   AssigniBoxView: boolean;
-  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green"]
+  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green","bg-magenta"]
   FilterBoxOpen: boolean;
   public rowId: number = 0;
   changeStatus: ChangeStatusDto = new ChangeStatusDto();
@@ -189,9 +189,6 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.ClosingCheckList = result.items
       this.ClosingCheckList.forEach(j => {
         j.group.forEach(i => {
-          var firstCharacterForAvatar = i.assigniName[0].toUpperCase();
-          var lastCharacterForAvatar = i.assigniName.substr(i.assigniName.indexOf(' ') + 1)[0].toUpperCase();
-          i["NameAvatar"] = firstCharacterForAvatar + lastCharacterForAvatar;
           if (i.status === "NotStarted") {
             i["StatusColor"] = this.StatusColorBox[0]
           }
@@ -199,7 +196,7 @@ export class Checklist extends AppComponentBase implements OnInit {
             i["StatusColor"] = this.StatusColorBox[1]
           }
           else if (i.status === "OnHold") {
-            i["StatusColor"] = this.StatusColorBox[2]
+            i["StatusColor"] = this.StatusColorBox[3]
           }
           else if (i.status === "Completed") {
             i["StatusColor"] = this.StatusColorBox[2]
@@ -285,7 +282,6 @@ export class Checklist extends AppComponentBase implements OnInit {
     this._router.navigate(['/app/main/checklist/task-details'], { state: { data: { id: recordId } } });
 
   }
-  //Filters
   filterByStatus(event): void {
     this.statusFilter = event.target.value.toString();
     this.getClosingCheckListAllTasks();

@@ -123,11 +123,6 @@
 
                                 </div>
                                 <div class="col-md-4">
-                                    <!-- <select class="form-control input-medium"
-                                        (change)="closingMonthSelect($event.target.value)">
-                                        <option value="January">InProgress</option>
-                                        <option value="Febuary">Complete</option>
-                                    </select> -->
                                     <div class="">
                                         <app-status [TaskId]="recordId" [StatusList]=taskDetailObject.taskStatus></app-status>
 
@@ -138,8 +133,7 @@
                                         style="color: #5867dd;"></i></a>
                                     <a class="action-btn" href="javascript:;" (click)="deleteTask()">
                                         <i class="fa fa-trash" style="color: #5867dd;"></i></a>
-                                    <!-- <i class="fa fa-trash" style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-                                    <a class="action-btn"><i class="fa fa-clone" aria-hidden="true"></i></a>
+                                    <a class="action-btn" (click)="duplicateTask()" ><i class="fa fa-clone" aria-hidden="true"></i></a>
 
                                 </div>
                             </div>
@@ -150,10 +144,10 @@
                                         <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
                                         </ng-uppy>
                                         <div *ngFor="let item of attachments" class="attachments_section">
-                                            <button class="attachement_btn">
-                                                <img src="../../../../assets/img/{{item.attachmentExtension}}">
+                                            <a href="{{item.attachmentUrl}}" class="attachement_btn" download="{{item.attachmentUrl}}">
+                                                <img src="../../../../assets/img/{{item.attachmentExtension}}">  
                                                 <span>{{item.attachmentName}}</span>
-                                            </button>
+                                            </a>
                                             <button class="cross-btn" (click)="deleteAttachment(item.id)">
                                                 <span class="fa fa-window-close"></span>
                                             </button>

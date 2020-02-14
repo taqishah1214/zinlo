@@ -54,7 +54,7 @@ namespace Zinlo.Comment
                     commentDto.TypeId = (int)comment.TypeId;
                     commentDto.UserName = _userRepository.FirstOrDefaultAsync((long)comment.CreatorUserId).Result.FullName;
                     commentDto.Body = comment.Body;
-                    commentDto.UserProfilePath = ""; // Will pass profile url from s3 in future.
+                    commentDto.ProfilePicture = "";
                     commentDto.CreationDateTime = comment.CreationTime;
                     commentDto.DaysCount = CalculateDays(comment.CreationTime);
                     commentList.Add(commentDto);

@@ -96,7 +96,7 @@ namespace Zinlo.ClosingChecklist
                     ProfilePicture = y.ProfilePicture
                 }
                 )
-            });
+            }).OrderBy(x=>x.CreationTime);
             var totalCount = response.Count();
 
             return new PagedResultDto<TasksGroup>(
@@ -186,6 +186,26 @@ namespace Zinlo.ClosingChecklist
 
                     }
                 }
+
+            if (input.CommentBody != "")
+            {
+                var commentDto = new CreateOrEditCommentDto()
+                {
+                    Body = input.CommentBody,
+                    Type = CommentTypeDto.ClosingChecklist,
+                    TypeId = input.Id,
+                };
+                await _commentAppService.Create(commentDto);
+            }
+
+            if (input.AttachmentsPath != null)
+            {
+                PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
+                postAttachmentsPathDto.FilePath = input.AttachmentsPath;
+                postAttachmentsPathDto.TypeId = input.Id;
+                postAttachmentsPathDto.Type = 1;
+                await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
+            }
         }
 
         public async Task<List<NameValueDto<string>>> UserAutoFill(string searchTerm)

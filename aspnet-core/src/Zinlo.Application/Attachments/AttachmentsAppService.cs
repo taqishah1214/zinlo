@@ -37,7 +37,7 @@ namespace Zinlo.Attachments
             {
                file =   item;
                 var OriginalFileName =file.FileName.Substring(0, file.FileName.LastIndexOf("."));
-                string uniqueFile = OriginalFileName + "#"+Guid.NewGuid() + "" + file.FileName.Substring(file.FileName.LastIndexOf(".", StringComparison.Ordinal));
+                string uniqueFile = OriginalFileName + "zinlo"+Guid.NewGuid() + "" + file.FileName.Substring(file.FileName.LastIndexOf(".", StringComparison.Ordinal));
                 var path = Path.Combine(Path.Combine(_env.WebRootPath, "Uploads-Attachments"), uniqueFile);
                 using (var fc = new FileStream(path, FileMode.Create))
                 {

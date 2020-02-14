@@ -10,7 +10,7 @@
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
-                        <a href="" (click)="back()">
+                        <a (click)="back()">
                             <i class="la la-arrow-left"></i>
                             Back
                         </a>
@@ -29,7 +29,8 @@
                                         <div class="dropdown-menu" [(ngModel)]="categoryName">
                                             <a class="dropdown-item" *ngFor="let item of categoriesList"
                                                 (click)="categoryClick(item.value,item.name)">
-                                                {{item.name}}</a>
+                                                {{item.name}}
+                                            </a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" (click)="routeToAddNewCategory()">+AddNew</a>
                                         </div>
@@ -110,10 +111,11 @@
                                             <div class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic">
                                                     <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                        {{userSignInName}}</div>
+                                                        {{userSignInName}}
+                                                    </div>
                                                 </div>
-                                                <input [(ngModel)]="checklist.commentBody" class="form-control">
-                                            </div>
+                                                <div innerHTML="{{checklist.commentBody}}"
+                                                class="form-control create-comments"></div>                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group " *ngIf="commantBox">
@@ -231,9 +233,19 @@
                                 </div>
                             </div>
                             <div class="drag_drop_box">
-                                <label>Attachments</label>
-                                <ng-uppy [config]="settings"></ng-uppy>
-                            </div>
+                                        <label>Attachments</label>
+                                        <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
+                                        </ng-uppy>
+                                        <div *ngFor="let item of attachments" class="attachments_section">
+                                            <a href="{{item.attachmentUrl}}" class="attachement_btn" download="{{item.attachmentUrl}}">
+                                                <img src="../../../../assets/img/{{item.attachmentExtension}}">  
+                                                <span>{{item.attachmentName}}</span>
+                                            </a>
+                                            <button class="cross-btn" (click)="deleteAttachment(item.id)">
+                                                <span class="fa fa-window-close"></span>
+                                            </button>
+                                        </div>
+                                    </div>
                         </div>
                     </div>
                     <div class="kt-portlet__head mb-2">
