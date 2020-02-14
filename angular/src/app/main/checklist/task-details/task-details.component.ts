@@ -66,6 +66,10 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
 getTaskDetails(id) : void{
 
    this._closingChecklistService.getDetails(id).subscribe(result=>{
+     console.log("task by id detail",result);
+    if(result.comments == null){
+      result.comments = [];
+    }
    this.taskDetailObject = result;
    
    this.attachments = result.attachments;

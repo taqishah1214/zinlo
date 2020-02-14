@@ -48,6 +48,7 @@
                                             <form class="input-arrow">
                                                 <input [(ngModel)]="checklist.closingMonth" autocomplete="off"
                                                     class="form-control" name="date" bsDatepicker
+                                                    placeholder="Select Month"
                                                     [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
@@ -60,6 +61,7 @@
                                     <div class="form-group">
                                         <label for="email"> Task Name</label>
                                         <input type="text" class="form-control bsDatepicker"
+                                        placeholder="Enter Task Name"
                                             [(ngModel)]="checklist.taskName">
                                     </div>
                                 </div>
@@ -155,6 +157,7 @@
                                     <div class="form-group">
                                         <label>No of Months</label>
                                         <input type="text" name="noOfMonths" [disabled]="enableValue == false"
+                                         placeholder="Enter Number"
                                             class="form-control bsDatepicker" [(ngModel)]="checklist.noOfMonths">
                                     </div>
                                     <div class="form-group">
@@ -162,6 +165,7 @@
                                         <select class="bg-white border form-control input-medium"
                                             (change)="onDaysClick($event.target.value)"
                                             [(ngModel)]="checklist.dayBeforeAfter">
+                                            <option [value]="undefined" disabled hidden>Days Before</option>
                                             <option value=true>Days Before</option>
                                             <option value=false>Days After</option>
                                         </select>
@@ -173,6 +177,7 @@
                                         <form class="input-arrow">
                                             <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker
+                                                placeholder="Month"
                                                 [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                 (onShown)="onOpenCalendar($event)">
                                         </form>
@@ -181,6 +186,7 @@
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
                                             <input type="radio" value="true" name="radioButton"
+                                            placeholder="Month"
                                                 (change)="handleRadioChange()" [(ngModel)]="checklist.endOfMonth">End of
                                             month
                                             <span></span>

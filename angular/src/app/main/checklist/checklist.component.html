@@ -29,10 +29,10 @@
                     <div class="record-card-header">
                         <div class="record-card-header-bottom">
                             <div class="record-card-header-bottom-inner1">
-                                <button class="btn arrow-btn left-arrow-btn btn-square" (click)="monthChangeHeader(0)">
+                                <button class="btn arrow-btn left-arrow-btn btn-square" (click)="calculateDate(-1)">
                                     <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
                                 </button>
-                                <button class="btn arrow-btn right-arrow-btn btn-square" (click)="monthChangeHeader(1)">
+                                <button class="btn arrow-btn right-arrow-btn btn-square" (click)="calculateDate(1)">
                                     <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
                                 </button>
                                 <h5>{{currentMonth}} {{currentYear}}</h5>
@@ -110,7 +110,7 @@
                                         <div class="form-group">
                                             <select class="form-control border-grey" (change)="filterByStatus($event)"
                                                 id="exampleFormControlSelect1">
-                                                <option value="0">Status</option>
+                                                <option value="0">All</option>
                                                 <option value="1">Not Started</option>
                                                 <option value="2">In Process</option>
                                                 <option value="3">On Hold</option>
@@ -121,14 +121,14 @@
                                         <div class="form-group">
                                             <select class="form-control border-grey" (change)="filterByCategory($event)"
                                                 id="exampleFormControlSelect2">
-                                                <option value="0">Category</option>
+                                                <option value="0">All</option>
                                                 <option *ngFor="let item of category;" [value]="item.value">
                                                     {{item.name}}
                                                 </option>
                                             </select>
                                         </div>
                                         <div class="form-group">                                          
-                                            <input id="titleFilter" (ngModelChange)="filterByDate($event)" class="form-control border-grey"
+                                            <input id="titleFilter" (ngModelChange)="filterByDate($event)" autocomplete="off" class="form-control border-grey"
                                              name="titleFilter" [(ngModel)]="titleFilter"
                                             type="text" bsDatepicker class="form-control" />
                                         </div> 

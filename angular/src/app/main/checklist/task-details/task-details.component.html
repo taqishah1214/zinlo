@@ -54,8 +54,8 @@
                             <div class="row">
                                 <div class="col-5">
                                     <select class="form-control input-medium">
-                                        <option value="January">Comments</option>
-                                        <option value="Febuary">History</option>
+                                        <option>Comments</option>
+                                        <option>History</option>
                                     </select>
                                 </div>
 
@@ -63,7 +63,7 @@
                             <div class="commentmainView show-comments">
                                 <div class="kt-widget3 ">
 
-                                    <div *ngFor="let i of taskDetailObject.comments" class="show-comments-inner kt-widget3__item ">
+                                    <div *ngFor="let i of  (taskDetailObject.comments || [])" class="show-comments-inner kt-widget3__item ">
                                         <div class="comments-header kt-widget3__header">
                                             <div class="kt-widget3__user-img">
                                                 <div class="kt-user-card-v2__pic">
