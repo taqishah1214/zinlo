@@ -47,7 +47,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   SelectionMsg: string;
-  days: import("e:/Zinlo/zinlo/angular/src/shared/service-proxies/service-proxies").NameValueDtoOfString[];
+  days: any;
 
   constructor(private _categoryService: CategoriesServiceProxy, injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy, private _router: Router) {
     super(injector)
