@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
@@ -33,10 +33,11 @@ import { CreatetaskComponent } from './checklist/createtask/createtask.component
 import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';;
 import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
 import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component';
+import { AccountsComponent } from './account/accounts/accounts.component';
 import { DuplicateTaskComponent } from './duplicate-task/duplicate-task.component';
-import { AccountsComponent } from './Account/accounts/accounts.component'
-;
-import { CreateEditAccountsComponent } from './Account/Accounts/create-edit-accounts/create-edit-accounts.component'
+import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component'
+
+
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -75,13 +76,14 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 TaskDetailsComponent,
                 StatusComponent,
                 EditTaskComponent,
-                FirstLetterOfWords,
+
+                FirstLetterOfWords,               
+                DuplicateTaskComponent,
                 CreateOrEditAccountsubtypeComponent,
                 AccountsubtypeComponent,
-                DuplicateTaskComponent,
                 AccountsComponent ,
-                CreateEditAccountsComponent
-                
+                CreateEditAccountsComponent               
+
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
@@ -89,6 +91,4 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale }
         ]
 })
-
-
 export class MainModule { }
