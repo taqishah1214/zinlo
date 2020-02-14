@@ -32,11 +32,13 @@ import { EditTaskComponent } from './checklist/edit-task/edit-task.component';
 import { Checklist } from './checklist/checklist.component';;
 import { CreatetaskComponent } from './checklist/createtask/createtask.component'
 import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';;
-import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
+import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component'
+;
 import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component'
 ;
-import { AccountsComponent } from './Account/accounts/accounts.component';
-import { CreateEditAccountsComponent } from './Account/Accounts/create-edit-accounts/create-edit-accounts.component'
+import { AccountsComponent } from './account/accounts/accounts.component'
+;
+import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component'
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -78,7 +80,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 EditTaskComponent,
                 FirstLetterOfWords
 ,
-                CreateOrEditAccountsubtypeComponent,
+                CreateOrEditAccountsubtypeComponent
+,
                 AccountsubtypeComponent
 ,
                 AccountsComponent ,
