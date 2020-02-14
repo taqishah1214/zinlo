@@ -35,7 +35,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   categoryId: any;
   comment;
   statusValue: any;
-  public closingMonthValue: Date;
+ closingMonthValue: Date;
+  endsOnDateValue : Date;
   createOrEdit: void;
   userName: string[];
   assigneeId: any;
@@ -65,7 +66,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.commantBox = false;
     this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
     this.taskId = history.state.data.id;
-    this.getTaskForEdit = new GetTaskForEditDto();
     this.active = true;
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
@@ -76,9 +76,9 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     element["attachmentName"] = attachmentName
     element["attachmentUrl"] = "http://localhost:22742/"+element.attachmentPath
     });
-
       this.ChangeStatus(result.statusId);
       this.closingMonthValue = this.getTaskForEdit.closingMonth.toDate();
+      this.endsOnDateValue = this.getTaskForEdit.endsOn.toDate();
       this.frequencyId = this.getTaskForEdit.frequency;
       if (this.frequencyId == "5") {
         this.endOnIsEnabled = false;
@@ -228,8 +228,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
   onUpdateTask() {
     this.checklist.frequency = this.getTaskForEdit.frequencyId;
-    this.checklist.closingMonth = this.getTaskForEdit.closingMonth;
-    this.checklist.endsOn = this.getTaskForEdit.endsOn;
+    this.checklist.closingMonth = moment(this.closingMonthValue);
+    this.checklist.endsOn = moment(this.endsOnDateValue);
     this.checklist.categoryId = this.getTaskForEdit.categoryId;
     this.checklist.dueOn = this.getTaskForEdit.dueOn;
     this.checklist.endOfMonth = this.getTaskForEdit.endOfMonth;

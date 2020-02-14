@@ -64,6 +64,7 @@ namespace Zinlo.ClosingChecklist
                                     .WhereIf(input.DateFilter != null && input.DateFilter.Value.Date.Year != 2000, e => false || e.CreationTime.Date == input.DateFilter.Value.Date)
                                     .WhereIf(month == 100 && year == 2000 && input.DateFilter != null && input.DateFilter.Value.Date.Year == 2000, e => false || e.CreationTime.Month == DateTime.Today.Month && e.CreationTime.Year == DateTime.Today.Year);
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+            var totalCount = query.Count();
             var closingCheckList = from o in pagedAndFilteredTasks.ToList()
 
                                    select new ClosingCheckListForViewDto()
@@ -97,8 +98,8 @@ namespace Zinlo.ClosingChecklist
                 }
                 )
             }).OrderBy(x=>x.CreationTime);
-            var totalCount = response.Count();
 
+             
             return new PagedResultDto<TasksGroup>(
                 totalCount,
                 response.ToList()

@@ -66,18 +66,23 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   BackToTaskList(): void {
     this._router.navigate(['/app/main/checklist']);
   }
-  getTaskDetails(id): void {
 
-    this._closingChecklistService.getDetails(id).subscribe(result => {
-      this.taskDetailObject = result;
-      this.attachments = result.attachments;
-      this.attachments.forEach(element => {
-        var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
-        element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
-        element["attachmentName"] = attachmentName
-        element["attachmentUrl"] = "http://localhost:22742/" + element.attachmentPath
-      });
+getTaskDetails(id) : void{
+
+   this._closingChecklistService.getDetails(id).subscribe(result=>{
+    if(result.comments == null){
+      result.comments = [];
+    }
+   this.taskDetailObject = result;
+   
+   this.attachments = result.attachments;
+   this.attachments.forEach(element => {
+    var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("#"));
+    element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
+    element["attachmentName"] = attachmentName
+    element["attachmentUrl"] = "http://localhost:22742/" + element.attachmentPath
     });
+  })
   }
 
   fileUploadedResponse(value): void {
