@@ -46,8 +46,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   categoriesList : any;
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
-  SelectionMsg: string;
   days: any;
+  daysBeforeAfter: any;
 
   constructor(private _categoryService: CategoriesServiceProxy, injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy, private _router: Router) {
     super(injector)
@@ -66,6 +66,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.active = true;
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
+      console.log("result",result);
       this.ChangeStatus(result.statusId);
       this.closingMonthValue = this.getTaskForEdit.closingMonth.toDate();
       this.frequencyId = this.getTaskForEdit.frequency;
@@ -77,6 +78,13 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       }
       this.getTaskForEdit.closingMonth = moment().startOf('day');
       this.getTaskForEdit.endsOn = moment().startOf('day');
+
+      if(this.getTaskForEdit.dayBeforeAfter == false){
+        this.daysBeforeAfter = "Days After"
+      }
+      else{
+      this.daysBeforeAfter = "Days Before"
+      }
       this.assigneeId = this.getTaskForEdit.assigneeId;
       this.parentassigneName = result;
       this.categoryName = this.getTaskForEdit.category;
@@ -157,16 +165,15 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   handleRadioChange() {
     this.checklist.dayBeforeAfter = null;
     this.checklist.dueOn = 0;
-    this.SelectionMsg = "";
     this.isChecked = false;
   }
   onDaysClick(valu) {
     this.isChecked = true;
-    if (valu == "true") {
-      this.SelectionMsg = "Days Before";
+    if(this.isChecked == true){
+      this.daysBeforeAfter == "Days Before";
     }
-    else if (valu == "false") {
-      this.SelectionMsg = "Days After";
+    else{
+      this.daysBeforeAfter == "Days After";
     }
   }
   onCreateTask() {

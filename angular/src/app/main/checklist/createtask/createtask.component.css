@@ -49,3 +49,6 @@
     top: 50% !important;
     transform: translateY(-50%) !important;
 }
+label{
+    color: #606060
+}

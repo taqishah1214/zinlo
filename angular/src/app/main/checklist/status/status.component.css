@@ -3,11 +3,11 @@
     position: relative;
 }
 .drop_down_class::after{
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 114%;
+    right: -55px !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 114% !important;
 
 }
 .drop_down_arrow {
