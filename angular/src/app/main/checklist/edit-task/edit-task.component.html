@@ -6,11 +6,11 @@
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Edit Task 
+                            Edit Task
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
-                        <a href="javascript: void(0);">
+                        <a href="" (click)="back()">
                             <i class="la la-arrow-left"></i>
                             Back
                         </a>
@@ -21,110 +21,109 @@
                         <div class="col-md-7">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group">
+                                    <div class="form-group category-selector">
                                         <label>Category</label>
-                                        <select (change)="routerEvent(value)" [(ngModel)]="getTaskForEdit.categoryId" id="categories" name="categories" class="form-control input-medium select2-search select2-search--inline"  >
-                                            <option  *ngFor="let item of category;" 
-                                            [value]="item.value">
-                                                {{item.name}}
-                                            </option>
-                                            <option [value]="-1">
-                                                <button class="btn btn-primary" >+AddNew</button>
-                                            </option>
-                                        </select>   
+                                        <button type="button" class="btn btn-secondary dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">{{categoryName}}</button>
+                                        <div class="dropdown-menu" [(ngModel)]="categoryName">
+                                            <a class="dropdown-item" *ngFor="let item of categoriesList"
+                                                (click)="categoryClick(item.value,item.name)">
+                                                {{item.name}}</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" (click)="routeToAddNewCategory()">+AddNew</a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="dateOfBirth">Closing Month</label>
                                         <div class="form-group">
-                                            <form class="container">
-                                                <input [(ngModel)]="getTaskForEdit.closingMonth._d" class="form-control" name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}" (onShown)="onOpenCalendar($event)">
-                                                </form>
+                                            <form class="">
+                                                <input [(ngModel)]="getTaskForEdit.closingMonth._d" class="form-control"
+                                                    name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                    (onShown)="onOpenCalendar($event)">
+                                            </form>
                                         </div>
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row"> 
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email"> Task Name</label>
                                         <input type="email" class="form-control  bsDatepicker"
                                             [(ngModel)]="getTaskForEdit.taskName">
-                                            
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                    <label>Assignee</label>
-                                    <app-user-list-component></app-user-list-component>
+                                        <label>Assignee</label>
+                                        <app-user-list-component></app-user-list-component>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">   
+                            <div class="row">
                                 <div class="col-md-12">
-                                    
                                     <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
                                             Comment
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#" data-toggle="kt-tooltip" title="Tooltip title" data-placement="right" data-skin="dark" data-container="body">Action</a>
+                                            <a class="dropdown-item" href="#" data-toggle="kt-tooltip"
+                                                title="Tooltip title" data-placement="right" data-skin="dark"
+                                                data-container="body">Action</a>
                                         </div>
                                     </div>
-
                                     <div class="commentmainView show-comments">
                                         <div class="kt-widget3 ">
-
-
                                             <div *ngFor="let i of comment" class="kt-widget3__item ">
                                                 <div class="comments-header kt-widget3__header">
                                                     <div class="kt-widget3__user-img">
                                                         <div class="kt-user-card-v2__pic">
-                                                            <div class="kt-badge kt-badge--xl kt-badge--warning">{{i.NameAvatar}}</div>
-                                                        </div>   
+                                                            <div class="kt-badge kt-badge--xl kt-badge--warning">
+                                                                {{i.NameAvatar}}</div>
+                                                        </div>
                                                     </div>
                                                     <div class="kt-widget3__info">
                                                         <a class="kt-widget3__username">
-                                                        {{i.userName}}
+                                                            {{i.userName}}
                                                         </a><br>
-                                                        
                                                     </div>
                                                     <span class="kt-widget3__status kt-font-info">
-                                                       {{i.daysCount}}
+                                                        {{i.daysCount}}
                                                     </span>
                                                 </div>
-                                                <div class="kt-widget3__body">
-                                                    <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">   
+                                                <div class="kt-widget3__body comments-body">
+                                                    <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">
                                                     </p>
                                                 </div>
                                             </div>
-  
-
                                         </div>
                                     </div>
+
                                     <div class="form-group giveCommentView" *ngIf="!commantBox">
-                                        <label >Comments</label>
-                                        <div (click)="commentClick()" >
+                                        <label>Comments</label>
+                                        <div (click)="commentClick()">
                                             <div class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic">
-                                                    <div class="kt-badge kt-badge--xl kt-badge--warning">{{userSignInName}}</div>
+                                                    <div class="kt-badge kt-badge--xl kt-badge--warning">
+                                                        {{userSignInName}}</div>
                                                 </div>
-                                                <input [(ngModel)]="checklist.commentBody"  class="form-control">
-                                            </div>  
+                                                <input [(ngModel)]="checklist.commentBody" class="form-control">
+                                            </div>
                                         </div>
                                     </div>
-
                                     <div class="form-group " *ngIf="commantBox">
-                                        <label >Comments</label>
+                                        <label>Comments</label>
                                         <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
                                         </p-editor>
                                         <button class="btn btn-brand" (click)="onComment()">Comment</button>
                                         <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
                                     </div>
-
-
                                 </div>
                             </div>
                             <div class="row">
@@ -134,7 +133,6 @@
                                         <p-editor [(ngModel)]="getTaskForEdit.instruction" name="HtmlEditorInput"
                                             [style]="{'height':'150px'}"></p-editor>
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>
@@ -143,15 +141,14 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Frequency</label>
-                                        <select class="form-control input-medium"
-                                        [(ngModel)]="getTaskForEdit.frequencyId">
+                                        <select class=" border border-default bg-white form-control input-medium"
+                                            (change)="onChange($event.target.value)"
+                                            [(ngModel)]="getTaskForEdit.frequencyId">
+                                            <option value="5">None</option>
                                             <option value="1">Monthly</option>
                                             <option value="2">Quarterly</option>
                                             <option value="3">Annually</option>
                                             <option value="4">XNumberOfMonths</option>
-                                            <option value="5">None</option>
-
-
                                         </select>
                                     </div>
                                     <div class="form-group ">
@@ -160,31 +157,35 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <label class="kt-radio kt-radio--single kt-radio--success">
-                                                        <input type="radio" checked="">
+                                                        <input type="radio" [(checked)]="isChecked" name="endOn">
                                                         <span></span>
                                                     </label>
                                                 </span>
+                                                <select class="form-control input-medium" (change)="onDayChange()"
+                                                    [(ngModel)]="getTaskForEdit.dueOn">
+                                                    <option *ngFor="let item of days;" [value]="item.value">
+                                                        {{item.name}}
+                                                    </option>
+                                                </select>
                                             </div>
-                                            <select class="form-control input-medium"
-                                            [(ngModel)]="getTaskForEdit.dueOn">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Status</label>
                                         <div class="kt-datatable__cell ">
-                                            <button class="text-left custom-d-btn btn btn-primary dropdown-toggle drop_down_class" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <button
+                                                class="text-left custom-d-btn btn btn-primary dropdown-toggle drop_down_class"
+                                                type="button" id="dropdownMenu2" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
                                                 {{getTaskForEdit.status}}
                                             </button>
-                                            <div class="dropdown-menu drop_down_class"  aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" (click)="ChangeStatus(1)" >Open</a>
-                                                <a class="dropdown-item" (click)="ChangeStatus(2)" >Complete</a>
-                                                <a class="dropdown-item" (click)="ChangeStatus(3)" >Inprogress</a>
+                                            <div class="dropdown-menu drop_down_class"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" (click)="ChangeStatus(1)">Not Started</a>
+                                                <a class="dropdown-item" (click)="ChangeStatus(2)">In Process</a>
+                                                <a class="dropdown-item" (click)="ChangeStatus(3)">On Hold</a>
+                                                <a class="dropdown-item" (click)="ChangeStatus(4)">Completed</a>
+
                                             </div>
                                         </div>
                                     </div>
@@ -192,47 +193,50 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>No of Months</label>
-                                        <input type="text" name="noOfMonths" class="form-control bsDatepicker" [(ngModel)]="getTaskForEdit.noOfMonths">
+                                        <input type="text" name="noOfMonths" [disabled]="enableValue == false"
+                                            class="form-control bsDatepicker" [(ngModel)]="getTaskForEdit.noOfMonths">
                                     </div>
                                     <div class="form-group">
                                         <label>Days Before</label>
-                                        <select class="form-control input-medium"
-                                        [(ngModel)]="getTaskForEdit.dayBeforeAfter">
+                                        <select class="border border-default bg-white form-control input-medium"
+                                            (change)="onDaysClick($event.target.value)"
+                                            [(ngModel)]="getTaskForEdit.dayBeforeAfter">
                                             <option value=true>Days Before</option>
                                             <option value=false>Days After</option>
                                         </select>
                                     </div>
                                     <div class="duplicate_box">
-                                        <button type="button" class="btn btn-outline-primary">Duplicate</button>
+                                        <button type="button" class="btn btn-outline-primary"
+                                            (click)="duplicateBtn()">Duplicate</button>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Ends on</label>
-                                        <form class="container">
-                                            <input [(ngModel)]="getTaskForEdit.endsOn._d" autocomplete="off" class="form-control" name="date" 
-                                            bsDatepicker [bsConfig]="{dateInputFormat: 'MM/YYYY'}">
-                                            </form>
+                                        <form class="">
+                                            <input [(ngModel)]="getTaskForEdit.endsOn._d" autocomplete="off"
+                                                class="form-control" name="date" [disabled]="endOnIsEnabled == false"
+                                                bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}">
+                                        </form>
                                     </div>
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" value="checklist.endOfMonth" [(ngModel)]="checklist.endOfMonth" >End of month 
+                                            <input type="radio" value="checklist.endOfMonth" name="endOn"
+                                                (change)="handleRadioChange()" [(ngModel)]="checklist.endOfMonth">End of
+                                            month
                                             <span></span>
                                         </label>
                                     </div>
-                                    
-                                    
-
                                 </div>
                             </div>
-                            <div class="drag_drop_box" >
+                            <div class="drag_drop_box">
                                 <label>Attachments</label>
-                            <ng-uppy [config]="settings"></ng-uppy>
-                        </div>
+                                <ng-uppy [config]="settings"></ng-uppy>
+                            </div>
                         </div>
                     </div>
-                    <div class="kt-portlet__head">
+                    <div class="kt-portlet__head mb-2">
                     </div>
                     <div class="">
                         <button class="btn btn-brand" (click)="onUpdateTask()">
@@ -240,7 +244,6 @@
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

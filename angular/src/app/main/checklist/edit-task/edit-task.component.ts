@@ -15,8 +15,9 @@ import { Router } from '@angular/router';
 })
 export class EditTaskComponent extends AppComponentBase implements OnInit {
   parentassigneName;
-  endOnIsEnabled: boolean = true;
-
+  endOnIsEnabled:boolean = true;
+  enableValue: boolean = false;
+  isChecked :boolean = false;
   SelectedCategory;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto()
   commantBox: boolean
@@ -31,7 +32,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   users;
   frequency;
   frequencyId: string;
-  categoryId: number;
+  categoryId: any;
   comment;
   statusValue: any;
   public closingMonthValue: Date;
@@ -40,9 +41,13 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   assigneeId: any;
   status: number;
   active = false;
+  categoryName : any;
   public userId: number;
+  categoriesList : any;
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
+  SelectionMsg: string;
+  days: import("e:/Zinlo/zinlo/angular/src/shared/service-proxies/service-proxies").NameValueDtoOfString[];
 
   constructor(private _categoryService: CategoriesServiceProxy, injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy, private _router: Router) {
     super(injector)
@@ -50,6 +55,9 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit() {
+    this.enableValue = false;
+    this.isChecked = true;
+    
     this.taskId = history.state.data.id;
     this.commantBox = false;
     this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
@@ -71,7 +79,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.getTaskForEdit.endsOn = moment().startOf('day');
       this.assigneeId = this.getTaskForEdit.assigneeId;
       this.parentassigneName = result;
-      this.categoryId = this.getTaskForEdit.categoryId;
+      this.categoryName = this.getTaskForEdit.category;
       this.comment = this.getTaskForEdit.comments;
 
       this.comment.forEach(i => {
@@ -82,11 +90,46 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       });
     });
     this._categoryService.categoryDropDown().subscribe(result => {
-      this.category = result;
+      this.categoriesList = result;
     });
-
+    this.loadDaysDropdown();
 
   }
+
+  categoryClick(id,name) : void {
+    this.categoryName = name;
+    this.getTaskForEdit.categoryId = id; 
+  }
+
+  routeToAddNewCategory() : void {
+    this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 ,redirectPath : "editChecklist","checklistTask" : this.taskId } } });   
+  }
+
+  onChange(val) {
+    if (val == 5) {
+      this.endOnIsEnabled = false;
+    }
+    else {
+      this.endOnIsEnabled = true;
+    }
+    if (val == 4) {
+      this.enableValue = true;
+    }
+    else {
+      this.enableValue = false;
+    }
+  }
+  onDayChange() {
+    this.checklist.endOfMonth = false;
+    this.isChecked = true;
+  }
+
+  loadDaysDropdown():void{
+    this._closingChecklistService.getCurrentMonthDays().subscribe(result=>{
+      this.days = result;
+    });
+  }
+  
   ChangeStatus(value): void {
     if (value === 1) {
       this.status = 1;
@@ -108,6 +151,22 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.status = 4;
       this.getTaskForEdit.status = "Completed"
       this.checklist.status = 4;
+    }
+  }
+
+  handleRadioChange() {
+    this.checklist.dayBeforeAfter = null;
+    this.checklist.dueOn = 0;
+    this.SelectionMsg = "";
+    this.isChecked = false;
+  }
+  onDaysClick(valu) {
+    this.isChecked = true;
+    if (valu == "true") {
+      this.SelectionMsg = "Days Before";
+    }
+    else if (valu == "false") {
+      this.SelectionMsg = "Days After";
     }
   }
   onCreateTask() {
@@ -142,7 +201,13 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this._router.navigate(['/app/main/checklist/tasks']);
     });
   }
-
+ 
+  duplicateBtn(){
+    this._router.navigate(['/app/main/duplicate-task'], { state: { data: { id: this.taskId } } });
+  }
+  back(){
+    this._router.navigate(['/app/main/checklist/task-details'])
+  }
   settings: UppyConfig = {
     uploadAPI: {
       endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",

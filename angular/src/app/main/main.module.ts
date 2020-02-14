@@ -1,5 +1,4 @@
-﻿
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
@@ -32,13 +31,12 @@ import { EditTaskComponent } from './checklist/edit-task/edit-task.component';
 import { Checklist } from './checklist/checklist.component';;
 import { CreatetaskComponent } from './checklist/createtask/createtask.component'
 import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';;
-import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component'
-;
-import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component'
-;
-import { AccountsComponent } from './account/accounts/accounts.component'
-;
+import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
+import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component';
+import { AccountsComponent } from './account/accounts/accounts.component';
+import { DuplicateTaskComponent } from './duplicate-task/duplicate-task.component';
 import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component'
+
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -78,14 +76,14 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 TaskDetailsComponent,
                 StatusComponent,
                 EditTaskComponent,
-                FirstLetterOfWords
-,
-                CreateOrEditAccountsubtypeComponent
-,
-                AccountsubtypeComponent
-,
+
+                FirstLetterOfWords,               
+                DuplicateTaskComponent,
+                CreateOrEditAccountsubtypeComponent,
+                AccountsubtypeComponent,
                 AccountsComponent ,
                 CreateEditAccountsComponent               
+
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

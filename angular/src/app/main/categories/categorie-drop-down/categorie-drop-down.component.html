@@ -1,14 +1,13 @@
-
-    <div class="form-group">
+   <div class="form-group category-selector">
         <label>Category</label>
-        <select id="categories" (change)="categoryValuee()" name="categories" [(ngModel)]="categoryId" class="bg-white border form-control input-medium select2-search select2-search--inline"  >
-            <option  *ngFor="let item of category;" 
-            [value]="item.value">
-            {{item.name}} 
-            </option>
-            <option [value]="-1">
-                <button class="btn btn-primary" >+AddNew</button>
-            </option>
-        </select>   
+        <button type="button" class="btn btn-secondary dropdown-toggle"
+            data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">{{categoryName}}</button>
+        <div class="dropdown-menu" [(ngModel)]="categoryName">
+            <a class="dropdown-item" *ngFor="let item of categoriesList"
+                (click)="categoryClick(item.value,item.name)">
+                {{item.name}}</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" (click)="routeToAddNewCategory()">+AddNew</a>
+        </div>
     </div>
-  
