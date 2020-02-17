@@ -146,7 +146,7 @@ getTaskDetails(id) : void{
           this._closingChecklistService.delete(this.recordId)
             .subscribe(() => {
               this.notify.success(this.l('SuccessfullyDeleted'));
-              this._router.navigate(['/app/main/TasksCheckList/tasks']);
+              this._router.navigate(['/app/main/TasksCheckList']);
             });
         }
       }

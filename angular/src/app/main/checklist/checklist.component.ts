@@ -235,7 +235,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   }
   //Start
   getClosingCheckListAllTasks(event?: LazyLoadEvent) {
-
+    this.assigniNameForHeader = []
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
       return;
