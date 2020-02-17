@@ -15275,7 +15275,7 @@ export class CommentDto implements ICommentDto {
     body!: string | undefined;
     userName!: string | undefined;
     creationDateTime!: moment.Moment | undefined;
-    userProfilePath!: string | undefined;
+    profilePicture!: string | undefined;
     daysCount!: string | undefined;
     id!: number;
 
@@ -15295,7 +15295,7 @@ export class CommentDto implements ICommentDto {
             this.body = data["body"];
             this.userName = data["userName"];
             this.creationDateTime = data["creationDateTime"] ? moment(data["creationDateTime"].toString()) : <any>undefined;
-            this.userProfilePath = data["userProfilePath"];
+            this.profilePicture = data["profilePicture"];
             this.daysCount = data["daysCount"];
             this.id = data["id"];
         }
@@ -15315,7 +15315,7 @@ export class CommentDto implements ICommentDto {
         data["body"] = this.body;
         data["userName"] = this.userName;
         data["creationDateTime"] = this.creationDateTime ? this.creationDateTime.toISOString() : <any>undefined;
-        data["userProfilePath"] = this.userProfilePath;
+        data["profilePicture"] = this.profilePicture;
         data["daysCount"] = this.daysCount;
         data["id"] = this.id;
         return data; 
@@ -15328,7 +15328,7 @@ export interface ICommentDto {
     body: string | undefined;
     userName: string | undefined;
     creationDateTime: moment.Moment | undefined;
-    userProfilePath: string | undefined;
+    profilePicture: string | undefined;
     daysCount: string | undefined;
     id: number;
 }

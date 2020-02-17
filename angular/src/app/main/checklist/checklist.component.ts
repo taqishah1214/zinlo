@@ -367,7 +367,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   }
   filterByMonth(event):void{
    var month =  event.getMonth() + 1;
-   this.monthFilter = month +"/"+ new Date().getFullYear()
+   this.monthFilter = month +"/"+ event.getFullYear()
    this.getClosingCheckListAllTasks();
   }
   loadCategories(): void {
