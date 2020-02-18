@@ -101,8 +101,16 @@ namespace Zinlo.ClosingChecklist
 
         public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditClosingChecklistDto input)
         {
+            input.CreationTime = input.CreationTime.AddDays(1);
+            input.ClosingMonth = input.ClosingMonth.AddDays(1);
+            input.EndsOn =       input.EndsOn.AddDays(1);
+            input.CreationTime = input.CreationTime.ToUniversalTime();
+            input.ClosingMonth = input.ClosingMonth.ToUniversalTime();
+            input.EndsOn = input.EndsOn.ToUniversalTime();
             if (input.Id == 0)
             {
+                
+
                 //Test Cases.
                 //1. Check Frequency. If frequency is none . Means single task
                 //2.  if frequency has value then repeat that number of times.
@@ -339,7 +347,7 @@ namespace Zinlo.ClosingChecklist
         }
         public int GetNumberOfMonthsBetweenDates(DateTime ClosingDate, DateTime EndDate)
         {
-            int Count = ((EndDate.Year - ClosingDate.Year) * 12) + EndDate.Month - ClosingDate.Month;
+            int Count = ((EndDate.Year - ClosingDate.Year) * 12) + EndDate.Month - ClosingDate.Month + 1;
             return Count;
         }
         public int GetNumberOfTaskIterationCount(int numberOfMonths,int frequency)
@@ -367,7 +375,7 @@ namespace Zinlo.ClosingChecklist
                     number = 3;
                     break;
                 case 3:
-                    number = 11;
+                    number = 12;
                     break;
 
                 default:
