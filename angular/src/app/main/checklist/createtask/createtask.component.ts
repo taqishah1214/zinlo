@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Injector, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, Data } from '@angular/router';
 import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
@@ -28,11 +28,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   SelectionMsg: string = "";
   attachmentPaths: any = [];
   newAttachementPath: string[] = [];
-  input : any;
   public isChecked: boolean = false;
   days: any;
   users: any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
+  minDate: Date = new Date()
+  maxDate:Date = new Date()
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild(IgxMonthPickerComponent, { static: true }) monthPicker: IgxMonthPickerComponent;
@@ -92,8 +93,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.dueOn = Number(this.checklist.dueOn);
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
-    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
-    debugger;
+    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
     if (this.attachmentPaths != null) {
       this.newAttachementPath = [];
@@ -187,11 +187,5 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     });
   }
 
-  onSearchUsers(event): void {
-    debugger;
-    this._closingChecklistService.getUserWithPicture(event).subscribe(result => {
-      debugger
-        this.users = result;
-    });
-}
+
 }

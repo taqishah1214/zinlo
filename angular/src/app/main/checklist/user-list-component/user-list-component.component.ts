@@ -1,6 +1,7 @@
-import { Component, OnInit, EventEmitter, Output, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, OnChanges, SimpleChanges, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { UserServiceProxy, ClosingChecklistServiceProxy} from '@shared/service-proxies/service-proxies';
 import { OnChange } from 'ngx-bootstrap';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 
 @Component({
@@ -11,11 +12,12 @@ import { OnChange } from 'ngx-bootstrap';
 export class UserListComponentComponent implements OnInit {
 
   users : any;
-
+  input : any;
   public selectedUserId:any;
-  @Input() TaskId : any;
-  @Input('assigneName') assigneName;
+
+  @Input() userId : any;
   @Output() messageEvent = new EventEmitter<string>();
+  @ViewChild(NgSelectComponent,{ static: true }) ngSelect : NgSelectComponent;
   constructor( private userService :UserServiceProxy,
     private cdf: ChangeDetectorRef,
     private _closingChecklistService: ClosingChecklistServiceProxy ) {
@@ -23,33 +25,27 @@ export class UserListComponentComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.userService.userDropDown().subscribe(result => {
-      this.users = result;
-      this.assigneName = this.users;
-
-  });
-  // this.brand.image =this.brands[0];
+      if (this.userId) {
+        this._closingChecklistService.getUserWithPicture("",this.userId).subscribe(result => {
+          this.users = result; 
+          this.input = this.users[0].id;
+      });
+      }
   }
-
-  userOnChange() : void {
-    this.messageEvent.emit(this.selectedUserId);
-  }
-
   onSearchUsers(event): void {
-    this._closingChecklistService.userAutoFill(event.query).subscribe(result => {
-        this.users = result;
-        this.messageEvent.emit(this.users.value);
-        console.log("task id ",this.users.value);
+    this._closingChecklistService.getUserWithPicture(event,0).subscribe(result => {
+        this.users = result; 
     });
 }
 
+
+  userOnChange(value) : void {
+    this.selectedUserId = value;
+    this.messageEvent.emit(this.selectedUserId);
+    debugger;
+    console.log(this.input)
+  }
 }
-// ngOnChanges(changes: SimpleChanges){
-//   if(changes.currentValue != undefined )
-//     this.assigneName= changes.currentValue;
-//     this.cdf.detectChanges()
-//     console.log("agchjdbshdb",this.assigneName);
-//   console.log("===> ",changes)
-// }
+
 
 

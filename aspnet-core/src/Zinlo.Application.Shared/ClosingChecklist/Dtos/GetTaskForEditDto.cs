@@ -28,6 +28,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public long AssigneeId { get; set; }
         public int FrequencyId { get; set; }
         public List<CommentDto> comments { get; set; }
+        public string ProfilePicture { get; set; }
 
     }
 }

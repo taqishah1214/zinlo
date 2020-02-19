@@ -22,7 +22,7 @@ namespace Zinlo.ClosingChecklist
         Task <GetTaskForEditDto>GetTaskForEdit(long id);
 
         Task Delete(long id);
-        Task<List<GetUserWithPicture>> GetUserWithPicture(string searchTerm);
+        Task<List<GetUserWithPicture>> GetUserWithPicture(string searchTerm,long? id);
 
     }
 }

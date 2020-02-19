@@ -81,7 +81,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.parentassigneName = result;
       this.categoryName = this.getTaskForEdit.category;
       this.comment = this.getTaskForEdit.comments;
-
       this.comment.forEach(i => {
         i.userName;
         var firstCharacterForAvatar = i.userName[0].toUpperCase();
@@ -192,7 +191,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.noOfMonths = this.getTaskForEdit.noOfMonths;
     this.checklist.taskName = this.getTaskForEdit.taskName;
     this.checklist.instruction = this.getTaskForEdit.instruction;
-    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
+    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
     this.checklist.id = this.taskId;
     this.checklist.comments = [];
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {

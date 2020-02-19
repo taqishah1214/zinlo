@@ -47,7 +47,9 @@
                                         <div class="month-calender">
                                             <form class="input-arrow">
                                                 <input [(ngModel)]="checklist.closingMonth" autocomplete="off"
-                                                    class="form-control" name="date" bsDatepicker
+                                                    class="form-control" name="date" bsDatepicker 
+                                                    [minDate]="minDate"
+                                                    [maxDate]="maxDate"
                                                     [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
@@ -65,32 +67,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <!-- <label>Assignee</label>
-                                        <app-user-list-component></app-user-list-component> -->
-
-
-                                        <ng-select bindLabel="name" placeholder="Search users" appendTo="body"
-                                            [searchable]="true" [clearable]="true"
-                                            [(ngModel)]="input" (input)="onSearchUsers($event.target.value)">
-                                            <ng-option [value]="item.id" 
-                                                *ngFor="let item of users">
-                                                <img src="{{item.picture}}" width="20px" height="20px" />
-                                                {{item.name}}
-                                            </ng-option>
-                                        </ng-select>
-
-
-                                        <!-- <input type="text" (input)="onSearchUsers($event.target.value)"
-                                            [(ngModel)]="input" ng id="userIdFirstWay" list="dynmicUserIds" />
-                                        <datalist id="dynmicUserIds">
-                                            <option *ngFor="let item of users" [value]="item.id">
-                                                <div *ngIf="item.picture" class="kt-badge kt-badge--xl">
-                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                        alt="Pic" [src]="item.picture">
-                                                </div> {{item.name}}
-                                            </option>
-                                        </datalist> -->
-
+                                        <label>Assignee</label>
+                                        <app-user-list-component></app-user-list-component>
                                     </div>
                                 </div>
                             </div>
@@ -197,6 +175,8 @@
                                         <form class="input-arrow">
                                             <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker
+                                                [minDate]="minDate"
+                                                [maxDate]="maxDate"
                                                 [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                 (onShown)="onOpenCalendar($event)">
                                         </form>
