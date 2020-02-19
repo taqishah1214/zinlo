@@ -229,6 +229,27 @@ namespace Zinlo.ClosingChecklist
             var assets = query;
             return assets;
         }
+        public async Task<List<GetUserWithPicture>> GetUserWithPicture(string searchTerm,long? id )
+        {
+            List<User> list = await _userRepository.GetAll().ToListAsync();
+            if (!String.IsNullOrEmpty(searchTerm))
+            {
+                list = list.Where(x => x.FullName.ToLower().Contains(searchTerm.Trim().ToLower())).ToList();
+            }
+            else
+            {
+                list = list.Where(x => x.Id == id).ToList(); ;
+            }
+            var query = (from o in list
+                select new GetUserWithPicture()
+                {
+                    Name = o.FullName,
+                    Id = o.Id,
+                    Picture =  o.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.ProfilePictureId).Result.ProfilePicture : ""
+        }).ToList();
+            var assets = query;
+            return assets;
+        }
         public async Task<List<NameValueDto<string>>> getUsersDropdown()
         {
             var filteredUsers = _userRepository.GetAll();
@@ -254,7 +275,8 @@ namespace Zinlo.ClosingChecklist
             output.Status = (StatusDto)task.Status;
             output.CategoryName = task.Category.Title;
             output.comments = await _commentAppService.GetComments(1, task.Id);
-            output.Attachments =  await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
+            output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
+            output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture : "";
             return output;
         }
 
@@ -291,6 +313,7 @@ namespace Zinlo.ClosingChecklist
             output.StatusId = (int)task.Status;
             output.comments = await _commentAppService.GetComments(1, id);
             output.Attachments =  await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
+            output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture : "";
             return output;
         }
 

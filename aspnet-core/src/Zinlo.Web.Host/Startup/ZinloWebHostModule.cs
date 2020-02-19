@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Abp.AspNetCore.MultiTenancy;
 using Abp.AspNetZeroCore;
 using Abp.AspNetZeroCore.Web.Authentication.External;
 using Abp.AspNetZeroCore.Web.Authentication.External.Facebook;
@@ -37,6 +38,7 @@ namespace Zinlo.Web.Startup
         public override void PreInitialize()
         {
             Configuration.Modules.AbpWebCommon().MultiTenancy.DomainFormat = _appConfiguration["App:ServerRootAddress"] ?? "http://localhost:22742/";
+            Configuration.MultiTenancy.Resolvers.Insert(0, typeof(DomainTenantResolveContributor));
             Configuration.Modules.AspNetZero().LicenseCode = _appConfiguration["AbpZeroLicenseCode"];
         }
 

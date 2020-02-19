@@ -75,7 +75,6 @@ getTaskDetails(id) : void{
       result.comments = [];
     }
    this.taskDetailObject = result;
-   
    this.attachments = result.attachments;
    this.attachments.forEach(element => {
     var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("#"));

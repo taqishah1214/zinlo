@@ -48,6 +48,9 @@
                                                 <input [(ngModel)]="checklist.closingMonth" autocomplete="off"
                                                     class="form-control" name="date" bsDatepicker
                                                     placeholder="Select Month"
+                                                    class="form-control" name="date" bsDatepicker 
+                                                    [minDate]="minDate"
+                                                    [maxDate]="maxDate"
                                                     [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
@@ -146,9 +149,9 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                       <div class="col-12">
+                                        <div class="col-12">
                                             <span>{{SelectionMsg}}</span>
-                                       </div>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -177,6 +180,8 @@
                                             <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker
                                                 placeholder="Month"
+                                                [minDate]="minDate"
+                                                [maxDate]="maxDate"
                                                 [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                 (onShown)="onOpenCalendar($event)">
                                         </form>
@@ -193,7 +198,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
 
                             <div class="drag_drop_box">
                                 <label class="bg-color">Attachments</label>

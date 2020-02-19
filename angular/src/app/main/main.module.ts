@@ -35,7 +35,9 @@ import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/cr
 import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component';
 import { AccountsComponent } from './account/accounts/accounts.component';
 import { DuplicateTaskComponent } from './checklist/duplicate-task/duplicate-task.component';
-import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component'
+import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 
 
@@ -63,7 +65,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 BsDropdownModule.forRoot(),
                 PopoverModule.forRoot(),
                 IgxCalendarModule,
-                UppyAngularModule
+                UppyAngularModule,
+                NgSelectModule,
         ],
         declarations: [
                 CategoriesComponent,
