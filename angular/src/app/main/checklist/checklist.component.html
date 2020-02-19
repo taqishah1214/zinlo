@@ -108,8 +108,8 @@
                                 <div *ngIf="FilterBoxOpen" class="lower-content">
                                     <form>
                                         <div class="form-group">
-                                            <select class="form-control border-grey" (change)="filterByStatus($event)"
-                                                id="exampleFormControlSelect1">
+                                            <select class="form-control border-grey" [(ngModel)]="filterStatus" (change)="filterByStatus($event)"
+                                                id="exampleFormControlSelect1" name="filterStatus">
                                                 <option value="0">All</option>
                                                 <option value="1">Not Started</option>
                                                 <option value="2">In Process</option>
@@ -119,7 +119,7 @@
 
                                         </div>
                                         <div class="form-group">
-                                            <select class="form-control border-grey" (change)="filterByCategory($event)"
+                                            <select class="form-control border-grey" name="categoryFilter" [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
                                                 id="exampleFormControlSelect2">
                                                 <option value="0">All</option>
                                                 <option *ngFor="let item of category;" [value]="item.value">

@@ -108,9 +108,7 @@ namespace Zinlo.ClosingChecklist
             input.ClosingMonth = input.ClosingMonth.ToUniversalTime();
             input.EndsOn = input.EndsOn.ToUniversalTime();
             if (input.Id == 0)
-            {
-                
-
+            {              
                 //Test Cases.
                 //1. Check Frequency. If frequency is none . Means single task
                 //2.  if frequency has value then repeat that number of times.
@@ -337,7 +335,7 @@ namespace Zinlo.ClosingChecklist
             var startDate = new DateTime(now.Year, now.Month, 1);
             var endDate = startDate.AddMonths(1).AddDays(-1);
             for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
-            {
+            {  
                 NameValueDto<string> nameValueDto = new NameValueDto<string>();
                 nameValueDto.Value = date.Day.ToString();
                 nameValueDto.Name = date.Day.ToString();

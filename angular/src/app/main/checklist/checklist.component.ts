@@ -16,6 +16,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
+  filterStatus: number = 0;
   advancedFiltersAreShown = false;
   filterText = '';
   titleFilter = '';
@@ -68,6 +69,7 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.FilterBoxOpen = false;
 
     CurrentDate:Date;
+   
   }
   ngOnInit() {
     this.minDate = new Date(new Date().getFullYear(), 0O0, 0O5, 17, 23, 42, 11);
@@ -380,6 +382,8 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.categoryFilter = 0;
     this.dateFilter = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
     this.titleFilter = '';
+    this.filterStatus = 0;
+
     this.getClosingCheckListAllTasks();
   }
 
