@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Zinlo.EntityFrameworkCore;
@@ -9,9 +10,10 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    partial class ZinloDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200217140626_ChartsofAccount_Table_Added")]
+    partial class ChartsofAccount_Table_Added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1457,8 +1459,8 @@ namespace Zinlo.Migrations
                     b.Property<string>("AccountName")
                         .HasColumnType("text");
 
-                    b.Property<string>("AccountNumber")
-                        .HasColumnType("text");
+                    b.Property<long>("AccountNo")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("AccountSubTypeId")
                         .HasColumnType("bigint");

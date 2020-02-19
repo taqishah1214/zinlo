@@ -691,6 +691,61 @@ export class AccountSubTypeServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    accountSubTypeDropDown(): Observable<NameValueDtoOfInt64[]> {
+        let url_ = this.baseUrl + "/api/services/app/AccountSubType/AccountSubTypeDropDown";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAccountSubTypeDropDown(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAccountSubTypeDropDown(<any>response_);
+                } catch (e) {
+                    return <Observable<NameValueDtoOfInt64[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<NameValueDtoOfInt64[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAccountSubTypeDropDown(response: HttpResponseBase): Observable<NameValueDtoOfInt64[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(NameValueDtoOfInt64.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<NameValueDtoOfInt64[]>(<any>null);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -2180,6 +2235,178 @@ export class CategoriesServiceProxy {
             }));
         }
         return _observableOf<NameValueDtoOfInt64[]>(<any>null);
+    }
+}
+
+@Injectable()
+export class ChartsofAccountServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditChartsofAccountDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAccountForEdit(id: number | undefined): Observable<GetAccountForEditDto> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetAccountForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAccountForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAccountForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetAccountForEditDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetAccountForEditDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAccountForEdit(response: HttpResponseBase): Observable<GetAccountForEditDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetAccountForEditDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetAccountForEditDto>(<any>null);
     }
 }
 
@@ -13842,6 +14069,46 @@ export interface ICreateOrEditAccountSubTypeDto {
     id: number | undefined;
 }
 
+export class NameValueDtoOfInt64 implements INameValueDtoOfInt64 {
+    name!: string | undefined;
+    value!: number;
+
+    constructor(data?: INameValueDtoOfInt64) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.value = data["value"];
+        }
+    }
+
+    static fromJS(data: any): NameValueDtoOfInt64 {
+        data = typeof data === 'object' ? data : {};
+        let result = new NameValueDtoOfInt64();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["value"] = this.value;
+        return data; 
+    }
+}
+
+export interface INameValueDtoOfInt64 {
+    name: string | undefined;
+    value: number;
+}
+
 export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto {
     title!: string | undefined;
     description!: string | undefined;
@@ -14748,11 +15015,27 @@ export interface IGetCategoryForEditOutput {
     category: CreateOrEditCategoryDto;
 }
 
-export class NameValueDtoOfInt64 implements INameValueDtoOfInt64 {
-    name!: string | undefined;
-    value!: number;
+export enum AccountType {
+    Fixed = 1,
+    Assets = 2,
+    Liability = 3,
+}
 
-    constructor(data?: INameValueDtoOfInt64) {
+export enum ReconciliationType {
+    Itemized = 1,
+    Amortization = 2,
+}
+
+export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAccountDto {
+    accountName!: string | undefined;
+    accountNumber!: string | undefined;
+    accountType!: AccountType;
+    reconciliationType!: ReconciliationType;
+    accountSubTypeId!: number;
+    assigneeId!: number;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditChartsofAccountDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -14763,29 +15046,112 @@ export class NameValueDtoOfInt64 implements INameValueDtoOfInt64 {
 
     init(data?: any) {
         if (data) {
-            this.name = data["name"];
-            this.value = data["value"];
+            this.accountName = data["accountName"];
+            this.accountNumber = data["accountNumber"];
+            this.accountType = data["accountType"];
+            this.reconciliationType = data["reconciliationType"];
+            this.accountSubTypeId = data["accountSubTypeId"];
+            this.assigneeId = data["assigneeId"];
+            this.id = data["id"];
         }
     }
 
-    static fromJS(data: any): NameValueDtoOfInt64 {
+    static fromJS(data: any): CreateOrEditChartsofAccountDto {
         data = typeof data === 'object' ? data : {};
-        let result = new NameValueDtoOfInt64();
+        let result = new CreateOrEditChartsofAccountDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["value"] = this.value;
+        data["accountName"] = this.accountName;
+        data["accountNumber"] = this.accountNumber;
+        data["accountType"] = this.accountType;
+        data["reconciliationType"] = this.reconciliationType;
+        data["accountSubTypeId"] = this.accountSubTypeId;
+        data["assigneeId"] = this.assigneeId;
+        data["id"] = this.id;
         return data; 
     }
 }
 
-export interface INameValueDtoOfInt64 {
-    name: string | undefined;
-    value: number;
+export interface ICreateOrEditChartsofAccountDto {
+    accountName: string | undefined;
+    accountNumber: string | undefined;
+    accountType: AccountType;
+    reconciliationType: ReconciliationType;
+    accountSubTypeId: number;
+    assigneeId: number;
+    id: number | undefined;
+}
+
+export class GetAccountForEditDto implements IGetAccountForEditDto {
+    id!: number;
+    accountName!: string | undefined;
+    accountNumber!: string | undefined;
+    accountSubType!: string | undefined;
+    assigniName!: string | undefined;
+    assigniId!: number;
+    reconcillationType!: number;
+    accountType!: number;
+    accountSubTypeId!: number;
+
+    constructor(data?: IGetAccountForEditDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.accountName = data["accountName"];
+            this.accountNumber = data["accountNumber"];
+            this.accountSubType = data["accountSubType"];
+            this.assigniName = data["assigniName"];
+            this.assigniId = data["assigniId"];
+            this.reconcillationType = data["reconcillationType"];
+            this.accountType = data["accountType"];
+            this.accountSubTypeId = data["accountSubTypeId"];
+        }
+    }
+
+    static fromJS(data: any): GetAccountForEditDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAccountForEditDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["accountName"] = this.accountName;
+        data["accountNumber"] = this.accountNumber;
+        data["accountSubType"] = this.accountSubType;
+        data["assigniName"] = this.assigniName;
+        data["assigniId"] = this.assigniId;
+        data["reconcillationType"] = this.reconcillationType;
+        data["accountType"] = this.accountType;
+        data["accountSubTypeId"] = this.accountSubTypeId;
+        return data; 
+    }
+}
+
+export interface IGetAccountForEditDto {
+    id: number;
+    accountName: string | undefined;
+    accountNumber: string | undefined;
+    accountSubType: string | undefined;
+    assigniName: string | undefined;
+    assigniId: number;
+    reconcillationType: number;
+    accountType: number;
+    accountSubTypeId: number;
 }
 
 export enum FriendshipState {
@@ -15275,7 +15641,7 @@ export class CommentDto implements ICommentDto {
     body!: string | undefined;
     userName!: string | undefined;
     creationDateTime!: moment.Moment | undefined;
-    userProfilePath!: string | undefined;
+    profilePicture!: string | undefined;
     daysCount!: string | undefined;
     id!: number;
 
@@ -15295,7 +15661,7 @@ export class CommentDto implements ICommentDto {
             this.body = data["body"];
             this.userName = data["userName"];
             this.creationDateTime = data["creationDateTime"] ? moment(data["creationDateTime"].toString()) : <any>undefined;
-            this.userProfilePath = data["userProfilePath"];
+            this.profilePicture = data["profilePicture"];
             this.daysCount = data["daysCount"];
             this.id = data["id"];
         }
@@ -15315,7 +15681,7 @@ export class CommentDto implements ICommentDto {
         data["body"] = this.body;
         data["userName"] = this.userName;
         data["creationDateTime"] = this.creationDateTime ? this.creationDateTime.toISOString() : <any>undefined;
-        data["userProfilePath"] = this.userProfilePath;
+        data["profilePicture"] = this.profilePicture;
         data["daysCount"] = this.daysCount;
         data["id"] = this.id;
         return data; 
@@ -15328,7 +15694,7 @@ export interface ICommentDto {
     body: string | undefined;
     userName: string | undefined;
     creationDateTime: moment.Moment | undefined;
-    userProfilePath: string | undefined;
+    profilePicture: string | undefined;
     daysCount: string | undefined;
     id: number;
 }

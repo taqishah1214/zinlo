@@ -110,7 +110,7 @@
                                         <div class="form-group">
                                             <select class="form-control border-grey" (change)="filterByStatus($event)"
                                                 id="exampleFormControlSelect1">
-                                                <option value="0">All</option>
+                                                <option value="0">Status</option>
                                                 <option value="1">Not Started</option>
                                                 <option value="2">In Process</option>
                                                 <option value="3">On Hold</option>
@@ -121,14 +121,14 @@
                                         <div class="form-group">
                                             <select class="form-control border-grey" (change)="filterByCategory($event)"
                                                 id="exampleFormControlSelect2">
-                                                <option value="0">All</option>
+                                                <option value="0">Category</option>
                                                 <option *ngFor="let item of category;" [value]="item.value">
                                                     {{item.name}}
                                                 </option>
                                             </select>
                                         </div>
                                         <div class="form-group">                                          
-                                            <input id="titleFilter" (ngModelChange)="filterByDate($event)" autocomplete="off" class="form-control border-grey"
+                                            <input id="titleFilter" (ngModelChange)="filterByDate($event)" class="form-control border-grey"
                                              name="titleFilter" [(ngModel)]="titleFilter"
                                             type="text" bsDatepicker class="form-control" />
                                         </div> 
@@ -193,7 +193,7 @@
                                             <span class="">{{""}}</span>
                                         </td>
                                         <td class="task-cell" (click)="RedirectToDetail(j.id)">
-                                            <span class="task-box"><b>{{j.taskName}}</b></span>
+                                            <span class="task-box"><span class="task-box-dot-{{j.StatusColor}}"></span><b>{{j.taskName}}</b></span>
                                         </td>
                                         <td class="cat-cell" (click)="RedirectToDetail(j.id)">
                                             <span class="category-name bg-lightgrey">{{j.category}}</span>
@@ -255,7 +255,7 @@
                                                             </div>
                                                             <div *ngIf="!j.profilePicture"
                                                                 class="kt-badge kt-badge--xl kt-badge--primary">
-                                                                {{j.NameAvatar}}</div>
+                                                                {{j.assigniName | firstLetterOfWords}}</div>
                                                              <span class="kt-user-card-v2__name">{{j.assigniName}}</span>
                                                             
                                                         </div>

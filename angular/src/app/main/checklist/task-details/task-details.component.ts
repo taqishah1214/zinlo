@@ -50,6 +50,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     this.comment.typeId = this.recordId;
     this._commentServiceProxy.create(this.comment).subscribe(result => {
       this.comment.body = "";
+      this.notify.success(this.l('Comment is successfully posted'));
     });
   }
   onCancelComment(): void {
@@ -146,7 +147,7 @@ getTaskDetails(id) : void{
           this._closingChecklistService.delete(this.recordId)
             .subscribe(() => {
               this.notify.success(this.l('SuccessfullyDeleted'));
-              this._router.navigate(['/app/main/TasksCheckList']);
+              this._router.navigate(['/app/main/checklist']);
             });
         }
       }

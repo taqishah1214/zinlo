@@ -60,7 +60,7 @@ namespace Zinlo.ClosingChecklist
                                     .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.TaskName.Contains(input.Filter))
                                     .WhereIf(input.StatusFilter != 0, e => false || e.Status == (Zinlo.ClosingChecklist.Status)input.StatusFilter)
                                     .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
-                                     .WhereIf(month != 100 && year != 2000, e => false || e.CreationTime.Month == month && e.CreationTime.Year == year)
+                                        .WhereIf(month != 100 && year != 2000, e => false || e.CreationTime.Month == month && e.CreationTime.Year == year)
                                     .WhereIf(input.DateFilter != null && input.DateFilter.Value.Date.Year != 2000, e => false || e.CreationTime.Date == input.DateFilter.Value.Date)
                                     .WhereIf(month == 100 && year == 2000 && input.DateFilter != null && input.DateFilter.Value.Date.Year == 2000, e => false || e.CreationTime.Month == DateTime.Today.Month && e.CreationTime.Year == DateTime.Today.Year);
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);

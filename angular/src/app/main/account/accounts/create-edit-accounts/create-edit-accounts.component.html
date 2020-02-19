@@ -4,8 +4,9 @@
             <div class="kt-portlet" id="kt_portlet">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">                         
-                             <span>Create a New Account</span>
+                        <h3 class="kt-portlet__head-title">
+                            <span *ngIf="editAccountCheck == false">Create a New Account</span>
+                            <span *ngIf="editAccountCheck == true">Edit Account</span>
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
@@ -16,65 +17,84 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body">
-                    <form (ngSubmit)="onSubmit()">       
+                    <form (ngSubmit)="onSubmit()" >
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="TaskName"> Task Name</label>
-                                            <input type="text" class="form-control"
-                                                [(ngModel)]="taskName">
+                                            <label for="TaskName">Account Name</label>
+                                            <input type="text" name="accountName" class="form-control"
+                                                [(ngModel)]="accountDto.accountName">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="TaskName"> Task Name</label>
-                                            <input type="text" class="form-control"
-                                                [(ngModel)]="taskName">
+                                            <label for="TaskName"> Account No.</label>
+                                            <input type="text" name="accountNumber" class="form-control"
+                                                [(ngModel)]="accountDto.accountNumber">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="TaskName"> Task Name</label>
-                                            <input type="text" class="form-control"
-                                                [(ngModel)]="taskName">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="TaskName"> Task Name</label>
-                                            <input type="text" class="form-control"
-                                                [(ngModel)]="taskName">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="TaskName"> Task Name</label>
-                                            <input type="text" class="form-control"
-                                                [(ngModel)]="taskName">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="TaskName"> Task Name</label>
-                                            <input type="text" class="form-control"
-                                                [(ngModel)]="taskName">
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            
-                        </div>
 
+                                        <div class="form-group category-selector">
+                                            <label for="TaskName">Account Type</label>
+                                            <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">{{accountType}}</button>
+                                            <div class="dropdown-menu" >
+                                                <a class="dropdown-item" *ngFor="let item of accountTypeList"
+                                                    (click)="accountTypeClick(item.id,item.name)">
+                                                    {{item.name}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group category-selector">
+                                            <label for="TaskName">Account Sub-Type</label>
+                                            <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">{{accountSubTypeName}}</button>
+                                            <div class="dropdown-menu" >
+                                                <a class="dropdown-item" *ngFor="let item of accountSubTypeList"
+                                                    (click)="accountSubTypeClick(item.value,item.name)">
+                                                    {{item.name}}</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item"
+                                                    (click)="routeToAddNewAccountSubType()">+AddNew</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Assignee</label>
+                                        <app-user-list-component></app-user-list-component>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group category-selector">
+                                            <label for="TaskName">Reconcillation Type</label>
+                                            <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">{{reconcillationType}}</button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" *ngFor="let item of reconcillationTypeList"
+                                                    (click)="reconcillationClick(item.id,item.name)">
+                                                    {{item.name}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__head">
+                        </div>
                         <div class="form-group margin-top-5">
                             <button class="btn btn-brand" type="submit">
-                                Save
+                                Create
                             </button>
                         </div>
                     </form>

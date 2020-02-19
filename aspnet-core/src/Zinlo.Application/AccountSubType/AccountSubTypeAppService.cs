@@ -66,6 +66,21 @@ namespace Zinlo.AccountSubType
             await _accountSubTypeRepository.InsertAsync(accountSubType);
         }
 
+        public async Task<List<NameValueDto<long>>> AccountSubTypeDropDown()
+        {
+            var categories = _accountSubTypeRepository.GetAll();
+            var query = (from o in categories
+
+                         select new NameValueDto<long>()
+                         {
+                             Name = o.Title,
+                             Value = o.Id
+                         });
+
+            var assets = await query.ToListAsync();
+            return assets;
+        }
+
         public async Task Delete(long id)
         {
             await _accountSubTypeRepository.DeleteAsync(id);

@@ -197,7 +197,7 @@
                                     <div class="form-group">
                                         <label>No of Months</label>
                                         <input type="text" name="noOfMonths" [disabled]="enableValue == false"
-                                            class="form-control bsDatepicker" [(ngModel)]="getTaskForEdit.noOfMonths">
+                                            class="form-control bsDatepicker" [(ngModel)]="getTaskForEdit.noOfMonths" (onShown)="onOpenCalendar($event)" >
                                     </div>
                                     <label>&nbsp;</label>
                                     <div class="form-group">
@@ -216,11 +216,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Ends on</label>
-                                        <form class="">
-                                            <input [(ngModel)]="endsOnDateValue" autocomplete="off"
-                                                class="form-control" name="date" [disabled]="endOnIsEnabled == false"
-                                                bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}">
-                                        </form>
+                                        <div class="form-group">
+                                            <form class="">
+                                                <input [(ngModel)]="endsOnDateValue" class="form-control"
+                                                    name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                    (onShown)="onOpenCalendar($event)">
+                                            </form>
+                                        </div>
                                     </div>
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
