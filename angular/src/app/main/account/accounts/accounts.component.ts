@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto, CategoriesServiceProxy, NameValueDtoOfInt64 } from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto, CategoriesServiceProxy, NameValueDtoOfInt64, AccountSubTypeServiceProxy, ChartsofAccountServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
@@ -58,33 +58,29 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   collapsibleRow : boolean
   collapsibleRowId : number;
   monthCount : number =1;
+  chartsOfAccountList : any = [] 
   monthsArray = new Array("January", "February", "March",
     "April", "May", "June", "July", "August", "September",
     "October", "Novemeber", "December");
+
+
   remainingUserForHeader: any = [];
-  category: NameValueDtoOfInt64[] = [];
+  accountSubTypes: any = [];
+  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
+  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
+  
   constructor(private _router: Router,
-    private _categoryService: CategoriesServiceProxy,
-    private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector) {
+    private _accountSubTypeService: AccountSubTypeServiceProxy,
+    private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector,
+    private _chartOfAccountService: ChartsofAccountServiceProxy) {
     super(injector)
     this.FilterBoxOpen = false;
-
-    CurrentDate:Date;
   }
   ngOnInit() {
-    this.minDate = new Date(new Date().getFullYear(), 0O0, 0O5, 17, 23, 42, 11);
-    this.maxDate = new Date(new Date().getFullYear(), 0O11, 0O5, 17, 23, 42, 11);
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
-    this.currentDate = new Date();
-    this.currentYear = this.currentDate.getFullYear()
-    var curr_month = this.currentDate.getMonth();
-    this.monthCount = curr_month;
-    this.currentMonth = this.monthsArray[curr_month]
-    this.yearCount = 1;
     this.collapsibleRow = false
-    this.loadCategories();
-    this.currentDate = new Date();
+    this.loadAccountSubType();
   }
   openFieldUpdateAssignee(record) {
     this.rowid = record;
@@ -93,118 +89,6 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     console.log("idddd",id);
     this.collapsibleRowId = id;
     this.collapsibleRow = !this.collapsibleRow;
-  }
-
-  onOpenCalendar(container) {
-    container.monthSelectHandler = (event: any): void => {
-      container._store.dispatch(container._actions.select(event.date));
-    };
-    container.setViewMode('month');
-  }
-
-  calculateDate(preNext):void{
-    if(preNext == 1)
-    {
-       var month = this.currentDate.getMonth();
-       this.currentMonth = this.monthsArray[month];
-       var year = this.currentDate.getFullYear();
-       this.currentYear = year;
-       if(month != 11)
-       {
-         this.currentDate.setMonth(month + 1);
-         var month1 = this.currentDate.getMonth();
-         this.currentMonth =this.monthsArray[month1];
-
-         var index = this.monthsArray.indexOf(this.currentMonth)+ 1;
-         this.monthFilter = index + "/"+ this.currentYear;
-         this.getClosingCheckListAllTasks();
-       }
-       else if(month == 11)
-       {
-         debugger
-        var year = this.currentDate.getFullYear();
-          this.currentDate.setFullYear(year + 1);
-         this.currentDate.setMonth(0);
-        var year1 = this.currentDate.getFullYear();
-        this.currentYear = year1;
-         this.currentMonth =this.monthsArray[0];
-
-         var index = this.monthsArray.indexOf(this.currentMonth)+ 1;
-         this.monthFilter = index + "/"+ this.currentYear;
-         this.getClosingCheckListAllTasks();
-       }
-    }
-    else if(preNext == -1)
-    {
-      debugger;
-      var monthIndex = this.currentDate.getMonth();
-       this.currentMonth = this.monthsArray[monthIndex];
-       var year = this.currentDate.getFullYear();
-       this.currentYear = year;
-       if(monthIndex != 0)
-       {
-         this.currentDate.setMonth(monthIndex - 1);
-         var month1 = this.currentDate.getMonth();
-         this.currentMonth =this.monthsArray[month1];
-
-         var index = this.monthsArray.indexOf(this.currentMonth)+ 1;
-         this.monthFilter = index + "/"+ this.currentYear;
-         this.getClosingCheckListAllTasks();
-       }
-       else if(monthIndex == 0 )
-       {
-         debugger
-        var year = this.currentDate.getFullYear();
-          this.currentDate.setFullYear(year - 1);
-         this.currentDate.setMonth(11);
-        var year1 = this.currentDate.getFullYear();
-        this.currentYear = year1;
-         this.currentMonth =this.monthsArray[11];
-
-         var index = this.monthsArray.indexOf(this.currentMonth) + 1;
-         this.monthFilter = index + "/"+ this.currentYear;
-         this.getClosingCheckListAllTasks();
-       }
-
-    }
-  }
-
-  monthChangeHeader(operation): void {
-
-    if (this.monthCount == -1) {
-      this.monthCount = 12;
-      this.currentYear = this.currentDate.getFullYear() - (Math.abs(this.yearCount));
-      --this.yearCount;
-
-    }
-    if (operation == 1) {
-      debugger
-      this.currentMonth = this.monthsArray[this.monthCount];
-      console.log("logged date change by ihsan",this.currentMonth);
-      console.log("Current year",this.currentYear);
-      var index = this.monthsArray.indexOf(this.currentMonth) + 1;
-      this.monthFilter = index + "/"+ this.currentYear;
-      this.getClosingCheckListAllTasks();
-      ++this.monthCount
-    }
-    else {
-      debugger
-      if (this.monthCount == 0) {
-        this.monthCount = 12;
-        this.currentYear = this.currentDate.getFullYear() - (Math.abs(this.yearCount));
-        --this.yearCount;
-      }
-      this.currentMonth = this.monthsArray[this.monthCount]
-      --this.monthCount
-
-    }
-    if (this.monthCount == 12) {
-      this.monthCount = 0;
-      this.currentYear = this.currentDate.getFullYear() + this.yearCount;
-      ++this.yearCount;
-
-    }
-
   }
 
   addInput(i) {
@@ -245,13 +129,9 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     }
 
     this.primengTableHelper.showLoadingIndicator();
-    this._closingChecklistService.getAll(
+    this._chartOfAccountService.getAll(
       this.filterText,
       this.titleFilter,
-      this.categoryFilter,
-      this.statusFilter,
-      moment(this.dateFilter),
-      this.monthFilter,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -260,41 +140,13 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
-      this.ClosingCheckList = result.items
-      this.ClosingCheckList.forEach(j => {
-        j.group.forEach(i => {
-          if (i.status === "NotStarted") {
-            i["StatusColor"] = this.StatusColorBox[0]
-          }
-          else if (i.status === "InProcess") {
-            i["StatusColor"] = this.StatusColorBox[1]
-          }
-          else if (i.status === "OnHold") {
-            i["StatusColor"] = this.StatusColorBox[3]
-          }
-          else if (i.status === "Completed") {
-            i["StatusColor"] = this.StatusColorBox[2]
-          }
-         
-            this.assigniNameForHeader.push({ assigniName: i.assigniName, assigneeId: i.assigneeId,profilePicture : i.profilePicture});
-            if (i.statusId == 1) {
-              i.status = "Not Started";
-            }
-            else if (i.statusId == 2) {
-              i.status = "In Process";
-            }
-            if (i.statusId == 3) {
-              i.status = "On Hold";
-            }
-            else if (i.statusId == 4) {
-              i.status = "Completed";
-            }
-         
-        });       
+      this.chartsOfAccountList = result.items
+      this.chartsOfAccountList.forEach(i => {
+        i["accountType"] =  this.getNameofAccountTypeAndReconcillation(i.accountTypeId,"accountType")
+        i["reconciliationType"] =   this.getNameofAccountTypeAndReconcillation(i.reconciliationTypeId,"reconcillation")           
+        this.assigniNameForHeader.push({ assigniName: i.assigneeName, assigneeId: i.assigneeId,profilePicture : i.profilePicture});
       });
-
-      this.assigniNameForHeader = this.getUnique(this.assigniNameForHeader, "assigneeId")
-
+      this.assigniNameForHeader = this.getUnique(this.assigniNameForHeader, "assigneeId")      
       if (this.assigniNameForHeader.length > 5)
       {
         this.remainingUserForHeader = [];
@@ -307,19 +159,69 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
         }
         this.assigniNameForHeader = limitedUserNameForHeader
         this.plusUserBadgeForHeader = true
-
       }
+      debugger;
     });
   }
+
+ 
+
+
+editAccount(id) : void {
+  this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: id} } });
+
+}
+
+deleteAccount(id) : void {
+  this.message.confirm(
+    '',
+    this.l('AreYouSure'),
+    (isConfirmed) => {
+        if (isConfirmed) {
+          this._chartOfAccountService.delete(id)
+                .subscribe(() => {
+                    this.ResetGrid();
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                });
+        }
+    }
+);
+}
+
+RedirectToCreateAccount(): void {
+  this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: 0} } });
+}
+
+  getNameofAccountTypeAndReconcillation(id , key ) : string {  
+    var result = "" ;
+    if (key === "accountType")
+     {
+      this.accountTypeList.forEach(i => {
+        if  (i.id == id)
+        {
+          result = i.name
+        }
+      })
+      return result;
+     }
+     else if (key === "reconcillation")
+     {
+      this.reconcillationTypeList.forEach(i => {
+        if  (i.id == id)
+        {
+          result = i.name
+        }
+      })
+      return result;
+     }  
+  }
+
   //End
   GetUserTasks(userId) {
     this.ClosingCheckList.forEach(i => {
 
       if (i.closingCheckListForViewDto.assigneeId === userId) {
         this.UserSpecficClosingCheckList.push(this.ClosingCheckList[i])
-      }
-      else {
-
       }
     });
     this.ClosingCheckList = this.UserSpecficClosingCheckList
@@ -348,34 +250,12 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
       this.getClosingCheckListAllTasks();
     });
   }
-  RedirectToCreateTask(): void {
-    this._router.navigate(['/app/main/checklist/createtask']);
-  }
+  
 
-  RedirectToDetail(recordId): void {
-    this._router.navigate(['/app/main/checklist/task-details'], { state: { data: { id: recordId } } });
-
-  }
-  filterByStatus(event): void {
-    this.statusFilter = event.target.value.toString();
-    this.getClosingCheckListAllTasks();
-  }
-  filterByCategory(event): void {
-    this.categoryFilter = event.target.value.toString();
-    this.getClosingCheckListAllTasks();
-  }
-  filterByDate(event): void {
-    this.dateFilter = event;
-    this.getClosingCheckListAllTasks();
-  }
-  filterByMonth(event):void{
-   var month =  event.getMonth() + 1;
-   this.monthFilter = month +"/"+ new Date().getFullYear()
-   this.getClosingCheckListAllTasks();
-  }
-  loadCategories(): void {
-    this._categoryService.categoryDropDown().subscribe(result => {
-      this.category = result;
+  
+  loadAccountSubType(): void {
+    this._accountSubTypeService.accountSubTypeDropDown().subscribe(result => {
+    this.accountSubTypes = result;
     });
   }
   ResetGrid(): void {

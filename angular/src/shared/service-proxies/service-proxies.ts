@@ -2250,6 +2250,82 @@ export class ChartsofAccountServiceProxy {
     }
 
     /**
+     * @param filter (optional) 
+     * @param titleFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | undefined, titleFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetAll?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (titleFilter === null)
+            throw new Error("The parameter 'titleFilter' cannot be null.");
+        else if (titleFilter !== undefined)
+            url_ += "TitleFilter=" + encodeURIComponent("" + titleFilter) + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfChartsofAccoutsForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfChartsofAccoutsForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfChartsofAccoutsForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfChartsofAccoutsForViewDto>(<any>null);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -15013,6 +15089,126 @@ export class GetCategoryForEditOutput implements IGetCategoryForEditOutput {
 
 export interface IGetCategoryForEditOutput {
     category: CreateOrEditCategoryDto;
+}
+
+export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
+    id!: number;
+    accountName!: string | undefined;
+    accountNumber!: string | undefined;
+    accountTypeId!: number;
+    accountSubTypeId!: number;
+    accountSubType!: string | undefined;
+    reconciliationTypeId!: number;
+    assigneeName!: string | undefined;
+    profilePicture!: string | undefined;
+    assigneeId!: number;
+
+    constructor(data?: IChartsofAccoutsForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.accountName = data["accountName"];
+            this.accountNumber = data["accountNumber"];
+            this.accountTypeId = data["accountTypeId"];
+            this.accountSubTypeId = data["accountSubTypeId"];
+            this.accountSubType = data["accountSubType"];
+            this.reconciliationTypeId = data["reconciliationTypeId"];
+            this.assigneeName = data["assigneeName"];
+            this.profilePicture = data["profilePicture"];
+            this.assigneeId = data["assigneeId"];
+        }
+    }
+
+    static fromJS(data: any): ChartsofAccoutsForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChartsofAccoutsForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["accountName"] = this.accountName;
+        data["accountNumber"] = this.accountNumber;
+        data["accountTypeId"] = this.accountTypeId;
+        data["accountSubTypeId"] = this.accountSubTypeId;
+        data["accountSubType"] = this.accountSubType;
+        data["reconciliationTypeId"] = this.reconciliationTypeId;
+        data["assigneeName"] = this.assigneeName;
+        data["profilePicture"] = this.profilePicture;
+        data["assigneeId"] = this.assigneeId;
+        return data; 
+    }
+}
+
+export interface IChartsofAccoutsForViewDto {
+    id: number;
+    accountName: string | undefined;
+    accountNumber: string | undefined;
+    accountTypeId: number;
+    accountSubTypeId: number;
+    accountSubType: string | undefined;
+    reconciliationTypeId: number;
+    assigneeName: string | undefined;
+    profilePicture: string | undefined;
+    assigneeId: number;
+}
+
+export class PagedResultDtoOfChartsofAccoutsForViewDto implements IPagedResultDtoOfChartsofAccoutsForViewDto {
+    totalCount!: number;
+    items!: ChartsofAccoutsForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfChartsofAccoutsForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items!.push(ChartsofAccoutsForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfChartsofAccoutsForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfChartsofAccoutsForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfChartsofAccoutsForViewDto {
+    totalCount: number;
+    items: ChartsofAccoutsForViewDto[] | undefined;
 }
 
 export enum AccountType {

@@ -27,7 +27,7 @@ namespace Zinlo.ChartsofAccount
 
        public async  Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
-            var query =  _chartsofAccountRepository.GetAll()
+            var query =  _chartsofAccountRepository.GetAll().Include(p=>p.AccountSubType).Include(p=>p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.AccountName.Contains(input.Filter))
                  .WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter), e => false || e.AccountNumber.Contains(input.TitleFilter));
 
@@ -36,19 +36,18 @@ namespace Zinlo.ChartsofAccount
 
             var accountsList = from o in pagedAndFilteredAccounts.ToList()
 
-                                   select new ChartsofAccoutsForViewDto()
-                                   {
-                                       Id = o.Id,
-                                       AccountName = o.AccountName,
-                                       AccountNumber = o.AccountNumber,
-                                       AccountTypeId = (int)o.AccountType,
-                                       AccountSubTypeId = o.AccountSubType != null? o.AccountSubType.Id:0,
-
-                                       AccountSubType = o.AccountSubType != null ? o.AccountSubType.Title : "",
-                                       ReconciliationTypeId = o.ReconciliationType != 0 ? (int)o.ReconciliationType : 0,
-                                       AssigneeName = o.Assignee != null ? o.Assignee.FullName : "",
-                                       //ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
-
+                               select new ChartsofAccoutsForViewDto()
+                               {
+                                   Id = o.Id,
+                                   AccountName = o.AccountName,
+                                   AccountNumber = o.AccountNumber,
+                                   AccountTypeId = (int)o.AccountType,
+                                   AccountSubTypeId = o.AccountSubType.Id,
+                                   AccountSubType = o.AccountSubType != null ? o.AccountSubType.Title : "",
+                                   ReconciliationTypeId = o.ReconciliationType != 0 ? (int)o.ReconciliationType : 0,
+                                   AssigneeName = o.Assignee != null ? o.Assignee.FullName : "",
+                                   ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : "",
+                                   AssigneeId = o.Assignee.Id
                                    };
 
             return new PagedResultDto<ChartsofAccoutsForViewDto>(

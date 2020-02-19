@@ -17,8 +17,8 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   accountId : number;
   editAccountCheck :  boolean = false;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
-  reconcillationType: any;
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
+  reconcillationType: any;
   accountDto: CreateOrEditChartsofAccountDto = new CreateOrEditChartsofAccountDto()
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -27,11 +27,12 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     super(injector)
   }
 
-  ngOnInit() {
-    this.accountId = history.state.data.id;
+  ngOnInit() {   
+   this.accountId = history.state.data.id;
     this.getAccountSubTypeForDropDown();
-    if (this.accountId != null)
+    if ( this.accountId != 0)
     {
+      
       this.editAccount()
     }
     else
@@ -121,6 +122,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
       this.notify.success(this.l('Account Successfully Created.'));
+      this.reRouteToAccountsList();
     }) 
   }
 
@@ -128,7 +130,12 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId.value);
     this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
       this.notify.success(this.l('Account Successfully Updated.'));
+      this.reRouteToAccountsList();
     })
+  }
+
+  reRouteToAccountsList () : void {
+    this._router.navigate(['/app/main/account/accounts']);
   }
 
 

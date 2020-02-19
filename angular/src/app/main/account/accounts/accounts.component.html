@@ -1,10 +1,9 @@
-
 <div class="kt-subheader kt-grid__item">
     <div [class]="containerClass">
         <div class="kt-subheader__main">
             <h3 class="kt-subheader__title">
                 <img src="./assets/media/ClosingCheckList/clipboard.svg" alt="clipboard">
-                <span>Checklist</span>
+                <span> Charts of Account</span>
             </h3>
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
             <span class="kt-subheader__desc">
@@ -13,7 +12,7 @@
         </div>
         <div class="kt-subheader__toolbar">
             <div class="kt-subheader__wrapper">
-                <button (click)="RedirectToCreateTask()" class="btn btn-primary"><i class="fa fa-plus"></i>
+                <button (click)="RedirectToCreateAccount()" class="btn btn-primary"><i class="fa fa-plus"></i>
                     {{"AddNew" | localize}}</button>
             </div>
         </div>
@@ -22,7 +21,7 @@
 
 <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
-       
+
         <section class="zinlo-records">
             <div class="custom-container">
                 <div class="card">
@@ -92,52 +91,6 @@
 
                                         </div>
                                     </div>
-                                    <div class="date-picker">
-                                        <input id="monthValue" (ngModelChange)="filterByMonth($event)" value="january 2020" class="date-field"
-                                        name="monthValue" [(ngModel)]="monthValue"
-                                        [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                        (onShown)="onOpenCalendar($event)"
-                                       type="text" bsDatepicker />
-
-                                    </div>
-                                    <div class="dropdown-btn-box">
-                                        <button (click)="openFilterClick()" class="btn btn-square"><img
-                                                src="./assets/media/ClosingCheckList/filter.png" alt="filter"></button>
-                                    </div>
-                                </div>
-                                <div *ngIf="FilterBoxOpen" class="lower-content">
-                                    <form>
-                                        <div class="form-group">
-                                            <select class="form-control border-grey" (change)="filterByStatus($event)"
-                                                id="exampleFormControlSelect1">
-                                                <option value="0">All</option>
-                                                <option value="1">Not Started</option>
-                                                <option value="2">In Process</option>
-                                                <option value="3">On Hold</option>
-                                                <option value="4">Completed</option>
-                                            </select>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-control border-grey" (change)="filterByCategory($event)"
-                                                id="exampleFormControlSelect2">
-                                                <option value="0">All</option>
-                                                <option *ngFor="let item of category;" [value]="item.value">
-                                                    {{item.name}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">                                          
-                                            <input id="titleFilter" (ngModelChange)="filterByDate($event)" autocomplete="off" class="form-control border-grey"
-                                             name="titleFilter" [(ngModel)]="titleFilter"
-                                            type="text" bsDatepicker class="form-control" />
-                                        </div> 
-                                        <div class="block-btn">
-                                            <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()">
-                                                <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
-                                            </button>
-                                        </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -168,11 +121,13 @@
                                                 Account Type
                                                 <p-sortIcon field="accountType"></p-sortIcon>
                                             </th>
-                                            <th class="accountSubtype-cell" scope="col" pSortableColumn="accountSubtype">
+                                            <th class="accountSubtype-cell" scope="col"
+                                                pSortableColumn="accountSubtype">
                                                 Account Sub type
                                                 <p-sortIcon field="accountSubtype"></p-sortIcon>
                                             </th>
-                                            <th class="reconciliation-cell" scope="col" pSortableColumn="reconciliation">
+                                            <th class="reconciliation-cell" scope="col"
+                                                pSortableColumn="reconciliation">
                                                 Reconciliation Type
                                                 <p-sortIcon field="reconciliation"></p-sortIcon>
                                             </th>
@@ -185,9 +140,9 @@
                                                 <p-sortIcon field="action"></p-sortIcon>
                                             </th>
 
-                                        <th class="cell-none">
-                                            <!-- <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div> -->
-                                        </th>
+                                            <th class="cell-none">
+                                                <!-- <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div> -->
+                                            </th>
                                         </tr>
                                     </ng-template>
                                 </p-table>
@@ -195,133 +150,127 @@
                             </div>
                             <!--<Primeng-TurboTable-End> {{i.creationTime | date:'d MMM EEE'}} -->
                             <table class="table record-table">
-                                <tbody *ngFor="let i of ClosingCheckList">
-
-                                    <tr *ngFor="let j of i.group ; let value = index"
+                                <tbody>
+                                    <tr *ngFor="let item of chartsOfAccountList"
                                         class="task-table-inner table-repeater">
 
-                                        <td class="accountNo-cell" (click)="RedirectToDetail(j.id)" *ngIf="value === 0">
-                                            <span class="">hammad</span>
-                                            
-                                            
+                                        <td class="accountNo-cell">
+                                            <span class="">{{item.accountNumber}}</span>
                                         </td>
-                                        <td (click)="RedirectToDetail(j.id)" *ngIf="value != 0">
-                                            <span class="">hammad</span>
+                                        <td class="accountName-cell">
+                                            <span class="task-box"><b>{{item.accountName}}</b></span>
                                         </td>
-                                        <td class="accountName-cell" (click)="RedirectToDetail(j.id)">
-                                            <span class="task-box"><b>hammad</b></span>
-                                        </td>
-                                        <td class="accountType-cell" (click)="RedirectToDetail(j.id)">
-                                            <span class="category-name bg-lightgrey">hammad</span>
-                                            <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div>
-
+                                        <td class="accountType-cell">
+                                            <span class="category-name bg-lightgrey">{{item.accountType}}</span>
+                                            <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                         </td>
                                         <td class="accountSubtype-cell">
-                                            <span class="">hammad</span>
-                                            
-
-                                            <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div>
+                                            <span class="">{{item.accountSubType}}</span>
+                                            <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                         </td>
                                         <td class="reconciliation-cell">
-                                            <span class="">hammad</span>
-                                            
-
-                                            <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div>
+                                            <span class="">{{item.reconciliationType}}</span>
+                                            <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                         </td>
-                                       
-                                        <td class="assignee-cell">
 
-                                            <div *ngIf="j.id != rowid" class="kt-user-card-v2"
-                                                (click)="openFieldUpdateAssignee(j.id)">
+                                        <td class="assignee-cell">
+                                            <div *ngIf="item.id != rowid" class="kt-user-card-v2"
+                                                (click)="openFieldUpdateAssignee(item.id)">
                                                 <div class="kt-user-card-v2__pic">
-                                                    <div *ngIf="j.profilePicture" class="kt-badge kt-badge--xl">
+                                                    <div *ngIf="item.profilePicture" class="kt-badge kt-badge--xl">
                                                         <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                            alt="Pic" [src]="j.profilePicture">
+                                                            alt="Pic" [src]="item.profilePicture">
                                                     </div>
 
-                                                    <div *ngIf="!j.profilePicture"
-                                                        class="kt-badge kt-badge--xl kt-badge--primary"> {{j.assigniName | firstLetterOfWords}}
+                                                    <div *ngIf="!item.profilePicture"
+                                                        class="kt-badge kt-badge--xl kt-badge--primary">
+                                                        {{item.assigneeName | firstLetterOfWords}}
                                                     </div>
                                                 </div>
                                                 <div class="kt-user-card-v2__details"> <span
                                                         class="kt-user-card-v2__name">
-                                                        {{j.assigniName}}</span> </div>
+                                                        {{item.assigneeName}}</span> </div>
                                             </div>
-                                            <div *ngIf="j.id == rowid">
-                                                <p-autoComplete placeholder="Search..." [(ngModel)]="j.text"
+                                            <div *ngIf="item.id == rowid">
+                                                <p-autoComplete placeholder="Search..." [(ngModel)]="item.text"
                                                     [suggestions]="userName" (completeMethod)="onSearchUsers($event)"
-                                                    (keyup.enter)="addInput(j)" [forceSelection]="true" required>
+                                                    (keyup.enter)="addInput(item)" [forceSelection]="true" required>
                                                 </p-autoComplete>
                                             </div>
                                         </td>
-                                        
-                                       
                                         <td class="action-cell">
-                                            <span class="">hammad</span>
+                                            <div class="btn-group">
+                                                <a *ngIf="'Pages.Categories.Edit' | permission" class="btn"
+                                                    href="javascript:;" (click)="editAccount(item.id)">
+                                                    <i class="fas fa-edit" style="color: #5867dd;"></i></a>
+                                                <a *ngIf="'Pages.Categories.Delete' | permission" class="btn"
+                                                    href="javascript:;" (click)="deleteAccount(item.id)">
+                                                    <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+                                            </div>
 
-                                            <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div>
-                                             
                                         </td>
                                         <td class="toggle-btn-cell">
-                                            <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div>
+                                            <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                         </td>
                                     </tr>
                                     <!-- show-collapsible-row -->
-                                    <tr *ngFor="let j of i.group ; let value = index" class="table-row-collapsible ">
-                                        <td *ngIf="collapsibleRow == true && j.id == collapsibleRowId" colspan="6">
+                                    <tr *ngFor="let item of chartsOfAccountList" class="table-row-collapsible ">
+                                        <td *ngIf="collapsibleRow == true && item.id == collapsibleRowId" colspan="6">
                                             <ul>
                                                 <li class="accountSubtype-cell">
-                                                    
+
                                                     <div class="thead-box"><b>Account Sub Type : </b></div>
-                                                   
+                                                    <div class="tdata-box">
+                                                        <span class="">{{item.accountSubType}}</span>
+                                                    </div>
                                                 </li>
                                                 <li class="reconciliation-cell">
                                                     <div class="thead-box"><b>Reconciliation : </b></div>
                                                     <div class="tdata-box">
-                                                        
+                                                        <span class="">{{item.reconciliationType}}</span>
                                                     </div>
                                                 </li>
-
-                                            
                                                 <li class="assignee-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>Assignee : </b></div>
                                                     <div class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
-                                                            <div *ngIf="j.profilePicture" class="kt-badge kt-badge--xl">
+                                                            <div *ngIf="item.profilePicture"
+                                                                class="kt-badge kt-badge--xl">
                                                                 <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                                    alt="Pic" [src]="j.profilePicture">
+                                                                    alt="Pic" [src]="item.profilePicture">
                                                             </div>
-                                                            <div *ngIf="!j.profilePicture"
+                                                            <div *ngIf="!item.profilePicture"
                                                                 class="kt-badge kt-badge--xl kt-badge--primary">
-                                                                {{j.NameAvatar}}</div>
-                                                             <span class="kt-user-card-v2__name">{{j.assigniName}}</span>
-                                                            
+                                                                {{item.assigneeName | firstLetterOfWords}}</div>
+                                                            <span class="kt-user-card-v2__name">
+                                                                {{item.assigneeName}}</span>
                                                         </div>
-
                                                     </div>
-                                                    <div *ngIf="j.id == rowid">
-                                                        <p-autoComplete placeholder="Search..." [(ngModel)]="j.text"
+                                                    <div *ngIf="item.id == rowid">
+                                                        <p-autoComplete placeholder="Search..." [(ngModel)]="item.text"
                                                             [suggestions]="userName"
                                                             (completeMethod)="onSearchUsers($event)"
-                                                            (keyup.enter)="addInput(j)" [forceSelection]="true"
+                                                            (keyup.enter)="addInput(item)" [forceSelection]="true"
                                                             required>
                                                         </p-autoComplete>
                                                     </div>
-
                                                 </li>
-
-                                               
-
                                                 <li class="action-cell-item">
                                                     <div class="thead-box"><b>Action : </b></div>
                                                     <div class="tdata-box">
-                                                        <span class="category-name bg-lightgrey">{{j.category}}</span>
+                                                        <div class="btn-group">
+                                                            <a class="btn"
+                                                                href="javascript:;" (click)="editAccount(item.id)">
+                                                                <i class="fas fa-edit" style="color: #5867dd;"></i></a>
+                                                            <a  class="btn"
+                                                                href="javascript:;" (click)="deleteAccount(item.id)">
+                                                                <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+                                                        </div>
                                                     </div>
                                                 </li>
                                             </ul>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                             <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">

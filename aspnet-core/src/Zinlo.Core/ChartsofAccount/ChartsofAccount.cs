@@ -16,9 +16,9 @@ namespace Zinlo.ChartsofAccount
         public string AccountName { get; set; }
         public AccountType AccountType { get; set; }
         public ReconciliationType ReconciliationType { get; set; }
-        public long AccountSubTypeId { get; set; }
         public long AssigneeId { get; set; }
         public virtual User Assignee { get; set; }
+        public long AccountSubTypeId { get; set; }
         public virtual AccountSubType.AccountSubType AccountSubType { get; set; }
     }
     public enum ReconciliationType

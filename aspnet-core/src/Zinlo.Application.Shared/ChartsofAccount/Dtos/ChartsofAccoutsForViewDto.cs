@@ -15,6 +15,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         public int ReconciliationTypeId { get; set; }
         public string AssigneeName { get; set; }
         public string  ProfilePicture { get; set; }
+        public long AssigneeId { get; set; }
 
     }
 }
