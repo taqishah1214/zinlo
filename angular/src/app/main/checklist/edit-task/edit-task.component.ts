@@ -51,7 +51,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   days: any;
-  daysBeforeAfter: any;
+  daysBeforeAfter: string;
 
   constructor(private _categoryService: CategoriesServiceProxy, private _attachmentService : AttachmentsServiceProxy,injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy, private _router: Router) {
     super(injector)
@@ -93,12 +93,12 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
         this.daysBeforeAfter = "Days After"
       }
       else{
-      this.daysBeforeAfter = "Days Before"
+        this.daysBeforeAfter = "Days Before"
       }
       this.assigneeId = this.getTaskForEdit.assigneeId;
       this.parentassigneName = result;
       this.categoryName = this.getTaskForEdit.category;
-      this.comment = this.getTaskForEdit.comments;
+         this.comment = this.getTaskForEdit.comments;
 
       this.comment.forEach(i => {
         i.userName;
@@ -216,12 +216,14 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
   onDaysClick(valu) {
     this.isChecked = true;
-    if(this.isChecked == true){
-      this.daysBeforeAfter == "Days Before";
+    if(valu === 'true'){
+      this.daysBeforeAfter = "Days Before";
     }
-    else{
-      this.daysBeforeAfter == "Days After";
-    }
+    else
+    {
+      this.daysBeforeAfter = "Days After";
+    
+  }
   }
   commentClick() {
     this.commantBox = true;

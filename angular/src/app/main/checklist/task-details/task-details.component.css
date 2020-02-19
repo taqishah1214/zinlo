@@ -64,12 +64,14 @@
     vertical-align: middle;
 }
 
+
 .show-comments{
     margin-top: 10px;
 }
-statusBox{
+.statusBox {
     width: 114% !important;
 }
+
 
 /* .drop_down_arrow {
     margin-left: 135px;

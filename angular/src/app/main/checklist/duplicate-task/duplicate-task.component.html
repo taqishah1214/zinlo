@@ -149,7 +149,7 @@
                                                     </label>
                                                 </span>
                                             </div>
-                                            <select class="form-control input-medium" (change)="onDayChange()"
+                                            <select class="border border-default bg-white form-control input-medium" (change)="onDayChange()"
                                                 [(ngModel)]="checklist.dueOn">
                                                 <option *ngFor="let item of days;" [value]="item.value">
                                                     {{item.name}}

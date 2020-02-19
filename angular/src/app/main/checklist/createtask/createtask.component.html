@@ -89,7 +89,7 @@
 
                                     <div class="form-group" *ngIf="commantModal">
                                         <label>Comments</label>
-                                        <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput"
+                                        <p-editor [(ngModel)]="checklist.commentBody"  (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
                                         </p-editor>
                                         <button class="btn btn-brand" (click)="onComment()">Comment</button>
@@ -137,7 +137,7 @@
                                                     </label>
                                                 </span>
                                             </div>
-                                            <select class="form-control input-medium" (change)="onDayChange()"
+                                            <select class="border border-default bg-white form-control input-medium" (change)="onDayChange()"
                                                 [(ngModel)]="checklist.dueOn">
                                                 <option *ngFor="let item of days;" [value]="item.value">
                                                     {{item.name}}

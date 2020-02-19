@@ -63,7 +63,7 @@
                             <div class="commentmainView show-comments">
                                 <div class="kt-widget3 ">
 
-                                    <div *ngFor="let i of  (taskDetailObject.comments || [])" class="show-comments-inner kt-widget3__item ">
+                                    <div *ngFor="let i of  (taskDetailObject.comments || [])" class="kt-widget3__item ">
                                         <div class="comments-header kt-widget3__header">
                                             <div class="kt-widget3__user-img">
                                                 <div class="kt-user-card-v2__pic">
@@ -81,7 +81,7 @@
                                                 {{i.daysCount}}
                                             </span>
                                         </div>
-                                        <div class="kt-widget3__body">
+                                        <div class="kt-widget3__body show-comments-inner">
                                             <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">
                                             </p>
                                         </div>
