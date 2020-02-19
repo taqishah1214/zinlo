@@ -803,3 +803,6 @@ table.table.record-table td, table.table.record-table th {
 
 
 
+.cell-none{
+    width: 20px;
+}

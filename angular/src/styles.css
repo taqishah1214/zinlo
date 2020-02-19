@@ -409,8 +409,19 @@ form.task-report-form::after{
     .table-box .task-table .ui-table-responsive .ui-table-thead>tr>th.status-cell {
         display: none !important;
     }
+    .table-box .task-table .ui-table-responsive .ui-table-thead>tr>th.accountSubtype-cell,
+    .table-box .task-table .ui-table-responsive .ui-table-thead>tr>th.reconciliation-cell,
+    .table-box .task-table .ui-table-responsive .ui-table-thead>tr>th.assignee-cell,
+    .table-box .task-table .ui-table-responsive .ui-table-thead>tr>th.action-cell {
+        
+        display: none !important;
+    }
 
 }
 .input-group-prepend select {
     border-radius: 0 4px 4px 0;
+}
+
+.show-comments-inner img {
+    max-width: 100%;
 }

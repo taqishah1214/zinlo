@@ -47,7 +47,7 @@
     color: #313030;
     right: 4px;
     top: 50%;
-    transform: translateY(65%);
+    transform: translateY(65%) !important;
 }
 label{
     color: #606060;

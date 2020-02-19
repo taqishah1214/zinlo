@@ -97,7 +97,7 @@
                                                         {{i.daysCount}}
                                                     </span>
                                                 </div>
-                                                <div class="kt-widget3__body comments-body">
+                                                <div class="kt-widget3__body comments-body show-comments-inner">
                                                     <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">
                                                     </p>
                                                 </div>
@@ -163,7 +163,7 @@
                                                         <span></span>
                                                     </label>
                                                 </span>
-                                                <select class="form-control input-medium" (change)="onDayChange()"
+                                                <select class="border border-default bg-white form-control input-medium" (change)="onDayChange()"
                                                     [(ngModel)]="getTaskForEdit.dueOn">
                                                     <option *ngFor="let item of days;" [value]="item.value">
                                                         {{item.name}}
