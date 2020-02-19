@@ -2888,14 +2888,19 @@ export class ClosingChecklistServiceProxy {
 
     /**
      * @param searchTerm (optional) 
+     * @param id (optional) 
      * @return Success
      */
-    getUserWithPicture(searchTerm: string | undefined): Observable<GetUserWithPicture[]> {
+    getUserWithPicture(searchTerm: string | undefined, id: number | undefined): Observable<GetUserWithPicture[]> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetUserWithPicture?";
         if (searchTerm === null)
             throw new Error("The parameter 'searchTerm' cannot be null.");
         else if (searchTerm !== undefined)
             url_ += "searchTerm=" + encodeURIComponent("" + searchTerm) + "&"; 
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -16163,6 +16168,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     assigneeName!: string | undefined;
     categoryName!: string | undefined;
     taskStatus!: string | undefined;
+    profilePicture!: string | undefined;
     comments!: CommentDto[] | undefined;
     attachments!: GetAttachmentsDto[] | undefined;
     taskName!: string | undefined;
@@ -16197,6 +16203,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             this.assigneeName = data["assigneeName"];
             this.categoryName = data["categoryName"];
             this.taskStatus = data["taskStatus"];
+            this.profilePicture = data["profilePicture"];
             if (Array.isArray(data["comments"])) {
                 this.comments = [] as any;
                 for (let item of data["comments"])
@@ -16243,6 +16250,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data["assigneeName"] = this.assigneeName;
         data["categoryName"] = this.categoryName;
         data["taskStatus"] = this.taskStatus;
+        data["profilePicture"] = this.profilePicture;
         if (Array.isArray(this.comments)) {
             data["comments"] = [];
             for (let item of this.comments)
@@ -16282,6 +16290,7 @@ export interface IDetailsClosingCheckListDto {
     assigneeName: string | undefined;
     categoryName: string | undefined;
     taskStatus: string | undefined;
+    profilePicture: string | undefined;
     comments: CommentDto[] | undefined;
     attachments: GetAttachmentsDto[] | undefined;
     taskName: string | undefined;
@@ -16404,6 +16413,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     assigneeId!: number;
     frequencyId!: number;
     comments!: CommentDto[] | undefined;
+    profilePicture!: string | undefined;
 
     constructor(data?: IGetTaskForEditDto) {
         if (data) {
@@ -16444,6 +16454,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
                 for (let item of data["comments"])
                     this.comments!.push(CommentDto.fromJS(item));
             }
+            this.profilePicture = data["profilePicture"];
         }
     }
 
@@ -16484,6 +16495,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
             for (let item of this.comments)
                 data["comments"].push(item.toJSON());
         }
+        data["profilePicture"] = this.profilePicture;
         return data; 
     }
 }
@@ -16509,6 +16521,7 @@ export interface IGetTaskForEditDto {
     assigneeId: number;
     frequencyId: number;
     comments: CommentDto[] | undefined;
+    profilePicture: string | undefined;
 }
 
 export enum CommentTypeDto {
