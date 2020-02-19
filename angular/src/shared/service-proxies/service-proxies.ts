@@ -2584,6 +2584,66 @@ export class ClosingChecklistServiceProxy {
     }
 
     /**
+     * @param searchTerm (optional) 
+     * @return Success
+     */
+    getUserWithPicture(searchTerm: string | undefined): Observable<GetUserWithPicture[]> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetUserWithPicture?";
+        if (searchTerm === null)
+            throw new Error("The parameter 'searchTerm' cannot be null.");
+        else if (searchTerm !== undefined)
+            url_ += "searchTerm=" + encodeURIComponent("" + searchTerm) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserWithPicture(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserWithPicture(<any>response_);
+                } catch (e) {
+                    return <Observable<GetUserWithPicture[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetUserWithPicture[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserWithPicture(response: HttpResponseBase): Observable<GetUserWithPicture[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetUserWithPicture.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetUserWithPicture[]>(<any>null);
+    }
+
+    /**
      * @return Success
      */
     getUsersDropdown(): Observable<NameValueDtoOfString[]> {
@@ -15491,6 +15551,50 @@ export class NameValueDtoOfString implements INameValueDtoOfString {
 export interface INameValueDtoOfString {
     name: string | undefined;
     value: string | undefined;
+}
+
+export class GetUserWithPicture implements IGetUserWithPicture {
+    id!: number;
+    name!: string | undefined;
+    picture!: string | undefined;
+
+    constructor(data?: IGetUserWithPicture) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.picture = data["picture"];
+        }
+    }
+
+    static fromJS(data: any): GetUserWithPicture {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetUserWithPicture();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["picture"] = this.picture;
+        return data; 
+    }
+}
+
+export interface IGetUserWithPicture {
+    id: number;
+    name: string | undefined;
+    picture: string | undefined;
 }
 
 export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {

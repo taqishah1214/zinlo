@@ -208,6 +208,27 @@ namespace Zinlo.ClosingChecklist
             var assets = query;
             return assets;
         }
+        public async Task<List<GetUserWithPicture>> GetUserWithPicture(string searchTerm)
+        {
+            List<User> list = await _userRepository.GetAll().ToListAsync();
+            if (!String.IsNullOrEmpty(searchTerm))
+            {
+                list = list.Where(x => x.FullName.ToLower().Contains(searchTerm.Trim().ToLower())).ToList();
+            }
+            else
+            {
+                list = new List<User>();
+            }
+            var query = (from o in list
+                select new GetUserWithPicture()
+                {
+                    Name = o.FullName,
+                    Id = o.Id,
+                    Picture =  o.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.ProfilePictureId).Result.ProfilePicture : ""
+        }).ToList();
+            var assets = query;
+            return assets;
+        }
         public async Task<List<NameValueDto<string>>> getUsersDropdown()
         {
             var filteredUsers = _userRepository.GetAll();

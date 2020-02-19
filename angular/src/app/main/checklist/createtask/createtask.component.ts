@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Injector } from '@angular/core';
+import { Component, OnInit, ViewChild, Injector, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
@@ -28,8 +28,10 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   SelectionMsg: string = "";
   attachmentPaths: any = [];
   newAttachementPath: string[] = [];
+  input : any;
   public isChecked: boolean = false;
   days: any;
+  users: any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -184,4 +186,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.days = result;
     });
   }
+
+  onSearchUsers(event): void {
+    debugger;
+    this._closingChecklistService.getUserWithPicture(event).subscribe(result => {
+      debugger
+        this.users = result;
+    });
+}
 }
