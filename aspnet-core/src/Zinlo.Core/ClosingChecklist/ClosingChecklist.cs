@@ -33,10 +33,11 @@ namespace Zinlo.ClosingChecklist
         Completed = 4
     }
     public enum Frequency
-    {
+    {         
         Monthly = 1,
         Quarterly = 2,
         Annually = 3,
-        XNumberOfMonths = 4
+        XNumberOfMonths = 4,
+             None = 5
     }
 }
