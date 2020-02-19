@@ -28,16 +28,19 @@
                     <div class="record-card-header">
                         <div class="record-card-header-bottom">
                             <div class="record-card-header-bottom-inner1">
-                                <button class="btn arrow-btn left-arrow-btn btn-square" (click)="calculateDate(-1)">
-                                    <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
+                                <button class="btn btn-images" (click)="calculateDate(-1)">
+                                    <img src="../../../../assets/img/download.png">
+                                    Download
                                 </button>
-                                <button class="btn arrow-btn right-arrow-btn btn-square" (click)="calculateDate(1)">
-                                    <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
+                                <button class="btn btn-images" (click)="calculateDate(1)">
+                                    <img src="../../../../assets/img/upload.png">
+                                 Upload
                                 </button>
                                 <h5>{{currentMonth}} {{currentYear}}</h5>
 
                             </div>
                             <div class="record-card-header-bottom-inner2">
+                              
                                 <div class="upper-content">
                                     <form class="search-form">
                                         <div class="form-group">
@@ -46,6 +49,16 @@
                                                 [placeholder]="l('SearchWithThreeDot')" class="border-grey">
                                         </div>
                                     </form>
+                                    <div class="form-group category-selector">
+                                        <button type="button" class="btn btn-secondary dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">{{accountType}}</button>
+                                        <div class="dropdown-menu" >
+                                            <a class="dropdown-item" *ngFor="let item of accountTypeList"
+                                                (click)="accountTypeClick(item.id,item.name)">
+                                                {{item.name}}</a>
+                                        </div>
+                                    </div>
                                     <div class="users-box-parent">
                                         <div class="users-box">
                                             <div *ngIf="plusUserBadgeForHeader"
@@ -150,27 +163,23 @@
                             </div>
                             <!--<Primeng-TurboTable-End> {{i.creationTime | date:'d MMM EEE'}} -->
                             <table class="table record-table">
-                                <tbody>
-                                    <tr *ngFor="let item of chartsOfAccountList"
-                                        class="task-table-inner table-repeater">
+                                <tbody *ngFor="let item of chartsOfAccountList">
+                                    <tr  class="task-table-inner table-repeater">
 
                                         <td class="accountNo-cell">
                                             <span class="">{{item.accountNumber}}</span>
                                         </td>
                                         <td class="accountName-cell">
-                                            <span class="task-box"><b>{{item.accountName}}</b></span>
+                                            <span class="task-box">{{item.accountName}}</span>
                                         </td>
                                         <td class="accountType-cell">
                                             <span class="category-name bg-lightgrey">{{item.accountType}}</span>
-                                            <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                         </td>
                                         <td class="accountSubtype-cell">
                                             <span class="">{{item.accountSubType}}</span>
-                                            <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                         </td>
                                         <td class="reconciliation-cell">
                                             <span class="">{{item.reconciliationType}}</span>
-                                            <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                         </td>
 
                                         <td class="assignee-cell">
@@ -189,7 +198,8 @@
                                                 </div>
                                                 <div class="kt-user-card-v2__details"> <span
                                                         class="kt-user-card-v2__name">
-                                                        {{item.assigneeName}}</span> </div>
+                                                        {{item.assigneeName}}</span> 
+                                                </div>
                                             </div>
                                             <div *ngIf="item.id == rowid">
                                                 <p-autoComplete placeholder="Search..." [(ngModel)]="item.text"
@@ -207,13 +217,12 @@
                                                     href="javascript:;" (click)="deleteAccount(item.id)">
                                                     <i class="fa fa-trash" style="color: #5867dd;"></i></a>
                                             </div>
-
                                         </td>
                                         <td class="toggle-btn-cell">
                                             <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                         </td>
                                     </tr>
-                                    <!-- show-collapsible-row -->
+                                        <!-- show-collapsible-row -->
                                     <tr *ngFor="let item of chartsOfAccountList" class="table-row-collapsible ">
                                         <td *ngIf="collapsibleRow == true && item.id == collapsibleRowId" colspan="6">
                                             <ul>
@@ -271,7 +280,7 @@
                                             </ul>
                                         </td>
                                     </tr>
-                                </tbody>
+                             </tbody>
                             </table>
                             <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
                                 {{'NoData' | localize}}

@@ -115,6 +115,7 @@ span{
       -ms-flex-pack: justify;
           justify-content: space-between;
   padding: 15px;
+  align-items: center;
 }
 .record-card-header-bottom-inner1 {
     display: -webkit-box;
@@ -161,7 +162,6 @@ button.btn-square{
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    margin-bottom: 15px;
 }
 .users-box {
     display: -webkit-box;
@@ -268,6 +268,7 @@ form.search-form .form-group{
 }
 form.search-form .form-group::after{
     content: "";
+    background:center center/cover url(../../../../assets/img/search.png);
   width: 16px;
   height: 16px;
   position: absolute;
@@ -376,7 +377,7 @@ form.search-form input::after{
     margin-right: 10px;
 }
 .task-box {
-    padding: 2px 20px;
+    /* padding: 2px 20px; */
     border-radius: 20px;
     width: 100%;
     position: relative;
@@ -593,7 +594,38 @@ table.table.record-table td, table.table.record-table th {
 .table-row-collapsible{
     display: none;
 }
-@media only screen and (max-width:1920px){
+.category-selector{
+    margin:0;
+    position: relative;
+    width: 170px;
+}
+.category-selector button {
+    width: 100%;
+    color:#EBEDF2;
+    border:1px solid #EBEDF2;
+    height: 36px;
+}
+.category-selector button:focus{
+    background-color: transparent;
+    box-shadow: none;
+    outline: none;
+}
+.category-selector button::after {
+    position: absolute;
+    font-size: 11px;
+    color: #a1a5b9;
+    top: 50%;
+    left: 0;
+    right: 0;
+    width: 20px;
+    margin-left: auto;
+    transform: translateY(-50%);
+
+}
+.category-selector .dropdown-menu{
+    width: 170px;
+}
+@media only screen and (max-width:1900px){
     .table-row-collapsible .accountSubtype-cell{
         display: none;
     }
@@ -606,10 +638,12 @@ table.table.record-table td, table.table.record-table th {
 .action-cell{
     display: table-cell;
 }
-.reconciliation-cell-item{
-display: none;
-}
+
 .action-cell{
+    display: none;
+}
+
+.table-row-collapsible  .reconciliation-cell{
     display: none;
 }
 .table-row-collapsible  .action-cell{
@@ -661,33 +695,25 @@ display: none;
     .table-row-collapsible  .assignee-cell{
     display: flex;
     }
-    
-  
-    .accountNo-cell {
-        width: 110px;
-    }
-    .accountName-cell {
-        width: 130px;
-    }
-    .accountType-cell {
-        width: 140px;
+    .accountType-cell{
+        width:160px !important;
     }
     .accountSubtype-cell{
-        width: 200px;
+        width: 180px !important;
     }
     .reconciliation-cell{
-        display: none;
+        display: table-cell;
     }
     .table-row-collapsible .reconciliation-cell{
-        display: flex;
+        display: none;
     }
 }   
 @media only screen and (max-width:1279px){
     
-    .accountSubtype-cell{
+    .reconciliation-cell{
         display: none;
         }
-        .table-row-collapsible  .accountSubtype-cell{
+        .table-row-collapsible  .reconciliation-cell{
             display: flex;
         }
     .table-row-collapsible{
@@ -704,6 +730,12 @@ display: none;
     }
     .toggle-btn-cell .taggle-btn{
         display: table-cell;
+    }
+    .category-selector{
+        width: 150px;
+    }
+    .category-selector .dropdown-menu{
+        width: 150px;
     }
 }
 @media only screen and (max-width:1140px){
@@ -832,6 +864,11 @@ display: none;
 .accountNo-cell{
     width: 160px;
 }
+.accountNo-cell span {
+    width: 100%;
+    position: relative;
+    word-break: break-all;
+}
 .accountSubtype-cell {
     width: 200px;
 }
@@ -856,4 +893,15 @@ display: none;
 .assignee-cell .kt-user-card-v2__pic{
     display: flex;
     align-items: center;
+}
+.btn-images{
+    color: #3F94FD;
+    border:1px solid #3F94FD;
+    margin-right: 5px;
+    width: 140px;
+    height: 36px;
+}
+.btn-images img{
+    max-width: 15px;
+    margin-right: 5px;
 }

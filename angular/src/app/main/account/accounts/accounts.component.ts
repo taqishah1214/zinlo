@@ -160,7 +160,6 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
         this.assigniNameForHeader = limitedUserNameForHeader
         this.plusUserBadgeForHeader = true
       }
-      debugger;
     });
   }
 
