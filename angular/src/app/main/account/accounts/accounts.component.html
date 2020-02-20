@@ -44,7 +44,7 @@
                                 <div class="upper-content">
                                     <form class="search-form">
                                         <div class="form-group">
-                                            <input type="text" autoFocus (input)="getClosingCheckListAllTasks()"
+                                            <input type="text" autoFocus (input)="getAllAccounts()"
                                                 [(ngModel)]="filterText" name="filterText"
                                                 [placeholder]="l('SearchWithThreeDot')" class="border-grey">
                                         </div>
@@ -114,7 +114,7 @@
                             <!--<Primeng-TurboTable-Start>-->
                             <div class="task-table" [busyIf]="primengTableHelper.isLoading">
                                 <p-table #dataTable class=" record-table"
-                                    (onLazyLoad)="getClosingCheckListAllTasks($event)"
+                                    (onLazyLoad)="getAllAccounts($event)"
                                     [value]="primengTableHelper.records"
                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                     [lazy]="true" [scrollable]="true" ScrollWidth="100%"
@@ -281,7 +281,7 @@
                         </div>
                         <div class="pagination-block">
                             <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
-                                (onPageChange)="getClosingCheckListAllTasks($event)"
+                                (onPageChange)="getAllAccounts($event)"
                                 [totalRecords]="primengTableHelper.totalRecordsCount"
                                 [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                                 class="paginator-counter">
