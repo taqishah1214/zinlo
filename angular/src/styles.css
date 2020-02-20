@@ -430,3 +430,13 @@ form.task-report-form::after{
     color: #5867dd;
     display: inline-block;
 }
+.tenantFooter{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+.tenantFooter > span {
+    position: static !important;
+}

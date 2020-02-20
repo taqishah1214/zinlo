@@ -125,3 +125,6 @@
 label{
     color: #606060;
 }
+.DueOn .input-group > label {
+    width: 100%;
+}

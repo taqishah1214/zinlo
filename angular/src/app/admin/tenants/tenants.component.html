@@ -125,12 +125,12 @@
                                 <ng-template pTemplate="body" let-record="$implicit">
                                     <tr>
                                         <td style="width: 130px">
-                                            <div class="btn-group dropdown" dropdown>
-                                                <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
-                                                    <i class="fa fa-cog"></i><span class="caret"></span>
-                                                    {{"Actions" | localize}}
+                                            <div class="btn-group dropdown">
+                                                <button class="custom_toggle_btn dropdown-toggle btn btn-sm"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-cog settings_icon"></i>
                                                 </button>
-                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                <ul class="dropdown-menu">
                                                     <li [class.disabled]="!record.isActive">
                                                         <a href="javascript:;"
                                                             *ngIf="'Pages.Tenants.Impersonation' | permission"
@@ -197,16 +197,19 @@
                             <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
                                 {{'NoData' | localize}}
                             </div>
-                            <div class="primeng-paging-container">
+                            
+                            <div class="tenantFooter primeng-paging-container">
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                </span>
                                 <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
                                     (onPageChange)="getTenants($event)"
                                     [totalRecords]="primengTableHelper.totalRecordsCount"
                                     [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
                                 </p-paginator>
-                                <span class="total-records-count">
-                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
-                                </span>
+                                    
                             </div>
+                           
                         </div>
                         <!--<Primeng-TurboTable-End>-->
                     </div>
