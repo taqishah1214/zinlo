@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input, OnChanges, SimpleChanges, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { UserServiceProxy, ClosingChecklistServiceProxy, ChangeAssigneeDto} from '@shared/service-proxies/service-proxies';
+import { UserServiceProxy, ClosingChecklistServiceProxy, ChangeAssigneeDto, ChartsofAccountServiceProxy} from '@shared/service-proxies/service-proxies';
 import { OnChange } from 'ngx-bootstrap';
 import { NgSelectComponent } from '@ng-select/ng-select';
 
@@ -23,7 +23,8 @@ export class UserListComponentComponent implements OnInit, OnChanges {
   @Output("callBack") callBack: EventEmitter<any> = new EventEmitter();
   constructor( private userService :UserServiceProxy,
     private cdf: ChangeDetectorRef,
-    private _closingChecklistService: ClosingChecklistServiceProxy ) {}
+    private _closingChecklistService: ClosingChecklistServiceProxy,
+    private _chartOfAccountService: ChartsofAccountServiceProxy ) {}
 
 
   ngOnInit() {
@@ -60,10 +61,18 @@ export class UserListComponentComponent implements OnInit, OnChanges {
     if (this.selectedUserId != null)
     {
     this.messageEvent.emit(this.selectedUserId);
-    if (this.comingChangeReguest == "ClosingCheckList" || this.comingChangeReguest == "DetailsClosingCheckList" ) {
+    if (this.comingChangeReguest == "ClosingCheckList" || this.comingChangeReguest == "DetailsClosingCheckList"  ) 
+    {
       this.changeAssigneeDto.assigneeId = this.selectedUserId;
       this.changeAssigneeDto.taskId = this.taskId;
       this._closingChecklistService.changeAssignee(this.changeAssigneeDto).subscribe( result => {
+        this.callBack.emit()
+      })
+    }
+    else if (this.comingChangeReguest == "accounts")
+    {
+      debugger;
+       this._chartOfAccountService.changeAccountsAssignee(this.taskId,this.selectedUserId).subscribe(result => {
         this.callBack.emit()
       })
     }
