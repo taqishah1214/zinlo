@@ -67,7 +67,6 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
        this.accountDto.accountSubTypeId = result.accountSubTypeId;
        this.accountDto.id = result.id;
        this.selectedUserID = result.assigniId;
-       debugger;
        this.accountDto.assigneeId = result.assigniId
     })
   }
@@ -111,7 +110,14 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   routeToAddNewAccountSubType(): void {
-    this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype']);
+    if (this.accountId != 0)
+    {
+      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: this.accountId , previousRoute : "account"} } });
+    }
+    else {
+      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: 0, previousRoute : "account" } } });
+
+    }
   }
 
   onSubmit(): void {
@@ -127,7 +133,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
     this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
       this.notify.success(this.l('Account Successfully Created.'));
-      this.reRouteToAccountsList();
+      this.redirectToAccountsList();
     }) 
   }
 
@@ -135,11 +141,11 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
     this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
       this.notify.success(this.l('Account Successfully Updated.'));
-      this.reRouteToAccountsList();
+      this.redirectToAccountsList();
     })
   }
 
-  reRouteToAccountsList () : void {
+  redirectToAccountsList () : void {
     this._router.navigate(['/app/main/account/accounts']);
   }
 
