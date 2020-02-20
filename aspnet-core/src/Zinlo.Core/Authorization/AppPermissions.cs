@@ -12,6 +12,11 @@
         public const string Pages_Administration_TimeManagements_Delete = "Pages.Administration.TimeManagements.Delete";
         public const string Pages_Administration_TimeManagements_Status = "Pages.Administration.TimeManagements.Status";
 
+        public const string Pages_ChartsofAccounts = "Pages.ChartsofAccounts";
+        public const string Pages_ChartsofAccounts_Create = "Pages.ChartsofAccounts.Create";
+        public const string Pages_ChartsofAccounts_Edit = "Pages.ChartsofAccounts.Edit";
+        public const string Pages_ChartsofAccounts_Delete = "Pages.ChartsofAccounts.Delete";
+
 
         public const string Pages_Tasks = "Pages.Tasks";
         public const string Pages_Tasks_Create = "Pages.Tasks.Create";
