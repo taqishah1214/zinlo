@@ -44,7 +44,7 @@
                                 <div class="upper-content">
                                     <form class="search-form">
                                         <div class="form-group">
-                                            <input type="text" autoFocus (input)="getClosingCheckListAllTasks()"
+                                            <input type="text" autoFocus (input)="getAllAccounts()"
                                                 [(ngModel)]="filterText" name="filterText"
                                                 [placeholder]="l('SearchWithThreeDot')" class="border-grey">
                                         </div>
@@ -89,7 +89,7 @@
 
 
                                             <div *ngFor="let item of assigniNameForHeader "
-                                                (click)="GetUserTasks(i.assigneeId)" class="kt-user-card-v2">
+                                                (click)="GetAssigniSpecficAccounts(i.assigneeId)" class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic user-image-box">
                                                     <div *ngIf="item.profilePicture" class="kt-badge kt-badge--xl">
                                                         <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
@@ -114,7 +114,7 @@
                             <!--<Primeng-TurboTable-Start>-->
                             <div class="task-table" [busyIf]="primengTableHelper.isLoading">
                                 <p-table #dataTable class=" record-table"
-                                    (onLazyLoad)="getClosingCheckListAllTasks($event)"
+                                    (onLazyLoad)="getAllAccounts($event)"
                                     [value]="primengTableHelper.records"
                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                     [lazy]="true" [scrollable]="true" ScrollWidth="100%"
@@ -168,6 +168,7 @@
 
                                         <td class="accountNo-cell">
                                             <span class="">{{item.accountNumber}}</span>
+                                            
                                         </td>
                                         <td class="accountName-cell">
                                             <span class="task-box">{{item.accountName}}</span>
@@ -202,20 +203,17 @@
                                                 </div>
                                             </div>
                                             <div *ngIf="item.id == rowid">
-                                                <p-autoComplete placeholder="Search..." [(ngModel)]="item.text"
-                                                    [suggestions]="userName" (completeMethod)="onSearchUsers($event)"
-                                                    (keyup.enter)="addInput(item)" [forceSelection]="true" required>
-                                                </p-autoComplete>
+                                                <app-user-list-component  (callBack)="refreshGrid()"  taskId = {{item.id}} comingChangeReguest="accounts" userId = {{item.assigneeId}} ></app-user-list-component>
                                             </div>
                                         </td>
                                         <td class="action-cell">
                                             <div class="btn-group">
                                                 <a *ngIf="'Pages.Categories.Edit' | permission" class="btn"
                                                     href="javascript:;" (click)="editAccount(item.id)">
-                                                    <i class="fas fa-edit" style="color: #5867dd;"></i></a>
+                                                    <img src="../../../../assets/img/edit.svg"></a>
                                                 <a *ngIf="'Pages.Categories.Delete' | permission" class="btn"
                                                     href="javascript:;" (click)="deleteAccount(item.id)">
-                                                    <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+                                                    <img src="../../../../assets/img/del.svg"></a>
                                             </div>
                                         </td>
                                         <td class="toggle-btn-cell">
@@ -223,8 +221,8 @@
                                         </td>
                                     </tr>
                                         <!-- show-collapsible-row -->
-                                    <tr *ngFor="let item of chartsOfAccountList" class="table-row-collapsible ">
-                                        <td *ngIf="collapsibleRow == true && item.id == collapsibleRowId" colspan="6">
+                                    <tr *ngIf="collapsibleRow == true && item.id == collapsibleRowId" class="table-row-collapsible "> 
+                                        <td>
                                             <ul>
                                                 <li class="accountSubtype-cell">
 
@@ -239,9 +237,9 @@
                                                         <span class="">{{item.reconciliationType}}</span>
                                                     </div>
                                                 </li>
-                                                <li class="assignee-cell kt-user-card-v2">
+                                                <li  class="assignee-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>Assignee : </b></div>
-                                                    <div class="tdata-box">
+                                                    <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div *ngIf="item.profilePicture"
                                                                 class="kt-badge kt-badge--xl">
@@ -256,12 +254,7 @@
                                                         </div>
                                                     </div>
                                                     <div *ngIf="item.id == rowid">
-                                                        <p-autoComplete placeholder="Search..." [(ngModel)]="item.text"
-                                                            [suggestions]="userName"
-                                                            (completeMethod)="onSearchUsers($event)"
-                                                            (keyup.enter)="addInput(item)" [forceSelection]="true"
-                                                            required>
-                                                        </p-autoComplete>
+                                                        <app-user-list-component  (callBack)="refreshGrid()"  taskId = {{item.id}} comingChangeReguest="accounts" userId = {{item.assigneeId}} ></app-user-list-component>
                                                     </div>
                                                 </li>
                                                 <li class="action-cell-item">
@@ -270,10 +263,10 @@
                                                         <div class="btn-group">
                                                             <a class="btn"
                                                                 href="javascript:;" (click)="editAccount(item.id)">
-                                                                <i class="fas fa-edit" style="color: #5867dd;"></i></a>
+                                                                <img src="../../../../assets/img/edit.svg"></a>
                                                             <a  class="btn"
                                                                 href="javascript:;" (click)="deleteAccount(item.id)">
-                                                                <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+                                                                <img src="../../../../assets/img/del.svg"></a>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -288,7 +281,7 @@
                         </div>
                         <div class="pagination-block">
                             <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
-                                (onPageChange)="getClosingCheckListAllTasks($event)"
+                                (onPageChange)="getAllAccounts($event)"
                                 [totalRecords]="primengTableHelper.totalRecordsCount"
                                 [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                                 class="paginator-counter">

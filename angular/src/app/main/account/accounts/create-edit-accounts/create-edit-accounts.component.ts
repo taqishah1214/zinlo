@@ -66,7 +66,9 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
        this.accountSubTypeName =result.accountSubType
        this.accountDto.accountSubTypeId = result.accountSubTypeId;
        this.accountDto.id = result.id;
+       this.accountDto.accountType = result.accountType
        this.selectedUserID = result.assigniId;
+       this.accountDto.reconciliationType = result.reconcillationType
        this.accountDto.assigneeId = result.assigniId
     })
   }

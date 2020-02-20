@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto, CategoriesServiceProxy, NameValueDtoOfInt64, AccountSubTypeServiceProxy, ChartsofAccountServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { UserListComponentComponent } from '../../checklist/user-list-component/user-list-component.component';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-accounts',
@@ -22,56 +21,28 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   filterText = '';
   titleFilter = '';
   categoryFilter: number = 0;
-  statusFilter: number = 0;
-  dateFilter: Date = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
-  monthFilter = '100/2000';
-  monthValue:Date = new Date();
-  minDate:Date;
-  maxDate:Date;               
+  statusFilter: number = 0;              
   tasksList: any;
   list: any = []
-  ClosingCheckList: any = []
-  UserSpecficClosingCheckList: any = []
+  chartsOfAccountList: any = []
+  UserSpecficchartsOfAccountList: any = []
   id: number;
   AssigniInputBox: boolean;
   AssigniBoxView: boolean;
-  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green","bg-magenta"]
   FilterBoxOpen: boolean;
   public rowId: number = 0;
-  changeStatus: ChangeStatusDto = new ChangeStatusDto();
-  changeAssigniDto: ChangeAssigneeDto = new ChangeAssigneeDto();
   assigniNameForHeader: any = [];
-  newArray: any = [];
-  assigneeId: any;
-  users: any;
-  updatedAssigneeId: any;
-  getTaskForEdit: void;
-  userName: string[];
   plusUserBadgeForHeader: boolean;
-  taskId;
-  text;
-  currentDate: Date;
-  currentMonth: string
-  currentYear: Number;
   rowid: number;
-  yearCount : number;
   collapsibleRow : boolean
   collapsibleRowId : number;
-  monthCount : number =1;
-  chartsOfAccountList : any = [] 
-  monthsArray = new Array("January", "February", "March",
-    "April", "May", "June", "July", "August", "September",
-    "October", "Novemeber", "December");
-
-
   remainingUserForHeader: any = [];
   accountSubTypes: any = [];
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
   
   constructor(private _router: Router,
-    private _accountSubTypeService: AccountSubTypeServiceProxy,
-    private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector,
+    private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector,
     private _chartOfAccountService: ChartsofAccountServiceProxy) {
     super(injector)
     this.FilterBoxOpen = false;
@@ -86,42 +57,10 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     this.rowid = record;
   }
   collapsibleRowClick(id) {
-    console.log("idddd",id);
     this.collapsibleRowId = id;
     this.collapsibleRow = !this.collapsibleRow;
-  }
-
-  addInput(i) {
-    this.rowid = 0;
-    i.assigniName = i.text;
-    i.assigneeId = this.assigneeId;
-    this.openFieldUpdateAssignee;
-    if (this.users) {
-      this.assigneeId = this.users.filter(a => {
-        if (a.name == i.assigniName) {
-          return a.value;
-        }
-      });
-      this.taskId = i.id;
-      this.updatedAssigneeId = this.assigneeId[0].value;
-      this.changeAssigniDto.assigneeId = this.updatedAssigneeId;
-      this.changeAssigniDto.taskId = this.taskId;
-      this._closingChecklistService.changeAssignee(this.changeAssigniDto).subscribe(result => {
-        this.getTaskForEdit = result;
-        this.getClosingCheckListAllTasks();
-      });
-    }
-  }
-
-  onSearchUsers(event): void {
-    this._closingChecklistService.userAutoFill(event.query).subscribe(result => {
-      this.users = result;
-      this.userName = result.map(a => a.name);
-    });
-
-  }
-  //Start
-  getClosingCheckListAllTasks(event?: LazyLoadEvent) {
+  } 
+  getAllAccounts(event?: LazyLoadEvent) {
     this.assigniNameForHeader = []
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
@@ -146,7 +85,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
         i["reconciliationType"] =   this.getNameofAccountTypeAndReconcillation(i.reconciliationTypeId,"reconcillation")           
         this.assigniNameForHeader.push({ assigniName: i.assigneeName, assigneeId: i.assigneeId,profilePicture : i.profilePicture});
       });
-      this.assigniNameForHeader = this.getUnique(this.assigniNameForHeader, "assigneeId")      
+      this.assigniNameForHeader = this.getUniqueAccounts(this.assigniNameForHeader, "assigneeId")      
       if (this.assigniNameForHeader.length > 5)
       {
         this.remainingUserForHeader = [];
@@ -162,13 +101,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
       }
     });
   }
-
- 
-
-
 editAccount(id) : void {
   this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: id} } });
-
 }
 
 deleteAccount(id) : void {
@@ -215,18 +149,18 @@ RedirectToCreateAccount(): void {
      }  
   }
 
-  //End
-  GetUserTasks(userId) {
-    this.ClosingCheckList.forEach(i => {
+    
+  GetAssigniSpecficAccounts(userId) {
+    this.chartsOfAccountList.forEach(i => {
 
-      if (i.closingCheckListForViewDto.assigneeId === userId) {
-        this.UserSpecficClosingCheckList.push(this.ClosingCheckList[i])
+      if (i.assigneeId === userId) {
+        this.UserSpecficchartsOfAccountList.push(this.chartsOfAccountList[i])
       }
     });
-    this.ClosingCheckList = this.UserSpecficClosingCheckList
+    this.chartsOfAccountList = this.UserSpecficchartsOfAccountList
   }
 
-  getUnique(arr, comp) {
+  getUniqueAccounts(arr, comp) {
 
     const unique = arr
       .map(e => e[comp])
@@ -241,14 +175,6 @@ RedirectToCreateAccount(): void {
   openFilterClick(): void {
     this.FilterBoxOpen = !this.FilterBoxOpen;
   }
-  ChangeStatus(statusId, TaskId): void {
-    this.changeStatus.statusId = statusId;
-    this.changeStatus.taskId = TaskId;
-    this._closingChecklistService.changeStatus(this.changeStatus).subscribe(result => {
-      this.notify.success(this.l("Status Successfully Changed"));
-      this.getClosingCheckListAllTasks();
-    });
-  }
   
 
   
@@ -258,11 +184,12 @@ RedirectToCreateAccount(): void {
     });
   }
   ResetGrid(): void {
-    this.statusFilter = 0;
-    this.categoryFilter = 0;
-    this.dateFilter = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
-    this.titleFilter = '';
-    this.getClosingCheckListAllTasks();
+    this.getAllAccounts();
+  }
+
+  refreshGrid() : void {
+    this.getAllAccounts()
+    this.notify.success(this.l('Assigni Successfully Updated.'));
   }
 
 }

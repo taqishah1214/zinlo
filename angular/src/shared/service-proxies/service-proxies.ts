@@ -2484,6 +2484,63 @@ export class ChartsofAccountServiceProxy {
         }
         return _observableOf<GetAccountForEditDto>(<any>null);
     }
+
+    /**
+     * @param accountId (optional) 
+     * @param assigneeId (optional) 
+     * @return Success
+     */
+    changeAccountsAssignee(accountId: number | undefined, assigneeId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/ChangeAccountsAssignee?";
+        if (accountId === null)
+            throw new Error("The parameter 'accountId' cannot be null.");
+        else if (accountId !== undefined)
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+        if (assigneeId === null)
+            throw new Error("The parameter 'assigneeId' cannot be null.");
+        else if (assigneeId !== undefined)
+            url_ += "assigneeId=" + encodeURIComponent("" + assigneeId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangeAccountsAssignee(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangeAccountsAssignee(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processChangeAccountsAssignee(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -2824,66 +2881,6 @@ export class ClosingChecklistServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
-    }
-
-    /**
-     * @param searchTerm (optional) 
-     * @return Success
-     */
-    userAutoFill(searchTerm: string | undefined): Observable<NameValueDtoOfString[]> {
-        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/UserAutoFill?";
-        if (searchTerm === null)
-            throw new Error("The parameter 'searchTerm' cannot be null.");
-        else if (searchTerm !== undefined)
-            url_ += "searchTerm=" + encodeURIComponent("" + searchTerm) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUserAutoFill(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUserAutoFill(<any>response_);
-                } catch (e) {
-                    return <Observable<NameValueDtoOfString[]>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<NameValueDtoOfString[]>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processUserAutoFill(response: HttpResponseBase): Observable<NameValueDtoOfString[]> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(NameValueDtoOfString.fromJS(item));
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<NameValueDtoOfString[]>(<any>null);
     }
 
     /**
@@ -16320,46 +16317,6 @@ export interface ICreateOrEditClosingChecklistDto {
     id: number;
 }
 
-export class NameValueDtoOfString implements INameValueDtoOfString {
-    name!: string | undefined;
-    value!: string | undefined;
-
-    constructor(data?: INameValueDtoOfString) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.name = data["name"];
-            this.value = data["value"];
-        }
-    }
-
-    static fromJS(data: any): NameValueDtoOfString {
-        data = typeof data === 'object' ? data : {};
-        let result = new NameValueDtoOfString();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["value"] = this.value;
-        return data; 
-    }
-}
-
-export interface INameValueDtoOfString {
-    name: string | undefined;
-    value: string | undefined;
-}
-
 export class GetUserWithPicture implements IGetUserWithPicture {
     id!: number;
     name!: string | undefined;
@@ -16402,6 +16359,46 @@ export interface IGetUserWithPicture {
     id: number;
     name: string | undefined;
     picture: string | undefined;
+}
+
+export class NameValueDtoOfString implements INameValueDtoOfString {
+    name!: string | undefined;
+    value!: string | undefined;
+
+    constructor(data?: INameValueDtoOfString) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.value = data["value"];
+        }
+    }
+
+    static fromJS(data: any): NameValueDtoOfString {
+        data = typeof data === 'object' ? data : {};
+        let result = new NameValueDtoOfString();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["value"] = this.value;
+        return data; 
+    }
+}
+
+export interface INameValueDtoOfString {
+    name: string | undefined;
+    value: string | undefined;
 }
 
 export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
