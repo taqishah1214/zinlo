@@ -59,6 +59,7 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
     this.taskId = history.state.data.id;
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.taskDetails = result;
+      this.checklist.assigneeId = this.taskDetails.assigneeId;
       this.checklist.categoryId = this.taskDetails.categoryId;
       this._categoryService.categoryDropDown().subscribe(result => {
         this.categoriesList = result;
@@ -111,7 +112,7 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.dueOn = Number(this.checklist.dueOn);
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
-    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
+    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
     this.checklist.taskName = this.taskDetails.taskName;
     this.checklist.instruction = this.taskDetails.instruction;
     if (this.attachmentPaths != null) {

@@ -9,12 +9,13 @@ import { AppComponentBase } from '@shared/common/app-component-base';
   templateUrl: './create-edit-accounts.component.html',
   styleUrls: ['./create-edit-accounts.component.css']
 })
-export class CreateEditAccountsComponent extends AppComponentBase implements OnInit {
+export class CreateEditAccountsComponent extends AppComponentBase implements OnInit  {
 
   accountSubTypeName: any;
   accountSubTypeList: any;
   accountType: any;
   accountId : number;
+  selectedUserID : any;
   editAccountCheck :  boolean = false;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
@@ -45,6 +46,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     this.reconcillationType = "Select Reconcillation Type"
     this.accountType = "Select Account Type"
     this.accountSubTypeName = "Select Account Sub Type"
+    this.selectedUserID = 0;
   }
 
 
@@ -64,6 +66,9 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
        this.accountSubTypeName =result.accountSubType
        this.accountDto.accountSubTypeId = result.accountSubTypeId;
        this.accountDto.id = result.id;
+       this.selectedUserID = result.assigniId;
+       debugger;
+       this.accountDto.assigneeId = result.assigniId
     })
   }
 
@@ -119,7 +124,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   createAccount():void {
-    this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId.value);
+    this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
     this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
       this.notify.success(this.l('Account Successfully Created.'));
       this.reRouteToAccountsList();
@@ -127,7 +132,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   updateAccount() : void {
-    this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId.value);
+    this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
     this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
       this.notify.success(this.l('Account Successfully Updated.'));
       this.reRouteToAccountsList();

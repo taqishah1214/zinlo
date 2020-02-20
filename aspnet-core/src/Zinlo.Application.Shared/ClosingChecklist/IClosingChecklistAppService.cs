@@ -11,16 +11,12 @@ namespace Zinlo.ClosingChecklist
     {
       
         Task CreateOrEdit(CreateOrEditClosingChecklistDto input);
-
-      ///  Task <GetClosingCheckListTaskDto> GetClosingCheckListTask();
         Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input);
-        Task<List<NameValueDto<string>>> UserAutoFill(string searchTerm);
         Task<DetailsClosingCheckListDto> GetDetails(long id);
         Task ChangeAssignee(ChangeAssigneeDto changeAssigneeDto);
         Task ChangeStatus(ChangeStatusDto changeStatusDto);
 
         Task <GetTaskForEditDto>GetTaskForEdit(long id);
-
         Task Delete(long id);
         Task<List<GetUserWithPicture>> GetUserWithPicture(string searchTerm,long? id);
 

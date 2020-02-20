@@ -206,35 +206,8 @@ export class Checklist extends AppComponentBase implements OnInit {
 
   }
 
-  addInput(i) {
-    this.rowid = 0;
-    i.assigniName = i.text;
-    i.assigneeId = this.assigneeId;
-    this.openFieldUpdateAssignee;
-    if (this.users) {
-      this.assigneeId = this.users.filter(a => {
-        if (a.name == i.assigniName) {
-          return a.value;
-        }
-      });
-      this.taskId = i.id;
-      this.updatedAssigneeId = this.assigneeId[0].value;
-      this.changeAssigniDto.assigneeId = this.updatedAssigneeId;
-      this.changeAssigniDto.taskId = this.taskId;
-      this._closingChecklistService.changeAssignee(this.changeAssigniDto).subscribe(result => {
-        this.getTaskForEdit = result;
-        this.getClosingCheckListAllTasks();
-      });
-    }
-  }
+  
 
-  onSearchUsers(event): void {
-    this._closingChecklistService.userAutoFill(event.query).subscribe(result => {
-      this.users = result;
-      this.userName = result.map(a => a.name);
-    });
-
-  }
   //Start
   getClosingCheckListAllTasks(event?: LazyLoadEvent) {
     this.assigniNameForHeader = []

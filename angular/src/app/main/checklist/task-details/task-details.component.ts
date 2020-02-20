@@ -40,6 +40,9 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   commentClick(): void {
     this.commantBox = false;
   }
+  updateDetails() : void {
+    this.getTaskDetails(this.recordId);
+  }
 
   onComment(): void {
     this.commantBox = true;

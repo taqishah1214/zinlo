@@ -119,6 +119,16 @@ namespace Zinlo.ChartsofAccount
 
         }
 
+        public async Task ChangeAccountsAssignee(long accountId,long assigneeId )
+        {
+            var account = await _chartsofAccountRepository.FirstOrDefaultAsync(accountId);
+            if (account != null)
+            {
+                account.AssigneeId = assigneeId;
+                _chartsofAccountRepository.Update(account);
+            }
+        }
+
       
       
     }

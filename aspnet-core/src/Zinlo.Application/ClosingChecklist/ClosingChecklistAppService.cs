@@ -238,26 +238,6 @@ namespace Zinlo.ClosingChecklist
             }
         }
 
-        public async Task<List<NameValueDto<string>>> UserAutoFill(string searchTerm)
-        {
-            List<User> list = await _userRepository.GetAll().ToListAsync();
-            if (!String.IsNullOrEmpty(searchTerm))
-            {
-                list = list.Where(x => x.FullName.ToLower().Contains(searchTerm.Trim().ToLower())).ToList();
-            }
-            else
-            {
-                list = new List<User>();
-            }
-            var query = (from o in list
-                         select new NameValueDto<string>()
-                         {
-                             Name = o.FullName,
-                             Value = o.Id.ToString()
-                         }).ToList();
-            var assets = query;
-            return assets;
-        }
         public async Task<List<GetUserWithPicture>> GetUserWithPicture(string searchTerm,long? id )
         {
             List<User> list = await _userRepository.GetAll().ToListAsync();

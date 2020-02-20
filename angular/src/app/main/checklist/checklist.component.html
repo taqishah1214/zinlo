@@ -233,10 +233,7 @@
                                                         {{j.assigniName}}</span> </div>
                                             </div>
                                             <div *ngIf="j.id == rowid">
-                                                <p-autoComplete placeholder="Search..." [(ngModel)]="j.text"
-                                                    [suggestions]="userName" (completeMethod)="onSearchUsers($event)"
-                                                    (keyup.enter)="addInput(j)" [forceSelection]="true" required>
-                                                </p-autoComplete>
+                                                <app-user-list-component  (callBack)="getClosingCheckListAllTasks()"  taskId = {{j.id}} comingChangeReguest="ClosingCheckList" userId = {{j.assigneeId}} ></app-user-list-component>
                                             </div>
                                         </td>
                                         <td class="toggle-btn-cell">
@@ -264,12 +261,15 @@
 
                                                     </div>
                                                     <div *ngIf="j.id == rowid">
-                                                        <p-autoComplete placeholder="Search..." [(ngModel)]="j.text"
+                                                        <!-- <p-autoComplete placeholder="Search..." [(ngModel)]="j.text"
                                                             [suggestions]="userName"
                                                             (completeMethod)="onSearchUsers($event)"
                                                             (keyup.enter)="addInput(j)" [forceSelection]="true"
                                                             required>
-                                                        </p-autoComplete>
+                                                        </p-autoComplete> -->
+                                                        <app-user-list-component userId = {{j.assigneeId}} ></app-user-list-component>
+
+
                                                     </div>
 
                                                 </li>
@@ -283,9 +283,10 @@
                                                                 class="form-control border-0 {{j.StatusColor}} text-white">
                                                                 <option value="" selected disabled hidden>
                                                                     {{j.status}}</option>
-                                                                <option value="1">Open</option>
-                                                                <option value="2">Complete</option>
-                                                                <option value="3">Inprogress</option>
+                                                                    <option value="1">Not Started</option>
+                                                                    <option value="2">In Process</option>
+                                                                    <option value="3">On Hold</option>
+                                                                    <option value="4">Completed</option>
                                                             </select>
                                                         </form>
                                                     </div>

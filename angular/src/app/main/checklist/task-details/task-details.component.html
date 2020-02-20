@@ -112,15 +112,7 @@
                         <div class="col-md-5">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <!-- <select class="form-control input-medium"
-                                        (change)="closingMonthSelect($event.target.value)">
-                                        <option value="January">Ihsan</option>
-                                        <option value="Febuary">Imad</option>
-
-                                    </select> -->
-
-                                    <app-user-list-component userId = {{taskDetailObject.assigneeId}} ></app-user-list-component>
-
+                                    <app-user-list-component  (callBack)="updateDetails()" taskId = {{recordId}} comingChangeReguest="DetailsClosingCheckList" userId = {{taskDetailObject.assigneeId}} ></app-user-list-component>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="">

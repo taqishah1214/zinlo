@@ -109,7 +109,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     else {
       this.checklist.noOfMonths = 0;
     }
-    debugger;
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(() => {
       this.backToTaskList();
       this.notify.success(this.l('SavedSuccessfully'));

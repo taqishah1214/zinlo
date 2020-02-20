@@ -67,6 +67,14 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
     this.taskId = history.state.data.id;
     this.active = true;
+    
+    this.loadDaysDropdown();
+    this.getTaskDetails();
+
+  }
+
+
+  getTaskDetails() : void {
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
       this.attachments = result.attachments;
@@ -109,9 +117,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this._categoryService.categoryDropDown().subscribe(result => {
       this.categoriesList = result;
     });
-    this.loadDaysDropdown();
-
   }
+
 
   getExtensionImagePath(str){
 
