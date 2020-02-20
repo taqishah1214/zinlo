@@ -3328,6 +3328,245 @@ export class ClosingChecklistServiceProxy {
         }
         return _observableOf<NameValueDtoOfString[]>(<any>null);
     }
+
+    /**
+     * @param closingDate (optional) 
+     * @param endDate (optional) 
+     * @return Success
+     */
+    getNumberOfMonthsBetweenDates(closingDate: moment.Moment | undefined, endDate: moment.Moment | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetNumberOfMonthsBetweenDates?";
+        if (closingDate === null)
+            throw new Error("The parameter 'closingDate' cannot be null.");
+        else if (closingDate !== undefined)
+            url_ += "ClosingDate=" + encodeURIComponent(closingDate ? "" + closingDate.toJSON() : "") + "&"; 
+        if (endDate === null)
+            throw new Error("The parameter 'endDate' cannot be null.");
+        else if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent(endDate ? "" + endDate.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNumberOfMonthsBetweenDates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNumberOfMonthsBetweenDates(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetNumberOfMonthsBetweenDates(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param numberOfMonths (optional) 
+     * @param frequency (optional) 
+     * @return Success
+     */
+    getNumberOfTaskIterationCount(numberOfMonths: number | undefined, frequency: number | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetNumberOfTaskIterationCount?";
+        if (numberOfMonths === null)
+            throw new Error("The parameter 'numberOfMonths' cannot be null.");
+        else if (numberOfMonths !== undefined)
+            url_ += "numberOfMonths=" + encodeURIComponent("" + numberOfMonths) + "&"; 
+        if (frequency === null)
+            throw new Error("The parameter 'frequency' cannot be null.");
+        else if (frequency !== undefined)
+            url_ += "frequency=" + encodeURIComponent("" + frequency) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNumberOfTaskIterationCount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNumberOfTaskIterationCount(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetNumberOfTaskIterationCount(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param closingMonth (optional) 
+     * @param frequency (optional) 
+     * @return Success
+     */
+    getClosingMonthByIterationNumber(closingMonth: moment.Moment | undefined, frequency: number | undefined): Observable<moment.Moment> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetClosingMonthByIterationNumber?";
+        if (closingMonth === null)
+            throw new Error("The parameter 'closingMonth' cannot be null.");
+        else if (closingMonth !== undefined)
+            url_ += "closingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
+        if (frequency === null)
+            throw new Error("The parameter 'frequency' cannot be null.");
+        else if (frequency !== undefined)
+            url_ += "frequency=" + encodeURIComponent("" + frequency) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetClosingMonthByIterationNumber(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetClosingMonthByIterationNumber(<any>response_);
+                } catch (e) {
+                    return <Observable<moment.Moment>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<moment.Moment>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetClosingMonthByIterationNumber(response: HttpResponseBase): Observable<moment.Moment> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? moment(resultData200.toString()) : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<moment.Moment>(<any>null);
+    }
+
+    /**
+     * @param frequency (optional) 
+     * @return Success
+     */
+    getFrequencyValue(frequency: number | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetFrequencyValue?";
+        if (frequency === null)
+            throw new Error("The parameter 'frequency' cannot be null.");
+        else if (frequency !== undefined)
+            url_ += "frequency=" + encodeURIComponent("" + frequency) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFrequencyValue(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFrequencyValue(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFrequencyValue(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
 }
 
 @Injectable()
@@ -15894,6 +16133,7 @@ export enum FrequencyDto {
     Quarterly = 2,
     Annually = 3,
     XNumberOfMonths = 4,
+    None = 5,
 }
 
 export class CommentDto implements ICommentDto {

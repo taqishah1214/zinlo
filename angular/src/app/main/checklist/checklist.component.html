@@ -121,7 +121,7 @@
                                         <div class="form-group">
                                             <select class="form-control border-grey" name="categoryFilter" [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
                                                 id="exampleFormControlSelect2">
-                                                <option value="0">Category</option>
+                                                <option value="0">All</option>
                                                 <option *ngFor="let item of category;" [value]="item.value">
                                                     {{item.name}}
                                                 </option>
