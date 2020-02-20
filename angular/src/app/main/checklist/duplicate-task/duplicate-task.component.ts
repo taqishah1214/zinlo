@@ -28,10 +28,10 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
   SelectionMsg: string = "";
   attachmentPaths: any = [];
   newAttachementPath: string[] = [];
-  taskId : any;
-  taskDetails : any;
-  categoriesList : any;
-  categoryName:any;
+  taskId: any;
+  taskDetails: any;
+  categoriesList: any;
+  categoryName: any;
   public isChecked: boolean = false;
   days: any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
@@ -47,15 +47,19 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
   }
   ngOnInit() {
     this.getDetailsOfTasks();
+    this.initializePageParameters();
+    this.loadDaysDropdown();
+  }
+  initializePageParameters(): void {
     this.userSignInName = this.appSession.user.name.toString();
     this.commantBox = true;
     this.closingMonthInputBox = true;
     this.closingMonthModalBox = false;
     this.enableValue = false;
     this.isChecked = true;
-    this.loadDaysDropdown();
   }
-  getDetailsOfTasks() : void {
+
+  getDetailsOfTasks(): void {
     this.taskId = history.state.data.id;
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.taskDetails = result;
@@ -67,9 +71,9 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
     })
   }
 
-  categoryClick(id,name) : void {
+  categoryClick(id, name): void {
     this.categoryName = name;
-    this.checklist.categoryId = id; 
+    this.checklist.categoryId = id;
   }
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
@@ -155,18 +159,14 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
       Webcam: false
     }
   }
-
-
   fileUploadedResponse(value): void {
     var response = value.successful
     response.forEach(i => {
       this.attachmentPaths.push(i.response.body.result);
     });
     this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
-
   }
-
-  onChange(val) {
+  OnFrequencyChange(val) {
     if (val == 5) {
       this.endOnIsEnabled = false;
     }
@@ -183,8 +183,6 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
   onDayChange() {
     this.checklist.endOfMonth = false;
     this.isChecked = true;
-  }
-  handleChange() {
   }
   handleRadioChange() {
     this.checklist.dayBeforeAfter = null;

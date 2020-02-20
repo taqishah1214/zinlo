@@ -14,7 +14,6 @@
                 </div>
                 <div class="kt-subheader__toolbar">
                     <div class="kt-subheader__wrapper">
-                        <!-- <button class="btn btn-primary"><i class="fa fa-plus"></i></button> -->
                     </div>
                 </div>
             </div>
@@ -79,7 +78,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Assignee</label>
-                                        <app-user-list-component userId = {{taskDetails.assigneeId}} ></app-user-list-component>
+                                        <app-user-list-component userId={{taskDetails.assigneeId}}>
+                                        </app-user-list-component>
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +127,7 @@
                                     <div class="form-group">
                                         <label>Frequency</label>
                                         <select class="bg-white border form-control input-medium"
-                                            (change)="onChange($event.target.value)" [(ngModel)]="checklist.frequency">
+                                            (change)="OnFrequencyChange($event.target.value)" [(ngModel)]="checklist.frequency">
                                             <option [ngValue]="undefined" hidden>Criteria</option>
                                             <option value="5">None</option>
                                             <option value="1">Monthly</option>
@@ -149,8 +149,8 @@
                                                     </label>
                                                 </span>
                                             </div>
-                                            <select class="border border-default bg-white form-control input-medium" (change)="onDayChange()"
-                                                [(ngModel)]="checklist.dueOn">
+                                            <select class="border border-default bg-white form-control input-medium"
+                                                (change)="onDayChange()" [(ngModel)]="checklist.dueOn">
                                                 <option *ngFor="let item of days;" [value]="item.value">
                                                     {{item.name}}
                                                 </option>
@@ -158,9 +158,9 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                       <div class="col-12">
+                                        <div class="col-12">
                                             <span>{{SelectionMsg}}</span>
-                                       </div>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -201,8 +201,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
-
                             <div class="drag_drop_box">
                                 <label class="bg-color">Attachments</label>
                                 <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>

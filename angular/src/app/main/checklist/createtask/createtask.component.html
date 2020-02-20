@@ -27,7 +27,7 @@
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
-                        <a href="javascript: void(0);" (click)="backToTaskList()">
+                        <a href="javascript: void(0);" (click)="redirectToTaskList()">
                             <i class="la la-arrow-left"></i>
                             Back
                         </a>
@@ -47,10 +47,8 @@
                                             <form class="input-arrow">
                                                 <input [(ngModel)]="checklist.closingMonth" autocomplete="off"
                                                     class="form-control" name="date" bsDatepicker
-                                                    placeholder="Select Month"
-                                                    class="form-control" name="date" bsDatepicker 
-                                                    [minDate]="minDate"
-                                                    [maxDate]="maxDate"
+                                                    placeholder="Select Month" class="form-control" name="date"
+                                                    bsDatepicker [minDate]="minDate" [maxDate]="maxDate"
                                                     [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
@@ -61,16 +59,16 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="email"> Task Name</label>
-                                        <input type="text" class="form-control bsDatepicker"
-                                        placeholder="Enter Task Name"
+                                        <label for="taskName"> Task Name</label>
+                                        <input type="text" class="form-control" placeholder="Enter Task Name"
                                             [(ngModel)]="checklist.taskName">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Assignee</label>
-                                        <app-user-list-component comingChangeReguest = "" userId = {{0}} ></app-user-list-component>
+                                        <app-user-list-component comingChangeReguest="" userId={{0}}>
+                                        </app-user-list-component>
                                     </div>
                                 </div>
                             </div>
@@ -92,7 +90,8 @@
 
                                     <div class="form-group" *ngIf="commantModal">
                                         <label>Comments</label>
-                                        <p-editor [(ngModel)]="checklist.commentBody"  (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
+                                        <p-editor [(ngModel)]="checklist.commentBody"
+                                            (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
                                         </p-editor>
                                         <button class="btn btn-brand" (click)="onComment()">Comment</button>
@@ -125,8 +124,6 @@
                                             <option value="2">Quarterly</option>
                                             <option value="3">Annually</option>
                                             <option value="4">XNumberOfMonths</option>
-
-
                                         </select>
                                     </div>
                                     <div class="form-group ">
@@ -140,8 +137,8 @@
                                                     </label>
                                                 </span>
                                             </div>
-                                            <select class="border border-default bg-white form-control input-medium" (change)="onDayChange()"
-                                                [(ngModel)]="checklist.dueOn">
+                                            <select class="border border-default bg-white form-control input-medium"
+                                                (change)="onDayChange()" [(ngModel)]="checklist.dueOn">
                                                 <option *ngFor="let item of days;" [value]="item.value">
                                                     {{item.name}}
                                                 </option>
@@ -153,14 +150,13 @@
                                             <span>{{SelectionMsg}}</span>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>No of Months</label>
                                         <input type="text" name="noOfMonths" [disabled]="enableValue == false"
-                                         placeholder="Enter Number"
-                                            class="form-control bsDatepicker" [(ngModel)]="checklist.noOfMonths">
+                                            placeholder="Enter Number" class="form-control bsDatepicker"
+                                            [(ngModel)]="checklist.noOfMonths">
                                     </div>
                                     <div class="form-group">
                                         <label>&nbsp;&nbsp;</label>
@@ -179,9 +175,7 @@
                                         <form class="input-arrow">
                                             <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker
-                                                placeholder="Month"
-                                                [minDate]="minDate"
-                                                [maxDate]="maxDate"
+                                                placeholder="Month" [minDate]="minDate" [maxDate]="maxDate"
                                                 [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                 (onShown)="onOpenCalendar($event)">
                                         </form>
@@ -189,8 +183,7 @@
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" value="true" name="radioButton"
-                                            placeholder="Month"
+                                            <input type="radio" value="true" name="radioButton" placeholder="Month"
                                                 (change)="handleRadioChange()" [(ngModel)]="checklist.endOfMonth">End of
                                             month
                                             <span></span>
@@ -198,8 +191,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             <div class="drag_drop_box">
                                 <label class="bg-color">Attachments</label>
                                 <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
