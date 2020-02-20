@@ -36,14 +36,11 @@ namespace Zinlo.Comment
             var data = ObjectMapper.Map(request, comment);
             await _commentRepository.UpdateAsync(data);
         }
-
-
         public async Task<List<CommentDto>> GetComments(int type, long typeId)
         {
             List<CommentDto> commentList = new List<CommentDto>();
             // var taskComments = await _commentRepository.GetAll().Where(x => x.Type== (CommentType)type && x.TypeId == typeId).ToListAsync();
             var taskComments = await _commentRepository.GetAll().Where(x => x.TypeId == typeId).ToListAsync();
-
             if (taskComments.Count > 0)
             {
                 foreach (var comment in taskComments)
@@ -65,15 +62,12 @@ namespace Zinlo.Comment
             {
                 return new List<CommentDto>();
             }
-
-
         }
         public string CalculateDays(DateTime dateTime)
         {
             double COUNT = (DateTime.Now - dateTime).TotalDays;
             COUNT = Math.Ceiling(COUNT);
-
-            return COUNT + " "+"days ago".ToString();
+            return COUNT + " " + "days ago".ToString();
         }
 
 

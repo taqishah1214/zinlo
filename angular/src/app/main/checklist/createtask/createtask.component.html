@@ -48,7 +48,7 @@
                                                 <input [(ngModel)]="checklist.closingMonth" autocomplete="off"
                                                     class="form-control" name="date" bsDatepicker
                                                     placeholder="Select Month" class="form-control" name="date"
-                                                    bsDatepicker [minDate]="minDate" [maxDate]="maxDate"
+                                                    bsDatepicker [minDate]="minDate"
                                                     [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
@@ -175,7 +175,7 @@
                                         <form class="input-arrow">
                                             <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker
-                                                placeholder="Month" [minDate]="minDate" [maxDate]="maxDate"
+                                                placeholder="Month" [minDate]="minDate"
                                                 [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                 (onShown)="onOpenCalendar($event)">
                                         </form>

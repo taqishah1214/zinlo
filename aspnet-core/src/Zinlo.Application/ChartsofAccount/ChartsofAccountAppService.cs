@@ -14,7 +14,7 @@ using Zinlo.Authorization.Users.Profile;
 
 namespace Zinlo.ChartsofAccount
 {
-   public class ChartsofAccountAppService : ZinloAppServiceBase , IChartsofAccountAppService
+    public class ChartsofAccountAppService : ZinloAppServiceBase, IChartsofAccountAppService
     {
         private readonly IRepository<ChartsofAccount, long> _chartsofAccountRepository;
         private readonly IProfileAppService _profileAppService;
@@ -25,9 +25,9 @@ namespace Zinlo.ChartsofAccount
             _profileAppService = profileAppService;
         }
 
-       public async  Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
+        public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
-            var query =  _chartsofAccountRepository.GetAll().Include(p=>p.AccountSubType).Include(p=>p.Assignee)
+            var query = _chartsofAccountRepository.GetAll().Include(p => p.AccountSubType).Include(p => p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.AccountName.Contains(input.Filter))
                  .WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter), e => false || e.AccountNumber.Contains(input.TitleFilter));
 
@@ -48,7 +48,7 @@ namespace Zinlo.ChartsofAccount
                                    AssigneeName = o.Assignee != null ? o.Assignee.FullName : "",
                                    ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : "",
                                    AssigneeId = o.Assignee.Id
-                                   };
+                               };
 
             return new PagedResultDto<ChartsofAccoutsForViewDto>(
                totalCount,
@@ -56,7 +56,6 @@ namespace Zinlo.ChartsofAccount
            );
 
         }
-
         public async Task CreateOrEdit(CreateOrEditChartsofAccountDto input)
         {
             if (input.Id == null)
@@ -72,36 +71,25 @@ namespace Zinlo.ChartsofAccount
 
         protected virtual async Task Update(CreateOrEditChartsofAccountDto input)
         {
-
             var account = await _chartsofAccountRepository.FirstOrDefaultAsync((int)input.Id);
             account.ReconciliationType = (ReconciliationType)input.ReconciliationType;
             account.AccountType = (AccountType)input.AccountType;
             _chartsofAccountRepository.Update(account);
-
         }
 
         protected virtual async Task Create(CreateOrEditChartsofAccountDto input)
         {
             var account = ObjectMapper.Map<ChartsofAccount>(input);
-
-
             if (AbpSession.TenantId != null)
             {
                 account.TenantId = (int)AbpSession.TenantId;
             }
-
-
             await _chartsofAccountRepository.InsertAsync(account);
         }
-
-
-
         public async Task Delete(long id)
         {
             await _chartsofAccountRepository.DeleteAsync(id);
         }
-
-       
         public async Task<GetAccountForEditDto> GetAccountForEdit(long id)
         {
             var account = await _chartsofAccountRepository.GetAll().Where(x => x.Id == id).Include(a => a.Assignee).Include(a => a.AccountSubType).FirstOrDefaultAsync();
@@ -114,12 +102,10 @@ namespace Zinlo.ChartsofAccount
             mappedAccount.AssigniName = account.Assignee.FullName;
             mappedAccount.AccountName = account.AccountName;
             mappedAccount.AccountNumber = account.AccountNumber;
-
             return mappedAccount;
-
         }
 
-        public async Task ChangeAccountsAssignee(long accountId,long assigneeId )
+        public async Task ChangeAccountsAssignee(long accountId, long assigneeId)
         {
             var account = await _chartsofAccountRepository.FirstOrDefaultAsync(accountId);
             if (account != null)

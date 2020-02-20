@@ -23,8 +23,6 @@
                                 <div class="col-md-12">
                                     <h5 class="text-navyblue">{{taskDetailObject.taskName}}</h5>
                                 </div>
-
-
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
@@ -58,11 +56,9 @@
                                         <option>History</option>
                                     </select>
                                 </div>
-
                             </div>
                             <div class="commentmainView show-comments">
                                 <div class="kt-widget3 ">
-
                                     <div *ngFor="let i of  (taskDetailObject.comments || [])" class="kt-widget3__item ">
                                         <div class="comments-header kt-widget3__header">
                                             <div class="kt-widget3__user-img">
@@ -75,7 +71,6 @@
                                                 <a class="kt-widget3__username">
                                                     {{i.userName}}
                                                 </a><br>
-
                                             </div>
                                             <span class="kt-widget3__status kt-font-info">
                                                 {{i.daysCount}}
@@ -93,7 +88,8 @@
                                 <div (click)="commentClick()">
                                     <div class="kt-user-card-v2">
                                         <div class="kt-user-card-v2__pic">
-                                            <div class="kt-badge kt-badge--xl kt-badge--warning">{{userSignInName | firstLetterOfWords}}                                            </div>
+                                            <div class="kt-badge kt-badge--xl kt-badge--warning">
+                                                {{userSignInName | firstLetterOfWords}} </div>
                                         </div>
                                         <input [(ngModel)]="comment.body" class="form-control">
                                     </div>
@@ -112,21 +108,24 @@
                         <div class="col-md-5">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <app-user-list-component  (callBack)="updateDetails()" taskId = {{recordId}} comingChangeReguest="DetailsClosingCheckList" userId = {{taskDetailObject.assigneeId}} ></app-user-list-component>
+                                    <app-user-list-component (callBack)="updateDetails()" taskId={{recordId}}
+                                        comingChangeReguest="DetailsClosingCheckList"
+                                        userId={{taskDetailObject.assigneeId}}></app-user-list-component>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="">
-                                        <app-status [TaskId]="recordId" [StatusList]=taskDetailObject.taskStatus></app-status>
+                                        <app-status [TaskId]="recordId" [StatusList]=taskDetailObject.taskStatus>
+                                        </app-status>
 
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <a class="action-btn"><i class="fas fa-edit" (click)="RedirectToEditTaskPage()"
-                                        style="color: #5867dd;"></i></a>
+                                            style="color: #5867dd;"></i></a>
                                     <a class="action-btn" href="javascript:;" (click)="deleteTask()">
                                         <i class="fa fa-trash" style="color: #5867dd;"></i></a>
-                                    <a class="action-btn" (click)="duplicateTask()" ><i class="fa fa-clone" aria-hidden="true"></i></a>
-
+                                    <a class="action-btn" (click)="duplicateTask()"><i class="fa fa-clone"
+                                            aria-hidden="true"></i></a>
                                 </div>
                             </div>
                             <div class="row">
@@ -136,8 +135,9 @@
                                         <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
                                         </ng-uppy>
                                         <div *ngFor="let item of attachments" class="attachments_section">
-                                            <a href="{{item.attachmentUrl}}" class="attachement_btn" download="{{item.attachmentUrl}}">
-                                                <img src="../../../../assets/img/{{item.attachmentExtension}}">  
+                                            <a href="{{item.attachmentUrl}}" class="attachement_btn"
+                                                download="{{item.attachmentUrl}}">
+                                                <img src="../../../../assets/img/{{item.attachmentExtension}}">
                                                 <span>{{item.attachmentName}}</span>
                                             </a>
                                             <button class="cross-btn" (click)="deleteAttachment(item.id)">
@@ -146,12 +146,10 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

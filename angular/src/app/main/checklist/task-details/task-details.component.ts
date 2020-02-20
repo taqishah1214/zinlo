@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { UppyConfig } from 'uppy-angular';
 import { ClosingChecklistServiceProxy, AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
-
 @Component({
   selector: 'app-task-details',
   templateUrl: './task-details.component.html',
@@ -33,17 +32,15 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   ngOnInit() {
     this.userSignInName = this.appSession.user.name.toString().toUpperCase();
     this.commantBox = true;
-
     this.recordId = history.state.data.id;
     this.getTaskDetails(this.recordId);
   }
   commentClick(): void {
     this.commantBox = false;
   }
-  updateDetails() : void {
+  updateDetails(): void {
     this.getTaskDetails(this.recordId);
   }
-
   onComment(): void {
     this.commantBox = true;
     this.SaveComments();
@@ -71,32 +68,29 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     this._router.navigate(['/app/main/checklist']);
   }
 
-getTaskDetails(id) : void{
+  getTaskDetails(id): void {
 
-   this._closingChecklistService.getDetails(id).subscribe(result=>{
-    if(result.comments == null){
-      result.comments = [];
-    }
-   this.taskDetailObject = result;
-   this.attachments = result.attachments;
-   this.attachments.forEach(element => {
-    var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("#"));
-    element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
-    element["attachmentName"] = attachmentName
-    element["attachmentUrl"] = "http://localhost:22742/" + element.attachmentPath
-    });
-  })
+    this._closingChecklistService.getDetails(id).subscribe(result => {
+      if (result.comments == null) {
+        result.comments = [];
+      }
+      this.taskDetailObject = result;
+      this.attachments = result.attachments;
+      this.attachments.forEach(element => {
+        var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("#"));
+        element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
+        element["attachmentName"] = attachmentName
+        element["attachmentUrl"] = "http://localhost:22742/" + element.attachmentPath
+      });
+    })
   }
 
   fileUploadedResponse(value): void {
-
-
     var response = value.successful
     response.forEach(i => {
       var resp = i.response.body.result
       this.newAttachmentPaths.push(resp.toString());
     });
-
     this.postAttachment.filePath = this.newAttachmentPaths;
     this.postAttachment.typeId = this.recordId;
     this.postAttachment.type = 1;
@@ -123,14 +117,12 @@ getTaskDetails(id) : void{
     );
 
   }
-
   getExtensionImagePath(str) {
 
     var extension = str.split('.')[1];
     extension = extension + ".png";
     return extension;
   }
-
   settings: UppyConfig = {
     uploadAPI: {
       endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",

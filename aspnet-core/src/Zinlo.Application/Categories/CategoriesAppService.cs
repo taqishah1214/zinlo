@@ -22,9 +22,6 @@ namespace Zinlo.Categories
         private readonly IRepository<Category, long> _categoryRepository;
         private readonly UserManager _userManager;
         private readonly IProfileAppService _profileAppService;
-
-
-
         public CategoriesAppService(IRepository<Category, long> categoryRepository, UserManager userManager, IRepository<User, long> userRepository, IProfileAppService profileAppService)
         {
             _categoryRepository = categoryRepository;
@@ -51,9 +48,9 @@ namespace Zinlo.Categories
             var mappedData = ObjectMapper.Map<List<GetCategoryForViewDto>>(pagedAndFilteredCategories);
             foreach (var data in mappedData)
             {
-                var userDetail = UserManager.GetUserById((long) data.UserId);
+                var userDetail = UserManager.GetUserById((long)data.UserId);
                 data.CreatedBy = userDetail.FullName;
-                data.ProfilePicture = userDetail.ProfilePictureId.HasValue ? "data:image/jpeg;base64,"+_profileAppService.GetProfilePictureById((Guid) userDetail.ProfilePictureId).Result.ProfilePicture : "";
+                data.ProfilePicture = userDetail.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)userDetail.ProfilePictureId).Result.ProfilePicture : "";
             }
             return new PagedResultDto<GetCategoryForViewDto>(
                 totalCount,
@@ -74,9 +71,7 @@ namespace Zinlo.Categories
         public async Task<GetCategoryForEditOutput> GetCategoryForEdit(EntityDto input)
         {
             var category = await _categoryRepository.FirstOrDefaultAsync(input.Id);
-
             var output = new GetCategoryForEditOutput { Category = ObjectMapper.Map<CreateOrEditCategoryDto>(category) };
-
             return output;
         }
 
@@ -102,8 +97,6 @@ namespace Zinlo.Categories
             {
                 category.TenantId = (int)AbpSession.TenantId;
             }
-
-
             await _categoryRepository.InsertAsync(category);
         }
 
