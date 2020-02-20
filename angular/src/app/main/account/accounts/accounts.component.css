@@ -905,3 +905,9 @@ table.table.record-table td, table.table.record-table th {
     max-width: 15px;
     margin-right: 5px;
 }
+.table-row-collapsible td {
+    max-width: 160px;
+}
+.table-row-collapsible td ul{
+    width: 300px;
+}
