@@ -128,8 +128,5 @@ namespace Zinlo.ChartsofAccount
                 _chartsofAccountRepository.Update(account);
             }
         }
-
-      
-      
     }
 }

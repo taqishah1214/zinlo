@@ -14,6 +14,7 @@ namespace Zinlo.ChartsofAccount
         Task Delete(long id);
         Task<GetAccountForEditDto> GetAccountForEdit(long id);
         Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input);
+        Task ChangeAccountsAssignee(long accountId, long assigneeId);
 
     }
 }
