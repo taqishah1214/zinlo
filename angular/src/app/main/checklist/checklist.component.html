@@ -1,5 +1,4 @@
-
- <div class="kt-subheader kt-grid__item">
+<div class="kt-subheader kt-grid__item">
     <div [class]="containerClass">
         <div class="kt-subheader__main">
             <h3 class="kt-subheader__title">
@@ -8,7 +7,6 @@
             </h3>
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
             <span class="kt-subheader__desc">
-
             </span>
         </div>
         <div class="kt-subheader__toolbar">
@@ -19,10 +17,9 @@
         </div>
     </div>
 </div>
-
 <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
-       
+
         <section class="zinlo-records">
             <div class="custom-container">
                 <div class="card">
@@ -74,8 +71,6 @@
                                                     </ul>
                                                 </div>
                                             </div>
-
-
                                             <div *ngFor="let item of assigniNameForHeader "
                                                 (click)="GetUserTasks(i.assigneeId)" class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic user-image-box">
@@ -88,17 +83,13 @@
                                                         {{item.assigniName | firstLetterOfWords}}</div>
                                                 </div>
                                             </div>
-
-
                                         </div>
                                     </div>
                                     <div class="date-picker">
-                                        <input id="monthValue" (ngModelChange)="filterByMonth($event)" value="january 2020" class="date-field"
-                                        name="monthValue" [(ngModel)]="monthValue"
-                                        [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                        (onShown)="onOpenCalendar($event)"
-                                       type="text" bsDatepicker />
-
+                                        <input id="monthValue" (ngModelChange)="filterByMonth($event)"
+                                            value="january 2020" class="date-field" name="monthValue"
+                                            [(ngModel)]="monthValue" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                            (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
                                     </div>
                                     <div class="dropdown-btn-box">
                                         <button (click)="openFilterClick()" class="btn btn-square"><img
@@ -108,18 +99,19 @@
                                 <div *ngIf="FilterBoxOpen" class="lower-content">
                                     <form>
                                         <div class="form-group">
-                                            <select class="form-control border-grey" [(ngModel)]="filterStatus" (change)="filterByStatus($event)"
-                                                id="exampleFormControlSelect1" name="filterStatus">
+                                            <select class="form-control border-grey" [(ngModel)]="filterStatus"
+                                                (change)="filterByStatus($event)" id="exampleFormControlSelect1"
+                                                name="filterStatus">
                                                 <option value="0">All</option>
                                                 <option value="1">Not Started</option>
                                                 <option value="2">In Process</option>
                                                 <option value="3">On Hold</option>
                                                 <option value="4">Completed</option>
                                             </select>
-
                                         </div>
                                         <div class="form-group">
-                                            <select class="form-control border-grey" name="categoryFilter" [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
+                                            <select class="form-control border-grey" name="categoryFilter"
+                                                [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
                                                 id="exampleFormControlSelect2">
                                                 <option value="0">All</option>
                                                 <option *ngFor="let item of category;" [value]="item.value">
@@ -127,11 +119,12 @@
                                                 </option>
                                             </select>
                                         </div>
-                                        <div class="form-group">                                          
-                                            <input id="titleFilter" (ngModelChange)="filterByDate($event)" class="form-control border-grey"
-                                             name="titleFilter" [(ngModel)]="titleFilter"
-                                            type="text" bsDatepicker class="form-control" />
-                                        </div> 
+                                        <div class="form-group">
+                                            <input id="titleFilter" (ngModelChange)="filterByDate($event)"
+                                                class="form-control border-grey" name="titleFilter"
+                                                [(ngModel)]="titleFilter" type="text" bsDatepicker
+                                                class="form-control" />
+                                        </div>
                                         <div class="block-btn">
                                             <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()">
                                                 <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
@@ -195,7 +188,8 @@
                                             <span class="">{{""}}</span>
                                         </td>
                                         <td class="task-cell" (click)="RedirectToDetail(j.id)">
-                                            <span class="task-box"><span class="task-box-dot-{{j.StatusColor}}"></span><b>{{j.taskName}}</b></span>
+                                            <span class="task-box"><span
+                                                    class="task-box-dot-{{j.StatusColor}}"></span><b>{{j.taskName}}</b></span>
                                         </td>
                                         <td class="cat-cell" (click)="RedirectToDetail(j.id)">
                                             <span class="category-name bg-lightgrey">{{j.category}}</span>
@@ -206,11 +200,11 @@
                                                     (change)="ChangeStatus($event.target.value,j.id)"
                                                     class="form-control border-0 {{j.StatusColor}} text-white">
                                                     <option value="" selected disabled hidden>
-                                                        {{j.status}}</option>                                                   
-                                                        <option value="1">Not Started</option>
-                                                        <option value="2">In Process</option>
-                                                        <option value="3">On Hold</option>
-                                                        <option value="4">Completed</option>
+                                                        {{j.status}}</option>
+                                                    <option value="1">Not Started</option>
+                                                    <option value="2">In Process</option>
+                                                    <option value="3">On Hold</option>
+                                                    <option value="4">Completed</option>
                                                 </select>
                                             </form>
                                         </td>
@@ -225,7 +219,8 @@
                                                     </div>
 
                                                     <div *ngIf="!j.profilePicture"
-                                                        class="kt-badge kt-badge--xl kt-badge--primary"> {{j.assigniName | firstLetterOfWords}}
+                                                        class="kt-badge kt-badge--xl kt-badge--primary">
+                                                        {{j.assigniName | firstLetterOfWords}}
                                                     </div>
                                                 </div>
                                                 <div class="kt-user-card-v2__details"> <span
@@ -233,7 +228,9 @@
                                                         {{j.assigniName}}</span> </div>
                                             </div>
                                             <div *ngIf="j.id == rowid">
-                                                <app-user-list-component  (callBack)="getClosingCheckListAllTasks()"  taskId = {{j.id}} comingChangeReguest="ClosingCheckList" userId = {{j.assigneeId}} ></app-user-list-component>
+                                                <app-user-list-component (callBack)="getClosingCheckListAllTasks()"
+                                                    taskId={{j.id}} comingChangeReguest="ClosingCheckList"
+                                                    userId={{j.assigneeId}}></app-user-list-component>
                                             </div>
                                         </td>
                                         <td class="toggle-btn-cell">
@@ -255,19 +252,15 @@
                                                             <div *ngIf="!j.profilePicture"
                                                                 class="kt-badge kt-badge--xl kt-badge--primary">
                                                                 {{j.assigniName | firstLetterOfWords}}</div>
-                                                             <span class="kt-user-card-v2__name">{{j.assigniName}}</span>
-                                                            
+                                                            <span class="kt-user-card-v2__name">{{j.assigniName}}</span>
                                                         </div>
 
                                                     </div>
                                                     <div *ngIf="j.id == rowid">
-                                                        <!-- <p-autoComplete placeholder="Search..." [(ngModel)]="j.text"
-                                                            [suggestions]="userName"
-                                                            (completeMethod)="onSearchUsers($event)"
-                                                            (keyup.enter)="addInput(j)" [forceSelection]="true"
-                                                            required>
-                                                        </p-autoComplete> -->
-                                                        <app-user-list-component userId = {{j.assigneeId}} ></app-user-list-component>
+                                                        <app-user-list-component
+                                                            (callBack)="getClosingCheckListAllTasks()" taskId={{j.id}}
+                                                            comingChangeReguest="ClosingCheckList"
+                                                            userId={{j.assigneeId}}></app-user-list-component>
 
 
                                                     </div>
@@ -283,15 +276,14 @@
                                                                 class="form-control border-0 {{j.StatusColor}} text-white">
                                                                 <option value="" selected disabled hidden>
                                                                     {{j.status}}</option>
-                                                                    <option value="1">Not Started</option>
-                                                                    <option value="2">In Process</option>
-                                                                    <option value="3">On Hold</option>
-                                                                    <option value="4">Completed</option>
+                                                                <option value="1">Not Started</option>
+                                                                <option value="2">In Process</option>
+                                                                <option value="3">On Hold</option>
+                                                                <option value="4">Completed</option>
                                                             </select>
                                                         </form>
                                                     </div>
                                                 </li>
-
                                                 <li class="category-cell-item">
                                                     <div class="thead-box"><b>Category : </b></div>
                                                     <div class="tdata-box">
