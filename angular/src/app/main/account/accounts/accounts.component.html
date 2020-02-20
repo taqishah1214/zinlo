@@ -168,6 +168,7 @@
 
                                         <td class="accountNo-cell">
                                             <span class="">{{item.accountNumber}}</span>
+                                            
                                         </td>
                                         <td class="accountName-cell">
                                             <span class="task-box">{{item.accountName}}</span>
@@ -212,10 +213,10 @@
                                             <div class="btn-group">
                                                 <a *ngIf="'Pages.Categories.Edit' | permission" class="btn"
                                                     href="javascript:;" (click)="editAccount(item.id)">
-                                                    <i class="fas fa-edit" style="color: #5867dd;"></i></a>
+                                                    <img src="../../../../assets/img/edit.svg"></a>
                                                 <a *ngIf="'Pages.Categories.Delete' | permission" class="btn"
                                                     href="javascript:;" (click)="deleteAccount(item.id)">
-                                                    <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+                                                    <img src="../../../../assets/img/del.svg"></a>
                                             </div>
                                         </td>
                                         <td class="toggle-btn-cell">
@@ -223,8 +224,8 @@
                                         </td>
                                     </tr>
                                         <!-- show-collapsible-row -->
-                                    <tr *ngFor="let item of chartsOfAccountList" class="table-row-collapsible ">
-                                        <td *ngIf="collapsibleRow == true && item.id == collapsibleRowId" colspan="6">
+                                    <tr *ngIf="collapsibleRow == true && item.id == collapsibleRowId" class="table-row-collapsible "> 
+                                        <td>
                                             <ul>
                                                 <li class="accountSubtype-cell">
 
@@ -270,10 +271,10 @@
                                                         <div class="btn-group">
                                                             <a class="btn"
                                                                 href="javascript:;" (click)="editAccount(item.id)">
-                                                                <i class="fas fa-edit" style="color: #5867dd;"></i></a>
+                                                                <img src="../../../../assets/img/edit.svg"></a>
                                                             <a  class="btn"
                                                                 href="javascript:;" (click)="deleteAccount(item.id)">
-                                                                <i class="fa fa-trash" style="color: #5867dd;"></i></a>
+                                                                <img src="../../../../assets/img/del.svg"></a>
                                                         </div>
                                                     </div>
                                                 </li>

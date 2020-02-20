@@ -425,3 +425,8 @@ form.task-report-form::after{
 .show-comments-inner img {
     max-width: 100%;
 }
+.settings_icon {
+    font-size: 24px !important;
+    color: #5867dd;
+    display: inline-block;
+}
