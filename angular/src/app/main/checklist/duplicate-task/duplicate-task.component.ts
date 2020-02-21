@@ -116,6 +116,10 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.dueOn = Number(this.checklist.dueOn);
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
+    if (this.selectedUserId.selectedUserId != undefined)
+    {
+      this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
+    }
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
     this.checklist.taskName = this.taskDetails.taskName;
     this.checklist.instruction = this.taskDetails.instruction;

@@ -20,6 +20,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
   reconcillationType: any;
+  assigniId : number;
   accountDto: CreateOrEditChartsofAccountDto = new CreateOrEditChartsofAccountDto()
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -139,8 +140,12 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     }) 
   }
 
-  updateAccount() : void {
-    this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
+ 
+  updateAccount() : void {   
+    if (this.selectedUserId.selectedUserId != undefined)
+    {
+      this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
+    }
     this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
       this.notify.success(this.l('Account Successfully Updated.'));
       this.redirectToAccountsList();
