@@ -38,6 +38,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   collapsibleRowId : number;
   remainingUserForHeader: any = [];
   accountSubTypes: any = [];
+  accountType : any;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
   
@@ -50,9 +51,15 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   ngOnInit() {
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
-    this.collapsibleRow = false
+    this.collapsibleRow = false;
+    this.accountType = "Account Type"
     this.loadAccountSubType();
   }
+
+  accountTypeClick(id,name) : void {
+    this.accountType = name
+  }
+
   openFieldUpdateAssignee(record) {
     this.rowid = record;
   }

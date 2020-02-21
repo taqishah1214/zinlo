@@ -199,6 +199,12 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
       this.SelectionMsg = "Days After";
     }
   }
+
+  routeToAddNewCategory() : void {
+    this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0, redirectPath: "duplicate", "checklistTask": this.taskId } } });
+
+  }
+
   loadDaysDropdown(): void {
     this._closingChecklistService.getCurrentMonthDays().subscribe(result => {
       this.days = result;
