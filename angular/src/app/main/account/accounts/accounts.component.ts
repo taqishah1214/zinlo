@@ -20,7 +20,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   advancedFiltersAreShown = false;
   filterText = '';
-  titleFilter = '';
+  accountTypeFilter : number = 0;
   categoryFilter: number = 0;
   statusFilter: number = 0;              
   tasksList: any;
@@ -39,6 +39,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   collapsibleRowId : number;
   remainingUserForHeader: any = [];
   accountSubTypes: any = [];
+  accountType : any;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
   
@@ -51,9 +52,17 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   ngOnInit() {
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
-    this.collapsibleRow = false
+    this.collapsibleRow = false;
+    this.accountType = "Account Type"
     this.loadAccountSubType();
   }
+
+  accountTypeClick(id,name) : void {
+    this.accountType = name
+    this.accountTypeFilter = id
+    this.getAllAccounts()
+  }
+
   openFieldUpdateAssignee(record) {
     this.rowid = record;
   }
@@ -62,7 +71,6 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     this.collapsibleRow = !this.collapsibleRow;
   } 
   getAllAccounts(event?: LazyLoadEvent) {
-    this.assigniNameForHeader = []
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
       return;
@@ -71,11 +79,14 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     this.primengTableHelper.showLoadingIndicator();
     this._chartOfAccountService.getAll(
       this.filterText,
-      this.titleFilter,
+      this.accountTypeFilter,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
     ).subscribe(result => {
+      this.assigniNameForHeader = [];
+      this.plusUserBadgeForHeader = false;
+      this.remainingUserForHeader = [];
       this.primengTableHelper.totalRecordsCount = result.totalCount;
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
@@ -185,6 +196,8 @@ RedirectToCreateAccount(): void {
     });
   }
   ResetGrid(): void {
+    this.accountType = "Account Type"
+    this.accountTypeFilter = 0
     this.getAllAccounts();
   }
 

@@ -116,6 +116,10 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.dueOn = Number(this.checklist.dueOn);
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
+    if (this.selectedUserId.selectedUserId != undefined)
+    {
+      this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
+    }
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
     this.checklist.taskName = this.taskDetails.taskName;
     this.checklist.instruction = this.taskDetails.instruction;
@@ -199,6 +203,12 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
       this.SelectionMsg = "Days After";
     }
   }
+
+  routeToAddNewCategory() : void {
+    this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0, redirectPath: "duplicate", "checklistTask": this.taskId } } });
+
+  }
+
   loadDaysDropdown(): void {
     this._closingChecklistService.getCurrentMonthDays().subscribe(result => {
       this.days = result;

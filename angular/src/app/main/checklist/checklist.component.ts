@@ -165,7 +165,6 @@ export class Checklist extends AppComponentBase implements OnInit {
     }
   }
   getClosingCheckListAllTasks(event?: LazyLoadEvent) {
-    this.assigniNameForHeader = []
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
       return;
@@ -183,6 +182,9 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
     ).subscribe(result => {
+      this.assigniNameForHeader = [];
+      this.plusUserBadgeForHeader = false;
+      this.remainingUserForHeader = [];
       this.primengTableHelper.totalRecordsCount = result.totalCount;
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();

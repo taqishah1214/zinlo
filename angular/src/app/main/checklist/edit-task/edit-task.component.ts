@@ -238,7 +238,14 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.noOfMonths = this.getTaskForEdit.noOfMonths;
     this.checklist.taskName = this.getTaskForEdit.taskName;
     this.checklist.instruction = this.getTaskForEdit.instruction;
-    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
+    if (this.selectedUserId.selectedUserId != undefined)
+    {
+      this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
+    }
+    else
+    {
+      this.checklist.assigneeId = this.getTaskForEdit.assigneeId;
+    }
     this.checklist.id = this.taskId;
     if (this.attachmentPaths != null) {
       this.newAttachementPath = [];

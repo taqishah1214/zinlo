@@ -41,6 +41,11 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
       var closingChecklistId = history.state.data.checklistTask;
       this._router.navigate(['/app/main/checklist/edit-task'], { state: { data: { id: closingChecklistId } } })
     }
+    else if (this.redirectPath === "duplicate")
+    {
+    var closingChecklistId = history.state.data.checklistTask;
+     this._router.navigate(['/app/main/checklist/duplicate-task'], { state: { data: { id: closingChecklistId } } });
+    }
     else {
       this._router.navigate(['/app/main/categories']);
     }
