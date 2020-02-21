@@ -25,11 +25,20 @@ namespace Zinlo.ChartsofAccount
             _profileAppService = profileAppService;
         }
 
+
+        public string AccountNoFilter { get; set; }
+
+        public string AccountTypeFilter { get; set; }
+
+        public string AssigneeFilter { get; set; }
+
+        
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
             var query = _chartsofAccountRepository.GetAll().Include(p => p.AccountSubType).Include(p => p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.AccountName.Contains(input.Filter))
-                 .WhereIf(!string.IsNullOrWhiteSpace(input.TitleFilter), e => false || e.AccountNumber.Contains(input.TitleFilter));
+                 .WhereIf(input.AccountType != 0, e => false || (e.AccountType == (AccountType)input.AccountType));
+
 
             var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var totalCount = query.Count();
