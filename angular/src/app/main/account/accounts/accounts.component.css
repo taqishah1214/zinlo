@@ -173,7 +173,8 @@ button.btn-square{
             flex-direction: row-reverse;
     width: -webkit-fit-content;
     width: -moz-fit-content;
-    width: fit-content
+    width: fit-content;
+    min-width: 220px;
 }
 .user-image-box {
     width: 35px;
@@ -910,4 +911,122 @@ table.table.record-table td, table.table.record-table th {
 }
 .table-row-collapsible td ul{
     width: 300px;
+}
+.uppy-modal ::ng-deep .uppy-Dashboard-inner {
+    min-height:100px !important;
+    height: 100px !important;
+    min-width: 50% !important;
+    width: 50% !important;
+} 
+.uppy-modal .modal-dialog {
+    max-width: 1000px;
+}
+.uppy-modal .modal-dialog ::ng-deep .uppy-Dashboard-inner {
+    width: 100% !important;
+}
+.uppy-modal .modal-dialog ::ng-deep .uppy-modal-box1 ::ng-deep .drag-drop-area {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+.uppy-modal .modal-dialog ::ng-deep .drag-drop-area .uppy-Root {
+    width: 50% !important;
+}
+.uppy-modal .modal-dialog ::ng-deep .drag-drop-area ::ng-deep .uppy-Root:nth-child(1),
+.download-modal-row .col-md-6:nth-child(1){
+    padding-right: 30px !important;
+    border-right: 1px solid #E2E3E5 !important;
+}
+.uppy-modal .modal-dialog ::ng-deep .drag-drop-area ::ng-deep .uppy-Root:nth-child(2),
+.download-modal-row .col-md-6:nth-child(2){
+    padding-left: 30px !important;
+}
+.download-modal-row{
+    position: relative;
+}
+.uppy-modal .modal-dialog .uppy-modal-box1 ::ng-deep .drag-drop-area::after,
+.download-modal-row::after {
+    content: "OR" !important;
+    width: 40px !important;
+    height: 40px !important;
+    position: absolute !important;
+    background-color: #F1F2FC !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border: 5px solid #fff !important;
+    border-radius: 50% !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    font-weight: 600 !important;
+    color: #5866dd !important;
+} 
+
+.table-row-collapsible .collapsable-cell {
+        width: 100%;
+}
+.table-row-collapsible .collapsable-cell .thead-box{
+    min-width: 90px;
+}
+.table-row-collapsible .collapsable-cell > ::ng-deep .ng-star-inserted{
+    width:100%;
+}
+.uppy-modal .modal-dialog .uppy-modal-box1 > p {
+    width: 50%;
+    display: inline-block;
+    text-align: center;
+    color: #0F2757;
+    font-size: 18px;
+    font-weight: 500;
+}
+.modal-bottom-row-col {
+    width: 33.33%;
+    padding: 5px;
+}
+.row.modal-bottom-record {
+    margin-top:30px;
+    color: #606060;
+}
+.row.modal-bottom-record .row {
+    margin: 0;
+}
+.row.modal-bottom-record .col-md-6:nth-child(1) {
+    padding-right: 30px;
+}
+.row.modal-bottom-record .col-md-6:nth-child(2){
+    padding-left: 30px;
+}
+.row.modal-bottom-record .col-md-6:nth-child(2) .modal-bottom-row-col{
+    width: 20%;
+}
+.inner-col-record {
+    border-radius: 5px;
+    padding: 10px;
+}
+.modal-bottom-row-col p {
+    font-size: 8px;
+}
+.uppy-modal .modal-footer,
+.download-modal .modal-footer  {
+    justify-content: center;
+    border: 0;
+}
+.uppy-modal .modal-header,
+.download-modal .modal-header {
+    border: 0;
+}
+.download-modal .modal-dialog {
+    max-width: 1000px;
+}
+.download-modal-row .col-md-6 {
+    padding: 20px 30px;
+    color: #0F2757;
+}
+.download-modal .modal-body {
+    padding: 50px 0 20px;
+}
+.download-modal-row .col-md-6 img {
+    width: 60px;
+    margin-bottom: 20px;
 }

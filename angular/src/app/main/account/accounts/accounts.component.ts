@@ -6,6 +6,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { UserListComponentComponent } from '../../checklist/user-list-component/user-list-component.component';
+import { UppyConfig } from 'uppy-angular';
 
 @Component({
   selector: 'app-accounts',
@@ -192,4 +193,20 @@ RedirectToCreateAccount(): void {
     this.notify.success(this.l('Assigni Successfully Updated.'));
   }
 
+  settings: UppyConfig = {
+    uploadAPI: {
+      endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",
+    },
+    plugins: {
+      Webcam: false
+    }
+  }
+  settingsUppy: UppyConfig = {
+    uploadAPI: {
+      endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",
+    },
+    plugins: {
+      Webcam: false
+    }
+  }
 }

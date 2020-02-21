@@ -28,17 +28,112 @@
                     <div class="record-card-header">
                         <div class="record-card-header-bottom">
                             <div class="record-card-header-bottom-inner1">
-                                <button class="btn btn-images" (click)="calculateDate(-1)">
+                                <button class="btn btn-images" data-toggle="modal" data-target="#kt_modal_1">
                                     <img src="../../../../assets/img/download.png">
                                     Download
                                 </button>
-                                <button class="btn btn-images" (click)="calculateDate(1)">
+                                <button class="btn btn-images" data-toggle="modal" data-target="#kt_modal_2">
                                     <img src="../../../../assets/img/upload.png">
                                  Upload
                                 </button>
                                 <h5>{{currentMonth}} {{currentYear}}</h5>
 
                             </div>
+                            <!-- Modal For Download -->
+                            <div class="modal fade  download-modal" id="kt_modal_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="download-modal-row row">
+                                                <div class="col-md-6 text-center">
+                                                    <img src="../../../../assets/img/download.png">
+                                                    <p>Download Trial Balance</p>
+                                                </div>
+                                                <div class="col-md-6 text-center">
+                                                    <img src="../../../../assets/img/download.png">
+                                                    <p>Download Chart of Accounts</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal For Upload -->
+                            <div class="modal fade uppy-modal" id="kt_modal_2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="drag_drop_box uppy-modal-box1">
+                                                <p>Upload Chart of Accounts</p>
+                                                <p>Upload Trial Balance</p> 
+                                                <ng-uppy [config]="settings"></ng-uppy>
+                                            </div>
+                                            <div class="drag_drop_box uppy-modal-box2">
+                                                <ng-uppy [config]="settingsUppy"></ng-uppy>
+                                            </div>
+                                            
+                                            <div class="row modal-bottom-record">
+                                                <div class="col-md-6">
+                                                    <p>This is the demo </p>
+                                                    <div class="inner-col-record border border-default">
+                                                        
+                                                        <div class="row">
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>Account Code</p>
+                                                            </div>
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>Account Name</p>
+                                                            </div>
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>Account Balance</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p>This is the demo </p>
+                                                    <div class="inner-col-record border border-default">
+                                                        
+                                                        <div class="row">
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>Account Code</p>
+                                                            </div>
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>Account Name</p>
+                                                            </div>
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>Account Balance</p>
+                                                            </div>
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>Account Name</p>
+                                                            </div>
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>Account Balance</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="record-card-header-bottom-inner2">
                               
                                 <div class="upper-content">
@@ -224,20 +319,20 @@
                                     <tr *ngIf="collapsibleRow == true && item.id == collapsibleRowId" class="table-row-collapsible "> 
                                         <td>
                                             <ul>
-                                                <li class="accountSubtype-cell">
+                                                <li class="accountSubtype-cell collapsable-cell">
 
                                                     <div class="thead-box"><b>Account Sub Type : </b></div>
                                                     <div class="tdata-box">
                                                         <span class="">{{item.accountSubType}}</span>
                                                     </div>
                                                 </li>
-                                                <li class="reconciliation-cell">
+                                                <li class="reconciliation-cell collapsable-cell">
                                                     <div class="thead-box"><b>Reconciliation : </b></div>
                                                     <div class="tdata-box">
                                                         <span class="">{{item.reconciliationType}}</span>
                                                     </div>
                                                 </li>
-                                                <li  class="assignee-cell kt-user-card-v2">
+                                                <li  class="assignee-cell collapsable-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>Assignee : </b></div>
                                                     <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
@@ -257,7 +352,7 @@
                                                         <app-user-list-component  (callBack)="refreshGrid()"  taskId = {{item.id}} comingChangeReguest="accounts" userId = {{item.assigneeId}} ></app-user-list-component>
                                                     </div>
                                                 </li>
-                                                <li class="action-cell-item">
+                                                <li class="action-cell-item collapsable-cell">
                                                     <div class="thead-box"><b>Action : </b></div>
                                                     <div class="tdata-box">
                                                         <div class="btn-group">

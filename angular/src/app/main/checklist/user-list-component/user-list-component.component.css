@@ -6,6 +6,8 @@
 }
 ::ng-deep .search-field ng-select .ng-select-container {
     height: calc(1.5em + 1.3rem + 2px) !important;
+    width: 100% !important;
+
 }
 
 .imagedropdown{
@@ -18,3 +20,9 @@
 ::ng-deep .ng-select .ng-arrow-wrapper {
     display: none;
 }
+ .ng-star-inserted{
+    width: 100% !important;
+}
+/* ::ng-deep .ng-dropdown-panel.ng-star-inserted.ng-select-bottom{
+    margin-left: 10px !important;
+} */
