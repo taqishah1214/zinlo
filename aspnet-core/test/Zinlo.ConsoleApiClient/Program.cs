@@ -22,7 +22,7 @@ namespace Zinlo.ConsoleApiClient
         private const string ServerUrlBase = "http://localhost:62114/";
         
         // If you have changed "Configuration.MultiTenancy.TenantIdResolveKey" in your web app, use the same value here. 
-        private const string TenantIdResolveKey = "Abp.TenantId";
+        private const string TenantIdResolveKey = "Abp-TenantId";
 
         static void Main(string[] args)
         {
@@ -46,7 +46,7 @@ namespace Zinlo.ConsoleApiClient
                 throw new Exception(disco.Error);
             }
 
-            client.DefaultRequestHeaders.Add("Abp.TenantId", "1");  //Set TenantId
+            client.DefaultRequestHeaders.Add("Abp-TenantId", "1");  //Set TenantId
             var tokenResponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
             {
                 Address = disco.TokenEndpoint,
