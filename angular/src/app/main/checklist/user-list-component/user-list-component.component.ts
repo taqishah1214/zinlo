@@ -18,6 +18,7 @@ export class UserListComponentComponent implements OnInit, OnChanges {
   @Input() comingChangeReguest : any;
   @Input() userId : any;
   @Input() taskId : any;
+  defaultUser: Array<{ id: number, name: string,picture:string }> = [{ id: -1, name: " Enter the Assignee Name" ,picture : "../../../../assets/media/files/emptyUser.svg"}];
   @Output() messageEvent = new EventEmitter<string>();
   @ViewChild(NgSelectComponent,{ static: true }) ngSelect : NgSelectComponent;
   @Output("callBack") callBack: EventEmitter<any> = new EventEmitter();
@@ -31,6 +32,9 @@ export class UserListComponentComponent implements OnInit, OnChanges {
       if (this.userId != 0) {
        this.getSelectedUserIdandPicture()
       }
+      else{
+        this.getUserDefaultPicture()
+      }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -40,6 +44,11 @@ export class UserListComponentComponent implements OnInit, OnChanges {
       this.userId = change.currentValue;
       this.getSelectedUserIdandPicture()
     }
+  }
+
+  getUserDefaultPicture() : void {
+    this.input = this.defaultUser[0].id;
+    this.users = this.defaultUser;
   }
 
   getSelectedUserIdandPicture() : void {
@@ -58,7 +67,7 @@ export class UserListComponentComponent implements OnInit, OnChanges {
 
   userOnChange(value) : void {
     this.selectedUserId = value;
-    if (this.selectedUserId != null)
+    if (this.selectedUserId != null || this.selectedUserId != -1)
     {
     this.messageEvent.emit(this.selectedUserId);
     if (this.comingChangeReguest == "ClosingCheckList" || this.comingChangeReguest == "DetailsClosingCheckList"  ) 

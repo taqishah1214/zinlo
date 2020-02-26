@@ -191,6 +191,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       if (this.ClosingCheckList.length==0) {
         this.assigniNameForHeader = [];
         this.remainingUserForHeader = [];
+        this.updateAssigneeOnHeader = true
       }
       this.ClosingCheckList.forEach(j => {
         j.group.forEach(i => {
@@ -285,14 +286,17 @@ export class Checklist extends AppComponentBase implements OnInit {
   }
   filterByStatus(event): void {
     this.statusFilter = event.target.value.toString();
+    this.updateAssigneeOnHeader = false;
     this.getClosingCheckListAllTasks();
   }
   filterByCategory(event): void {
     this.categoryFilter = event.target.value.toString();
+    this.updateAssigneeOnHeader = false;
     this.getClosingCheckListAllTasks();
   }
   filterByDate(event): void {
     this.dateFilter = event;
+    this.updateAssigneeOnHeader = false;
     this.getClosingCheckListAllTasks();
   }
   filterByMonth(event):void{
@@ -312,6 +316,8 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.dateFilter = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
     this.titleFilter = '';
     this.filterStatus = 0;
+    this.getTaskWithAssigneeId = 0;
+    this.updateAssigneeOnHeader = true;
     this.getClosingCheckListAllTasks();
   }
 
