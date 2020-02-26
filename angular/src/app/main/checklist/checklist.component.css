@@ -50,7 +50,7 @@ span{
     background-color: #F1F2FC !important;
 }
 .bg-purple{
-    background-color: #6F42C1 !important;
+    background-color: #716ACA !important;
 }
 .bg-golden{
     background-color: #FFB822 !important;
@@ -66,6 +66,9 @@ span{
 }
 .bg-magenta{
     background-color: #993399 !important;
+}
+.bg-gray{
+    background-color: #8A8A8A !important;
 }
 .text-blue{
     color: #3F94FD;
@@ -393,7 +396,7 @@ form.search-form input::after{
 .task-box-dot-bg-purple {
     width: 5px;
     height: 5px;
-    background-color: #6F42C1;
+    background-color: #716ACA;
     border-radius: 50%;
     display: inline-block;
     margin-right: 10px;
@@ -402,7 +405,7 @@ form.search-form input::after{
 .task-box-dot-bg-golden {
     width: 5px;
     height: 5px;
-    background-color: #ffb822;
+    background-color: #FFB822;
     border-radius: 50%;
     display: inline-block;
     margin-right: 10px;
@@ -417,10 +420,10 @@ form.search-form input::after{
     margin-right: 10px;
 }
 
-.task-box-dot-bg-magenta {
+.task-box-dot-bg-gray {
     width: 5px;
     height: 5px;
-    background-color: #993399;
+    background-color:#8A8A8A;
     border-radius: 50%;
     display: inline-block;
     margin-right: 10px;

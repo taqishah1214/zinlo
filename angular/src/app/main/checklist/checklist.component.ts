@@ -34,7 +34,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   id: number;
   AssigniInputBox: boolean;
   AssigniBoxView: boolean;
-  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green","bg-magenta"]
+  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green","bg-gray"]
   FilterBoxOpen: boolean;
   public rowId: number = 0;
   changeStatus: ChangeStatusDto = new ChangeStatusDto();
@@ -68,10 +68,7 @@ export class Checklist extends AppComponentBase implements OnInit {
     private _categoryService: CategoriesServiceProxy,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector) {
     super(injector)
-    this.FilterBoxOpen = false;
-
-    CurrentDate:Date;
-   
+    this.FilterBoxOpen = false;   
   }
   ngOnInit() {
     this.initializePageParameters();
@@ -191,7 +188,6 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
       this.ClosingCheckList = result.items
-      debugger
       if (this.ClosingCheckList.length==0) {
         this.assigniNameForHeader = [];
         this.remainingUserForHeader = [];
@@ -199,13 +195,13 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.ClosingCheckList.forEach(j => {
         j.group.forEach(i => {
           if (i.status === "NotStarted") {
-            i["StatusColor"] = this.StatusColorBox[0]
+            i["StatusColor"] = this.StatusColorBox[3]
           }
           else if (i.status === "InProcess") {
-            i["StatusColor"] = this.StatusColorBox[1]
+            i["StatusColor"] = this.StatusColorBox[0]
           }
           else if (i.status === "OnHold") {
-            i["StatusColor"] = this.StatusColorBox[3]
+            i["StatusColor"] = this.StatusColorBox[1]
           }
           else if (i.status === "Completed") {
             i["StatusColor"] = this.StatusColorBox[2]
