@@ -164,12 +164,12 @@
                                     <tr>
                                         <td style="width: 130px"
                                             [hidden]="!(['Pages.Administration.Users.Impersonation', 'Pages.Administration.Users.Edit', 'Pages.Administration.Users.ChangePermissions', 'Pages.Administration.Users.Delete'] | permissionAny)">
-                                            <div class="btn-group dropdown" dropdown container="body">
-                                                <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
-                                                    <i class="fa fa-cog"></i><span class="caret"></span>
-                                                    {{"Actions" | localize}}
+                                            <div class="btn-group dropdown" >
+                                                <button class="custom_toggle_btn dropdown-toggle btn btn-sm"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-cog settings_icon"></i>
                                                 </button>
-                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                <ul class="dropdown-menu">
                                                     <li>
                                                         <a href="javascript:;"
                                                             *ngIf="('Pages.Administration.Users.Impersonation' | permission) && record.id !== appSession.userId"

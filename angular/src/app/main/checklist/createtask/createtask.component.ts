@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild, Injector, ViewEncapsulation } from '@angular/core';
+import { Router, Data } from '@angular/router';
 import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
@@ -30,7 +30,9 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   newAttachementPath: string[] = [];
   public isChecked: boolean = false;
   days: any;
+  users: any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
+  minDate: Date = new Date()
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild(IgxMonthPickerComponent, { static: true }) monthPicker: IgxMonthPickerComponent;
@@ -41,14 +43,19 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     super(injector)
   }
   ngOnInit() {
-    this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
+    this.initializePageParameters();
+    this.loadDaysDropdown();
+  }
+
+  initializePageParameters() {
+    this.userSignInName = this.appSession.user.name.toString();
     this.commantBox = true;
     this.closingMonthInputBox = true;
     this.closingMonthModalBox = false;
     this.enableValue = false;
     this.isChecked = true;
-    this.loadDaysDropdown();
   }
+
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
       container._store.dispatch(container._actions.select(event.date));
@@ -63,7 +70,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.closingMonthInputBox = true;
     this.closingMonthModalBox = false;
   }
-  backToTaskList(): void {
+  redirectToTaskList(): void {
     this._router.navigate(['/app/main/checklist']);
   }
   EndofMonthSelected(): void {
@@ -73,14 +80,8 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = false;
   }
   onCreateTask(): void {
-    if (this.checklist.dayBeforeAfter) {
-      this.checklist.dayBeforeAfter = true;
-    }
-    else {
-      this.checklist.dayBeforeAfter = false;
-    }
-
-    if (this.checklist.endOfMonth) {
+    debugger;
+     if (this.checklist.endOfMonth) {
       this.checklist.endOfMonth = true;
     }
     else {
@@ -90,8 +91,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.dueOn = Number(this.checklist.dueOn);
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
-    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId.value);
-    debugger;
+    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
     this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
     if (this.attachmentPaths != null) {
       this.newAttachementPath = [];
@@ -108,7 +108,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.checklist.noOfMonths = 0;
     }
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(() => {
-      this.backToTaskList();
+      this.redirectToTaskList();
       this.notify.success(this.l('SavedSuccessfully'));
     });
   }
@@ -116,7 +116,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.commantModal = true;
     this.commantBox = false;
   }
-
   onComment(): void {
     this.commantModal = false;
     this.commantBox = true;
@@ -133,15 +132,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       Webcam: false
     }
   }
-
-
   fileUploadedResponse(value): void {
     var response = value.successful
     response.forEach(i => {
       this.attachmentPaths.push(i.response.body.result);
     });
     this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
-
   }
 
   onChange(val) {
@@ -162,8 +158,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = false;
     this.isChecked = true;
   }
-  handleChange() {
-  }
   handleRadioChange() {
     this.checklist.dayBeforeAfter = null;
     this.checklist.dueOn = 0;
@@ -174,9 +168,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.isChecked = true;
     if (valu == "true") {
       this.SelectionMsg = "Days Before";
+      this.checklist.dayBeforeAfter = true
     }
     else if (valu == "false") {
       this.SelectionMsg = "Days After";
+      this.checklist.dayBeforeAfter = false
+
     }
   }
   loadDaysDropdown(): void {

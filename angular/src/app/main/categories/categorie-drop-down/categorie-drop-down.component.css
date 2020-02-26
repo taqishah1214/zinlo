@@ -63,3 +63,6 @@
     top: 50%;
     transform: translateY(-50%);
 }
+.dropdown-menu.ng-untouched .dropdown-item:last-child{
+    color: #007ad9;
+}

@@ -12,7 +12,7 @@ namespace Zinlo.Comment.Dtos
         public string Body { get; set; }
         public string UserName { get; set; }
         public DateTime? CreationDateTime { get; set; }
-        public string UserProfilePath { get; set; }
+        public string ProfilePicture { get; set; }
         public string DaysCount { get; set; }
     }
 }

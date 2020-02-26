@@ -23,8 +23,6 @@
                                 <div class="col-md-12">
                                     <h5 class="text-navyblue">{{taskDetailObject.taskName}}</h5>
                                 </div>
-
-
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
@@ -54,16 +52,14 @@
                             <div class="row">
                                 <div class="col-5">
                                     <select class="form-control input-medium">
-                                        <option value="January">Comments</option>
-                                        <option value="Febuary">History</option>
+                                        <option>Comments</option>
+                                        <option>History</option>
                                     </select>
                                 </div>
-
                             </div>
                             <div class="commentmainView show-comments">
                                 <div class="kt-widget3 ">
-
-                                    <div *ngFor="let i of taskDetailObject.comments" class="show-comments-inner kt-widget3__item ">
+                                    <div *ngFor="let i of  (taskDetailObject.comments || [])" class="kt-widget3__item ">
                                         <div class="comments-header kt-widget3__header">
                                             <div class="kt-widget3__user-img">
                                                 <div class="kt-user-card-v2__pic">
@@ -75,13 +71,12 @@
                                                 <a class="kt-widget3__username">
                                                     {{i.userName}}
                                                 </a><br>
-
                                             </div>
                                             <span class="kt-widget3__status kt-font-info">
                                                 {{i.daysCount}}
                                             </span>
                                         </div>
-                                        <div class="kt-widget3__body">
+                                        <div class="kt-widget3__body show-comments-inner">
                                             <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">
                                             </p>
                                         </div>
@@ -93,7 +88,8 @@
                                 <div (click)="commentClick()">
                                     <div class="kt-user-card-v2">
                                         <div class="kt-user-card-v2__pic">
-                                            <div class="kt-badge kt-badge--xl kt-badge--warning">{{userSignInName | firstLetterOfWords}}                                            </div>
+                                            <div class="kt-badge kt-badge--xl kt-badge--warning">
+                                                {{userSignInName | firstLetterOfWords}} </div>
                                         </div>
                                         <input [(ngModel)]="comment.body" class="form-control">
                                     </div>
@@ -112,35 +108,25 @@
                         <div class="col-md-5">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <!-- <select class="form-control input-medium"
-                                        (change)="closingMonthSelect($event.target.value)">
-                                        <option value="January">Ihsan</option>
-                                        <option value="Febuary">Imad</option>
-
-                                    </select> -->
-
-                                    <app-user-list-component></app-user-list-component>
-
+                                    <app-user-list-component (callBack)="updateDetails()" taskId={{recordId}}
+                                        comingChangeReguest="DetailsClosingCheckList"
+                                        userId={{taskDetailObject.assigneeId}}></app-user-list-component>
                                 </div>
                                 <div class="col-md-4">
-                                    <!-- <select class="form-control input-medium"
-                                        (change)="closingMonthSelect($event.target.value)">
-                                        <option value="January">InProgress</option>
-                                        <option value="Febuary">Complete</option>
-                                    </select> -->
                                     <div class="">
-                                        <app-status [TaskId]="recordId" [StatusList]=taskDetailObject.taskStatus></app-status>
+                                        <app-status [TaskId]="recordId" [StatusList]=taskDetailObject.taskStatus>
+                                        </app-status>
 
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <a class="action-btn"><i class="fas fa-edit" (click)="RedirectToEditTaskPage()"
-                                        style="color: #5867dd;"></i></a>
-                                    <a class="action-btn" href="javascript:;" (click)="deleteTask()">
-                                        <i class="fa fa-trash" style="color: #5867dd;"></i></a>
-                                    <!-- <i class="fa fa-trash" style="color: #5867dd;"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-                                    <a class="action-btn"><i class="fa fa-clone" aria-hidden="true"></i></a>
 
+                                    <a class="action-btn"><img src="../../../../assets/img/edit.svg"
+                                            (click)="RedirectToEditTaskPage()"></a>
+                                    <a class="action-btn" (click)="deleteTask()"><img
+                                            src="../../../../assets/img/del.svg"></a>
+                                    <a class="action-btn" (click)="duplicateTask()"><img
+                                            src="../../../../assets/img/dup.svg"></a>
                                 </div>
                             </div>
                             <div class="row">
@@ -150,22 +136,21 @@
                                         <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
                                         </ng-uppy>
                                         <div *ngFor="let item of attachments" class="attachments_section">
-                                            <button class="attachement_btn">
-                                                <img src="../../../../assets/img/{{item.attachmentExtension}}">
+                                            <a href="{{item.attachmentUrl}}" target="_blank" class="attachement_btn"
+                                                download="{{item.attachmentUrl}}">
+                                                <img src="../../../../assets/media/files/{{item.attachmentExtension}}">
                                                 <span>{{item.attachmentName}}</span>
-                                            </button>
+                                            </a>
                                             <button class="cross-btn" (click)="deleteAttachment(item.id)">
                                                 <span class="fa fa-window-close"></span>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

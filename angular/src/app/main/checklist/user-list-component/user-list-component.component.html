@@ -1,21 +1,10 @@
-<!-- <div class="form-group">
-    <label>Assigni Name</label>
-    <select id="categories" name="users" (change)="userOnChange()" [(ngModel)]="selectedUserId" class="form-control input-medium select2-search select2-search--inline"  >
-        <option  *ngFor="let item of users;" 
-        [value]="item.value">
-            {{item.name}}
-        </option>
-    </select>   
-</div> -->
-
-
-
 <div class="form-group search-field">
-    <div>
-        <p-autoComplete [(ngModel)]="selectedUserId" [suggestions]="users" (completeMethod)="onSearchUsers($event)" field="name"
-            placeholder="Search..." [minLength]="1" name="SingleSelectInput" id="SingleSelectInput" [multiple]="false"
-            inputStyleClass="form-control" styleClass="width-percent-100" [forceSelection]="true" required
-            >
-        </p-autoComplete>
-    </div>
+    <ng-select bindLabel="name" placeholder="Search users" appendTo="body" [searchable]="true" [clearable]="true"
+         [(ngModel)]="input" name="input" (input)="onSearchUsers($event.target.value)" (change) = "userOnChange($event)">
+        <ng-option [value]="item.id" *ngFor="let item of users">
+            <img *ngIf="item.picture" class="imagedropdown" src="{{item.picture}}"/>
+            <div *ngIf="!item.picture" class="kt-badge kt-badge--xl kt-badge--primary imagedropdown">{{item.name | firstLetterOfWords}}</div>
+            {{item.name}}
+        </ng-option>
+    </ng-select>
 </div>

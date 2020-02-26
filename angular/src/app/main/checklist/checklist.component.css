@@ -50,7 +50,7 @@ span{
     background-color: #F1F2FC !important;
 }
 .bg-purple{
-    background-color: #6F42C1 !important;
+    background-color: #716ACA !important;
 }
 .bg-golden{
     background-color: #FFB822 !important;
@@ -66,6 +66,9 @@ span{
 }
 .bg-magenta{
     background-color: #993399 !important;
+}
+.bg-gray{
+    background-color: #8A8A8A !important;
 }
 .text-blue{
     color: #3F94FD;
@@ -173,7 +176,8 @@ button.btn-square{
             flex-direction: row-reverse;
     width: -webkit-fit-content;
     width: -moz-fit-content;
-    width: fit-content
+    width: fit-content;
+    min-width:215px;
 }
 .user-image-box {
     width: 35px;
@@ -207,6 +211,10 @@ button.btn-square{
     padding: 10px;
     border-radius: 4px;
     display: none;
+}
+
+.kt-user-card-v2 {
+    cursor: pointer !important
 }
 .member-count:hover .member-dropdown{
     display: block;
@@ -376,13 +384,51 @@ form.search-form input::after{
     margin-right: 10px;
 }
 .task-box {
-    padding: 2px 20px;
+    padding: 2px 20px 2px 5px;
     border-radius: 20px;
     width: 100%;
     position: relative;
     word-break: break-all;
     color: #575962;
+    display: flex;
+    align-items: center;
 }
+.task-box-dot-bg-purple {
+    width: 5px;
+    height: 5px;
+    background-color: #716ACA;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.task-box-dot-bg-golden {
+    width: 5px;
+    height: 5px;
+    background-color: #FFB822;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.task-box-dot-bg-sea-green {
+    width: 5px;
+    height: 5px;
+    background-color: #0ABB87;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.task-box-dot-bg-gray {
+    width: 5px;
+    height: 5px;
+    background-color:#8A8A8A;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
 .task-report-form{
     width: 100px;
     height: 23px;
@@ -425,19 +471,7 @@ form.task-report-form select:focus option {
     color: #000;
 }
 
-.task-box::after {
-    content: "";
-    width: 5px;
-    height: 5px;
-    position: absolute;
-    background-color: #6F42C1;
-    left: 6px;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-            transform: translateY(-50%);
-    border-radius: 50%;
-}
+
 .task-box:hover{
     background-color: #F1F2FC;
 }
@@ -777,3 +811,6 @@ table.table.record-table td, table.table.record-table th {
 
 
 
+.cell-none{
+    width: 20px;
+}

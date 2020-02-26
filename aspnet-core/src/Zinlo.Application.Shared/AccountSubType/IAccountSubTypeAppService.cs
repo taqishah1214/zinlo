@@ -16,5 +16,7 @@ namespace Zinlo.AccountSubType
         Task<PagedResultDto<GetAccountSubTypeForViewDto>> GetAll(GetAllAccountSubTypeInput input);
 
         Task<CreateOrEditAccountSubTypeDto> GetAccountSubTypeForEdit(long id);
+
+        Task<List<NameValueDto<long>>> AccountSubTypeDropDown();
     }
 }

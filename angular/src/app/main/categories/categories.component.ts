@@ -7,8 +7,6 @@ import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import * as _ from 'lodash';
 import { CategoriesServiceProxy } from '@shared/service-proxies/service-proxies';
-
-
 @Component({
     templateUrl: './categories.component.html',
     styleUrls: ['./categories.component.css'],
@@ -19,10 +17,7 @@ export class CategoriesComponent extends AppComponentBase {
 
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
-
     @Output() recordid = new EventEmitter<number>();
-
-
     advancedFiltersAreShown = false;
     filterText = '';
     titleFilter = '';
@@ -35,22 +30,16 @@ export class CategoriesComponent extends AppComponentBase {
         private _router: Router
     ) {
         super(injector);
-
     }
     ngOnInit() {
-        
     }
 
     getCategories(event?: LazyLoadEvent) {
-        
-      
         if (this.primengTableHelper.shouldResetPaging(event)) {
             this.paginator.changePage(0);
             return;
         }
-
         this.primengTableHelper.showLoadingIndicator();
-
         this._categoriesServiceProxy.getAll(
             this.filterText,
             this.titleFilter,
@@ -68,17 +57,14 @@ export class CategoriesComponent extends AppComponentBase {
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
     }
-
     createCategory(): void {
         this.EditRecordId = 0;
         this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 } } });
     }
-
     editCategory(id: any): void {
         this.recordid = id;
         this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: this.recordid } } });
     }
-
     deleteCategory(id: number): void {
         this.message.confirm(
             '',

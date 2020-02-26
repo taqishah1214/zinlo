@@ -5,7 +5,7 @@
                 <div class="kt-subheader__main">
                     <h3 class="kt-subheader__title">
                         <img src="./assets/media/ClosingCheckList/clipboard.svg" alt="clipboard">
-                        <span>Checklist</span>
+                        <span> Checklist</span>
                     </h3>
                     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
                     <span class="kt-subheader__desc">
@@ -14,7 +14,6 @@
                 </div>
                 <div class="kt-subheader__toolbar">
                     <div class="kt-subheader__wrapper">
-                        <!-- <button class="btn btn-primary"><i class="fa fa-plus"></i></button> -->
                     </div>
                 </div>
             </div>
@@ -28,7 +27,7 @@
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
-                        <a href="javascript: void(0);" (click)="backToTaskList()">
+                        <a href="javascript: void(0);" (click)="redirectToTaskList()">
                             <i class="la la-arrow-left"></i>
                             Back
                         </a>
@@ -48,6 +47,8 @@
                                             <form class="input-arrow">
                                                 <input [(ngModel)]="checklist.closingMonth" autocomplete="off"
                                                     class="form-control" name="date" bsDatepicker
+                                                    placeholder="Select Month" class="form-control" name="date"
+                                                    bsDatepicker [minDate]="minDate"
                                                     [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
@@ -58,15 +59,16 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="email"> Task Name</label>
-                                        <input type="text" class="form-control bsDatepicker"
+                                        <label for="taskName"> Task Name</label>
+                                        <input type="text" class="form-control" placeholder="Enter Task Name"
                                             [(ngModel)]="checklist.taskName">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Assignee</label>
-                                        <app-user-list-component></app-user-list-component>
+                                        <app-user-list-component comingChangeReguest="" userId={{0}}>
+                                        </app-user-list-component>
                                     </div>
                                 </div>
                             </div>
@@ -77,8 +79,8 @@
                                         <div (click)="commentClick()">
                                             <div class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic">
-                                                    <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                        {{userSignInName}}</div>
+                                                    <div class="kt-badge kt-badge--xl kt-badge--primary">
+                                                        {{userSignInName  | firstLetterOfWords}}</div>
                                                 </div>
                                                 <div innerHTML="{{checklist.commentBody}}"
                                                     class="form-control create-comments"></div>
@@ -88,7 +90,8 @@
 
                                     <div class="form-group" *ngIf="commantModal">
                                         <label>Comments</label>
-                                        <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput"
+                                        <p-editor [(ngModel)]="checklist.commentBody"
+                                            (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
                                         </p-editor>
                                         <button class="btn btn-brand" (click)="onComment()">Comment</button>
@@ -120,9 +123,7 @@
                                             <option value="1">Monthly</option>
                                             <option value="2">Quarterly</option>
                                             <option value="3">Annually</option>
-                                            <option value="4">XNumberOfMonths</option>
-
-
+                                            <option value="4">EveryXNumberOfMonths</option>
                                         </select>
                                     </div>
                                     <div class="form-group ">
@@ -136,8 +137,8 @@
                                                     </label>
                                                 </span>
                                             </div>
-                                            <select class="form-control input-medium" (change)="onDayChange()"
-                                                [(ngModel)]="checklist.dueOn">
+                                            <select class="border border-default bg-white form-control input-medium"
+                                                (change)="onDayChange()" [(ngModel)]="checklist.dueOn">
                                                 <option *ngFor="let item of days;" [value]="item.value">
                                                     {{item.name}}
                                                 </option>
@@ -145,23 +146,23 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                       <div class="col-12">
+                                        <div class="col-12">
                                             <span>{{SelectionMsg}}</span>
-                                       </div>
+                                        </div>
                                     </div>
-
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>No of Months</label>
                                         <input type="text" name="noOfMonths" [disabled]="enableValue == false"
-                                            class="form-control bsDatepicker" [(ngModel)]="checklist.noOfMonths">
+                                            placeholder="Enter Number" class="form-control bsDatepicker"
+                                            [(ngModel)]="checklist.noOfMonths">
                                     </div>
                                     <div class="form-group">
                                         <label>&nbsp;&nbsp;</label>
                                         <select class="bg-white border form-control input-medium"
-                                            (change)="onDaysClick($event.target.value)"
-                                            [(ngModel)]="checklist.dayBeforeAfter">
+                                            (change)="onDaysClick($event.target.value)">
+                                            <option [value]="undefined" disabled hidden>Days Before</option>
                                             <option value=true>Days Before</option>
                                             <option value=false>Days After</option>
                                         </select>
@@ -173,6 +174,7 @@
                                         <form class="input-arrow">
                                             <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker
+                                                placeholder="Month" [minDate]="minDate"
                                                 [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                 (onShown)="onOpenCalendar($event)">
                                         </form>
@@ -180,7 +182,7 @@
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" value="true" name="radioButton"
+                                            <input type="radio" value="true" name="radioButton" placeholder="Month"
                                                 (change)="handleRadioChange()" [(ngModel)]="checklist.endOfMonth">End of
                                             month
                                             <span></span>
@@ -188,8 +190,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
-
                             <div class="drag_drop_box">
                                 <label class="bg-color">Attachments</label>
                                 <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>

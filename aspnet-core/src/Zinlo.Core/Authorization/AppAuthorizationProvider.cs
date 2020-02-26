@@ -43,6 +43,12 @@ namespace Zinlo.Authorization
             categories.CreateChildPermission(AppPermissions.Pages_Categories_Delete, L("DeleteCategory"), multiTenancySides: MultiTenancySides.Tenant);
 
 
+            var chartofAccounts = pages.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts, L("ChartsofAccounts"), multiTenancySides: MultiTenancySides.Tenant);
+            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Create, L("CreateNewChartsofAccounts"), multiTenancySides: MultiTenancySides.Tenant);
+            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Edit, L("EditChartsofAccounts"), multiTenancySides: MultiTenancySides.Tenant);
+            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Delete, L("DeleteChartsofAccounts"), multiTenancySides: MultiTenancySides.Tenant);
+
+
             pages.CreateChildPermission(AppPermissions.Pages_DemoUiComponents, L("DemoUiComponents"));
 
             var administration = pages.CreateChildPermission(AppPermissions.Pages_Administration, L("Administration"));

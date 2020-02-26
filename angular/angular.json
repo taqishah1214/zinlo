@@ -53,7 +53,8 @@
               "src/app/shared/core.less",
               "src/app/shared/layout/layout.less",
               "src/styles.css",
-              "src/ignite-styles.scss"
+              "src/ignite-styles.scss",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
             "scripts": [
               "node_modules/@aspnet/signalr/dist/browser/signalr.min.js",
@@ -155,7 +156,8 @@
               
               "src/app/shared/core.less",
               "src/app/shared/layout/layout.less",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
             "scripts": [
               "node_modules/@aspnet/signalr/dist/browser/signalr.min.js",

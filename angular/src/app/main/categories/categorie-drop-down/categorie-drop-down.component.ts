@@ -26,6 +26,7 @@ export class CategorieDropDownComponent implements OnInit {
    ) {
 }
   ngOnInit() {
+    this.categoryName = "Select Category"
     this._categoryService.categoryDropDown().subscribe(result => {
       this.categoriesList = result;
     });

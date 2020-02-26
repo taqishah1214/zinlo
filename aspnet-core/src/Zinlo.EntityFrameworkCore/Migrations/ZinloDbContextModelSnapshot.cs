@@ -1447,6 +1447,49 @@ namespace Zinlo.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Zinlo.ChartsofAccount.ChartsofAccount", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("AccountName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("text");
+
+                    b.Property<long>("AccountSubTypeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("AccountType")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("AssigneeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ReconciliationType")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountSubTypeId");
+
+                    b.HasIndex("AssigneeId");
+
+                    b.ToTable("ChartsofAccount");
+                });
+
             modelBuilder.Entity("Zinlo.Chat.ChatMessage", b =>
                 {
                     b.Property<long>("Id")
@@ -2125,6 +2168,21 @@ namespace Zinlo.Migrations
                     b.HasOne("Zinlo.Authorization.Users.User", "LastModifierUser")
                         .WithMany()
                         .HasForeignKey("LastModifierUserId");
+                });
+
+            modelBuilder.Entity("Zinlo.ChartsofAccount.ChartsofAccount", b =>
+                {
+                    b.HasOne("Zinlo.AccountSubType.AccountSubType", "AccountSubType")
+                        .WithMany()
+                        .HasForeignKey("AccountSubTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Zinlo.Authorization.Users.User", "Assignee")
+                        .WithMany()
+                        .HasForeignKey("AssigneeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Zinlo.ClosingChecklist.ClosingChecklist", b =>

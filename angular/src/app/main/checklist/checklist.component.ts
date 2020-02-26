@@ -16,6 +16,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
+  filterStatus: number = 0;
   advancedFiltersAreShown = false;
   filterText = '';
   titleFilter = '';
@@ -33,7 +34,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   id: number;
   AssigniInputBox: boolean;
   AssigniBoxView: boolean;
-  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green"]
+  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green","bg-gray"]
   FilterBoxOpen: boolean;
   public rowId: number = 0;
   changeStatus: ChangeStatusDto = new ChangeStatusDto();
@@ -52,10 +53,12 @@ export class Checklist extends AppComponentBase implements OnInit {
   currentMonth: string
   currentYear: Number;
   rowid: number;
+  getTaskWithAssigneeId : number = 0;
   yearCount : number;
   collapsibleRow : boolean
   collapsibleRowId : number;
   monthCount : number =1;
+  updateAssigneeOnHeader : boolean = true
   monthsArray = new Array("January", "February", "March",
     "April", "May", "June", "July", "August", "September",
     "October", "Novemeber", "December");
@@ -65,9 +68,13 @@ export class Checklist extends AppComponentBase implements OnInit {
     private _categoryService: CategoriesServiceProxy,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector) {
     super(injector)
-    this.FilterBoxOpen = false;
+    this.FilterBoxOpen = false;   
   }
   ngOnInit() {
+    this.initializePageParameters();
+    this.loadCategories();
+  }
+  initializePageParameters():void{
     this.minDate = new Date(new Date().getFullYear(), 0O0, 0O5, 17, 23, 42, 11);
     this.maxDate = new Date(new Date().getFullYear(), 0O11, 0O5, 17, 23, 42, 11);
     this.AssigniInputBox = false;
@@ -78,9 +85,10 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.monthCount = curr_month;
     this.currentMonth = this.monthsArray[curr_month]
     this.yearCount = 1;
-    this.collapsibleRow = false
-    this.loadCategories();
+    this.collapsibleRow = false;
+    this.currentDate = new Date();
   }
+
   openFieldUpdateAssignee(record) {
     this.rowid = record;
   }
@@ -95,76 +103,80 @@ export class Checklist extends AppComponentBase implements OnInit {
     };
     container.setViewMode('month');
   }
-  monthChangeHeader(operation): void {
 
-    if (this.monthCount == -1) {
-      this.monthCount = 12;
-      this.currentYear = this.currentDate.getFullYear() - (Math.abs(this.yearCount));
-      --this.yearCount;
+  calculateDate(preNext):void{
+    this.updateAssigneeOnHeader = true
+    if(preNext == 1)
+    {
+       var month = this.currentDate.getMonth();
+       this.currentMonth = this.monthsArray[month];
+       var year = this.currentDate.getFullYear();
+       this.currentYear = year;
+       if(month != 11)
+       {
+         this.currentDate.setMonth(month + 1);
+         var month1 = this.currentDate.getMonth();
+         this.currentMonth =this.monthsArray[month1];
+         var index = this.monthsArray.indexOf(this.currentMonth)+ 1;
+         this.monthFilter = index + "/"+ this.currentYear;
+         this.monthValue = null;
+         this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
+         this.updateAssigneeOnHeader = true;
+         this.getClosingCheckListAllTasks();
+       }
+       else if(month == 11)
+       {
+        var year = this.currentDate.getFullYear();
+          this.currentDate.setFullYear(year + 1);
+         this.currentDate.setMonth(0);
+        var year1 = this.currentDate.getFullYear();
+        this.currentYear = year1;
+         this.currentMonth =this.monthsArray[0];
+         var index = this.monthsArray.indexOf(this.currentMonth)+ 1;
+         this.monthFilter = index + "/"+ this.currentYear;
+         this.monthValue = null;
+         this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
+         this.updateAssigneeOnHeader = true;
+         this.getClosingCheckListAllTasks();
+       }
+    }
+    else if(preNext == -1)
+    {
+      var monthIndex = this.currentDate.getMonth();
+       this.currentMonth = this.monthsArray[monthIndex];
+       var year = this.currentDate.getFullYear();
+       this.currentYear = year;
+       if(monthIndex != 0)
+       {
+         this.currentDate.setMonth(monthIndex - 1);
+         var month1 = this.currentDate.getMonth();
+         this.currentMonth =this.monthsArray[month1];
+         var index = this.monthsArray.indexOf(this.currentMonth)+ 1;
+         this.monthFilter = index + "/"+ this.currentYear;
+         this.monthValue = null;
+         this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
+         this.updateAssigneeOnHeader = true;
+         this.getClosingCheckListAllTasks();
+       }
+       else if(monthIndex == 0 )
+       {
+        var year = this.currentDate.getFullYear();
+          this.currentDate.setFullYear(year - 1);
+         this.currentDate.setMonth(11);
+        var year1 = this.currentDate.getFullYear();
+        this.currentYear = year1;
+         this.currentMonth =this.monthsArray[11];
+         var index = this.monthsArray.indexOf(this.currentMonth) + 1;
+         this.monthFilter = index + "/"+ this.currentYear;
+         this.monthValue = null;
+         this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
+         this.updateAssigneeOnHeader = true;
+         this.getClosingCheckListAllTasks();
+       }
 
     }
-    if (operation == 1) {
-      debugger
-      this.currentMonth = this.monthsArray[this.monthCount];
-      console.log("logged date change by ihsan",this.currentMonth);
-      console.log("Current year",this.currentYear);
-      var index = this.monthsArray.indexOf(this.currentMonth) + 1;
-      this.monthFilter = index + "/"+ this.currentYear;
-      this.getClosingCheckListAllTasks();
-      ++this.monthCount
-    }
-    else {
-      debugger
-      if (this.monthCount == 0) {
-        this.monthCount = 12;
-        this.currentYear = this.currentDate.getFullYear() - (Math.abs(this.yearCount));
-        --this.yearCount;
-      }
-      this.currentMonth = this.monthsArray[this.monthCount]
-      --this.monthCount
-
-    }
-    if (this.monthCount == 12) {
-      this.monthCount = 0;
-      this.currentYear = this.currentDate.getFullYear() + this.yearCount;
-      ++this.yearCount;
-
-    }
-
   }
-
-  addInput(i) {
-    this.rowid = 0;
-    i.assigniName = i.text;
-    i.assigneeId = this.assigneeId;
-    this.openFieldUpdateAssignee;
-    if (this.users) {
-      this.assigneeId = this.users.filter(a => {
-        if (a.name == i.assigniName) {
-          return a.value;
-        }
-      });
-      this.taskId = i.id;
-      this.updatedAssigneeId = this.assigneeId[0].value;
-      this.changeAssigniDto.assigneeId = this.updatedAssigneeId;
-      this.changeAssigniDto.taskId = this.taskId;
-      this._closingChecklistService.changeAssignee(this.changeAssigniDto).subscribe(result => {
-        this.getTaskForEdit = result;
-        this.getClosingCheckListAllTasks();
-      });
-    }
-  }
-
-  onSearchUsers(event): void {
-    this._closingChecklistService.userAutoFill(event.query).subscribe(result => {
-      this.users = result;
-      this.userName = result.map(a => a.name);
-    });
-
-  }
-  //Start
   getClosingCheckListAllTasks(event?: LazyLoadEvent) {
-
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
       return;
@@ -178,6 +190,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.statusFilter,
       moment(this.dateFilter),
       this.monthFilter,
+      this.getTaskWithAssigneeId,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -189,23 +202,19 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.ClosingCheckList = result.items
       this.ClosingCheckList.forEach(j => {
         j.group.forEach(i => {
-          var firstCharacterForAvatar = i.assigniName[0].toUpperCase();
-          var lastCharacterForAvatar = i.assigniName.substr(i.assigniName.indexOf(' ') + 1)[0].toUpperCase();
-          i["NameAvatar"] = firstCharacterForAvatar + lastCharacterForAvatar;
           if (i.status === "NotStarted") {
-            i["StatusColor"] = this.StatusColorBox[0]
+            i["StatusColor"] = this.StatusColorBox[3]
           }
           else if (i.status === "InProcess") {
-            i["StatusColor"] = this.StatusColorBox[1]
+            i["StatusColor"] = this.StatusColorBox[0]
           }
           else if (i.status === "OnHold") {
-            i["StatusColor"] = this.StatusColorBox[2]
+            i["StatusColor"] = this.StatusColorBox[1]
           }
           else if (i.status === "Completed") {
             i["StatusColor"] = this.StatusColorBox[2]
           }
          
-            this.assigniNameForHeader.push({ assigniName: i.assigniName, assigneeId: i.assigneeId,profilePicture : i.profilePicture});
             if (i.statusId == 1) {
               i.status = "Not Started";
             }
@@ -218,12 +227,17 @@ export class Checklist extends AppComponentBase implements OnInit {
             else if (i.statusId == 4) {
               i.status = "Completed";
             }
-         
-        });       
+        });
+        if (this.updateAssigneeOnHeader === true)
+        {
+          this.assigniNameForHeader = [];
+          this.plusUserBadgeForHeader = false
+          this.remainingUserForHeader = [];
+          this.assigniNameForHeader = j.overallMonthlyAssignee; 
+        }
       });
-
-      this.assigniNameForHeader = this.getUnique(this.assigniNameForHeader, "assigneeId")
-
+      if (this.updateAssigneeOnHeader === true)
+      {
       if (this.assigniNameForHeader.length > 5)
       {
         this.remainingUserForHeader = [];
@@ -236,26 +250,18 @@ export class Checklist extends AppComponentBase implements OnInit {
         }
         this.assigniNameForHeader = limitedUserNameForHeader
         this.plusUserBadgeForHeader = true
-
       }
+      this.updateAssigneeOnHeader = false;
+    }
+      
     });
   }
-  //End
-  GetUserTasks(userId) {
-    this.ClosingCheckList.forEach(i => {
-
-      if (i.closingCheckListForViewDto.assigneeId === userId) {
-        this.UserSpecficClosingCheckList.push(this.ClosingCheckList[i])
-      }
-      else {
-
-      }
-    });
-    this.ClosingCheckList = this.UserSpecficClosingCheckList
+  GetUserTasks(id) {
+    this.getTaskWithAssigneeId = id;
+    this.getClosingCheckListAllTasks();
   }
 
-  getUnique(arr, comp) {
-
+  getUniqueNamesByAssignee(arr, comp) {
     const unique = arr
       .map(e => e[comp])
       .map((e, i, final) => final.indexOf(e) === i && i)
@@ -285,22 +291,29 @@ export class Checklist extends AppComponentBase implements OnInit {
     this._router.navigate(['/app/main/checklist/task-details'], { state: { data: { id: recordId } } });
 
   }
-  //Filters
   filterByStatus(event): void {
     this.statusFilter = event.target.value.toString();
+    this.updateAssigneeOnHeader = false;
     this.getClosingCheckListAllTasks();
   }
   filterByCategory(event): void {
     this.categoryFilter = event.target.value.toString();
+    this.updateAssigneeOnHeader = false;
     this.getClosingCheckListAllTasks();
   }
   filterByDate(event): void {
     this.dateFilter = event;
+    this.updateAssigneeOnHeader = false;
     this.getClosingCheckListAllTasks();
   }
   filterByMonth(event):void{
    var month =  event.getMonth() + 1;
-   this.monthFilter = month +"/"+ new Date().getFullYear()
+   this.monthFilter = month +"/"+ event.getFullYear()
+    this.assigniNameForHeader = [];
+    this.remainingUserForHeader = [];
+    this.updateAssigneeOnHeader = true
+   this.currentYear =  event.getFullYear();
+   this.currentMonth = this.monthsArray[month-1];;
    this.getClosingCheckListAllTasks();
   }
   loadCategories(): void {
@@ -312,6 +325,10 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.statusFilter = 0;
     this.categoryFilter = 0;
     this.dateFilter = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
+    this.titleFilter = '';
+    this.filterStatus = 0;
+    this.getTaskWithAssigneeId = 0;
+    this.updateAssigneeOnHeader = true;
     this.getClosingCheckListAllTasks();
   }
 

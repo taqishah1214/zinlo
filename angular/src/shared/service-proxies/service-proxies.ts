@@ -691,6 +691,61 @@ export class AccountSubTypeServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    accountSubTypeDropDown(): Observable<NameValueDtoOfInt64[]> {
+        let url_ = this.baseUrl + "/api/services/app/AccountSubType/AccountSubTypeDropDown";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAccountSubTypeDropDown(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAccountSubTypeDropDown(<any>response_);
+                } catch (e) {
+                    return <Observable<NameValueDtoOfInt64[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<NameValueDtoOfInt64[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAccountSubTypeDropDown(response: HttpResponseBase): Observable<NameValueDtoOfInt64[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(NameValueDtoOfInt64.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<NameValueDtoOfInt64[]>(<any>null);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -2184,6 +2239,311 @@ export class CategoriesServiceProxy {
 }
 
 @Injectable()
+export class ChartsofAccountServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param accountType (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | undefined, accountType: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetAll?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (accountType === null)
+            throw new Error("The parameter 'accountType' cannot be null.");
+        else if (accountType !== undefined)
+            url_ += "AccountType=" + encodeURIComponent("" + accountType) + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfChartsofAccoutsForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfChartsofAccoutsForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfChartsofAccoutsForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfChartsofAccoutsForViewDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditChartsofAccountDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAccountForEdit(id: number | undefined): Observable<GetAccountForEditDto> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetAccountForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAccountForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAccountForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetAccountForEditDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetAccountForEditDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAccountForEdit(response: HttpResponseBase): Observable<GetAccountForEditDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetAccountForEditDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetAccountForEditDto>(<any>null);
+    }
+
+    /**
+     * @param accountId (optional) 
+     * @param assigneeId (optional) 
+     * @return Success
+     */
+    changeAccountsAssignee(accountId: number | undefined, assigneeId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/ChangeAccountsAssignee?";
+        if (accountId === null)
+            throw new Error("The parameter 'accountId' cannot be null.");
+        else if (accountId !== undefined)
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+        if (assigneeId === null)
+            throw new Error("The parameter 'assigneeId' cannot be null.");
+        else if (assigneeId !== undefined)
+            url_ += "assigneeId=" + encodeURIComponent("" + assigneeId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangeAccountsAssignee(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangeAccountsAssignee(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processChangeAccountsAssignee(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
 export class ChatServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -2382,12 +2742,13 @@ export class ClosingChecklistServiceProxy {
      * @param statusFilter (optional) 
      * @param dateFilter (optional) 
      * @param monthFilter (optional) 
+     * @param assigneeId (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, monthFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
+    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, monthFilter: string | undefined, assigneeId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -2413,6 +2774,10 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'monthFilter' cannot be null.");
         else if (monthFilter !== undefined)
             url_ += "MonthFilter=" + encodeURIComponent("" + monthFilter) + "&"; 
+        if (assigneeId === null)
+            throw new Error("The parameter 'assigneeId' cannot be null.");
+        else if (assigneeId !== undefined)
+            url_ += "AssigneeId=" + encodeURIComponent("" + assigneeId) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -2525,14 +2890,19 @@ export class ClosingChecklistServiceProxy {
 
     /**
      * @param searchTerm (optional) 
+     * @param id (optional) 
      * @return Success
      */
-    userAutoFill(searchTerm: string | undefined): Observable<NameValueDtoOfString[]> {
-        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/UserAutoFill?";
+    getUserWithPicture(searchTerm: string | undefined, id: number | undefined): Observable<GetUserWithPicture[]> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetUserWithPicture?";
         if (searchTerm === null)
             throw new Error("The parameter 'searchTerm' cannot be null.");
         else if (searchTerm !== undefined)
             url_ += "searchTerm=" + encodeURIComponent("" + searchTerm) + "&"; 
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2543,21 +2913,21 @@ export class ClosingChecklistServiceProxy {
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUserAutoFill(response_);
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserWithPicture(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processUserAutoFill(<any>response_);
+                    return this.processGetUserWithPicture(<any>response_);
                 } catch (e) {
-                    return <Observable<NameValueDtoOfString[]>><any>_observableThrow(e);
+                    return <Observable<GetUserWithPicture[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<NameValueDtoOfString[]>><any>_observableThrow(response_);
+                return <Observable<GetUserWithPicture[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processUserAutoFill(response: HttpResponseBase): Observable<NameValueDtoOfString[]> {
+    protected processGetUserWithPicture(response: HttpResponseBase): Observable<GetUserWithPicture[]> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -2571,7 +2941,7 @@ export class ClosingChecklistServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(NameValueDtoOfString.fromJS(item));
+                    result200!.push(GetUserWithPicture.fromJS(item));
             }
             return _observableOf(result200);
             }));
@@ -2580,7 +2950,7 @@ export class ClosingChecklistServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<NameValueDtoOfString[]>(<any>null);
+        return _observableOf<GetUserWithPicture[]>(<any>null);
     }
 
     /**
@@ -2959,6 +3329,245 @@ export class ClosingChecklistServiceProxy {
             }));
         }
         return _observableOf<NameValueDtoOfString[]>(<any>null);
+    }
+
+    /**
+     * @param closingDate (optional) 
+     * @param endDate (optional) 
+     * @return Success
+     */
+    getNumberOfMonthsBetweenDates(closingDate: moment.Moment | undefined, endDate: moment.Moment | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetNumberOfMonthsBetweenDates?";
+        if (closingDate === null)
+            throw new Error("The parameter 'closingDate' cannot be null.");
+        else if (closingDate !== undefined)
+            url_ += "ClosingDate=" + encodeURIComponent(closingDate ? "" + closingDate.toJSON() : "") + "&"; 
+        if (endDate === null)
+            throw new Error("The parameter 'endDate' cannot be null.");
+        else if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent(endDate ? "" + endDate.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNumberOfMonthsBetweenDates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNumberOfMonthsBetweenDates(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetNumberOfMonthsBetweenDates(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param numberOfMonths (optional) 
+     * @param frequency (optional) 
+     * @return Success
+     */
+    getNumberOfTaskIterationCount(numberOfMonths: number | undefined, frequency: number | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetNumberOfTaskIterationCount?";
+        if (numberOfMonths === null)
+            throw new Error("The parameter 'numberOfMonths' cannot be null.");
+        else if (numberOfMonths !== undefined)
+            url_ += "numberOfMonths=" + encodeURIComponent("" + numberOfMonths) + "&"; 
+        if (frequency === null)
+            throw new Error("The parameter 'frequency' cannot be null.");
+        else if (frequency !== undefined)
+            url_ += "frequency=" + encodeURIComponent("" + frequency) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNumberOfTaskIterationCount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNumberOfTaskIterationCount(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetNumberOfTaskIterationCount(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param closingMonth (optional) 
+     * @param frequency (optional) 
+     * @return Success
+     */
+    getClosingMonthByIterationNumber(closingMonth: moment.Moment | undefined, frequency: number | undefined): Observable<moment.Moment> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetClosingMonthByIterationNumber?";
+        if (closingMonth === null)
+            throw new Error("The parameter 'closingMonth' cannot be null.");
+        else if (closingMonth !== undefined)
+            url_ += "closingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
+        if (frequency === null)
+            throw new Error("The parameter 'frequency' cannot be null.");
+        else if (frequency !== undefined)
+            url_ += "frequency=" + encodeURIComponent("" + frequency) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetClosingMonthByIterationNumber(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetClosingMonthByIterationNumber(<any>response_);
+                } catch (e) {
+                    return <Observable<moment.Moment>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<moment.Moment>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetClosingMonthByIterationNumber(response: HttpResponseBase): Observable<moment.Moment> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? moment(resultData200.toString()) : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<moment.Moment>(<any>null);
+    }
+
+    /**
+     * @param frequency (optional) 
+     * @return Success
+     */
+    getFrequencyValue(frequency: number | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetFrequencyValue?";
+        if (frequency === null)
+            throw new Error("The parameter 'frequency' cannot be null.");
+        else if (frequency !== undefined)
+            url_ += "frequency=" + encodeURIComponent("" + frequency) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFrequencyValue(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFrequencyValue(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFrequencyValue(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
     }
 }
 
@@ -13842,6 +14451,46 @@ export interface ICreateOrEditAccountSubTypeDto {
     id: number | undefined;
 }
 
+export class NameValueDtoOfInt64 implements INameValueDtoOfInt64 {
+    name!: string | undefined;
+    value!: number;
+
+    constructor(data?: INameValueDtoOfInt64) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.value = data["value"];
+        }
+    }
+
+    static fromJS(data: any): NameValueDtoOfInt64 {
+        data = typeof data === 'object' ? data : {};
+        let result = new NameValueDtoOfInt64();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["value"] = this.value;
+        return data; 
+    }
+}
+
+export interface INameValueDtoOfInt64 {
+    name: string | undefined;
+    value: number;
+}
+
 export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto {
     title!: string | undefined;
     description!: string | undefined;
@@ -14748,11 +15397,19 @@ export interface IGetCategoryForEditOutput {
     category: CreateOrEditCategoryDto;
 }
 
-export class NameValueDtoOfInt64 implements INameValueDtoOfInt64 {
-    name!: string | undefined;
-    value!: number;
+export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
+    id!: number;
+    accountName!: string | undefined;
+    accountNumber!: string | undefined;
+    accountTypeId!: number;
+    accountSubTypeId!: number;
+    accountSubType!: string | undefined;
+    reconciliationTypeId!: number;
+    assigneeName!: string | undefined;
+    profilePicture!: string | undefined;
+    assigneeId!: number;
 
-    constructor(data?: INameValueDtoOfInt64) {
+    constructor(data?: IChartsofAccoutsForViewDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -14763,29 +15420,240 @@ export class NameValueDtoOfInt64 implements INameValueDtoOfInt64 {
 
     init(data?: any) {
         if (data) {
-            this.name = data["name"];
-            this.value = data["value"];
+            this.id = data["id"];
+            this.accountName = data["accountName"];
+            this.accountNumber = data["accountNumber"];
+            this.accountTypeId = data["accountTypeId"];
+            this.accountSubTypeId = data["accountSubTypeId"];
+            this.accountSubType = data["accountSubType"];
+            this.reconciliationTypeId = data["reconciliationTypeId"];
+            this.assigneeName = data["assigneeName"];
+            this.profilePicture = data["profilePicture"];
+            this.assigneeId = data["assigneeId"];
         }
     }
 
-    static fromJS(data: any): NameValueDtoOfInt64 {
+    static fromJS(data: any): ChartsofAccoutsForViewDto {
         data = typeof data === 'object' ? data : {};
-        let result = new NameValueDtoOfInt64();
+        let result = new ChartsofAccoutsForViewDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["value"] = this.value;
+        data["id"] = this.id;
+        data["accountName"] = this.accountName;
+        data["accountNumber"] = this.accountNumber;
+        data["accountTypeId"] = this.accountTypeId;
+        data["accountSubTypeId"] = this.accountSubTypeId;
+        data["accountSubType"] = this.accountSubType;
+        data["reconciliationTypeId"] = this.reconciliationTypeId;
+        data["assigneeName"] = this.assigneeName;
+        data["profilePicture"] = this.profilePicture;
+        data["assigneeId"] = this.assigneeId;
         return data; 
     }
 }
 
-export interface INameValueDtoOfInt64 {
-    name: string | undefined;
-    value: number;
+export interface IChartsofAccoutsForViewDto {
+    id: number;
+    accountName: string | undefined;
+    accountNumber: string | undefined;
+    accountTypeId: number;
+    accountSubTypeId: number;
+    accountSubType: string | undefined;
+    reconciliationTypeId: number;
+    assigneeName: string | undefined;
+    profilePicture: string | undefined;
+    assigneeId: number;
+}
+
+export class PagedResultDtoOfChartsofAccoutsForViewDto implements IPagedResultDtoOfChartsofAccoutsForViewDto {
+    totalCount!: number;
+    items!: ChartsofAccoutsForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfChartsofAccoutsForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items!.push(ChartsofAccoutsForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfChartsofAccoutsForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfChartsofAccoutsForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfChartsofAccoutsForViewDto {
+    totalCount: number;
+    items: ChartsofAccoutsForViewDto[] | undefined;
+}
+
+export enum AccountType {
+    Fixed = 1,
+    Assets = 2,
+    Liability = 3,
+}
+
+export enum ReconciliationType {
+    Itemized = 1,
+    Amortization = 2,
+}
+
+export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAccountDto {
+    accountName!: string | undefined;
+    accountNumber!: string | undefined;
+    accountType!: AccountType;
+    reconciliationType!: ReconciliationType;
+    accountSubTypeId!: number;
+    assigneeId!: number;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditChartsofAccountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.accountName = data["accountName"];
+            this.accountNumber = data["accountNumber"];
+            this.accountType = data["accountType"];
+            this.reconciliationType = data["reconciliationType"];
+            this.accountSubTypeId = data["accountSubTypeId"];
+            this.assigneeId = data["assigneeId"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditChartsofAccountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditChartsofAccountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["accountName"] = this.accountName;
+        data["accountNumber"] = this.accountNumber;
+        data["accountType"] = this.accountType;
+        data["reconciliationType"] = this.reconciliationType;
+        data["accountSubTypeId"] = this.accountSubTypeId;
+        data["assigneeId"] = this.assigneeId;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditChartsofAccountDto {
+    accountName: string | undefined;
+    accountNumber: string | undefined;
+    accountType: AccountType;
+    reconciliationType: ReconciliationType;
+    accountSubTypeId: number;
+    assigneeId: number;
+    id: number | undefined;
+}
+
+export class GetAccountForEditDto implements IGetAccountForEditDto {
+    id!: number;
+    accountName!: string | undefined;
+    accountNumber!: string | undefined;
+    accountSubType!: string | undefined;
+    assigniName!: string | undefined;
+    assigniId!: number;
+    reconcillationType!: number;
+    accountType!: number;
+    accountSubTypeId!: number;
+
+    constructor(data?: IGetAccountForEditDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.accountName = data["accountName"];
+            this.accountNumber = data["accountNumber"];
+            this.accountSubType = data["accountSubType"];
+            this.assigniName = data["assigniName"];
+            this.assigniId = data["assigniId"];
+            this.reconcillationType = data["reconcillationType"];
+            this.accountType = data["accountType"];
+            this.accountSubTypeId = data["accountSubTypeId"];
+        }
+    }
+
+    static fromJS(data: any): GetAccountForEditDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAccountForEditDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["accountName"] = this.accountName;
+        data["accountNumber"] = this.accountNumber;
+        data["accountSubType"] = this.accountSubType;
+        data["assigniName"] = this.assigniName;
+        data["assigniId"] = this.assigniId;
+        data["reconcillationType"] = this.reconcillationType;
+        data["accountType"] = this.accountType;
+        data["accountSubTypeId"] = this.accountSubTypeId;
+        return data; 
+    }
+}
+
+export interface IGetAccountForEditDto {
+    id: number;
+    accountName: string | undefined;
+    accountNumber: string | undefined;
+    accountSubType: string | undefined;
+    assigniName: string | undefined;
+    assigniId: number;
+    reconcillationType: number;
+    accountType: number;
+    accountSubTypeId: number;
 }
 
 export enum FriendshipState {
@@ -15075,6 +15943,50 @@ export interface IMarkAllUnreadMessagesOfUserAsReadInput {
     userId: number;
 }
 
+export class GetUserWithPicture implements IGetUserWithPicture {
+    id!: number;
+    name!: string | undefined;
+    picture!: string | undefined;
+
+    constructor(data?: IGetUserWithPicture) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.picture = data["picture"];
+        }
+    }
+
+    static fromJS(data: any): GetUserWithPicture {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetUserWithPicture();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["picture"] = this.picture;
+        return data; 
+    }
+}
+
+export interface IGetUserWithPicture {
+    id: number;
+    name: string | undefined;
+    picture: string | undefined;
+}
+
 export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
     taskName!: string | undefined;
     category!: string | undefined;
@@ -15144,6 +16056,7 @@ export interface IClosingCheckListForViewDto {
 }
 
 export class TasksGroup implements ITasksGroup {
+    overallMonthlyAssignee!: GetUserWithPicture[] | undefined;
     creationTime!: moment.Moment;
     group!: ClosingCheckListForViewDto[] | undefined;
     closingCheckListForViewDto!: ClosingCheckListForViewDto;
@@ -15162,6 +16075,11 @@ export class TasksGroup implements ITasksGroup {
 
     init(data?: any) {
         if (data) {
+            if (Array.isArray(data["overallMonthlyAssignee"])) {
+                this.overallMonthlyAssignee = [] as any;
+                for (let item of data["overallMonthlyAssignee"])
+                    this.overallMonthlyAssignee!.push(GetUserWithPicture.fromJS(item));
+            }
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             if (Array.isArray(data["group"])) {
                 this.group = [] as any;
@@ -15184,6 +16102,11 @@ export class TasksGroup implements ITasksGroup {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.overallMonthlyAssignee)) {
+            data["overallMonthlyAssignee"] = [];
+            for (let item of this.overallMonthlyAssignee)
+                data["overallMonthlyAssignee"].push(item.toJSON());
+        }
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         if (Array.isArray(this.group)) {
             data["group"] = [];
@@ -15199,6 +16122,7 @@ export class TasksGroup implements ITasksGroup {
 }
 
 export interface ITasksGroup {
+    overallMonthlyAssignee: GetUserWithPicture[] | undefined;
     creationTime: moment.Moment;
     group: ClosingCheckListForViewDto[] | undefined;
     closingCheckListForViewDto: ClosingCheckListForViewDto;
@@ -15267,6 +16191,7 @@ export enum FrequencyDto {
     Quarterly = 2,
     Annually = 3,
     XNumberOfMonths = 4,
+    None = 5,
 }
 
 export class CommentDto implements ICommentDto {
@@ -15275,7 +16200,7 @@ export class CommentDto implements ICommentDto {
     body!: string | undefined;
     userName!: string | undefined;
     creationDateTime!: moment.Moment | undefined;
-    userProfilePath!: string | undefined;
+    profilePicture!: string | undefined;
     daysCount!: string | undefined;
     id!: number;
 
@@ -15295,7 +16220,7 @@ export class CommentDto implements ICommentDto {
             this.body = data["body"];
             this.userName = data["userName"];
             this.creationDateTime = data["creationDateTime"] ? moment(data["creationDateTime"].toString()) : <any>undefined;
-            this.userProfilePath = data["userProfilePath"];
+            this.profilePicture = data["profilePicture"];
             this.daysCount = data["daysCount"];
             this.id = data["id"];
         }
@@ -15315,7 +16240,7 @@ export class CommentDto implements ICommentDto {
         data["body"] = this.body;
         data["userName"] = this.userName;
         data["creationDateTime"] = this.creationDateTime ? this.creationDateTime.toISOString() : <any>undefined;
-        data["userProfilePath"] = this.userProfilePath;
+        data["profilePicture"] = this.profilePicture;
         data["daysCount"] = this.daysCount;
         data["id"] = this.id;
         return data; 
@@ -15328,7 +16253,7 @@ export interface ICommentDto {
     body: string | undefined;
     userName: string | undefined;
     creationDateTime: moment.Moment | undefined;
-    userProfilePath: string | undefined;
+    profilePicture: string | undefined;
     daysCount: string | undefined;
     id: number;
 }
@@ -15497,6 +16422,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     assigneeName!: string | undefined;
     categoryName!: string | undefined;
     taskStatus!: string | undefined;
+    profilePicture!: string | undefined;
     comments!: CommentDto[] | undefined;
     attachments!: GetAttachmentsDto[] | undefined;
     taskName!: string | undefined;
@@ -15531,6 +16457,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             this.assigneeName = data["assigneeName"];
             this.categoryName = data["categoryName"];
             this.taskStatus = data["taskStatus"];
+            this.profilePicture = data["profilePicture"];
             if (Array.isArray(data["comments"])) {
                 this.comments = [] as any;
                 for (let item of data["comments"])
@@ -15577,6 +16504,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data["assigneeName"] = this.assigneeName;
         data["categoryName"] = this.categoryName;
         data["taskStatus"] = this.taskStatus;
+        data["profilePicture"] = this.profilePicture;
         if (Array.isArray(this.comments)) {
             data["comments"] = [];
             for (let item of this.comments)
@@ -15616,6 +16544,7 @@ export interface IDetailsClosingCheckListDto {
     assigneeName: string | undefined;
     categoryName: string | undefined;
     taskStatus: string | undefined;
+    profilePicture: string | undefined;
     comments: CommentDto[] | undefined;
     attachments: GetAttachmentsDto[] | undefined;
     taskName: string | undefined;
@@ -15738,6 +16667,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     assigneeId!: number;
     frequencyId!: number;
     comments!: CommentDto[] | undefined;
+    profilePicture!: string | undefined;
 
     constructor(data?: IGetTaskForEditDto) {
         if (data) {
@@ -15778,6 +16708,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
                 for (let item of data["comments"])
                     this.comments!.push(CommentDto.fromJS(item));
             }
+            this.profilePicture = data["profilePicture"];
         }
     }
 
@@ -15818,6 +16749,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
             for (let item of this.comments)
                 data["comments"].push(item.toJSON());
         }
+        data["profilePicture"] = this.profilePicture;
         return data; 
     }
 }
@@ -15843,6 +16775,7 @@ export interface IGetTaskForEditDto {
     assigneeId: number;
     frequencyId: number;
     comments: CommentDto[] | undefined;
+    profilePicture: string | undefined;
 }
 
 export enum CommentTypeDto {

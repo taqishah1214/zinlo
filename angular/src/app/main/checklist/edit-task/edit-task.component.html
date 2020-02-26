@@ -1,5 +1,4 @@
 <div *ngIf="active" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-
     <div class="row">
         <div class="col-lg-12">
             <div class="kt-portlet" id="kt_portlet">
@@ -10,7 +9,7 @@
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
-                        <a href="" (click)="back()">
+                        <a (click)="redirectToTaskDetails()">
                             <i class="la la-arrow-left"></i>
                             Back
                         </a>
@@ -29,7 +28,8 @@
                                         <div class="dropdown-menu" [(ngModel)]="categoryName">
                                             <a class="dropdown-item" *ngFor="let item of categoriesList"
                                                 (click)="categoryClick(item.value,item.name)">
-                                                {{item.name}}</a>
+                                                {{item.name}}
+                                            </a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" (click)="routeToAddNewCategory()">+AddNew</a>
                                         </div>
@@ -40,8 +40,8 @@
                                         <label for="dateOfBirth">Closing Month</label>
                                         <div class="form-group">
                                             <form class="">
-                                                <input [(ngModel)]="getTaskForEdit.closingMonth._d" class="form-control"
-                                                    name="date" bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                <input [(ngModel)]="closingMonthValue" class="form-control" name="date"
+                                                    bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
                                         </div>
@@ -51,15 +51,16 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="email"> Task Name</label>
-                                        <input type="email" class="form-control  bsDatepicker"
+                                        <label for="TaskName"> Task Name</label>
+                                        <input type="text" class="form-control  bsDatepicker"
                                             [(ngModel)]="getTaskForEdit.taskName">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Assignee</label>
-                                        <app-user-list-component></app-user-list-component>
+                                        <app-user-list-component comingChangeReguest="" userId={{assigneeId}}>
+                                        </app-user-list-component>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +97,7 @@
                                                         {{i.daysCount}}
                                                     </span>
                                                 </div>
-                                                <div class="kt-widget3__body comments-body">
+                                                <div class="kt-widget3__body comments-body show-comments-inner">
                                                     <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">
                                                     </p>
                                                 </div>
@@ -110,9 +111,11 @@
                                             <div class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic">
                                                     <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                        {{userSignInName}}</div>
+                                                        {{userSignInName}}
+                                                    </div>
                                                 </div>
-                                                <input [(ngModel)]="checklist.commentBody" class="form-control">
+                                                <div innerHTML="{{checklist.commentBody}}"
+                                                    class="form-control create-comments"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -142,7 +145,7 @@
                                     <div class="form-group">
                                         <label>Frequency</label>
                                         <select class=" border border-default bg-white form-control input-medium"
-                                            (change)="onChange($event.target.value)"
+                                            (change)="OnFrequencyChange($event.target.value)"
                                             [(ngModel)]="getTaskForEdit.frequencyId">
                                             <option value="5">None</option>
                                             <option value="1">Monthly</option>
@@ -151,7 +154,7 @@
                                             <option value="4">XNumberOfMonths</option>
                                         </select>
                                     </div>
-                                    <div class="form-group ">
+                                    <div class="form-group DueOn">
                                         <label>Due on</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -161,13 +164,14 @@
                                                         <span></span>
                                                     </label>
                                                 </span>
-                                                <select class="form-control input-medium" (change)="onDayChange()"
-                                                    [(ngModel)]="getTaskForEdit.dueOn">
+                                                <select class="border border-default bg-white form-control input-medium"
+                                                    (change)="onDayChange()" [(ngModel)]="getTaskForEdit.dueOn">
                                                     <option *ngFor="let item of days;" [value]="item.value">
                                                         {{item.name}}
                                                     </option>
                                                 </select>
                                             </div>
+                                            <label class="daysBefore">{{daysBeforeAfter}}</label>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -194,10 +198,11 @@
                                     <div class="form-group">
                                         <label>No of Months</label>
                                         <input type="text" name="noOfMonths" [disabled]="enableValue == false"
-                                            class="form-control bsDatepicker" [(ngModel)]="getTaskForEdit.noOfMonths">
+                                            class="form-control bsDatepicker" [(ngModel)]="getTaskForEdit.noOfMonths"
+                                            (onShown)="onOpenCalendar($event)">
                                     </div>
+                                    <label>&nbsp;</label>
                                     <div class="form-group">
-                                        <label>Days Before</label>
                                         <select class="border border-default bg-white form-control input-medium"
                                             (change)="onDaysClick($event.target.value)"
                                             [(ngModel)]="getTaskForEdit.dayBeforeAfter">
@@ -207,17 +212,19 @@
                                     </div>
                                     <div class="duplicate_box">
                                         <button type="button" class="btn btn-outline-primary"
-                                            (click)="duplicateBtn()">Duplicate</button>
+                                            (click)="duplicateTask()">Duplicate</button>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Ends on</label>
-                                        <form class="">
-                                            <input [(ngModel)]="getTaskForEdit.endsOn._d" autocomplete="off"
-                                                class="form-control" name="date" [disabled]="endOnIsEnabled == false"
-                                                bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}">
-                                        </form>
+                                        <div class="form-group">
+                                            <form class="">
+                                                <input [(ngModel)]="endsOnDateValue" class="form-control" name="date"
+                                                    bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                    (onShown)="onOpenCalendar($event)">
+                                            </form>
+                                        </div>
                                     </div>
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
@@ -232,14 +239,25 @@
                             </div>
                             <div class="drag_drop_box">
                                 <label>Attachments</label>
-                                <ng-uppy [config]="settings"></ng-uppy>
+                                <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
+                                </ng-uppy>
+                                <div *ngFor="let item of attachments" class="attachments_section">
+                                    <a href="{{item.attachmentUrl}}" target="_blank" class="attachement_btn"
+                                                download="{{item.attachmentUrl}}">
+                                    <img src="../../../../assets/media/files/{{item.attachmentExtension}}">
+                                        <span>{{item.attachmentName}}</span>
+                                    </a>
+                                    <button class="cross-btn" (click)="deleteAttachment(item.id)">
+                                        <span class="fa fa-window-close"></span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="kt-portlet__head mb-2">
                     </div>
                     <div class="">
-                        <button class="btn btn-brand" (click)="onUpdateTask()">
+                        <button class="btn btn-brand" (click)="SaveTaskChanges()">
                             Update
                         </button>
                     </div>

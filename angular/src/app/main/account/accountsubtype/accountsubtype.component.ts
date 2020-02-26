@@ -6,7 +6,8 @@ import { Table } from 'primeng/components/table/table';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import * as _ from 'lodash';
-import { CategoriesServiceProxy, AccountSubTypeServiceProxy } from '@shared/service-proxies/service-proxies';
+
+import {AccountSubTypeServiceProxy } from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -94,4 +95,5 @@ export class AccountsubtypeComponent extends AppComponentBase {
             }
         );
     }
+   
 }
