@@ -121,6 +121,7 @@ export class Checklist extends AppComponentBase implements OnInit {
          this.monthFilter = index + "/"+ this.currentYear;
          this.monthValue = null;
          this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
+         this.updateAssigneeOnHeader = true;
          this.getClosingCheckListAllTasks();
        }
        else if(month == 11)
@@ -135,6 +136,7 @@ export class Checklist extends AppComponentBase implements OnInit {
          this.monthFilter = index + "/"+ this.currentYear;
          this.monthValue = null;
          this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
+         this.updateAssigneeOnHeader = true;
          this.getClosingCheckListAllTasks();
        }
     }
@@ -153,6 +155,7 @@ export class Checklist extends AppComponentBase implements OnInit {
          this.monthFilter = index + "/"+ this.currentYear;
          this.monthValue = null;
          this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
+         this.updateAssigneeOnHeader = true;
          this.getClosingCheckListAllTasks();
        }
        else if(monthIndex == 0 )
@@ -167,6 +170,7 @@ export class Checklist extends AppComponentBase implements OnInit {
          this.monthFilter = index + "/"+ this.currentYear;
          this.monthValue = null;
          this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
+         this.updateAssigneeOnHeader = true;
          this.getClosingCheckListAllTasks();
        }
 
@@ -196,11 +200,6 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
       this.ClosingCheckList = result.items
-      if (this.ClosingCheckList.length==0) {
-        this.assigniNameForHeader = [];
-        this.remainingUserForHeader = [];
-        this.updateAssigneeOnHeader = true
-      }
       this.ClosingCheckList.forEach(j => {
         j.group.forEach(i => {
           if (i.status === "NotStarted") {
@@ -308,9 +307,13 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.getClosingCheckListAllTasks();
   }
   filterByMonth(event):void{
-   this.updateAssigneeOnHeader = true
    var month =  event.getMonth() + 1;
    this.monthFilter = month +"/"+ event.getFullYear()
+    this.assigniNameForHeader = [];
+    this.remainingUserForHeader = [];
+    this.updateAssigneeOnHeader = true
+   this.currentYear =  event.getFullYear();
+   this.currentMonth = this.monthsArray[month-1];;
    this.getClosingCheckListAllTasks();
   }
   loadCategories(): void {
