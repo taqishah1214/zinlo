@@ -209,6 +209,10 @@ button.btn-square{
     border-radius: 4px;
     display: none;
 }
+
+.kt-user-card-v2 {
+    cursor: pointer !important
+}
 .member-count:hover .member-dropdown{
     display: block;
 }

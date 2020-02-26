@@ -53,10 +53,12 @@ export class Checklist extends AppComponentBase implements OnInit {
   currentMonth: string
   currentYear: Number;
   rowid: number;
+  getTaskWithAssigneeId : number = 0;
   yearCount : number;
   collapsibleRow : boolean
   collapsibleRowId : number;
   monthCount : number =1;
+  updateAssigneeOnHeader : boolean = true
   monthsArray = new Array("January", "February", "March",
     "April", "May", "June", "July", "August", "September",
     "October", "Novemeber", "December");
@@ -106,6 +108,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   }
 
   calculateDate(preNext):void{
+    this.updateAssigneeOnHeader = true
     if(preNext == 1)
     {
        var month = this.currentDate.getMonth();
@@ -178,18 +181,21 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.statusFilter,
       moment(this.dateFilter),
       this.monthFilter,
+      this.getTaskWithAssigneeId,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
     ).subscribe(result => {
-      this.assigniNameForHeader = [];
-      this.plusUserBadgeForHeader = false;
-      this.remainingUserForHeader = [];
       this.primengTableHelper.totalRecordsCount = result.totalCount;
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
       this.ClosingCheckList = result.items
+      debugger
+      if (this.ClosingCheckList.length==0) {
+        this.assigniNameForHeader = [];
+        this.remainingUserForHeader = [];
+      }
       this.ClosingCheckList.forEach(j => {
         j.group.forEach(i => {
           if (i.status === "NotStarted") {
@@ -205,7 +211,6 @@ export class Checklist extends AppComponentBase implements OnInit {
             i["StatusColor"] = this.StatusColorBox[2]
           }
          
-            this.assigniNameForHeader.push({ assigniName: i.assigniName, assigneeId: i.assigneeId,profilePicture : i.profilePicture});
             if (i.statusId == 1) {
               i.status = "Not Started";
             }
@@ -218,11 +223,17 @@ export class Checklist extends AppComponentBase implements OnInit {
             else if (i.statusId == 4) {
               i.status = "Completed";
             }
-        });       
+        });
+        if (this.updateAssigneeOnHeader === true)
+        {
+          this.assigniNameForHeader = [];
+          this.plusUserBadgeForHeader = false
+          this.remainingUserForHeader = [];
+          this.assigniNameForHeader = j.overallMonthlyAssignee; 
+        }
       });
-
-      this.assigniNameForHeader = this.getUniqueNamesByAssignee(this.assigniNameForHeader, "assigneeId")
-
+      if (this.updateAssigneeOnHeader === true)
+      {
       if (this.assigniNameForHeader.length > 5)
       {
         this.remainingUserForHeader = [];
@@ -235,20 +246,15 @@ export class Checklist extends AppComponentBase implements OnInit {
         }
         this.assigniNameForHeader = limitedUserNameForHeader
         this.plusUserBadgeForHeader = true
-
       }
+      this.updateAssigneeOnHeader = false;
+    }
+      
     });
   }
-  GetUserTasks(userId) {
-    this.ClosingCheckList.forEach(i => {
-      if (i.closingCheckListForViewDto.assigneeId === userId) {
-        this.UserSpecficClosingCheckList.push(this.ClosingCheckList[i])
-      }
-      else {
-
-      }
-    });
-    this.ClosingCheckList = this.UserSpecficClosingCheckList
+  GetUserTasks(id) {
+    this.getTaskWithAssigneeId = id;
+    this.getClosingCheckListAllTasks();
   }
 
   getUniqueNamesByAssignee(arr, comp) {
@@ -294,6 +300,7 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.getClosingCheckListAllTasks();
   }
   filterByMonth(event):void{
+   this.updateAssigneeOnHeader = true
    var month =  event.getMonth() + 1;
    this.monthFilter = month +"/"+ event.getFullYear()
    this.getClosingCheckListAllTasks();

@@ -13,5 +13,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public int StatusFilter { get; set; }      
         public DateTime? DateFilter { get; set; }
         public string MonthFilter { get; set; }
+
+        public long AssigneeId { get; set; }
     }
 }

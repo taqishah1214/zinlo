@@ -20,6 +20,7 @@ using Zinlo.Attachments.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using Zinlo.Authorization.Users.Profile;
+using NUglify.Helpers;
 
 namespace Zinlo.ClosingChecklist
 {
@@ -51,9 +52,22 @@ namespace Zinlo.ClosingChecklist
                                     .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
                                     .WhereIf(month != 100 && year != 2000, e => false || e.ClosingMonth.Month == month && e.ClosingMonth.Year == year)
                                     .WhereIf(input.DateFilter != null && input.DateFilter.Value.Date.Year != 2000, e => false || e.ClosingMonth.Date == input.DateFilter.Value.Date)
-                                    .WhereIf(month == 100 && year == 2000 && input.DateFilter != null && input.DateFilter.Value.Date.Year == 2000, e => false || e.ClosingMonth.Month == DateTime.Today.Month && e.ClosingMonth.Year == DateTime.Today.Year);
+                                    .WhereIf(month == 100 && year == 2000 && input.DateFilter != null && input.DateFilter.Value.Date.Year == 2000, e => false || e.ClosingMonth.Month == DateTime.Today.Month && e.ClosingMonth.Year == DateTime.Today.Year)
+                                    .WhereIf(input.AssigneeId != 0 , e=> false || e.AssigneeId == input.AssigneeId);
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var totalCount = query.Count();
+            List<GetUserWithPicture> getUserWithPictures = new List<GetUserWithPicture>();
+            getUserWithPictures = (from o in query.ToList()
+
+                                   select new GetUserWithPicture()
+                                   {
+                                       Id = o.AssigneeId,
+                                       Name = o.Assignee.FullName,
+                                       Picture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
+                                   }).ToList();
+
+            getUserWithPictures = getUserWithPictures.DistinctBy(p => new { p.Id, p.Name }).ToList();
+
             var closingCheckList = from o in pagedAndFilteredTasks.ToList()
 
                                    select new ClosingCheckListForViewDto()
@@ -67,11 +81,11 @@ namespace Zinlo.ClosingChecklist
                                        Category = o.Category.Title,
                                        CreationTime = o.ClosingMonth,
                                        ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
-
                                    };
             var result = closingCheckList.ToList();
             var response = result.GroupBy(x => x.CreationTime.Date).Select(x => new TasksGroup
             {
+                OverallMonthlyAssignee = getUserWithPictures,
                 CreationTime = x.Key,
                 group = x.Select(y => new ClosingCheckListForViewDto
                 {
@@ -83,7 +97,7 @@ namespace Zinlo.ClosingChecklist
                     AssigniName = y.AssigniName,
                     Status = y.Status,
                     TaskName = y.TaskName,
-                    ProfilePicture = y.ProfilePicture
+                    ProfilePicture = y.ProfilePicture,
                 }
                 )
             }).OrderBy(x => x.CreationTime);
@@ -151,26 +165,26 @@ namespace Zinlo.ClosingChecklist
             {
                 task.TenantId = (int)AbpSession.TenantId;
             }
-                var checklistId = await _closingChecklistRepository.InsertAndGetIdAsync(task);
+            var checklistId = await _closingChecklistRepository.InsertAndGetIdAsync(task);
 
-                if (input.CommentBody != "")
+            if (input.CommentBody != "")
+            {
+                var commentDto = new CreateOrEditCommentDto()
                 {
-                    var commentDto = new CreateOrEditCommentDto()
-                    {
-                        Body = input.CommentBody,
-                        Type = CommentTypeDto.ClosingChecklist,
-                        TypeId = checklistId
-                    };
-                    await _commentAppService.Create(commentDto);
-                }
-                if (input.AttachmentsPath != null)
-                {
-                    PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
-                    postAttachmentsPathDto.FilePath = input.AttachmentsPath;
-                    postAttachmentsPathDto.TypeId = checklistId;
-                    postAttachmentsPathDto.Type = 1;
-                    await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
-                }           
+                    Body = input.CommentBody,
+                    Type = CommentTypeDto.ClosingChecklist,
+                    TypeId = checklistId
+                };
+                await _commentAppService.Create(commentDto);
+            }
+            if (input.AttachmentsPath != null)
+            {
+                PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
+                postAttachmentsPathDto.FilePath = input.AttachmentsPath;
+                postAttachmentsPathDto.TypeId = checklistId;
+                postAttachmentsPathDto.Type = 1;
+                await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
+            }
         }
         protected virtual async Task Update(CreateOrEditClosingChecklistDto input)
         {
@@ -352,7 +366,7 @@ namespace Zinlo.ClosingChecklist
                     number = 1;
                     break;
                 case 2:
-                    number = 3;
+                    number = 3; 
                     break;
                 case 3:
                     number = 12;
@@ -365,5 +379,10 @@ namespace Zinlo.ClosingChecklist
             return number;
         }
 
+
+
+        
+
     }
 }
+

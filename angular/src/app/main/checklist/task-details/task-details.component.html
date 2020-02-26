@@ -136,9 +136,9 @@
                                         <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
                                         </ng-uppy>
                                         <div *ngFor="let item of attachments" class="attachments_section">
-                                            <a href="{{item.attachmentUrl}}" class="attachement_btn"
+                                            <a href="{{item.attachmentUrl}}" target="_blank" class="attachement_btn"
                                                 download="{{item.attachmentUrl}}">
-                                                <img src="../../../../assets/img/{{item.attachmentExtension}}">
+                                                <img src="../../../../assets/media/files/{{item.attachmentExtension}}">
                                                 <span>{{item.attachmentName}}</span>
                                             </a>
                                             <button class="cross-btn" (click)="deleteAttachment(item.id)">

@@ -114,7 +114,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
   getExtensionImagePath(str) {
     var extension = str.split('.')[1];
-    extension = extension + ".png";
+    extension = extension + ".svg";
     return extension;
   }
 

@@ -2742,12 +2742,13 @@ export class ClosingChecklistServiceProxy {
      * @param statusFilter (optional) 
      * @param dateFilter (optional) 
      * @param monthFilter (optional) 
+     * @param assigneeId (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, monthFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
+    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, monthFilter: string | undefined, assigneeId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -2773,6 +2774,10 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'monthFilter' cannot be null.");
         else if (monthFilter !== undefined)
             url_ += "MonthFilter=" + encodeURIComponent("" + monthFilter) + "&"; 
+        if (assigneeId === null)
+            throw new Error("The parameter 'assigneeId' cannot be null.");
+        else if (assigneeId !== undefined)
+            url_ += "AssigneeId=" + encodeURIComponent("" + assigneeId) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -15938,6 +15943,50 @@ export interface IMarkAllUnreadMessagesOfUserAsReadInput {
     userId: number;
 }
 
+export class GetUserWithPicture implements IGetUserWithPicture {
+    id!: number;
+    name!: string | undefined;
+    picture!: string | undefined;
+
+    constructor(data?: IGetUserWithPicture) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.picture = data["picture"];
+        }
+    }
+
+    static fromJS(data: any): GetUserWithPicture {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetUserWithPicture();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["picture"] = this.picture;
+        return data; 
+    }
+}
+
+export interface IGetUserWithPicture {
+    id: number;
+    name: string | undefined;
+    picture: string | undefined;
+}
+
 export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
     taskName!: string | undefined;
     category!: string | undefined;
@@ -16007,6 +16056,7 @@ export interface IClosingCheckListForViewDto {
 }
 
 export class TasksGroup implements ITasksGroup {
+    overallMonthlyAssignee!: GetUserWithPicture[] | undefined;
     creationTime!: moment.Moment;
     group!: ClosingCheckListForViewDto[] | undefined;
     closingCheckListForViewDto!: ClosingCheckListForViewDto;
@@ -16025,6 +16075,11 @@ export class TasksGroup implements ITasksGroup {
 
     init(data?: any) {
         if (data) {
+            if (Array.isArray(data["overallMonthlyAssignee"])) {
+                this.overallMonthlyAssignee = [] as any;
+                for (let item of data["overallMonthlyAssignee"])
+                    this.overallMonthlyAssignee!.push(GetUserWithPicture.fromJS(item));
+            }
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             if (Array.isArray(data["group"])) {
                 this.group = [] as any;
@@ -16047,6 +16102,11 @@ export class TasksGroup implements ITasksGroup {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.overallMonthlyAssignee)) {
+            data["overallMonthlyAssignee"] = [];
+            for (let item of this.overallMonthlyAssignee)
+                data["overallMonthlyAssignee"].push(item.toJSON());
+        }
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         if (Array.isArray(this.group)) {
             data["group"] = [];
@@ -16062,6 +16122,7 @@ export class TasksGroup implements ITasksGroup {
 }
 
 export interface ITasksGroup {
+    overallMonthlyAssignee: GetUserWithPicture[] | undefined;
     creationTime: moment.Moment;
     group: ClosingCheckListForViewDto[] | undefined;
     closingCheckListForViewDto: ClosingCheckListForViewDto;
@@ -16315,50 +16376,6 @@ export interface ICreateOrEditClosingChecklistDto {
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
-}
-
-export class GetUserWithPicture implements IGetUserWithPicture {
-    id!: number;
-    name!: string | undefined;
-    picture!: string | undefined;
-
-    constructor(data?: IGetUserWithPicture) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-            this.picture = data["picture"];
-        }
-    }
-
-    static fromJS(data: any): GetUserWithPicture {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetUserWithPicture();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["picture"] = this.picture;
-        return data; 
-    }
-}
-
-export interface IGetUserWithPicture {
-    id: number;
-    name: string | undefined;
-    picture: string | undefined;
 }
 
 export class NameValueDtoOfString implements INameValueDtoOfString {

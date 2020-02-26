@@ -16,7 +16,10 @@ namespace Zinlo.ClosingChecklist.Dtos
         //{
         //    this.group = new List<ClosingCheckListForViewDto>();
         //}
+
+        public List<GetUserWithPicture> OverallMonthlyAssignee { get; set; }
         public DateTime CreationTime { get; set; }
         public IEnumerable<ClosingCheckListForViewDto> group { get; set; }
     }
 }
+
