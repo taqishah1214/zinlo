@@ -99,6 +99,8 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = false;
   }
   onDuplicateTask(): void {
+
+    debugger;
     if (this.checklist.dayBeforeAfter) {
       this.checklist.dayBeforeAfter = true;
     }
@@ -120,7 +122,6 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
     {
       this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
     }
-    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
     this.checklist.taskName = this.taskDetails.taskName;
     this.checklist.instruction = this.taskDetails.instruction;
     if (this.attachmentPaths != null) {

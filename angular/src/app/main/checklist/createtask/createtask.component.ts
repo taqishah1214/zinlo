@@ -6,6 +6,7 @@ import { UserListComponentComponent } from '../user-list-component/user-list-com
 import { IgxMonthPickerComponent } from "igniteui-angular";
 import { UppyConfig } from 'uppy-angular';
 import { AppComponentBase } from '@shared/common/app-component-base';
+import { AppConsts } from '@shared/AppConsts';
 @Component({
   selector: 'app-createtask',
   templateUrl: './createtask.component.html',
@@ -126,7 +127,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   }
   settings: UppyConfig = {
     uploadAPI: {
-      endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",
+      endpoint:  AppConsts.remoteServiceBaseUrl + '/api/services/app/Attachments/PostAttachmentFile',
     },
     plugins: {
       Webcam: false
