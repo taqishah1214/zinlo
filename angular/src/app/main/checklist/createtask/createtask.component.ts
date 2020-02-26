@@ -80,14 +80,8 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = false;
   }
   onCreateTask(): void {
-    if (this.checklist.dayBeforeAfter) {
-      this.checklist.dayBeforeAfter = true;
-    }
-    else {
-      this.checklist.dayBeforeAfter = false;
-    }
-
-    if (this.checklist.endOfMonth) {
+    debugger;
+     if (this.checklist.endOfMonth) {
       this.checklist.endOfMonth = true;
     }
     else {
@@ -174,9 +168,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.isChecked = true;
     if (valu == "true") {
       this.SelectionMsg = "Days Before";
+      this.checklist.dayBeforeAfter = true
     }
     else if (valu == "false") {
       this.SelectionMsg = "Days After";
+      this.checklist.dayBeforeAfter = false
+
     }
   }
   loadDaysDropdown(): void {

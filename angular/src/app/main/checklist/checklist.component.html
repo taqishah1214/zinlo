@@ -102,7 +102,7 @@
                                             <select class="form-control border-grey" [(ngModel)]="filterStatus"
                                                 (change)="filterByStatus($event)" id="exampleFormControlSelect1"
                                                 name="filterStatus">
-                                                <option value="0">All</option>
+                                                <option value="0">All Statuses</option>
                                                 <option value="1">Not Started</option>
                                                 <option value="2">In Process</option>
                                                 <option value="3">On Hold</option>
@@ -113,7 +113,7 @@
                                             <select class="form-control border-grey" name="categoryFilter"
                                                 [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
                                                 id="exampleFormControlSelect2">
-                                                <option value="0">All</option>
+                                                <option value="0">All Categories</option>
                                                 <option *ngFor="let item of category;" [value]="item.value">
                                                     {{item.name}}
                                                 </option>

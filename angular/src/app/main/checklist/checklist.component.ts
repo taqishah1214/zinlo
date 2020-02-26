@@ -34,7 +34,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   id: number;
   AssigniInputBox: boolean;
   AssigniBoxView: boolean;
-  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green","bg-magenta"]
+  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green","bg-gray"]
   FilterBoxOpen: boolean;
   public rowId: number = 0;
   changeStatus: ChangeStatusDto = new ChangeStatusDto();
@@ -119,6 +119,8 @@ export class Checklist extends AppComponentBase implements OnInit {
          this.currentMonth =this.monthsArray[month1];
          var index = this.monthsArray.indexOf(this.currentMonth)+ 1;
          this.monthFilter = index + "/"+ this.currentYear;
+         this.monthValue = null;
+         this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
          this.getClosingCheckListAllTasks();
        }
        else if(month == 11)
@@ -131,6 +133,8 @@ export class Checklist extends AppComponentBase implements OnInit {
          this.currentMonth =this.monthsArray[0];
          var index = this.monthsArray.indexOf(this.currentMonth)+ 1;
          this.monthFilter = index + "/"+ this.currentYear;
+         this.monthValue = null;
+         this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
          this.getClosingCheckListAllTasks();
        }
     }
@@ -147,7 +151,9 @@ export class Checklist extends AppComponentBase implements OnInit {
          this.currentMonth =this.monthsArray[month1];
          var index = this.monthsArray.indexOf(this.currentMonth)+ 1;
          this.monthFilter = index + "/"+ this.currentYear;
-         this.getClosingCheckListAllTasks();
+         this.monthValue = null;
+         this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
+         this.getClosingCheckListAllTasks();        
        }
        else if(monthIndex == 0 )
        {
@@ -159,6 +165,8 @@ export class Checklist extends AppComponentBase implements OnInit {
          this.currentMonth =this.monthsArray[11];
          var index = this.monthsArray.indexOf(this.currentMonth) + 1;
          this.monthFilter = index + "/"+ this.currentYear;
+         this.monthValue = null;
+         this.monthValue = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth())
          this.getClosingCheckListAllTasks();
        }
 
@@ -189,17 +197,18 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
+
       this.ClosingCheckList = result.items
       this.ClosingCheckList.forEach(j => {
         j.group.forEach(i => {
           if (i.status === "NotStarted") {
-            i["StatusColor"] = this.StatusColorBox[0]
+            i["StatusColor"] = this.StatusColorBox[3]
           }
           else if (i.status === "InProcess") {
-            i["StatusColor"] = this.StatusColorBox[1]
+            i["StatusColor"] = this.StatusColorBox[0]
           }
           else if (i.status === "OnHold") {
-            i["StatusColor"] = this.StatusColorBox[3]
+            i["StatusColor"] = this.StatusColorBox[1]
           }
           else if (i.status === "Completed") {
             i["StatusColor"] = this.StatusColorBox[2]
@@ -294,8 +303,11 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.getClosingCheckListAllTasks();
   }
   filterByMonth(event):void{
+
    var month =  event.getMonth() + 1;
-   this.monthFilter = month +"/"+ event.getFullYear()
+   this.monthFilter = month +"/"+ event.getFullYear();
+   this.currentMonth =this.monthsArray[month -1];
+   this.currentYear = event.getFullYear();
    this.getClosingCheckListAllTasks();
   }
   loadCategories(): void {
