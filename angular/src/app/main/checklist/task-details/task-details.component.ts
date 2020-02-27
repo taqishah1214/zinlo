@@ -40,6 +40,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     this.getProfilePicture();
   }
 
+
   getProfilePicture() {
     this.userInfo.getProfilePicture();
     this.userInfo.profilePicture.subscribe(
@@ -91,6 +92,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
         result.comments = [];
       }
       this.taskDetailObject = result;
+      this.initilizeStatus();
       this.attachments = result.attachments;
       this.attachments.forEach(element => {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
@@ -99,6 +101,23 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
         element["attachmentUrl"] = "http://localhost:22742/" + element.attachmentPath
       });
     })
+  }
+
+  initilizeStatus() : void {
+        if (this.taskDetailObject.taskStatus === "NotStarted")
+        {
+          this.taskDetailObject.taskStatus = "Not Started"
+        }else if ( this.taskDetailObject.taskStatus === "InProcess")
+        {
+          this.taskDetailObject.taskStatus = "In Process"
+
+        }
+        else if ( this.taskDetailObject.taskStatus === "OnHold")
+        {
+          this.taskDetailObject.taskStatus = "On Hold"
+
+        }
+
   }
 
   fileUploadedResponse(value): void {
