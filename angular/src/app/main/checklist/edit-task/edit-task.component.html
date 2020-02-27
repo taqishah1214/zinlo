@@ -40,7 +40,7 @@
                                         <label for="dateOfBirth">Closing Month</label>
                                         <div class="form-group">
                                             <form class="">
-                                                <input [(ngModel)]="closingMonthValue" class="form-control" name="date"
+                                                <input disabled [(ngModel)]="closingMonthValue" class="form-control" name="date"
                                                     bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
@@ -59,7 +59,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Assignee</label>
-                                        <app-user-list-component  comingChangeReguest="" userId={{assigneeId}}>
+                                        <app-user-list-component disable = "true" comingChangeReguest="" userId={{assigneeId}}>
                                         </app-user-list-component>
                                     </div>
                                 </div>
@@ -191,14 +191,6 @@
                                                 aria-haspopup="true" aria-expanded="false">
                                                 {{getTaskForEdit.status}}
                                             </button>
-                                            <div class="dropdown-menu drop_down_class"
-                                                aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" (click)="ChangeStatus(1)">Not Started</a>
-                                                <a class="dropdown-item" (click)="ChangeStatus(2)">In Process</a>
-                                                <a class="dropdown-item" (click)="ChangeStatus(3)">On Hold</a>
-                                                <a class="dropdown-item" (click)="ChangeStatus(4)">Completed</a>
-
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

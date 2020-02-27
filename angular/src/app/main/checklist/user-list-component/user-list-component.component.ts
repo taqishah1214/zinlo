@@ -18,6 +18,7 @@ export class UserListComponentComponent implements OnInit, OnChanges {
   @Input() comingChangeReguest : any;
   @Input() userId : any;
   @Input() taskId : any;
+  @Input() disable : any;
   defaultUser: Array<{ id: number, name: string,picture:string }> = [{ id: -1, name: " Enter the Assignee Name" ,picture : "../../../../assets/media/files/emptyUser.svg"}];
   @Output() messageEvent = new EventEmitter<string>();
   @ViewChild(NgSelectComponent,{ static: true }) ngSelect : NgSelectComponent;
@@ -29,6 +30,10 @@ export class UserListComponentComponent implements OnInit, OnChanges {
 
 
   ngOnInit() {
+    if (this.disable === "true")
+    {
+      this.disable = true
+    }
       if (this.userId != 0) {
        this.getSelectedUserIdandPicture()
       }
