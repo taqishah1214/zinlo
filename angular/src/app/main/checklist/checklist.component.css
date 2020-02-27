@@ -230,10 +230,12 @@ button.btn-square{
     padding-bottom: 5px;
     border-bottom: 1px solid #EBEDF2;
 }
-.member-count .member-dropdown ul li:last-child{
+.member-count .member-dropdown ul:last-child li{
     margin-bottom: 0;
-    padding-bottom: 0;
     border-bottom: 0;
+}
+.member-count .member-dropdown ul:last-child li{
+    padding-bottom: 0;
 }
 .member-count .member-dropdown .mem-img {
     width: 40px;

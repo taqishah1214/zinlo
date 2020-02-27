@@ -52,3 +52,17 @@
 label{
     color: #606060
 }
+.add-task{
+    padding:25px;
+}
+.dueOn{
+    margin-bottom: 6px;
+}
+::ng-deep .bs-datepicker-head button.current{
+    position:absolute;
+    left:50%;
+    transform: translateX(-50%);
+}
+.btn-brand{
+ margin-top: 5px;
+}

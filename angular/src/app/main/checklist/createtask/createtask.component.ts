@@ -32,10 +32,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   days: any;
   users: any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
-  minDate: Date = new Date()
+  minDate: Date = new Date();
+  daysBeforeAfter : string = null;
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild(IgxMonthPickerComponent, { static: true }) monthPicker: IgxMonthPickerComponent;
+  createBtnDisable: boolean;
   constructor
     (private _router: Router,
       private _closingChecklistService: ClosingChecklistServiceProxy,
@@ -80,7 +82,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = false;
   }
   onCreateTask(): void {
-    debugger;
+   
      if (this.checklist.endOfMonth) {
       this.checklist.endOfMonth = true;
     }
@@ -107,6 +109,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     else {
       this.checklist.noOfMonths = 0;
     }
+   
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(() => {
       this.redirectToTaskList();
       this.notify.success(this.l('SavedSuccessfully'));
@@ -160,6 +163,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   }
   handleRadioChange() {
     this.checklist.dayBeforeAfter = null;
+    this.daysBeforeAfter = null;
     this.checklist.dueOn = 0;
     this.SelectionMsg = "";
     this.isChecked = false;
@@ -175,6 +179,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.checklist.dayBeforeAfter = false
 
     }
+    
   }
   loadDaysDropdown(): void {
     this._closingChecklistService.getCurrentMonthDays().subscribe(result => {

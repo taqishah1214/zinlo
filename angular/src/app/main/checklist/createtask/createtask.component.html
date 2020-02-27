@@ -1,4 +1,4 @@
-<div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
+<div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid add-task">
     <div class="row">
         <div class="kt-subheader kt-grid__item">
             <div [class]="containerClass">
@@ -126,7 +126,7 @@
                                             <option value="4">EveryXNumberOfMonths</option>
                                         </select>
                                     </div>
-                                    <div class="form-group ">
+                                    <div class="form-group dueOn">
                                         <label>Due on</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -145,11 +145,17 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row"  *ngIf="SelectionMsg != null">
                                         <div class="col-12">
                                             <span>{{SelectionMsg}}</span>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                 
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -161,8 +167,8 @@
                                     <div class="form-group">
                                         <label>&nbsp;&nbsp;</label>
                                         <select class="bg-white border form-control input-medium"
-                                            (change)="onDaysClick($event.target.value)">
-                                            <option [value]="undefined" disabled hidden>Days Before</option>
+                                            (change)="onDaysClick($event.target.value)" [(ngModel)]="daysBeforeAfter">
+                                            <option value=null disabled hidden>None</option>
                                             <option value=true>Days Before</option>
                                             <option value=false>Days After</option>
                                         </select>
@@ -198,11 +204,12 @@
                     </div>
                     <div class="kt-portlet__head">
                     </div>
-                    <div class="">
+                    <div class="btn-create">
                         <button class="btn btn-brand" (click)="onCreateTask()">
                             Create
                         </button>
                     </div>
+                   
                 </div>
             </div>
         </div>
