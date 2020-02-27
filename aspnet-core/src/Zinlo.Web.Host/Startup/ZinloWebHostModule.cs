@@ -38,6 +38,7 @@ namespace Zinlo.Web.Startup
         public override void PreInitialize()
         {
             Configuration.Modules.AbpWebCommon().MultiTenancy.DomainFormat = _appConfiguration["App:ServerRootAddress"] ?? "http://localhost:22742/";
+            Configuration.MultiTenancy.TenantIdResolveKey = "Abp-TenantId";
             Configuration.MultiTenancy.Resolvers.Insert(0, typeof(DomainTenantResolveContributor));
             Configuration.Modules.AspNetZero().LicenseCode = _appConfiguration["AbpZeroLicenseCode"];
         }

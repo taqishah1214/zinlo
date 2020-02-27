@@ -59,7 +59,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Assignee</label>
-                                        <app-user-list-component comingChangeReguest="" userId={{assigneeId}}>
+                                        <app-user-list-component  comingChangeReguest="" userId={{assigneeId}}>
                                         </app-user-list-component>
                                     </div>
                                 </div>
@@ -110,8 +110,16 @@
                                         <div (click)="commentClick()">
                                             <div class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic">
-                                                    <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                        {{userSignInName}}
+                                                    <div class="kt-user-card-v2__pic">
+                                                        <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
+                                                            <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                                alt="Pic" [src]="UserProfilePicture">
+                                                        </div>
+        
+                                                        <div *ngIf="!UserProfilePicture"
+                                                            class="kt-badge kt-badge--xl kt-badge--primary">
+                                                            {{userSignInName | firstLetterOfWords}}
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div innerHTML="{{checklist.commentBody}}"

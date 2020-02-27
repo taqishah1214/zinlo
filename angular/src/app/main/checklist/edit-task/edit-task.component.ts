@@ -5,6 +5,7 @@ import { UppyConfig } from 'uppy-angular';
 import * as moment from 'moment';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
 import { Router } from '@angular/router';
+import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 @Component({
   selector: 'app-edit-task',
   templateUrl: './edit-task.component.html',
@@ -44,13 +45,15 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   newAttachementPath: string[] = [];
   getTaskForEdit: GetTaskForEditDto = new GetTaskForEditDto();
   _changeStatus: ChangeStatusDto = new ChangeStatusDto();
+  categoryTitle : any;
+  UserProfilePicture : any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto()
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   days: any;
   daysBeforeAfter: string;
 
-  constructor(private _categoryService: CategoriesServiceProxy, private _attachmentService: AttachmentsServiceProxy, injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy, private _router: Router) {
+  constructor(private userInfo: UserInformation,private _categoryService: CategoriesServiceProxy, private _attachmentService: AttachmentsServiceProxy, injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy, private _router: Router) {
     super(injector)
 
   }
@@ -58,6 +61,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.initializePageParameters();
     this.loadDaysDropdown();
     this.getTaskDetails();
+    this.getProfilePicture();
   }
   initializePageParameters(): void {
     this.enableValue = false;
@@ -67,7 +71,23 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
     this.taskId = history.state.data.id;
     this.active = true;
+    this.categoryTitle = history.state.data.categoryTitle == "" ? "" : history.state.data.categoryTitle;
+   
+
   }
+
+  getProfilePicture() {
+    this.userInfo.getProfilePicture();
+    this.userInfo.profilePicture.subscribe(
+      data => {
+        this.UserProfilePicture = data.valueOf();
+     });
+    if (this.UserProfilePicture == undefined)
+    {
+      this.UserProfilePicture = "";
+    }
+  }
+
   getTaskDetails(): void {
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
@@ -81,6 +101,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.ChangeStatus(result.statusId);
       this.closingMonthValue = this.getTaskForEdit.closingMonth.toDate();
       this.endsOnDateValue = this.getTaskForEdit.endsOn.toDate();
+      this.getTaskForEdit.categoryId = history.state.data.categoryid !== 0 ? history.state.data.categoryid : this.getTaskForEdit.categoryId 
       this.frequencyId = this.getTaskForEdit.frequency;
       if (this.frequencyId == "5") {
         this.endOnIsEnabled = false;
@@ -99,8 +120,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       }
       this.assigneeId = this.getTaskForEdit.assigneeId;
       this.parentassigneName = result;
-      this.categoryName = this.getTaskForEdit.category;
-      this.comment = this.getTaskForEdit.comments;
+      this.categoryName = this.categoryTitle != "" ? this.categoryTitle : this.getTaskForEdit.category;
+      this.comment = this.getTaskForEdit.comments ;
       this.comment.forEach(i => {
         i.userName;
         var firstCharacterForAvatar = i.userName[0].toUpperCase();

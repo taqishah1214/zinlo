@@ -32,7 +32,8 @@
                                 <div class="form-group">
                                     <label for="description">Description</label>
                                     <textarea class="form-control" [(ngModel)]="categoryobj.description"
-                                        id="description" name="description"></textarea>
+                                        id="description" name="description" (keydown.enter)="save($event)"
+                                         ></textarea>
                                 </div>
                             </div>
                         </div>
