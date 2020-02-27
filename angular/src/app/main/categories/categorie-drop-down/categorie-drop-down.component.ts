@@ -11,13 +11,13 @@ import { Router } from '@angular/router';
 export class CategorieDropDownComponent implements OnInit {
   public categoryValue : any;
   categories: any;
-  category : NameValueDtoOfInt64[] = [];
   categoryId : any;
   categoryName : any;
   categoriesList:any;
   
   @Input() SelectedCategory;
   @Output() messageEvent = new EventEmitter<number>();
+  @Input() category : any;
 
   constructor
   (
@@ -26,7 +26,7 @@ export class CategorieDropDownComponent implements OnInit {
    ) {
 }
   ngOnInit() {
-    this.categoryName = "Select Category"
+    this.categoryName = this.category;
     this._categoryService.categoryDropDown().subscribe(result => {
       this.categoriesList = result;
     });

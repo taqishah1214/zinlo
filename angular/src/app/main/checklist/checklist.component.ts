@@ -284,7 +284,7 @@ export class Checklist extends AppComponentBase implements OnInit {
     });
   }
   RedirectToCreateTask(): void {
-    this._router.navigate(['/app/main/checklist/createtask']);
+    this._router.navigate(['/app/main/checklist/createtask'],{ state: { data: { categoryid: 0 , categoryTitle : ""} } });
   }
 
   RedirectToDetail(recordId): void {

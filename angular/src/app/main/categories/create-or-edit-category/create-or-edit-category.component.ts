@@ -32,19 +32,19 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
       });
     }
   }
-  backToRoute(): void {
+  backToRoute(title,id): void {
 
     if (this.redirectPath === "checkList") {
-      this._router.navigate(['/app/main/checklist/createtask']);
+      this._router.navigate(['/app/main/checklist/createtask'],{ state: { data: { categoryid: id , categoryTitle : title} } });
     }
     else if (this.redirectPath === "editChecklist") {
       var closingChecklistId = history.state.data.checklistTask;
-      this._router.navigate(['/app/main/checklist/edit-task'], { state: { data: { id: closingChecklistId } } })
+      this._router.navigate(['/app/main/checklist/edit-task'], { state: { data: { id: closingChecklistId,categoryid: id , categoryTitle : title } } })
     }
     else if (this.redirectPath === "duplicate")
     {
     var closingChecklistId = history.state.data.checklistTask;
-     this._router.navigate(['/app/main/checklist/duplicate-task'], { state: { data: { id: closingChecklistId } } });
+     this._router.navigate(['/app/main/checklist/duplicate-task'], { state: { data: { id: closingChecklistId,categoryid: id , categoryTitle : title } } });
     }
     else {
       this._router.navigate(['/app/main/categories']);
@@ -52,16 +52,17 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
   }
 
   BackToCategoriesList(): void {
-    this.backToRoute();
+    this.backToRoute("",0);
   }
   onSubmit(): void {
     this._categoriesServiceProxy.createOrEdit(this.categoryobj)
       .pipe(finalize(() => { }))
-      .subscribe(() => {
-        this.backToRoute();
+      .subscribe(result => {
+        this.backToRoute(this.categoryobj.title,result);
         this.notify.info(this.l('SavedSuccessfully'));
       });
   }
-
-
+  save(event){
+    this.onSubmit();
+  }
 }

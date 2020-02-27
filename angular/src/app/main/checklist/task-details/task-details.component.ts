@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UppyConfig } from 'uppy-angular';
 import { ClosingChecklistServiceProxy, AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
+import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 @Component({
   selector: 'app-task-details',
   templateUrl: './task-details.component.html',
@@ -18,13 +19,15 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   comment: CreateOrEditCommentDto = new CreateOrEditCommentDto();
   postAttachment: PostAttachmentsPathDto = new PostAttachmentsPathDto();
   userSignInName: any;
+  UserProfilePicture :any;
 
   constructor(
     injector: Injector,
     private _router: Router,
     private _closingChecklistService: ClosingChecklistServiceProxy,
     private _commentServiceProxy: CommentServiceProxy,
-    private _attachmentService: AttachmentsServiceProxy
+    private _attachmentService: AttachmentsServiceProxy,
+    private userInfo: UserInformation
   ) {
     super(injector);
   }
@@ -34,6 +37,19 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     this.commantBox = true;
     this.recordId = history.state.data.id;
     this.getTaskDetails(this.recordId);
+    this.getProfilePicture();
+  }
+
+  getProfilePicture() {
+    this.userInfo.getProfilePicture();
+    this.userInfo.profilePicture.subscribe(
+      data => {
+        this.UserProfilePicture = data.valueOf();
+     });
+    if (this.UserProfilePicture == undefined)
+    {
+      this.UserProfilePicture = "";
+    }
   }
   commentClick(): void {
     this.commantBox = false;
@@ -58,10 +74,10 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   }
 
   RedirectToEditTaskPage(): void {
-    this._router.navigate(['/app/main/checklist/edit-task'], { state: { data: { id: this.recordId } } })
+    this._router.navigate(['/app/main/checklist/edit-task'], { state: { data: { id: this.recordId,categoryid: 0 , categoryTitle : "" } } })
   }
   duplicateTask(): void {
-    this._router.navigate(['/app/main/checklist/duplicate-task'], { state: { data: { id: this.recordId } } });
+    this._router.navigate(['/app/main/checklist/duplicate-task'], { state: { data: { id: this.recordId,categoryid: 0 , categoryTitle : "" } } });
   }
 
   BackToTaskList(): void {

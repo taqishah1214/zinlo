@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Injector, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, Injector, ViewEncapsulation, OnChanges } from '@angular/core';
 import { Router, Data } from '@angular/router';
 import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
@@ -7,12 +7,14 @@ import { IgxMonthPickerComponent } from "igniteui-angular";
 import { UppyConfig } from 'uppy-angular';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppConsts } from '@shared/AppConsts';
+import {UserInformation} from "../../CommonFunctions/UserInformation"
 @Component({
   selector: 'app-createtask',
   templateUrl: './createtask.component.html',
   styleUrls: ['./createtask.component.css']
 })
 export class CreatetaskComponent extends AppComponentBase implements OnInit {
+  
   categories: any;
   Email: string;
   taskName: string;
@@ -23,10 +25,11 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   commantBox: boolean;
   closingMonthInputBox: boolean;
   closingMonthModalBox: boolean;
-  userSignInName: string;
+  UserProfilePicture: any;
   enableValue: boolean = false;
   endOnIsEnabled: boolean = true;
   SelectionMsg: string = "";
+  userName : string;
   attachmentPaths: any = [];
   newAttachementPath: string[] = [];
   public isChecked: boolean = false;
@@ -34,27 +37,49 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   users: any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   minDate: Date = new Date()
+  categoryTitle : any;
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild(IgxMonthPickerComponent, { static: true }) monthPicker: IgxMonthPickerComponent;
+
   constructor
     (private _router: Router,
       private _closingChecklistService: ClosingChecklistServiceProxy,
+      private userInfo: UserInformation,
       injector: Injector) {
     super(injector)
   }
   ngOnInit() {
+    this.getProfilePicture(); 
     this.initializePageParameters();
     this.loadDaysDropdown();
+   
+  }
+
+  getProfilePicture() {
+    this.userInfo.getProfilePicture();
+    this.userInfo.profilePicture.subscribe(
+      data => {
+        this.UserProfilePicture = data.valueOf();
+     });
+    if (this.UserProfilePicture == undefined)
+    {
+      this.UserProfilePicture = "";
+    }
   }
 
   initializePageParameters() {
-    this.userSignInName = this.appSession.user.name.toString();
+    this.userName = this.appSession.user.name.toString();
     this.commantBox = true;
     this.closingMonthInputBox = true;
     this.closingMonthModalBox = false;
     this.enableValue = false;
     this.isChecked = true;
+    this.categoryTitle = history.state.data.categoryTitle == "" ? "Select Category" : history.state.data.categoryTitle;
+    if (history.state.data.categoryid != 0 )
+    {
+      this.checklist.categoryId = history.state.data.categoryid 
+    }
   }
 
   onOpenCalendar(container) {
@@ -81,7 +106,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = false;
   }
   onCreateTask(): void {
-    debugger;
      if (this.checklist.endOfMonth) {
       this.checklist.endOfMonth = true;
     }
@@ -93,7 +117,10 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
     this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
-    this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
+    if (this.selectedCategoryId.categoryId != undefined)
+    {
+      this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
+    }
     if (this.attachmentPaths != null) {
       this.newAttachementPath = [];
       this.attachmentPaths.forEach(element => {
@@ -180,6 +207,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   loadDaysDropdown(): void {
     this._closingChecklistService.getCurrentMonthDays().subscribe(result => {
       this.days = result;
+     
     });
   }
 }
