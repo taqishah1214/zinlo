@@ -145,16 +145,6 @@ namespace Zinlo.ClosingChecklist
                             input.ClosingMonth = GetClosingMonthByIterationNumberForXNumberOfMonth(input.ClosingMonth, input.NoOfMonths);
                         }
                     }
-
-
-
-
-                    //for (int i = 0; i < input.NoOfMonths; i++)
-                    //{
-                    //    input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
-                    //    await Create(input);              
-                    //    input.ClosingMonth = GetClosingMonthByIterationNumber(input.ClosingMonth, (int)input.Frequency);
-                    //}
                 }
                 else if (input.Frequency != FrequencyDto.None && input.Frequency != FrequencyDto.XNumberOfMonths)
                 {
@@ -442,7 +432,7 @@ namespace Zinlo.ClosingChecklist
             }
             else
             {
-                baseDate = ClosingMonth.AddDays(numberOfDays);
+                baseDate = ClosingMonth.AddDays(- numberOfDays);
             }
             return baseDate;
         }
