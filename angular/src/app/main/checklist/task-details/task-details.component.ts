@@ -4,6 +4,7 @@ import { UppyConfig } from 'uppy-angular';
 import { ClosingChecklistServiceProxy, AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
+import { AppConsts } from '@shared/AppConsts';
 @Component({
   selector: 'app-task-details',
   templateUrl: './task-details.component.html',
@@ -160,7 +161,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   }
   settings: UppyConfig = {
     uploadAPI: {
-      endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",
+      endpoint: AppConsts.remoteServiceBaseUrl + '/api/services/app/Attachments/PostAttachmentFile',
     },
     plugins: {
       Webcam: false

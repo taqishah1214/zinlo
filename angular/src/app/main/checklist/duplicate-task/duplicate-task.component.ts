@@ -6,6 +6,7 @@ import { IgxMonthPickerComponent } from "igniteui-angular";
 import { UppyConfig } from 'uppy-angular';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
+import { AppConsts } from '@shared/AppConsts';
 @Component({
   selector: 'app-duplicate-task',
   templateUrl: './duplicate-task.component.html',
@@ -158,7 +159,7 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
   }
   settings: UppyConfig = {
     uploadAPI: {
-      endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",
+      endpoint: AppConsts.remoteServiceBaseUrl + '/api/services/app/Attachments/PostAttachmentFile',
     },
     plugins: {
       Webcam: false

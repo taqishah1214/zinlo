@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
 import { Router } from '@angular/router';
 import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
+import { AppConsts } from '@shared/AppConsts';
 @Component({
   selector: 'app-edit-task',
   templateUrl: './edit-task.component.html',
@@ -290,7 +291,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
   settings: UppyConfig = {
     uploadAPI: {
-      endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",
+      endpoint: AppConsts.remoteServiceBaseUrl + '/api/services/app/Attachments/PostAttachmentFile',
     },
     plugins: {
       Webcam: false
