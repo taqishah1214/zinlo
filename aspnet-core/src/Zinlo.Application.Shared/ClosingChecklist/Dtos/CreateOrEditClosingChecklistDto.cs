@@ -24,6 +24,7 @@ namespace Zinlo.Tasks.Dtos
         public string CommentBody { get; set; }
         public List<CommentDto> comments { get; set; }
         public List<string> AttachmentsPath { get; set; }
+        public string GroupId { get; set; }
     }
     public enum StatusDto
     {

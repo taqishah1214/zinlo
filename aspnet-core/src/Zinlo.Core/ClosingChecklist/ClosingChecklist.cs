@@ -24,6 +24,7 @@ namespace Zinlo.ClosingChecklist
         public bool DayBeforeAfter { get; set; }
         public bool EndOfMonth { get; set; }
         public Frequency Frequency { get; set; }
+        public string GroupId { get; set; }
     }
     public enum Status
     {
