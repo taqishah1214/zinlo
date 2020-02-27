@@ -54,12 +54,14 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
   BackToCategoriesList(): void {
     this.backToRoute();
   }
+
   onSubmit(): void {
     this._categoriesServiceProxy.createOrEdit(this.categoryobj)
       .pipe(finalize(() => { }))
       .subscribe(() => {
         this.backToRoute();
         this.notify.info(this.l('SavedSuccessfully'));
+
       });
   }
 

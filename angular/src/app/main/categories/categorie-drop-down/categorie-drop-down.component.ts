@@ -32,6 +32,7 @@ export class CategorieDropDownComponent implements OnInit {
     });
   }
   categoryClick(id,name) : void {
+    console.log("wertyuiiiiiiiiiiiiiii")
     this.categoryId = id;
     this.categoryName = name;
     this.messageEvent.emit(this.categoryId);
