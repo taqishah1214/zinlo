@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { UppyConfig } from 'uppy-angular';
-import { ClosingChecklistServiceProxy, AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto } from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy, AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto, DetailsClosingCheckListDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 import { AppConsts } from '@shared/AppConsts';
@@ -12,15 +12,18 @@ import { AppConsts } from '@shared/AppConsts';
 })
 export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   taskObject: any;
-  taskDetailObject: any;
+  taskDetailObject: DetailsClosingCheckListDto = new DetailsClosingCheckListDto();
   recordId: number = 0;
+  taskStatus: any = "";
   commantBox: boolean;
   attachments: any;
+  commentsData: any = [];
   newAttachmentPaths: any = [];
   comment: CreateOrEditCommentDto = new CreateOrEditCommentDto();
   postAttachment: PostAttachmentsPathDto = new PostAttachmentsPathDto();
   userSignInName: any;
-  UserProfilePicture :any;
+  assigneeId: any = 0;
+  UserProfilePicture: any;
 
   constructor(
     injector: Injector,
@@ -47,9 +50,8 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     this.userInfo.profilePicture.subscribe(
       data => {
         this.UserProfilePicture = data.valueOf();
-     });
-    if (this.UserProfilePicture == undefined)
-    {
+      });
+    if (this.UserProfilePicture == undefined) {
       this.UserProfilePicture = "";
     }
   }
@@ -76,10 +78,10 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   }
 
   RedirectToEditTaskPage(): void {
-    this._router.navigate(['/app/main/checklist/edit-task'], { state: { data: { id: this.recordId,categoryid: 0 , categoryTitle : "" } } })
+    this._router.navigate(['/app/main/checklist/edit-task'], { state: { data: { id: this.recordId, categoryid: 0, categoryTitle: "" } } })
   }
   duplicateTask(): void {
-    this._router.navigate(['/app/main/checklist/duplicate-task'], { state: { data: { id: this.recordId,categoryid: 0 , categoryTitle : "" } } });
+    this._router.navigate(['/app/main/checklist/duplicate-task'], { state: { data: { id: this.recordId, categoryid: 0, categoryTitle: "" } } });
   }
 
   BackToTaskList(): void {
@@ -87,12 +89,12 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   }
 
   getTaskDetails(id): void {
-
     this._closingChecklistService.getDetails(id).subscribe(result => {
-      if (result.comments == null) {
-        result.comments = [];
-      }
       this.taskDetailObject = result;
+      this.commentsData = this.taskDetailObject.comments;
+      this.assigneeId = this.taskDetailObject.assigneeId;
+      this.taskStatus = this.taskDetailObject.taskStatus;
+
       this.initilizeStatus();
       this.attachments = result.attachments;
       this.attachments.forEach(element => {
@@ -104,20 +106,17 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     })
   }
 
-  initilizeStatus() : void {
-        if (this.taskDetailObject.taskStatus === "NotStarted")
-        {
-          this.taskDetailObject.taskStatus = "Not Started"
-        }else if ( this.taskDetailObject.taskStatus === "InProcess")
-        {
-          this.taskDetailObject.taskStatus = "In Process"
+  initilizeStatus(): void {
+    if (this.taskDetailObject.taskStatus === "NotStarted") {
+      this.taskDetailObject.taskStatus = "Not Started"
+    } else if (this.taskDetailObject.taskStatus === "InProcess") {
+      this.taskDetailObject.taskStatus = "In Process"
 
-        }
-        else if ( this.taskDetailObject.taskStatus === "OnHold")
-        {
-          this.taskDetailObject.taskStatus = "On Hold"
+    }
+    else if (this.taskDetailObject.taskStatus === "OnHold") {
+      this.taskDetailObject.taskStatus = "On Hold"
 
-        }
+    }
 
   }
 

@@ -197,7 +197,7 @@ namespace Zinlo.ClosingChecklist
                             input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
                             if (IsIterationFrequencyChanged)
                             {
-                                if (input.ClosingMonth.Year >= EditedTaskClosingMonth.Year && input.ClosingMonth.Month >= EditedTaskClosingMonth.Month)
+                                if (input.ClosingMonth.Date >= DateTime.Now.Date)
                                 {
                                     await Create(input);
                                 }
@@ -281,7 +281,7 @@ namespace Zinlo.ClosingChecklist
 
                     //  input.ClosingMonth = task.ClosingMonth.AddMonths(1); // Start from the current task closingMonth
                     input.ClosingMonth = IterationStartClosingMonth;
-                    EditedTaskClosingMonth = task.ClosingMonth;
+                   // EditedTaskClosingMonth = task.ClosingMonth;
                     IsIterationFrequencyChanged = true;
                     input.Id = 0;
                     flag = false;
@@ -481,21 +481,30 @@ namespace Zinlo.ClosingChecklist
         }
         public List<ClosingCheckGroupDto> GetIterationFutureTasks(List<ClosingCheckGroupDto> tasks, long Id, int IterationNumber)
         {
-            IterationStartClosingMonth = DateTime.MinValue;
+           // IterationStartClosingMonth = DateTime.MinValue;
             string currentTaskGroupID = tasks.Where(x => x.Id == Id).FirstOrDefault().GroupId;
             // int iterationNumber = Convert.ToInt32(currentTaskGroupID.Split("-").Last());
             List<ClosingCheckGroupDto> list = new List<ClosingCheckGroupDto>();
+            var checklists =  _closingChecklistRepository.GetAll().ToList();
             foreach (var item in tasks)
             {
+
                 int itemNumber = Convert.ToInt32(item.GroupId.Split("-").Last());
                 if(itemNumber == 0)
                 {
                     IterationStartClosingMonth = _closingChecklistRepository.FirstOrDefault(x => x.Id == item.Id).ClosingMonth;
                 }
-                if (itemNumber > IterationNumber)
+                var currentItem = checklists.FirstOrDefault(x => x.Id == item.Id);
+                if(currentItem.ClosingMonth.Date > DateTime.Now.Date)
                 {
                     list.Add(item);
                 }
+                //if (itemNumber > IterationNumber)
+                //{
+                  
+
+                //    list.Add(item);
+                //}
             }
             return list;
         }
