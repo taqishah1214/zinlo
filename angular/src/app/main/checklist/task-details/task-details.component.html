@@ -35,8 +35,10 @@
                                 </div>
 
                             </div>
+                            <div class="row" *ngIf="taskDetailObject.instruction == null">
+                            </div>
 
-                            <div class="row">
+                            <div class="row" *ngIf="taskDetailObject.instruction != null">
                                 <div class="col-md-12">
 
                                     <div class="custom-text-area" innerHTML="{{taskDetailObject.instruction}} "></div>

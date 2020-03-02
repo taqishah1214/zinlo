@@ -80,13 +80,15 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
     this.currentDate = new Date();
-    this.currentYear = this.currentDate.getFullYear()
+    this.currentYear = this.currentDate.getFullYear();
     var curr_month = this.currentDate.getMonth();
     this.monthCount = curr_month;
     this.currentMonth = this.monthsArray[curr_month]
     this.yearCount = 1;
     this.collapsibleRow = false;
     this.currentDate = new Date();
+    this.currentYear = this.currentDate.getFullYear();
+
   }
 
   openFieldUpdateAssignee(record) {
@@ -103,26 +105,35 @@ export class Checklist extends AppComponentBase implements OnInit {
     };
     container.setViewMode('month');
   }
+  filterByMonth(event): void {
+    var month = event.getMonth() + 1;
+    this.monthFilter = month + "/" + event.getFullYear()
+    this.assigniNameForHeader = [];
+    this.remainingUserForHeader = [];
+    this.updateAssigneeOnHeader = true
+    this.currentYear = event.getFullYear();
+    this.currentMonth = this.monthsArray[month - 1];;
+    this.getClosingCheckListAllTasks();
+  }
 
   calculateDate(preNext): void {
-    this.updateAssigneeOnHeader = true
+    this.updateAssigneeOnHeader = true;
     if (preNext == 1) {
-      var month = this.currentDate.getMonth();
+      var month = +moment().month(this.currentMonth).format('M');
       this.currentMonth = this.monthsArray[month];
       var year = this.currentDate.getFullYear();
-      this.currentYear = year;
-      if (month != 11) {
-        this.currentDate.setMonth(month + 1);
+      if (month != 12) {
+        this.currentDate.setMonth(month);
         var month1 = this.currentDate.getMonth();
         this.currentMonth = this.monthsArray[month1];
-        var index = this.monthsArray.indexOf(this.currentMonth) + 1;
+        var index = this.monthsArray.indexOf(this.currentMonth);
         this.monthFilter = index + "/" + this.currentYear;
         this.monthValue = null;
         this.monthValue = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth())
         this.updateAssigneeOnHeader = true;
         this.getClosingCheckListAllTasks();
       }
-      else if (month == 11) {
+      else if (month == 12) {
         var year = this.currentDate.getFullYear();
         this.currentDate.setFullYear(year + 1);
         this.currentDate.setMonth(0);
@@ -298,16 +309,7 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.updateAssigneeOnHeader = false;
     this.getClosingCheckListAllTasks();
   }
-  filterByMonth(event): void {
-    var month = event.getMonth() + 1;
-    this.monthFilter = month + "/" + event.getFullYear()
-    this.assigniNameForHeader = [];
-    this.remainingUserForHeader = [];
-    this.updateAssigneeOnHeader = true
-    this.currentYear = event.getFullYear();
-    this.currentMonth = this.monthsArray[month - 1];;
-    this.getClosingCheckListAllTasks();
-  }
+
   loadCategories(): void {
     this._categoryService.categoryDropDown().subscribe(result => {
       this.category = result;

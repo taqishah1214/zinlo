@@ -25,13 +25,6 @@ namespace Zinlo.ChartsofAccount
             _profileAppService = profileAppService;
         }
 
-
-        public string AccountNoFilter { get; set; }
-
-        public string AccountTypeFilter { get; set; }
-
-        public string AssigneeFilter { get; set; }
-
         
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
@@ -81,9 +74,10 @@ namespace Zinlo.ChartsofAccount
         protected virtual async Task Update(CreateOrEditChartsofAccountDto input)
         {
             var account = await _chartsofAccountRepository.FirstOrDefaultAsync((int)input.Id);
-            account.ReconciliationType = (ReconciliationType)input.ReconciliationType;
-            account.AccountType = (AccountType)input.AccountType;
-            _chartsofAccountRepository.Update(account);
+            var updatedAccount = ObjectMapper.Map(input, account);
+            updatedAccount.ReconciliationType = (ReconciliationType)input.ReconciliationType;
+            updatedAccount.AccountType = (AccountType)input.AccountType;
+            await _chartsofAccountRepository.UpdateAsync(updatedAccount);
         }
 
         protected virtual async Task Create(CreateOrEditChartsofAccountDto input)

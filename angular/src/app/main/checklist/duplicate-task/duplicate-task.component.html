@@ -5,7 +5,7 @@
                 <div class="kt-subheader__main">
                     <h3 class="kt-subheader__title">
                         <img src="./assets/media/ClosingCheckList/clipboard.svg" alt="clipboard">
-                        <span>Checklist</span>
+                        <span class="headSpace">Checklist</span>
                     </h3>
                     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
                     <span class="kt-subheader__desc">
@@ -127,7 +127,7 @@
                                     <div class="form-group">
                                         <label>Frequency</label>
                                         <select class="bg-white border form-control input-medium"
-                                            (change)="OnFrequencyChange($event.target.value)" [(ngModel)]="checklist.frequency">
+                                            (change)="OnFrequencyChange($event.target.value)" name="frequency" [(ngModel)]="frequency">
                                             <option [ngValue]="undefined" hidden>Criteria</option>
                                             <option value="5">None</option>
                                             <option value="1">Monthly</option>
@@ -150,7 +150,7 @@
                                                 </span>
                                             </div>
                                             <select class="border border-default bg-white form-control input-medium"
-                                                (change)="onDayChange()" [(ngModel)]="checklist.dueOn">
+                                                (change)="onDayChange()" name="dueOn" [(ngModel)]="dueOn">
                                                 <option *ngFor="let item of days;" [value]="item.value">
                                                     {{item.name}}
                                                 </option>
@@ -173,8 +173,8 @@
                                     <div class="form-group">
                                         <label>&nbsp;&nbsp;</label>
                                         <select class="bg-white border form-control input-medium"
-                                            (change)="onDaysClick($event.target.value)"
-                                            [(ngModel)]="checklist.dayBeforeAfter">
+                                            (change)="onDaysClick($event.target.value)" [(ngModel)]="daysBeforeAfter">
+                                            <option value=null disabled hidden>None</option>
                                             <option value=true>Days Before</option>
                                             <option value=false>Days After</option>
                                         </select>
@@ -184,7 +184,7 @@
                                     <div class="form-group">
                                         <label>Ends on</label>
                                         <form class="input-arrow">
-                                            <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false"
+                                            <input name="endsOn" [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker
                                                 [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                 (onShown)="onOpenCalendar($event)">
