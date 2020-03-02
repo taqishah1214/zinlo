@@ -36,6 +36,9 @@ namespace Zinlo.ClosingChecklist
         #endregion
         #region|Global Parameters|
         public bool flag = true;
+        public DateTime IterationStartClosingMonth = DateTime.MinValue;
+        public bool IsIterationFrequencyChanged = false;
+        public DateTime EditedTaskClosingMonth = DateTime.MinValue;
         #endregion
         #region|#Constructor Dependencies|
         public ClosingChecklistAppService(IProfileAppService profileAppService, IRepository<ClosingChecklist, long> closingChecklistRepository, UserManager userManager, ICommentAppService commentAppService, IRepository<User, long> userRepository, IAttachmentAppService attachmentAppService)
@@ -162,10 +165,23 @@ namespace Zinlo.ClosingChecklist
                             string groupID = GenerateGroupID(checklistCount + checklistNextID, i);
                             input.GroupId = groupID;
                             input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
-                            await Create(input);
+                            if(IsIterationFrequencyChanged)
+                            {
+                                if(input.ClosingMonth.Year >= DateTime.Now.Year && input.ClosingMonth.Month >= DateTime.Now.Month)
+                                {
+                                    await Create(input);
+                                }                               
+                            }
+                            else
+                            {
+                                await Create(input);
+                            }                          
                             input.ClosingMonth = GetIterationBaseDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
                             input.ClosingMonth = GetClosingMonthByIterationNumberForXNumberOfMonth(input.ClosingMonth, input.NoOfMonths);
                         }
+                        IsIterationFrequencyChanged = false;
+                        IterationStartClosingMonth = DateTime.MinValue;
+                        EditedTaskClosingMonth = DateTime.MinValue;
                     }
                 }
                 else if (input.Frequency != FrequencyDto.None && input.Frequency != FrequencyDto.XNumberOfMonths)
@@ -179,10 +195,23 @@ namespace Zinlo.ClosingChecklist
                             string groupID = GenerateGroupID(checklistCount + checklistNextID, i);
                             input.GroupId = groupID;
                             input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
-                            await Create(input);
+                            if (IsIterationFrequencyChanged)
+                            {
+                                if (input.ClosingMonth.Year >= EditedTaskClosingMonth.Year && input.ClosingMonth.Month >= EditedTaskClosingMonth.Month)
+                                {
+                                    await Create(input);
+                                }
+                            }
+                            else
+                            {
+                                await Create(input);
+                            }
                             input.ClosingMonth = GetIterationBaseDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
                             input.ClosingMonth = GetClosingMonthByIterationNumber(input.ClosingMonth, (int)input.Frequency);
                         }
+                        IsIterationFrequencyChanged = false;
+                        IterationStartClosingMonth = DateTime.MinValue;
+                        EditedTaskClosingMonth = DateTime.MinValue;
                     }
                 }
             }
@@ -250,7 +279,10 @@ namespace Zinlo.ClosingChecklist
                 if ((int)input.Frequency != (int)Frequency.None)
                 {
 
-                    input.ClosingMonth = task.ClosingMonth; // Start from the current task closingMonth
+                    //  input.ClosingMonth = task.ClosingMonth.AddMonths(1); // Start from the current task closingMonth
+                    input.ClosingMonth = IterationStartClosingMonth;
+                    EditedTaskClosingMonth = task.ClosingMonth;
+                    IsIterationFrequencyChanged = true;
                     input.Id = 0;
                     flag = false;
                     await CreateOrEdit(input);
@@ -406,20 +438,42 @@ namespace Zinlo.ClosingChecklist
                 _closingChecklistRepository.Update(task);
             }
         }
-        public async Task<List<NameValueDto<string>>> GetCurrentMonthDays()
+        public async Task<List<NameValueDto<string>>> GetCurrentMonthDays(DateTime dateTime)
         {
-            List<NameValueDto<string>> list = new List<NameValueDto<string>>();
-            DateTime now = DateTime.Now;
-            var startDate = new DateTime(now.Year, now.Month, 1);
-            var endDate = startDate.AddMonths(1).AddDays(-1);
-            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+            if (dateTime == DateTime.MinValue)
             {
-                NameValueDto<string> nameValueDto = new NameValueDto<string>();
-                nameValueDto.Value = date.Day.ToString();
-                nameValueDto.Name = date.Day.ToString();
-                list.Add(nameValueDto);
+                List<NameValueDto<string>> list = new List<NameValueDto<string>>();
+                DateTime now =  DateTime.Now;
+                var startDate = new DateTime(now.Year, now.Month, 1);
+                var endDate = startDate.AddMonths(1).AddDays(-1);
+                for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                {
+                    NameValueDto<string> nameValueDto = new NameValueDto<string>();
+                    nameValueDto.Value = date.Day.ToString();
+                    nameValueDto.Name = date.Day.ToString();
+                    list.Add(nameValueDto);
+                }
+                return list;
+
             }
-            return list;
+            else
+            {
+                List<NameValueDto<string>> list = new List<NameValueDto<string>>();
+                DateTime now = dateTime; //  DateTime.Now;
+                var startDate = new DateTime(now.Year, now.Month, 1);
+                var endDate = startDate.AddMonths(1).AddDays(-1);
+                for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                {
+                    NameValueDto<string> nameValueDto = new NameValueDto<string>();
+                    nameValueDto.Value = date.Day.ToString();
+                    nameValueDto.Name = date.Day.ToString();
+                    list.Add(nameValueDto);
+                }
+                return list;
+
+            }
+
+            
         }
         public string GenerateGroupID(long id, int iteration)
         {
@@ -427,12 +481,17 @@ namespace Zinlo.ClosingChecklist
         }
         public List<ClosingCheckGroupDto> GetIterationFutureTasks(List<ClosingCheckGroupDto> tasks, long Id, int IterationNumber)
         {
+            IterationStartClosingMonth = DateTime.MinValue;
             string currentTaskGroupID = tasks.Where(x => x.Id == Id).FirstOrDefault().GroupId;
             // int iterationNumber = Convert.ToInt32(currentTaskGroupID.Split("-").Last());
             List<ClosingCheckGroupDto> list = new List<ClosingCheckGroupDto>();
             foreach (var item in tasks)
             {
                 int itemNumber = Convert.ToInt32(item.GroupId.Split("-").Last());
+                if(itemNumber == 0)
+                {
+                    IterationStartClosingMonth = _closingChecklistRepository.FirstOrDefault(x => x.Id == item.Id).ClosingMonth;
+                }
                 if (itemNumber > IterationNumber)
                 {
                     list.Add(item);

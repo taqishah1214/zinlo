@@ -58,7 +58,7 @@
                                         <label for="dateOfBirth">Closing Month</label>
                                         <div class="month-calender">
                                             <form class="input-arrow">
-                                                <input [(ngModel)]="checklist.closingMonth" autocomplete="off"
+                                                <input [(ngModel)]="checklist.closingMonth" (ngModelChange)="loadDaysByMonth($event)"
                                                     class="form-control" name="date" bsDatepicker
                                                     [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">

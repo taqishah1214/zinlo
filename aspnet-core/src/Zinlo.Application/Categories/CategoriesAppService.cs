@@ -132,5 +132,18 @@ namespace Zinlo.Categories
             return assets;
         }
 
+        public bool IsCategoryExist(string input)
+        {
+            if(input != null)
+            {
+                bool IsExist = _categoryRepository.GetAll().Any(x => x.Title.Trim().ToLower() == input.Trim().ToLower());
+                return IsExist;
+            }
+            else
+            {
+                return false;
+            }
+           
+        }
     }
 }

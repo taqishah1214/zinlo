@@ -17,13 +17,14 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body">
-                    <form (ngSubmit)="onSubmit()">
+                    <form  #categoryFormRef="ngForm" (ngSubmit)="onSubmit()">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="title">Title</label>
-                                    <input autofocus type="text" class="form-control" id="title" name="title"
+                                    <input autofocus type="text" class="form-control" id="title"  required (focusout)="CheckCategory()" name="title"
                                         [(ngModel)]="categoryobj.title">
+                                        <span style="color:red" *ngIf="isCategoryExist">Category with same Name already exist.</span>
                                 </div>
                             </div>
                         </div>
@@ -31,7 +32,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="description">Description</label>
-                                    <textarea class="form-control" [(ngModel)]="categoryobj.description"
+                                    <textarea class="form-control" required [(ngModel)]="categoryobj.description"
                                         id="description" name="description" (keydown.enter)="save($event)"
                                          ></textarea>
                                 </div>
@@ -40,7 +41,7 @@
                         <div class="kt-portlet__head">
                         </div>
                         <div class="form-group margin-top-5">
-                            <button class="btn btn-brand" type="submit">
+                            <button class="btn btn-brand" type="submit" [disabled]="categoryFormRef.form.invalid">
                                 {{"Save" | localize}}
                             </button>
                         </div>

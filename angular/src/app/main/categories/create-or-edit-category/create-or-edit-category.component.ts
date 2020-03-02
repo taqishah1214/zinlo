@@ -17,6 +17,7 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
   categoryobj: CreateOrEditCategoryDto = new CreateOrEditCategoryDto();
   categoryId: number = 0;
   redirectPath: any;
+  isCategoryExist:boolean = false;
   constructor(private _router: Router,
     private _categoriesServiceProxy: CategoriesServiceProxy,
     injector: Injector) {
@@ -56,15 +57,27 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
   }
 
   onSubmit(): void {
-    this._categoriesServiceProxy.createOrEdit(this.categoryobj)
+    if (this.isCategoryExist == false) {
+      this._categoriesServiceProxy.createOrEdit(this.categoryobj)
       .pipe(finalize(() => { }))
       .subscribe(result => {
         this.backToRoute(this.categoryobj.title,result);
         this.notify.info(this.l('SavedSuccessfully'));
 
       });
+    }  
   }
+
   save(event){
     this.onSubmit();
+  }
+  CheckCategory(){
+    const {categoryobj,categoryId,_categoriesServiceProxy} = this  
+    if (categoryId==0)  {
+      _categoriesServiceProxy.isCategoryExist(categoryobj.title).subscribe(result=>{
+        this.isCategoryExist = result;
+      });
+    }
+  
   }
 }
