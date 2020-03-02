@@ -139,7 +139,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     else {
       this.checklist.noOfMonths = 0;
     }
-    debugger;
     this.errorMessage = "";
     if(this.checklist.frequency == 2) //Quarterly
     {

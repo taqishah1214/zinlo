@@ -18,7 +18,7 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
   taskName: string;
   comment: string;
   closingMonth: string;
-  frequenct: string;
+  frequency: number;
   commantModal: boolean;
   commantBox: boolean;
   closingMonthInputBox: boolean;
@@ -35,10 +35,13 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
   categoryName: any;
   public isChecked: boolean = false;
   days: any;
+  dueOn: number;
+  endsOn: any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild(IgxMonthPickerComponent, { static: true }) monthPicker: IgxMonthPickerComponent;
+  daysBeforeAfter : string = null;
   constructor
     (private _router: Router,
       private _closingChecklistService: ClosingChecklistServiceProxy,
@@ -100,7 +103,6 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = false;
   }
   onDuplicateTask(): void {
-
     debugger;
     if (this.checklist.dayBeforeAfter) {
       this.checklist.dayBeforeAfter = true;
@@ -116,8 +118,8 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
       this.checklist.endOfMonth = false;
     }
 
-    this.checklist.dueOn = Number(this.checklist.dueOn);
-    this.checklist.frequency = Number(this.checklist.frequency);
+    this.checklist.frequency = Number(this.frequency);
+    this.checklist.dueOn = Number(this.dueOn);
     this.checklist.status = 1
     if (this.selectedUserId.selectedUserId != undefined)
     {
@@ -175,6 +177,7 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
   OnFrequencyChange(val) {
     if (val == 5) {
       this.endOnIsEnabled = false;
+      this.checklist.endsOn = null;
     }
     else {
       this.endOnIsEnabled = true;
@@ -184,6 +187,7 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
     }
     else {
       this.enableValue = false;
+      this.checklist.noOfMonths = null;
     }
   }
   onDayChange() {
@@ -192,6 +196,7 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
   }
   handleRadioChange() {
     this.checklist.dayBeforeAfter = null;
+    this.daysBeforeAfter = null;
     this.checklist.dueOn = 0;
     this.SelectionMsg = "";
     this.isChecked = false;
@@ -200,9 +205,12 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
     this.isChecked = true;
     if (valu == "true") {
       this.SelectionMsg = "Days Before";
+      this.checklist.dayBeforeAfter = true
     }
     else if (valu == "false") {
       this.SelectionMsg = "Days After";
+      this.checklist.dayBeforeAfter = false
+
     }
   }
 
