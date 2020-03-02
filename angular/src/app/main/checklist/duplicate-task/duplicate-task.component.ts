@@ -212,9 +212,12 @@ export class DuplicateTaskComponent extends AppComponentBase implements OnInit {
   }
 
   loadDaysDropdown(): void {
-    this._closingChecklistService.getCurrentMonthDays().subscribe(result => {
+    this._closingChecklistService.getCurrentMonthDays(this.checklist.closingMonth).subscribe(result => {
       this.days = result;
     });
+  }
+  loadDaysByMonth(event):void{
+    this.loadDaysDropdown();
   }
 }
 

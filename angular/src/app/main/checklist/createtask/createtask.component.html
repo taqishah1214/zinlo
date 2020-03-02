@@ -33,6 +33,7 @@
                         </a>
                     </div>
                 </div>
+                <form #taskForm="ngForm">
                 <div class="kt-portlet__body">
                     <div class="row">
                         <div class="col-md-7">
@@ -45,7 +46,7 @@
                                         <label for="dateOfBirth">Closing Month</label>
                                         <div class="month-calender">
                                             <form class="input-arrow">
-                                                <input [(ngModel)]="checklist.closingMonth" autocomplete="off"
+                                                <input [(ngModel)]="checklist.closingMonth" (ngModelChange)="loadDaysByMonth($event)" required="required"
                                                     class="form-control" name="date" bsDatepicker
                                                     placeholder="Select Month" class="form-control" name="date"
                                                     bsDatepicker [minDate]="minDate"
@@ -60,7 +61,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="taskName"> Task Name</label>
-                                        <input type="text" class="form-control" placeholder="Enter Task Name"
+                                        <input type="text" class="form-control" required  name="taskName" id="taskName" placeholder="Enter Task Name"
                                             [(ngModel)]="checklist.taskName">
                                     </div>
                                 </div>
@@ -123,7 +124,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Frequency</label>
-                                        <select class="bg-white border form-control input-medium"
+                                        <select class="bg-white border form-control input-medium" required id="frequency" name="frequency"
                                             (change)="onChange($event.target.value)" [(ngModel)]="checklist.frequency">
                                             <option [ngValue]="undefined" hidden>Criteria</option>
                                             <option value="5">None</option>
@@ -185,7 +186,7 @@
                                     <div class="form-group">
                                         <label>Ends on</label>
                                         <form class="input-arrow">
-                                            <input [(ngModel)]="checklist.endsOn" [disabled]="endOnIsEnabled == false"
+                                            <input [(ngModel)]="checklist.endsOn" required="required" 
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker
                                                 placeholder="Month" [minDate]="minDate"
                                                 [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
@@ -212,12 +213,13 @@
                     <div class="kt-portlet__head">
                     </div>
                     <div class="btn-create">
-                        <button class="btn btn-brand" (click)="onCreateTask()">
+                        <button class="btn btn-brand" (click)="onCreateTask()" [disabled]="taskForm.form.invalid">
                             Create
                         </button>
                     </div>
                    
                 </div>
+            </form>
             </div>
         </div>
     </div>

@@ -199,7 +199,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 
   loadDaysDropdown(): void {
-    this._closingChecklistService.getCurrentMonthDays().subscribe(result => {
+    this._closingChecklistService.getCurrentMonthDays(this.getTaskForEdit.closingMonth).subscribe(result => {
       this.days = result;
     });
   }

@@ -21,6 +21,8 @@ namespace Zinlo.Categories
 
 		Task Delete(EntityDto input);
         Task<List<NameValueDto<long>>> CategoryDropDown();
+		bool IsCategoryExist(string input);
+
 
 
 

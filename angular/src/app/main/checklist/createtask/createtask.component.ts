@@ -8,6 +8,8 @@ import { UppyConfig } from 'uppy-angular';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppConsts } from '@shared/AppConsts';
 import {UserInformation} from "../../CommonFunctions/UserInformation"
+import { moment } from 'ngx-bootstrap/chronos/test/chain';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 @Component({
   selector: 'app-createtask',
   templateUrl: './createtask.component.html',
@@ -42,7 +44,8 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild(IgxMonthPickerComponent, { static: true }) monthPicker: IgxMonthPickerComponent;
   daysBeforeAfter : string = null;
-
+  DaysByMonth: Date = new Date();
+  errorMessage = "";
   constructor
     (private _router: Router,
       private _closingChecklistService: ClosingChecklistServiceProxy,
@@ -136,6 +139,30 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     else {
       this.checklist.noOfMonths = 0;
     }
+    debugger;
+    this.errorMessage = "";
+    if(this.checklist.frequency == 2) //Quarterly
+    {
+      var monthsCount = this.getNoOfmonths(this.checklist.closingMonth,this.checklist.endsOn);
+      console.log(monthsCount)
+      if(monthsCount < 3)
+      {
+        this.errorMessage = "Quarterly is not valid in the current range.";
+        this.notify.error(this.errorMessage);
+        return;
+      }
+    }
+    else if(this.checklist.frequency == 3) //Anually
+    {
+      var monthsCount = this.getNoOfmonths(this.checklist.closingMonth,this.checklist.endsOn);
+      console.log(monthsCount)
+      if(monthsCount < 12)
+      {
+        this.errorMessage = "Anually is not valid in the current range.";
+        this.notify.error(this.errorMessage);
+        return;
+      }
+    }
    
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(() => {
       this.redirectToTaskList();
@@ -209,9 +236,19 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     
   }
   loadDaysDropdown(): void {
-    this._closingChecklistService.getCurrentMonthDays().subscribe(result => {
+    this._closingChecklistService.getCurrentMonthDays(this.checklist.closingMonth).subscribe(result => {
       this.days = result;
      
     });
   }
+  loadDaysByMonth(event):void{
+    this.loadDaysDropdown();
+  }
+   getNoOfmonths(date1, date2) {
+    var Nomonths;
+    Nomonths= (date2.getFullYear() - date1.getFullYear()) * 12;
+    Nomonths-= date1.getMonth() + 1;
+    Nomonths+= date2.getMonth() +1; // we should add + 1 to get correct month number
+    return Nomonths <= 0 ? 0 : Nomonths;
+}
 }
