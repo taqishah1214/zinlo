@@ -13,7 +13,7 @@ import { AccountsComponent } from './account/accounts/accounts.component';
 import { DuplicateTaskComponent } from './checklist/duplicate-task/duplicate-task.component';
 import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component';
 import { ReconcilliationComponent } from './reconcilliation/reconcilliation.component';
-import { CreateEditItemizedComponent } from './reconcilliation/create-edit-itemized/create-edit-itemized.component';
+import { CreateEditItemizedComponent } from './reconcilliation/itemized/create-edit-itemized/create-edit-itemized.component';
 
 @NgModule({
     imports: [

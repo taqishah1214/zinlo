@@ -1,4 +1,3 @@
-
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy, CreateOrEditChartsofAccountDto } from '@shared/service-proxies/service-proxies';
 import { Router } from '@angular/router';
@@ -8,11 +7,11 @@ import { UppyConfig } from 'uppy-angular';
 import { AppConsts } from '@shared/AppConsts';
 
 @Component({
-  selector: 'app-createdit-amartization',
-  templateUrl: './createdit-amartization.component.html',
-  styleUrls: ['./createdit-amartization.component.css']
+  selector: 'app-create-edit-itemized',
+  templateUrl: './create-edit-itemized.component.html',
+  styleUrls: ['./create-edit-itemized.component.css']
 })
-export class CreateditAmartizationComponent extends AppComponentBase implements OnInit  {
+export class CreateEditItemizedComponent extends AppComponentBase implements OnInit  {
 
   accountSubTypeName: any;
   accountSubTypeList: any;

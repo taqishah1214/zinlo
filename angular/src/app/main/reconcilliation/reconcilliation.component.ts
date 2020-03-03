@@ -134,7 +134,7 @@ deleteAccount(id) : void {
 }
 
 RedirectToCreateAccount(): void {
-  this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: 0} } });
+  this._router.navigate(['/app/main/reconcilliation/create-edit-itemized'], { state: { data: { id: 0} } });
 }
 
   getNameofAccountTypeAndReconcillation(id , key ) : string {  
