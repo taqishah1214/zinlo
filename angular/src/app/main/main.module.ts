@@ -36,7 +36,8 @@ import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype
 import { AccountsComponent } from './account/accounts/accounts.component';
 import { DuplicateTaskComponent } from './checklist/duplicate-task/duplicate-task.component';
 import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component';
-import { NgSelectModule } from '@ng-select/ng-select';
+import { NgSelectModule } from '@ng-select/ng-select';;
+import { ReconcilliationComponent } from './reconcilliation/reconcilliation.component'
 
 
 
@@ -85,7 +86,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 CreateOrEditAccountsubtypeComponent,
                 AccountsubtypeComponent,
                 AccountsComponent ,
-                CreateEditAccountsComponent               
+                CreateEditAccountsComponent ,
+                ReconcilliationComponent              
 
         ],
         providers: [

@@ -1,0 +1,309 @@
+<div class="kt-subheader kt-grid__item">
+    <div [class]="containerClass">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <img src="./assets/media/ClosingCheckList/clipboard.svg" alt="clipboard">
+                <span> Reconciliation</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="RedirectToCreateAccount()" class="btn btn-primary"><i class="fa fa-plus"></i>
+                    {{"AddNew" | localize}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+    <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
+
+        <section class="zinlo-records">
+            <div class="custom-container">
+                <div class="card">
+                    <div class="record-card-header">
+                        <div class="record-card-header-bottom">
+                            <div class="record-card-header-bottom-inner1">
+                                <h5>Jan 2102</h5>
+                            </div>
+                            <div class="record-card-header-bottom-inner2">
+                              
+                                <div class="upper-content">
+                                    <form class="search-form">
+                                        <div class="form-group">
+                                            <input type="text" autoFocus (input)="getAllAccounts()"
+                                                [(ngModel)]="filterText" name="filterText"
+                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
+                                        </div>
+                                    </form>
+
+                                    <div class="users-box-parent">
+                                        <div class="users-box">
+                                            <div *ngIf="plusUserBadgeForHeader"
+                                                class="member-count bg-lightgrey text-blue">
+                                                <span>+{{remainingUserForHeader.length}}</span>
+                                                <div class="member-dropdown">
+                                                    <ul>
+                                                        <li *ngFor="let item of remainingUserForHeader">
+                                                            <div class="kt-user-card-v2__pic">
+                                                                <div *ngIf="item.profilePicture"
+                                                                    class="kt-badge kt-badge--xl mem-img">
+                                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                                        alt="Pic" [src]="item.profilePicture">
+                                                                </div>
+                                                                <div *ngIf="!item.profilePicture"
+                                                                    class="kt-badge kt-badge--xl kt-badge--primary mem-img">
+                                                                    {{item.assigniName | firstLetterOfWords}}</div>
+                                                            </div>
+                                                            <div class="kt-user-card-v2__details">
+                                                                <span class="kt-user-card-v2__name">
+                                                                    {{item.assigniName}}
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+
+                                            <div *ngFor="let item of assigniNameForHeader "
+                                                (click)="GetAssigniSpecficAccounts(i.assigneeId)" class="kt-user-card-v2">
+                                                <div class="kt-user-card-v2__pic user-image-box">
+                                                    <div *ngIf="item.profilePicture" class="kt-badge kt-badge--xl">
+                                                        <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                            alt="Pic" [src]="item.profilePicture">
+                                                    </div>
+                                                    <div *ngIf="!item.profilePicture"
+                                                        class="kt-badge kt-badge--xl kt-badge--primary">
+                                                        {{item.assigniName | firstLetterOfWords}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-btn-box">
+                                        <button (click)="openFilterClick()" class="btn btn-square"><img
+                                                src="./assets/media/ClosingCheckList/filter.png" alt="filter"></button>
+                                    </div>
+                                </div>
+                                <div *ngIf="FilterBoxOpen" class="lower-content">
+                                    <form>
+                                        <div class="form-group">
+                                            <select class="form-control border-grey" name="categoryFilter"
+                                                [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
+                                                id="exampleFormControlSelect2">
+                                                <option value="0">Status</option>
+                                                <option *ngFor="let item of category;" [value]="item.value">
+                                                    {{item.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control border-grey" name="categoryFilter"
+                                                [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
+                                                id="exampleFormControlSelect2">
+                                                <option value="0">Account Type</option>
+                                                <option *ngFor="let item of category;" [value]="item.value">
+                                                    {{item.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="block-btn">
+                                            <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()">
+                                                <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="primeng-paging-container">
+                        <div class="table-box">
+
+                            <!--<Primeng-TurboTable-Start>-->
+                            <div class="task-table" [busyIf]="primengTableHelper.isLoading">
+                                <p-table #dataTable class=" record-table"
+                                    (onLazyLoad)="getAllAccounts($event)"
+                                    [value]="primengTableHelper.records"
+                                    rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                    [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                    [responsive]="primengTableHelper.isResponsive"
+                                    [resizableColumns]="primengTableHelper.resizableColumns">
+                                    <ng-template pTemplate="header">
+                                        <tr class="task-table-inner">
+                                            <th class="accountNo-cell" scope="col" pSortableColumn="AccountNumber">
+                                                Account No
+                                                <p-sortIcon field="AccountNumber"></p-sortIcon>
+                                            </th>
+                                            <th class="accountName-cell" scope="col" >
+                                                Account Name
+                                            </th>
+                                            <th class="accountType-cell" scope="col" pSortableColumn="AccountType">
+                                                Account Type
+                                                <p-sortIcon field="AccountType"></p-sortIcon>
+                                            </th>
+                                            <th class="accountSubtype-cell" scope="col">
+                                                Account Sub type
+                                            </th>
+                                            <th class="reconciliation-cell" scope="col">
+                                                Reconciliation Type     
+                                            </th>
+                                            <th class="assignee-cell" scope="col" pSortableColumn="AssigneeId">
+                                                Assignee
+                                                <p-sortIcon field="AssigneeId"></p-sortIcon>
+                                            </th>
+                                            <th class="action-cell" scope="col">
+                                                Status
+                                            </th>
+
+                                            <th class="cell-none">
+                                                <!-- <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div> -->
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+
+                            </div>
+                            <!--<Primeng-TurboTable-End> {{i.creationTime | date:'d MMM EEE'}} -->
+                            <table class="table record-table">
+                                <tbody *ngFor="let item of chartsOfAccountList">
+                                    <tr  class="task-table-inner table-repeater">
+
+                                        <td class="accountNo-cell">
+                                            <span class="">{{item.accountNumber}}</span>
+                                            
+                                        </td>
+                                        <td class="accountName-cell">
+                                            <span class="task-box">{{item.accountName}}</span>
+                                        </td>
+                                        <td class="accountType-cell">
+                                            <span class="category-name bg-lightgrey">{{item.accountType}}</span>
+                                        </td>
+                                        <td class="accountSubtype-cell">
+                                            <span class="">{{item.accountSubType}}</span>
+                                        </td>
+                                        <td class="reconciliation-cell">
+                                            <span class="">{{item.reconciliationType}}</span>
+                                        </td>
+
+                                        <td class="assignee-cell">
+                                            <div *ngIf="item.id != rowid" class="kt-user-card-v2"
+                                                (click)="openFieldUpdateAssignee(item.id)">
+                                                <div class="kt-user-card-v2__pic">
+                                                    <div *ngIf="item.profilePicture" class="kt-badge kt-badge--xl">
+                                                        <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                            alt="Pic" [src]="item.profilePicture">
+                                                    </div>
+
+                                                    <div *ngIf="!item.profilePicture"
+                                                        class="kt-badge kt-badge--xl kt-badge--primary">
+                                                        {{item.assigneeName | firstLetterOfWords}}
+                                                    </div>
+                                                </div>
+                                                <div class="kt-user-card-v2__details"> <span
+                                                        class="kt-user-card-v2__name">
+                                                        {{item.assigneeName}}</span> 
+                                                </div>
+                                            </div>
+                                            <div *ngIf="item.id == rowid">
+                                                <app-user-list-component  (callBack)="refreshGrid()"  taskId = {{item.id}} comingChangeReguest="accounts" userId = {{item.assigneeId}} ></app-user-list-component>
+                                            </div>
+                                        </td>
+                                        <td class="action-cell">
+                                            <form class="task-report-form">
+                                                <select onclick="console.log('test')"
+                                                    (change)="ChangeStatus($event.target.value,j.id)"
+                                                    class="form-control border-0 bg-brown text-white">
+                                                    <option value="" selected disabled hidden>
+                                                        Selected Status</option>
+                                                    <option value="1">In Process</option>
+                                                    <option value="2">Open</option>
+                                                    <option value="3">Completed</option>
+                                                </select>
+                                            </form>
+                                        </td>
+                                        <td class="toggle-btn-cell">
+                                            <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
+                                        </td>
+                                    </tr>
+                                        <!-- show-collapsible-row -->
+                                    <tr *ngIf="collapsibleRow == true && item.id == collapsibleRowId" class="table-row-collapsible "> 
+                                        <td>
+                                            <ul>
+                                                <li class="accountSubtype-cell collapsable-cell">
+
+                                                    <div class="thead-box"><b>Account Sub Type : </b></div>
+                                                    <div class="tdata-box">
+                                                        <span class="">{{item.accountSubType}}</span>
+                                                    </div>
+                                                </li>
+                                                <li class="reconciliation-cell collapsable-cell">
+                                                    <div class="thead-box"><b>Reconciliation : </b></div>
+                                                    <div class="tdata-box">
+                                                        <span class="">{{item.reconciliationType}}</span>
+                                                    </div>
+                                                </li>
+                                                <li  class="assignee-cell collapsable-cell kt-user-card-v2">
+                                                    <div class="thead-box"><b>Assignee : </b></div>
+                                                    <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
+                                                        <div class="kt-user-card-v2__pic">
+                                                            <div *ngIf="item.profilePicture"
+                                                                class="kt-badge kt-badge--xl">
+                                                                <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                                    alt="Pic" [src]="item.profilePicture">
+                                                            </div>
+                                                            <div *ngIf="!item.profilePicture"
+                                                                class="kt-badge kt-badge--xl kt-badge--primary">
+                                                                {{item.assigneeName | firstLetterOfWords}}</div>
+                                                            <span class="kt-user-card-v2__name">
+                                                                {{item.assigneeName}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="item.id == rowid">
+                                                        <app-user-list-component  (callBack)="refreshGrid()"  taskId = {{item.id}} comingChangeReguest="accounts" userId = {{item.assigneeId}} ></app-user-list-component>
+                                                    </div>
+                                                </li>
+                                                <li class="action-cell-item collapsable-cell">
+                                                    <div class="thead-box"><b>Action : </b></div>
+                                                    <form class="task-report-form">
+                                                        <select onclick="console.log('test')"
+                                                            (change)="ChangeStatus($event.target.value,j.id)"
+                                                            class="form-control border-0 bg-brown text-white">
+                                                            <option value="" selected disabled hidden>
+                                                                Selected Status</option>
+                                                            <option value="1">In Process</option>
+                                                            <option value="2">Open</option>
+                                                            <option value="3">Completed</option>
+                                                        </select>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                             </tbody>
+                            </table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                        </div>
+                        <div class="pagination-block">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getAllAccounts($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                class="paginator-counter">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
