@@ -39,6 +39,7 @@ import { CreateEditAccountsComponent } from './account/accounts/create-edit-acco
 import { NgSelectModule } from '@ng-select/ng-select';;
 import { ReconcilliationComponent } from './reconcilliation/reconcilliation.component';
 import { CreateEditItemizedComponent } from './reconcilliation/itemized/create-edit-itemized/create-edit-itemized.component';
+import { CreateEditAmortizedComponent } from './reconcilliation/amortized/create-edit-amortized/create-edit-amortized.component';
 
 
 
@@ -81,7 +82,6 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 TaskDetailsComponent,
                 StatusComponent,
                 EditTaskComponent,
-
                 FirstLetterOfWords,               
                 DuplicateTaskComponent,
                 CreateOrEditAccountsubtypeComponent,
@@ -89,7 +89,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 AccountsComponent ,
                 CreateEditAccountsComponent ,
                 ReconcilliationComponent,            
-                CreateEditItemizedComponent            
+                CreateEditItemizedComponent ,
+                CreateEditAmortizedComponent           
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
