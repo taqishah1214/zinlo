@@ -1,0 +1,116 @@
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="kt-portlet" id="kt_portlet">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            <span *ngIf="editAccountCheck == false">Add an Item</span>
+                            <span *ngIf="editAccountCheck == true">Edit Account</span>
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <a (click)="redirectToAccountsList()">
+                            <i class="la la-arrow-left"></i>
+                            Back
+                        </a>
+                    </div>
+                </div>
+                <div class="kt-portlet__body">
+                    <form (ngSubmit)="onSubmit()" >
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="InvoiceNo">Invoice No.</label>
+                                            <input type="text" name="accountName" class="form-control"
+                                                [(ngModel)]="accountDto.accountName">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="TaskName">Journal Entry No.</label>
+                                            <input type="text" name="accountNumber" class="form-control"
+                                                [(ngModel)]="accountDto.accountNumber">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="form-group category-selector">
+                                            <label for="TaskName">Start Date</label>
+                                            <input [(ngModel)]="startDate" (ngModelChange)="loadDaysByMonth($event)" required="required"
+                                            class="form-control" name="date" bsDatepicker
+                                            placeholder="Select Date" class="form-control" name="date"
+                                            bsDatepicker [minDate]="minDate"
+                                            [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                            (onShown)="onOpenCalendar($event)">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group category-selector">
+                                            <label for="TaskName">End Date</label>
+                                            <input [(ngModel)]="endDate" (ngModelChange)="loadDaysByMonth($event)" required="required"
+                                            class="form-control" name="date" bsDatepicker
+                                            placeholder="Select Date" class="form-control" name="date"
+                                            bsDatepicker [minDate]="minDate"
+                                            [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                            (onShown)="onOpenCalendar($event)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Amount</label>
+                                        <app-user-list-component comingChangeReguest = "" userId = {{selectedUserID}} ></app-user-list-component>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group category-selector">
+                                            <label for="TaskName">Accomulate Amount</label>
+                                            <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">{{reconcillationType}}</button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" *ngFor="let item of reconcillationTypeList"
+                                                    (click)="reconcillationClick(item.id,item.name)">
+                                                    {{item.name}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="description">Description</label>
+                                            <textarea class="form-control" required [(ngModel)]="description"
+                                                id="description" name="description" (keydown.enter)="save($event)"
+                                                 ></textarea>
+                                        </div>   
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="drag_drop_box">
+                                    <label class="bg-color">Attachments</label>
+                                    <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__head">
+                        </div>
+                        <div class="form-group margin-top-5">
+                            <button *ngIf="editAccountCheck == false" class="btn btn-brand" type="submit">
+                                Save
+                            </button>
+                            <button *ngIf="editAccountCheck == true" class="btn btn-brand" type="submit">
+                                Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

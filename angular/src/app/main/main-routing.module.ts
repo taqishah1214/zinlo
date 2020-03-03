@@ -12,6 +12,7 @@ import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype
 import { AccountsComponent } from './account/accounts/accounts.component';
 import { DuplicateTaskComponent } from './checklist/duplicate-task/duplicate-task.component';
 import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component';
+import { CreateditAmartizationComponent } from './createdit-amartization/createdit-amartization.component';
 
 @NgModule({
     imports: [
@@ -32,6 +33,7 @@ import { CreateEditAccountsComponent } from './account/accounts/create-edit-acco
                     { path: 'checklist/duplicate-task', component : DuplicateTaskComponent , data: {permission:""}},
                     { path: 'account/accounts', component: AccountsComponent , data: { permission: '' }  },
                     { path: 'account/accounts/create-edit-accounts', component: CreateEditAccountsComponent , data: { permission: '' }  },
+                    { path: 'createdit-amartization', component: CreateditAmartizationComponent, data: { permission: 'Pages.ClosingChecklist' }},
                 ]
             }
         ])
