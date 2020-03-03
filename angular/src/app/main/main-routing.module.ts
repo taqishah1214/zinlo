@@ -13,6 +13,7 @@ import { AccountsComponent } from './account/accounts/accounts.component';
 import { DuplicateTaskComponent } from './checklist/duplicate-task/duplicate-task.component';
 import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component';
 import { ReconcilliationComponent } from './reconcilliation/reconcilliation.component';
+import { CreateEditItemizedComponent } from './reconcilliation/create-edit-itemized/create-edit-itemized.component';
 
 @NgModule({
     imports: [
@@ -34,6 +35,7 @@ import { ReconcilliationComponent } from './reconcilliation/reconcilliation.comp
                     { path: 'account/accounts', component: AccountsComponent , data: { permission: '' }  },
                     { path: 'account/accounts/create-edit-accounts', component: CreateEditAccountsComponent , data: { permission: '' }  },
                     { path: 'reconcilliation', component: ReconcilliationComponent , data: { permission: '' }  },
+                    { path: 'reconcilliation/create-edit-itemized', component: CreateEditItemizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
                 ]
             }
         ])
