@@ -15,6 +15,7 @@ using Zinlo.MultiTenancy.Accounting;
 using Zinlo.MultiTenancy.Payments;
 using Zinlo.Storage;
 using Abp.Localization;
+using Zinlo.Reconciliation;
 
 namespace Zinlo.EntityFrameworkCore
 {
@@ -28,6 +29,8 @@ namespace Zinlo.EntityFrameworkCore
         public virtual DbSet<Comment.Comment> Comments { get; set; }
         public virtual DbSet<AccountSubType.AccountSubType> AccountSubTypes { get; set; }
         public virtual DbSet<ChartsofAccount.ChartsofAccount> ChartsofAccounts { get; set; }
+        public virtual DbSet<Itemization> Itemizations { get; set; }
+        public virtual DbSet<Amortization> Amortizations { get; set; }
 
 
         /* Define an IDbSet for each entity of the application */
