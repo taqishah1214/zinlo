@@ -105,11 +105,13 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   }
   EndofMonthSelected(): void {
     this.checklist.endOfMonth = true;
+    this.checklist.dayBeforeAfter = false;
   }
   EndofMonthUnselected(): void {
     this.checklist.endOfMonth = false;
   }
   onCreateTask(): void {
+    
      if (this.checklist.endOfMonth) {
       this.checklist.endOfMonth = true;
     }
@@ -215,7 +217,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.isChecked = true;
   }
   handleRadioChange() {
-    this.checklist.dayBeforeAfter = null;
+    this.checklist.dayBeforeAfter = false;
     this.daysBeforeAfter = null;
     this.checklist.dueOn = 0;
     this.SelectionMsg = "";
