@@ -2601,6 +2601,63 @@ export class ChartsofAccountServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param accountId (optional) 
+     * @param selectedStatusId (optional) 
+     * @return Success
+     */
+    changeStatus(accountId: number | undefined, selectedStatusId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/ChangeStatus?";
+        if (accountId === null)
+            throw new Error("The parameter 'accountId' cannot be null.");
+        else if (accountId !== undefined)
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+        if (selectedStatusId === null)
+            throw new Error("The parameter 'selectedStatusId' cannot be null.");
+        else if (selectedStatusId !== undefined)
+            url_ += "selectedStatusId=" + encodeURIComponent("" + selectedStatusId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangeStatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangeStatus(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processChangeStatus(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -15919,6 +15976,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
     assigneeName!: string | undefined;
     profilePicture!: string | undefined;
     assigneeId!: number;
+    statusId!: number;
 
     constructor(data?: IChartsofAccoutsForViewDto) {
         if (data) {
@@ -15941,6 +15999,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
             this.assigneeName = data["assigneeName"];
             this.profilePicture = data["profilePicture"];
             this.assigneeId = data["assigneeId"];
+            this.statusId = data["statusId"];
         }
     }
 
@@ -15963,6 +16022,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
         data["assigneeName"] = this.assigneeName;
         data["profilePicture"] = this.profilePicture;
         data["assigneeId"] = this.assigneeId;
+        data["statusId"] = this.statusId;
         return data; 
     }
 }
@@ -15978,6 +16038,7 @@ export interface IChartsofAccoutsForViewDto {
     assigneeName: string | undefined;
     profilePicture: string | undefined;
     assigneeId: number;
+    statusId: number;
 }
 
 export class PagedResultDtoOfChartsofAccoutsForViewDto implements IPagedResultDtoOfChartsofAccoutsForViewDto {

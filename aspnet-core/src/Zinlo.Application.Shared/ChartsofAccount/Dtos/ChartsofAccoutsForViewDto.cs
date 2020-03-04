@@ -17,5 +17,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         public string  ProfilePicture { get; set; }
         public long AssigneeId { get; set; }
 
+        public int StatusId { get; set; }
+
     }
 }

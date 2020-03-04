@@ -42,7 +42,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   accountType : any;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
-  
+  StatusColorBox: any = ["bg-blue", "bg-sea-green", "bg-gray"]
   constructor(private _router: Router,
     private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector,
     private _chartOfAccountService: ChartsofAccountServiceProxy) {
@@ -95,6 +95,8 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       this.chartsOfAccountList.forEach(i => {
         i["accountType"] =  this.getNameofAccountTypeAndReconcillation(i.accountTypeId,"accountType")
         i["reconciliationType"] =   this.getNameofAccountTypeAndReconcillation(i.reconciliationTypeId,"reconcillation")           
+        i["statusName"] = this.getStatusNameWithId(i.statusId)  
+        i["statusBoxColor"] = this.getStatusBoxColor(i.statusId)     
         this.assigniNameForHeader.push({ assigniName: i.assigneeName, assigneeId: i.assigneeId,profilePicture : i.profilePicture});
       });
       this.assigniNameForHeader = this.getUniqueAccounts(this.assigniNameForHeader, "assigneeId")      
@@ -113,25 +115,38 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       }
     });
   }
-editAccount(id) : void {
-  this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: id} } });
-}
 
-deleteAccount(id) : void {
-  this.message.confirm(
-    '',
-    this.l('AreYouSure'),
-    (isConfirmed) => {
-        if (isConfirmed) {
-          this._chartOfAccountService.delete(id)
-                .subscribe(() => {
-                    this.ResetGrid();
-                    this.notify.success(this.l('SuccessfullyDeleted'));
-                });
-        }
+  ChangeStatus( selectedStatusId, accountId) {
+    this._chartOfAccountService.changeStatus(accountId,selectedStatusId).subscribe(result => {
+      this.ResetGrid();
+      this.notify.success(this.l('Status Successfully Updated.'));
+
+    })
+  }
+  getStatusBoxColor(id) : string {
+    if (id == 1) {
+      return this.StatusColorBox[0]
     }
-);
-}
+    else if (id == 2) {
+      return this.StatusColorBox[2]
+    }
+    else if (id == 3) {
+      return this.StatusColorBox[1]
+    }
+  }
+
+  getStatusNameWithId(id): string {
+    if (id == 1) {
+      return "In Process"
+    }
+    else if (id == 2) {
+      return "Open"
+    }
+    else if (id == 3) {
+      return "Complete"
+    }
+  }
+
 
 RedirectToCreateAccount(): void {
   this._router.navigate(['/app/main/reconcilliation/create-edit-itemized'], { state: { data: { id: 0} } });

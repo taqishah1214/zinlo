@@ -16,5 +16,7 @@ namespace Zinlo.ChartsofAccount
         Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input);
         Task ChangeAccountsAssignee(long accountId, long assigneeId);
 
+        Task ChangeStatus(long accountId, long selectedStatusId);
+
     }
 }

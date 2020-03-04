@@ -420,6 +420,15 @@ form.task-report-form.bg-magenta select:focus {
 form.task-report-form.bg-brown select:focus {
     background-color: #ac7339;
 }
+form.task-report-form.bg-blue select:focus {
+    background-color: #738AF8;
+}
+.bg-blue{
+    background-color: #738AF8 !important;
+    }
+.bg-gray{
+    background-color: #8A8A8A !important;
+}
 /*table dropdown colors ends*/
 
 
