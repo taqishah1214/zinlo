@@ -35,6 +35,8 @@ namespace Zinlo.Authorization
             tests.CreateChildPermission(AppPermissions.Pages_ClosingChecklist_Edit, L("EditClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
             tests.CreateChildPermission(AppPermissions.Pages_ClosingChecklist_Delete, L("DeleteClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
 
+            var reconcilliations = pages.CreateChildPermission(AppPermissions.Pages_Reconciliation, L("Reconciliation"), multiTenancySides: MultiTenancySides.Tenant);
+
 
 
             var categories = pages.CreateChildPermission(AppPermissions.Pages_Categories, L("Categories"), multiTenancySides: MultiTenancySides.Tenant);

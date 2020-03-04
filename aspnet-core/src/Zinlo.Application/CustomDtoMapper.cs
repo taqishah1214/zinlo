@@ -45,6 +45,8 @@ using Zinlo.ClosingChecklist.Dtos;
 using Zinlo.Attachments.Dtos;
 using Zinlo.AccountSubType.Dtos;
 using Zinlo.ChartsofAccount.Dtos;
+using Zinlo.Reconciliation.Dtos;
+using Zinlo.Reconciliation;
 
 namespace Zinlo
 {
@@ -183,7 +185,11 @@ namespace Zinlo
             configuration.CreateMap<CreateOrEditChartsofAccountDto, ChartsofAccount.ChartsofAccount>().ReverseMap();
             configuration.CreateMap<GetAccountForEditDto, ChartsofAccount.ChartsofAccount>().ReverseMap();
 
+            //Reconciliation
+            configuration.CreateMap<CreateOrEditItemizationDto, Itemization>().ReverseMap();
+            configuration.CreateMap<CreateOrEditAmortizationDto, Amortization>().ReverseMap();
 
+            
         }
     }
 }
