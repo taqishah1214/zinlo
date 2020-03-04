@@ -39,7 +39,9 @@ import { CreateEditAccountsComponent } from './account/accounts/create-edit-acco
 import { NgSelectModule } from '@ng-select/ng-select';;
 import { ReconcilliationComponent } from './reconcilliation/reconcilliation.component';
 import { CreateEditItemizedComponent } from './reconcilliation/itemized/create-edit-itemized/create-edit-itemized.component';
-import { CreateEditAmortizedComponent } from './reconcilliation/amortized/create-edit-amortized/create-edit-amortized.component';
+import { CreateEditAmortizedComponent } from './reconcilliation/amortized/create-edit-amortized/create-edit-amortized.component';;
+import { ItemizedComponent } from './reconcilliation/itemized/itemized.component'
+import { AmortizedComponent } from './reconcilliation/amortized/amortized.component';
 
 
 
@@ -90,7 +92,9 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 CreateEditAccountsComponent ,
                 ReconcilliationComponent,            
                 CreateEditItemizedComponent ,
-                CreateEditAmortizedComponent           
+                CreateEditAmortizedComponent ,
+                ItemizedComponent,
+                AmortizedComponent      
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

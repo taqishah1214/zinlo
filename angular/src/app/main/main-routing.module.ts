@@ -15,6 +15,8 @@ import { CreateEditAccountsComponent } from './account/accounts/create-edit-acco
 import { ReconcilliationComponent } from './reconcilliation/reconcilliation.component';
 import { CreateEditItemizedComponent } from './reconcilliation/itemized/create-edit-itemized/create-edit-itemized.component';
 import { CreateEditAmortizedComponent } from './reconcilliation/amortized/create-edit-amortized/create-edit-amortized.component';
+import { ItemizedComponent } from './reconcilliation/itemized/itemized.component';
+import { AmortizedComponent } from './reconcilliation/amortized/amortized.component';
 
 @NgModule({
     imports: [
@@ -38,6 +40,8 @@ import { CreateEditAmortizedComponent } from './reconcilliation/amortized/create
                     { path: 'reconcilliation', component: ReconcilliationComponent , data: { permission: '' }  },
                     { path: 'reconcilliation/itemized/create-edit-itemized', component: CreateEditItemizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'reconcilliation/amortized/create-edit-amortized', component: CreateEditAmortizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
+                    { path: 'reconcilliation/itemized', component: ItemizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
+                    { path: 'reconcilliation/amortized', component: AmortizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
                 ]
             }
         ])

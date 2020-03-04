@@ -33,8 +33,8 @@ namespace Zinlo.ChartsofAccount
 
             var query = _chartsofAccountRepository.GetAll().Include(p => p.AccountSubType).Include(p => p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.AccountName.Contains(input.Filter))
-                 .WhereIf(input.AccountType != 0, e => false || (e.AccountType == (AccountType)input.AccountType))
-                 .WhereIf(CurrentDate != null && CurrentDate.Date.Year != 2000, e => false || e.CreationTime.Date == CurrentDate.Date);
+                 .WhereIf(input.AccountType != 0, e => false || (e.AccountType == (AccountType)input.AccountType));
+               
 
             var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var totalCount = query.Count();

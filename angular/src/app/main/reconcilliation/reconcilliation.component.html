@@ -171,7 +171,7 @@
                                             <span class="">{{item.accountNumber}}</span>
                                             
                                         </td>
-                                        <td class="accountName-cell">
+                                        <td class="accountName-cell" (click)="reDirectToItemizedAmotized(item.reconciliationTypeId)">
                                             <span class="task-box">{{item.accountName}}</span>
                                         </td>
                                         <td class="accountType-cell">
@@ -236,7 +236,7 @@
                                                 </li>
                                                 <li class="accountSubtype-cell collapsable-cell">
 
-                                                    <div class="thead-box"><b>Account Sub Type : </b></div>
+                                                    <div class="thead-box"><b> Balanace </b></div>
                                                     <div class="tdata-box">
                                                         <span class=""> $ 111</span>
                                                     </div>

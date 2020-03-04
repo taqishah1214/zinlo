@@ -147,10 +147,17 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     }
   }
 
+  reDirectToItemizedAmotized (reconciliationTypeId){
+  if (reconciliationTypeId == 1)
+  {
+    this._router.navigate(['/app/main/reconcilliation/itemized']);
 
-RedirectToCreateAccount(): void {
-  this._router.navigate(['/app/main/reconcilliation/create-edit-itemized'], { state: { data: { id: 0} } });
-}
+  }
+  else if (reconciliationTypeId == 2) {
+    this._router.navigate(['/app/main/reconcilliation/amortized']);
+
+  }
+  }
 
   getNameofAccountTypeAndReconcillation(id , key ) : string {  
     var result = "" ;
@@ -221,20 +228,4 @@ RedirectToCreateAccount(): void {
     this.notify.success(this.l('Assigni Successfully Updated.'));
   }
 
-  settings: UppyConfig = {
-    uploadAPI: {
-      endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",
-    },
-    plugins: {
-      Webcam: false
-    }
-  }
-  settingsUppy: UppyConfig = {
-    uploadAPI: {
-      endpoint: "http://localhost:22742/api/services/app/Attachments/PostAttachmentFile",
-    },
-    plugins: {
-      Webcam: false
-    }
-  }
 }
