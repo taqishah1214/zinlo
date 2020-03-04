@@ -880,6 +880,70 @@ export class AccountSubTypeServiceProxy {
 }
 
 @Injectable()
+export class AmortizationServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditAmortizationDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Amortization/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
 export class AttachmentsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -3954,9 +4018,10 @@ export class ClosingChecklistServiceProxy {
      * @param isDaysBefore (optional) 
      * @param closingMonth (optional) 
      * @param numberOfDays (optional) 
+     * @param endsOfMonth (optional) 
      * @return Success
      */
-    getNextIterationDateAfterDueDate(isDaysBefore: boolean | undefined, closingMonth: moment.Moment | undefined, numberOfDays: number | undefined): Observable<moment.Moment> {
+    getNextIterationDateAfterDueDate(isDaysBefore: boolean | undefined, closingMonth: moment.Moment | undefined, numberOfDays: number | undefined, endsOfMonth: boolean | undefined): Observable<moment.Moment> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetNextIterationDateAfterDueDate?";
         if (isDaysBefore === null)
             throw new Error("The parameter 'isDaysBefore' cannot be null.");
@@ -3970,6 +4035,10 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'numberOfDays' cannot be null.");
         else if (numberOfDays !== undefined)
             url_ += "numberOfDays=" + encodeURIComponent("" + numberOfDays) + "&"; 
+        if (endsOfMonth === null)
+            throw new Error("The parameter 'endsOfMonth' cannot be null.");
+        else if (endsOfMonth !== undefined)
+            url_ += "endsOfMonth=" + encodeURIComponent("" + endsOfMonth) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -6913,6 +6982,70 @@ export class InvoiceServiceProxy {
     }
 
     protected processCreateInvoice(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class ItemizationServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditItemizationDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Itemization/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -15167,6 +15300,78 @@ export interface IPagedResultDtoOfGetAccountSubTypeForViewDto {
     items: GetAccountSubTypeForViewDto[] | undefined;
 }
 
+export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto {
+    inoviceNo!: string | undefined;
+    journalEntryNo!: string | undefined;
+    startDate!: moment.Moment;
+    endDate!: moment.Moment;
+    amount!: number;
+    accomulateAmount!: number;
+    description!: string | undefined;
+    creationTime!: moment.Moment;
+    creatorUserId!: number | undefined;
+    id!: number;
+
+    constructor(data?: ICreateOrEditAmortizationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.inoviceNo = data["inoviceNo"];
+            this.journalEntryNo = data["journalEntryNo"];
+            this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
+            this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
+            this.amount = data["amount"];
+            this.accomulateAmount = data["accomulateAmount"];
+            this.description = data["description"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = data["creatorUserId"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditAmortizationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditAmortizationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["inoviceNo"] = this.inoviceNo;
+        data["journalEntryNo"] = this.journalEntryNo;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["amount"] = this.amount;
+        data["accomulateAmount"] = this.accomulateAmount;
+        data["description"] = this.description;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditAmortizationDto {
+    inoviceNo: string | undefined;
+    journalEntryNo: string | undefined;
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+    amount: number;
+    accomulateAmount: number;
+    description: string | undefined;
+    creationTime: moment.Moment;
+    creatorUserId: number | undefined;
+    id: number;
+}
+
 export class PostAttachmentsPathDto implements IPostAttachmentsPathDto {
     type!: number;
     typeId!: number;
@@ -20583,6 +20788,70 @@ export class CreateInvoiceDto implements ICreateInvoiceDto {
 
 export interface ICreateInvoiceDto {
     subscriptionPaymentId: number;
+}
+
+export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
+    inoviceNo!: string | undefined;
+    journalEntryNo!: string | undefined;
+    date!: moment.Moment;
+    amount!: number;
+    description!: string | undefined;
+    creationTime!: moment.Moment;
+    creatorUserId!: number | undefined;
+    id!: number;
+
+    constructor(data?: ICreateOrEditItemizationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.inoviceNo = data["inoviceNo"];
+            this.journalEntryNo = data["journalEntryNo"];
+            this.date = data["date"] ? moment(data["date"].toString()) : <any>undefined;
+            this.amount = data["amount"];
+            this.description = data["description"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = data["creatorUserId"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditItemizationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditItemizationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["inoviceNo"] = this.inoviceNo;
+        data["journalEntryNo"] = this.journalEntryNo;
+        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        data["amount"] = this.amount;
+        data["description"] = this.description;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditItemizationDto {
+    inoviceNo: string | undefined;
+    journalEntryNo: string | undefined;
+    date: moment.Moment;
+    amount: number;
+    description: string | undefined;
+    creationTime: moment.Moment;
+    creatorUserId: number | undefined;
+    id: number;
 }
 
 export class ApplicationLanguageListDto implements IApplicationLanguageListDto {

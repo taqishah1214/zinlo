@@ -37,7 +37,7 @@ import { AmortizedComponent } from './reconcilliation/amortized/amortized.compon
                     { path: 'checklist/duplicate-task', component : DuplicateTaskComponent , data: {permission:""}},
                     { path: 'account/accounts', component: AccountsComponent , data: { permission: '' }  },
                     { path: 'account/accounts/create-edit-accounts', component: CreateEditAccountsComponent , data: { permission: '' }  },
-                    { path: 'reconcilliation', component: ReconcilliationComponent , data: { permission: '' }  },
+                    { path: 'reconcilliation', component: ReconcilliationComponent , data: { permission: 'Pages.Reconciliation' }  },
                     { path: 'reconcilliation/itemized/create-edit-itemized', component: CreateEditItemizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'reconcilliation/amortized/create-edit-amortized', component: CreateEditAmortizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'reconcilliation/itemized', component: ItemizedComponent, data: { permission: 'Pages.ClosingChecklist' }},

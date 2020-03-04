@@ -248,7 +248,7 @@ namespace Zinlo.ClosingChecklist
             }
         }
 
-        //[AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
+        [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
         protected virtual async System.Threading.Tasks.Task Create(CreateOrEditClosingChecklistDto input)
         {
 
@@ -542,7 +542,7 @@ namespace Zinlo.ClosingChecklist
             return Count;
         }
         public int GetNumberOfTaskIterationCount(int numberOfMonths, int frequency)
-        {
+        { 
             int frequencyNumber = GetFrequencyValue(frequency);
             decimal iterations = (numberOfMonths / frequencyNumber);
             int iterationNumber = (int)Math.Ceiling(iterations);

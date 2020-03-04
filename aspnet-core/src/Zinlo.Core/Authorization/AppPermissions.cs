@@ -17,6 +17,8 @@
         public const string Pages_ChartsofAccounts_Edit = "Pages.ChartsofAccounts.Edit";
         public const string Pages_ChartsofAccounts_Delete = "Pages.ChartsofAccounts.Delete";
 
+        public const string Pages_Reconciliation = "Pages.Reconciliation";
+
 
         public const string Pages_Tasks = "Pages.Tasks";
         public const string Pages_Tasks_Create = "Pages.Tasks.Create";

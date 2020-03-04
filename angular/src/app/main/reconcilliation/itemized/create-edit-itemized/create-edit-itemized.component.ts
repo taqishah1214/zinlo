@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy, CreateOrEditChartsofAccountDto } from '@shared/service-proxies/service-proxies';
+import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy, CreateOrEditChartsofAccountDto, CreateOrEditItemizationDto, ItemizationServiceProxy } from '@shared/service-proxies/service-proxies';
 import { Router } from '@angular/router';
 import { UserListComponentComponent } from '@app/main/checklist/user-list-component/user-list-component.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -23,10 +23,12 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
   reconcillationType: any;
   assigniId : number;
-  accountDto: CreateOrEditChartsofAccountDto = new CreateOrEditChartsofAccountDto()
+  accountDto: CreateOrEditChartsofAccountDto = new CreateOrEditChartsofAccountDto();
+  itemizedDto : CreateOrEditItemizationDto = new CreateOrEditItemizationDto();
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(private _accountSubTypeService: AccountSubTypeServiceProxy,
+              private _itemizationServiceProxy : ItemizationServiceProxy,
     private _chartOfAccountService: ChartsofAccountServiceProxy, private _router: Router, injector: Injector) {
     super(injector)
   }
@@ -100,30 +102,9 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
      }  
   }
 
-  accountSubTypeClick(id, name): void {
-    this.accountSubTypeName = name;
-    this.accountDto.accountSubTypeId = id;
-  }
+ 
 
-  reconcillationClick(id, name): void {
-    this.reconcillationType = name;
-    this.accountDto.reconciliationType = id;
-  }
-  accountTypeClick(id, name): void {
-    this.accountType = name;
-    this.accountDto.accountType = id;
-  }
 
-  routeToAddNewAccountSubType(): void {
-    if (this.accountId != 0)
-    {
-      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: this.accountId , previousRoute : "account"} } });
-    }
-    else {
-      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: 0, previousRoute : "account" } } });
-
-    }
-  }
 
   onSubmit(): void {
     if (this.editAccountCheck) {
