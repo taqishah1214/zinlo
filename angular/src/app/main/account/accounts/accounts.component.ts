@@ -42,7 +42,9 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   accountType : any;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
-  
+  updateAssigneeOnHeader: boolean = true;
+  getAccountWithAssigneeId : number = 0;
+
   constructor(private _router: Router,
     private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector,
     private _chartOfAccountService: ChartsofAccountServiceProxy) {
@@ -60,6 +62,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   accountTypeClick(id,name) : void {
     this.accountType = name
     this.accountTypeFilter = id
+    this.updateAssigneeOnHeader = false;
     this.getAllAccounts()
   }
 
@@ -70,6 +73,12 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     this.collapsibleRowId = id;
     this.collapsibleRow = !this.collapsibleRow;
   } 
+
+  searchWithName() {
+    this.updateAssigneeOnHeader = false
+    this.getAllAccounts();
+  }
+
   getAllAccounts(event?: LazyLoadEvent) {
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
@@ -80,11 +89,11 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     this._chartOfAccountService.getAll(
       this.filterText,
       this.accountTypeFilter,
+      this.getAccountWithAssigneeId,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
-      this.primengTableHelper.getMaxResultCount(this.paginator, event)
+      this.primengTableHelper.getMaxResultCount(this.paginator, event),      
     ).subscribe(result => {
-      this.assigniNameForHeader = [];
       this.plusUserBadgeForHeader = false;
       this.remainingUserForHeader = [];
       this.primengTableHelper.totalRecordsCount = result.totalCount;
@@ -95,22 +104,31 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
       this.chartsOfAccountList.forEach(i => {
         i["accountType"] =  this.getNameofAccountTypeAndReconcillation(i.accountTypeId,"accountType")
         i["reconciliationType"] =   this.getNameofAccountTypeAndReconcillation(i.reconciliationTypeId,"reconcillation")           
-        this.assigniNameForHeader.push({ assigniName: i.assigneeName, assigneeId: i.assigneeId,profilePicture : i.profilePicture});
+        if (this.updateAssigneeOnHeader === true) {
+          this.assigniNameForHeader = [];
+          this.plusUserBadgeForHeader = false
+          this.remainingUserForHeader = [];
+          this.assigniNameForHeader = i.overallMonthlyAssignee;
+        }
+
       });
-      this.assigniNameForHeader = this.getUniqueAccounts(this.assigniNameForHeader, "assigneeId")      
-      if (this.assigniNameForHeader.length > 5)
-      {
-        this.remainingUserForHeader = [];
-        var limitedUserNameForHeader = [];
-        for (var i = 0; i < 5; i++) {
-          limitedUserNameForHeader.push(this.assigniNameForHeader[i])
+
+      if (this.updateAssigneeOnHeader === true) {
+        if (this.assigniNameForHeader.length > 5) {
+          this.remainingUserForHeader = [];
+          var limitedUserNameForHeader = [];
+          for (var i = 0; i < 5; i++) {
+            limitedUserNameForHeader.push(this.assigniNameForHeader[i])
+          }
+          for (let index = 5; index < this.assigniNameForHeader.length; index++) {
+            this.remainingUserForHeader.push(this.assigniNameForHeader[index])
+          }
+          this.assigniNameForHeader = limitedUserNameForHeader
+          this.plusUserBadgeForHeader = true
         }
-        for (let index = 5; index < this.assigniNameForHeader.length; index++) {
-          this.remainingUserForHeader.push(this.assigniNameForHeader[index])
-        }
-        this.assigniNameForHeader = limitedUserNameForHeader
-        this.plusUserBadgeForHeader = true
+        this.updateAssigneeOnHeader = false;
       }
+    
     });
   }
 editAccount(id) : void {
@@ -163,13 +181,8 @@ RedirectToCreateAccount(): void {
 
     
   GetAssigniSpecficAccounts(userId) {
-    this.chartsOfAccountList.forEach(i => {
-
-      if (i.assigneeId === userId) {
-        this.UserSpecficchartsOfAccountList.push(this.chartsOfAccountList[i])
-      }
-    });
-    this.chartsOfAccountList = this.UserSpecficchartsOfAccountList
+    this.getAccountWithAssigneeId = userId;
+    this.getAllAccounts();
   }
 
   getUniqueAccounts(arr, comp) {
@@ -198,10 +211,14 @@ RedirectToCreateAccount(): void {
   ResetGrid(): void {
     this.accountType = "Account Type"
     this.accountTypeFilter = 0
+    this.updateAssigneeOnHeader = true;
+    this.getAccountWithAssigneeId = 0;
     this.getAllAccounts();
   }
 
   refreshGrid() : void {
+    this.updateAssigneeOnHeader = false;
+    this.getAccountWithAssigneeId = 0;
     this.getAllAccounts()
     this.notify.success(this.l('Assigni Successfully Updated.'));
   }

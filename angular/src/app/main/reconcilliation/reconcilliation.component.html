@@ -41,21 +41,21 @@
                                                 class="member-count bg-lightgrey text-blue">
                                                 <span>+{{remainingUserForHeader.length}}</span>
                                                 <div class="member-dropdown">
-                                                    <ul>
-                                                        <li *ngFor="let item of remainingUserForHeader">
+                                                    <ul *ngFor="let item of remainingUserForHeader" >
+                                                        <li (click)="GetAssigniSpecficAccounts(item.id)">
                                                             <div class="kt-user-card-v2__pic">
-                                                                <div *ngIf="item.profilePicture"
+                                                                <div *ngIf="item.picture"
                                                                     class="kt-badge kt-badge--xl mem-img">
                                                                     <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
                                                                         alt="Pic" [src]="item.profilePicture">
                                                                 </div>
-                                                                <div *ngIf="!item.profilePicture"
+                                                                <div *ngIf="!item.picture"
                                                                     class="kt-badge kt-badge--xl kt-badge--primary mem-img">
-                                                                    {{item.assigniName | firstLetterOfWords}}</div>
+                                                                    {{item.name | firstLetterOfWords}}</div>
                                                             </div>
                                                             <div class="kt-user-card-v2__details">
                                                                 <span class="kt-user-card-v2__name">
-                                                                    {{item.assigniName}}
+                                                                    {{item.name}}
                                                                 </span>
                                                             </div>
                                                         </li>
@@ -65,15 +65,15 @@
 
 
                                             <div *ngFor="let item of assigniNameForHeader "
-                                                (click)="GetAssigniSpecficAccounts(i.assigneeId)" class="kt-user-card-v2">
+                                                (click)="GetAssigniSpecficAccounts(item.id)" class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic user-image-box">
-                                                    <div *ngIf="item.profilePicture" class="kt-badge kt-badge--xl">
+                                                    <div *ngIf="item.picture" class="kt-badge kt-badge--xl">
                                                         <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                            alt="Pic" [src]="item.profilePicture">
+                                                            alt="Pic" [src]="item.picture">
                                                     </div>
-                                                    <div *ngIf="!item.profilePicture"
+                                                    <div *ngIf="!item.picture"
                                                         class="kt-badge kt-badge--xl kt-badge--primary">
-                                                        {{item.assigniName | firstLetterOfWords}}</div>
+                                                        {{item.name | firstLetterOfWords}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -85,26 +85,26 @@
                                 </div>
                                 <div *ngIf="FilterBoxOpen" class="lower-content">
                                     <form>
-                                        <div class="form-group">
-                                            <select class="form-control border-grey" name="categoryFilter"
-                                                [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
-                                                id="exampleFormControlSelect2">
-                                                <option value="0">Status</option>
-                                                <option *ngFor="let item of category;" [value]="item.value">
-                                                    {{item.name}}
-                                                </option>
-                                            </select>
+                                        <div class="form-group category-selector">
+                                            <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">{{accountType}}</button>
+                                            <div class="dropdown-menu" >
+                                                <a class="dropdown-item" *ngFor="let item of accountTypeList"
+                                                    (click)="accountTypeClick(item.id,item.name)">
+                                                    {{item.name}}</a>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <select class="form-control border-grey" name="categoryFilter"
-                                                [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
-                                                id="exampleFormControlSelect2">
-                                                <option value="0">Account Type</option>
-                                                <option *ngFor="let item of category;" [value]="item.value">
-                                                    {{item.name}}
-                                                </option>
-                                            </select>
-                                        </div>
+                                        <!-- <div class="form-group category-selector">
+                                            <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">{{accountType}}</button>
+                                            <div class="dropdown-menu" >
+                                                <a class="dropdown-item" *ngFor="let item of accountTypeList"
+                                                    (click)="accountTypeClick(item.id,item.name)">
+                                                    {{item.name}}</a>
+                                            </div>
+                                        </div> -->
                                         <div class="block-btn">
                                             <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()">
                                                 <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">

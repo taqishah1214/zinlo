@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Zinlo.ChartsofAccount.Dtos;
 using Abp.Application.Services.Dto;
 using Zinlo.Authorization.Users.Profile;
+using Zinlo.ClosingChecklist.Dtos;
+using NUglify.Helpers;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -33,9 +35,19 @@ namespace Zinlo.ChartsofAccount
 
             var query = _chartsofAccountRepository.GetAll().Include(p => p.AccountSubType).Include(p => p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.AccountName.Contains(input.Filter))
-                 .WhereIf(input.AccountType != 0, e => false || (e.AccountType == (AccountType)input.AccountType));
-               
+                 .WhereIf(input.AccountType != 0, e => false || (e.AccountType == (AccountType)input.AccountType))
+                 .WhereIf(input.AssigneeId != 0, e => false || (e.AssigneeId == input.AssigneeId));
 
+            List<GetUserWithPicture> getUserWithPictures = new List<GetUserWithPicture>();
+            getUserWithPictures = (from o in query.ToList()
+                                   select new GetUserWithPicture()
+                                   {
+                                       Id = o.AssigneeId,
+                                       Name = o.Assignee.FullName,
+                                       Picture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
+                                   }).ToList();
+
+            getUserWithPictures = getUserWithPictures.DistinctBy(p => new { p.Id, p.Name }).ToList();
             var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var totalCount = query.Count();
 
@@ -53,7 +65,8 @@ namespace Zinlo.ChartsofAccount
                                    AssigneeName = o.Assignee != null ? o.Assignee.FullName : "",
                                    ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : "",
                                    AssigneeId = o.Assignee.Id,
-                                   StatusId = (int)o.Status
+                                   StatusId = (int)o.Status,
+                                   OverallMonthlyAssignee = getUserWithPictures
                                };
 
             return new PagedResultDto<ChartsofAccoutsForViewDto>(

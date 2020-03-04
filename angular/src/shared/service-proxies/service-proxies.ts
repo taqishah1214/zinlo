@@ -2312,12 +2312,13 @@ export class ChartsofAccountServiceProxy {
     /**
      * @param filter (optional) 
      * @param accountType (optional) 
+     * @param assigneeId (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, accountType: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
+    getAll(filter: string | undefined, accountType: number | undefined, assigneeId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
         let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -2327,6 +2328,10 @@ export class ChartsofAccountServiceProxy {
             throw new Error("The parameter 'accountType' cannot be null.");
         else if (accountType !== undefined)
             url_ += "AccountType=" + encodeURIComponent("" + accountType) + "&"; 
+        if (assigneeId === null)
+            throw new Error("The parameter 'assigneeId' cannot be null.");
+        else if (assigneeId !== undefined)
+            url_ += "AssigneeId=" + encodeURIComponent("" + assigneeId) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -3954,9 +3959,10 @@ export class ClosingChecklistServiceProxy {
      * @param isDaysBefore (optional) 
      * @param closingMonth (optional) 
      * @param numberOfDays (optional) 
+     * @param endsOfMonth (optional) 
      * @return Success
      */
-    getNextIterationDateAfterDueDate(isDaysBefore: boolean | undefined, closingMonth: moment.Moment | undefined, numberOfDays: number | undefined): Observable<moment.Moment> {
+    getNextIterationDateAfterDueDate(isDaysBefore: boolean | undefined, closingMonth: moment.Moment | undefined, numberOfDays: number | undefined, endsOfMonth: boolean | undefined): Observable<moment.Moment> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetNextIterationDateAfterDueDate?";
         if (isDaysBefore === null)
             throw new Error("The parameter 'isDaysBefore' cannot be null.");
@@ -3970,6 +3976,10 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'numberOfDays' cannot be null.");
         else if (numberOfDays !== undefined)
             url_ += "numberOfDays=" + encodeURIComponent("" + numberOfDays) + "&"; 
+        if (endsOfMonth === null)
+            throw new Error("The parameter 'endsOfMonth' cannot be null.");
+        else if (endsOfMonth !== undefined)
+            url_ += "endsOfMonth=" + encodeURIComponent("" + endsOfMonth) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -15965,6 +15975,50 @@ export interface IGetCategoryForEditOutput {
     category: CreateOrEditCategoryDto;
 }
 
+export class GetUserWithPicture implements IGetUserWithPicture {
+    id!: number;
+    name!: string | undefined;
+    picture!: string | undefined;
+
+    constructor(data?: IGetUserWithPicture) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.picture = data["picture"];
+        }
+    }
+
+    static fromJS(data: any): GetUserWithPicture {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetUserWithPicture();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["picture"] = this.picture;
+        return data; 
+    }
+}
+
+export interface IGetUserWithPicture {
+    id: number;
+    name: string | undefined;
+    picture: string | undefined;
+}
+
 export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
     id!: number;
     accountName!: string | undefined;
@@ -15976,6 +16030,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
     assigneeName!: string | undefined;
     profilePicture!: string | undefined;
     assigneeId!: number;
+    overallMonthlyAssignee!: GetUserWithPicture[] | undefined;
     statusId!: number;
 
     constructor(data?: IChartsofAccoutsForViewDto) {
@@ -15999,6 +16054,11 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
             this.assigneeName = data["assigneeName"];
             this.profilePicture = data["profilePicture"];
             this.assigneeId = data["assigneeId"];
+            if (Array.isArray(data["overallMonthlyAssignee"])) {
+                this.overallMonthlyAssignee = [] as any;
+                for (let item of data["overallMonthlyAssignee"])
+                    this.overallMonthlyAssignee!.push(GetUserWithPicture.fromJS(item));
+            }
             this.statusId = data["statusId"];
         }
     }
@@ -16022,6 +16082,11 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
         data["assigneeName"] = this.assigneeName;
         data["profilePicture"] = this.profilePicture;
         data["assigneeId"] = this.assigneeId;
+        if (Array.isArray(this.overallMonthlyAssignee)) {
+            data["overallMonthlyAssignee"] = [];
+            for (let item of this.overallMonthlyAssignee)
+                data["overallMonthlyAssignee"].push(item.toJSON());
+        }
         data["statusId"] = this.statusId;
         return data; 
     }
@@ -16038,6 +16103,7 @@ export interface IChartsofAccoutsForViewDto {
     assigneeName: string | undefined;
     profilePicture: string | undefined;
     assigneeId: number;
+    overallMonthlyAssignee: GetUserWithPicture[] | undefined;
     statusId: number;
 }
 
@@ -16513,50 +16579,6 @@ export class MarkAllUnreadMessagesOfUserAsReadInput implements IMarkAllUnreadMes
 export interface IMarkAllUnreadMessagesOfUserAsReadInput {
     tenantId: number | undefined;
     userId: number;
-}
-
-export class GetUserWithPicture implements IGetUserWithPicture {
-    id!: number;
-    name!: string | undefined;
-    picture!: string | undefined;
-
-    constructor(data?: IGetUserWithPicture) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-            this.picture = data["picture"];
-        }
-    }
-
-    static fromJS(data: any): GetUserWithPicture {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetUserWithPicture();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["picture"] = this.picture;
-        return data; 
-    }
-}
-
-export interface IGetUserWithPicture {
-    id: number;
-    name: string | undefined;
-    picture: string | undefined;
 }
 
 export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {

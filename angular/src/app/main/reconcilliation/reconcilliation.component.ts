@@ -43,6 +43,8 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
   StatusColorBox: any = ["bg-blue", "bg-sea-green", "bg-gray"]
+  updateAssigneeOnHeader: boolean = true;
+  getAccountWithAssigneeId : number = 0;
   constructor(private _router: Router,
     private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector,
     private _chartOfAccountService: ChartsofAccountServiceProxy) {
@@ -60,6 +62,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   accountTypeClick(id,name) : void {
     this.accountType = name
     this.accountTypeFilter = id
+    this.updateAssigneeOnHeader = false
     this.getAllAccounts()
   }
 
@@ -80,13 +83,12 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this._chartOfAccountService.getAll(
       this.filterText,
       this.accountTypeFilter,
+      this.getAccountWithAssigneeId,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
     ).subscribe(result => {
-      this.assigniNameForHeader = [];
       this.plusUserBadgeForHeader = false;
-      this.remainingUserForHeader = [];
       this.primengTableHelper.totalRecordsCount = result.totalCount;
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
@@ -96,22 +98,29 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
         i["accountType"] =  this.getNameofAccountTypeAndReconcillation(i.accountTypeId,"accountType")
         i["reconciliationType"] =   this.getNameofAccountTypeAndReconcillation(i.reconciliationTypeId,"reconcillation")           
         i["statusName"] = this.getStatusNameWithId(i.statusId)  
-        i["statusBoxColor"] = this.getStatusBoxColor(i.statusId)     
-        this.assigniNameForHeader.push({ assigniName: i.assigneeName, assigneeId: i.assigneeId,profilePicture : i.profilePicture});
+        i["statusBoxColor"] = this.getStatusBoxColor(i.statusId) 
+        if (this.updateAssigneeOnHeader === true) {
+          this.assigniNameForHeader = [];
+          this.plusUserBadgeForHeader = false
+          this.remainingUserForHeader = [];
+          this.assigniNameForHeader = i.overallMonthlyAssignee;
+        }    
       });
-      this.assigniNameForHeader = this.getUniqueAccounts(this.assigniNameForHeader, "assigneeId")      
-      if (this.assigniNameForHeader.length > 5)
-      {
-        this.remainingUserForHeader = [];
-        var limitedUserNameForHeader = [];
-        for (var i = 0; i < 5; i++) {
-          limitedUserNameForHeader.push(this.assigniNameForHeader[i])
+     
+      if (this.updateAssigneeOnHeader === true) {
+        if (this.assigniNameForHeader.length > 5) {
+          this.remainingUserForHeader = [];
+          var limitedUserNameForHeader = [];
+          for (var i = 0; i < 5; i++) {
+            limitedUserNameForHeader.push(this.assigniNameForHeader[i])
+          }
+          for (let index = 5; index < this.assigniNameForHeader.length; index++) {
+            this.remainingUserForHeader.push(this.assigniNameForHeader[index])
+          }
+          this.assigniNameForHeader = limitedUserNameForHeader
+          this.plusUserBadgeForHeader = true
         }
-        for (let index = 5; index < this.assigniNameForHeader.length; index++) {
-          this.remainingUserForHeader.push(this.assigniNameForHeader[index])
-        }
-        this.assigniNameForHeader = limitedUserNameForHeader
-        this.plusUserBadgeForHeader = true
+        this.updateAssigneeOnHeader = false;
       }
     });
   }
@@ -183,17 +192,6 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
      }  
   }
 
-    
-  GetAssigniSpecficAccounts(userId) {
-    this.chartsOfAccountList.forEach(i => {
-
-      if (i.assigneeId === userId) {
-        this.UserSpecficchartsOfAccountList.push(this.chartsOfAccountList[i])
-      }
-    });
-    this.chartsOfAccountList = this.UserSpecficchartsOfAccountList
-  }
-
   getUniqueAccounts(arr, comp) {
 
     const unique = arr
@@ -211,6 +209,11 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   }
   
 
+  GetAssigniSpecficAccounts(userId) {
+    this.getAccountWithAssigneeId = userId;
+    this.getAllAccounts();
+  }
+
   
   loadAccountSubType(): void {
     this._accountSubTypeService.accountSubTypeDropDown().subscribe(result => {
@@ -220,10 +223,14 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   ResetGrid(): void {
     this.accountType = "Account Type"
     this.accountTypeFilter = 0
+    this.getAccountWithAssigneeId = 0;
+    this.updateAssigneeOnHeader = true
     this.getAllAccounts();
   }
 
   refreshGrid() : void {
+    this.updateAssigneeOnHeader = true
+    this.getAccountWithAssigneeId = 0;
     this.getAllAccounts()
     this.notify.success(this.l('Assigni Successfully Updated.'));
   }
