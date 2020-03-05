@@ -35,7 +35,7 @@
                                             <i class="la la-arrow-left"></i>
                                             Back
                                         </a>
-                                        <button class="btn btn-brand" (click)="RedirectToAddNew()"><i class="fa fa-plus"></i>
+                                        <button class="btn btn-brand" (click)="RedirectToAddNew(0)"><i class="fa fa-plus"></i>
                                             {{"AddNew" | localize}}</button>
                                     </div>
                                 </div>
@@ -96,10 +96,10 @@
 
                             <tbody>
                                 <tr *ngFor="let item of items" class="task-table-inner table-repeater">
-                                    <td class="Description-cell">
+                                    <td class="Description-cell" (click)="RedirectToDetail(item.id)">
                                         <span>{{item.date | date}}</span>
                                     </td>
-                                    <td class="date-cell">
+                                    <td class="date-cell" >
                                         <span class="">{{item.amount}}</span>
                                     </td>
                                    

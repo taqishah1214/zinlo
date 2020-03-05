@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { ChartsofAccountServiceProxy, CreateOrEditItemizationDto, ItemizationServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ChartsofAccountServiceProxy, CreateOrEditItemizationDto, ItemizationServiceProxy, GetEditionEditOutput } from '@shared/service-proxies/service-proxies';
 import { Router } from '@angular/router';
 import { UserListComponentComponent } from '@app/main/checklist/user-list-component/user-list-component.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -14,13 +14,23 @@ import { AppConsts } from '@shared/AppConsts';
 export class CreateEditItemizedComponent extends AppComponentBase implements OnInit  {
   itemizedDto : CreateOrEditItemizationDto = new CreateOrEditItemizationDto();
   minDate: Date = new Date();
+  title = "Add an Item";
+  Save  = "Save";
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
+  recordId: number;
   constructor(private _itemizationServiceProxy : ItemizationServiceProxy,
     private _chartOfAccountService: ChartsofAccountServiceProxy, private _router: Router, injector: Injector) {
     super(injector)
   }
 
   ngOnInit() {   
+    this.recordId = history.state.data.id;
+    if(this.recordId != 0)
+    {
+      this.title = "Edit Item";
+      this.Save = "Update";
+      this.GetEdit(this.recordId);
+    }
   
   }
   redirectToItemsList () : void {
@@ -45,6 +55,16 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     this._itemizationServiceProxy.createOrEdit(this.itemizedDto).subscribe(response => {
       this.notify.success(this.l('Item Successfully Created.'));
       this.redirectToItemsList();
-    }) 
+    })
   }
+  GetEdit(id):void{
+
+    if(id !=0)
+    {
+      this._itemizationServiceProxy.getEdit(id).subscribe(response=>{
+      this.itemizedDto = response;
+      });
+    }
+  }
+
 }
