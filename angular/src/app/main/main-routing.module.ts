@@ -17,6 +17,8 @@ import { CreateEditItemizedComponent } from './reconcilliation/itemized/create-e
 import { CreateEditAmortizedComponent } from './reconcilliation/amortized/create-edit-amortized/create-edit-amortized.component';
 import { ItemizedComponent } from './reconcilliation/itemized/itemized.component';
 import { AmortizedComponent } from './reconcilliation/amortized/amortized.component';
+import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-details/itemized-details.component';
+import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component';
 
 @NgModule({
     imports: [
@@ -42,6 +44,10 @@ import { AmortizedComponent } from './reconcilliation/amortized/amortized.compon
                     { path: 'reconcilliation/amortized/create-edit-amortized', component: CreateEditAmortizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'reconcilliation/itemized', component: ItemizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'reconcilliation/amortized', component: AmortizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
+                    { path: 'reconcilliation/itemized/itemized-details', component: ItemizedDetailsComponent, data: { permission: 'Pages.ClosingChecklist' }},
+                    { path: 'reconcilliation/itemized/amortized-details', component: AmortizedDetailsComponent, data: { permission: 'Pages.ClosingChecklist' }},
+
+
                 ]
             }
         ])

@@ -18,6 +18,7 @@ export class ItemizedComponent extends AppComponentBase {
 UserProfilePicture: any;
 monthValue: Date = new Date();
 commantBox: boolean;
+recordId = 0;
 @ViewChild('dataTable', { static: true }) dataTable: Table;
 @ViewChild('paginator', { static: true }) paginator: Paginator;
 constructor(
@@ -84,9 +85,20 @@ commentClick(): void {
   onCancelComment(): void {
   this.commantBox = true;
   }
-  RedirectToAddNew(){
-    this._router.navigate(['/app/main/reconcilliation/itemized/create-edit-itemized']);
+  RedirectToAddNew(val){
+    debugger;
+    this.recordId = val;
+    this._router.navigate(['/app/main/reconcilliation/itemized/create-edit-itemized'], { state: { data: { id: this.recordId } } });
+    
   }
+
+  RedirectToDetail(val){
+    debugger;
+    this.recordId = val;
+    this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'], { state: { data: { id: this.recordId } } });
+    
+  }
+  
   
 
 }

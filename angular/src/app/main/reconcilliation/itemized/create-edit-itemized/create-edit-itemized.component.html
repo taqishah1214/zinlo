@@ -6,12 +6,12 @@
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            <span *ngIf="editAccountCheck == false">Add an Item</span>
-                            <span *ngIf="editAccountCheck == true">Edit Account</span>
+                            <span>{{title}}</span>
+                           
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
-                        <a (click)="redirectToAccountsList()">
+                        <a (click)="redirectToItemsList()">
                             <i class="la la-arrow-left"></i>
                             Back
                         </a>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="form-group margin-top-5">
                             <button (click)="SaveChanges()" class="btn btn-brand" type="submit">
-                                Save
+                                {{Save}}
                             </button>                     
                         </div>
                     </form>
