@@ -24,6 +24,10 @@ export class AmortizedComponent extends AppComponentBase {
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   advancedFiltersAreShown = false;
   filterText = '';
+  collapsibleRowId : number;
+  collapsibleRow : boolean = false;
+
+
 
   constructor(
     injector: Injector,
@@ -67,8 +71,15 @@ export class AmortizedComponent extends AppComponentBase {
     this.amortizedItemList = result.items;
   });
 }
+collapsibleRowClick(id) {
+  this.collapsibleRowId = id;
+  this.collapsibleRow = !this.collapsibleRow;
+} 
 
+BackToReconcileList() {
+  this._router.navigate(['/app/main/reconcilliation']);
 
+}
 
 
   onOpenCalendar(container) {

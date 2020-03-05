@@ -10,9 +10,9 @@ namespace Zinlo.Reconciliation.Dtos
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
-        public long BeginningAmount { get; set; }
-        public long AccuredAmortization { get; set; }
-        public long NetAmount { get; set; }
+        public double  BeginningAmount { get; set; }
+        public double AccuredAmortization { get; set; }
+        public double  NetAmount { get; set; }
 
     }
 }

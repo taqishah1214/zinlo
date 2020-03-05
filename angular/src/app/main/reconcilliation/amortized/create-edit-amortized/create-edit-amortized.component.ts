@@ -105,7 +105,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
 
 
   redirectToAmortizedList () : void {
-    this._router.navigate(['/app/main/account/accounts']);
+    this._router.navigate(['/app/main/reconcilliation']);
   }
 
 

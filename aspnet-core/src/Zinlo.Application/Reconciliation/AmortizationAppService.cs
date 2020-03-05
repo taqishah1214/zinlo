@@ -56,7 +56,7 @@ namespace Zinlo.Reconciliation
                                    StartDate =o.StartDate,
                                    EndDate =o.EndDate,
                                    Description =o.Description,
-                                   BeginningAmount =0,
+                                   BeginningAmount =o.Amount,
                                    AccuredAmortization = 0,
                                    NetAmount = 0,
                                };
