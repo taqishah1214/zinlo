@@ -20,6 +20,10 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   title : string ;
   buttonTitle : string ;
   accountId:number
+  attachmentPaths: any = [];
+  newAttachementPath: string[] = [];
+
+
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(private _accountSubTypeService: AccountSubTypeServiceProxy,
@@ -97,12 +101,30 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
 
 
   createAmortizedItem():void {
+
+    if (this.attachmentPaths != null) {
+      this.newAttachementPath = [];
+      this.attachmentPaths.forEach(element => {
+        this.newAttachementPath.push(element.toString())
+      });
+
+      this.amortizationDto.attachmentsPath = this.newAttachementPath;
+    }
+
     this._reconcialtionService.createOrEdit(this.amortizationDto).subscribe(response => {
       this.notify.success(this.l('Amortized Item  Successfully Created.'));
       this.redirectToAmortizedList();
     }) 
   }
 
+ 
+  fileUploadedResponse(value): void {
+    var response = value.successful
+    response.forEach(i => {
+      this.attachmentPaths.push(i.response.body.result);
+    });
+    this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
+  }
 
   redirectToAmortizedList () : void {
     this._router.navigate(['/app/main/reconcilliation']);

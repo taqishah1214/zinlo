@@ -10,15 +10,20 @@ using Zinlo.Reconciliation.Dtos;
 using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Zinlo.Attachments.Dtos;
+using Zinlo.Attachments;
 
 namespace Zinlo.Reconciliation
 {
    public class AmortizationAppService : ZinloAppServiceBase, IAmortizationAppService
     {
         private readonly IRepository<Amortization, long> _amortizationRepository;
+        private readonly IAttachmentAppService _attachmentAppService;
+
         #region|#Constructor|
-        public AmortizationAppService(IRepository<Amortization, long> amortizationRepository)
+        public AmortizationAppService(IRepository<Amortization, long> amortizationRepository,IAttachmentAppService attachmentAppService)
         {
+            _attachmentAppService = attachmentAppService;
             _amortizationRepository = amortizationRepository;
         }
         #endregion
@@ -70,6 +75,14 @@ namespace Zinlo.Reconciliation
         protected virtual async Task Create(CreateOrEditAmortizationDto input)
         {
             var item = ObjectMapper.Map<Amortization>(input);
+            if (input.AttachmentsPath != null)
+            {
+                PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
+                postAttachmentsPathDto.FilePath = input.AttachmentsPath;
+                postAttachmentsPathDto.TypeId = 2;
+                postAttachmentsPathDto.Type = 1;
+                await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
+            }
             await _amortizationRepository.InsertAsync(item);
 
         }

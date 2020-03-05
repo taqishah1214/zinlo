@@ -15625,6 +15625,7 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
     accomulateAmount!: number;
     description!: string | undefined;
     chartsofAccountId!: number;
+    attachmentsPath!: string[] | undefined;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -15648,6 +15649,11 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
             this.accomulateAmount = data["accomulateAmount"];
             this.description = data["description"];
             this.chartsofAccountId = data["chartsofAccountId"];
+            if (Array.isArray(data["attachmentsPath"])) {
+                this.attachmentsPath = [] as any;
+                for (let item of data["attachmentsPath"])
+                    this.attachmentsPath!.push(item);
+            }
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -15671,6 +15677,11 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
         data["accomulateAmount"] = this.accomulateAmount;
         data["description"] = this.description;
         data["chartsofAccountId"] = this.chartsofAccountId;
+        if (Array.isArray(this.attachmentsPath)) {
+            data["attachmentsPath"] = [];
+            for (let item of this.attachmentsPath)
+                data["attachmentsPath"].push(item);
+        }
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -15687,6 +15698,7 @@ export interface ICreateOrEditAmortizationDto {
     accomulateAmount: number;
     description: string | undefined;
     chartsofAccountId: number;
+    attachmentsPath: string[] | undefined;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
