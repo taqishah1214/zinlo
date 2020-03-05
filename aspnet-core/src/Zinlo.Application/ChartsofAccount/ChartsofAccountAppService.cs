@@ -122,6 +122,7 @@ namespace Zinlo.ChartsofAccount
             mappedAccount.AssigniName = account.Assignee.FullName;
             mappedAccount.AccountName = account.AccountName;
             mappedAccount.AccountNumber = account.AccountNumber;
+            mappedAccount.ReconciledId = (int)account.Reconciled;
             return mappedAccount;
         }
 

@@ -16366,6 +16366,12 @@ export enum ReconciliationType {
     Amortization = 2,
 }
 
+export enum Reconciled {
+    NetAmount = 1,
+    BeginningAmount = 2,
+    AccruedAmount = 3,
+}
+
 export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAccountDto {
     accountName!: string | undefined;
     accountNumber!: string | undefined;
@@ -16373,6 +16379,7 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
     reconciliationType!: ReconciliationType;
     accountSubTypeId!: number;
     assigneeId!: number;
+    reconciled!: Reconciled;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditChartsofAccountDto) {
@@ -16392,6 +16399,7 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
             this.reconciliationType = data["reconciliationType"];
             this.accountSubTypeId = data["accountSubTypeId"];
             this.assigneeId = data["assigneeId"];
+            this.reconciled = data["reconciled"];
             this.id = data["id"];
         }
     }
@@ -16411,6 +16419,7 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
         data["reconciliationType"] = this.reconciliationType;
         data["accountSubTypeId"] = this.accountSubTypeId;
         data["assigneeId"] = this.assigneeId;
+        data["reconciled"] = this.reconciled;
         data["id"] = this.id;
         return data; 
     }
@@ -16423,6 +16432,7 @@ export interface ICreateOrEditChartsofAccountDto {
     reconciliationType: ReconciliationType;
     accountSubTypeId: number;
     assigneeId: number;
+    reconciled: Reconciled;
     id: number | undefined;
 }
 
@@ -16436,6 +16446,7 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
     reconcillationType!: number;
     accountType!: number;
     accountSubTypeId!: number;
+    reconciledId!: number;
 
     constructor(data?: IGetAccountForEditDto) {
         if (data) {
@@ -16457,6 +16468,7 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
             this.reconcillationType = data["reconcillationType"];
             this.accountType = data["accountType"];
             this.accountSubTypeId = data["accountSubTypeId"];
+            this.reconciledId = data["reconciledId"];
         }
     }
 
@@ -16478,6 +16490,7 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
         data["reconcillationType"] = this.reconcillationType;
         data["accountType"] = this.accountType;
         data["accountSubTypeId"] = this.accountSubTypeId;
+        data["reconciledId"] = this.reconciledId;
         return data; 
     }
 }
@@ -16492,6 +16505,7 @@ export interface IGetAccountForEditDto {
     reconcillationType: number;
     accountType: number;
     accountSubTypeId: number;
+    reconciledId: number;
 }
 
 export enum FriendshipState {

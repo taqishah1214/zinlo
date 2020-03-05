@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy, CreateOrEditChartsofAccountDto } from '@shared/service-proxies/service-proxies';
+import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy, CreateOrEditChartsofAccountDto, CreateOrEditAmortizationDto, AmortizationServiceProxy } from '@shared/service-proxies/service-proxies';
 import { Router } from '@angular/router';
 import { UserListComponentComponent } from '@app/main/checklist/user-list-component/user-list-component.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -25,9 +25,13 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   assigniId : number;
   accountDto: CreateOrEditChartsofAccountDto = new CreateOrEditChartsofAccountDto()
 
+  accumulateAmount : boolean = true
+  amortizationDto: CreateOrEditAmortizationDto = new CreateOrEditAmortizationDto()
+
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(private _accountSubTypeService: AccountSubTypeServiceProxy,
-    private _chartOfAccountService: ChartsofAccountServiceProxy, private _router: Router, injector: Injector) {
+    private _chartOfAccountService: ChartsofAccountServiceProxy, private _router: Router, injector: Injector,
+    private _reconcialtionService : AmortizationServiceProxy) {
     super(injector)
   }
 
@@ -43,6 +47,21 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     {    
       this.createNewAccount();
     }   
+  }
+
+  tabFilter(val) : void {
+    if (val == "Manual")
+    {
+      this.accumulateAmount = true
+    }
+    else if (val == "Monthly")
+    {
+      this.accumulateAmount = false
+    }
+    else if (val == "Daily")
+    {
+
+    }
   }
 
   createNewAccount() : void {
@@ -126,35 +145,25 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   }
 
   onSubmit(): void {
-    if (this.editAccountCheck) {
-      this.updateAccount()
-    }
-    else {
-      this.createAccount()
-    }
+    // if (this.editAccountCheck) {
+    //   this.updateAccount()
+    // }
+    // else {
+    //   this.createAccount()
+    // }
+    this.createAmortizedItem()
   }
 
-  createAccount():void {
-    this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
-    this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
+  createAmortizedItem():void {
+    debugger
+    this._reconcialtionService.createOrEdit(this.amortizationDto).subscribe(response => {
       this.notify.success(this.l('Account Successfully Created.'));
-      this.redirectToAccountsList();
+      this.redirectToAmortizedList();
     }) 
   }
 
- 
-  updateAccount() : void {   
-    if (this.selectedUserId.selectedUserId != undefined)
-    {
-      this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
-    }
-    this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
-      this.notify.success(this.l('Account Successfully Updated.'));
-      this.redirectToAccountsList();
-    })
-  }
 
-  redirectToAccountsList () : void {
+  redirectToAmortizedList () : void {
     this._router.navigate(['/app/main/account/accounts']);
   }
   settings: UppyConfig = {

@@ -1,1 +1,230 @@
-<p>amortized works!</p>
+<div>
+    <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{"Reconciliation" | localize}}</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <div class="kt-grid__item ">
+                        <div class="itemized-head">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
+                                <div class="d-flex flex-wrap align-items-center">
+                                    <h3 class="mr-3 mb-0">
+                                        <span>{{"Amortized List" | localize}}</span>
+                                    </h3>
+                                    <h6 class="ml-3 mb-0">
+                                        Account No
+                                        <span class="bg-lightgrey badge badge-secondary bagesTextColor">Account
+                                            No</span>
+                                        Account Name
+                                        <span class="bg-lightgrey badge badge-secondary bagesTextColor">Account
+                                            Name</span>
+                                    </h6>
+
+                                </div>
+                                <div class="kt-subheader__toolbar">
+                                    <div class="kt-subheader__wrapper">
+                                        <a class="mr-3" href="javascript: void(0);" (click)="BackToReconcileList()">
+                                            <i class="la la-arrow-left"></i>
+                                            Back
+                                        </a>
+                                        <button class="btn btn-brand" (click)="RedirectToAddNewAmortize()"><i class="fa fa-plus"></i>
+                                            {{"AddNew" | localize}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="kt-form calender-filter">
+                        <div>
+                            <div class="row align-items-center mb-4">
+                                <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
+                                    <div class="date-picker">
+                                        <input id="monthValue" (ngModelChange)="filterByMonth($event)"
+                                            value="january 2020" class="date-field" name="monthValue"
+                                            [(ngModel)]="monthValue" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                            (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="task-table" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable class=" record-table" [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr class="table-itemized">
+                                        <th class="date-cell">
+                                            {{'Date' | localize}}
+                                        </th>
+
+                                        <th class="Description-cell">
+                                            Description
+
+                                        </th>
+                                        <th class="Amount-cell">
+                                            Amount
+                                        </th>
+
+                                        <th class="Attachment-cell">
+                                            Attachment
+                                        </th>
+                                        <th class="cell-none">
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                        <table class="table record-table table-itemized">
+
+                            <tbody>
+                                <tr class="task-table-inner table-repeater">
+
+                                    <td class="date-cell">
+                                        <span class="">hammmad</span>
+                                    </td>
+                                    <td class="Description-cell">
+                                        <span>Mani is creating</span>
+                                    </td>
+                                    <td class="Amount-cell">
+                                        <span>$12345678</span>
+                                    </td>
+                                    <td class="Attachment-cell">
+                                        <div class="attachments_section">
+                                            <a target="_blank" class="attachement_btn">
+                                                <img src="../../../../assets/media/files/png.svg">
+                                            </a>
+                                        </div>
+                                    </td>
+
+                                    <td class="toggle-btn-cell">
+                                        <div (click)="collapsibleRowClick()" class="taggle-btn"></div>
+                                    </td>
+                                </tr>
+                                <!-- show-collapsible-row -->
+                                <!-- <tr class="table-row-collapsible ">
+    <td colspan="6">
+    <ul>
+    <li class="Amount-cell-item">
+    <div class="thead-box"><b>Amount : </b></div>
+    <div class="tdata-box">
+    
+    </div>
+    </li>
+    <li class="Attachment-cell-item">
+    <div class="thead-box"><b>Attachment : </b></div>
+    <div class="tdata-box">
+    <span class="category-name bg-lightgrey"></span>
+    </div>
+    </li>
+    </ul>
+    </td>
+    </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                <select class="input-medium">
+                                    <option>Comments</option>
+                                    <option>History</option>
+                                </select>
+                            </div>
+                            <div class="commentmainView show-comments">
+                                <div class="kt-widget3 ">
+                                    <div class="kt-widget3__item ">
+                                        <div class="comments-header kt-widget3__header">
+                                            <div class="kt-widget3__user-img">
+                                                <div class="kt-user-card-v2__pic">
+                                                    <div class="kt-badge kt-badge--xl kt-badge--warning">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget3__info">
+                                                <a class="kt-widget3__username">
+                                                    hammmmmda
+                                                </a><br>
+                                            </div>
+                                            <span class="kt-widget3__status kt-font-info">
+                                                2 days 2109
+                                            </span>
+                                        </div>
+                                        <div class="kt-widget3__body show-comments-inner">
+                                            <p class="kt-widget3__text commentViewBox">
+                                                fadugyiuogsijuhgsjiuhgujkhuhcafyghujkcgjhhshujsckjhsjhugkhsjhjhghjgshdjughjhkghghgkghghggh
+                                                fjhkfghkgcfxghkggxfghkhcgxhfhkxfgjhkfhxkgxfhgcgxfghvcgxfcghvcgxgk
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group giveCommentView" *ngIf="commantBox">
+                                <label>Comments</label>
+                                <div (click)="commentClick()">
+                                    <div class="kt-user-card-v2">
+                                        <div class="kt-user-card-v2__pic">
+
+                                            <div class="kt-user-card-v2__pic">
+                                                <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
+                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                        alt="Pic" [src]="UserProfilePicture">
+                                                </div>
+
+                                                <div *ngIf="!UserProfilePicture"
+                                                    class="kt-badge kt-badge--xl kt-badge--primary">
+                                                    {{userSignInName | firstLetterOfWords}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group " *ngIf="!commantBox">
+                                <label>Comments</label>
+                                <p-editor name="HtmlEditorInput" [style]="{'height':'150px'}">
+                                </p-editor>
+                                <button class="btn btn-brand" (click)="onComment()">Comment</button>
+                                <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="report-container">
+                                <div class="report-box d-flex flex-wrap">
+                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">Total:</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 87,869.25</div>
+                                </div>
+                                <div class="report-box d-flex flex-wrap">
+                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">Trial Balance:</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 89,869.25</div>
+                                </div>
+                                <div class="report-box d-flex flex-wrap">
+                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">Variance:</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 2000</div>
+                                </div>
+                            </div>
+                            <div class="Check-reconcile-btn">
+                                <button class="btn btn-brand" (click)="reconcileCheck()">Check as Reconciled</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

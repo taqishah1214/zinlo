@@ -19,9 +19,9 @@ namespace Zinlo.ChartsofAccount
         public long AssigneeId { get; set; }
         public virtual User Assignee { get; set; }
         public long AccountSubTypeId { get; set; }
-
         public Status Status { get; set; }
         public virtual AccountSubType.AccountSubType AccountSubType { get; set; }
+        public Reconciled Reconciled { get; set; }
     }
     public enum ReconciliationType
     {
@@ -40,5 +40,12 @@ namespace Zinlo.ChartsofAccount
         InProcess = 1,
         Open = 2 , 
         Complete = 3
+    }
+
+    public enum Reconciled
+    {
+        NetAmount = 1,
+        BeginningAmount = 2,
+        AccruedAmount = 3,
     }
 }
