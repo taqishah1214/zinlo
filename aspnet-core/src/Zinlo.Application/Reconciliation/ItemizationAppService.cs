@@ -1,9 +1,14 @@
-﻿using Abp.Domain.Repositories;
+﻿using Abp.Application.Services.Dto;
+using Abp.Collections.Extensions;
+using Abp.Domain.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zinlo.Reconciliation.Dtos;
+using System.Linq.Dynamic.Core;
+using Abp.Linq.Extensions;
 
 namespace Zinlo.Reconciliation
 {
@@ -14,6 +19,31 @@ namespace Zinlo.Reconciliation
         public ItemizationAppService(IRepository<Itemization,long> itemizationRepository)
         {
             _itemizationRepository = itemizationRepository;
+        }
+        #endregion
+        #region|Get All|
+        public async Task<PagedResultDto<ItemizedListForViewDto>> GetAll(GetAllItemizationInput input)
+        {
+           
+            var query = _itemizationRepository.GetAll()
+                 .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter));            
+            var pagedAndFilteredItems = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+            var totalCount = query.Count();
+            var ItemizedList = from o in pagedAndFilteredItems
+
+                               select new ItemizedListForViewDto()
+                               {
+                                   Id = o.Id,
+                                   Amount = o.Amount,
+                                   Date = o.Date,
+                                   Description = o.Description                                  
+                               };
+
+            return new PagedResultDto<ItemizedListForViewDto>(
+               totalCount,
+               ItemizedList.ToList()
+           );
+
         }
         #endregion
         #region|Create Edit|
@@ -28,6 +58,9 @@ namespace Zinlo.Reconciliation
                 await Update(input);
             }
         }
+
+       
+
         protected virtual async Task Create(CreateOrEditItemizationDto input)
         {
             var item = ObjectMapper.Map<Itemization>(input);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Abp.Application.Services.Dto;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,5 +10,6 @@ namespace Zinlo.Reconciliation
    public interface IItemizationAppService
     {
         Task CreateOrEdit(CreateOrEditItemizationDto input);
+        Task<PagedResultDto<ItemizedListForViewDto>> GetAll(GetAllItemizationInput input);
     }
 }
