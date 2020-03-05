@@ -59,25 +59,29 @@
 
                     <div class="row align-items-center">
                         <!--<Primeng-TurboTable-Start>-->
-                        <div class="task-table" [busyIf]="primengTableHelper.isLoading">
-                            <p-table #dataTable class=" record-table" [value]="primengTableHelper.records"
+                        <div class="task-table" [busyIf]="primengTableHelper.isLoading">                           
+                                <p-table #dataTable (onLazyLoad)="getAllItems($event)"
+                                [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [scrollable]="true" ScrollWidth="100%"
                                 [responsive]="primengTableHelper.isResponsive"
                                 [resizableColumns]="primengTableHelper.resizableColumns">
                                 <ng-template pTemplate="header">
                                     <tr class="table-itemized">
-                                        <th class="date-cell">
+                                       
+                                        <th class="accountType-cell" scope="col" pSortableColumn="Date">
                                             {{'Date' | localize}}
+                                            <p-sortIcon field="Date"></p-sortIcon>
+                                        </th> 
+                                        
+                                        <th class="Amount-cell">
+                                            Amount
                                         </th>
-
                                         <th class="Description-cell">
                                             Description
 
                                         </th>
-                                        <th class="Amount-cell">
-                                            Amount
-                                        </th>
+                                      
 
                                         <th class="Attachment-cell">
                                             Attachment
@@ -91,16 +95,16 @@
                         <table class="table record-table table-itemized">
 
                             <tbody>
-                                <tr class="task-table-inner table-repeater">
-
-                                    <td class="date-cell">
-                                        <span class="">hammmad</span>
-                                    </td>
+                                <tr *ngFor="let item of items" class="task-table-inner table-repeater">
                                     <td class="Description-cell">
-                                        <span>Mani is creating</span>
+                                        <span>{{item.date | date}}</span>
                                     </td>
+                                    <td class="date-cell">
+                                        <span class="">{{item.amount}}</span>
+                                    </td>
+                                   
                                     <td class="Amount-cell">
-                                        <span>$12345678</span>
+                                        <span>${{item.description}}</span>
                                     </td>
                                     <td class="Attachment-cell">
                                         <div class="attachments_section">
@@ -108,8 +112,7 @@
                                                 <img src="../../../../assets/media/files/png.svg">
                                             </a>
                                         </div>
-                                    </td>
-
+                                    </td>                       
                                     <td class="toggle-btn-cell">
                                         <div (click)="collapsibleRowClick()" class="taggle-btn"></div>
                                     </td>
@@ -135,6 +138,20 @@
     </tr> -->
                             </tbody>
                         </table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{'NoData' | localize}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getAllItems($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -222,6 +239,7 @@
                                 <button class="btn btn-brand" (click)="reconcileCheck()">Check as Reconciled</button>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
