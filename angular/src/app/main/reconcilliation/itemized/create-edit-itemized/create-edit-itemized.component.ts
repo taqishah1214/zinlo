@@ -52,6 +52,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     container.setViewMode('month');
   }
   SaveChanges(){
+    this.itemizedDto.chartsofAccountId = 1;
     this._itemizationServiceProxy.createOrEdit(this.itemizedDto).subscribe(response => {
       this.notify.success(this.l('Item Successfully Created.'));
       this.redirectToItemsList();

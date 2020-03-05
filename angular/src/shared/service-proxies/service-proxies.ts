@@ -21346,6 +21346,7 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
     date!: moment.Moment;
     amount!: number;
     description!: string | undefined;
+    chartsofAccountId!: number;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -21366,6 +21367,7 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
             this.date = data["date"] ? moment(data["date"].toString()) : <any>undefined;
             this.amount = data["amount"];
             this.description = data["description"];
+            this.chartsofAccountId = data["chartsofAccountId"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -21386,6 +21388,7 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
         data["date"] = this.date ? this.date.toISOString() : <any>undefined;
         data["amount"] = this.amount;
         data["description"] = this.description;
+        data["chartsofAccountId"] = this.chartsofAccountId;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -21399,6 +21402,7 @@ export interface ICreateOrEditItemizationDto {
     date: moment.Moment;
     amount: number;
     description: string | undefined;
+    chartsofAccountId: number;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
