@@ -14,5 +14,6 @@ namespace Zinlo.Reconciliation.Dtos
         public double Amount { get; set; }
         public double AccomulateAmount { get; set; }
         public string Description { get; set; }
+        public long ChartsofAccountId { get; set; }
     }
 }

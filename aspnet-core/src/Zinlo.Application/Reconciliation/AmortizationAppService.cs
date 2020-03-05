@@ -1,9 +1,15 @@
-﻿using Abp.Domain.Repositories;
+﻿using Abp.Application.Services.Dto;
+using Abp.Collections.Extensions;
+using Abp.Domain.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zinlo.Reconciliation.Dtos;
+using System.Linq.Dynamic.Core;
+using Abp.Linq.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Zinlo.Reconciliation
 {
@@ -28,6 +34,39 @@ namespace Zinlo.Reconciliation
                 await Update(input);
             }
         }
+
+        public async Task Delete(long Id)
+        {
+            await _amortizationRepository.DeleteAsync(Id);
+        }
+
+        public async Task<PagedResultDto<AmortizedListForViewDto>> GetAll(GetAllAmortizationInput input)
+        {
+            var query = _amortizationRepository.GetAll()
+                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
+                .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId);
+
+            var pagedAndFilteredItems = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+            var totalCount = query.Count();
+            var AmortizedList = from o in pagedAndFilteredItems
+
+                               select new AmortizedListForViewDto()
+                               {
+                                   Id = o.Id,
+                                   StartDate =o.StartDate,
+                                   EndDate =o.EndDate,
+                                   Description =o.Description,
+                                   BeginningAmount =0,
+                                   AccuredAmortization = 0,
+                                   NetAmount = 0,
+                               };
+
+            return new PagedResultDto<AmortizedListForViewDto>(
+               totalCount,
+               AmortizedList.ToList()
+           );
+        }
+
         protected virtual async Task Create(CreateOrEditAmortizationDto input)
         {
             var item = ObjectMapper.Map<Amortization>(input);
@@ -40,6 +79,17 @@ namespace Zinlo.Reconciliation
             var data = ObjectMapper.Map(input, item);
             await _amortizationRepository.UpdateAsync(data);
         }
+
+        public async Task<CreateOrEditAmortizationDto> GetAmortizedItemDetails(long Id)
+        {
+            CreateOrEditAmortizationDto ItemData = new CreateOrEditAmortizationDto();
+            var item = await _amortizationRepository.FirstOrDefaultAsync(x => x.Id == Id);
+            var data = ObjectMapper.Map(item, ItemData);
+            return data;
+        }
+
+
+
         #endregion
 
     }

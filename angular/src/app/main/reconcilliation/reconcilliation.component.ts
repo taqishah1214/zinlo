@@ -156,14 +156,14 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     }
   }
 
-  reDirectToItemizedAmotized (reconciliationTypeId){
+  reDirectToItemizedAmotized (reconciliationTypeId,accountId,accountNo,accountName){
   if (reconciliationTypeId == 1)
   {
-    this._router.navigate(['/app/main/reconcilliation/itemized']);
+    this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : accountId  }} });
 
   }
   else if (reconciliationTypeId == 2) {
-    this._router.navigate(['/app/main/reconcilliation/amortized']);
+    this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo}} });
 
   }
   }

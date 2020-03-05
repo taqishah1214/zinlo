@@ -941,6 +941,190 @@ export class AmortizationServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Amortization/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param chartofAccountId (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | undefined, chartofAccountId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfAmortizedListForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Amortization/GetAll?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (chartofAccountId === null)
+            throw new Error("The parameter 'chartofAccountId' cannot be null.");
+        else if (chartofAccountId !== undefined)
+            url_ += "ChartofAccountId=" + encodeURIComponent("" + chartofAccountId) + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfAmortizedListForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfAmortizedListForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfAmortizedListForViewDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfAmortizedListForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfAmortizedListForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAmortizedItemDetails(id: number | undefined): Observable<CreateOrEditAmortizationDto> {
+        let url_ = this.baseUrl + "/api/services/app/Amortization/GetAmortizedItemDetails?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAmortizedItemDetails(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAmortizedItemDetails(<any>response_);
+                } catch (e) {
+                    return <Observable<CreateOrEditAmortizationDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CreateOrEditAmortizationDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAmortizedItemDetails(response: HttpResponseBase): Observable<CreateOrEditAmortizationDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CreateOrEditAmortizationDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CreateOrEditAmortizationDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -15384,6 +15568,7 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
     amount!: number;
     accomulateAmount!: number;
     description!: string | undefined;
+    chartsofAccountId!: number;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -15406,6 +15591,7 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
             this.amount = data["amount"];
             this.accomulateAmount = data["accomulateAmount"];
             this.description = data["description"];
+            this.chartsofAccountId = data["chartsofAccountId"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -15428,6 +15614,7 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
         data["amount"] = this.amount;
         data["accomulateAmount"] = this.accomulateAmount;
         data["description"] = this.description;
+        data["chartsofAccountId"] = this.chartsofAccountId;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -15443,9 +15630,118 @@ export interface ICreateOrEditAmortizationDto {
     amount: number;
     accomulateAmount: number;
     description: string | undefined;
+    chartsofAccountId: number;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
+}
+
+export class AmortizedListForViewDto implements IAmortizedListForViewDto {
+    id!: number;
+    startDate!: moment.Moment;
+    endDate!: moment.Moment;
+    description!: string | undefined;
+    beginningAmount!: number;
+    accuredAmortization!: number;
+    netAmount!: number;
+
+    constructor(data?: IAmortizedListForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
+            this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
+            this.description = data["description"];
+            this.beginningAmount = data["beginningAmount"];
+            this.accuredAmortization = data["accuredAmortization"];
+            this.netAmount = data["netAmount"];
+        }
+    }
+
+    static fromJS(data: any): AmortizedListForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AmortizedListForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["description"] = this.description;
+        data["beginningAmount"] = this.beginningAmount;
+        data["accuredAmortization"] = this.accuredAmortization;
+        data["netAmount"] = this.netAmount;
+        return data; 
+    }
+}
+
+export interface IAmortizedListForViewDto {
+    id: number;
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+    description: string | undefined;
+    beginningAmount: number;
+    accuredAmortization: number;
+    netAmount: number;
+}
+
+export class PagedResultDtoOfAmortizedListForViewDto implements IPagedResultDtoOfAmortizedListForViewDto {
+    totalCount!: number;
+    items!: AmortizedListForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfAmortizedListForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items!.push(AmortizedListForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAmortizedListForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfAmortizedListForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfAmortizedListForViewDto {
+    totalCount: number;
+    items: AmortizedListForViewDto[] | undefined;
 }
 
 export class PostAttachmentsPathDto implements IPostAttachmentsPathDto {
