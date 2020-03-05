@@ -21,11 +21,9 @@
                                     </h3>
                                     <h6 class="ml-3 mb-0">
                                         Account No
-                                        <span class="bg-lightgrey badge badge-secondary bagesTextColor">Account
-                                            No</span>
+                                        <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountName}}</span>
                                         Account Name
-                                        <span class="bg-lightgrey badge badge-secondary bagesTextColor">Account
-                                            Name</span>
+                                        <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountName}}</span>
                                     </h6>
 
                                 </div>
@@ -35,7 +33,8 @@
                                             <i class="la la-arrow-left"></i>
                                             Back
                                         </a>
-                                        <button class="btn btn-brand" (click)="RedirectToAddNew(0)"><i class="fa fa-plus"></i>
+                                        <button class="btn btn-brand" (click)="RedirectToAddNew()"><i
+                                                class="fa fa-plus"></i>
                                             {{"AddNew" | localize}}</button>
                                     </div>
                                 </div>
@@ -57,102 +56,129 @@
                         </div>
                     </form>
 
-                    <div class="row align-items-center">
+                    <div class="primeng-paging-container">
+                        <div class="table-box">
                         <!--<Primeng-TurboTable-Start>-->
-                        <div class="task-table" [busyIf]="primengTableHelper.isLoading">                           
-                                <p-table #dataTable (onLazyLoad)="getAllItems($event)"
+                        <div class="task-table" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable class=" record-table" (onLazyLoad)="getAllItems($event)"
                                 [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [scrollable]="true" ScrollWidth="100%"
                                 [responsive]="primengTableHelper.isResponsive"
                                 [resizableColumns]="primengTableHelper.resizableColumns">
                                 <ng-template pTemplate="header">
-                                    <tr class="table-itemized">
-                                       
-                                        <th class="accountType-cell" scope="col" pSortableColumn="Date">
-                                            {{'Date' | localize}}
+                                    <tr  class="task-table-inner">
+                                        <th class="accountNo-cell" scope="col" pSortableColumn="Date">
+                                            Date
                                             <p-sortIcon field="Date"></p-sortIcon>
-                                        </th> 
+                                        </th>
+                                        <th class="accountType-cell " scope="col">
+                                            Description
+                                        </th>
                                         
-                                        <th class="Amount-cell">
+                                        <th class="reconciliation-cell" scope="col">
                                             Amount
                                         </th>
-                                        <th class="Description-cell">
-                                            Description
-
+                                       
+                                        
+                                        <th class="action-cell" scope="col">
+                                            Attachments
                                         </th>
-                                      
 
-                                        <th class="Attachment-cell">
-                                            Attachment
-                                        </th>
                                         <th class="cell-none">
+                                            <!-- <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div> -->
                                         </th>
                                     </tr>
                                 </ng-template>
                             </p-table>
-                        </div>
-                        <table class="table record-table table-itemized">
 
-                            <tbody>
-                                <tr *ngFor="let item of items" class="task-table-inner table-repeater">
-                                    <td class="Description-cell" (click)="RedirectToDetail(item.id)">
-                                        <span>{{item.date | date}}</span>
+                        </div>
+                        <!--<Primeng-TurboTable-End> {{i.creationTime | date:'d MMM EEE'}} -->
+                        <table class="table record-table">
+                            <tbody *ngFor="let item of items">
+                                <tr  class="task-table-inner table-repeater">
+                                    <td class="accountNo-cell">
+                                        <span class="">{{item.date | date}}</span>
+                                    </td>                                   
+                                    <td class="accountName-cell">
+                                        <span class="task-box">{{item.description}}</span>
                                     </td>
-                                    <td class="date-cell" >
+                                    <td class="reconciliation-cell">
                                         <span class="">{{item.amount}}</span>
                                     </td>
-                                   
-                                    <td class="Amount-cell">
-                                        <span>${{item.description}}</span>
+                                    
+                                  
+                                    <td class="action-cell">
+                                        <span class="">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="drag_drop_box">
+                                                        <div class="attachments_section">
+                                                            <a target="_blank" class="attachement_btn">
+                                                                <img src="../../../../assets/media/files/pdf.svg">
+                                                                <span> Dumpy Attachemt</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </span>
                                     </td>
-                                    <td class="Attachment-cell">
-                                        <div class="attachments_section">
-                                            <a target="_blank" class="attachement_btn">
-                                                <img src="../../../../assets/media/files/png.svg">
-                                            </a>
-                                        </div>
-                                    </td>                       
                                     <td class="toggle-btn-cell">
-                                        <div (click)="collapsibleRowClick()" class="taggle-btn"></div>
+                                        <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                     </td>
                                 </tr>
                                 <!-- show-collapsible-row -->
-                                <!-- <tr class="table-row-collapsible ">
-    <td colspan="6">
-    <ul>
-    <li class="Amount-cell-item">
-    <div class="thead-box"><b>Amount : </b></div>
-    <div class="tdata-box">
-    
-    </div>
-    </li>
-    <li class="Attachment-cell-item">
-    <div class="thead-box"><b>Attachment : </b></div>
-    <div class="tdata-box">
-    <span class="category-name bg-lightgrey"></span>
-    </div>
-    </li>
-    </ul>
-    </td>
-    </tr> -->
+                                <tr *ngIf="collapsibleRow == true && item.id == collapsibleRowId"
+                                    class="table-row-collapsible ">
+                                    <td>
+                                        <ul>
+                                            <li class="reconciliation-cell collapsable-cell">
+                                                <div class="thead-box"><b>Net Amount : </b></div>
+                                                <div class="tdata-box">
+                                                    <span class="">{{item.netAmount}}</span>
+                                                </div>
+                                            </li>
+                                            <li class="accountSubtype-cell collapsable-cell">
+                                                <div class="thead-box"><b> Attachments </b></div>
+                                                <div class="tdata-box">
+                                                    <span class="">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="drag_drop_box">
+                                                                    <div class="attachments_section">
+                                                                        <a target="_blank" class="attachement_btn">
+                                                                            <img src="../../../../assets/media/files/pdf.svg">
+                                                                            <span> Dumpy Attachemt</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
                             {{'NoData' | localize}}
                         </div>
-                        <div class="primeng-paging-container">
-                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
-                                (onPageChange)="getAllItems($event)"
-                                [totalRecords]="primengTableHelper.totalRecordsCount"
-                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
-
-                            </p-paginator>
-                            <span class="total-records-count">
-                                {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
-                            </span>
-                        </div>
                     </div>
+                    <div class="pagination-block">
+                        <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                            (onPageChange)="getAllItems($event)"
+                            [totalRecords]="primengTableHelper.totalRecordsCount"
+                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                            class="paginator-counter">
+                        </p-paginator>
+                        <span class="total-records-count">
+                            {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                        </span>
+                    </div>
+                </div>      
                     <div class="row">
                         <div class="col-md-6">
                             <div>
@@ -239,7 +265,6 @@
                                 <button class="btn btn-brand" (click)="reconcileCheck()">Check as Reconciled</button>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>
