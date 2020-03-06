@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Zinlo.ChartsofAccount.Dtos;
+using Zinlo.Dto;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -17,6 +18,9 @@ namespace Zinlo.ChartsofAccount
         Task ChangeAccountsAssignee(long accountId, long assigneeId);
 
         Task ChangeStatus(long accountId, long selectedStatusId);
+        Task<FileDto> GetChartsofAccountToExcel(long id);
+
+
 
     }
 }

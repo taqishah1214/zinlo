@@ -7,6 +7,11 @@ import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { UserListComponentComponent } from '../../checklist/user-list-component/user-list-component.component';
 import { UppyConfig } from 'uppy-angular';
+import { FileDownloadService } from '@shared/utils/file-download.service';
+import { HttpClient } from '@angular/common/http';
+import { AppConsts } from '@shared/AppConsts';
+import { finalize } from 'rxjs/operators';
+import { FileUpload } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-accounts',
@@ -44,10 +49,14 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
   updateAssigneeOnHeader: boolean = true;
   getAccountWithAssigneeId : number = 0;
+  uploadUrl = AppConsts.remoteServiceBaseUrl + '/Users/ImportAccountsFromExcel';
+
+  @ViewChild('ExcelFileUpload', { static: true }) excelFileUpload: FileUpload;
 
   constructor(private _router: Router,
-    private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector,
-    private _chartOfAccountService: ChartsofAccountServiceProxy) {
+    private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector, private _httpClient: HttpClient,
+    private _chartOfAccountService: ChartsofAccountServiceProxy,private _fileDownloadService: FileDownloadService)
+    {
     super(injector)
     this.FilterBoxOpen = false;
   }
@@ -84,6 +93,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
       this.paginator.changePage(0);
       return;
     }
+
+   
 
     this.primengTableHelper.showLoadingIndicator();
     this._chartOfAccountService.getAll(
@@ -239,4 +250,37 @@ RedirectToCreateAccount(): void {
       Webcam: false
     }
   }
+
+  uploadaccountExcel(data: { files: File }): void {
+    debugger;
+    const formData: FormData = new FormData();
+    const file = data.files[0];
+    formData.append('file', file, file.name);
+
+    this._httpClient
+        .post<any>(this.uploadUrl, formData)
+        .pipe(finalize(() => this.excelFileUpload.clear()))
+        .subscribe(response => {
+            if (response.success) {
+                this.notify.success(this.l('ImportUsersProcessStart'));
+            } else if (response.error != null) {
+                this.notify.error(this.l('ImportUsersUploadFailed'));
+            }
+        });
+}
+
+onUploadExcelError(): void {
+    this.notify.error(this.l('ImportUsersUploadFailed'));
+}
+
+  downloadExcelFile(): void {
+    console.log();
+    this._chartOfAccountService.getChartsofAccountToExcel(0)
+        .subscribe(result => {
+            this._fileDownloadService.downloadTempFile(result);
+        });
+}
+
+
+
 }

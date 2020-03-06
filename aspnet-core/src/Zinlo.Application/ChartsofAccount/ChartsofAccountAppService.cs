@@ -13,6 +13,7 @@ using Abp.Application.Services.Dto;
 using Zinlo.Authorization.Users.Profile;
 using Zinlo.ClosingChecklist.Dtos;
 using NUglify.Helpers;
+using Zinlo.Dto;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -20,11 +21,12 @@ namespace Zinlo.ChartsofAccount
     {
         private readonly IRepository<ChartsofAccount, long> _chartsofAccountRepository;
         private readonly IProfileAppService _profileAppService;
-
-        public ChartsofAccountAppService(IRepository<ChartsofAccount, long> chartsofAccountRepository, IProfileAppService profileAppService)
+        private readonly IChartsOfAccountsListExcelExporter _chartsOfAccountsListExcelExporter;
+        public ChartsofAccountAppService(IRepository<ChartsofAccount, long> chartsofAccountRepository, IProfileAppService profileAppService, IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter)
         {
             _chartsofAccountRepository = chartsofAccountRepository;
             _profileAppService = profileAppService;
+            _chartsOfAccountsListExcelExporter = chartsOfAccountsListExcelExporter;
         }
 
         
@@ -144,6 +146,43 @@ namespace Zinlo.ChartsofAccount
                 account.Status = (Status)selectedStatusId;
                 _chartsofAccountRepository.Update(account);
             }
+        }
+
+        public async Task<FileDto> GetChartsofAccountToExcel(long id)
+        {
+            var accounts =  _chartsofAccountRepository.GetAll().Include(x => x.Assignee);
+            List<ChartsOfAccountsExcellExporterDto> listToExport = new List<ChartsOfAccountsExcellExporterDto>();
+            foreach (var item in accounts)
+            {
+                ChartsOfAccountsExcellExporterDto chartsOfAccountsExcellExporterDto = new ChartsOfAccountsExcellExporterDto();
+                chartsOfAccountsExcellExporterDto.AccountName = item.AccountName;
+                chartsOfAccountsExcellExporterDto.AccountNumber = item.AccountNumber;
+                chartsOfAccountsExcellExporterDto.AccountType = GetAccounttypeById((int)item.AccountType);
+                chartsOfAccountsExcellExporterDto.AssignedUser = item.Assignee.FullName;
+                listToExport.Add(chartsOfAccountsExcellExporterDto);
+            }
+            return _chartsOfAccountsListExcelExporter.ExportToFile(listToExport);
+        }
+        public string GetAccounttypeById(int id)
+        {
+            string type = string.Empty;
+            switch (id)
+            {
+                case 1:
+                    type = "Fixed";
+                    break;
+                case 2:
+                    type = "Assets";
+                    break;
+                case 3:
+                    type = "Liability";
+                    break;
+
+                default:
+                    type = "Fixed";
+                    break;
+            }
+            return type;
         }
     }
 }

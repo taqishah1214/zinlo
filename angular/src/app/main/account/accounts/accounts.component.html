@@ -43,11 +43,11 @@
                                     <div class="modal-content">
                                         <div class="modal-body">
                                             <div class="download-modal-row row">
-                                                <div class="col-md-6 text-center">
-                                                    <img src="../../../../assets/img/download.png">
+                                                <div class="col-md-6 text-center" (click)="uploadaccountExcel()">
+                                                    <img src="../../../../assets/img/download.png"  >
                                                     <p>Download Trial Balance</p>
                                                 </div>
-                                                <div class="col-md-6 text-center">
+                                                <div class="col-md-6 text-center" (click)="downloadExcelFile()">
                                                     <img src="../../../../assets/img/download.png">
                                                     <p>Download Chart of Accounts</p>
                                                 </div>
@@ -127,6 +127,13 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                             <button type="button" class="btn btn-primary">Save changes</button>
+                                            <span class="fileinput-button">
+                                                <p-fileUpload customUpload="true" name="ExcelFileUpload" #ExcelFileUpload
+                                                    maxFileSize="10000000" auto="auto" accept=".csv,.xls,.xlsx"
+                                                    (uploadHandler)="uploadaccountExcel($event)" (onError)="onUploadExcelError()"
+                                                    chooseLabel="{{'ImportFromExcel' | localize}}">
+                                                </p-fileUpload>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
