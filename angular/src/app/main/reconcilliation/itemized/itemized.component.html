@@ -33,7 +33,7 @@
                                             <i class="la la-arrow-left"></i>
                                             Back
                                         </a>
-                                        <button class="btn btn-brand" (click)="RedirectToAddNew()"><i
+                                        <button class="btn btn-brand" (click)="RedirectToAddNew(0)"><i
                                                 class="fa fa-plus"></i>
                                             {{"AddNew" | localize}}</button>
                                     </div>
@@ -72,15 +72,14 @@
                                             Date
                                             <p-sortIcon field="Date"></p-sortIcon>
                                         </th>
-                                        <th class="accountType-cell " scope="col">
+                                        <th class="accountName-cell" scope="col">
                                             Description
                                         </th>
                                         
                                         <th class="reconciliation-cell" scope="col">
                                             Amount
                                         </th>
-                                       
-                                        
+                                 
                                         <th class="action-cell" scope="col">
                                             Attachments
                                         </th>
@@ -100,15 +99,13 @@
                                     <td class="accountNo-cell">
                                         <span class="">{{item.date | date}}</span>
                                     </td>                                   
-                                    <td class="accountName-cell">
+                                    <td class="accountName-cell" (click)="RedirectToAddNew(item.id)">
                                         <span class="task-box">{{item.description}}</span>
                                     </td>
                                     <td class="reconciliation-cell">
                                         <span class="">{{item.amount}}</span>
                                     </td>
-                                    
-                                  
-                                    <td class="action-cell">
+                                    <td class="reconciliation-cell">
                                         <span class="">
                                             <div class="row">
                                                 <div class="col-md-12">

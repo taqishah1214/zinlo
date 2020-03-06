@@ -43,7 +43,7 @@ recordId = 0;
     super(injector);
   }
   ngOnInit() {
-    this.recordId = history.state.data.id
+    this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
     this.commantBox = true;
@@ -69,9 +69,7 @@ recordId = 0;
         console.log(this.items);
     });
   }
-  RedirectToAddNewAmortize() : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId }} });
-  }
+ 
 collapsibleRowClick(id) {
   this.collapsibleRowId = id;
   this.collapsibleRow = !this.collapsibleRow;
@@ -82,10 +80,10 @@ BackToReconcileList() {
 
 }
 RedirectToAddNew(val){
-  debugger;
   this.recordId = val;
-  this._router.navigate(['/app/main/reconcilliation/itemized/create-edit-itemized'], { state: { data: { id: this.recordId } } });
-  
+  this._router.navigate(['/app/main/reconcilliation/itemized/create-edit-itemized'], { state: { data: { id: this.recordId , accountName :this.accountName ,accountNo: this.accountNo,accountId : this.accountId } } });
+ 
+
 }
 
 RedirectToDetail(val){
