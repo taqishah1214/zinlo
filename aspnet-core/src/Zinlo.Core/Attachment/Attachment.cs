@@ -17,5 +17,6 @@ namespace Zinlo.Attachment
     public enum AttachmentType
     {
         ClosingChecklist = 1,
+        Amortized = 2
     }
 }

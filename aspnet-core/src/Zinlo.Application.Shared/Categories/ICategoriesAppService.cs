@@ -17,10 +17,12 @@ namespace Zinlo.Categories
 
 		Task<GetCategoryForEditOutput> GetCategoryForEdit(EntityDto input);
 
-		Task CreateOrEdit(CreateOrEditCategoryDto input);
+		Task<long>CreateOrEdit(CreateOrEditCategoryDto input);
 
 		Task Delete(EntityDto input);
         Task<List<NameValueDto<long>>> CategoryDropDown();
+		bool IsCategoryExist(string input);
+
 
 
 

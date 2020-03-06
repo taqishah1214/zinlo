@@ -45,6 +45,8 @@ using Zinlo.ClosingChecklist.Dtos;
 using Zinlo.Attachments.Dtos;
 using Zinlo.AccountSubType.Dtos;
 using Zinlo.ChartsofAccount.Dtos;
+using Zinlo.Reconciliation.Dtos;
+using Zinlo.Reconciliation;
 
 namespace Zinlo
 {
@@ -153,7 +155,11 @@ namespace Zinlo
             //Closing checklist
             configuration.CreateMap<CreateOrEditClosingChecklistDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
             configuration.CreateMap<DetailsClosingCheckListDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
-            configuration.CreateMap<GetTaskForEditDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
+            configuration.CreateMap<GetTaskForEditDto, ClosingChecklist.ClosingChecklist>().ReverseMap().
+                ForMember(dto=>dto.AssigniName,entity=>entity.MapFrom(p=>p.Assignee.FullName)).
+                ForMember(dto=>dto.Category, entity=>entity.MapFrom(p=>p.Category.Title)).
+                ForMember(dto=>dto.Status, entity=>entity.MapFrom(p=>p.Status.ToString())).
+                ForMember(dto=>dto.StatusId, entity=>entity.MapFrom(p=>(int)p.Status));
             configuration.CreateMap<Comment.Comment, CommentDto>().ReverseMap();
 
             //Attachment
@@ -183,7 +189,11 @@ namespace Zinlo
             configuration.CreateMap<CreateOrEditChartsofAccountDto, ChartsofAccount.ChartsofAccount>().ReverseMap();
             configuration.CreateMap<GetAccountForEditDto, ChartsofAccount.ChartsofAccount>().ReverseMap();
 
+            //Reconciliation
+            configuration.CreateMap<CreateOrEditItemizationDto, Itemization>().ReverseMap();
+            configuration.CreateMap<CreateOrEditAmortizationDto, Amortization>().ReverseMap();
 
+            
         }
     }
 }

@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Zinlo.ChartsofAccount.Dtos;
 using Abp.Application.Services.Dto;
 using Zinlo.Authorization.Users.Profile;
+using Zinlo.ClosingChecklist.Dtos;
+using NUglify.Helpers;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -25,21 +27,27 @@ namespace Zinlo.ChartsofAccount
             _profileAppService = profileAppService;
         }
 
-
-        public string AccountNoFilter { get; set; }
-
-        public string AccountTypeFilter { get; set; }
-
-        public string AssigneeFilter { get; set; }
-
         
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
+            DateTime now = DateTime.Now;
+            var CurrentDate = new DateTime(now.Year, now.Month, 1);
+
             var query = _chartsofAccountRepository.GetAll().Include(p => p.AccountSubType).Include(p => p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.AccountName.Contains(input.Filter))
-                 .WhereIf(input.AccountType != 0, e => false || (e.AccountType == (AccountType)input.AccountType));
+                 .WhereIf(input.AccountType != 0, e => false || (e.AccountType == (AccountType)input.AccountType))
+                 .WhereIf(input.AssigneeId != 0, e => false || (e.AssigneeId == input.AssigneeId));
 
+            List<GetUserWithPicture> getUserWithPictures = new List<GetUserWithPicture>();
+            getUserWithPictures = (from o in query.ToList()
+                                   select new GetUserWithPicture()
+                                   {
+                                       Id = o.AssigneeId,
+                                       Name = o.Assignee.FullName,
+                                       Picture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
+                                   }).ToList();
 
+            getUserWithPictures = getUserWithPictures.DistinctBy(p => new { p.Id, p.Name }).ToList();
             var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var totalCount = query.Count();
 
@@ -56,7 +64,9 @@ namespace Zinlo.ChartsofAccount
                                    ReconciliationTypeId = o.ReconciliationType != 0 ? (int)o.ReconciliationType : 0,
                                    AssigneeName = o.Assignee != null ? o.Assignee.FullName : "",
                                    ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : "",
-                                   AssigneeId = o.Assignee.Id
+                                   AssigneeId = o.Assignee.Id,
+                                   StatusId = (int)o.Status,
+                                   OverallMonthlyAssignee = getUserWithPictures
                                };
 
             return new PagedResultDto<ChartsofAccoutsForViewDto>(
@@ -77,18 +87,19 @@ namespace Zinlo.ChartsofAccount
             }
 
         }
-
         protected virtual async Task Update(CreateOrEditChartsofAccountDto input)
         {
             var account = await _chartsofAccountRepository.FirstOrDefaultAsync((int)input.Id);
-            account.ReconciliationType = (ReconciliationType)input.ReconciliationType;
-            account.AccountType = (AccountType)input.AccountType;
-            _chartsofAccountRepository.Update(account);
+            var updatedAccount = ObjectMapper.Map(input, account);
+            updatedAccount.ReconciliationType = (ReconciliationType)input.ReconciliationType;
+            updatedAccount.AccountType = (AccountType)input.AccountType;
+            await _chartsofAccountRepository.UpdateAsync(updatedAccount);
         }
 
         protected virtual async Task Create(CreateOrEditChartsofAccountDto input)
         {
             var account = ObjectMapper.Map<ChartsofAccount>(input);
+            account.Status = (Status)2;
             if (AbpSession.TenantId != null)
             {
                 account.TenantId = (int)AbpSession.TenantId;
@@ -111,6 +122,7 @@ namespace Zinlo.ChartsofAccount
             mappedAccount.AssigniName = account.Assignee.FullName;
             mappedAccount.AccountName = account.AccountName;
             mappedAccount.AccountNumber = account.AccountNumber;
+            mappedAccount.ReconciledId = (int)account.Reconciled;
             return mappedAccount;
         }
 
@@ -120,6 +132,16 @@ namespace Zinlo.ChartsofAccount
             if (account != null)
             {
                 account.AssigneeId = assigneeId;
+                _chartsofAccountRepository.Update(account);
+            }
+        }
+
+        public async Task ChangeStatus(long accountId, long selectedStatusId)
+        {
+            var account = await _chartsofAccountRepository.FirstOrDefaultAsync(accountId);
+            if (account != null)
+            {
+                account.Status = (Status)selectedStatusId;
                 _chartsofAccountRepository.Update(account);
             }
         }

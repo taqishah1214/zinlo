@@ -75,20 +75,22 @@ namespace Zinlo.Categories
             return output;
         }
 
-        public async Task CreateOrEdit(CreateOrEditCategoryDto input)
+        public async Task<long>CreateOrEdit(CreateOrEditCategoryDto input)
         {
             if (input.Id == null)
             {
-                await Create(input);
+                long id =  await Create(input);
+                return id;
             }
             else
             {
-                await Update(input);
+                long id = await Update(input);
+                return id;
             }
         }
 
         [AbpAuthorize(AppPermissions.Pages_Categories_Create)]
-        protected virtual async Task Create(CreateOrEditCategoryDto input)
+        protected virtual async Task<long> Create(CreateOrEditCategoryDto input)
         {
             var category = ObjectMapper.Map<Category>(input);
 
@@ -97,14 +99,16 @@ namespace Zinlo.Categories
             {
                 category.TenantId = (int)AbpSession.TenantId;
             }
-            await _categoryRepository.InsertAsync(category);
+           long id  =  await _categoryRepository.InsertAndGetIdAsync(category);
+            return id;
         }
 
         [AbpAuthorize(AppPermissions.Pages_Categories_Edit)]
-        protected virtual async Task Update(CreateOrEditCategoryDto input)
+        protected virtual async Task<long> Update(CreateOrEditCategoryDto input)
         {
             var category = await _categoryRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, category);
+            return (long)input.Id;
         }
 
         [AbpAuthorize(AppPermissions.Pages_Categories_Delete)]
@@ -128,5 +132,18 @@ namespace Zinlo.Categories
             return assets;
         }
 
+        public bool IsCategoryExist(string input)
+        {
+            if(input != null)
+            {
+                bool IsExist = _categoryRepository.GetAll().Any(x => x.Title.Trim().ToLower() == input.Trim().ToLower());
+                return IsExist;
+            }
+            else
+            {
+                return false;
+            }
+           
+        }
     }
 }

@@ -137,7 +137,7 @@
                                 <div class="upper-content">
                                     <form class="search-form">
                                         <div class="form-group">
-                                            <input type="text" autoFocus (input)="getAllAccounts()"
+                                            <input type="text" autoFocus (input)="searchWithName()"
                                                 [(ngModel)]="filterText" name="filterText"
                                                 [placeholder]="l('SearchWithThreeDot')" class="border-grey">
                                         </div>
@@ -158,21 +158,21 @@
                                                 class="member-count bg-lightgrey text-blue">
                                                 <span>+{{remainingUserForHeader.length}}</span>
                                                 <div class="member-dropdown">
-                                                    <ul>
-                                                        <li *ngFor="let item of remainingUserForHeader">
+                                                    <ul *ngFor="let item of remainingUserForHeader" >
+                                                        <li (click)="GetAssigniSpecficAccounts(item.id)">
                                                             <div class="kt-user-card-v2__pic">
-                                                                <div *ngIf="item.profilePicture"
+                                                                <div *ngIf="item.picture"
                                                                     class="kt-badge kt-badge--xl mem-img">
                                                                     <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
                                                                         alt="Pic" [src]="item.profilePicture">
                                                                 </div>
-                                                                <div *ngIf="!item.profilePicture"
+                                                                <div *ngIf="!item.picture"
                                                                     class="kt-badge kt-badge--xl kt-badge--primary mem-img">
-                                                                    {{item.assigniName | firstLetterOfWords}}</div>
+                                                                    {{item.name | firstLetterOfWords}}</div>
                                                             </div>
                                                             <div class="kt-user-card-v2__details">
                                                                 <span class="kt-user-card-v2__name">
-                                                                    {{item.assigniName}}
+                                                                    {{item.name}}
                                                                 </span>
                                                             </div>
                                                         </li>
@@ -182,19 +182,17 @@
 
 
                                             <div *ngFor="let item of assigniNameForHeader "
-                                                (click)="GetAssigniSpecficAccounts(i.assigneeId)" class="kt-user-card-v2">
+                                                (click)="GetAssigniSpecficAccounts(item.id)" class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic user-image-box">
-                                                    <div *ngIf="item.profilePicture" class="kt-badge kt-badge--xl">
+                                                    <div *ngIf="item.picture" class="kt-badge kt-badge--xl">
                                                         <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                            alt="Pic" [src]="item.profilePicture">
+                                                            alt="Pic" [src]="item.picture">
                                                     </div>
-                                                    <div *ngIf="!item.profilePicture"
+                                                    <div *ngIf="!item.picture"
                                                         class="kt-badge kt-badge--xl kt-badge--primary">
-                                                        {{item.assigniName | firstLetterOfWords}}</div>
+                                                        {{item.name | firstLetterOfWords}}</div>
                                                 </div>
                                             </div>
-
-
                                         </div>
                                     </div>
                                 </div>

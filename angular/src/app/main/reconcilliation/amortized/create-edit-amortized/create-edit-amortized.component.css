@@ -1,0 +1,78 @@
+.select {
+    padding: 5px 10px 7px;
+    border-radius: 4px;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+.select .options {
+    position: absolute;
+    top: 29px;
+    left: 0;
+    width: 100%;
+    border-radius: 0 0 4px 4px;
+    border: 1px solid #000;
+    display: none; 
+    background-color: #fff;
+
+}
+.select .options .option {
+    padding: 5px 10px;
+    cursor: pointer;
+
+}
+.select .options .option:hover:not(.btn-option){
+	color: white;
+	background-color: #000;
+}
+.select .options .option button{
+	border: 0;
+    padding: 8px 15px;
+    border-radius: 3px;
+    background-color: darkcyan;
+    color: white;
+    cursor: pointer;
+}
+.select::after {
+    content: "";
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    top: 13px;
+    right: 10px;
+    border-top: 7px solid #000;
+    box-sizing: border-box;
+    border-right: 7px solid rgba(0, 0, 0, 0.0);
+    border-bottom: 7px solid rgba(0, 0, 0, 0.0);
+    border-left: 7px solid rgba(0, 0, 0, 0.0);
+    cursor: pointer;
+}	
+.category-selector button {
+    width: 100%;
+    text-align: left;
+    padding: 9px 15px 8px 15px;
+    height: calc(1.5em + 1.3rem + 2px);
+
+}
+.category-selector button::after {
+    position: absolute;
+    font-size: 11px;
+    color: #313030;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.dropdown-menu.ng-untouched .dropdown-item:last-child{
+    color: #007ad9;
+}
+label{
+color: #606060;
+}
+::ng-deep .uppy-Dashboard-inner {
+    min-height:220px !important;
+    height: 220px !important;
+    
+}
+.tab_button {
+    cursor: pointer;
+}

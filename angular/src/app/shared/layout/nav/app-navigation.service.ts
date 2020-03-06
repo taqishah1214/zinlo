@@ -36,6 +36,9 @@ export class AppNavigationService {
                 
             ]),
 
+            new AppMenuItem('Reconciliation', 'Pages.Reconciliation', 'flaticon-interface-8', '/app/main/reconcilliation', [ 
+            ]),
+
            // new AppMenuItem('Tests', 'Pages.Tests', 'flaticon-more', '/app/main/tests/tests'),
              new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
                 //new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),

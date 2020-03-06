@@ -33,6 +33,10 @@ namespace Zinlo.Attachments
             var file= (IFormFile)null;
             List<string> finalFilePath = new List<string>();
             var ctx = _httpContextAccessor.HttpContext.Request.Form.Files;
+            if (!Directory.Exists(_env.WebRootPath + "/Uploads-Attachments"))
+            {
+                Directory.CreateDirectory(_env.WebRootPath + "/Uploads-Attachments");
+            }
             foreach(var item in ctx)
             {
                file =   item;
@@ -49,6 +53,7 @@ namespace Zinlo.Attachments
            
             return finalFilePath;    
         }
+
 
         public async Task PostAttachmentsPath(PostAttachmentsPathDto input)
         {    

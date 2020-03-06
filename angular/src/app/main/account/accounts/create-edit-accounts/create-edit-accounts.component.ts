@@ -22,6 +22,10 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   reconcillationType: any;
   assigniId : number;
   accountDto: CreateOrEditChartsofAccountDto = new CreateOrEditChartsofAccountDto()
+  reconciledBox : boolean = false
+  recociled : any
+  recociledList: Array<{ id: number, name: string }> = [{ id: 1, name: "Net Amount" }, { id: 2, name: "Beginning Amount" }, { id: 3, name: "Accrued Amount" }];
+
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(private _accountSubTypeService: AccountSubTypeServiceProxy,
@@ -62,8 +66,15 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     this._chartOfAccountService.getAccountForEdit( this.accountId).subscribe(result => {
        this.accountDto.accountName = result.accountName
        this.accountDto.accountNumber = result.accountNumber
-       this.accountType = this.getNameofAccountTypeAndReconcillation(result.accountType,"accountType")
-       this.reconcillationType = this.getNameofAccountTypeAndReconcillation(result.reconcillationType,"reconcillation")
+       this.accountType = this.getNameofAccountTypeAndReconcillationReconcilled(result.accountType,"accountType")
+       this.reconcillationType = this.getNameofAccountTypeAndReconcillationReconcilled(result.reconcillationType,"reconcillation")
+       
+       if (result.reconciledId != 0)
+       {
+        this.reconciledBox = true
+        this.recociled = this.getNameofAccountTypeAndReconcillationReconcilled(result.reconciledId,"recociledList")
+        this.accountDto.reconciled = result.reconciledId
+      }
        this.accountSubTypeName =result.accountSubType
        this.accountDto.accountSubTypeId = result.accountSubTypeId;
        this.accountDto.id = result.id;
@@ -74,7 +85,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     })
   }
 
-  getNameofAccountTypeAndReconcillation(id , key ) : string {  
+  getNameofAccountTypeAndReconcillationReconcilled(id , key ) : string {  
     var result = "" ;
     if (key === "accountType")
      {
@@ -95,7 +106,17 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
         }
       })
       return result;
-     }  
+     }
+     else if (key === "recociledList")  
+     {
+      this.recociledList.forEach(i => {
+        if  (i.id == id)
+        {
+          result = i.name
+        }
+      })
+      return result;
+     }
   }
 
   accountSubTypeClick(id, name): void {
@@ -106,10 +127,22 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   reconcillationClick(id, name): void {
     this.reconcillationType = name;
     this.accountDto.reconciliationType = id;
+    if (id == 2)
+    {
+      this.reconciledBox = true
+    }
+    else{
+      this.reconciledBox = false
+      this.accountDto.reconciled = 0;
+    }
   }
   accountTypeClick(id, name): void {
     this.accountType = name;
     this.accountDto.accountType = id;
+  }
+  recociledClick(id , name) : void {
+    this.recociled = name;
+    this.accountDto.reconciled = id;
   }
 
   routeToAddNewAccountSubType(): void {

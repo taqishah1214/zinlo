@@ -10,8 +10,14 @@ import { CreatetaskComponent } from './checklist/createtask/createtask.component
 import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
 import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component';
 import { AccountsComponent } from './account/accounts/accounts.component';
-import { DuplicateTaskComponent } from './checklist/duplicate-task/duplicate-task.component';
 import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component';
+import { ReconcilliationComponent } from './reconcilliation/reconcilliation.component';
+import { CreateEditItemizedComponent } from './reconcilliation/itemized/create-edit-itemized/create-edit-itemized.component';
+import { CreateEditAmortizedComponent } from './reconcilliation/amortized/create-edit-amortized/create-edit-amortized.component';
+import { ItemizedComponent } from './reconcilliation/itemized/itemized.component';
+import { AmortizedComponent } from './reconcilliation/amortized/amortized.component';
+import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-details/itemized-details.component';
+import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component';
 
 @NgModule({
     imports: [
@@ -29,9 +35,17 @@ import { CreateEditAccountsComponent } from './account/accounts/create-edit-acco
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                     { path: 'account/accountsubtype/create-or-edit-accountsubtype', component: CreateOrEditAccountsubtypeComponent , data: { permission: '' }  },
                     { path: 'account/accountsubtype', component: AccountsubtypeComponent , data: { permission: '' }  },
-                    { path: 'checklist/duplicate-task', component : DuplicateTaskComponent , data: {permission:""}},
                     { path: 'account/accounts', component: AccountsComponent , data: { permission: '' }  },
                     { path: 'account/accounts/create-edit-accounts', component: CreateEditAccountsComponent , data: { permission: '' }  },
+                    { path: 'reconcilliation', component: ReconcilliationComponent , data: { permission: 'Pages.Reconciliation' }  },
+                    { path: 'reconcilliation/itemized/create-edit-itemized', component: CreateEditItemizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
+                    { path: 'reconcilliation/amortized/create-edit-amortized', component: CreateEditAmortizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
+                    { path: 'reconcilliation/itemized', component: ItemizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
+                    { path: 'reconcilliation/amortized', component: AmortizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
+                    { path: 'reconcilliation/itemized/itemized-details', component: ItemizedDetailsComponent, data: { permission: 'Pages.ClosingChecklist' }},
+                    { path: 'reconcilliation/itemized/amortized-details', component: AmortizedDetailsComponent, data: { permission: 'Pages.ClosingChecklist' }},
+
+
                 ]
             }
         ])

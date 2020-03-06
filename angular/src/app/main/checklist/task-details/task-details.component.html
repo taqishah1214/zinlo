@@ -35,8 +35,10 @@
                                 </div>
 
                             </div>
+                            <div class="row" *ngIf="taskDetailObject.instruction == null">
+                            </div>
 
-                            <div class="row">
+                            <div class="row" *ngIf="taskDetailObject.instruction != null">
                                 <div class="col-md-12">
 
                                     <div class="custom-text-area" innerHTML="{{taskDetailObject.instruction}} "></div>
@@ -59,7 +61,7 @@
                             </div>
                             <div class="commentmainView show-comments">
                                 <div class="kt-widget3 ">
-                                    <div *ngFor="let i of  (taskDetailObject.comments || [])" class="kt-widget3__item ">
+                                    <div *ngFor="let i of commentsData" class="kt-widget3__item ">
                                         <div class="comments-header kt-widget3__header">
                                             <div class="kt-widget3__user-img">
                                                 <div class="kt-user-card-v2__pic">
@@ -88,8 +90,18 @@
                                 <div (click)="commentClick()">
                                     <div class="kt-user-card-v2">
                                         <div class="kt-user-card-v2__pic">
-                                            <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                {{userSignInName | firstLetterOfWords}} </div>
+
+                                            <div class="kt-user-card-v2__pic">
+                                                <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
+                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                        alt="Pic" [src]="UserProfilePicture">
+                                                </div>
+
+                                                <div *ngIf="!UserProfilePicture"
+                                                    class="kt-badge kt-badge--xl kt-badge--primary">
+                                                    {{userSignInName | firstLetterOfWords}}
+                                                </div>
+                                            </div>
                                         </div>
                                         <input [(ngModel)]="comment.body" class="form-control">
                                     </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Zinlo.ClosingChecklist.Dtos;
 
 namespace Zinlo.ChartsofAccount.Dtos
 {
@@ -16,6 +17,8 @@ namespace Zinlo.ChartsofAccount.Dtos
         public string AssigneeName { get; set; }
         public string  ProfilePicture { get; set; }
         public long AssigneeId { get; set; }
+        public List<GetUserWithPicture> OverallMonthlyAssignee { get; set; }
+        public int StatusId { get; set; }
 
     }
 }

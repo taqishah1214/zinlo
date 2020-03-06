@@ -1475,7 +1475,13 @@ namespace Zinlo.Migrations
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<int>("Reconciled")
+                        .HasColumnType("integer");
+
                     b.Property<int>("ReconciliationType")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<int>("TenantId")
@@ -1584,6 +1590,9 @@ namespace Zinlo.Migrations
 
                     b.Property<int>("Frequency")
                         .HasColumnType("integer");
+
+                    b.Property<string>("GroupId")
+                        .HasColumnType("text");
 
                     b.Property<string>("Instruction")
                         .HasColumnType("text");
@@ -1918,6 +1927,94 @@ namespace Zinlo.Migrations
                     b.ToTable("AbpTenants");
                 });
 
+            modelBuilder.Entity("Zinlo.Reconciliation.Amortization", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<double>("AccomulateAmount")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
+
+                    b.Property<long>("ChartsofAccountId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("InoviceNo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("JournalEntryNo")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChartsofAccountId");
+
+                    b.ToTable("Amortizations");
+                });
+
+            modelBuilder.Entity("Zinlo.Reconciliation.Itemization", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
+
+                    b.Property<long>("ChartsofAccountId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("InoviceNo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("JournalEntryNo")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChartsofAccountId");
+
+                    b.ToTable("Itemizations");
+                });
+
             modelBuilder.Entity("Zinlo.Storage.BinaryObject", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2226,6 +2323,24 @@ namespace Zinlo.Migrations
                     b.HasOne("Zinlo.Authorization.Users.User", "LastModifierUser")
                         .WithMany()
                         .HasForeignKey("LastModifierUserId");
+                });
+
+            modelBuilder.Entity("Zinlo.Reconciliation.Amortization", b =>
+                {
+                    b.HasOne("Zinlo.ChartsofAccount.ChartsofAccount", "ChartsofAccount")
+                        .WithMany()
+                        .HasForeignKey("ChartsofAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Zinlo.Reconciliation.Itemization", b =>
+                {
+                    b.HasOne("Zinlo.ChartsofAccount.ChartsofAccount", "ChartsofAccount")
+                        .WithMany()
+                        .HasForeignKey("ChartsofAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Abp.Application.Features.EditionFeatureSetting", b =>

@@ -86,8 +86,29 @@
                                                     {{item.name}}</a>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div *ngIf="reconciledBox" class="form-group category-selector">
+                                            <label for="TaskName">Reconciled As</label>
+                                            <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">{{recociled}}</button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" *ngFor="let item of recociledList"
+                                                    (click)="recociledClick(item.id,item.name)">
+                                                    {{item.name}}</a>
+                                            </div>
+                                        </div>
+                                    </div>                             
+                                </div>
+
+
+                                
+
                             </div>
                         </div>
                         <div class="kt-portlet__head">

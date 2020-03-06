@@ -13,6 +13,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         public ReconciliationType ReconciliationType { get; set; }
         public virtual long AccountSubTypeId { get; set; }
         public virtual long AssigneeId { get; set; }
+        public Reconciled Reconciled { get; set; }
     }
     public enum ReconciliationType
     {
@@ -24,5 +25,11 @@ namespace Zinlo.ChartsofAccount.Dtos
         Fixed = 1,
         Assets = 2,
         Liability = 3
+    }
+    public enum Reconciled
+    {
+        NetAmount = 1,
+        BeginningAmount = 2,
+        AccruedAmount = 3,
     }
 }

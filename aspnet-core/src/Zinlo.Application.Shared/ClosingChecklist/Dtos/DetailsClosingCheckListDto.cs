@@ -11,6 +11,7 @@ namespace Zinlo.ClosingChecklist.Dtos
     {
         public string AssigneeName { get; set; }
         public string CategoryName { get; set; }
+        public long CategoryId { get; set; }
         public string TaskStatus { get; set; }
 
         public string ProfilePicture { get; set; }
