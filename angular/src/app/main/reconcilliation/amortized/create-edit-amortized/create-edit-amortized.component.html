@@ -56,10 +56,10 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group category-selector">
                                                                 <label for="Date">Start Date</label>
-                                                                <input [(ngModel)]="amortizationDto.startDate" (ngModelChange)="loadDaysByMonth($event)" required="required"
+                                                                <input [(ngModel)]="amortizationDto.startDate" required="required"
                                                                 class="form-control" name="startDate" bsDatepicker
                                                                 placeholder="Select Date" class="form-control" name="date"
-                                                                bsDatepicker [minDate]="minDate" >
+                                                                bsDatepicker  >
                                                             </div>
 
 
@@ -69,10 +69,10 @@
 
                                                             <div class="form-group category-selector">
                                                                 <label for="Date">Start Date</label>
-                                                                <input [(ngModel)]="amortizationDto.endDate" (ngModelChange)="loadDaysByMonth($event)" required="required"
+                                                                <input [(ngModel)]="amortizationDto.endDate"  required="required"
                                                                 class="form-control" name="endDate" bsDatepicker
                                                                 placeholder="Select Date" class="form-control" name="date"
-                                                                bsDatepicker [minDate]="minDate" >
+                                                                bsDatepicker  >
                                                             </div>
 
                                                         </div>
@@ -94,7 +94,7 @@
                                                             <div class="form-group">
                                                                 <label for="description">Description</label>
                                                                 <textarea class="form-control" required [(ngModel)]="amortizationDto.description"
-                                                                    id="description" name="description" (keydown.enter)="save($event)"
+                                                                    id="description" name="description" 
                                                                      ></textarea>
                                                             </div>   
                                                         </div>

@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body">
-                    <form (ngSubmit)="onSubmit()" >
+                    <form  >
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
@@ -42,10 +42,10 @@
 
                                         <div class="form-group category-selector">
                                             <label for="Date">Date</label>
-                                            <input [(ngModel)]="itemizedDto.date" (ngModelChange)="loadDaysByMonth($event)" required="required"
+                                            <input [(ngModel)]="itemizedDto.date" required="required"
                                             class="form-control" name="date" bsDatepicker
                                             placeholder="Select Date" class="form-control" name="date"
-                                            bsDatepicker [minDate]="minDate"
+                                            bsDatepicker 
                                            
                                            >
                                         </div>
@@ -64,7 +64,7 @@
                                         <div class="form-group">
                                             <label for="description">Description</label>
                                             <textarea class="form-control" required [(ngModel)]="itemizedDto.description"
-                                                id="description" name="description" (keydown.enter)="save($event)"
+                                                id="description" name="description" 
                                                  ></textarea>
                                         </div>   
                                     </div>
@@ -73,7 +73,7 @@
                             <div class="col-md-6">
                                 <div class="drag_drop_box">
                                     <label class="bg-color">Attachments</label>
-                                    <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
+                                    <ng-uppy [config]="settings" ></ng-uppy>
                                 </div>
                             </div>
                         </div>
