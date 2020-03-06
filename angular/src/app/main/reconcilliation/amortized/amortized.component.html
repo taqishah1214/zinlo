@@ -48,7 +48,7 @@
                             <div class="row align-items-center mb-4">
                                 <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
                                     <div class="date-picker">
-                                        <input id="monthValue" (ngModelChange)="filterByMonth($event)"
+                                        <input id="monthValue" 
                                             value="january 2020" class="date-field" name="monthValue"
                                             [(ngModel)]="monthValue" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                             (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
@@ -186,7 +186,6 @@
                     </div>
                     <div class="pagination-block">
                         <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
-                            (onPageChange)="getAllAccounts($event)"
                             [totalRecords]="primengTableHelper.totalRecordsCount"
                             [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                             class="paginator-counter">
@@ -279,7 +278,7 @@
                                 </div>
                             </div>
                             <div class="Check-reconcile-btn">
-                                <button class="btn btn-brand" (click)="reconcileCheck()">Check as Reconciled</button>
+                                <button class="btn btn-brand" >Check as Reconciled</button>
                             </div>
                         </div>
                     </div>
