@@ -27,16 +27,18 @@ namespace Zinlo.AccountSubType
             _profileAppService = profileAppService;
         }
 
-        public async Task CreateOrEdit(CreateOrEditAccountSubTypeDto input)
+        public async Task<long> CreateOrEdit(CreateOrEditAccountSubTypeDto input)
         {
 
             if (input.Id == null)
             {
-                await Create(input);
+                long id =  await Create(input);
+                return id;
             }
             else
             {
-                await Update(input);
+                long id = await Update(input);
+                return id;
             }
 
         }
@@ -50,12 +52,13 @@ namespace Zinlo.AccountSubType
             return output;
         }
 
-        private async Task Update(CreateOrEditAccountSubTypeDto input)
+        private async Task<long> Update(CreateOrEditAccountSubTypeDto input)
         {
             var category = await _accountSubTypeRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, category);
+            return (long)input.Id;
         }
-        protected virtual async Task Create(CreateOrEditAccountSubTypeDto input)
+        protected virtual async Task<long> Create(CreateOrEditAccountSubTypeDto input)
         {
             var accountSubType = ObjectMapper.Map<AccountSubType>(input);
             if (AbpSession.TenantId != null)
@@ -63,7 +66,8 @@ namespace Zinlo.AccountSubType
                 accountSubType.TenantId = (int)AbpSession.TenantId;
             }
 
-            await _accountSubTypeRepository.InsertAsync(accountSubType);
+          long id =   await _accountSubTypeRepository.InsertAndGetIdAsync(accountSubType);
+            return id;
         }
 
         public async Task<List<NameValueDto<long>>> AccountSubTypeDropDown()

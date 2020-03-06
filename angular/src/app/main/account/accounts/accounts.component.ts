@@ -132,7 +132,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     });
   }
 editAccount(id) : void {
-  this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: id} } });
+  this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: id,newSubTypeId : 0} } });
 }
 
 deleteAccount(id) : void {
@@ -152,7 +152,7 @@ deleteAccount(id) : void {
 }
 
 RedirectToCreateAccount(): void {
-  this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: 0} } });
+  this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: 0 , newSubTypeId : 0} } });
 }
 
   getNameofAccountTypeAndReconcillation(id , key ) : string {  

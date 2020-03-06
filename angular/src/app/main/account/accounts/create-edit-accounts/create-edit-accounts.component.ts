@@ -11,7 +11,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 })
 export class CreateEditAccountsComponent extends AppComponentBase implements OnInit  {
 
-  accountSubTypeName: any;
+  accountSubTypeName: any =  "Select Account Sub Type";
   accountSubTypeList: any;
   accountType: any;
   accountId : number;
@@ -25,7 +25,8 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   reconciledBox : boolean = false
   recociled : any
   recociledList: Array<{ id: number, name: string }> = [{ id: 1, name: "Net Amount" }, { id: 2, name: "Beginning Amount" }, { id: 3, name: "Accrued Amount" }];
-
+  selectedSubTypeId : any;
+  seclectedSubTypeTitle : any;
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(private _accountSubTypeService: AccountSubTypeServiceProxy,
@@ -50,10 +51,15 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   createNewAccount() : void {
     this.reconcillationType = "Select Reconcillation Type"
     this.accountType = "Select Account Type"
-    this.accountSubTypeName = "Select Account Sub Type"
     this.selectedUserID = 0;
+    this.selectedSubTypeId = history.state.data.newSubTypeId;
+    if (this.selectedSubTypeId != 0)
+    {
+      this.accountSubTypeName = history.state.data.newSubTypeTitle
+      this.accountDto.accountSubTypeId = this.selectedSubTypeId
+    }
+    
   }
-
 
   getAccountSubTypeForDropDown(): void {
     this._accountSubTypeService.accountSubTypeDropDown().subscribe(result => {
@@ -74,14 +80,22 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
         this.reconciledBox = true
         this.recociled = this.getNameofAccountTypeAndReconcillationReconcilled(result.reconciledId,"recociledList")
         this.accountDto.reconciled = result.reconciledId
-      }
-       this.accountSubTypeName =result.accountSubType
-       this.accountDto.accountSubTypeId = result.accountSubTypeId;
+      }    
        this.accountDto.id = result.id;
        this.accountDto.accountType = result.accountType
        this.selectedUserID = result.assigniId;
        this.accountDto.reconciliationType = result.reconcillationType
        this.accountDto.assigneeId = result.assigniId
+       this.selectedSubTypeId = history.state.data.newSubTypeId;     
+       if (this.selectedSubTypeId != 0)
+       {
+         this.accountSubTypeName = history.state.data.newSubTypeTitle
+         this.accountDto.accountSubTypeId = this.selectedSubTypeId
+       }      
+       else{
+        this.accountSubTypeName =result.accountSubType
+        this.accountDto.accountSubTypeId = result.accountSubTypeId;
+       }
     })
   }
 

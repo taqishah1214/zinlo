@@ -10,7 +10,7 @@ namespace Zinlo.AccountSubType
 {
     public interface IAccountSubTypeAppService : IApplicationService
     {
-        Task CreateOrEdit(CreateOrEditAccountSubTypeDto input);
+        Task<long> CreateOrEdit(CreateOrEditAccountSubTypeDto input);
         Task Delete(long id);
 
         Task<PagedResultDto<GetAccountSubTypeForViewDto>> GetAll(GetAllAccountSubTypeInput input);
