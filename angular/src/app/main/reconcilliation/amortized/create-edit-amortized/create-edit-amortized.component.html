@@ -5,12 +5,11 @@
                                     <div class="kt-portlet__head">
                                         <div class="kt-portlet__head-label">
                                             <h3 class="kt-portlet__head-title">
-                                                <span *ngIf="editAccountCheck == false">Add an Item</span>
-                                                <span *ngIf="editAccountCheck == true">Edit Account</span>
+                                                <span>{{title}}</span>
                                             </h3>
                                         </div>
                                         <div class="kt-portlet__head-toolbar">
-                                            <a (click)="redirectToAccountsList()">
+                                            <a (click)="redirectToAmortizedList()">
                                                 <i class="la la-arrow-left"></i>
                                                 Back
                                             </a>
@@ -56,25 +55,26 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group category-selector">
-                                                                <label for="TaskName">Start Date</label>
+                                                                <label for="Date">Start Date</label>
                                                                 <input [(ngModel)]="amortizationDto.startDate" (ngModelChange)="loadDaysByMonth($event)" required="required"
-                                                                class="form-control" name="date" bsDatepicker
+                                                                class="form-control" name="startDate" bsDatepicker
                                                                 placeholder="Select Date" class="form-control" name="date"
-                                                                bsDatepicker [minDate]="minDate"
-                                                                [bsConfig]="{dateInputFormat: 'DD MM YYYY'}"
-                                                                (onShown)="onOpenCalendar($event)">
+                                                                bsDatepicker [minDate]="minDate" >
                                                             </div>
+
+
                                                         </div>
                                                         <div class="col-md-6">
+                                                           
+
                                                             <div class="form-group category-selector">
-                                                                <label for="TaskName">End Date</label>
+                                                                <label for="Date">Start Date</label>
                                                                 <input [(ngModel)]="amortizationDto.endDate" (ngModelChange)="loadDaysByMonth($event)" required="required"
-                                                                class="form-control" name="date" bsDatepicker
+                                                                class="form-control" name="endDate" bsDatepicker
                                                                 placeholder="Select Date" class="form-control" name="date"
-                                                                bsDatepicker [minDate]="minDate"
-                                                                [bsConfig]="{dateInputFormat: 'DD MMMM YYYY'}"
-                                                                (onShown)="onOpenCalendar($event)">
+                                                                bsDatepicker [minDate]="minDate" >
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -110,11 +110,8 @@
                                             <div class="kt-portlet__head">
                                             </div>
                                             <div class="form-group margin-top-5">
-                                                <button *ngIf="editAccountCheck == false" class="btn btn-brand" type="submit">
-                                                    Save
-                                                </button>
-                                                <button *ngIf="editAccountCheck == true" class="btn btn-brand" type="submit">
-                                                    Update
+                                                <button class="btn btn-brand" type="submit">
+                                                    {{buttonTitle}}
                                                 </button>
                                             </div>
                                         </form>

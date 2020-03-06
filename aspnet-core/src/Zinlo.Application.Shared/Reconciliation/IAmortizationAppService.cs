@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Abp.Application.Services.Dto;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,5 +10,10 @@ namespace Zinlo.Reconciliation
   public  interface IAmortizationAppService
     {
         Task CreateOrEdit(CreateOrEditAmortizationDto input);
+        Task Delete(long Id);
+        Task<PagedResultDto<AmortizedListForViewDto>> GetAll(GetAllAmortizationInput input);
+        Task <CreateOrEditAmortizationDto> GetAmortizedItemDetails (long Id);
+
+
     }
 }

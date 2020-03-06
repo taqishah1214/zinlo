@@ -1,6 +1,7 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using System;
+using Zinlo.ChartsofAccount;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,5 +17,7 @@ namespace Zinlo.Reconciliation
         public double Amount { get; set; }
         public double AccomulateAmount { get; set; }
         public string Description { get; set; }
+        public virtual ChartsofAccount.ChartsofAccount ChartsofAccount { get; set; }
+        public long ChartsofAccountId { get; set; }
     }
 }

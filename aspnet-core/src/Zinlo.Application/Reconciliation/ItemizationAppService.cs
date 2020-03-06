@@ -73,6 +73,14 @@ namespace Zinlo.Reconciliation
             var data = ObjectMapper.Map(input, item);
           await  _itemizationRepository.UpdateAsync(data);
         }
+
+        public async Task<CreateOrEditItemizationDto> GetEdit(long Id)
+        {
+            var item = await _itemizationRepository.FirstOrDefaultAsync(x => x.Id == Id);
+            var output = ObjectMapper.Map<CreateOrEditItemizationDto>(item);
+            return output;
+        }
+
         #endregion
     }
 }

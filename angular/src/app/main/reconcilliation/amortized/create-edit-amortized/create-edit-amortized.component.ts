@@ -13,20 +13,18 @@ import { AppConsts } from '@shared/AppConsts';
 })
 export class CreateEditAmortizedComponent extends AppComponentBase implements OnInit  {
 
-  accountSubTypeName: any;
-  accountSubTypeList: any;
-  accountType: any;
-  accountId : number;
-  selectedUserID : any;
-  editAccountCheck :  boolean = false;
-  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
-  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
-  reconcillationType: any;
-  assigniId : number;
-  accountDto: CreateOrEditChartsofAccountDto = new CreateOrEditChartsofAccountDto()
 
   accumulateAmount : boolean = true
   amortizationDto: CreateOrEditAmortizationDto = new CreateOrEditAmortizationDto()
+  amortrizedItemId : number ;
+  title : string ;
+  buttonTitle : string ;
+  accountId:number
+  attachmentPaths: any = [];
+  newAttachementPath: string[] = [];
+  accountName : any;
+  accountNo : any;
+
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(private _accountSubTypeService: AccountSubTypeServiceProxy,
@@ -36,18 +34,35 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   }
 
   ngOnInit() {   
-   this.accountId = history.state.data.id;
-    this.getAccountSubTypeForDropDown();
-    if ( this.accountId != 0)
-    {
-      
-      this.editAccount()
+    this.accountId = history.state.data.accountId
+    this.accountName = history.state.data.accountName
+    this.accountNo = history.state.data.accountNo
+    this.amortrizedItemId = history.state.data.amortrizedItemId;
+    if ( this.amortrizedItemId != 0)
+    {     
+      this.getAmortizedItemDetails()
     }
     else
-    {    
+    {         
       this.createNewAccount();
     }   
   }
+
+
+  getAmortizedItemDetails() : void {
+    this.title = "Edit a Item"
+    this.buttonTitle =  "Save"
+    this._reconcialtionService.getAmortizedItemDetails(this.amortrizedItemId).subscribe(result => {
+      this.amortizationDto = result
+    })
+  }
+  
+  createNewAccount() : void {
+    this.title = "Create a Item"
+    this.buttonTitle =  "Create"
+
+  }
+
 
   tabFilter(val) : void {
     if (val == "Manual")
@@ -64,108 +79,59 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     }
   }
 
-  createNewAccount() : void {
-    this.reconcillationType = "Select Reconcillation Type"
-    this.accountType = "Select Account Type"
-    this.accountSubTypeName = "Select Account Sub Type"
-    this.selectedUserID = 0;
-  }
-
-
-  getAccountSubTypeForDropDown(): void {
-    this._accountSubTypeService.accountSubTypeDropDown().subscribe(result => {
-      this.accountSubTypeList = result;
-    });
-  }
-
-  editAccount() : void {
-    this.editAccountCheck = true;
-    this._chartOfAccountService.getAccountForEdit( this.accountId).subscribe(result => {
-       this.accountDto.accountName = result.accountName
-       this.accountDto.accountNumber = result.accountNumber
-       this.accountType = this.getNameofAccountTypeAndReconcillation(result.accountType,"accountType")
-       this.reconcillationType = this.getNameofAccountTypeAndReconcillation(result.reconcillationType,"reconcillation")
-       this.accountSubTypeName =result.accountSubType
-       this.accountDto.accountSubTypeId = result.accountSubTypeId;
-       this.accountDto.id = result.id;
-       this.accountDto.accountType = result.accountType
-       this.selectedUserID = result.assigniId;
-       this.accountDto.reconciliationType = result.reconcillationType
-       this.accountDto.assigneeId = result.assigniId
-    })
-  }
-
-  getNameofAccountTypeAndReconcillation(id , key ) : string {  
-    var result = "" ;
-    if (key === "accountType")
-     {
-      this.accountTypeList.forEach(i => {
-        if  (i.id == id)
-        {
-          result = i.name
-        }
-      })
-      return result;
-     }
-     else if (key === "reconcillation")
-     {
-      this.reconcillationTypeList.forEach(i => {
-        if  (i.id == id)
-        {
-          result = i.name
-        }
-      })
-      return result;
-     }  
-  }
-
-  accountSubTypeClick(id, name): void {
-    this.accountSubTypeName = name;
-    this.accountDto.accountSubTypeId = id;
-  }
-
-  reconcillationClick(id, name): void {
-    this.reconcillationType = name;
-    this.accountDto.reconciliationType = id;
-  }
-  accountTypeClick(id, name): void {
-    this.accountType = name;
-    this.accountDto.accountType = id;
-  }
-
-  routeToAddNewAccountSubType(): void {
-    if (this.accountId != 0)
-    {
-      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: this.accountId , previousRoute : "account"} } });
-    }
-    else {
-      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: 0, previousRoute : "account" } } });
-
-    }
-  }
-
   onSubmit(): void {
-    // if (this.editAccountCheck) {
-    //   this.updateAccount()
-    // }
-    // else {
-    //   this.createAccount()
-    // }
-    this.createAmortizedItem()
+    this.amortizationDto.chartsofAccountId = this.accountId;
+    if (this.amortrizedItemId != 0)
+    {
+      this.updateAmortizedItem()
+    }
+    else{
+      this.createAmortizedItem()
+    }
+    
   }
 
-  createAmortizedItem():void {
-    debugger
+
+  updateAmortizedItem() : void  { 
     this._reconcialtionService.createOrEdit(this.amortizationDto).subscribe(response => {
-      this.notify.success(this.l('Account Successfully Created.'));
+      this.notify.success(this.l('Amortized Item Successfully Updated.'));
       this.redirectToAmortizedList();
     }) 
   }
 
 
-  redirectToAmortizedList () : void {
-    this._router.navigate(['/app/main/account/accounts']);
+  createAmortizedItem():void {
+
+    if (this.attachmentPaths != null) {
+      this.newAttachementPath = [];
+      this.attachmentPaths.forEach(element => {
+        this.newAttachementPath.push(element.toString())
+      });
+
+      this.amortizationDto.attachmentsPath = this.newAttachementPath;
+    }
+
+    this._reconcialtionService.createOrEdit(this.amortizationDto).subscribe(response => {
+      this.notify.success(this.l('Amortized Item  Successfully Created.'));
+      this.redirectToAmortizedList();
+    }) 
   }
+
+ 
+  fileUploadedResponse(value): void {
+    var response = value.successful
+    response.forEach(i => {
+      this.attachmentPaths.push(i.response.body.result);
+    });
+    this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
+  }
+
+  redirectToAmortizedList () : void {
+    this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
+
+  }
+
+
   settings: UppyConfig = {
     uploadAPI: {
       endpoint:  AppConsts.remoteServiceBaseUrl + '/api/services/app/Attachments/PostAttachmentFile',
