@@ -97,7 +97,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
         element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
         element["attachmentName"] = attachmentName
-        element["attachmentUrl"] = "http://localhost:22742/" + element.attachmentPath
+        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl + element.attachmentPath
       });
       this.ChangeStatus(result.statusId);
       this.closingMonthValue = this.getTaskForEdit.closingMonth.toDate();
@@ -284,7 +284,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     });
   }
   duplicateTask() {
-    this._router.navigate(['/app/main/checklist/duplicate-task'], { state: { data: { id: this.taskId } } });
+    this._router.navigate(['/app/main/checklist/createtask'], { state: { data: {assigneeId : this.getTaskForEdit.assigneeId,categoryid: this.getTaskForEdit.categoryId, title: this.getTaskForEdit.taskName,categoryTitle : this.getTaskForEdit.category, createOrDuplicate: false } } });
   }
   redirectToTaskDetails() {
     this._router.navigate(['/app/main/checklist/task-details'], { state: { data: { id: this.taskId } } });

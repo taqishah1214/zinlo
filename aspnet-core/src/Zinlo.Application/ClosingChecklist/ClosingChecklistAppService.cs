@@ -13,6 +13,7 @@ using Zinlo.Comment;
 using Zinlo.Comment.Dtos;
 using Zinlo.ClosingChecklist.Dtos;
 using System.Collections.Generic;
+using Bogus.Extensions;
 using Zinlo.Authorization.Users;
 using Zinlo.Attachments;
 using Zinlo.Attachments.Dtos;
@@ -135,22 +136,23 @@ namespace Zinlo.ClosingChecklist
                     input.EndsOn = input.EndsOn.ToUniversalTime();
                 }
 
+               
+                var checklistCount = _closingChecklistRepository.GetAll().Max(p => (long?)p.Id) ?? 0;
 
-                var checklistCount = _closingChecklistRepository.GetAll().Max(x => x.Id);
                 //Test Cases.
                 //1. Check Frequency. If frequency is none . Means single task
                 //2.  if frequency has value then repeat that number of times.
                 //3. if frequency is X ,Then will repeat count number of times in next months.
                 //4. Ends on will be checked for termination in every case.
                 //5. If DayBeforeAfter is true . means days before last date. else days after
-                if(input.EndOfMonth)
+                if (input.EndOfMonth)
                 {
                     input.DueOn = 0;
                    // input.ClosingMonth = new DateTime(input.ClosingMonth.Year, input.ClosingMonth.Month, GetTotalDaysByMonth(input.ClosingMonth));
                 }
                 if (input.Frequency == FrequencyDto.None)
                 {
-                    string groupId = GenerateGroupID(checklistCount + checklistNextID, 0);
+                    string groupId = GenerateGroupId(checklistCount + checklistNextID, 0);
                     input.GroupId = groupId;
                     input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn,input.EndOfMonth);
                     await Create(input);
@@ -167,7 +169,7 @@ namespace Zinlo.ClosingChecklist
                         int numberOfRecordsToInsert = GetNumberOfTaskIterationCountForEveryXNumberOfMonth(numberOfMonths, input.NoOfMonths);
                         for (int i = 0; i < numberOfRecordsToInsert; i++)
                         {
-                            string groupId = GenerateGroupID(checklistCount + checklistNextID, i);
+                            string groupId = GenerateGroupId(checklistCount + checklistNextID, i);
                             input.GroupId = groupId;
                             input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn,input.EndOfMonth);
                             if(IsIterationFrequencyChanged)
@@ -215,7 +217,7 @@ namespace Zinlo.ClosingChecklist
                         int numberOfRecordsToInsert = GetNumberOfTaskIterationCount(numberOfMonths, (int)input.Frequency);
                         for (int i = 0; i < numberOfRecordsToInsert; i++)
                         {
-                            string groupId = GenerateGroupID(checklistCount + checklistNextID, i);
+                            string groupId = GenerateGroupId(checklistCount + checklistNextID, i);
                             input.GroupId = groupId;
                             input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn,input.EndOfMonth);
                             if (IsIterationFrequencyChanged)
@@ -385,14 +387,21 @@ namespace Zinlo.ClosingChecklist
         {
             var task = _closingChecklistRepository.GetAll().Include(u => u.Assignee).Include(c => c.Category).FirstOrDefault(x => x.Id == id);
             var output = ObjectMapper.Map<DetailsClosingCheckListDto>(task);
-            output.AssigneeName = task.Assignee.Name;
-            output.TaskStatus = task.Status.ToString();
-            output.Status = (StatusDto)task.Status;
-            output.CategoryName = task.Category.Title;
-            output.CategoryId = task.CategoryId;
-            output.comments = await _commentAppService.GetComments(1, task.Id);
-            output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
-            output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture : "";
+            if (task != null)
+            {
+                output.AssigneeName = task.Assignee.Name;
+                output.TaskStatus = task.Status.ToString();
+                output.Status = (StatusDto) task.Status;
+                output.CategoryName = task.Category.Title;
+                output.CategoryId = task.CategoryId;
+                output.comments = await _commentAppService.GetComments(1, task.Id);
+                output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
+                output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue
+                    ? "data:image/jpeg;base64," + _profileAppService
+                          .GetProfilePictureById((Guid) task.Assignee.ProfilePictureId).Result.ProfilePicture
+                    : "";
+            }
+
             return output;
         }
         public async Task Delete(long id)
@@ -404,14 +413,7 @@ namespace Zinlo.ClosingChecklist
         public async Task<List<GetUserWithPicture>> GetUserWithPicture(string searchTerm, long? id)
         {
             List<User> list = await _userRepository.GetAll().ToListAsync();
-            if (!String.IsNullOrEmpty(searchTerm))
-            {
-                list = list.Where(x => x.FullName.ToLower().Contains(searchTerm.Trim().ToLower())).ToList();
-            }
-            else
-            {
-                list = list.Where(x => x.Id == id).ToList();
-            }
+            list = !String.IsNullOrEmpty(searchTerm) ? list.Where(x => x.FullName.ToLower().Contains(searchTerm.Trim().ToLower())).ToList() : list.Where(x => x.Id == id).ToList();
             var query = (from o in list
                          select new GetUserWithPicture()
                          {
@@ -421,21 +423,6 @@ namespace Zinlo.ClosingChecklist
                          }).ToList();
             var assets = query;
             return assets;
-        }
-        public async Task<List<NameValueDto<string>>> getUsersDropdown()
-        {
-            var filteredUsers = _userRepository.GetAll();
-
-            var query = (from o in filteredUsers
-
-                         select new NameValueDto<string>()
-                         {
-                             Value = o.Id.ToString(),
-                             Name = o.FullName
-                         });
-
-            var users = await query.ToListAsync();
-            return users;
         }
         public async Task ChangeAssignee(ChangeAssigneeDto changeAssigneeDto)
         {
@@ -451,23 +438,25 @@ namespace Zinlo.ClosingChecklist
             var task = await _closingChecklistRepository.FirstOrDefaultAsync(changeStatusDto.TaskId);
             if (task != null)
             {
-                task.Status = (Zinlo.ClosingChecklist.Status)changeStatusDto.StatusId;
+                task.Status = (Status)changeStatusDto.StatusId;
                 _closingChecklistRepository.Update(task);
             }
         }
-        public async Task<List<NameValueDto<string>>> GetCurrentMonthDays(DateTime dateTime)
+        public List<NameValueDto<string>> GetCurrentMonthDays(DateTime dateTime)
         {
             if (dateTime == DateTime.MinValue)
             {
-                List<NameValueDto<string>> list = new List<NameValueDto<string>>();
-                DateTime now =  DateTime.Now;
+                var list = new List<NameValueDto<string>>();
+                var now = DateTime.Now;
                 var startDate = new DateTime(now.Year, now.Month, 1);
                 var endDate = startDate.AddMonths(1).AddDays(-1);
-                for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                for (var date = startDate; date <= endDate; date = date.AddDays(1))
                 {
-                    NameValueDto<string> nameValueDto = new NameValueDto<string>();
-                    nameValueDto.Value = date.Day.ToString();
-                    nameValueDto.Name = date.Day.ToString();
+                    var nameValueDto = new NameValueDto<string>
+                    {
+                        Value = date.Day.ToString(),
+                        Name = date.Day.ToString()
+                    };
                     list.Add(nameValueDto);
                 }
                 return list;
@@ -475,33 +464,32 @@ namespace Zinlo.ClosingChecklist
             }
             else
             {
-                List<NameValueDto<string>> list = new List<NameValueDto<string>>();
-                DateTime now = dateTime; //  DateTime.Now;
+                var list = new List<NameValueDto<string>>();
+                var now = dateTime; //  DateTime.Now;
                 var startDate = new DateTime(now.Year, now.Month, 1);
                 var endDate = startDate.AddMonths(1).AddDays(-1);
-                for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                for (var date = startDate; date <= endDate; date = date.AddDays(1))
                 {
-                    NameValueDto<string> nameValueDto = new NameValueDto<string>();
-                    nameValueDto.Value = date.Day.ToString();
-                    nameValueDto.Name = date.Day.ToString();
+                    var nameValueDto = new NameValueDto<string>
+                    {
+                        Value = date.Day.ToString(), Name = date.Day.ToString()
+                    };
                     list.Add(nameValueDto);
                 }
                 return list;
 
             }
 
-            
+
         }
-        public string GenerateGroupID(long id, int iteration)
+        public string GenerateGroupId(long id, int iteration)
         {
             return id + "-" + iteration;
         }
-        public List<ClosingCheckGroupDto> GetIterationFutureTasks(List<ClosingCheckGroupDto> tasks, long Id, int IterationNumber)
+        public List<ClosingCheckGroupDto> GetIterationFutureTasks(List<ClosingCheckGroupDto> tasks, long id, int iterationNumber)
         {
-           // IterationStartClosingMonth = DateTime.MinValue;
-            string currentTaskGroupID = tasks.Where(x => x.Id == Id).FirstOrDefault().GroupId;
-            // int iterationNumber = Convert.ToInt32(currentTaskGroupID.Split("-").Last());
-            List<ClosingCheckGroupDto> list = new List<ClosingCheckGroupDto>();
+
+            var list = new List<ClosingCheckGroupDto>();
             var checklists =  _closingChecklistRepository.GetAll().ToList();
             foreach (var item in tasks)
             {
@@ -512,25 +500,19 @@ namespace Zinlo.ClosingChecklist
                     IterationStartClosingMonth = _closingChecklistRepository.FirstOrDefault(x => x.Id == item.Id).ClosingMonth;
                 }
                 var currentItem = checklists.FirstOrDefault(x => x.Id == item.Id);
-                if(currentItem.ClosingMonth.Date > DateTime.Now.Date)
+                if(currentItem != null && currentItem.ClosingMonth.Date > DateTime.Now.Date)
                 {
                     list.Add(item);
                 }
-                //if (itemNumber > IterationNumber)
-                //{
-                  
-
-                //    list.Add(item);
-                //}
             }
             return list;
         }
         #endregion
         #region|Frequency Logic for Create Task|
-        public int GetNumberOfMonthsBetweenDates(DateTime ClosingDate, DateTime EndDate)
+        public int GetNumberOfMonthsBetweenDates(DateTime closingDate, DateTime endDate)
         {
-            int Count = ((EndDate.Year - ClosingDate.Year) * 12) + EndDate.Month - ClosingDate.Month + 1;
-            return Count;
+            var count = ((endDate.Year - closingDate.Year) * 12) + endDate.Month - closingDate.Month + 1;
+            return count;
         }
         public int GetNumberOfTaskIterationCount(int numberOfMonths, int frequency)
         { 
@@ -540,51 +522,51 @@ namespace Zinlo.ClosingChecklist
             
             return iterationNumber;
         }
-        public int GetNumberOfTaskIterationCountForEveryXNumberOfMonth(int numberOfMonths, int Xnumber)
+        public int GetNumberOfTaskIterationCountForEveryXNumberOfMonth(int numberOfMonths, int xNumber)
         {
-            decimal iterations = (numberOfMonths / Xnumber);
+            decimal iterations = (numberOfMonths / xNumber);
             int iterationNumber = (int)Math.Ceiling(iterations);
             return iterationNumber;
         }
         public DateTime GetClosingMonthByIterationNumber(DateTime closingMonth, int frequency)
         {
-            int frequencyNumber = GetFrequencyValue(frequency);
-            DateTime dateTime = closingMonth.AddMonths(frequencyNumber);
+            var frequencyNumber = GetFrequencyValue(frequency);
+            var dateTime = closingMonth.AddMonths(frequencyNumber);
             return dateTime;
         }
         public DateTime GetClosingMonthByIterationNumberForXNumberOfMonth(DateTime closingMonth, int frequency)
         {
-            DateTime dateTime = closingMonth.AddMonths(frequency);
+            var dateTime = closingMonth.AddMonths(frequency);
             return dateTime;
         }
         public int GetTotalDaysByMonth(DateTime dateTime)
         {
-            int totalDays = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
+            var totalDays = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
             return totalDays;
         }
-        public DateTime GetNextIterationDateAfterDueDate(bool IsDaysBefore, DateTime closingMonth, int numberOfDays,bool endsOfMonth)
+        public DateTime GetNextIterationDateAfterDueDate(bool isDaysBefore, DateTime closingMonth, int numberOfDays,bool endsOfMonth)
         {
-            DateTime NextDate = closingMonth;
+            var nextDate = closingMonth;
             if(endsOfMonth)
             {
-                NextDate = new DateTime(closingMonth.Year, closingMonth.Month, (GetTotalDaysByMonth(closingMonth)));
+                nextDate = new DateTime(closingMonth.Year, closingMonth.Month, (GetTotalDaysByMonth(closingMonth)));
             }
-           else if (IsDaysBefore)
+            else if (isDaysBefore)
             {
-                NextDate = new DateTime(closingMonth.Year, closingMonth.Month, (GetTotalDaysByMonth(closingMonth) - numberOfDays));
+                nextDate = new DateTime(closingMonth.Year, closingMonth.Month, (GetTotalDaysByMonth(closingMonth) - numberOfDays));
             }
             else
             {
-                NextDate = NextDate.AddDays(-NextDate.Day);
-                int number = GetTotalDaysByMonth(closingMonth) + numberOfDays;
-                NextDate = NextDate.AddDays(number);
+                nextDate = nextDate.AddDays(-nextDate.Day);
+                var number = GetTotalDaysByMonth(closingMonth) + numberOfDays;
+                nextDate = nextDate.AddDays(number);
             }
-            return NextDate;
+            return nextDate;
 
         }
         public int GetFrequencyValue(int frequency)
         {
-            int number = 1;
+            var number = 1;
             switch (frequency)
             {
                 case 1:
@@ -603,18 +585,12 @@ namespace Zinlo.ClosingChecklist
             }
             return number;
         }
-        public DateTime GetIterationBaseDate(bool DaysBeforeAfter, DateTime ClosingMonth, int numberOfDays)
+        public DateTime GetIterationBaseDate(bool daysBeforeAfter, DateTime closingMonth, int numberOfDays)
         {
-            DateTime baseDate = ClosingMonth;          
-                baseDate = ClosingMonth.AddDays(-numberOfDays);
+            var baseDate = closingMonth.AddDays(-numberOfDays);
             return baseDate;
         }
         #endregion
-
-
-
-
-
     }
 }
 

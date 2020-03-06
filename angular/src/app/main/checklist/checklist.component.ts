@@ -113,6 +113,7 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.updateAssigneeOnHeader = true
     this.currentYear = event.getFullYear();
     this.currentMonth = this.monthsArray[month - 1];;
+    this.currentDate = event;
     this.getClosingCheckListAllTasks();
   }
 
@@ -186,6 +187,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.paginator.changePage(0);
       return;
     }
+    debugger
 
     this.primengTableHelper.showLoadingIndicator();
     this._closingChecklistService.getAll(
