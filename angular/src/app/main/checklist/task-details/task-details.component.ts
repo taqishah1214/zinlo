@@ -101,7 +101,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
         element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
         element["attachmentName"] = attachmentName
-        element["attachmentUrl"] = "http://localhost:22742/" + element.attachmentPath
+        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl + element.attachmentPath
       });
     })
   }
