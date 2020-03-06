@@ -10,12 +10,16 @@ import { AppConsts } from '@shared/AppConsts';
   selector: 'app-create-edit-itemized',
   templateUrl: './create-edit-itemized.component.html',
   styleUrls: ['./create-edit-itemized.component.css']
+  
 })
 export class CreateEditItemizedComponent extends AppComponentBase implements OnInit  {
   itemizedDto : CreateOrEditItemizationDto = new CreateOrEditItemizationDto();
   minDate: Date = new Date();
   title = "Add an Item";
   Save  = "Save";
+  accountName : any;
+  accountNo : any;
+  accountId : any;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   recordId: number;
   constructor(private _itemizationServiceProxy : ItemizationServiceProxy,
@@ -24,7 +28,11 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   }
 
   ngOnInit() {   
+    this.accountId = history.state.data.accountId
     this.recordId = history.state.data.id;
+    this.accountName = history.state.data.accountName
+    this.accountNo = history.state.data.accountNo
+    debugger;
     if(this.recordId != 0)
     {
       this.title = "Edit Item";
@@ -34,7 +42,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   
   }
   redirectToItemsList () : void {
-    this._router.navigate(['/app/main/reconcilliation/itemized']);
+    this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
   }
   settings: UppyConfig = {
     uploadAPI: {
