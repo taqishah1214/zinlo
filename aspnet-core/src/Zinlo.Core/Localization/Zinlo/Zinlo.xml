@@ -1013,6 +1013,25 @@
     <text name="EditClosingChecklist">Edit closing checklist</text>
     <text name="DeleteClosingChecklist">Delete closing checklist</text>
     <text name="AddNew">Add new</text>
+    <text name="CreateTask">Create Task</text>
+    <text name="DuplicateTask">Duplicate Task</text>
+    <text name="TaskName">Task Name</text>
+    <text name="Assignee">Assignee</text>
+    <text name="Comments">Comments</text>
+    <text name="Comment">Comment</text>
+    <text name="ClosingMonth">Closing Month</text>
+    <text name="Instruction">Instruction</text>
+    <text name="Frequency">Frequency</text>
+    <text name="Criteria">Criteria</text>
+    <text name="Quarterly">Quarterly</text>
+    <text name="EveryXNumberOfMonths">Every X Number of Months</text>
+    <text name="Dueon">Due on</text>
+    <text name="NoofMonths">No of Months</text>
+    <text name="DaysBefore">Days Before</text>
+    <text name="DaysAfter">Days After</text>
+    <text name="Endson">Ends on</text>
+    <text name="Endofmonth">End of month</text>
+    <text name="Attachments">Attachments</text>
 
     <!--Category-->
     <text name="EditCategory">Edit category</text>

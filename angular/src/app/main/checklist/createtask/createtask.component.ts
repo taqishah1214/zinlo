@@ -40,6 +40,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   minDate: Date = new Date()
   categoryTitle : any;
+  createOrDuplicate : boolean = true;
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild(IgxMonthPickerComponent, { static: true }) monthPicker: IgxMonthPickerComponent;
@@ -79,6 +80,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.closingMonthModalBox = false;
     this.enableValue = false;
     this.isChecked = true;
+    this.checklist.assigneeId = 0;
+    if(!history.state.data.createOrDuplicate){
+      this.createOrDuplicate = history.state.data.createOrDuplicate;
+      this.checklist.taskName = history.state.data.title;
+      this.checklist.assigneeId = history.state.data.assigneeId
+    }
     this.categoryTitle = history.state.data.categoryTitle == "" ? "Select Category" : history.state.data.categoryTitle;
     if (history.state.data.categoryid != 0 )
     {
@@ -111,7 +118,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = false;
   }
   onCreateTask(): void {
-    
+    debugger
      if (this.checklist.endOfMonth) {
       this.checklist.endOfMonth = true;
     }
@@ -122,10 +129,14 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.dueOn = Number(this.checklist.dueOn);
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
-    this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
+   
     if (this.selectedCategoryId.categoryId != undefined)
     {
       this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
+    }
+    if (this.selectedUserId.selectedUserId != undefined)
+    {
+      this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
     }
     if (this.attachmentPaths != null) {
       this.newAttachementPath = [];

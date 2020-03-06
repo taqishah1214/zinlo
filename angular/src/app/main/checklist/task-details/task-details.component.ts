@@ -81,7 +81,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     this._router.navigate(['/app/main/checklist/edit-task'], { state: { data: { id: this.recordId, categoryid: 0, categoryTitle: "" } } })
   }
   duplicateTask(): void {
-    this._router.navigate(['/app/main/checklist/duplicate-task'], { state: { data: { id: this.recordId, categoryid: 0, categoryTitle: "" } } });
+    this._router.navigate(['/app/main/checklist/createtask'], { state: { data: {assigneeId : this.taskDetailObject.assigneeId,categoryid: this.taskDetailObject.categoryId, title: this.taskDetailObject.taskName,categoryTitle : this.taskDetailObject.categoryName, createOrDuplicate: false } } });
   }
 
   BackToTaskList(): void {

@@ -34,7 +34,6 @@ import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';;
 import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
 import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component';
 import { AccountsComponent } from './account/accounts/accounts.component';
-import { DuplicateTaskComponent } from './checklist/duplicate-task/duplicate-task.component';
 import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component';
 import { NgSelectModule } from '@ng-select/ng-select';;
 import { ReconcilliationComponent } from './reconcilliation/reconcilliation.component';
@@ -85,7 +84,6 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 StatusComponent,
                 EditTaskComponent,
                 FirstLetterOfWords,               
-                DuplicateTaskComponent,
                 CreateOrEditAccountsubtypeComponent,
                 AccountsubtypeComponent,
                 AccountsComponent ,

@@ -17277,7 +17277,6 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     endsOn!: moment.Moment;
     dayBeforeAfter!: boolean;
     endOfMonth!: boolean;
-    frequency!: string | undefined;
     categoryId!: number;
     assigneeId!: number;
     frequencyId!: number;
@@ -17314,7 +17313,6 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
             this.endsOn = data["endsOn"] ? moment(data["endsOn"].toString()) : <any>undefined;
             this.dayBeforeAfter = data["dayBeforeAfter"];
             this.endOfMonth = data["endOfMonth"];
-            this.frequency = data["frequency"];
             this.categoryId = data["categoryId"];
             this.assigneeId = data["assigneeId"];
             this.frequencyId = data["frequencyId"];
@@ -17355,7 +17353,6 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
         data["endsOn"] = this.endsOn ? this.endsOn.toISOString() : <any>undefined;
         data["dayBeforeAfter"] = this.dayBeforeAfter;
         data["endOfMonth"] = this.endOfMonth;
-        data["frequency"] = this.frequency;
         data["categoryId"] = this.categoryId;
         data["assigneeId"] = this.assigneeId;
         data["frequencyId"] = this.frequencyId;
@@ -17385,7 +17382,6 @@ export interface IGetTaskForEditDto {
     endsOn: moment.Moment;
     dayBeforeAfter: boolean;
     endOfMonth: boolean;
-    frequency: string | undefined;
     categoryId: number;
     assigneeId: number;
     frequencyId: number;
@@ -17396,12 +17392,12 @@ export interface IGetTaskForEditDto {
 export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     assigneeName!: string | undefined;
     categoryName!: string | undefined;
+    categoryId!: number;
     taskStatus!: string | undefined;
     profilePicture!: string | undefined;
     comments!: CommentDto[] | undefined;
     attachments!: GetAttachmentsDto[] | undefined;
     taskName!: string | undefined;
-    categoryId!: number;
     assigneeId!: number;
     closingMonth!: moment.Moment;
     status!: StatusDto;
@@ -17432,6 +17428,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         if (data) {
             this.assigneeName = data["assigneeName"];
             this.categoryName = data["categoryName"];
+            this.categoryId = data["categoryId"];
             this.taskStatus = data["taskStatus"];
             this.profilePicture = data["profilePicture"];
             if (Array.isArray(data["comments"])) {
@@ -17445,7 +17442,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
                     this.attachments!.push(GetAttachmentsDto.fromJS(item));
             }
             this.taskName = data["taskName"];
-            this.categoryId = data["categoryId"];
             this.assigneeId = data["assigneeId"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.status = data["status"];
@@ -17480,6 +17476,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data = typeof data === 'object' ? data : {};
         data["assigneeName"] = this.assigneeName;
         data["categoryName"] = this.categoryName;
+        data["categoryId"] = this.categoryId;
         data["taskStatus"] = this.taskStatus;
         data["profilePicture"] = this.profilePicture;
         if (Array.isArray(this.comments)) {
@@ -17493,7 +17490,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
                 data["attachments"].push(item.toJSON());
         }
         data["taskName"] = this.taskName;
-        data["categoryId"] = this.categoryId;
         data["assigneeId"] = this.assigneeId;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["status"] = this.status;
@@ -17521,12 +17517,12 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
 export interface IDetailsClosingCheckListDto {
     assigneeName: string | undefined;
     categoryName: string | undefined;
+    categoryId: number;
     taskStatus: string | undefined;
     profilePicture: string | undefined;
     comments: CommentDto[] | undefined;
     attachments: GetAttachmentsDto[] | undefined;
     taskName: string | undefined;
-    categoryId: number;
     assigneeId: number;
     closingMonth: moment.Moment;
     status: StatusDto;

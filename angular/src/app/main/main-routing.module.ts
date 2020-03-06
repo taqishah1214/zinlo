@@ -10,7 +10,6 @@ import { CreatetaskComponent } from './checklist/createtask/createtask.component
 import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
 import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component';
 import { AccountsComponent } from './account/accounts/accounts.component';
-import { DuplicateTaskComponent } from './checklist/duplicate-task/duplicate-task.component';
 import { CreateEditAccountsComponent } from './account/accounts/create-edit-accounts/create-edit-accounts.component';
 import { ReconcilliationComponent } from './reconcilliation/reconcilliation.component';
 import { CreateEditItemizedComponent } from './reconcilliation/itemized/create-edit-itemized/create-edit-itemized.component';
@@ -34,7 +33,6 @@ import { AmortizedComponent } from './reconcilliation/amortized/amortized.compon
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                     { path: 'account/accountsubtype/create-or-edit-accountsubtype', component: CreateOrEditAccountsubtypeComponent , data: { permission: '' }  },
                     { path: 'account/accountsubtype', component: AccountsubtypeComponent , data: { permission: '' }  },
-                    { path: 'checklist/duplicate-task', component : DuplicateTaskComponent , data: {permission:""}},
                     { path: 'account/accounts', component: AccountsComponent , data: { permission: '' }  },
                     { path: 'account/accounts/create-edit-accounts', component: CreateEditAccountsComponent , data: { permission: '' }  },
                     { path: 'reconcilliation', component: ReconcilliationComponent , data: { permission: 'Pages.Reconciliation' }  },

@@ -27,7 +27,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   category;
   users;
   frequency;
-  frequencyId: string;
+  frequencyId: number;
   comment;
   closingMonthValue: Date;
   endsOnDateValue: Date;
@@ -103,8 +103,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.closingMonthValue = this.getTaskForEdit.closingMonth.toDate();
       this.endsOnDateValue = this.getTaskForEdit.endsOn.toDate();
       this.getTaskForEdit.categoryId = history.state.data.categoryid !== 0 ? history.state.data.categoryid : this.getTaskForEdit.categoryId 
-      this.frequencyId = this.getTaskForEdit.frequency;
-      if (this.frequencyId == "5") {
+      this.frequencyId = this.getTaskForEdit.frequencyId;
+      if (this.frequencyId == 5) {
         this.endOnIsEnabled = false;
       }
       else {

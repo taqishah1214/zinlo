@@ -8,7 +8,6 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
 using Zinlo.Authorization;
-using Zinlo.ClosingChecklist;
 using Zinlo.Tasks.Dtos;
 using Zinlo.Comment;
 using Zinlo.Comment.Dtos;
@@ -17,8 +16,6 @@ using System.Collections.Generic;
 using Zinlo.Authorization.Users;
 using Zinlo.Attachments;
 using Zinlo.Attachments.Dtos;
-using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using Zinlo.Authorization.Users.Profile;
 using NUglify.Helpers;
 
@@ -31,23 +28,25 @@ namespace Zinlo.ClosingChecklist
         private readonly ICommentAppService _commentAppService;
         private readonly IRepository<User, long> _userRepository;
         private readonly IAttachmentAppService _attachmentAppService;
-        private readonly UserManager _userManager;
         private readonly IProfileAppService _profileAppService;
         #endregion
         #region|Global Parameters|
-        public bool flag = true;
+        public bool Flag = true;
         public DateTime IterationStartClosingMonth = DateTime.MinValue;
         public bool IsIterationFrequencyChanged = false;
         public DateTime EditedTaskClosingMonth = DateTime.MinValue;
         #endregion
         #region|#Constructor Dependencies|
-        public ClosingChecklistAppService(IProfileAppService profileAppService, IRepository<ClosingChecklist, long> closingChecklistRepository, UserManager userManager, ICommentAppService commentAppService, IRepository<User, long> userRepository, IAttachmentAppService attachmentAppService)
+        public ClosingChecklistAppService(IProfileAppService profileAppService,
+                                          IRepository<ClosingChecklist, long> closingChecklistRepository,
+                                          UserManager userManager, ICommentAppService commentAppService,
+                                          IRepository<User, long> userRepository,
+                                          IAttachmentAppService attachmentAppService)
         {
             _closingChecklistRepository = closingChecklistRepository;
             _commentAppService = commentAppService;
             _userRepository = userRepository;
             _attachmentAppService = attachmentAppService;
-            _userManager = userManager;
             _profileAppService = profileAppService;
         }
         #endregion
@@ -67,15 +66,14 @@ namespace Zinlo.ClosingChecklist
                                     .WhereIf(input.AssigneeId != 0, e => false || e.AssigneeId == input.AssigneeId);
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "ClosingMonth asc").PageBy(input);
             var totalCount = query.Count();
-            List<GetUserWithPicture> getUserWithPictures = new List<GetUserWithPicture>();
-            getUserWithPictures = (from o in query.ToList()
+            var getUserWithPictures = (from o in query.ToList()
 
-                                   select new GetUserWithPicture()
-                                   {
-                                       Id = o.AssigneeId,
-                                       Name = o.Assignee.FullName,
-                                       Picture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
-                                   }).ToList();
+                select new GetUserWithPicture()
+                {
+                    Id = o.AssigneeId,
+                    Name = o.Assignee.FullName,
+                    Picture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
+                }).ToList();
 
             getUserWithPictures = getUserWithPictures.DistinctBy(p => new { p.Id, p.Name }).ToList();
 
@@ -121,14 +119,13 @@ namespace Zinlo.ClosingChecklist
         }
         #endregion
         #region|Create Eidt Details Delete|
-        public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditClosingChecklistDto input)
+        public async Task CreateOrEdit(CreateOrEditClosingChecklistDto input)
         {
-            long checklistCount = 0;
             long checklistNextID = 1;
 
             if (input.Id == 0)
             {
-                if (flag)
+                if (Flag)
                 {
                     input.CreationTime = input.CreationTime.AddDays(1);
                     input.ClosingMonth = input.ClosingMonth.AddDays(1);
@@ -139,7 +136,7 @@ namespace Zinlo.ClosingChecklist
                 }
 
 
-                checklistCount = _closingChecklistRepository.GetAll().Max(x => x.Id);
+                var checklistCount = _closingChecklistRepository.GetAll().Max(x => x.Id);
                 //Test Cases.
                 //1. Check Frequency. If frequency is none . Means single task
                 //2.  if frequency has value then repeat that number of times.
@@ -153,8 +150,8 @@ namespace Zinlo.ClosingChecklist
                 }
                 if (input.Frequency == FrequencyDto.None)
                 {
-                    string groupID = GenerateGroupID(checklistCount + checklistNextID, 0);
-                    input.GroupId = groupID;
+                    string groupId = GenerateGroupID(checklistCount + checklistNextID, 0);
+                    input.GroupId = groupId;
                     input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn,input.EndOfMonth);
                     await Create(input);
                 }
@@ -167,11 +164,11 @@ namespace Zinlo.ClosingChecklist
                     input.ClosingMonth = input.ClosingMonth.AddMonths(input.NoOfMonths);
                     if (numberOfMonths > 0)
                     {
-                        int NumberOfRecordsToInsert = GetNumberOfTaskIterationCountForEveryXNumberOfMonth(numberOfMonths, input.NoOfMonths);
-                        for (int i = 0; i < NumberOfRecordsToInsert; i++)
+                        int numberOfRecordsToInsert = GetNumberOfTaskIterationCountForEveryXNumberOfMonth(numberOfMonths, input.NoOfMonths);
+                        for (int i = 0; i < numberOfRecordsToInsert; i++)
                         {
-                            string groupID = GenerateGroupID(checklistCount + checklistNextID, i);
-                            input.GroupId = groupID;
+                            string groupId = GenerateGroupID(checklistCount + checklistNextID, i);
+                            input.GroupId = groupId;
                             input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn,input.EndOfMonth);
                             if(IsIterationFrequencyChanged)
                             {
@@ -215,11 +212,11 @@ namespace Zinlo.ClosingChecklist
                     //}
                     if (numberOfMonths > 0)
                     {
-                        int NumberOfRecordsToInsert = GetNumberOfTaskIterationCount(numberOfMonths, (int)input.Frequency);
-                        for (int i = 0; i < NumberOfRecordsToInsert; i++)
+                        int numberOfRecordsToInsert = GetNumberOfTaskIterationCount(numberOfMonths, (int)input.Frequency);
+                        for (int i = 0; i < numberOfRecordsToInsert; i++)
                         {
-                            string groupID = GenerateGroupID(checklistCount + checklistNextID, i);
-                            input.GroupId = groupID;
+                            string groupId = GenerateGroupID(checklistCount + checklistNextID, i);
+                            input.GroupId = groupId;
                             input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn,input.EndOfMonth);
                             if (IsIterationFrequencyChanged)
                             {
@@ -248,8 +245,8 @@ namespace Zinlo.ClosingChecklist
             }
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
-        protected virtual async System.Threading.Tasks.Task Create(CreateOrEditClosingChecklistDto input)
+        //[AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
+        protected virtual async Task Create(CreateOrEditClosingChecklistDto input)
         {
 
             var task = ObjectMapper.Map<ClosingChecklist>(input);
@@ -271,10 +268,10 @@ namespace Zinlo.ClosingChecklist
             }
             if (input.AttachmentsPath != null)
             {
-                PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
-                postAttachmentsPathDto.FilePath = input.AttachmentsPath;
-                postAttachmentsPathDto.TypeId = checklistId;
-                postAttachmentsPathDto.Type = 1;
+                PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto
+                {
+                    FilePath = input.AttachmentsPath, TypeId = checklistId, Type = 1
+                };
                 await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
             }
         }
@@ -283,10 +280,9 @@ namespace Zinlo.ClosingChecklist
             var task = await _closingChecklistRepository.FirstOrDefaultAsync((int)input.Id);
 
             #region|Check frequency changes|
-            if (task.Frequency != (Zinlo.ClosingChecklist.Frequency)input.Frequency)
+            if (task.Frequency != (Frequency)input.Frequency)
             {
                 //Find task group.
-                List<ClosingCheckGroupDto> taskGroups = new List<ClosingCheckGroupDto>();
                 string str = "";
                 int index = task.GroupId.IndexOf('-');
                 if (index > 0)
@@ -295,7 +291,7 @@ namespace Zinlo.ClosingChecklist
                 }
                 var list = _closingChecklistRepository.GetAll().Select(x => new ClosingCheckGroupDto { GroupId = x.GroupId, Id = x.Id }).ToList();
                 list = list.Where(x => x.GroupId != null).ToList();
-                taskGroups = list.Where(x => x.GroupId.Contains(str)).ToList();
+                var taskGroups = list.Where(x => x.GroupId.Contains(str)).ToList();
                 int iterationNumber = Convert.ToInt32(task.GroupId.Split("-").Last());
                 List<ClosingCheckGroupDto> tasksListToDiscard = GetIterationFutureTasks(taskGroups, Convert.ToInt64(str), iterationNumber);
                 foreach (var item in tasksListToDiscard)
@@ -310,7 +306,7 @@ namespace Zinlo.ClosingChecklist
                    // EditedTaskClosingMonth = task.ClosingMonth;
                     IsIterationFrequencyChanged = true;
                     input.Id = 0;
-                    flag = false;
+                    Flag = false;
                     await CreateOrEdit(input);
 
                     //Discard all 
@@ -327,10 +323,10 @@ namespace Zinlo.ClosingChecklist
             #endregion
             else
             {
-                var data = ObjectMapper.Map(input, task);
-                task.Status = (Zinlo.ClosingChecklist.Status)input.Status;
-                task.Frequency = (Zinlo.ClosingChecklist.Frequency)input.Frequency;
-                var result = _closingChecklistRepository.Update(task);
+                ObjectMapper.Map(input, task);
+                task.Status = (Status)input.Status;
+                task.Frequency = (Frequency)input.Frequency;
+                _closingChecklistRepository.Update(task);
                 if (input.comments != null)
                 {
                     foreach (var item in input.comments)
@@ -341,7 +337,7 @@ namespace Zinlo.ClosingChecklist
                             Type = CommentTypeDto.ClosingChecklist,
                             TypeId = input.Id
                         };
-                        if (item.Id == null)
+                        if (item.Id == 0)
                         {
                             await _commentAppService.Create(commentDto);
                         }
@@ -366,10 +362,10 @@ namespace Zinlo.ClosingChecklist
 
                 if (input.AttachmentsPath != null)
                 {
-                    PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
-                    postAttachmentsPathDto.FilePath = input.AttachmentsPath;
-                    postAttachmentsPathDto.TypeId = input.Id;
-                    postAttachmentsPathDto.Type = 1;
+                    PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto
+                    {
+                        FilePath = input.AttachmentsPath, TypeId = input.Id, Type = 1
+                    };
                     await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
                 }
             }
@@ -380,12 +376,6 @@ namespace Zinlo.ClosingChecklist
         {
             var task = await _closingChecklistRepository.GetAll().Where(x => x.Id == id).Include(a => a.Assignee).Include(a => a.Category).FirstOrDefaultAsync();
             var output = ObjectMapper.Map<GetTaskForEditDto>(task);
-            output.AssigniName = task.Assignee.FullName;
-            output.Category = task.Category.Title;
-            output.Frequency = task.Frequency.ToString();
-            output.FrequencyId = (int)task.Frequency;
-            output.Status = task.Status.ToString();
-            output.StatusId = (int)task.Status;
             output.comments = await _commentAppService.GetComments(1, id);
             output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
             output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture : "";
@@ -393,12 +383,13 @@ namespace Zinlo.ClosingChecklist
         }
         public async Task<DetailsClosingCheckListDto> GetDetails(long id)
         {
-            var task = _closingChecklistRepository.GetAll().Include(u => u.Assignee).Include(c => c.Category).Where(x => x.Id == id).FirstOrDefault();
+            var task = _closingChecklistRepository.GetAll().Include(u => u.Assignee).Include(c => c.Category).FirstOrDefault(x => x.Id == id);
             var output = ObjectMapper.Map<DetailsClosingCheckListDto>(task);
             output.AssigneeName = task.Assignee.Name;
             output.TaskStatus = task.Status.ToString();
             output.Status = (StatusDto)task.Status;
             output.CategoryName = task.Category.Title;
+            output.CategoryId = task.CategoryId;
             output.comments = await _commentAppService.GetComments(1, task.Id);
             output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
             output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture : "";

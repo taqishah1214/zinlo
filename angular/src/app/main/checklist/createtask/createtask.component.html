@@ -8,9 +8,12 @@
                         <span class="headSpace"> Checklist</span>
                     </h3>
                     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-                    <span class="kt-subheader__desc">
-                        Create a Task
+                    <span *ngIf="createOrDuplicate" class="kt-subheader__desc">
+                       {{"CreateTask" | localize}}
                     </span>
+                    <span *ngIf="!createOrDuplicate" class="kt-subheader__desc">
+                        {{"DuplicateTask" | localize}}
+                     </span>
                 </div>
                 <div class="kt-subheader__toolbar">
                     <div class="kt-subheader__wrapper">
@@ -22,8 +25,11 @@
             <div class="kt-portlet" id="kt_portlet">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-                            Create a Task
+                        <h3  *ngIf="createOrDuplicate" class="kt-portlet__head-title">
+                            {{"CreateTask" | localize}}
+                        </h3>
+                        <h3  *ngIf="!createOrDuplicate" class="kt-portlet__head-title">
+                            {{"DuplicateTask" | localize}}
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
@@ -43,7 +49,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="dateOfBirth">Closing Month</label>
+                                        <label for="dateOfBirth">{{"ClosingMonth" | localize}}</label>
                                         <div class="month-calender">
                                             <form class="input-arrow">
                                                 <input [(ngModel)]="checklist.closingMonth" (ngModelChange)="loadDaysByMonth($event)" required="required"
@@ -60,15 +66,15 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="taskName"> Task Name</label>
+                                        <label for="taskName"> {{"Task Name" | localize}} </label>
                                         <input type="text" class="form-control" required  name="taskName" id="taskName" placeholder="Enter Task Name"
                                             [(ngModel)]="checklist.taskName">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Assignee</label>
-                                        <app-user-list-component comingChangeReguest="" userId={{0}}>
+                                        <label>{{"Assignee" | localize}}</label>
+                                        <app-user-list-component comingChangeReguest="" userId={{checklist.assigneeId}}>
                                         </app-user-list-component>
                                     </div>
                                 </div>
@@ -76,7 +82,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group" *ngIf="commantBox">
-                                        <label>Comments</label>
+                                        <label>{{"Comments" | localize}}</label>
                                         <div (click)="commentClick()">
                                             <div class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic">
@@ -97,20 +103,20 @@
                                     </div>
 
                                     <div class="form-group" *ngIf="commantModal">
-                                        <label>Comments</label>
+                                        <label>{{"Comments" | localize}}</label>
                                         <p-editor [(ngModel)]="checklist.commentBody"
                                             (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
                                         </p-editor>
-                                        <button class="btn btn-brand" (click)="onComment()">Comment</button>
-                                        <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                                        <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                        <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
                                     </div>
 
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="bg-color">Instruction</label>
+                                    <label class="bg-color">{{"Instruction" | localize}}</label>
                                     <div class="form-group">
                                         <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
                                             [style]="{'height':'150px'}"></p-editor>
@@ -123,19 +129,19 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Frequency</label>
+                                        <label>{{"Frequency" | localize}}</label>
                                         <select class="bg-white border form-control input-medium" required id="frequency" name="frequency"
                                             (change)="onChange($event.target.value)" [(ngModel)]="checklist.frequency">
-                                            <option [ngValue]="undefined" hidden>Criteria</option>
-                                            <option value="5">None</option>
-                                            <option value="1">Monthly</option>
-                                            <option value="2">Quarterly</option>
-                                            <option value="3">Annually</option>
-                                            <option value="4">EveryXNumberOfMonths</option>
+                                            <option [ngValue]="undefined" hidden>{{"Criteria" | localize}}</option>
+                                            <option value="5">{{"None" | localize}}</option>
+                                            <option value="1">{{"Monthly" | localize}}</option>
+                                            <option value="2">{{"Quarterly" | localize}}</option>
+                                            <option value="3">{{"Annually" | localize}}</option>
+                                            <option value="4">{{"EveryXNumberOfMonths" | localize}} </option>
                                         </select>
                                     </div>
                                     <div class="form-group dueOn">
-                                        <label>Due on</label>
+                                        <label>{{"Dueon" | localize}}</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
@@ -167,7 +173,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>No of Months</label>
+                                        <label>{{"NoofMonths" | localize}}</label>
                                         <input type="text" name="noOfMonths" [disabled]="enableValue == false"
                                             placeholder="Enter Number" class="form-control bsDatepicker"
                                             [(ngModel)]="checklist.noOfMonths">
@@ -177,14 +183,14 @@
                                         <select class="bg-white border form-control input-medium"
                                             (change)="onDaysClick($event.target.value)" [(ngModel)]="daysBeforeAfter" name="daysBeforeAfter">
                                             <option value=null disabled hidden>None</option>
-                                            <option value=true>Days Before</option>
-                                            <option value=false>Days After</option>
+                                            <option value=true>{{"DaysBefore" | localize}}</option>
+                                            <option value=false>{{"DaysAfter" | localize}}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Ends on</label>
+                                        <label>{{"Endson" | localize}}</label>
                                         <form class="input-arrow">
                                             <input [(ngModel)]="checklist.endsOn" required="required" 
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker
@@ -197,15 +203,14 @@
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
                                             <input type="radio" value="true" name="endOfMonth" placeholder="Month"
-                                                (change)="handleRadioChange()" [(ngModel)]="checklist.endOfMonth">End of
-                                            month
+                                                (change)="handleRadioChange()" [(ngModel)]="checklist.endOfMonth">{{"Endofmonth" | localize}}
                                             <span></span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="drag_drop_box">
-                                <label class="bg-color">Attachments</label>
+                                <label class="bg-color">{{"Attachments" | localize}}</label>
                                 <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
                             </div>
                         </div>
@@ -214,7 +219,7 @@
                     </div>
                     <div class="btn-create">
                         <button class="btn btn-brand" (click)="onCreateTask()" [disabled]="taskForm.form.invalid">
-                            Create
+                            {{"Create" | localize}}
                         </button>
                     </div>
                    
