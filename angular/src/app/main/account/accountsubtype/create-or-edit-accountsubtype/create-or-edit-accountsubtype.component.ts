@@ -27,24 +27,25 @@ export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implem
   onSubmit() : void {
    this.accountSubTypeServiceProxy.createOrEdit(this.accountsSubType).subscribe(result => {
     this.notify.success(this.l('SavedSuccessfully'));
-    this.redirect();
+    this.redirect(this.accountsSubType.title,result);
     
    })
   }
 
-  redirect() : void {
+  redirect(title,selectedId) : void {
+    
     let accountId = history.state.data.accountId;
     let previousRoute = history.state.data.previousRoute;
     if (accountId != 0 && previousRoute == "account")
     {
-      this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: accountId} } });
+      this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id : accountId, newSubTypeId : selectedId,newSubTypeTitle : title} } });
     }
     else if (previousRoute == "account") {
-      this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: accountId} } });
+      this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id : 0, newSubTypeId : selectedId,newSubTypeTitle : title} } });
     }
     else
     {
-    this._router.navigate(['/app/main/account/accountsubtype']);
+    this._router.navigate(['/app/main/account/accountsubtype']);  
     }
   }
 
