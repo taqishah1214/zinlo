@@ -33,9 +33,11 @@
                                             <i class="la la-arrow-left"></i>
                                             Back
                                         </a>
-                                        <button class="btn btn-brand" (click)="RedirectToAddNewAmortize()"><i
-                                                class="fa fa-plus"></i>
-                                            {{"AddNew" | localize}}</button>
+
+                                        <button class="btn btn-brand" (click)="RedirectToAddandEditNewAmortize(0)"><i
+                                            class="fa fa-plus"></i>
+                                        {{"AddNew" | localize}}</button>
+
                                     </div>
                                 </div>
                             </div>
@@ -69,11 +71,11 @@
                                 <ng-template pTemplate="header">
                                     <tr  class="task-table-inner">
                                         <th class="accountNo-cell" scope="col" pSortableColumn="AccountNumber">
-                                            StartDate
+                                            Start Date
                                             <p-sortIcon field="AccountNumber"></p-sortIcon>
                                         </th>
                                         <th class="accountType-cell " scope="col">
-                                            EndDate
+                                            End Date
                                         </th>
                                         <th class="accountName-cell" scope="col" pSortableColumn="AccountType">
                                             Description
@@ -83,7 +85,7 @@
                                             Beginning Amount
                                         </th>
                                         <th class="accountSubtype-cell" scope="col">
-                                            Accured Atomization
+                                            Accrued Amortization
                                         </th>
                                         <th class="assignee-cell" scope="col" pSortableColumn="AssigneeId">
                                             Net Amount
@@ -111,7 +113,7 @@
                                     <td class="accountType-cell ">
                                         <span class="">{{item.endDate | date}}</span>
                                     </td>
-                                    <td class="accountName-cell">
+                                    <td class="accountName-cell" (click)="RedirectToAddandEditNewAmortize(item.id)">
                                         <span class="task-box">{{item.description}}</span>
                                     </td>
                                     <td class="reconciliation-cell">

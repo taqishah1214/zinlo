@@ -27,8 +27,6 @@ export class AmortizedComponent extends AppComponentBase {
   collapsibleRowId : number;
   collapsibleRow : boolean = false;
 
-
-
   constructor(
     injector: Injector,
     private _router: Router,
@@ -46,8 +44,8 @@ export class AmortizedComponent extends AppComponentBase {
     this.getProfilePicture();
 
   }
-  RedirectToAddNewAmortize() : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId }} });
+  RedirectToAddandEditNewAmortize(amortizedItemId) : void {
+    this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId }} });
   }
 
   getAllAmortizedList(event?: LazyLoadEvent){

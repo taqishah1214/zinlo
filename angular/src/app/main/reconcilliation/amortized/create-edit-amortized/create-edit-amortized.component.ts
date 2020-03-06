@@ -22,7 +22,8 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   accountId:number
   attachmentPaths: any = [];
   newAttachementPath: string[] = [];
-
+  accountName : any;
+  accountNo : any;
 
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -34,12 +35,11 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
 
   ngOnInit() {   
     this.accountId = history.state.data.accountId
-  //  this.amortrizedItemId = history.state.data.id;
-  this.amortrizedItemId = 0;
-
+    this.accountName = history.state.data.accountName
+    this.accountNo = history.state.data.accountNo
+    this.amortrizedItemId = history.state.data.amortrizedItemId;
     if ( this.amortrizedItemId != 0)
-    {  
-      
+    {     
       this.getAmortizedItemDetails()
     }
     else
@@ -127,7 +127,8 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   }
 
   redirectToAmortizedList () : void {
-    this._router.navigate(['/app/main/reconcilliation']);
+    this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
+
   }
 
 
