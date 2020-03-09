@@ -66,7 +66,6 @@ recordId = 0;
         this.primengTableHelper.records = result.items;
         this.primengTableHelper.hideLoadingIndicator();
         this.items = result.items;
-        console.log(this.items);
     });
   }
  

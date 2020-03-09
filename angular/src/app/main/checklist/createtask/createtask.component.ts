@@ -156,7 +156,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     if(this.checklist.frequency == 2) //Quarterly
     {
       var monthsCount = this.getNoOfmonths(this.checklist.closingMonth,this.checklist.endsOn);
-      console.log(monthsCount)
       if(monthsCount < 3)
       {
         this.errorMessage = "Quarterly is not valid in the current range.";
@@ -167,7 +166,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     else if(this.checklist.frequency == 3) //Anually
     {
       var monthsCount = this.getNoOfmonths(this.checklist.closingMonth,this.checklist.endsOn);
-      console.log(monthsCount)
       if(monthsCount < 12)
       {
         this.errorMessage = "Anually is not valid in the current range.";
@@ -190,6 +188,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.commantBox = true;
   }
   onCancelComment(): void {
+    this.checklist.commentBody = "";
     this.commantModal = false;
     this.commantBox = true;
   }

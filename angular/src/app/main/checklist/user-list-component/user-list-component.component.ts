@@ -70,7 +70,7 @@ export class UserListComponentComponent implements OnInit, OnChanges {
 
   userOnChange(value): void {
     this.selectedUserId = value;
-    if (this.selectedUserId != undefined) {
+    if (this.selectedUserId != undefined ) {
       if (this.selectedUserId != -1) {
         this.messageEvent.emit(this.selectedUserId);
         if (this.comingChangeReguest == "ClosingCheckList" || this.comingChangeReguest == "DetailsClosingCheckList") {
@@ -81,12 +81,14 @@ export class UserListComponentComponent implements OnInit, OnChanges {
           })
         }
         else if (this.comingChangeReguest == "accounts") {
-          debugger;
           this._chartOfAccountService.changeAccountsAssignee(this.taskId, this.selectedUserId).subscribe(result => {
             this.callBack.emit()
           })
         }
       }
+    }
+    else{
+      this.getUserDefaultPicture();
     }
   }
 }
