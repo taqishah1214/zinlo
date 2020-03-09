@@ -444,3 +444,7 @@ form.task-report-form::after{
 .headSpace{
     margin-left: 5px;
 }
+
+.btnMargin{
+    margin-top: 4px;
+}

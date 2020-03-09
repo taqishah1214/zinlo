@@ -53,7 +53,7 @@
                                         <div class="month-calender">
                                             <form class="input-arrow">
                                                 <input [(ngModel)]="checklist.closingMonth" (ngModelChange)="loadDaysByMonth($event)" required="required"
-                                                    class="form-control" name="date" bsDatepicker
+                                                autocomplete="off" class="form-control" name="date" bsDatepicker 
                                                     placeholder="Select Month" class="form-control" name="date"
                                                     bsDatepicker [minDate]="minDate"
                                                     [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
@@ -108,8 +108,10 @@
                                             (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
                                         </p-editor>
+                                        <div class="btnMargin" >
                                         <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
                                         <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
+                                    </div>
                                     </div>
 
                                 </div>
@@ -192,7 +194,7 @@
                                     <div class="form-group">
                                         <label>{{"Endson" | localize}}</label>
                                         <form class="input-arrow">
-                                            <input [(ngModel)]="checklist.endsOn" required="required" 
+                                            <input [(ngModel)]="checklist.endsOn" required="required" [disabled]="endOnIsEnabled == false"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker
                                                 placeholder="Month" [minDate]="minDate"
                                                 [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"

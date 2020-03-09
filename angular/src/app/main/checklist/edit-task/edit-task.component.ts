@@ -90,8 +90,10 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 
   getTaskDetails(): void {
+  
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
+      console.log("results",result);
       this.attachments = result.attachments;
       this.attachments.forEach(element => {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));

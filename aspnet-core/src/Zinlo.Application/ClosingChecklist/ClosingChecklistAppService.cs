@@ -160,7 +160,8 @@ namespace Zinlo.ClosingChecklist
                 else if (input.NoOfMonths > 0)
                 {
 
-                    int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn);
+                   // int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn);
+                    int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth.AddMonths(1), input.EndsOn);
                     input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
                     await Create(input);
                     input.ClosingMonth = input.ClosingMonth.AddMonths(input.NoOfMonths);
@@ -193,8 +194,13 @@ namespace Zinlo.ClosingChecklist
                 }
                 else if (input.Frequency != FrequencyDto.None && input.Frequency != FrequencyDto.XNumberOfMonths)
                 {
-                    int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn);
+                    int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth.AddMonths(1), input.EndsOn);
                     int frequency = GetFrequencyValue((int)input.Frequency);
+                    if(frequency == 1)
+                    {
+                        numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn);
+                    }
+
                     if(frequency != 1)
                     {
                         input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
@@ -212,6 +218,7 @@ namespace Zinlo.ClosingChecklist
                     //{
                     //    input.ClosingMonth = input.ClosingMonth.AddMonths(1);
                     //}
+                    
                     if (numberOfMonths > 0)
                     {
                         int numberOfRecordsToInsert = GetNumberOfTaskIterationCount(numberOfMonths, (int)input.Frequency);
@@ -258,7 +265,7 @@ namespace Zinlo.ClosingChecklist
             }
             var checklistId = await _closingChecklistRepository.InsertAndGetIdAsync(task);
 
-            if (input.CommentBody != "")
+            if (!String.IsNullOrWhiteSpace(input.CommentBody))
             {
                 var commentDto = new CreateOrEditCommentDto()
                 {

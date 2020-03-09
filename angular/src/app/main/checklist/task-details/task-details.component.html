@@ -31,7 +31,7 @@
                                     Closing Month <span
                                         class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth | date:'MMMM,yyyy'}}</span>
                                     Due By <span
-                                        class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.endsOn | date:'d MMMM, yyyy'}}</span>
+                                        class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth | date:'d MMMM, yyyy'}}</span>
                                 </div>
 
                             </div>
@@ -113,8 +113,11 @@
                                 <p-editor [(ngModel)]="comment.body" name="HtmlEditorInput"
                                     [style]="{'height':'150px'}">
                                 </p-editor>
-                                <button class="btn btn-brand" (click)="onComment()">Comment</button>
-                                <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                                <div class="btnMargin" >
+                                    <button class="btn btn-brand" (click)="onComment()">Comment</button>
+                                    <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                                </div>
+                               
                             </div>
                         </div>
                         <div class="col-md-5">
