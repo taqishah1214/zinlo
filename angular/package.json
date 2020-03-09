@@ -35,6 +35,7 @@
     "abp-web-resources": "^4.2.0",
     "acorn": "^7.1.0",
     "adal-angular": "^1.0.17",
+    "add-subtract-date": "^1.0.14",
     "angular-gridster2": "^8.2.0",
     "angular-oauth2-oidc": "^8.0.4",
     "angular2-counto": "^1.2.5",

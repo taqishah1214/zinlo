@@ -54,16 +54,11 @@ namespace Zinlo.ClosingChecklist
         #region|Get All|
         public async Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input)
         {
-            int index = input.MonthFilter.IndexOf('/');
-            int month = Convert.ToInt32(input.MonthFilter.Substring(0, index));
-            int year = Convert.ToInt32(input.MonthFilter.Substring(index + 1, 4));
             var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u => u.Assignee)
                                     .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.TaskName.Contains(input.Filter))
                                     .WhereIf(input.StatusFilter != 0, e => false || e.Status == (Zinlo.ClosingChecklist.Status)input.StatusFilter)
                                     .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
-                                    .WhereIf(month != 100 && year != 2000, e => false || e.ClosingMonth.Month == month && e.ClosingMonth.Year == year)
-                                    .WhereIf(input.DateFilter != null && input.DateFilter.Value.Date.Year != 2000, e => false || e.ClosingMonth.Date == input.DateFilter.Value.Date)
-                                    .WhereIf(month == 100 && year == 2000 && input.DateFilter != null && input.DateFilter.Value.Date.Year == 2000, e => false || e.ClosingMonth.Month == DateTime.Today.Month && e.ClosingMonth.Year == DateTime.Today.Year)
+                                    .WhereIf(input.DateFilter != null, e => false || e.ClosingMonth.Month == input.DateFilter.Value.Month && e.ClosingMonth.Year == input.DateFilter.Value.Year)
                                     .WhereIf(input.AssigneeId != 0, e => false || e.AssigneeId == input.AssigneeId);
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "ClosingMonth asc").PageBy(input);
             var totalCount = query.Count();

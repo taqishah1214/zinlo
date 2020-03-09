@@ -3115,14 +3115,13 @@ export class ClosingChecklistServiceProxy {
      * @param categoryFilter (optional) 
      * @param statusFilter (optional) 
      * @param dateFilter (optional) 
-     * @param monthFilter (optional) 
      * @param assigneeId (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, monthFilter: string | undefined, assigneeId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
+    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, assigneeId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -3144,10 +3143,6 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'dateFilter' cannot be null.");
         else if (dateFilter !== undefined)
             url_ += "DateFilter=" + encodeURIComponent(dateFilter ? "" + dateFilter.toJSON() : "") + "&"; 
-        if (monthFilter === null)
-            throw new Error("The parameter 'monthFilter' cannot be null.");
-        else if (monthFilter !== undefined)
-            url_ += "MonthFilter=" + encodeURIComponent("" + monthFilter) + "&"; 
         if (assigneeId === null)
             throw new Error("The parameter 'assigneeId' cannot be null.");
         else if (assigneeId !== undefined)
@@ -3492,61 +3487,6 @@ export class ClosingChecklistServiceProxy {
     }
 
     /**
-     * @return Success
-     */
-    getUsersDropdown(): Observable<NameValueDtoOfString[]> {
-        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/getUsersDropdown";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetUsersDropdown(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetUsersDropdown(<any>response_);
-                } catch (e) {
-                    return <Observable<NameValueDtoOfString[]>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<NameValueDtoOfString[]>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetUsersDropdown(response: HttpResponseBase): Observable<NameValueDtoOfString[]> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(NameValueDtoOfString.fromJS(item));
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<NameValueDtoOfString[]>(<any>null);
-    }
-
-    /**
      * @param body (optional) 
      * @return Success
      */
@@ -3715,8 +3655,8 @@ export class ClosingChecklistServiceProxy {
      * @param iteration (optional) 
      * @return Success
      */
-    generateGroupID(id: number | undefined, iteration: number | undefined): Observable<string> {
-        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GenerateGroupID?";
+    generateGroupId(id: number | undefined, iteration: number | undefined): Observable<string> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GenerateGroupId?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -3736,11 +3676,11 @@ export class ClosingChecklistServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGenerateGroupID(response_);
+            return this.processGenerateGroupId(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGenerateGroupID(<any>response_);
+                    return this.processGenerateGroupId(<any>response_);
                 } catch (e) {
                     return <Observable<string>><any>_observableThrow(e);
                 }
@@ -3749,7 +3689,7 @@ export class ClosingChecklistServiceProxy {
         }));
     }
 
-    protected processGenerateGroupID(response: HttpResponseBase): Observable<string> {
+    protected processGenerateGroupId(response: HttpResponseBase): Observable<string> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -3791,11 +3731,11 @@ export class ClosingChecklistServiceProxy {
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         if (iterationNumber === null)
             throw new Error("The parameter 'iterationNumber' cannot be null.");
         else if (iterationNumber !== undefined)
-            url_ += "IterationNumber=" + encodeURIComponent("" + iterationNumber) + "&"; 
+            url_ += "iterationNumber=" + encodeURIComponent("" + iterationNumber) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3856,11 +3796,11 @@ export class ClosingChecklistServiceProxy {
         if (closingDate === null)
             throw new Error("The parameter 'closingDate' cannot be null.");
         else if (closingDate !== undefined)
-            url_ += "ClosingDate=" + encodeURIComponent(closingDate ? "" + closingDate.toJSON() : "") + "&"; 
+            url_ += "closingDate=" + encodeURIComponent(closingDate ? "" + closingDate.toJSON() : "") + "&"; 
         if (endDate === null)
             throw new Error("The parameter 'endDate' cannot be null.");
         else if (endDate !== undefined)
-            url_ += "EndDate=" + encodeURIComponent(endDate ? "" + endDate.toJSON() : "") + "&"; 
+            url_ += "endDate=" + encodeURIComponent(endDate ? "" + endDate.toJSON() : "") + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3970,19 +3910,19 @@ export class ClosingChecklistServiceProxy {
 
     /**
      * @param numberOfMonths (optional) 
-     * @param xnumber (optional) 
+     * @param xNumber (optional) 
      * @return Success
      */
-    getNumberOfTaskIterationCountForEveryXNumberOfMonth(numberOfMonths: number | undefined, xnumber: number | undefined): Observable<number> {
+    getNumberOfTaskIterationCountForEveryXNumberOfMonth(numberOfMonths: number | undefined, xNumber: number | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetNumberOfTaskIterationCountForEveryXNumberOfMonth?";
         if (numberOfMonths === null)
             throw new Error("The parameter 'numberOfMonths' cannot be null.");
         else if (numberOfMonths !== undefined)
             url_ += "numberOfMonths=" + encodeURIComponent("" + numberOfMonths) + "&"; 
-        if (xnumber === null)
-            throw new Error("The parameter 'xnumber' cannot be null.");
-        else if (xnumber !== undefined)
-            url_ += "Xnumber=" + encodeURIComponent("" + xnumber) + "&"; 
+        if (xNumber === null)
+            throw new Error("The parameter 'xNumber' cannot be null.");
+        else if (xNumber !== undefined)
+            url_ += "xNumber=" + encodeURIComponent("" + xNumber) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -4219,7 +4159,7 @@ export class ClosingChecklistServiceProxy {
         if (isDaysBefore === null)
             throw new Error("The parameter 'isDaysBefore' cannot be null.");
         else if (isDaysBefore !== undefined)
-            url_ += "IsDaysBefore=" + encodeURIComponent("" + isDaysBefore) + "&"; 
+            url_ += "isDaysBefore=" + encodeURIComponent("" + isDaysBefore) + "&"; 
         if (closingMonth === null)
             throw new Error("The parameter 'closingMonth' cannot be null.");
         else if (closingMonth !== undefined)
@@ -4345,11 +4285,11 @@ export class ClosingChecklistServiceProxy {
         if (daysBeforeAfter === null)
             throw new Error("The parameter 'daysBeforeAfter' cannot be null.");
         else if (daysBeforeAfter !== undefined)
-            url_ += "DaysBeforeAfter=" + encodeURIComponent("" + daysBeforeAfter) + "&"; 
+            url_ += "daysBeforeAfter=" + encodeURIComponent("" + daysBeforeAfter) + "&"; 
         if (closingMonth === null)
             throw new Error("The parameter 'closingMonth' cannot be null.");
         else if (closingMonth !== undefined)
-            url_ += "ClosingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
+            url_ += "closingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
         if (numberOfDays === null)
             throw new Error("The parameter 'numberOfDays' cannot be null.");
         else if (numberOfDays !== undefined)
@@ -17909,46 +17849,6 @@ export interface IDetailsClosingCheckListDto {
     id: number;
 }
 
-export class NameValueDtoOfString implements INameValueDtoOfString {
-    name!: string | undefined;
-    value!: string | undefined;
-
-    constructor(data?: INameValueDtoOfString) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.name = data["name"];
-            this.value = data["value"];
-        }
-    }
-
-    static fromJS(data: any): NameValueDtoOfString {
-        data = typeof data === 'object' ? data : {};
-        let result = new NameValueDtoOfString();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["value"] = this.value;
-        return data; 
-    }
-}
-
-export interface INameValueDtoOfString {
-    name: string | undefined;
-    value: string | undefined;
-}
-
 export class ChangeAssigneeDto implements IChangeAssigneeDto {
     taskId!: number;
     assigneeId!: number;
@@ -18027,6 +17927,46 @@ export class ChangeStatusDto implements IChangeStatusDto {
 export interface IChangeStatusDto {
     statusId: number;
     taskId: number;
+}
+
+export class NameValueDtoOfString implements INameValueDtoOfString {
+    name!: string | undefined;
+    value!: string | undefined;
+
+    constructor(data?: INameValueDtoOfString) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.value = data["value"];
+        }
+    }
+
+    static fromJS(data: any): NameValueDtoOfString {
+        data = typeof data === 'object' ? data : {};
+        let result = new NameValueDtoOfString();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["value"] = this.value;
+        return data; 
+    }
+}
+
+export interface INameValueDtoOfString {
+    name: string | undefined;
+    value: string | undefined;
 }
 
 export class ClosingCheckGroupDto implements IClosingCheckGroupDto {

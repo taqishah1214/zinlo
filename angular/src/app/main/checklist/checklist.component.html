@@ -26,13 +26,13 @@
                     <div class="record-card-header">
                         <div class="record-card-header-bottom">
                             <div class="record-card-header-bottom-inner1">
-                                <button class="btn arrow-btn left-arrow-btn btn-square" (click)="calculateDate(-1)">
+                                <button class="btn arrow-btn left-arrow-btn btn-square"  (click)="filterByMonth(-1)">
                                     <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
                                 </button>
-                                <button class="btn arrow-btn right-arrow-btn btn-square" (click)="calculateDate(1)">
+                                <button class="btn arrow-btn right-arrow-btn btn-square" (click)="filterByMonth(1)">
                                     <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
                                 </button>
-                                <h5>{{currentMonth}} {{currentYear}}</h5>
+                                <h5>{{selectedDate | momentFormat:'MMMM YYYY'}}</h5>
 
                             </div>
                             <div class="record-card-header-bottom-inner2">
@@ -88,8 +88,8 @@
                                     </div>
                                     <div class="date-picker">
                                         <input id="monthValue" (ngModelChange)="filterByMonth($event)"
-                                            value="january 2020" class="date-field" name="monthValue"
-                                            [(ngModel)]="monthValue" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                            class="date-field" name="monthValue"
+                                            [(ngModel)]="selectedDate" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                             (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
                                     </div>
                                     <div class="dropdown-btn-box">
