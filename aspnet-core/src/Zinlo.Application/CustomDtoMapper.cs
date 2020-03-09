@@ -159,7 +159,8 @@ namespace Zinlo
                 ForMember(dto=>dto.AssigniName,entity=>entity.MapFrom(p=>p.Assignee.FullName)).
                 ForMember(dto=>dto.Category, entity=>entity.MapFrom(p=>p.Category.Title)).
                 ForMember(dto=>dto.Status, entity=>entity.MapFrom(p=>p.Status.ToString())).
-                ForMember(dto=>dto.StatusId, entity=>entity.MapFrom(p=>(int)p.Status));
+                ForMember(dto=>dto.StatusId, entity=>entity.MapFrom(p=>(int)p.Status)).
+                ForMember(dto=>dto.FrequencyId, entity=>entity.MapFrom(p=>(int)p.Frequency));
             configuration.CreateMap<Comment.Comment, CommentDto>().ReverseMap();
 
             //Attachment

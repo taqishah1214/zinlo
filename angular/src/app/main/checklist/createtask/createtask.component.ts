@@ -81,7 +81,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.enableValue = false;
     this.isChecked = true;
     this.checklist.assigneeId = 0;
-    debugger
     if(!history.state.data.createOrDuplicate || history.state.data.createOrDuplicate != undefined){
       this.createOrDuplicate = history.state.data.createOrDuplicate;
       this.checklist.taskName = history.state.data.title;

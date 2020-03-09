@@ -39,6 +39,6 @@ namespace Zinlo.ClosingChecklist
         Quarterly = 2,
         Annually = 3,
         XNumberOfMonths = 4,
-             None = 5
+        None = 5
     }
 }

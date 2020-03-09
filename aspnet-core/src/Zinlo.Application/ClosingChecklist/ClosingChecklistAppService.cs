@@ -371,9 +371,9 @@ namespace Zinlo.ClosingChecklist
         }
         public async Task<GetTaskForEditDto> GetTaskForEdit(long id)
         {
-            var task = await _closingChecklistRepository.GetAll().Where(x => x.Id == id).Include(a => a.Assignee).Include(a => a.Category).FirstOrDefaultAsync();
+            var task = await _closingChecklistRepository.GetAll().Include(a => a.Assignee).Include(a => a.Category).FirstOrDefaultAsync(x => x.Id == id);
             var output = ObjectMapper.Map<GetTaskForEditDto>(task);
-            output.comments = await _commentAppService.GetComments(1, id);
+            output.Comments = await _commentAppService.GetComments(1, id);
             output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
             output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture : "";
             return output;
