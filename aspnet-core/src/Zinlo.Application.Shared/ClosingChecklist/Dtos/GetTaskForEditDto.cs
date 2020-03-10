@@ -23,6 +23,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public DateTime EndsOn { get; set; }
         public bool DayBeforeAfter { get; set; }
         public bool EndOfMonth { get; set; }
+        public bool MonthStatus { get; set; }
         public long CategoryId { get; set; }
         public long AssigneeId { get; set; }
         public int FrequencyId { get; set; }

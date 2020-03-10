@@ -51,6 +51,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   collapsibleRow: boolean
   collapsibleRowId: number;
   updateAssigneeOnHeader: boolean = true
+  monthStatus: boolean;
   remainingUserForHeader: any = [];
   category: NameValueDtoOfInt64[] = [];
   selectedDate : Date = new Date();
@@ -121,6 +122,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
+      this.monthStatus = result.items[0].monthStatus;
       this.ClosingCheckList = result.items
       this.ClosingCheckList.forEach(j => {
         j.group.forEach(i => {
@@ -207,7 +209,7 @@ export class Checklist extends AppComponentBase implements OnInit {
     this._router.navigate(['/app/main/checklist/createtask'], { state: { data: { categoryid: 0, categoryTitle: "" } } });
   }
 
-  RedirectToDetail(recordId): void {
+  redirectToDetail(recordId): void {
     this._router.navigate(['/app/main/checklist/task-details'], { state: { data: { id: recordId } } });
 
   }

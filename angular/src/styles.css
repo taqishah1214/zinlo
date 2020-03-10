@@ -448,3 +448,9 @@ form.task-report-form::after{
 .btnMargin{
     margin-top: 4px;
 }
+.disabled
+{
+  pointer-events: none;
+  cursor: no-drop !important;
+ 
+}

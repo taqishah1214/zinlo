@@ -17645,6 +17645,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     endsOn!: moment.Moment;
     dayBeforeAfter!: boolean;
     endOfMonth!: boolean;
+    monthStatus!: boolean;
     categoryId!: number;
     assigneeId!: number;
     frequencyId!: number;
@@ -17681,6 +17682,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
             this.endsOn = data["endsOn"] ? moment(data["endsOn"].toString()) : <any>undefined;
             this.dayBeforeAfter = data["dayBeforeAfter"];
             this.endOfMonth = data["endOfMonth"];
+            this.monthStatus = data["monthStatus"];
             this.categoryId = data["categoryId"];
             this.assigneeId = data["assigneeId"];
             this.frequencyId = data["frequencyId"];
@@ -17721,6 +17723,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
         data["endsOn"] = this.endsOn ? this.endsOn.toISOString() : <any>undefined;
         data["dayBeforeAfter"] = this.dayBeforeAfter;
         data["endOfMonth"] = this.endOfMonth;
+        data["monthStatus"] = this.monthStatus;
         data["categoryId"] = this.categoryId;
         data["assigneeId"] = this.assigneeId;
         data["frequencyId"] = this.frequencyId;
@@ -17750,6 +17753,7 @@ export interface IGetTaskForEditDto {
     endsOn: moment.Moment;
     dayBeforeAfter: boolean;
     endOfMonth: boolean;
+    monthStatus: boolean;
     categoryId: number;
     assigneeId: number;
     frequencyId: number;
@@ -17763,6 +17767,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     categoryId!: number;
     taskStatus!: string | undefined;
     profilePicture!: string | undefined;
+    monthStatus!: boolean;
     comments!: CommentDto[] | undefined;
     attachments!: GetAttachmentsDto[] | undefined;
     taskName!: string | undefined;
@@ -17799,6 +17804,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             this.categoryId = data["categoryId"];
             this.taskStatus = data["taskStatus"];
             this.profilePicture = data["profilePicture"];
+            this.monthStatus = data["monthStatus"];
             if (Array.isArray(data["comments"])) {
                 this.comments = [] as any;
                 for (let item of data["comments"])
@@ -17847,6 +17853,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data["categoryId"] = this.categoryId;
         data["taskStatus"] = this.taskStatus;
         data["profilePicture"] = this.profilePicture;
+        data["monthStatus"] = this.monthStatus;
         if (Array.isArray(this.comments)) {
             data["comments"] = [];
             for (let item of this.comments)
@@ -17888,6 +17895,7 @@ export interface IDetailsClosingCheckListDto {
     categoryId: number;
     taskStatus: string | undefined;
     profilePicture: string | undefined;
+    monthStatus: boolean;
     comments: CommentDto[] | undefined;
     attachments: GetAttachmentsDto[] | undefined;
     taskName: string | undefined;

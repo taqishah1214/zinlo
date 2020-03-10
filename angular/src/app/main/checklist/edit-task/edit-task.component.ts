@@ -48,7 +48,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   _changeStatus: ChangeStatusDto = new ChangeStatusDto();
   categoryTitle : any;
   UserProfilePicture : any;
-  checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto()
+  checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
+  monthStatus : boolean;
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   days: any;
@@ -93,6 +94,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
       this.getTaskForEdit = result;
+      this.monthStatus = this.getTaskForEdit.monthStatus;
       this.attachments = result.attachments;
       this.attachments.forEach(element => {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));

@@ -24,6 +24,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   userSignInName: any;
   assigneeId: any = 0;
   UserProfilePicture: any;
+  monthStatus : boolean;
 
   constructor(
     injector: Injector,
@@ -94,6 +95,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
       this.commentsData = this.taskDetailObject.comments;
       this.assigneeId = this.taskDetailObject.assigneeId;
       this.taskStatus = this.taskDetailObject.taskStatus;
+      this.monthStatus = this.taskDetailObject.monthStatus;
 
       this.initilizeStatus();
       this.attachments = result.attachments;

@@ -129,6 +129,16 @@ namespace Zinlo.TimeManagements
         {
             var management = await _timeManagementRepository.FirstOrDefaultAsync(p =>
                 p.Month.Month.Equals(dateTime.Month) && p.Month.Year.Equals(dateTime.Year));
+            if (management==null)
+            {
+                var createManagement = new CreateOrEditTimeManagementDto()
+                {
+                    Month = dateTime,
+                    Status = false,
+                };
+                await Create(createManagement);
+                return false;
+            }
             return management.Status;
         }
 

@@ -181,23 +181,23 @@
                                     <tr *ngFor="let j of i.group ; let value = index"
                                         class="task-table-inner table-repeater">
 
-                                        <td class="date-cell" (click)="RedirectToDetail(j.id)" *ngIf="value === 0">
+                                        <td class="date-cell" (click)="redirectToDetail(j.id)" *ngIf="value === 0">
                                             <span class=""><b>{{i.creationTime | date:'d'}}</b>
                                                 {{i.creationTime | date:'MMM'}},{{i.creationTime | date:'EEE'}}</span>
                                         </td>
-                                        <td (click)="RedirectToDetail(j.id)" *ngIf="value != 0">
+                                        <td (click)="redirectToDetail(j.id)" *ngIf="value != 0">
                                             <span class="">{{""}}</span>
                                         </td>
-                                        <td class="task-cell"  (click)="RedirectToDetail(j.id)">
+                                        <td class="task-cell"  (click)="redirectToDetail(j.id)">
                                             <span style="cursor: pointer;" class="task-box"><span
                                                     class="task-box-dot-{{j.StatusColor}}"></span><b>{{j.taskName}}</b></span>
                                         </td>
-                                        <td class="cat-cell" style="cursor: default;" (click)="RedirectToDetail(j.id)">
+                                        <td class="cat-cell" style="cursor: default;" (click)="redirectToDetail(j.id)">
                                             <span class="category-name bg-lightgrey">{{j.category}}</span>
                                         </td>
-                                        <td class="status-cell">
+                                        <td [ngClass]="{'disabled':!monthStatus}" class="status-cell">
                                             <form class="task-report-form">
-                                                <select onclick="console.log('test')"
+                                                <select [disabled]="!monthStatus" onclick="console.log('test')"
                                                     (change)="ChangeStatus($event.target.value,j.id)"
                                                     class="form-control border-0 {{j.StatusColor}} text-white">
                                                     <option value="" selected disabled hidden>
@@ -209,10 +209,10 @@
                                                 </select>
                                             </form>
                                         </td>
-                                        <td class="assignee-cell">
+                                        <td [ngClass]="{'disabled':!monthStatus}" class="assignee-cell">
 
                                             <div *ngIf="j.id != rowid" class="kt-user-card-v2"
-                                                (click)="openFieldUpdateAssignee(j.id)">
+                                                (click)="monthStatus && openFieldUpdateAssignee(j.id)">
                                                 <div class="kt-user-card-v2__pic">
                                                     <div *ngIf="j.profilePicture" class="kt-badge kt-badge--xl">
                                                         <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
