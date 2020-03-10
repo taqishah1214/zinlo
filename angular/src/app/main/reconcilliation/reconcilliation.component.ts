@@ -41,7 +41,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   accountSubTypes: any = [];
   accountType : any;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
-  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
+  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
   StatusColorBox: any = ["bg-blue", "bg-sea-green", "bg-gray"]
   updateAssigneeOnHeader: boolean = true;
   getAccountWithAssigneeId : number = 0;
@@ -157,6 +157,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   }
 
   reDirectToItemizedAmotized (reconciliationTypeId,accountId,accountNo,accountName){
+    debugger;
   if (reconciliationTypeId == 1)
   {
     this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : accountId, accountName :accountName ,accountNo: accountNo  }} });

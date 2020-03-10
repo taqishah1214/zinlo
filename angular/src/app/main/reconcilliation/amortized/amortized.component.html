@@ -21,7 +21,7 @@
                                     </h3>
                                     <h6 class="ml-3 mb-0">
                                         Account No
-                                        <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountName}}</span>
+                                        <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountNo}}</span>
                                         Account Name
                                         <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountName}}</span>
                                     </h6>
@@ -49,7 +49,7 @@
                                 <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
                                     <div class="date-picker">
                                         <input id="monthValue" 
-                                            value="january 2020" class="date-field" name="monthValue"
+                                            value="january 2020" (ngModelChange)="filterByMonth($event)" class="date-field"  name="monthValue"
                                             [(ngModel)]="monthValue" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                             (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
                                     </div>
@@ -105,7 +105,7 @@
                         </div>
                         <!--<Primeng-TurboTable-End> {{i.creationTime | date:'d MMM EEE'}} -->
                         <table class="table record-table">
-                            <tbody *ngFor="let item of amortizedItemList">
+                            <tbody *ngFor="let item of itemList">
                                 <tr  class="task-table-inner table-repeater">
                                     <td class="accountNo-cell">
                                         <span class="">{{item.startDate | date}}</span>
@@ -117,29 +117,38 @@
                                         <span class="task-box">{{item.description}}</span>
                                     </td>
                                     <td class="reconciliation-cell">
-                                        <span class="">{{item.beginningAmount}}</span>
+                                        <span class="">$ {{item.beginningAmount | formater }}</span>
                                     </td>
                                     <td class="accountSubtype-cell">
-                                        <span class="">{{item.accuredAmortization}}</span>
+                                        <span class="">$ {{item.accuredAmortization | formater }}</span>
                                     </td>
                                     <td class="assignee-cell">
-                                        <span class="">{{item.netAmount}}</span>
+                                        <span class="">$ {{item.netAmount | formater}}</span>
                                     </td>
-                                    <td class="action-cell">
+                                    <td *ngFor="let i of item.attachments ;let value = index" class="action-cell">
                                         <span class="">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <div class="drag_drop_box">
-                                                        <div class="attachments_section">
-                                                            <a target="_blank" class="attachement_btn">
-                                                                <img src="../../../../assets/media/files/pdf.svg">
-                                                                <span> Dumpy Attachemt</span>
+                                                    <div *ngFor="let i of item.attachments" class="drag_drop_box">
+                                                        <div  *ngIf="i.length!=0" class="attachments_section">
+                                                            <a  href="{{i.attachmentUrl}}" target="_blank"
+                                                                download="{{i.attachmentUrl}}" class="attachement_btn">
+                                                                <img src="../../../../assets/media/files/{{i.attachmentExtension}}">
+                                                                <span>{{i.attachmentName}}</span>
                                                             </a>
                                                         </div>
+                                                        <div *ngIf="i.length==0" class="drag_drop_box">
+                                                        <a>
+                                                            <span>No Attachments</span>
+                                                        </a>
+                                                    </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </span>
+
+                                        <!-- <span  class="attatchments-box ">+3</span> -->
+
                                     </td>
                                     <td class="toggle-btn-cell">
                                         <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
@@ -147,32 +156,43 @@
                                 </tr>
                                 <!-- show-collapsible-row -->
                                 <tr *ngIf="collapsibleRow == true && item.id == collapsibleRowId"
-                                    class="table-row-collapsible ">
+                                    class="table-row-collapsible">
                                     <td>
                                         <ul>
-                                            <li class="reconciliation-cell collapsable-cell">
+                                            <li>
                                                 <div class="thead-box"><b>Net Amount : </b></div>
-                                                <div class="tdata-box">
-                                                    <span class="">{{item.netAmount}}</span>
+                                                <div *ngIf="item.netAmount"  class="tdata-box">
+                                                    <span class="">$ {{item.netAmount | formater}}</span>
                                                 </div>
+                                                <div *ngIf="!item.netAmount"  class="tdata-box">
+                                                    <span class="">$ {{0 | formater}}</span>
+                                                </div>
+                                                
                                             </li>
-                                            <li class="accountSubtype-cell collapsable-cell">
+                                            <li >
                                                 <div class="thead-box"><b> Attachments </b></div>
-                                                <div class="tdata-box">
+                                                <div class="tdata-box d-flex">
                                                     <span class="">
                                                         <div class="row">
                                                             <div class="col-md-12">
-                                                                <div class="drag_drop_box">
-                                                                    <div class="attachments_section">
-                                                                        <a target="_blank" class="attachement_btn">
-                                                                            <img src="../../../../assets/media/files/pdf.svg">
-                                                                            <span> Dumpy Attachemt</span>
+                                                                <div *ngFor="let i of item.attachments" class="drag_drop_box">
+                                                                    <div  *ngIf="i.length!=0" class="attachments_section">
+                                                                        <a  href="{{i.attachmentUrl}}" target="_blank"
+                                                                            download="{{i.attachmentUrl}}" class="attachement_btn">
+                                                                            <img src="../../../../assets/media/files/{{i.attachmentExtension}}">
+                                                                            <span>{{i.attachmentName}}</span>
                                                                         </a>
                                                                     </div>
+                                                                    <div *ngIf="i.length==0" class="drag_drop_box">
+                                                                    <a>
+                                                                        <span>No Attachments</span>
+                                                                    </a>
+                                                                </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </span>
+                                                    <!-- <span class="attatchments-box ">+3</span> -->
                                                 </div>
                                             </li>
                                         </ul>
@@ -215,17 +235,16 @@
                                             </div>
                                             <div class="kt-widget3__info">
                                                 <a class="kt-widget3__username">
-                                                    hammmmmda
+                                                    hammmad
                                                 </a><br>
                                             </div>
                                             <span class="kt-widget3__status kt-font-info">
-                                                2 days 2109
+                                                2 days 2020
                                             </span>
                                         </div>
                                         <div class="kt-widget3__body show-comments-inner">
                                             <p class="kt-widget3__text commentViewBox">
-                                                fadugyiuogsijuhgsjiuhgujkhuhcafyghujkcgjhhshujsckjhsjhugkhsjhjhghjgshdjughjhkghghgkghghggh
-                                                fjhkfghkgcfxghkggxfghkhcgxhfhkxfgjhkfhxkgxfhgcgxfghvcgxfcghvcgxgk
+                                              Some Comments 
                                             </p>
                                         </div>
                                     </div>
@@ -245,7 +264,7 @@
 
                                                 <div *ngIf="!UserProfilePicture"
                                                     class="kt-badge kt-badge--xl kt-badge--primary">
-                                                    {{userSignInName | firstLetterOfWords}}
+                                                    {{userName | firstLetterOfWords}}
                                                 </div>
                                             </div>
                                         </div>
@@ -264,18 +283,36 @@
                         </div>
                         <div class="col-md-6">
                             <div class="report-container">
-                                <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">Total:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 87,869.25</div>
-                                </div>
-                                <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">Trial Balance:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 89,869.25</div>
-                                </div>
-                                <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">Variance:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 2000</div>
-                                </div>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="text-navyblue">Beginning Amount</th>
+                                            <th class="text-navyblue">Accrued Amortization</th>
+                                            <th class="text-navyblue">Net Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-navyblue">Total:</td>
+                                            <td class="text-blue">$ {{begininngAmount| formater }}</td>
+                                            <td class="text-blue">$ {{accuredAmount| formater }}</td>
+                                            <td class="text-blue">$ {{netAmount | formater}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-navyblue">Total Balance:</td>
+                                            <td class="text-blue">$0</td>
+                                            <td class="text-blue">$0</td>
+                                            <td class="text-blue">$0</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-navyblue">Varience:</td>
+                                            <td class="text-blue">$0</td>
+                                            <td class="text-blue">$0</td>
+                                            <td class="text-blue">$0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="Check-reconcile-btn">
                                 <button class="btn btn-brand" >Check as Reconciled</button>

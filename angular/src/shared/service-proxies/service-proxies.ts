@@ -1001,12 +1001,13 @@ export class AmortizationServiceProxy {
     /**
      * @param filter (optional) 
      * @param chartofAccountId (optional) 
+     * @param monthFilter (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, chartofAccountId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfAmortizedListForViewDto> {
+    getAll(filter: string | undefined, chartofAccountId: number | undefined, monthFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfAmortizedListDto> {
         let url_ = this.baseUrl + "/api/services/app/Amortization/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -1016,6 +1017,10 @@ export class AmortizationServiceProxy {
             throw new Error("The parameter 'chartofAccountId' cannot be null.");
         else if (chartofAccountId !== undefined)
             url_ += "ChartofAccountId=" + encodeURIComponent("" + chartofAccountId) + "&"; 
+        if (monthFilter === null)
+            throw new Error("The parameter 'monthFilter' cannot be null.");
+        else if (monthFilter !== undefined)
+            url_ += "MonthFilter=" + encodeURIComponent("" + monthFilter) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -1045,14 +1050,14 @@ export class AmortizationServiceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<PagedResultDtoOfAmortizedListForViewDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfAmortizedListDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PagedResultDtoOfAmortizedListForViewDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfAmortizedListDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfAmortizedListForViewDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfAmortizedListDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1063,7 +1068,7 @@ export class AmortizationServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfAmortizedListForViewDto.fromJS(resultData200);
+            result200 = PagedResultDtoOfAmortizedListDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1071,7 +1076,7 @@ export class AmortizationServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PagedResultDtoOfAmortizedListForViewDto>(<any>null);
+        return _observableOf<PagedResultDtoOfAmortizedListDto>(<any>null);
     }
 
     /**
@@ -15616,6 +15621,52 @@ export interface IPagedResultDtoOfGetAccountSubTypeForViewDto {
     items: GetAccountSubTypeForViewDto[] | undefined;
 }
 
+export class GetAttachmentsDto implements IGetAttachmentsDto {
+    id!: number;
+    attachmentPath!: string | undefined;
+
+    constructor(data?: IGetAttachmentsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.attachmentPath = data["attachmentPath"];
+        }
+    }
+
+    static fromJS(data: any): GetAttachmentsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAttachmentsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["attachmentPath"] = this.attachmentPath;
+        return data; 
+    }
+}
+
+export interface IGetAttachmentsDto {
+    id: number;
+    attachmentPath: string | undefined;
+}
+
+export enum Criteria {
+    Manual = 1,
+    Monthly = 2,
+    Daily = 3,
+}
+
 export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto {
     inoviceNo!: string | undefined;
     journalEntryNo!: string | undefined;
@@ -15626,6 +15677,8 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
     description!: string | undefined;
     chartsofAccountId!: number;
     attachmentsPath!: string[] | undefined;
+    attachments!: GetAttachmentsDto[] | undefined;
+    criteria!: Criteria;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -15654,6 +15707,12 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
                 for (let item of data["attachmentsPath"])
                     this.attachmentsPath!.push(item);
             }
+            if (Array.isArray(data["attachments"])) {
+                this.attachments = [] as any;
+                for (let item of data["attachments"])
+                    this.attachments!.push(GetAttachmentsDto.fromJS(item));
+            }
+            this.criteria = data["criteria"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -15682,6 +15741,12 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
             for (let item of this.attachmentsPath)
                 data["attachmentsPath"].push(item);
         }
+        if (Array.isArray(this.attachments)) {
+            data["attachments"] = [];
+            for (let item of this.attachments)
+                data["attachments"].push(item.toJSON());
+        }
+        data["criteria"] = this.criteria;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -15699,6 +15764,8 @@ export interface ICreateOrEditAmortizationDto {
     description: string | undefined;
     chartsofAccountId: number;
     attachmentsPath: string[] | undefined;
+    attachments: GetAttachmentsDto[] | undefined;
+    criteria: Criteria;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
@@ -15712,6 +15779,7 @@ export class AmortizedListForViewDto implements IAmortizedListForViewDto {
     beginningAmount!: number;
     accuredAmortization!: number;
     netAmount!: number;
+    attachments!: GetAttachmentsDto[] | undefined;
 
     constructor(data?: IAmortizedListForViewDto) {
         if (data) {
@@ -15731,6 +15799,11 @@ export class AmortizedListForViewDto implements IAmortizedListForViewDto {
             this.beginningAmount = data["beginningAmount"];
             this.accuredAmortization = data["accuredAmortization"];
             this.netAmount = data["netAmount"];
+            if (Array.isArray(data["attachments"])) {
+                this.attachments = [] as any;
+                for (let item of data["attachments"])
+                    this.attachments!.push(GetAttachmentsDto.fromJS(item));
+            }
         }
     }
 
@@ -15750,6 +15823,11 @@ export class AmortizedListForViewDto implements IAmortizedListForViewDto {
         data["beginningAmount"] = this.beginningAmount;
         data["accuredAmortization"] = this.accuredAmortization;
         data["netAmount"] = this.netAmount;
+        if (Array.isArray(this.attachments)) {
+            data["attachments"] = [];
+            for (let item of this.attachments)
+                data["attachments"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -15762,13 +15840,70 @@ export interface IAmortizedListForViewDto {
     beginningAmount: number;
     accuredAmortization: number;
     netAmount: number;
+    attachments: GetAttachmentsDto[] | undefined;
 }
 
-export class PagedResultDtoOfAmortizedListForViewDto implements IPagedResultDtoOfAmortizedListForViewDto {
-    totalCount!: number;
-    items!: AmortizedListForViewDto[] | undefined;
+export class AmortizedListDto implements IAmortizedListDto {
+    amortizedListForViewDtos!: AmortizedListForViewDto[] | undefined;
+    totalBeginningAmount!: number;
+    totalAccuredAmortization!: number;
+    totalNetAmount!: number;
 
-    constructor(data?: IPagedResultDtoOfAmortizedListForViewDto) {
+    constructor(data?: IAmortizedListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (Array.isArray(data["amortizedListForViewDtos"])) {
+                this.amortizedListForViewDtos = [] as any;
+                for (let item of data["amortizedListForViewDtos"])
+                    this.amortizedListForViewDtos!.push(AmortizedListForViewDto.fromJS(item));
+            }
+            this.totalBeginningAmount = data["totalBeginningAmount"];
+            this.totalAccuredAmortization = data["totalAccuredAmortization"];
+            this.totalNetAmount = data["totalNetAmount"];
+        }
+    }
+
+    static fromJS(data: any): AmortizedListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AmortizedListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.amortizedListForViewDtos)) {
+            data["amortizedListForViewDtos"] = [];
+            for (let item of this.amortizedListForViewDtos)
+                data["amortizedListForViewDtos"].push(item.toJSON());
+        }
+        data["totalBeginningAmount"] = this.totalBeginningAmount;
+        data["totalAccuredAmortization"] = this.totalAccuredAmortization;
+        data["totalNetAmount"] = this.totalNetAmount;
+        return data; 
+    }
+}
+
+export interface IAmortizedListDto {
+    amortizedListForViewDtos: AmortizedListForViewDto[] | undefined;
+    totalBeginningAmount: number;
+    totalAccuredAmortization: number;
+    totalNetAmount: number;
+}
+
+export class PagedResultDtoOfAmortizedListDto implements IPagedResultDtoOfAmortizedListDto {
+    totalCount!: number;
+    items!: AmortizedListDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfAmortizedListDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -15783,14 +15918,14 @@ export class PagedResultDtoOfAmortizedListForViewDto implements IPagedResultDtoO
             if (Array.isArray(data["items"])) {
                 this.items = [] as any;
                 for (let item of data["items"])
-                    this.items!.push(AmortizedListForViewDto.fromJS(item));
+                    this.items!.push(AmortizedListDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): PagedResultDtoOfAmortizedListForViewDto {
+    static fromJS(data: any): PagedResultDtoOfAmortizedListDto {
         data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfAmortizedListForViewDto();
+        let result = new PagedResultDtoOfAmortizedListDto();
         result.init(data);
         return result;
     }
@@ -15807,9 +15942,9 @@ export class PagedResultDtoOfAmortizedListForViewDto implements IPagedResultDtoO
     }
 }
 
-export interface IPagedResultDtoOfAmortizedListForViewDto {
+export interface IPagedResultDtoOfAmortizedListDto {
     totalCount: number;
-    items: AmortizedListForViewDto[] | undefined;
+    items: AmortizedListDto[] | undefined;
 }
 
 export class PostAttachmentsPathDto implements IPostAttachmentsPathDto {
@@ -15862,46 +15997,6 @@ export interface IPostAttachmentsPathDto {
     type: number;
     typeId: number;
     filePath: string[] | undefined;
-}
-
-export class GetAttachmentsDto implements IGetAttachmentsDto {
-    id!: number;
-    attachmentPath!: string | undefined;
-
-    constructor(data?: IGetAttachmentsDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.attachmentPath = data["attachmentPath"];
-        }
-    }
-
-    static fromJS(data: any): GetAttachmentsDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetAttachmentsDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["attachmentPath"] = this.attachmentPath;
-        return data; 
-    }
-}
-
-export interface IGetAttachmentsDto {
-    id: number;
-    attachmentPath: string | undefined;
 }
 
 export class AuditLogListDto implements IAuditLogListDto {

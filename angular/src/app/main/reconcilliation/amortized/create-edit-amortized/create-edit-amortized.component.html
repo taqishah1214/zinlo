@@ -9,7 +9,7 @@
                                             </h3>
                                         </div>
                                         <div class="kt-portlet__head-toolbar">
-                                            <a (click)="redirectToAmortizedList()">
+                                            <a class="cursor_pointer" (click)="redirectToAmortizedList()">
                                                 <i class="la la-arrow-left"></i>
                                                 Back
                                             </a>
@@ -68,7 +68,7 @@
                                                            
 
                                                             <div class="form-group category-selector">
-                                                                <label for="Date">Start Date</label>
+                                                                <label for="Date">End Date</label>
                                                                 <input [(ngModel)]="amortizationDto.endDate"  required="required"
                                                                 class="form-control" name="endDate" bsDatepicker
                                                                 placeholder="Select Date" class="form-control" name="date"
@@ -104,6 +104,16 @@
                                                     <div class="drag_drop_box">
                                                         <label class="bg-color">Attachments</label>
                                                         <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
+                                                        <div *ngFor="let item of attachments" class="attachments_section">
+                                                            <a href="{{item.attachmentUrl}}" target="_blank" class="attachement_btn"
+                                                                download="{{item.attachmentUrl}}">
+                                                                <img src="../../../../../assets/media/files/{{item.attachmentExtension}}">
+                                                                <span>{{item.attachmentName}}</span>
+                                                            </a>
+                                                            <button class="cross-btn" (click)="deleteAttachment(item.id)">
+                                                                <span class="fa fa-window-close"></span>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy, CreateOrEditChartsofAccountDto, CreateOrEditAmortizationDto, AmortizationServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AccountSubTypeServiceProxy, AttachmentsServiceProxy, CreateOrEditAmortizationDto, AmortizationServiceProxy } from '@shared/service-proxies/service-proxies';
 import { Router } from '@angular/router';
 import { UserListComponentComponent } from '@app/main/checklist/user-list-component/user-list-component.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -24,11 +24,13 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   newAttachementPath: string[] = [];
   accountName : any;
   accountNo : any;
+  attachments: any;
+  
 
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
-  constructor(private _accountSubTypeService: AccountSubTypeServiceProxy,
-    private _chartOfAccountService: ChartsofAccountServiceProxy, private _router: Router, injector: Injector,
+  constructor(
+    private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector,
     private _reconcialtionService : AmortizationServiceProxy) {
     super(injector)
   }
@@ -48,16 +50,46 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     }   
   }
 
+  getExtensionImagePath(str) {
+
+    var extension = str.split('.')[1];
+    extension = extension + ".svg";
+    return extension;
+  }
 
   getAmortizedItemDetails() : void {
     this.title = "Edit a Item"
     this.buttonTitle =  "Save"
     this._reconcialtionService.getAmortizedItemDetails(this.amortrizedItemId).subscribe(result => {
       this.amortizationDto = result
+      this.attachments = result.attachments;
+      this.attachments.forEach(element => {
+        var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
+        element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
+        element["attachmentName"] = attachmentName
+        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl + element.attachmentPath
+      });
     })
   }
   
+  deleteAttachment(id): void {
+    this.message.confirm(
+      '',
+      this.l('AreYouSure'),
+      (isConfirmed) => {
+        if (isConfirmed) {
+          this._attachmentService.deleteAttachmentPath(id)
+            .subscribe(() => {
+              this.notify.success(this.l('Attachment is successfully removed'));
+            });
+        }
+      }
+    );
+
+  }
+
   createNewAccount() : void {
+    this.amortizationDto.criteria = 1;
     this.title = "Create a Item"
     this.buttonTitle =  "Create"
 
@@ -68,14 +100,19 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     if (val == "Manual")
     {
       this.accumulateAmount = true
+      this.amortizationDto.criteria = 1;
+
     }
     else if (val == "Monthly")
     {
+      this.amortizationDto.criteria = 2;
       this.accumulateAmount = false
+      this.amortizationDto.accomulateAmount = 0;
+
     }
     else if (val == "Daily")
     {
-
+      this.amortizationDto.criteria = 3;
     }
   }
 
@@ -93,6 +130,15 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
 
 
   updateAmortizedItem() : void  { 
+
+    if (this.attachmentPaths != null) {
+      this.newAttachementPath = [];
+      this.attachmentPaths.forEach(element => {
+        this.newAttachementPath.push(element.toString())
+      });
+
+      this.amortizationDto.attachmentsPath = this.newAttachementPath;
+    }
     this._reconcialtionService.createOrEdit(this.amortizationDto).subscribe(response => {
       this.notify.success(this.l('Amortized Item Successfully Updated.'));
       this.redirectToAmortizedList();

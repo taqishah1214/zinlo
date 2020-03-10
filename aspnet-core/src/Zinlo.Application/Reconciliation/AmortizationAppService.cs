@@ -45,45 +45,171 @@ namespace Zinlo.Reconciliation
             await _amortizationRepository.DeleteAsync(Id);
         }
 
-        public async Task<PagedResultDto<AmortizedListForViewDto>> GetAll(GetAllAmortizationInput input)
+        public async Task<PagedResultDto<AmortizedListDto>> GetAll(GetAllAmortizationInput input)
         {
+            int index = input.MonthFilter.IndexOf('/');
+            int month = Convert.ToInt32(input.MonthFilter.Substring(0, index));
+            int year = Convert.ToInt32(input.MonthFilter.Substring(index + 1, 4));
             var query = _amortizationRepository.GetAll()
                 .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
                 .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId);
+                
 
             var pagedAndFilteredItems = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var totalCount = query.Count();
-            var AmortizedList = from o in pagedAndFilteredItems
+           var amortizedList = (from o in pagedAndFilteredItems.ToList()
 
-                               select new AmortizedListForViewDto()
-                               {
-                                   Id = o.Id,
-                                   StartDate =o.StartDate,
-                                   EndDate =o.EndDate,
-                                   Description =o.Description,
-                                   BeginningAmount =o.Amount,
-                                   AccuredAmortization = 0,
-                                   NetAmount = 0,
-                               };
+                                select new AmortizedListForViewDto()
+                                {
+                                    Id = o.Id,
+                                    StartDate = o.StartDate,
+                                    EndDate = o.EndDate,
+                                    Description = o.Description,
+                                    AccuredAmortization = CalculateAccuredAmount(o.Description, Convert.ToInt32(o.Criteria), o.AccomulateAmount, o.Amount,o.EndDate, input.MonthFilter,o.StartDate),
+                                    BeginningAmount = o.Amount,
+                                    NetAmount = CalculateNetAmount(Convert.ToInt32(o.Criteria) == 2 ? CalculateAccuredAmount(o.Description, Convert.ToInt32(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate): o.AccomulateAmount, o.Amount) ,
+                                    Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 2).Result        
+                               }).ToList();
 
-            return new PagedResultDto<AmortizedListForViewDto>(
+
+            List<AmortizedListDto> result = new List <AmortizedListDto>();
+
+            AmortizedListDto amortizedListDto = new AmortizedListDto
+            {
+                amortizedListForViewDtos = amortizedList,
+                TotalBeginningAmount = amortizedList.Sum(item => item.BeginningAmount),
+                TotalAccuredAmortization = amortizedList.Sum(item => item.AccuredAmortization),
+                TotalNetAmount = amortizedList.Sum(item => item.NetAmount)
+            };
+
+            result.Add(amortizedListDto);
+            return new PagedResultDto<AmortizedListDto>(
                totalCount,
-               AmortizedList.ToList()
+               result
            );
         }
 
+        protected virtual double CalculateNetAmount(double AccomulateAmount, double BeginningAmount)
+        {
+            double Result = 0;
+            Result =  BeginningAmount - AccomulateAmount;
+            return Result;
+        }
+
+        protected virtual double CalculateAccuredAmount(string des, int CriteriaId , double AccomulateAmount, double BeginningAmount,DateTime EndDate, string Current, DateTime StartDate)
+        {
+            double Result =1;
+            switch (CriteriaId)
+            {
+                case 1:
+                    Result = AccomulateAmount;
+                    break;
+                case 2:
+                    Result = GetAccuredAmountMonthly(AccomulateAmount, BeginningAmount, EndDate, Current, StartDate);
+                    break;
+                case 3:
+                    Result = GetAccuredAmountDaily(AccomulateAmount, BeginningAmount, EndDate, Current, StartDate);
+                    break;
+
+                default:
+                    Result = 1;
+                    break;
+            }
+            return Result;
+        }
+
+        protected virtual double  GetAccuredAmountMonthly(double AccomulateAmount, double BeginningAmount , DateTime EndDate, string Current, DateTime StartDate)
+        {
+            DateTime MonthEnd =  GetValidDate(Current);
+           int DateResult =  CompareDates(EndDate, MonthEnd);
+            /*if (DateResult == -1 || DateResult > 0)
+            {
+                return BeginningAmount;
+            }*/
+            if (MonthEnd >= EndDate)
+            {
+                return BeginningAmount;
+            }
+            else
+            {
+                // Year of MonthEnd - Year of StartDate) 12 + (Month of MonthEnd -Month of StartDate +1)  Original Amount
+                double Year = MonthEnd.Year - StartDate.Year;
+                double Month = MonthEnd.Month - StartDate.Month;
+                double EndMonth = EndDate.Month - StartDate.Month;
+                double EndYear = EndDate.Year - StartDate.Year;
+                double Result1 = (Year * 12) + (Month + 1);
+                double Result2 = (EndYear * 12) + (EndMonth + 1);
+                double Result3 = (Result1/Result2)*BeginningAmount;
+                return Result3;
+            }
+        }
+        protected virtual double GetAccuredAmountDaily(double AccomulateAmount, double BeginningAmount, DateTime EndDate, string Current, DateTime StartDate)
+        {
+
+
+            DateTime MonthEnd = GetValidDate(Current);
+            int DateResult = CompareDates(EndDate, MonthEnd);
+            if (MonthEnd >= EndDate)
+            {
+                return BeginningAmount;
+            }
+            else
+            {
+                //(MonthEnd - StartDate + 1) / (EndDate - StartDate + 1) * Original Amoun
+                double month1 = (MonthEnd - StartDate).TotalDays;
+                double month2 = (EndDate - StartDate).TotalDays;
+                double Result1 = (month1 + 1);
+                double Result2 = (month2 + 1);
+                return(Result1 / Result2) * BeginningAmount;
+            }
+           
+        }
+
+        public DateTime GetValidDate(string current)
+        {
+            int index = current.IndexOf('/');
+            int month = Convert.ToInt32(current.Substring(0, index));
+            int year = Convert.ToInt32(current.Substring(index + 1, 4));
+            if (month == 100 && year == 2000)
+            {
+                // DateTime dateTime = new DateTime(2019, 8, 31, 0, 0, 0); ;
+                DateTime dateTime = DateTime.Now;
+                return dateTime;
+            }
+            else
+            {
+                return new DateTime(year, month, 1);
+            }
+
+        }
+
+        public int CompareDates(DateTime EndDate,DateTime MonthEnd)
+        {
+            DateTime date1 = new DateTime(EndDate.Year, EndDate.Month, EndDate.Day, 0, 0, 0);
+            DateTime date2 = new DateTime(MonthEnd.Year, MonthEnd.Month, MonthEnd.Day, 0, 0, 0);
+            int result = DateTime.Compare(date2, date1);
+            return result;
+        }
+
+       
+
+
         protected virtual async Task Create(CreateOrEditAmortizationDto input)
         {
+            input.EndDate = input.EndDate.AddDays(1);
+            input.StartDate = input.StartDate.AddDays(1);
+            input.CreationTime = input.CreationTime.AddDays(1);
             var item = ObjectMapper.Map<Amortization>(input);
+            var itemAddedId = await _amortizationRepository.InsertAndGetIdAsync(item);
             if (input.AttachmentsPath != null)
             {
                 PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
                 postAttachmentsPathDto.FilePath = input.AttachmentsPath;
-                postAttachmentsPathDto.TypeId = 2;
-                postAttachmentsPathDto.Type = 1;
+                postAttachmentsPathDto.TypeId = itemAddedId;
+                postAttachmentsPathDto.Type = 2;
                 await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
             }
-            await _amortizationRepository.InsertAsync(item);
+          
 
         }
         protected virtual async Task Update(CreateOrEditAmortizationDto input)
@@ -91,12 +217,21 @@ namespace Zinlo.Reconciliation
             var item = await _amortizationRepository.FirstOrDefaultAsync(input.Id);
             var data = ObjectMapper.Map(input, item);
             await _amortizationRepository.UpdateAsync(data);
+            if (input.AttachmentsPath != null)
+            {
+                PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
+                postAttachmentsPathDto.FilePath = input.AttachmentsPath;
+                postAttachmentsPathDto.TypeId = input.Id;
+                postAttachmentsPathDto.Type = 2;
+                await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
+            }
         }
 
         public async Task<CreateOrEditAmortizationDto> GetAmortizedItemDetails(long Id)
         {
             CreateOrEditAmortizationDto ItemData = new CreateOrEditAmortizationDto();
             var item = await _amortizationRepository.FirstOrDefaultAsync(x => x.Id == Id);
+            ItemData.Attachments = await _attachmentAppService.GetAttachmentsPath(Id, 2);
             var data = ObjectMapper.Map(item, ItemData);
             return data;
         }

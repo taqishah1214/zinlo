@@ -19,5 +19,15 @@ namespace Zinlo.Reconciliation
         public string Description { get; set; }
         public virtual ChartsofAccount.ChartsofAccount ChartsofAccount { get; set; }
         public long ChartsofAccountId { get; set; }
+        public Criteria Criteria { get; set; }
+
+    }
+    public enum Criteria
+    {
+        Manual = 1,
+        Monthly = 2,
+        Daily = 3,
     }
 }
+
+
