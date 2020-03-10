@@ -18,7 +18,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   selectedUserID : any;
   editAccountCheck :  boolean = false;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
-  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortization" }]
+  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
   reconcillationType: any;
   assigniId : number;
   accountDto: CreateOrEditChartsofAccountDto = new CreateOrEditChartsofAccountDto()

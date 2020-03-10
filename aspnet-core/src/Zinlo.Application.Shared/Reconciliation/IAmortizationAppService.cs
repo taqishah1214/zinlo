@@ -11,7 +11,7 @@ namespace Zinlo.Reconciliation
     {
         Task CreateOrEdit(CreateOrEditAmortizationDto input);
         Task Delete(long Id);
-        Task<PagedResultDto<AmortizedListForViewDto>> GetAll(GetAllAmortizationInput input);
+        Task<PagedResultDto<AmortizedListDto>> GetAll(GetAllAmortizationInput input);
         Task <CreateOrEditAmortizationDto> GetAmortizedItemDetails (long Id);
 
 

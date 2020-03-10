@@ -1041,3 +1041,7 @@ table.table.record-table td, table.table.record-table th {
     width: 60px;
     margin-bottom: 20px;
 }
+tr.table-row-collapsible li {
+    display: flex;
+    align-items: center;
+}

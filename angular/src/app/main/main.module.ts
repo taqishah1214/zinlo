@@ -31,6 +31,7 @@ import { EditTaskComponent } from './checklist/edit-task/edit-task.component';
 import { Checklist } from './checklist/checklist.component';;
 import { CreatetaskComponent } from './checklist/createtask/createtask.component'
 import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';;
+import {Formater} from "@shared/customPipe/formatter"
 import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
 import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component';
 import { AccountsComponent } from './account/accounts/accounts.component';
@@ -41,7 +42,8 @@ import { CreateEditItemizedComponent } from './reconcilliation/itemized/create-e
 import { CreateEditAmortizedComponent } from './reconcilliation/amortized/create-edit-amortized/create-edit-amortized.component';;
 import { ItemizedComponent } from './reconcilliation/itemized/itemized.component'
 import { AmortizedComponent } from './reconcilliation/amortized/amortized.component';;
-import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-details/itemized-details.component';
+import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-details/itemized-details.component'
+;
 import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component'
 
 
@@ -85,7 +87,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 TaskDetailsComponent,
                 StatusComponent,
                 EditTaskComponent,
-                FirstLetterOfWords,               
+                FirstLetterOfWords,  
+                Formater,             
                 CreateOrEditAccountsubtypeComponent,
                 AccountsubtypeComponent,
                 AccountsComponent ,

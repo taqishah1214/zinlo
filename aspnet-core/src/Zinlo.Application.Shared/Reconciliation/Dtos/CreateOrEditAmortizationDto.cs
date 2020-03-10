@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Zinlo.Attachments.Dtos;
 
 namespace Zinlo.Reconciliation.Dtos
 {
@@ -16,8 +17,14 @@ namespace Zinlo.Reconciliation.Dtos
         public string Description { get; set; }
         public long ChartsofAccountId { get; set; }
         public List<string> AttachmentsPath { get; set; }
+        public List<GetAttachmentsDto> Attachments { get; set; }
+        public Criteria Criteria { get; set; }
 
-
-
+    }
+    public enum Criteria
+    {
+        Manual = 1,
+        Monthly = 2,
+        Daily = 3,
     }
 }
