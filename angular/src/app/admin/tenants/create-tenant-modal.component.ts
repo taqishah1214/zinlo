@@ -58,7 +58,7 @@ export class CreateTenantModalComponent extends AppComponentBase {
         this.tenant = new CreateTenantInput();
         this.tenant.isActive = true;
         this.tenant.shouldChangePasswordOnNextLogin = true;
-        this.tenant.sendActivationEmail = true;
+        this.tenant.sendActivationEmail = false;
         this.tenant.editionId = 0;
         this.tenant.isInTrialPeriod = false;
 

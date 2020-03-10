@@ -126,126 +126,284 @@ namespace Zinlo.ClosingChecklist
 
             if (input.Id == 0)
             {
-                if (Flag)
+                if(IsIterationFrequencyChanged)
                 {
-                    input.CreationTime = input.CreationTime.AddDays(1);
-                    input.ClosingMonth = input.ClosingMonth.AddDays(1);
-                    input.EndsOn = input.EndsOn.AddDays(1);
-                    input.CreationTime = input.CreationTime.ToUniversalTime();
-                    input.ClosingMonth = input.ClosingMonth.ToUniversalTime();
-                    input.EndsOn = input.EndsOn.ToUniversalTime();
-                }
+                    #region|Frequency changed request| 
 
-               
-                var checklistCount = _closingChecklistRepository.GetAll().Max(p => (long?)p.Id) ?? 0;
+                    ////////////if (Flag)
+                    ////////////{
+                    ////////////    input.CreationTime = input.CreationTime.AddDays(1);
+                    ////////////    input.ClosingMonth = input.ClosingMonth.AddDays(1);
+                    ////////////    input.EndsOn = input.EndsOn.AddDays(1);
+                    ////////////    input.CreationTime = input.CreationTime.ToUniversalTime();
+                    ////////////    input.ClosingMonth = input.ClosingMonth.ToUniversalTime();
+                    ////////////    input.EndsOn = input.EndsOn.ToUniversalTime();
+                    ////////////}
 
-                //Test Cases.
-                //1. Check Frequency. If frequency is none . Means single task
-                //2.  if frequency has value then repeat that number of times.
-                //3. if frequency is X ,Then will repeat count number of times in next months.
-                //4. Ends on will be checked for termination in every case.
-                //5. If DayBeforeAfter is true . means days before last date. else days after
-                if (input.EndOfMonth)
-                {
-                    input.DueOn = 0;
-                   // input.ClosingMonth = new DateTime(input.ClosingMonth.Year, input.ClosingMonth.Month, GetTotalDaysByMonth(input.ClosingMonth));
-                }
-                if (input.Frequency == FrequencyDto.None)
-                {
-                    string groupId = GenerateGroupId(checklistCount + checklistNextID, 0);
-                    input.GroupId = groupId;
-                    input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn,input.EndOfMonth);
-                    await Create(input);
-                }
-                else if (input.NoOfMonths > 0)
-                {
 
-                   // int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn);
-                    int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth.AddMonths(1), input.EndsOn);
-                    input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
-                    await Create(input);
-                    input.ClosingMonth = input.ClosingMonth.AddMonths(input.NoOfMonths);
-                    if (numberOfMonths > 0)
+                    var checklistCount = _closingChecklistRepository.GetAll().Max(p => (long?)p.Id) ?? 0;
+
+                    //Test Cases.
+                    //1. Check Frequency. If frequency is none . Means single task
+                    //2.  if frequency has value then repeat that number of times.
+                    //3. if frequency is X ,Then will repeat count number of times in next months.
+                    //4. Ends on will be checked for termination in every case.
+                    //5. If DayBeforeAfter is true . means days before last date. else days after
+                    if (input.EndOfMonth)
                     {
-                        int numberOfRecordsToInsert = GetNumberOfTaskIterationCountForEveryXNumberOfMonth(numberOfMonths, input.NoOfMonths);
-                        for (int i = 0; i < numberOfRecordsToInsert; i++)
-                        {
-                            string groupId = GenerateGroupId(checklistCount + checklistNextID, i);
-                            input.GroupId = groupId;
-                            input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn,input.EndOfMonth);
-                            if(IsIterationFrequencyChanged)
-                            {
-                                if(input.ClosingMonth.Year >= DateTime.Now.Year && input.ClosingMonth.Month >= DateTime.Now.Month)
-                                {
-                                    await Create(input);
-                                }                               
-                            }
-                            else
-                            {
-                                await Create(input);
-                            }                          
-                            input.ClosingMonth = GetIterationBaseDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
-                            input.ClosingMonth = GetClosingMonthByIterationNumberForXNumberOfMonth(input.ClosingMonth, input.NoOfMonths);
-                        }
-                        IsIterationFrequencyChanged = false;
-                        IterationStartClosingMonth = DateTime.MinValue;
-                        EditedTaskClosingMonth = DateTime.MinValue;
+                        input.DueOn = 0;
+                        // input.ClosingMonth = new DateTime(input.ClosingMonth.Year, input.ClosingMonth.Month, GetTotalDaysByMonth(input.ClosingMonth));
                     }
-                }
-                else if (input.Frequency != FrequencyDto.None && input.Frequency != FrequencyDto.XNumberOfMonths)
-                {
-                    int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth.AddMonths(1), input.EndsOn);
-                    int frequency = GetFrequencyValue((int)input.Frequency);
-                    if(frequency == 1)
+                    if (input.Frequency == FrequencyDto.None)
                     {
-                        numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn);
-                    }
-
-                    if(frequency != 1)
-                    {
+                        string groupId = GenerateGroupId(checklistCount + checklistNextID, 0);
+                        input.GroupId = groupId;
                         input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
                         await Create(input);
-                    }                                 
-                    if(frequency == 3)
-                    {
-                       input.ClosingMonth = input.ClosingMonth.AddMonths(3);
                     }
-                    else if(frequency == 12)
+                    else if (input.NoOfMonths > 0)
                     {
-                        input.ClosingMonth = input.ClosingMonth.AddMonths(12);
-                    }
-                    //else if (frequency == 1)
-                    //{
-                    //    input.ClosingMonth = input.ClosingMonth.AddMonths(1);
-                    //}
-                    
-                    if (numberOfMonths > 0)
-                    {
-                        int numberOfRecordsToInsert = GetNumberOfTaskIterationCount(numberOfMonths, (int)input.Frequency);
-                        for (int i = 0; i < numberOfRecordsToInsert; i++)
+                        string groupIdInitial = GenerateGroupId(checklistCount + checklistNextID, 0);
+                        input.GroupId = groupIdInitial;
+                        // int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn);
+                        int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn);
+                        //input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+                        //await Create(input);
+                        input.ClosingMonth = input.ClosingMonth.AddMonths(input.NoOfMonths);
+                        if (numberOfMonths > 0)
                         {
-                            string groupId = GenerateGroupId(checklistCount + checklistNextID, i);
-                            input.GroupId = groupId;
-                            input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn,input.EndOfMonth);
-                            if (IsIterationFrequencyChanged)
+                            int numberOfRecordsToInsert = GetNumberOfTaskIterationCountForEveryXNumberOfMonth(numberOfMonths, input.NoOfMonths);
+                            for (int i = 1; i <= numberOfRecordsToInsert; i++)
                             {
-                                if (input.ClosingMonth.Date >= DateTime.Now.Date)
+                                string groupId = GenerateGroupId(checklistCount + checklistNextID, i);
+                                input.GroupId = groupId;
+                                if(i != 1)
                                 {
-                                    await Create(input);
+                                    input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+
                                 }
-                            }
-                            else
-                            {
                                 await Create(input);
+                                //if (IsIterationFrequencyChanged)
+                                //{
+                                //    if (input.ClosingMonth.Year >= DateTime.Now.Year && input.ClosingMonth.Month >= DateTime.Now.Month)
+                                //    {
+                                //        await Create(input);
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    await Create(input);
+                                //}
+                                input.ClosingMonth = GetIterationBaseDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
+                                input.ClosingMonth = GetClosingMonthByIterationNumberForXNumberOfMonth(input.ClosingMonth, input.NoOfMonths);
                             }
-                            input.ClosingMonth = GetIterationBaseDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
-                            input.ClosingMonth = GetClosingMonthByIterationNumber(input.ClosingMonth, (int)input.Frequency);
+                            IsIterationFrequencyChanged = false;
+                            IterationStartClosingMonth = DateTime.MinValue;
+                            EditedTaskClosingMonth = DateTime.MinValue;
                         }
-                        IsIterationFrequencyChanged = false;
-                        IterationStartClosingMonth = DateTime.MinValue;
-                        EditedTaskClosingMonth = DateTime.MinValue;
                     }
+                    else if (input.Frequency != FrequencyDto.None && input.Frequency != FrequencyDto.XNumberOfMonths)
+                    {
+                        string groupIdInitial = GenerateGroupId(checklistCount + checklistNextID, 0);
+                        input.GroupId = groupIdInitial;
+                        int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn);
+                        int frequency = GetFrequencyValue((int)input.Frequency);
+
+                        if (frequency == 1)
+                        {
+                            numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn);
+                        }
+
+
+                        /*   int diff = CompareDates(input.ClosingMonth);
+
+                           if (diff > 0)
+                           {
+                               input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+                               await Create(input);
+                           }
+                           */
+
+                        ////////if (IsIterationFrequencyChanged)
+                        ////////{
+
+                        int diff = CompareDates(input.ClosingMonth);
+                        if(diff <= 0)
+                        {
+                             if (frequency == 3)
+                            {
+                                input.ClosingMonth = input.ClosingMonth.AddMonths(3);
+                            }
+                            else if (frequency == 12)
+                            {
+                                input.ClosingMonth = input.ClosingMonth.AddMonths(12);
+                            }
+                        }
+                       
+                           
+                        ////////}
+                        ////////else
+                        ////////{
+                        ////////    if (frequency == 3)
+                        ////////    {
+                        ////////        input.ClosingMonth = input.ClosingMonth.AddMonths(3);
+                        ////////    }
+                        ////////    else if (frequency == 12)
+                        ////////    {
+                        ////////        input.ClosingMonth = input.ClosingMonth.AddMonths(12);
+                        ////////    }
+                        ////////}
+
+                        //else if (frequency == 1)
+                        //{
+                        //    input.ClosingMonth = input.ClosingMonth.AddMonths(1);
+                        //}
+
+                        if (numberOfMonths > 0)
+                        {
+                            int numberOfRecordsToInsert = GetNumberOfTaskIterationCount(numberOfMonths, (int)input.Frequency);
+                            for (int i = 1; i <= numberOfRecordsToInsert; i++)
+                            {
+                                string groupId = GenerateGroupId(checklistCount + checklistNextID, i);
+                                input.GroupId = groupId;
+                                input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+                                await Create(input);
+                                //////////if (IsIterationFrequencyChanged)
+                                //////////{
+                                ////if (input.ClosingMonth.Date.Year >= DateTime.Now.Date.Year && input.ClosingMonth.Date.Month >= DateTime.Now.Date.Year)
+                                ////{
+
+                                ////}
+                                //////////}
+                                //////////else
+                                //////////{
+                                //////////    await Create(input);
+                                //////////}
+                                input.ClosingMonth = GetIterationBaseDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
+                                input.ClosingMonth = GetClosingMonthByIterationNumber(input.ClosingMonth, (int)input.Frequency);
+                            }
+                            IsIterationFrequencyChanged = false;
+                            IterationStartClosingMonth = DateTime.MinValue;
+                            EditedTaskClosingMonth = DateTime.MinValue;
+                        }
+                    }
+                    #endregion
                 }
+                else
+                {
+                    #region|Initial create request| 
+                        input.CreationTime = input.CreationTime.AddDays(1);
+                        input.ClosingMonth = input.ClosingMonth.AddDays(1);
+                        input.EndsOn = input.EndsOn.AddDays(1);
+                        input.CreationTime = input.CreationTime.ToUniversalTime();
+                        input.ClosingMonth = input.ClosingMonth.ToUniversalTime();
+                        input.EndsOn = input.EndsOn.ToUniversalTime();
+                    var checklistCount = _closingChecklistRepository.GetAll().Max(p => (long?)p.Id) ?? 0;
+
+                    if (input.EndOfMonth)
+                    {
+                        input.DueOn = 0;
+                    }
+                    if (input.Frequency == FrequencyDto.None)
+                    {
+                        string groupId = GenerateGroupId(checklistCount + checklistNextID, 0);
+                        input.GroupId = groupId;
+                        input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+                        await Create(input);
+                    }
+                    else if (input.NoOfMonths > 0)
+                    {
+                        string groupIdInitial = GenerateGroupId(checklistCount + checklistNextID, 0);
+                        input.GroupId = groupIdInitial;
+                        // int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn);
+                        int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth.AddMonths(1), input.EndsOn);
+                        input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+                        await Create(input);
+                        input.ClosingMonth = input.ClosingMonth.AddMonths(input.NoOfMonths);
+                        if (numberOfMonths > 0)
+                        {
+                            int numberOfRecordsToInsert = GetNumberOfTaskIterationCountForEveryXNumberOfMonth(numberOfMonths, input.NoOfMonths);
+                            for (int i = 0; i < numberOfRecordsToInsert; i++)
+                            {
+                                string groupId = GenerateGroupId(checklistCount + checklistNextID, i + 1);
+                                input.GroupId = groupId;
+                                input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+                                await Create(input);
+                                //////if (IsIterationFrequencyChanged)
+                                //////{
+                                //////    if (input.ClosingMonth.Year >= DateTime.Now.Year && input.ClosingMonth.Month >= DateTime.Now.Month)
+                                //////    {
+                                //////        await Create(input);
+                                //////    }
+                                //////}
+                                //////else
+                                //////{
+                                //////    await Create(input);
+                                //////}
+                                input.ClosingMonth = GetIterationBaseDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
+                                input.ClosingMonth = GetClosingMonthByIterationNumberForXNumberOfMonth(input.ClosingMonth, input.NoOfMonths);
+                            }
+                            IsIterationFrequencyChanged = false;
+                            IterationStartClosingMonth = DateTime.MinValue;
+                            EditedTaskClosingMonth = DateTime.MinValue;
+                        }
+                    }
+                    else if (input.Frequency != FrequencyDto.None && input.Frequency != FrequencyDto.XNumberOfMonths)
+                    {
+                        string groupIdInitial = GenerateGroupId(checklistCount + checklistNextID, 0);
+                        input.GroupId = groupIdInitial;
+                        int numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth.AddMonths(1), input.EndsOn);
+                        int frequency = GetFrequencyValue((int)input.Frequency);
+                        if (frequency == 1)
+                        {
+                            numberOfMonths = GetNumberOfMonthsBetweenDates(input.ClosingMonth, input.EndsOn) -1;
+                        }
+                        input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+                        await Create(input);            
+                         if (frequency == 1)
+                        {
+                            input.ClosingMonth = input.ClosingMonth.AddMonths(1);
+                        }
+                       else if (frequency == 3)
+                        {
+                            input.ClosingMonth = input.ClosingMonth.AddMonths(3);
+                        }
+                        else if (frequency == 12)
+                        {
+                            input.ClosingMonth = input.ClosingMonth.AddMonths(12);
+                        }                                       
+                        if (numberOfMonths > 0)
+                        {
+                            int numberOfRecordsToInsert = GetNumberOfTaskIterationCount(numberOfMonths, (int)input.Frequency);
+                            for (int i = 0; i < numberOfRecordsToInsert; i++)
+                            {
+                                string groupId = GenerateGroupId(checklistCount + checklistNextID, i+1);
+                                input.GroupId = groupId;
+                                input.ClosingMonth = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+                                await Create(input);
+                                //////if (IsIterationFrequencyChanged)
+                                //////{
+                                //////    if (input.ClosingMonth.Date >= DateTime.Now.Date)
+                                //////    {
+                                //////        await Create(input);
+                                //////    }
+                                //////}
+                                //////else
+                                //////{
+                                //////    await Create(input);
+                                //////}
+                                input.ClosingMonth = GetIterationBaseDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn);
+                                input.ClosingMonth = GetClosingMonthByIterationNumber(input.ClosingMonth, (int)input.Frequency);
+                            }
+                            IsIterationFrequencyChanged = false;
+                            IterationStartClosingMonth = DateTime.MinValue;
+                            EditedTaskClosingMonth = DateTime.MinValue;
+                        }
+                    }
+                    #endregion
+                }
+
+
             }
             else
             {
@@ -312,11 +470,13 @@ namespace Zinlo.ClosingChecklist
 
                     //  input.ClosingMonth = task.ClosingMonth.AddMonths(1); // Start from the current task closingMonth
                     input.ClosingMonth = IterationStartClosingMonth;
+                   // input.EndsOn = new DateTime(input.EndsOn.Year, input.EndsOn.Month, 1);
                    // EditedTaskClosingMonth = task.ClosingMonth;
+                  
                     IsIterationFrequencyChanged = true;
                     input.Id = 0;
                     Flag = false;
-                    await CreateOrEdit(input);
+                  await  CreateOrEdit(input);
 
                     //Discard all 
                     // And create tasks onward with new frequency.
@@ -507,9 +667,10 @@ namespace Zinlo.ClosingChecklist
                 if(itemNumber == 0)
                 {
                     IterationStartClosingMonth = _closingChecklistRepository.FirstOrDefault(x => x.Id == item.Id).ClosingMonth;
+                    IterationStartClosingMonth = new DateTime(IterationStartClosingMonth.Year, IterationStartClosingMonth.Month, 1);
                 }
                 var currentItem = checklists.FirstOrDefault(x => x.Id == item.Id);
-                if(currentItem != null && currentItem.ClosingMonth.Date > DateTime.Now.Date)
+                if(currentItem != null && CompareDates(currentItem.ClosingMonth) > 0)
                 {
                     list.Add(item);
                 }
@@ -599,9 +760,19 @@ namespace Zinlo.ClosingChecklist
             var baseDate = closingMonth.AddDays(-numberOfDays);
             return baseDate;
         }
+<<<<<<< Updated upstream
         protected virtual async Task<bool> GetMonthStatus(DateTime dateTime)
         {
             return await _managementsAppService.GetMonthStatus(dateTime);
+=======
+        public int CompareDates(DateTime ClosingMonth)
+        {
+            DateTime dateTime = DateTime.Now;        
+            DateTime date1 = new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0);
+            DateTime date2 = new DateTime(ClosingMonth.Year, ClosingMonth.Month, 1, 0, 0, 0);
+            int result = DateTime.Compare(date2, date1);
+            return result;
+>>>>>>> Stashed changes
         }
         #endregion
     }

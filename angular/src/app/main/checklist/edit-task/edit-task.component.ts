@@ -194,6 +194,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     }
     else {
       this.enableValue = false;
+      this.getTaskForEdit.noOfMonths = 0;
     }
   }
   onDayChange() {
@@ -239,9 +240,11 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.isChecked = true;
     if (valu === 'true') {
       this.daysBeforeAfter = "Days Before";
+      this.checklist.dayBeforeAfter = true
     }
     else {
       this.daysBeforeAfter = "Days After";
+      this.checklist.dayBeforeAfter = false;
     }
   }
   commentClick() {
@@ -263,6 +266,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.noOfMonths = this.getTaskForEdit.noOfMonths;
     this.checklist.taskName = this.getTaskForEdit.taskName;
     this.checklist.instruction = this.getTaskForEdit.instruction;
+    this.checklist.dayBeforeAfter = this.getTaskForEdit.dayBeforeAfter;
     if (this.selectedUserId.selectedUserId != undefined)
     {
       this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
