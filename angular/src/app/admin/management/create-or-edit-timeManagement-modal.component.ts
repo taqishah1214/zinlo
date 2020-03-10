@@ -36,7 +36,6 @@ export class CreateOrEditTimeManagementModalComponent extends AppComponentBase {
         container.setViewMode('month');
       }
     onChange() {
-        debugger
         abp.event.trigger('app.dashboardFilters.dateRangePicker.onDateChange', this.selectedDateRange);
       }
     show(timeManagementId?: number): void {
@@ -44,8 +43,6 @@ export class CreateOrEditTimeManagementModalComponent extends AppComponentBase {
         if (!timeManagementId) {
             this.timeManagement = new CreateOrEditTimeManagementDto();
             this.timeManagement.id = timeManagementId;
-            this.timeManagement.openDate = moment().startOf('day');
-            this.timeManagement.closeDate = moment().startOf('day');
             this.timeManagement.month = moment().startOf('day');
 
             this.active = true;
@@ -63,9 +60,6 @@ export class CreateOrEditTimeManagementModalComponent extends AppComponentBase {
 
     save(): void {
             this.saving = true;
-            this.timeManagement.openDate = this.selectedDateRange[0];
-            this.timeManagement.closeDate = this.selectedDateRange[1];
-			debugger
             this._timeManagementsServiceProxy.createOrEdit(this.timeManagement)
              .pipe(finalize(() => { this.saving = false;}))
              .subscribe(() => {

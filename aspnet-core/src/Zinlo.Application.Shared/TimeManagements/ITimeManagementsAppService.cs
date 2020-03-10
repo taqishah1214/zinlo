@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
-using Zinlo.TimeManagements.Dtos;
+using Zinlo.TimeManagements.Dto;
 
 namespace Zinlo.TimeManagements
 {
@@ -15,7 +16,8 @@ namespace Zinlo.TimeManagements
 
 		Task Delete(EntityDto<long> input);
 		Task ChangeStatus(long id);
+        Task<bool> GetMonthStatus(DateTime dateTime);
 
-		
+
     }
 }

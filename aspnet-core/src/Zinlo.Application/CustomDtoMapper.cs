@@ -1,7 +1,5 @@
-﻿using Zinlo.TimeManagements.Dtos;
-using Zinlo.TimeManagements;
+﻿using Zinlo.TimeManagements;
 using Zinlo.Categories.Dtos;
-using Zinlo.Tests;
 using Zinlo.Categories;
 using Abp.Application.Editions;
 using Abp.Application.Features;
@@ -47,6 +45,7 @@ using Zinlo.AccountSubType.Dtos;
 using Zinlo.ChartsofAccount.Dtos;
 using Zinlo.Reconciliation.Dtos;
 using Zinlo.Reconciliation;
+using Zinlo.TimeManagements.Dto;
 
 namespace Zinlo
 {

@@ -118,7 +118,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = false;
   }
   onCreateTask(): void {
-    debugger
      if (this.checklist.endOfMonth) {
       this.checklist.endOfMonth = true;
     }

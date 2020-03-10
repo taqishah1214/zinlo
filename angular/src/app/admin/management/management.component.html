@@ -43,11 +43,6 @@
                                         {{l('Month')}}
                                         <p-sortIcon field="timeManagement.month"></p-sortIcon>
                                     </th>
-
-                                    <th style="width: 475px" pSortableColumn="openDate">
-                                        {{l('OpenCloseDate')}}
-                                        <p-sortIcon field="timeManagement.openDate"></p-sortIcon>
-                                    </th>
                                     
                                     <th style="width: 55px" pSortableColumn="status">
                                         {{l('Status')}}
@@ -58,25 +53,6 @@
                             </ng-template>                           
 							<ng-template pTemplate="body" let-record="$implicit">
                                 <tr>
-                                    <!-- <td style="width: 130px"
-                                        [hidden]="!isGrantedAny('Pages.Administration.TimeManagements.Edit', 'Pages.Administration.TimeManagements.Delete')">
-                                       <div class="btn-group dropdown" dropdown container="body">
-                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
-                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
-                                            </button>
-												<ul class="dropdown-menu"  *dropdownMenu>
-
-												<li>
-													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.TimeManagements.Edit')"
-														(click)="createOrEditTimeManagementModal.show(record.timeManagement.id)">{{l('Edit')}}</a>
-												</li>
-												<li>
-											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Administration.TimeManagements.Delete')"
-														(click)="deleteTimeManagement(record.timeManagement)">{{l('Delete')}}</a>
-												</li>
-                                            </ul>
-                                        </div>
-                                    </td> -->
                                     <td style="width:150px">
 										<span class="ui-column-title"> {{l('Month')}}</span>
                                         <span *ngIf="record.timeManagement.month">
@@ -84,21 +60,12 @@
                                         </span>
                                         <span *ngIf="!record.timeManagement.month">-</span>
                                     </td>
-                                    <td style="width:475px">
-										<span class="ui-column-title"> {{l('OpenCloseDate')}}</span>
-                                        <span *ngIf="record.timeManagement.openDate && record.timeManagement.closeDate">
-											{{record.timeManagement.openDate | momentFormat:'MMM Do YYYY'}} - {{record.timeManagement.closeDate | momentFormat:'MMM Do YYYY'}}
-                                        </span>
-                                        <span *ngIf="!record.timeManagement.openDate">-</span>
-                                    </td>
                                     <td style="width:55px">
                                         <span class="ui-column-title"> {{l('Status')}}</span>
                                         <label class="switch">
                                             <input type="checkbox" [checked]="record.timeManagement.status" (change)="changeStatus(record.timeManagement.id)">
                                             <span class="slider round"></span>
                                         </label>
-                                        <!-- <div *ngIf="record.timeManagement.status" class="text-center"><i class="fa fa-check-circle kt--font-success" title="True"></i></div>
-										<div *ngIf="!record.timeManagement.status" class="text-center"><i class="fa fa-times-circle" title="False"></i></div> -->
                                     </td>
 
                                 </tr>

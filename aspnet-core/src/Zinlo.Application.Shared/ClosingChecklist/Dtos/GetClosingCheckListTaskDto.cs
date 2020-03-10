@@ -12,14 +12,12 @@ namespace Zinlo.ClosingChecklist.Dtos
 
     public class TasksGroup : GetClosingCheckListTaskDto
     {
-        //public TasksGroup()
-        //{
-        //    this.group = new List<ClosingCheckListForViewDto>();
-        //}
+        
 
         public List<GetUserWithPicture> OverallMonthlyAssignee { get; set; }
         public DateTime CreationTime { get; set; }
-        public IEnumerable<ClosingCheckListForViewDto> group { get; set; }
+        public IEnumerable<ClosingCheckListForViewDto> Group { get; set; }
+        public bool MonthStatus { get; set; }
     }
 }
 

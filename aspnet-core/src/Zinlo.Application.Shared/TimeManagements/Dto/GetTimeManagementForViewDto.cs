@@ -1,4 +1,4 @@
-﻿namespace Zinlo.TimeManagements.Dtos
+﻿namespace Zinlo.TimeManagements.Dto
 {
     public class GetTimeManagementForViewDto
     {

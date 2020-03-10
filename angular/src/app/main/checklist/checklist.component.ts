@@ -86,15 +86,12 @@ export class Checklist extends AppComponentBase implements OnInit {
   }
   filterByMonth(event) {
     if(event===1){
-      debugger
       this.selectedDate =new Date(add(this.selectedDate, 1, "month"));
    }
    else if(event === -1) {
-     debugger
      this.selectedDate = new Date( subtract(this.selectedDate, 1, "month"));
    }
    else {
-     debugger
      this.selectedDate = event;
    }
    
@@ -119,6 +116,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
     ).subscribe(result => {
+      debugger
       this.primengTableHelper.totalRecordsCount = result.totalCount;
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();

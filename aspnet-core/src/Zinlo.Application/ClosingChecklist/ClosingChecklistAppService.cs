@@ -19,6 +19,7 @@ using Zinlo.Attachments;
 using Zinlo.Attachments.Dtos;
 using Zinlo.Authorization.Users.Profile;
 using NUglify.Helpers;
+using Zinlo.TimeManagements;
 
 namespace Zinlo.ClosingChecklist
 {
@@ -30,6 +31,7 @@ namespace Zinlo.ClosingChecklist
         private readonly IRepository<User, long> _userRepository;
         private readonly IAttachmentAppService _attachmentAppService;
         private readonly IProfileAppService _profileAppService;
+        private readonly ITimeManagementsAppService _managementsAppService;
         #endregion
         #region|Global Parameters|
         public bool Flag = true;
@@ -42,12 +44,13 @@ namespace Zinlo.ClosingChecklist
                                           IRepository<ClosingChecklist, long> closingChecklistRepository,
                                           UserManager userManager, ICommentAppService commentAppService,
                                           IRepository<User, long> userRepository,
-                                          IAttachmentAppService attachmentAppService)
+                                          IAttachmentAppService attachmentAppService, ITimeManagementsAppService managementsAppService)
         {
             _closingChecklistRepository = closingChecklistRepository;
             _commentAppService = commentAppService;
             _userRepository = userRepository;
             _attachmentAppService = attachmentAppService;
+            _managementsAppService = managementsAppService;
             _profileAppService = profileAppService;
         }
         #endregion
@@ -60,6 +63,7 @@ namespace Zinlo.ClosingChecklist
                                     .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
                                     .WhereIf(input.DateFilter != null, e => false || e.ClosingMonth.Month == input.DateFilter.Value.Month && e.ClosingMonth.Year == input.DateFilter.Value.Year)
                                     .WhereIf(input.AssigneeId != 0, e => false || e.AssigneeId == input.AssigneeId);
+            var status = await GetMonthStatus((DateTime) input.DateFilter);
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "ClosingMonth asc").PageBy(input);
             var totalCount = query.Count();
             var getUserWithPictures = (from o in query.ToList()
@@ -90,9 +94,10 @@ namespace Zinlo.ClosingChecklist
             var result = closingCheckList.ToList();
             var response = result.GroupBy(x => x.CreationTime.Date).Select(x => new TasksGroup
             {
+                MonthStatus = status,
                 OverallMonthlyAssignee = getUserWithPictures,
                 CreationTime = x.Key,
-                group = x.Select(y => new ClosingCheckListForViewDto
+                Group = x.Select(y => new ClosingCheckListForViewDto
                 {
                     CreationTime = y.CreationTime,
                     AssigneeId = y.AssigneeId,
@@ -591,6 +596,10 @@ namespace Zinlo.ClosingChecklist
         {
             var baseDate = closingMonth.AddDays(-numberOfDays);
             return baseDate;
+        }
+        protected virtual async Task<bool> GetMonthStatus(DateTime dateTime)
+        {
+            return await _managementsAppService.GetMonthStatus(dateTime);
         }
         #endregion
     }

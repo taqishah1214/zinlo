@@ -10,15 +10,8 @@ namespace Zinlo.TimeManagements
     public class TimeManagement : CreationAuditedEntity<long> , IMustHaveTenant
     {
         public int TenantId { get; set; }
-        
-		public virtual DateTime OpenDate { get; set; }
-		
-		public virtual DateTime CloseDate { get; set; }
-		
-		public virtual DateTime Month { get; set; }
-		
-		public virtual bool Status { get; set; }
-		
+        public virtual DateTime Month { get; set; }
+        public virtual bool Status { get; set; }
 
     }
 }

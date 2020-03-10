@@ -1,7 +1,7 @@
 ﻿using Abp.Application.Services.Dto;
 using System;
 
-namespace Zinlo.TimeManagements.Dtos
+namespace Zinlo.TimeManagements.Dto
 {
     public class GetAllTimeManagementsInput : PagedAndSortedResultRequestDto
     {

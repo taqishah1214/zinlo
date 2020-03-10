@@ -32,7 +32,6 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     this.recordId = history.state.data.id;
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
-    debugger;
     if(this.recordId != 0)
     {
       this.title = "Edit Item";

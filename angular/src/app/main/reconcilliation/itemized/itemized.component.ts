@@ -86,7 +86,6 @@ RedirectToAddNew(val){
 }
 
 RedirectToDetail(val){
-  debugger;
   this.recordId = val;
   this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'], { state: { data: { id: this.recordId } } });
   

@@ -1,6 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 
-namespace Zinlo.TimeManagements.Dtos
+namespace Zinlo.TimeManagements.Dto
 {
     public class GetAllForLookupTableInput : PagedAndSortedResultRequestDto
     {

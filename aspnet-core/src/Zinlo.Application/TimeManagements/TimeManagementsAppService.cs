@@ -4,7 +4,7 @@ using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
-using Zinlo.TimeManagements.Dtos;
+using Zinlo.TimeManagements.Dto;
 using Abp.Application.Services.Dto;
 using Zinlo.Authorization;
 using Abp.Authorization;
@@ -40,8 +40,6 @@ namespace Zinlo.TimeManagements
                                   {
                                       TimeManagement = new TimeManagementDto
                                       {
-                                          OpenDate = o.OpenDate,
-                                          CloseDate = o.CloseDate,
                                           Month = o.Month,
                                           Status = o.Status,
                                           Id = o.Id
@@ -125,6 +123,13 @@ namespace Zinlo.TimeManagements
 
             timeManagement.Status = !timeManagement.Status;
             await _timeManagementRepository.UpdateAsync(timeManagement);
+        }
+
+        public async Task<bool> GetMonthStatus(DateTime dateTime)
+        {
+            var management = await _timeManagementRepository.FirstOrDefaultAsync(p =>
+                p.Month.Month.Equals(dateTime.Month) && p.Month.Year.Equals(dateTime.Year));
+            return management.Status;
         }
 
         protected virtual async Task<TimeManagement> GetManagement(long id)

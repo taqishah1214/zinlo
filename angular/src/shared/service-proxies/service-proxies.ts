@@ -12869,6 +12869,62 @@ export class TimeManagementsServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param dateTime (optional) 
+     * @return Success
+     */
+    getMonthStatus(dateTime: moment.Moment | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/TimeManagements/GetMonthStatus?";
+        if (dateTime === null)
+            throw new Error("The parameter 'dateTime' cannot be null.");
+        else if (dateTime !== undefined)
+            url_ += "dateTime=" + encodeURIComponent(dateTime ? "" + dateTime.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMonthStatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMonthStatus(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetMonthStatus(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
 }
 
 @Injectable()
@@ -17246,6 +17302,7 @@ export class TasksGroup implements ITasksGroup {
     overallMonthlyAssignee!: GetUserWithPicture[] | undefined;
     creationTime!: moment.Moment;
     group!: ClosingCheckListForViewDto[] | undefined;
+    monthStatus!: boolean;
     closingCheckListForViewDto!: ClosingCheckListForViewDto;
     sorting!: string | undefined;
     skipCount!: number;
@@ -17273,6 +17330,7 @@ export class TasksGroup implements ITasksGroup {
                 for (let item of data["group"])
                     this.group!.push(ClosingCheckListForViewDto.fromJS(item));
             }
+            this.monthStatus = data["monthStatus"];
             this.closingCheckListForViewDto = data["closingCheckListForViewDto"] ? ClosingCheckListForViewDto.fromJS(data["closingCheckListForViewDto"]) : <any>undefined;
             this.sorting = data["sorting"];
             this.skipCount = data["skipCount"];
@@ -17300,6 +17358,7 @@ export class TasksGroup implements ITasksGroup {
             for (let item of this.group)
                 data["group"].push(item.toJSON());
         }
+        data["monthStatus"] = this.monthStatus;
         data["closingCheckListForViewDto"] = this.closingCheckListForViewDto ? this.closingCheckListForViewDto.toJSON() : <any>undefined;
         data["sorting"] = this.sorting;
         data["skipCount"] = this.skipCount;
@@ -17312,6 +17371,7 @@ export interface ITasksGroup {
     overallMonthlyAssignee: GetUserWithPicture[] | undefined;
     creationTime: moment.Moment;
     group: ClosingCheckListForViewDto[] | undefined;
+    monthStatus: boolean;
     closingCheckListForViewDto: ClosingCheckListForViewDto;
     sorting: string | undefined;
     skipCount: number;
@@ -26817,8 +26877,6 @@ export interface ITenantSettingsEditDto {
 }
 
 export class TimeManagementDto implements ITimeManagementDto {
-    openDate!: moment.Moment;
-    closeDate!: moment.Moment;
     month!: moment.Moment;
     status!: boolean;
     id!: number;
@@ -26834,8 +26892,6 @@ export class TimeManagementDto implements ITimeManagementDto {
 
     init(data?: any) {
         if (data) {
-            this.openDate = data["openDate"] ? moment(data["openDate"].toString()) : <any>undefined;
-            this.closeDate = data["closeDate"] ? moment(data["closeDate"].toString()) : <any>undefined;
             this.month = data["month"] ? moment(data["month"].toString()) : <any>undefined;
             this.status = data["status"];
             this.id = data["id"];
@@ -26851,8 +26907,6 @@ export class TimeManagementDto implements ITimeManagementDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["openDate"] = this.openDate ? this.openDate.toISOString() : <any>undefined;
-        data["closeDate"] = this.closeDate ? this.closeDate.toISOString() : <any>undefined;
         data["month"] = this.month ? this.month.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["id"] = this.id;
@@ -26861,8 +26915,6 @@ export class TimeManagementDto implements ITimeManagementDto {
 }
 
 export interface ITimeManagementDto {
-    openDate: moment.Moment;
-    closeDate: moment.Moment;
     month: moment.Moment;
     status: boolean;
     id: number;
@@ -26953,8 +27005,6 @@ export interface IPagedResultDtoOfGetTimeManagementForViewDto {
 }
 
 export class CreateOrEditTimeManagementDto implements ICreateOrEditTimeManagementDto {
-    openDate!: moment.Moment;
-    closeDate!: moment.Moment;
     month!: moment.Moment;
     status!: boolean;
     id!: number | undefined;
@@ -26970,8 +27020,6 @@ export class CreateOrEditTimeManagementDto implements ICreateOrEditTimeManagemen
 
     init(data?: any) {
         if (data) {
-            this.openDate = data["openDate"] ? moment(data["openDate"].toString()) : <any>undefined;
-            this.closeDate = data["closeDate"] ? moment(data["closeDate"].toString()) : <any>undefined;
             this.month = data["month"] ? moment(data["month"].toString()) : <any>undefined;
             this.status = data["status"];
             this.id = data["id"];
@@ -26987,8 +27035,6 @@ export class CreateOrEditTimeManagementDto implements ICreateOrEditTimeManagemen
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["openDate"] = this.openDate ? this.openDate.toISOString() : <any>undefined;
-        data["closeDate"] = this.closeDate ? this.closeDate.toISOString() : <any>undefined;
         data["month"] = this.month ? this.month.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["id"] = this.id;
@@ -26997,8 +27043,6 @@ export class CreateOrEditTimeManagementDto implements ICreateOrEditTimeManagemen
 }
 
 export interface ICreateOrEditTimeManagementDto {
-    openDate: moment.Moment;
-    closeDate: moment.Moment;
     month: moment.Moment;
     status: boolean;
     id: number | undefined;
