@@ -32,7 +32,7 @@
                                 <button class="btn arrow-btn right-arrow-btn btn-square" (click)="filterByMonth(1)">
                                     <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
                                 </button>
-                                <h5>{{selectedDate | momentFormat:'MMMM YYYY'}}</h5>
+                                <h5  style="cursor: default;">{{selectedDate | momentFormat:'MMMM YYYY'}}</h5>
 
                             </div>
                             <div class="record-card-header-bottom-inner2">
@@ -188,11 +188,11 @@
                                         <td (click)="RedirectToDetail(j.id)" *ngIf="value != 0">
                                             <span class="">{{""}}</span>
                                         </td>
-                                        <td class="task-cell" (click)="RedirectToDetail(j.id)">
-                                            <span class="task-box"><span
+                                        <td class="task-cell"  (click)="RedirectToDetail(j.id)">
+                                            <span style="cursor: pointer;" class="task-box"><span
                                                     class="task-box-dot-{{j.StatusColor}}"></span><b>{{j.taskName}}</b></span>
                                         </td>
-                                        <td class="cat-cell" (click)="RedirectToDetail(j.id)">
+                                        <td class="cat-cell" style="cursor: default;" (click)="RedirectToDetail(j.id)">
                                             <span class="category-name bg-lightgrey">{{j.category}}</span>
                                         </td>
                                         <td class="status-cell">

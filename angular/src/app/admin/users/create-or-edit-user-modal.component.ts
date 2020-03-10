@@ -31,7 +31,7 @@ export class CreateOrEditUserModalComponent extends AppComponentBase {
 
     user: UserEditDto = new UserEditDto();
     roles: UserRoleDto[];
-    sendActivationEmail = true;
+    sendActivationEmail = false;
     setRandomPassword = true;
     passwordComplexityInfo = '';
     profilePicture: string;
@@ -52,7 +52,7 @@ export class CreateOrEditUserModalComponent extends AppComponentBase {
         if (!userId) {
             this.active = true;
             this.setRandomPassword = true;
-            this.sendActivationEmail = true;
+            this.sendActivationEmail = false;
         }
 
         this._userService.getUserForEdit(userId).subscribe(userResult => {
