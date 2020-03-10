@@ -117,12 +117,13 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
     ).subscribe(result => {
-      debugger
       this.primengTableHelper.totalRecordsCount = result.totalCount;
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
+      if(result.items.length>0){
       this.monthStatus = result.items[0].monthStatus;
+      }
       this.ClosingCheckList = result.items
       this.ClosingCheckList.forEach(j => {
         j.group.forEach(i => {

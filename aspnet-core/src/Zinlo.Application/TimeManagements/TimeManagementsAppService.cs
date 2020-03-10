@@ -131,12 +131,16 @@ namespace Zinlo.TimeManagements
                 p.Month.Month.Equals(dateTime.Month) && p.Month.Year.Equals(dateTime.Year));
             if (management==null)
             {
-                var createManagement = new CreateOrEditTimeManagementDto()
+                if (dateTime.Year.Equals(DateTime.Now.Year) && dateTime.Month.Equals(DateTime.Now.Month))
                 {
-                    Month = dateTime,
-                    Status = false,
-                };
-                await Create(createManagement);
+                    var createManagement = new CreateOrEditTimeManagementDto()
+                    {
+                        Month = dateTime,
+                        Status = false,
+                    };
+                    await Create(createManagement);
+                }
+               
                 return false;
             }
             return management.Status;
