@@ -760,11 +760,10 @@ namespace Zinlo.ClosingChecklist
             var baseDate = closingMonth.AddDays(-numberOfDays);
             return baseDate;
         }
-<<<<<<< Updated upstream
         protected virtual async Task<bool> GetMonthStatus(DateTime dateTime)
         {
             return await _managementsAppService.GetMonthStatus(dateTime);
-=======
+        }
         public int CompareDates(DateTime ClosingMonth)
         {
             DateTime dateTime = DateTime.Now;        
@@ -772,7 +771,6 @@ namespace Zinlo.ClosingChecklist
             DateTime date2 = new DateTime(ClosingMonth.Year, ClosingMonth.Month, 1, 0, 0, 0);
             int result = DateTime.Compare(date2, date1);
             return result;
->>>>>>> Stashed changes
         }
         #endregion
     }
