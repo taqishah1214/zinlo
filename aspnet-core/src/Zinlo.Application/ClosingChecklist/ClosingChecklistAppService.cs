@@ -19,6 +19,7 @@ using Zinlo.Attachments;
 using Zinlo.Attachments.Dtos;
 using Zinlo.Authorization.Users.Profile;
 using NUglify.Helpers;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using Zinlo.TimeManagements;
 
 namespace Zinlo.ClosingChecklist
@@ -57,14 +58,15 @@ namespace Zinlo.ClosingChecklist
         #region|Get All|
         public async Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input)
         {
-            var query = _closingChecklistRepository.GetAll().Include(rest => rest.Category).Include(u => u.Assignee)
+
+            if (!(input.DateFilter != null && input.DateFilter < DateTime.Now.AddMonths(1)))return new PagedResultDto<TasksGroup>();
+                var query = _closingChecklistRepository.GetAll().Where(e=>e.ClosingMonth.Month == input.DateFilter.Value.Month && e.ClosingMonth.Year == input.DateFilter.Value.Year).Include(rest => rest.Category).Include(u => u.Assignee)
                                     .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.TaskName.Contains(input.Filter))
                                     .WhereIf(input.StatusFilter != 0, e => false || e.Status == (Zinlo.ClosingChecklist.Status)input.StatusFilter)
                                     .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
-                                    .WhereIf(input.DateFilter != null, e => false || e.ClosingMonth.Month == input.DateFilter.Value.Month && e.ClosingMonth.Year == input.DateFilter.Value.Year)
                                     .WhereIf(input.AssigneeId != 0, e => false || e.AssigneeId == input.AssigneeId);
             var status = await GetMonthStatus((DateTime) input.DateFilter);
-            var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "ClosingMonth asc").PageBy(input);
+            var pagedAndFilteredTasks = query.PageBy(input);
             var totalCount = query.Count();
             var getUserWithPictures = (from o in query.ToList()
 
@@ -91,6 +93,7 @@ namespace Zinlo.ClosingChecklist
                                        CreationTime = o.ClosingMonth,
                                        ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
                                    };
+
             var result = closingCheckList.ToList();
             var response = result.GroupBy(x => x.CreationTime.Date).Select(x => new TasksGroup
             {
@@ -562,7 +565,7 @@ namespace Zinlo.ClosingChecklist
                 output.Status = (StatusDto) task.Status;
                 output.CategoryName = task.Category.Title;
                 output.CategoryId = task.CategoryId;
-                output.comments = await _commentAppService.GetComments(1, task.Id);
+                output.Comments = await _commentAppService.GetComments(1, task.Id);
                 output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
                 output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue
                     ? "data:image/jpeg;base64," + _profileAppService
