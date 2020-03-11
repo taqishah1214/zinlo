@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Zinlo.Attachments.Dtos;
 
 namespace Zinlo.Reconciliation.Dtos
 {
@@ -10,5 +11,7 @@ namespace Zinlo.Reconciliation.Dtos
         public DateTime Date { get; set; }
         public double Amount { get; set; }
         public string Description { get; set; }
+        public List<GetAttachmentsDto> Attachments { get; set; }
+
     }
 }

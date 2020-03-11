@@ -21,7 +21,7 @@
                                     </h3>
                                     <h6 class="ml-3 mb-0">
                                         Account No
-                                        <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountName}}</span>
+                                        <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountNo}}</span>
                                         Account Name
                                         <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountName}}</span>
                                     </h6>
@@ -33,9 +33,11 @@
                                             <i class="la la-arrow-left"></i>
                                             Back
                                         </a>
-                                        <button class="btn btn-brand" (click)="RedirectToAddNew(0)"><i
-                                                class="fa fa-plus"></i>
-                                            {{"AddNew" | localize}}</button>
+
+                                        <button class="btn btn-brand" (click)="RedirectToAddandEditNewAmortize(0)"><i
+                                            class="fa fa-plus"></i>
+                                        {{"AddNew" | localize}}</button>
+
                                     </div>
                                 </div>
                             </div>
@@ -46,8 +48,8 @@
                             <div class="row align-items-center mb-4">
                                 <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
                                     <div class="date-picker">
-                                        <input id="monthValue"
-                                            value="january 2020" class="date-field" name="monthValue"
+                                        <input id="monthValue" 
+                                            value="january 2020" (ngModelChange)="filterByMonth($event)" class="date-field"  name="monthValue"
                                             [(ngModel)]="monthValue" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                             (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
                                     </div>
@@ -60,7 +62,7 @@
                         <div class="table-box">
                         <!--<Primeng-TurboTable-Start>-->
                         <div class="task-table" [busyIf]="primengTableHelper.isLoading">
-                            <p-table #dataTable class=" record-table" (onLazyLoad)="getAllItems($event)"
+                            <p-table #dataTable class=" record-table" (onLazyLoad)="getAllAmortizedList($event)"
                                 [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [scrollable]="true" ScrollWidth="100%"
@@ -68,21 +70,21 @@
                                 [resizableColumns]="primengTableHelper.resizableColumns">
                                 <ng-template pTemplate="header">
                                     <tr  class="task-table-inner">
-                                        <th class="accountNo-cell" scope="col" pSortableColumn="Date">
-                                            Date
-                                            <p-sortIcon field="Date"></p-sortIcon>
+                                        <th class="accountNo-cell" scope="col" pSortableColumn="AccountNumber">
+                                            Start Date
+                                            <p-sortIcon field="AccountNumber"></p-sortIcon>
                                         </th>
-                                        <th class="accountName-cell" scope="col">
+                                        <th class="accountName-cell" scope="col" pSortableColumn="AccountType">
                                             Description
+                                            <p-sortIcon field="AccountType"></p-sortIcon>
                                         </th>
-                                        
                                         <th class="reconciliation-cell" scope="col">
                                             Amount
                                         </th>
-                                 
-                                        <th class="action-cell" scope="col">
+                                        <th class="accountSubtype-cell" scope="col">
                                             Attachments
                                         </th>
+                                        
 
                                         <th class="cell-none">
                                             <!-- <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div> -->
@@ -94,65 +96,79 @@
                         </div>
                         <!--<Primeng-TurboTable-End> {{i.creationTime | date:'d MMM EEE'}} -->
                         <table class="table record-table">
-                            <tbody *ngFor="let item of items">
+                            <tbody *ngFor="let item of itemList">
                                 <tr  class="task-table-inner table-repeater">
                                     <td class="accountNo-cell">
                                         <span class="">{{item.date | date}}</span>
-                                    </td>                                   
-                                    <td class="accountName-cell" (click)="RedirectToAddNew(item.id)">
+                                    </td>
+                                    <td class="accountName-cell" (click)="RedirectToAddandEditNewAmortize(item.id)">
                                         <span class="task-box">{{item.description}}</span>
                                     </td>
                                     <td class="reconciliation-cell">
-                                        <span class="">{{item.amount}}</span>
+                                        <span class="">$ {{item.amount | formater }}</span>
                                     </td>
-                                    <td class="reconciliation-cell">
+                                    <td class="accountSubtype-cell">
                                         <span class="">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <div class="drag_drop_box">
-                                                        <div class="attachments_section">
-                                                            <a target="_blank" class="attachement_btn">
-                                                                <img src="../../../../assets/media/files/pdf.svg">
-                                                                <span> Dumpy Attachemt</span>
-                                                            </a>
-                                                        </div>
+                                                    <div *ngIf="item.attachments?.length > 0" class="drag_drop_box">
+                                                        <div *ngFor="let i of item.attachments"  class="attachments_section">
+                                                            <a  href="{{i.attachmentUrl}}" target="_blank"
+                                                                download="{{i.attachmentUrl}}" class="attachement_btn">
+                                                                <img src="../../../../assets/media/files/{{i.attachmentExtension}}">
+                                                                <span>{{i.attachmentName}}</span>
+                                                            </a>     
+                                                        </div>    
                                                     </div>
+
+                                                    <div *ngIf="item.attachments?.length == 0" class="drag_drop_box">
+                                                        <div  class="attachments_section_none">
+                                                            <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
+                                                                <span>No Attachments</span>
+                                                            </a>
+                                                        </div>    
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </span>
+
+                                        <!-- <span  class="attatchments-box ">+3</span> -->
+
                                     </td>
                                     <td class="toggle-btn-cell">
                                         <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                     </td>
                                 </tr>
                                 <!-- show-collapsible-row -->
-                                <tr *ngIf="collapsibleRow == true && item.id == collapsibleRowId"
-                                    class="table-row-collapsible ">
+                                 <tr *ngIf="collapsibleRow == true && item.id == collapsibleRowId"
+                                    class="table-row-collapsible">
                                     <td>
                                         <ul>
-                                            <li class="reconciliation-cell collapsable-cell">
-                                                <div class="thead-box"><b>Net Amount : </b></div>
-                                                <div class="tdata-box">
-                                                    <span class="">{{item.netAmount}}</span>
-                                                </div>
-                                            </li>
-                                            <li class="accountSubtype-cell collapsable-cell">
-                                                <div class="thead-box"><b> Attachments </b></div>
-                                                <div class="tdata-box">
+                                            <li >
+                                                <div class="thead-box"><b> Attachments : </b></div>
+                                                <div class="tdata-box d-flex">
                                                     <span class="">
                                                         <div class="row">
                                                             <div class="col-md-12">
-                                                                <div class="drag_drop_box">
-                                                                    <div class="attachments_section">
-                                                                        <a target="_blank" class="attachement_btn">
-                                                                            <img src="../../../../assets/media/files/pdf.svg">
-                                                                            <span> Dumpy Attachemt</span>
+                                                                <div *ngFor="let i of item.attachments" class="drag_drop_box">
+                                                                    <div  *ngIf="i.length!=0" class="attachments_section">
+                                                                        <a  href="{{i.attachmentUrl}}" target="_blank"
+                                                                            download="{{i.attachmentUrl}}" class="attachement_btn">
+                                                                            <img src="../../../../assets/media/files/{{i.attachmentExtension}}">
+                                                                            <span>{{i.attachmentName}}</span>
                                                                         </a>
                                                                     </div>
+                                                                    <div *ngIf="i.length==0" class="drag_drop_box">
+                                                                    <a>
+                                                                        <span>No Attachments</span>
+                                                                    </a>
+                                                                </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </span>
+                                                     <span class="attatchments-box ">+3</span> 
                                                 </div>
                                             </li>
                                         </ul>
@@ -166,7 +182,6 @@
                     </div>
                     <div class="pagination-block">
                         <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
-                            (onPageChange)="getAllItems($event)"
                             [totalRecords]="primengTableHelper.totalRecordsCount"
                             [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                             class="paginator-counter">
@@ -196,17 +211,16 @@
                                             </div>
                                             <div class="kt-widget3__info">
                                                 <a class="kt-widget3__username">
-                                                    hammmmmda
+                                                    hammmad
                                                 </a><br>
                                             </div>
                                             <span class="kt-widget3__status kt-font-info">
-                                                2 days 2109
+                                                2 days 2020
                                             </span>
                                         </div>
                                         <div class="kt-widget3__body show-comments-inner">
                                             <p class="kt-widget3__text commentViewBox">
-                                                fadugyiuogsijuhgsjiuhgujkhuhcafyghujkcgjhhshujsckjhsjhugkhsjhjhghjgshdjughjhkghghgkghghggh
-                                                fjhkfghkgcfxghkggxfghkhcgxhfhkxfgjhkfhxkgxfhgcgxfghvcgxfcghvcgxgk
+                                              Some Comments 
                                             </p>
                                         </div>
                                     </div>
@@ -226,7 +240,7 @@
 
                                                 <div *ngIf="!UserProfilePicture"
                                                     class="kt-badge kt-badge--xl kt-badge--primary">
-                                                    {{userSignInName | firstLetterOfWords}}
+                                                    {{userName | firstLetterOfWords}}
                                                 </div>
                                             </div>
                                         </div>
@@ -243,19 +257,19 @@
                                 <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                       <div class="col-md-6">
                             <div class="report-container">
                                 <div class="report-box d-flex flex-wrap">
                                     <div class="report-box-inner1 w-50 px-2 text-navyblue">Total:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 87,869.25</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">${{TotalAmount | formater }}</div>
                                 </div>
                                 <div class="report-box d-flex flex-wrap">
                                     <div class="report-box-inner1 w-50 px-2 text-navyblue">Trial Balance:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 89,869.25</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 0</div>
                                 </div>
                                 <div class="report-box d-flex flex-wrap">
                                     <div class="report-box-inner1 w-50 px-2 text-navyblue">Variance:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 2000</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 0</div>
                                 </div>
                             </div>
                             <div class="Check-reconcile-btn">

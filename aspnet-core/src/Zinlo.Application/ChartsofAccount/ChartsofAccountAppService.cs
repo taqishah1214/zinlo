@@ -66,6 +66,7 @@ namespace Zinlo.ChartsofAccount
                                    ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : "",
                                    AssigneeId = o.Assignee.Id,
                                    StatusId = (int)o.Status,
+                                   Balance = o.Balance,
                                    OverallMonthlyAssignee = getUserWithPictures
                                };
 
@@ -144,6 +145,28 @@ namespace Zinlo.ChartsofAccount
                 account.Status = (Status)selectedStatusId;
                 _chartsofAccountRepository.Update(account);
             }
+        }
+
+        public async Task AddandUpdateBalance(double balance, long id)
+        {
+            var account = await _chartsofAccountRepository.FirstOrDefaultAsync(id);
+            if (account != null)
+            {
+                account.Balance = balance;
+                await _chartsofAccountRepository.UpdateAsync(account);
+            }
+        }
+
+        public async Task<int> CheckReconcilled(long id)
+        {
+            int result = 0;
+            var account = await _chartsofAccountRepository.FirstOrDefaultAsync(id);
+            if (account != null)
+            {
+               result = (int)account.Reconciled;   
+            }
+            return result;
+
         }
     }
 }

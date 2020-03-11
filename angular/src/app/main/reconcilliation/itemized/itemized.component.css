@@ -32,6 +32,11 @@
     width: 200px;
     padding: 10px 5px;
     }
+    .attachments_section_none {
+        display: inline-block;
+        width: 200px;
+        padding: 10px 5px;
+    }
     .attachments_section .attachement_btn {
     background: transparent;
     border: none;
@@ -783,6 +788,9 @@
     }
     .table-row-collapsible ul li{
         margin-bottom: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
     }
     .table-row-collapsible{
         display: none;
@@ -911,24 +919,33 @@
             }
         .table-row-collapsible{
             display: table-row;
+            cursor: pointer;
         }
         .assignee-cell{
             display: none;
+            cursor: pointer;
         }
         .assignee-cell-item{
             display: flex;
         }
         .accountNo-cell {
             width: 120px;
+            cursor: pointer;
+        }
+        .accountName-cell {
+            cursor: pointer;
         }
         .toggle-btn-cell .taggle-btn{
             display: table-cell;
+            cursor: pointer;
         }
         .category-selector{
             width: 150px;
+            cursor: pointer;
         }
         .category-selector .dropdown-menu{
             width: 150px;
+            cursor: pointer;
         }
     }
     @media only screen and (max-width:1140px){
@@ -1028,6 +1045,7 @@
     }    
     .date-picker {
         position: relative;
+        cursor: pointer;
     }
     .date-picker::after{
         content:"";
@@ -1052,28 +1070,34 @@
     }
     .accountNo-cell{
         width: 160px;
+        cursor: pointer;
     }
     .accountNo-cell span {
         width: 100%;
         position: relative;
         word-break: break-all;
+        cursor: pointer;
     }
     .accountSubtype-cell {
         width: 200px;
+        cursor: pointer;
     }
     .reconciliation-cell{
-    
+        cursor: pointer;
         width: 220px;
     }
     .accountType-cell{
         width: 170px;
+        cursor: pointer;
     }
     .assignee-cell {
         width:260px;
+        cursor: pointer;
     } 
     
     .action-cell  {
-        width:180px;
+        width:310px;
+        cursor: pointer;
     }
     
     .cell-none{
@@ -1098,7 +1122,7 @@
         max-width: 160px;
     }
     .table-row-collapsible td ul{
-        width: 300px;
+        width: 500px;
     }
     .uppy-modal ::ng-deep .uppy-Dashboard-inner {
         min-height:100px !important;
@@ -1217,4 +1241,28 @@
     .download-modal-row .col-md-6 img {
         width: 60px;
         margin-bottom: 20px;
+    }
+    span.attatchments-box {
+        width: 45px;
+        height: 45px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background: #f0f0f1;
+        margin-left: 10px;
+        color: #007ad9;
+    }
+    tr.table-row-collapsible .attachments_section {
+        padding: 5px;
+    }
+    tr.table-row-collapsible span.attatchments-box {
+        width: 35px;
+        height: 35px;
+    }
+   .report-container table{
+        width:100%;
+    }
+    .report-container table td, .report-container table th {
+        font-size: 10px;
+        padding: 5px;
     }

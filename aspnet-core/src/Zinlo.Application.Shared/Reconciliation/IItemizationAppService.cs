@@ -10,7 +10,7 @@ namespace Zinlo.Reconciliation
    public interface IItemizationAppService
     {
         Task CreateOrEdit(CreateOrEditItemizationDto input);
-        Task<PagedResultDto<ItemizedListForViewDto>> GetAll(GetAllItemizationInput input);
+        Task<PagedResultDto<ItemizedListDto>> GetAll(GetAllItemizationInput input);
         Task<CreateOrEditItemizationDto> GetEdit(long Id);
     }
 }
