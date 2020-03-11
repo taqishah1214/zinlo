@@ -20,8 +20,12 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   accountName : any;
   accountNo : any;
   accountId : any;
-  @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
+  ItemizedItemId : any;
+  attachmentPaths: any = [];
   recordId: number;
+  newAttachementPath: string[] = [];
+  attachments: any;
+
   constructor(private _itemizationServiceProxy : ItemizationServiceProxy,
     private _chartOfAccountService: ChartsofAccountServiceProxy, private _router: Router, injector: Injector) {
     super(injector)
@@ -29,14 +33,14 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
 
   ngOnInit() {   
     this.accountId = history.state.data.accountId
-    this.recordId = history.state.data.id;
+    this.ItemizedItemId = history.state.data.ItemizedItemId;
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
-    if(this.recordId != 0)
+    if(this.ItemizedItemId != 0)
     {
       this.title = "Edit Item";
       this.Save = "Update";
-      this.GetEdit(this.recordId);
+      this.getDetailsofItem(this.ItemizedItemId);
     }
   
   }
@@ -51,6 +55,13 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
       Webcam: false
     }
   }
+  fileUploadedResponse(value): void {
+    var response = value.successful
+    response.forEach(i => {
+      this.attachmentPaths.push(i.response.body.result);
+    });
+    this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
+  }
 
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
@@ -58,21 +69,42 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     };
     container.setViewMode('month');
   }
-  SaveChanges(){
-    this.itemizedDto.chartsofAccountId = 1;
+  SaveItem(){
+    if (this.attachmentPaths != null) {
+      this.newAttachementPath = [];
+      this.attachmentPaths.forEach(element => {
+      this.newAttachementPath.push(element.toString())
+  });
+
+  this.itemizedDto.attachmentsPath = this.newAttachementPath;
+}
+    this.itemizedDto.chartsofAccountId = this.accountId;
     this._itemizationServiceProxy.createOrEdit(this.itemizedDto).subscribe(response => {
       this.notify.success(this.l('Item Successfully Created.'));
       this.redirectToItemsList();
     })
   }
-  GetEdit(id):void{
+  getExtensionImagePath(str) {
 
-    if(id !=0)
-    {
-      this._itemizationServiceProxy.getEdit(id).subscribe(response=>{
-      this.itemizedDto = response;
+    var extension = str.split('.')[1];
+    extension = extension + ".svg";
+    return extension;
+  }
+  getDetailsofItem(id):void{
+      this._itemizationServiceProxy.getEdit(id).subscribe(result=>{
+      this.itemizedDto = result;
+      this.attachments = result.attachments;
+      this.attachments.forEach(element => {
+        var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
+        element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
+        element["attachmentName"] = attachmentName
+        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl + element.attachmentPath
       });
-    }
+
+      });
+    
   }
 
 }
+
+

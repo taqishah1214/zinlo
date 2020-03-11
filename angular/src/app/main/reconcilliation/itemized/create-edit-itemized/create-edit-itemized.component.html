@@ -73,14 +73,24 @@
                             <div class="col-md-6">
                                 <div class="drag_drop_box">
                                     <label class="bg-color">Attachments</label>
-                                    <ng-uppy [config]="settings" ></ng-uppy>
+                                    <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
+                                    <div *ngFor="let item of attachments" class="attachments_section">
+                                        <a href="{{item.attachmentUrl}}" target="_blank" class="attachement_btn"
+                                            download="{{item.attachmentUrl}}">
+                                            <img src="../../../../../assets/media/files/{{item.attachmentExtension}}">
+                                            <span>{{item.attachmentName}}</span>
+                                        </a>
+                                        <button class="cross-btn" (click)="deleteAttachment(item.id)">
+                                            <span class="fa fa-window-close"></span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="kt-portlet__head">
                         </div>
                         <div class="form-group margin-top-5">
-                            <button (click)="SaveChanges()" class="btn btn-brand" type="submit">
+                            <button (click)="SaveItem()" class="btn btn-brand" type="submit">
                                 {{Save}}
                             </button>                     
                         </div>

@@ -15,8 +15,10 @@ namespace Zinlo.ChartsofAccount
         Task<GetAccountForEditDto> GetAccountForEdit(long id);
         Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input);
         Task ChangeAccountsAssignee(long accountId, long assigneeId);
-
         Task ChangeStatus(long accountId, long selectedStatusId);
+        Task AddandUpdateBalance(double balance, long id);
+        Task <int> CheckReconcilled(long id);
+
 
     }
 }

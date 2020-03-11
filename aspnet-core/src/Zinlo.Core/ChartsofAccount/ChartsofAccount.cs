@@ -22,6 +22,8 @@ namespace Zinlo.ChartsofAccount
         public Status Status { get; set; }
         public virtual AccountSubType.AccountSubType AccountSubType { get; set; }
         public Reconciled Reconciled { get; set; }
+        public double Balance { get; set; }
+
     }
     public enum ReconciliationType
     {

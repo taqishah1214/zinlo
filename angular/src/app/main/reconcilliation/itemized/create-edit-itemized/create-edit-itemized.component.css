@@ -73,3 +73,37 @@ color: #606060;
     height: 220px !important;
     
 }
+.attachments_section{
+    display: inline-block;
+    background-color: #45414E14;
+    width: calc(50% - 10px);
+    margin: 20px 5px;
+    padding: 10px 5px;
+}
+.attachments_section .attachement_btn {
+    background: transparent;
+    border: none;
+    color: #606060;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: calc(100% - 25px);
+    text-align: left;
+}
+.attachments_section .attachement_btn img{
+    max-width: 100%;
+    width: 25px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.attachments_section .cross-btn{
+    background: transparent;
+    border: none;
+    color: #606060;
+    display: inline-block;
+    vertical-align: middle;
+}
