@@ -105,6 +105,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       return;
     }
     this.dateFilter = this.selectedDate;
+    console.log("*****************Date Filter****************",this.dateFilter);
     this.primengTableHelper.showLoadingIndicator();
     this._closingChecklistService.getAll(
       this.filterText,
