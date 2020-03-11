@@ -8,5 +8,8 @@ namespace Zinlo.Reconciliation.Dtos
   public   class GetAllItemizationInput : PagedAndSortedResultRequestDto
     {
         public string Filter { get; set; }
+
+        public long ChartofAccountId { get; set; }
+
     }
 }

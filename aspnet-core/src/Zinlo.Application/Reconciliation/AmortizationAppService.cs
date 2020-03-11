@@ -12,6 +12,7 @@ using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Zinlo.Attachments.Dtos;
 using Zinlo.Attachments;
+using Zinlo.ChartsofAccount;
 
 namespace Zinlo.Reconciliation
 {
@@ -19,12 +20,14 @@ namespace Zinlo.Reconciliation
     {
         private readonly IRepository<Amortization, long> _amortizationRepository;
         private readonly IAttachmentAppService _attachmentAppService;
+        private readonly IChartsofAccountAppService _chartsofAccountAppService;
 
         #region|#Constructor|
-        public AmortizationAppService(IRepository<Amortization, long> amortizationRepository,IAttachmentAppService attachmentAppService)
+        public AmortizationAppService(IChartsofAccountAppService chartsofAccountAppService, IRepository<Amortization, long> amortizationRepository,IAttachmentAppService attachmentAppService)
         {
             _attachmentAppService = attachmentAppService;
             _amortizationRepository = amortizationRepository;
+            _chartsofAccountAppService = chartsofAccountAppService;
         }
         #endregion
         #region|Create Edit|
@@ -82,7 +85,33 @@ namespace Zinlo.Reconciliation
                 TotalNetAmount = amortizedList.Sum(item => item.NetAmount)
             };
 
-            result.Add(amortizedListDto);
+           
+
+            if (input.ChartofAccountId != 0 )
+            {
+                var reconcilledResult = await _chartsofAccountAppService.CheckReconcilled(input.ChartofAccountId);
+                switch (reconcilledResult)
+                {
+                    case 1:
+                        await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalNetAmount, input.ChartofAccountId);
+                        break;
+                    case 2:
+                        await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalBeginningAmount, input.ChartofAccountId);
+                        break;
+                    case 3:
+                        await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalAccuredAmortization, input.ChartofAccountId);
+                        break;
+
+                    default:
+                        break;
+                }      
+            }
+
+
+
+
+
+        result.Add(amortizedListDto);
             return new PagedResultDto<AmortizedListDto>(
                totalCount,
                result

@@ -125,23 +125,26 @@
                                     <td class="assignee-cell">
                                         <span class="">$ {{item.netAmount | formater}}</span>
                                     </td>
-                                    <td *ngFor="let i of item.attachments ;let value = index" class="action-cell">
+                                    <td class="action-cell">
                                         <span class="">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <div *ngFor="let i of item.attachments" class="drag_drop_box">
-                                                        <div  *ngIf="i.length!=0" class="attachments_section">
+                                                    <div *ngIf="item.attachments?.length > 0" class="drag_drop_box">
+                                                        <div *ngFor="let i of item.attachments"  class="attachments_section">
                                                             <a  href="{{i.attachmentUrl}}" target="_blank"
                                                                 download="{{i.attachmentUrl}}" class="attachement_btn">
                                                                 <img src="../../../../assets/media/files/{{i.attachmentExtension}}">
                                                                 <span>{{i.attachmentName}}</span>
-                                                            </a>
-                                                        </div>
-                                                        <div *ngIf="i.length==0" class="drag_drop_box">
-                                                        <a>
-                                                            <span>No Attachments</span>
-                                                        </a>
+                                                            </a>     
+                                                        </div>    
                                                     </div>
+
+                                                    <div *ngIf="item.attachments?.length == 0" class="drag_drop_box">
+                                                        <div  class="attachments_section_none">
+                                                            <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
+                                                                <span>No Attachments</span>
+                                                            </a>
+                                                        </div>    
                                                     </div>
                                                 </div>
                                             </div>
@@ -170,24 +173,27 @@
                                                 
                                             </li>
                                             <li >
-                                                <div class="thead-box"><b> Attachments </b></div>
+                                                <div class="thead-box"><b> Attachments : </b></div>
                                                 <div class="tdata-box d-flex">
                                                     <span class="">
                                                         <div class="row">
                                                             <div class="col-md-12">
-                                                                <div *ngFor="let i of item.attachments" class="drag_drop_box">
-                                                                    <div  *ngIf="i.length!=0" class="attachments_section">
+                                                                <div *ngIf="item.attachments?.length > 0" class="drag_drop_box">
+                                                                    <div *ngFor="let i of item.attachments"  class="attachments_section">
                                                                         <a  href="{{i.attachmentUrl}}" target="_blank"
                                                                             download="{{i.attachmentUrl}}" class="attachement_btn">
                                                                             <img src="../../../../assets/media/files/{{i.attachmentExtension}}">
                                                                             <span>{{i.attachmentName}}</span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div *ngIf="i.length==0" class="drag_drop_box">
-                                                                    <a>
-                                                                        <span>No Attachments</span>
-                                                                    </a>
+                                                                        </a>     
+                                                                    </div>    
                                                                 </div>
+            
+                                                                <div *ngIf="item.attachments?.length == 0" class="drag_drop_box">
+                                                                    <div  class="attachments_section_none">
+                                                                        <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
+                                                                            <span>No Attachments</span>
+                                                                        </a>
+                                                                    </div>    
                                                                 </div>
                                                             </div>
                                                         </div>
