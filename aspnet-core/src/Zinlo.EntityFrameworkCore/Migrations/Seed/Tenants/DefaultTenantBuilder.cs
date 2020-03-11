@@ -16,7 +16,7 @@ namespace Zinlo.Migrations.Seed.Tenants
         {
             _context = context;
         }
-        public DefaultTenantBuilder(ZinloDbContext context,string tenantName)
+        public DefaultTenantBuilder(ZinloDbContext context, string tenantName)
         {
             _context = context;
             _tenantName = tenantName;
@@ -27,32 +27,7 @@ namespace Zinlo.Migrations.Seed.Tenants
             CreateDefaultTenant();
         }
 
-        public void CreateSeederTenants ()
-        {
-            GenerateSeederTenants();
-        }
-
-        private void GenerateSeederTenants()
-        {
-
-            var defaultTenant = _context.Tenants.IgnoreQueryFilters().FirstOrDefault(t => t.TenancyName == _tenantName);
-            if (defaultTenant == null)
-            {
-                defaultTenant = new MultiTenancy.Tenant(_tenantName, _tenantName);
-
-                var defaultEdition = _context.Editions.IgnoreQueryFilters().FirstOrDefault(e => e.Name == "Standard");
-                if (defaultEdition != null)
-                {
-                    defaultTenant.EditionId = defaultEdition.Id;
-                }
-
-                _context.Tenants.Add(defaultTenant);
-                _context.SaveChanges();
-
-            }
-        }
-
-            private void CreateDefaultTenant()
+        private void CreateDefaultTenant()
         {
             //Default tenant
 

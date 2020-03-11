@@ -31,6 +31,7 @@
                                     defaultTimezoneScope="{{defaultTimezoneScope}}"></timezone-combo>
                             </div>
                         </tab>
+                       <div *ngIf="false">
                         <tab *ngIf="true" heading="{{'Appearance' | localize}}" [active]="activeTabIndex == 1">
                             <div class="row m-form">
                                 <div class="col-md-6">
@@ -459,6 +460,7 @@
                                     [(ngModel)]="settings.billing.taxVatNo" maxlength="32">
                             </div>
                         </tab>
+                       </div>
                         <tab *ngIf="!isMultiTenancyEnabled" heading="{{'OtherSettings' | localize}}">
                             <div class="kt-checkbox-list">
                                 <h5>{{"IsQuickThemeSelectEnabled" | localize}}</h5>
