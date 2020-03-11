@@ -54,7 +54,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   monthStatus: boolean;
   remainingUserForHeader: any = [];
   category: NameValueDtoOfInt64[] = [];
-  selectedDate : Date = new Date();
+  selectedDate = new Date();
   constructor(private _router: Router,
     private _categoryService: CategoriesServiceProxy,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector) {
@@ -62,6 +62,7 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.FilterBoxOpen = false;
   }
   ngOnInit() {
+    console.log("selected date",this.selectedDate);
     this.initializePageParameters();
     this.loadCategories();
   }
@@ -93,7 +94,7 @@ export class Checklist extends AppComponentBase implements OnInit {
      this.selectedDate = new Date( subtract(this.selectedDate, 1, "month"));
    }
    else {
-     this.selectedDate = event;
+     this.selectedDate = new Date(add(event, 2, "day"));
    }
    
    this.getClosingCheckListAllTasks();
