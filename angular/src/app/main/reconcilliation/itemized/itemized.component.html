@@ -59,7 +59,7 @@
                     </form>
 
                     <div class="primeng-paging-container">
-                        <div class="table-box">
+                        <div class="table-box itemzied-item-table">
                         <!--<Primeng-TurboTable-Start>-->
                         <div class="task-table" [busyIf]="primengTableHelper.isLoading">
                             <p-table #dataTable class=" record-table" (onLazyLoad)="getAllAmortizedList($event)"
@@ -109,28 +109,42 @@
                                     </td>
                                     <td class="accountSubtype-cell">
                                         <span class="">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div *ngIf="item.attachments?.length > 0" class="drag_drop_box">
-                                                        <div *ngFor="let i of item.attachments"  class="attachments_section">
-                                                            <a  href="{{i.attachmentUrl}}" target="_blank"
-                                                                download="{{i.attachmentUrl}}" class="attachement_btn">
-                                                                <img src="../../../../assets/media/files/{{i.attachmentExtension}}">
-                                                                <span>{{i.attachmentName}}</span>
+                                            <div class="d-flex">
+                                                <div *ngIf="item.attachments?.length > 0" class="drag_drop_box">
+                                                    <div class="drag_drop_box">
+                                                        <div class="attachments_section">
+                                                            <a  href="{{item.attachments[0].attachmentUrl}}" target="_blank"
+                                                                download="{{item.attachments[0].attachmentUrl}}" class="attachement_btn">
+                                                                <img src="../../../../assets/media/files/{{item.attachments[0].attachmentExtension}}">
+                                                                <span>{{item.attachments[0].attachmentName}}</span>
                                                             </a>     
-                                                        </div>    
+                                                        </div> 
                                                     </div>
-
-                                                    <div *ngIf="item.attachments?.length == 0" class="drag_drop_box">
-                                                        <div  class="attachments_section_none">
-                                                            <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
-                                                                <span>No Attachments</span>
-                                                            </a>
-                                                        </div>    
-                                                    </div>
-
+                                                </div>
+                                                     <div *ngIf="item.attachments?.length > 0" class="drag_drop_box"> 
+                                                            <span class="attatchments-box">+{{item.attachments?.length}}
+                                                            <div  class="attachment-dropdown">
+                                                               <div  *ngFor="let i of item.attachments" _ngcontent-qyg-c22="" class="attachments_section ng-star-inserted">
+                                                                   <a  _ngcontent-qyg-c22="" class="attachement_btn" target="_blank" 
+                                                                   href="{{i.attachmentUrl}}" 
+                                                                   download="{{i.attachmentUrl}}">
+                                                                   <img _ngcontent-qyg-c22="" src="../../../../assets/media/files/{{i.attachmentExtension}}">
+                                                                   <span _ngcontent-qyg-c22="">{{i.attachmentName}}</span>
+                                                                </a>
+                                                                </div>
+                                                            </div>
+                                                        </span> 
+                                                    </div>        
+                                            <div *ngIf="item.attachments?.length == 0" class="col-md-12">
+                                                <div  class="drag_drop_box">
+                                                     <div  class="attachments_section_none">
+                                                        <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
+                                                            <span>No Attachments</span>
+                                                        </a>
+                                                    </div>    
                                                 </div>
                                             </div>
+                                        </div>
                                         </span>
 
                                         <!-- <span  class="attatchments-box ">+3</span> -->
@@ -148,27 +162,42 @@
                                             <li >
                                                 <div class="thead-box"><b> Attachments : </b></div>
                                                 <div class="tdata-box d-flex">
-                                                    <span class="">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div *ngFor="let i of item.attachments" class="drag_drop_box">
-                                                                    <div  *ngIf="i.length!=0" class="attachments_section">
-                                                                        <a  href="{{i.attachmentUrl}}" target="_blank"
-                                                                            download="{{i.attachmentUrl}}" class="attachement_btn">
-                                                                            <img src="../../../../assets/media/files/{{i.attachmentExtension}}">
-                                                                            <span>{{i.attachmentName}}</span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div *ngIf="i.length==0" class="drag_drop_box">
-                                                                    <a>
-                                                                        <span>No Attachments</span>
-                                                                    </a>
-                                                                </div>
-                                                                </div>
+                                                    <div class="d-flex">
+                                                        <div *ngIf="item.attachments?.length > 0" class="drag_drop_box">
+                                                            <div class="drag_drop_box">
+                                                                <div class="attachments_section">
+                                                                    <a  href="{{item.attachments[0].attachmentUrl}}" target="_blank"
+                                                                        download="{{item.attachments[0].attachmentUrl}}" class="attachement_btn">
+                                                                        <img src="../../../../assets/media/files/{{item.attachments[0].attachmentExtension}}">
+                                                                        <span>{{item.attachments[0].attachmentName}}</span>
+                                                                    </a>     
+                                                                </div> 
                                                             </div>
                                                         </div>
-                                                    </span>
-                                                     <span class="attatchments-box ">+3</span> 
+                                                             <div *ngIf="item.attachments?.length > 0" class="drag_drop_box"> 
+                                                                    <span class="attatchments-box">+{{item.attachments?.length}}
+                                                                    <div  class="attachment-dropdown">
+                                                                       <div  *ngFor="let i of item.attachments" _ngcontent-qyg-c22="" class="attachments_section ng-star-inserted">
+                                                                           <a  _ngcontent-qyg-c22="" class="attachement_btn" target="_blank" 
+                                                                           href="{{i.attachmentUrl}}" 
+                                                                           download="{{i.attachmentUrl}}">
+                                                                           <img _ngcontent-qyg-c22="" src="../../../../assets/media/files/{{i.attachmentExtension}}">
+                                                                           <span _ngcontent-qyg-c22="">{{i.attachmentName}}</span>
+                                                                        </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </span> 
+                                                            </div>        
+                                                    <div *ngIf="item.attachments?.length == 0" class="col-md-12">
+                                                        <div  class="drag_drop_box">
+                                                             <div  class="attachments_section_none">
+                                                                <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
+                                                                    <span>No Attachments</span>
+                                                                </a>
+                                                            </div>    
+                                                        </div>
+                                                    </div>
+                                                </div> 
                                                 </div>
                                             </li>
                                         </ul>
@@ -183,6 +212,7 @@
                     <div class="pagination-block">
                         <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
                             [totalRecords]="primengTableHelper.totalRecordsCount"
+                            (onPageChange)="getAllAmortizedList($event)"
                             [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                             class="paginator-counter">
                         </p-paginator>

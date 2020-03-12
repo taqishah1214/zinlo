@@ -67,25 +67,26 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
         element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
         element["attachmentName"] = attachmentName
-        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl + element.attachmentPath
+        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl+"/" + element.attachmentPath
       });
     })
   }
   
   deleteAttachment(id): void {
-    this.message.confirm(
-      '',
-      this.l('AreYouSure'),
-      (isConfirmed) => {
-        if (isConfirmed) {
-          this._attachmentService.deleteAttachmentPath(id)
-            .subscribe(() => {
-              this.notify.success(this.l('Attachment is successfully removed'));
-            });
-        }
-      }
-    );
-
+    let self = this;
+        self.message.confirm(
+            "",
+            this.l('AreYouSure'),
+            isConfirmed => {
+                if (isConfirmed) {
+                  this._attachmentService.deleteAttachmentPath(id)
+                  .subscribe(() => {
+                    this.notify.success(this.l('Attachment is successfully removed'));
+                    this.getAmortizedItemDetails();
+                  });
+                }
+            }
+        );
   }
 
   createNewAccount() : void {

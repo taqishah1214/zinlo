@@ -87,7 +87,7 @@ export class AmortizedComponent extends AppComponentBase {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
         element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
         element["attachmentName"] = attachmentName
-        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl + element.attachmentPath
+        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl+"/"+ element.attachmentPath
       });
     });
     });

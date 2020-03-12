@@ -1242,16 +1242,6 @@
         width: 60px;
         margin-bottom: 20px;
     }
-    span.attatchments-box {
-        width: 45px;
-        height: 45px;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        background: #f0f0f1;
-        margin-left: 10px;
-        color: #007ad9;
-    }
     tr.table-row-collapsible .attachments_section {
         padding: 5px;
     }
@@ -1265,4 +1255,39 @@
     .report-container table td, .report-container table th {
         font-size: 10px;
         padding: 5px;
+    }
+    span.attatchments-box {
+        width: 35px;
+        height: 35px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background: #f0f0f1;
+        margin-left: 10px;
+        color: #007ad9;
+        position: relative;
+    }
+    span.attatchments-box .attachment-dropdown{
+        position: absolute;
+        top: 100%;
+        right: 0;
+        z-index: 1;
+        border: 1px solid #eeeeee;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #fff;
+        display: none;
+    }
+    span.attatchments-box:hover .attachment-dropdown{
+        display:block;
+    }
+    tr.table-row-collapsible .attachments_section {
+        padding: 5px;
+    }
+   .attachment-dropdown .attachments_section {
+        padding: 5px;
+        margin-bottom: 5px;
+    }
+    .attachment-dropdown .attachments_section:last-child{
+        margin-bottom: 0;
     }

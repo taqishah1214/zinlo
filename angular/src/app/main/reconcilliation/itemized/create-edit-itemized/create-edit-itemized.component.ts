@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { ChartsofAccountServiceProxy, CreateOrEditItemizationDto, ItemizationServiceProxy, GetEditionEditOutput } from '@shared/service-proxies/service-proxies';
+import { ChartsofAccountServiceProxy, CreateOrEditItemizationDto, ItemizationServiceProxy, GetEditionEditOutput, AttachmentsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { Router } from '@angular/router';
 import { UserListComponentComponent } from '@app/main/checklist/user-list-component/user-list-component.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -27,7 +27,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   attachments: any;
 
   constructor(private _itemizationServiceProxy : ItemizationServiceProxy,
-    private _chartOfAccountService: ChartsofAccountServiceProxy, private _router: Router, injector: Injector) {
+    private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector) {
     super(injector)
   }
 
@@ -90,6 +90,23 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     extension = extension + ".svg";
     return extension;
   }
+
+  deleteAttachment(id): void {
+    let self = this;
+        self.message.confirm(
+            "",
+            this.l('AreYouSure'),
+            isConfirmed => {
+                if (isConfirmed) {
+                  this._attachmentService.deleteAttachmentPath(id)
+                  .subscribe(() => {
+                    this.notify.success(this.l('Attachment is successfully removed'));
+                    this.getDetailsofItem(this.ItemizedItemId);
+                  });
+                }
+            }
+        );
+  }
   getDetailsofItem(id):void{
       this._itemizationServiceProxy.getEdit(id).subscribe(result=>{
       this.itemizedDto = result;
@@ -98,7 +115,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
         element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
         element["attachmentName"] = attachmentName
-        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl + element.attachmentPath
+        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl+"/" + element.attachmentPath
       });
 
       });

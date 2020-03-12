@@ -34,6 +34,7 @@ export class ItemizedComponent extends AppComponentBase {
   netAmount : any;
   itemList : any = [];
   monthFilter = '100/2000';
+  remainingAttachmentList: any = []
   
 
 
@@ -76,25 +77,22 @@ export class ItemizedComponent extends AppComponentBase {
     this.primengTableHelper.getMaxResultCount(this.paginator, event)
   ).subscribe(result => {
     this.primengTableHelper.totalRecordsCount = result.totalCount;
-    this.primengTableHelper.records = result.items;
+    this.primengTableHelper.records = result.items[0].itemizedListForViewDto;
     this.primengTableHelper.hideLoadingIndicator();
     this.ItemizedList = result.items;
-    this.ItemizedList.forEach(j => {  
-      this.TotalAmount = j.totalAmount;
-      this.itemList = j.itemizedListForViewDto;
-      j.itemizedListForViewDto.forEach(i => {
-        i.attachments.forEach(element => {
-          var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
-          element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
-          element["attachmentName"] = attachmentName
-          element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl + element.attachmentPath
+      this.TotalAmount = this.ItemizedList[0].totalAmount;
+      this.itemList = this.ItemizedList[0].itemizedListForViewDto;
+      this.itemList.forEach(i => {
+        debugger
+        i.attachments.forEach((element,index) => {
+            var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
+            element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
+            element["attachmentName"] = attachmentName
+            element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl+"/"+ element.attachmentPath
+              
         });
-      });
-      });
-
-
-
-    
+      });  
+      console.log("-----------Item List---------",this.itemList)  
   });
 }
 
