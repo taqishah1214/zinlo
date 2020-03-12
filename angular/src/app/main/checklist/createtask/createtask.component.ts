@@ -152,26 +152,26 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.checklist.noOfMonths = 0;
     }
     this.errorMessage = "";
-    if(this.checklist.frequency == 2) //Quarterly
-    {
-      var monthsCount = this.getNoOfmonths(this.checklist.closingMonth,this.checklist.endsOn);
-      if(monthsCount < 3)
-      {
-        this.errorMessage = "Quarterly is not valid in the current range.";
-        this.notify.error(this.errorMessage);
-        return;
-      }
-    }
-    else if(this.checklist.frequency == 3) //Anually
-    {
-      var monthsCount = this.getNoOfmonths(this.checklist.closingMonth,this.checklist.endsOn);
-      if(monthsCount < 12)
-      {
-        this.errorMessage = "Anually is not valid in the current range.";
-        this.notify.error(this.errorMessage);
-        return;
-      }
-    }
+    // if(this.checklist.frequency == 2) //Quarterly
+    // {
+    //   var monthsCount = this.getNoOfmonths(this.checklist.closingMonth,this.checklist.endsOn);
+    //   if(monthsCount < 3)
+    //   {
+    //     this.errorMessage = "Quarterly is not valid in the current range.";
+    //     this.notify.error(this.errorMessage);
+    //     return;
+    //   }
+    // }
+    // else if(this.checklist.frequency == 3) //Anually
+    // {
+    //   var monthsCount = this.getNoOfmonths(this.checklist.closingMonth,this.checklist.endsOn);
+    //   if(monthsCount < 12)
+    //   {
+    //     this.errorMessage = "Anually is not valid in the current range.";
+    //     this.notify.error(this.errorMessage);
+    //     return;
+    //   }
+    // }
    
     this._closingChecklistService.createOrEdit(this.checklist).subscribe(() => {
       this.redirectToTaskList();
