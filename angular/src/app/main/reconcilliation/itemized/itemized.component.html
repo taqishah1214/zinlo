@@ -34,10 +34,9 @@
                                             Back
                                         </a>
 
-                                        <button class="btn btn-brand" (click)="RedirectToAddandEditNewAmortize(0)"><i
+                                        <button class="btn btn-brand" (click)="RedirectToAddNew()"><i
                                             class="fa fa-plus"></i>
                                         {{"AddNew" | localize}}</button>
-
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +100,7 @@
                                     <td class="accountNo-cell">
                                         <span class="">{{item.date | date}}</span>
                                     </td>
-                                    <td class="accountName-cell" (click)="RedirectToAddandEditNewAmortize(item.id)">
+                                    <td class="accountName-cell" (click)="RedirectToDetail(item.id)">
                                         <span class="task-box">{{item.description}}</span>
                                     </td>
                                     <td class="reconciliation-cell">
@@ -124,8 +123,8 @@
                                                      <div *ngIf="item.attachments?.length > 0" class="drag_drop_box"> 
                                                             <span class="attatchments-box">+{{item.attachments?.length}}
                                                             <div  class="attachment-dropdown">
-                                                               <div  *ngFor="let i of item.attachments" _ngcontent-qyg-c22="" class="attachments_section ng-star-inserted">
-                                                                   <a  _ngcontent-qyg-c22="" class="attachement_btn" target="_blank" 
+                                                               <div  *ngFor="let i of item.attachments;  let value = index"  _ngcontent-qyg-c22="" class="attachments_section ng-star-inserted">
+                                                                   <a _ngcontent-qyg-c22="" class="attachement_btn" target="_blank" 
                                                                    href="{{i.attachmentUrl}}" 
                                                                    download="{{i.attachmentUrl}}">
                                                                    <img _ngcontent-qyg-c22="" src="../../../../assets/media/files/{{i.attachmentExtension}}">

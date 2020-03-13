@@ -20,6 +20,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         public List<GetUserWithPicture> OverallMonthlyAssignee { get; set; }
         public int StatusId { get; set; }
         public double Balance { get; set; } 
+        public bool Lock { get; set; }
 
     }
 }

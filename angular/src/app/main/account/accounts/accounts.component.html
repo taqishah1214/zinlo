@@ -294,7 +294,8 @@
                                         <td class="action-cell">
                                             <div class="btn-group">
                                                 <a *ngIf="'Pages.Categories.Edit' | permission" class="btn"
-                                                    href="javascript:;" (click)="editAccount(item.id)">
+                                                    href="javascript:;"
+                                                    (click)="editAccount(item.id,item.lock)">
                                                     <img src="../../../../assets/img/edit.svg"></a>
                                                 <a *ngIf="'Pages.Categories.Delete' | permission" class="btn"
                                                     href="javascript:;" (click)="deleteAccount(item.id)">
@@ -347,7 +348,7 @@
                                                     <div class="tdata-box">
                                                         <div class="btn-group">
                                                             <a class="btn"
-                                                                href="javascript:;" (click)="editAccount(item.id)">
+                                                                href="javascript:;" (click)="editAccount(item.id,item.lock)">
                                                                 <img src="../../../../assets/img/edit.svg"></a>
                                                             <a  class="btn"
                                                                 href="javascript:;" (click)="deleteAccount(item.id)">

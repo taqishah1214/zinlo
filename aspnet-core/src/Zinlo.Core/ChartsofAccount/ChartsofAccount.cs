@@ -23,6 +23,7 @@ namespace Zinlo.ChartsofAccount
         public virtual AccountSubType.AccountSubType AccountSubType { get; set; }
         public Reconciled Reconciled { get; set; }
         public double Balance { get; set; }
+        public bool Lock { get; set; }
 
     }
     public enum ReconciliationType

@@ -43,7 +43,7 @@ import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized
                     { path: 'reconcilliation/itemized', component: ItemizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'reconcilliation/amortized', component: AmortizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'reconcilliation/itemized/itemized-details', component: ItemizedDetailsComponent, data: { permission: 'Pages.ClosingChecklist' }},
-                    { path: 'reconcilliation/itemized/amortized-details', component: AmortizedDetailsComponent, data: { permission: 'Pages.ClosingChecklist' }},
+                    { path: 'reconcilliation/amortized/amortized-details', component: AmortizedDetailsComponent, data: { permission: 'Pages.ClosingChecklist' }},
 
 
                 ]

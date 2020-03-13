@@ -132,6 +132,11 @@ namespace Zinlo.Reconciliation
             return output;
         }
 
+        public async Task Delete(long Id)
+        {
+            await _itemizationRepository.DeleteAsync(Id);
+        }
+
         #endregion
     }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { UppyConfig } from 'uppy-angular';
-import { ClosingChecklistServiceProxy, AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto, DetailsClosingCheckListDto } from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy, AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto, DetailsClosingCheckListDto, AmortizationServiceProxy, CreateOrEditAmortizationDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 import { AppConsts } from '@shared/AppConsts';
@@ -15,7 +15,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   taskDetailObject: DetailsClosingCheckListDto = new DetailsClosingCheckListDto();
   recordId: number = 0;
   taskStatus: any = "";
-  commantBox: boolean;
+  commantBox: boolean = true;
   attachments: any;
   commentsData: any = [];
   newAttachmentPaths: any = [];
@@ -24,12 +24,18 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   userSignInName: any;
   assigneeId: any = 0;
   UserProfilePicture: any;
+  accountId : any;
+  accountName:any;
+  accountNo:any;
+  amortrizedItemId:any;
+  amortizationDto: CreateOrEditAmortizationDto = new CreateOrEditAmortizationDto()
+  netAmount : any;
+  accuredAmount : any;
 
   constructor(
     injector: Injector,
     private _router: Router,
-    private _closingChecklistService: ClosingChecklistServiceProxy,
-    private _commentServiceProxy: CommentServiceProxy,
+    private _amortizationService :AmortizationServiceProxy ,
     private _attachmentService: AttachmentsServiceProxy,
     private userInfo: UserInformation
   ) {
@@ -38,12 +44,15 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
 
   ngOnInit() {
     this.userSignInName = this.appSession.user.name.toString().toUpperCase();
-    this.commantBox = true;
-    this.recordId = history.state.data.id;
-    this.getTaskDetails(this.recordId);
+    this.accountId = history.state.data.accountId
+    this.accountName = history.state.data.accountName
+    this.accountNo = history.state.data.accountNo
+    this.amortrizedItemId = history.state.data.amortrizedItemId;
+    this.netAmount = history.state.data.netAmount;
+    this.accuredAmount = history.state.data.accuredAmount
+    this.getTaskDetails();
     this.getProfilePicture();
   }
-
 
   getProfilePicture() {
     this.userInfo.getProfilePicture();
@@ -59,66 +68,45 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     this.commantBox = false;
   }
   updateDetails(): void {
-    this.getTaskDetails(this.recordId);
+    this.getTaskDetails();
   }
   onComment(): void {
     this.commantBox = true;
     this.SaveComments();
-    this.getTaskDetails(this.recordId);
+    this.getTaskDetails();
   }
   SaveComments(): void {
-    this.comment.typeId = this.recordId;
-    this._commentServiceProxy.create(this.comment).subscribe(result => {
-      this.comment.body = "";
-      this.notify.success(this.l('Comment is successfully posted'));
-    });
+   
   }
   onCancelComment(): void {
     this.commantBox = true;
   }
 
-  RedirectToEditTaskPage(): void {
-    this._router.navigate(['/app/main/checklist/edit-task'], { state: { data: { id: this.recordId, categoryid: 0, categoryTitle: "" } } })
-  }
-  duplicateTask(): void {
-    this._router.navigate(['/app/main/checklist/duplicate-task'], { state: { data: { id: this.recordId, categoryid: 0, categoryTitle: "" } } });
+  editAmortizedItem() : void {
+    this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : this.amortrizedItemId, netAmount : this.netAmount, accuredAmount : this.accuredAmount }} });
   }
 
-  BackToTaskList(): void {
-    this._router.navigate(['/app/main/checklist']);
+  BackToList() : void {
+    this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo}} });
   }
+  
 
-  getTaskDetails(id): void {
-    this._closingChecklistService.getDetails(id).subscribe(result => {
-      this.taskDetailObject = result;
-      this.commentsData = this.taskDetailObject.comments;
-      this.assigneeId = this.taskDetailObject.assigneeId;
-      this.taskStatus = this.taskDetailObject.taskStatus;
-
-      this.initilizeStatus();
+  getTaskDetails(): void {
+    
+    this._amortizationService.getAmortizedItemDetails(this.amortrizedItemId).subscribe(result => {
+      this.amortizationDto = result
       this.attachments = result.attachments;
       this.attachments.forEach(element => {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
         element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
         element["attachmentName"] = attachmentName
-        element["attachmentUrl"] = "http://localhost:22742/" + element.attachmentPath
+        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl+"/" + element.attachmentPath
       });
     })
-  }
-
-  initilizeStatus(): void {
-    if (this.taskDetailObject.taskStatus === "NotStarted") {
-      this.taskDetailObject.taskStatus = "Not Started"
-    } else if (this.taskDetailObject.taskStatus === "InProcess") {
-      this.taskDetailObject.taskStatus = "In Process"
-
-    }
-    else if (this.taskDetailObject.taskStatus === "OnHold") {
-      this.taskDetailObject.taskStatus = "On Hold"
-
-    }
 
   }
+
+ 
 
   fileUploadedResponse(value): void {
     var response = value.successful
@@ -127,11 +115,11 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
       this.newAttachmentPaths.push(resp.toString());
     });
     this.postAttachment.filePath = this.newAttachmentPaths;
-    this.postAttachment.typeId = this.recordId;
-    this.postAttachment.type = 1;
+    this.postAttachment.typeId = this.amortrizedItemId;
+    this.postAttachment.type = 2;
     this._attachmentService.postAttachmentsPath(this.postAttachment).subscribe(response => {
       this.notify.success(this.l('Attachment is successfully Uploaded'));
-      this.getTaskDetails(this.recordId);
+      this.getTaskDetails();
     })
   }
 
@@ -144,7 +132,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
           this._attachmentService.deleteAttachmentPath(id)
             .subscribe(() => {
               this.notify.success(this.l('Attachment is successfully removed'));
-              this.getTaskDetails(this.recordId);
+              this.getTaskDetails();
 
             });
         }
@@ -167,17 +155,17 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     }
   }
 
-  deleteTask(): void {
+  deleteItem(): void {
     this.message.confirm(
       '',
       this.l('AreYouSure'),
       (isConfirmed) => {
         if (isConfirmed) {
-          this._closingChecklistService.delete(this.recordId)
-            .subscribe(() => {
-              this.notify.success(this.l('SuccessfullyDeleted'));
-              this._router.navigate(['/app/main/checklist']);
-            });
+          this._amortizationService.delete(this.amortrizedItemId).subscribe(() => {
+            this.notify.success(this.l('Amortized Item Successfuly Deleted'));
+            this.BackToList()
+
+          });
         }
       }
     );

@@ -71,6 +71,71 @@
 .statusBox {
     width: 114% !important;
 }
+.record-card-header-top-inner1 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.custom-container{
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto; 
+}
+.text-navyblue{
+    color: #0F2757;
+}
+.text-lightgrey {
+    color: #B5B7C7;
+}
+.bg-lightgrey{
+    background-color: #F1F2FC !important;
+}
+.record-card-header-top {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 15px;
+}
+.item-card {
+    padding: 15px 20px;
+    width: 170px;
+    min-height: 160px;
+    height: 100%;
+    box-shadow: 0px 0px 12px #00000014;
+}
+button.btn-square{
+    border: 1px solid #EBEDF2;
+    line-height: .5;
+    width: 35px;
+    height: 35px;
+    padding: 5px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.border-bottom-grey {
+    border-bottom: 1px solid #EBEDF2;
+}
+.item-card span {
+    font-size: 12px;
+}
 
 
 /* .drop_down_arrow {

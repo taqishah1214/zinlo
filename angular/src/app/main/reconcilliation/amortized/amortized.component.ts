@@ -34,6 +34,7 @@ export class AmortizedComponent extends AppComponentBase {
   netAmount : any;
   itemList : any = [];
   monthFilter = '100/2000';
+  lock : boolean = false
   constructor(
     injector: Injector,
     private _router: Router,
@@ -47,14 +48,26 @@ export class AmortizedComponent extends AppComponentBase {
     this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
+    this.lock = history.state.data.lock;
     this.commantBox = true;
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
 
 
   }
-  RedirectToAddandEditNewAmortize(amortizedItemId) : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId }} });
+  RedirectToDetails(amortizedItemId,accured,net) : void {
+    if (this.lock == false)
+    {
+      this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net }} });
+
+    }
+    else{
+      this.notify.error("Reconciliation Type is change. So accounts is Lock");
+    }
+  }
+  RedirectToAddNewItem()
+  {
+      this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : 0 }} });
   }
 
   getAllAmortizedList(event?: LazyLoadEvent){

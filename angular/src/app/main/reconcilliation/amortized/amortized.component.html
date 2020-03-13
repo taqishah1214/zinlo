@@ -34,7 +34,7 @@
                                             Back
                                         </a>
 
-                                        <button class="btn btn-brand" (click)="RedirectToAddandEditNewAmortize(0)"><i
+                                        <button *ngIf="!lock" class="btn btn-brand" (click)="RedirectToAddNewItem()"><i
                                             class="fa fa-plus"></i>
                                         {{"AddNew" | localize}}</button>
 
@@ -113,7 +113,7 @@
                                     <td class="accountType-cell ">
                                         <span class="">{{item.endDate | date}}</span>
                                     </td>
-                                    <td class="accountName-cell" (click)="RedirectToAddandEditNewAmortize(item.id)">
+                                    <td class="accountName-cell" (click)="RedirectToDetails(item.id,item.accuredAmortization,item.netAmount)">
                                         <span class="task-box">{{item.description}}</span>
                                     </td>
                                     <td class="reconciliation-cell">

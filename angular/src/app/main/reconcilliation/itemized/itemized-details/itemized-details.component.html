@@ -9,17 +9,17 @@
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
-                        <a href="javascript: void(0);" (click)="BackToTaskList()">
+                        <a href="javascript: void(0);" (click)="BackToList()">
                             <i class="la la-arrow-left"></i>
                             Back
                         </a>
                         <div class="btn-group">
 
-                            <a *ngIf="'Pages.Categories.Edit' | permission" class="btn"
-                                href="javascript:;" (click)="editCategory(record.id)">
+                            <a  class="btn" href="javascript:;"
+                                (click)="editItemizedItem()">
                                 <img src="../../../../assets/img/edit.svg"></a>
-                            <a *ngIf="'Pages.Categories.Delete' | permission" class="btn"
-                                href="javascript:;" (click)="deleteCategory(record.id)">
+                            <a class="btn" href="javascript:;"
+                                (click)="deleteItem()">
                                 <img src="../../../../assets/img/del.svg"></a>
 
 
@@ -28,169 +28,132 @@
                 </div>
                 <div class="kt-portlet__body">
 
-                    <div class="row">
-                        <div class="col-md-7">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h5 class="text-navyblue"></h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="container py-3">
-                                        <div class="card shadow"style="border:none;width:170px">
-                                          <div class="card-body">
-                                              <div><i class="fa fa-calendar" style="font-size:40px;"></i></div>
-                                              <div class="pt-2 font-weight-bold"><span style="font-size:14px;">Some Text</span></div>
-                                              <div class=""><span style="font-size:14px;">jan,10,2020</span></div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="container py-3">
-                                        <div class="card shadow"style="border:none;width:170px">
-                                          <div class="card-body">
-                                              <div><i class="fa fa-calendar" style="font-size:40px;"></i></div>
-                                              <div class="pt-2 font-weight-bold"><span style="font-size:14px;">Some Text</span></div>
-                                              <div class=""><span style="font-size:14px;">$59556</span></div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="attachment-box">
-                                       
-                                    <p>The description will go here</p>
+                    <div class="record-card-body p-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="item-card-box d-flex flex-wrap">
+                                    <div class="item-card rounded mr-3 mb-3">
+                                        <img src="../../../../assets/img/calendar-o.svg" alt="bill" class="my-3">
+                                        <span class="d-block mb-1 text-navyblue item-card-title">Date</span>
+                                        <span class="d-block text-lightgrey">{{itemizationDto.date | date}}</span>
+                                    </div>
+                                    <div class="item-card rounded mr-3 mb-3">
+                                        <img src="../../../../assets/img/money.svg" alt="bill" class="my-3">
+                                        <span class="d-block mb-1 text-navyblue item-card-title">Amount</span>
+                                        <span class="d-block text-lightgrey">$ {{itemizationDto.amount | formater}}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-5">
-                                    <select class="form-control input-medium">
-                                        <option>Comments</option>
-                                        <option>History</option>
-                                    </select>
+                            <div class="col-md-4">
+                                <div class="item-card-box d-flex flex-wrap">
+                                    <div class="item-card rounded mr-3 mb-3">
+                                        <img src="../../../../assets/img/bill.svg" alt="bill" class="my-3">
+                                        <span class="d-block mb-1 text-navyblue item-card-title">Invoice No.</span>
+                                        <span class="d-block text-lightgrey">{{itemizationDto.inoviceNo}}</span>
+                                    </div>
+                                    <div class="item-card rounded mr-3 mb-3">
+                                        <img src="../../../../assets/img/calendar-o.svg" alt="bill" class="my-3">
+                                        <span class="d-block mb-1 text-navyblue item-card-title">Journal Entry
+                                            No.</span>
+                                        <span class="d-block text-lightgrey">{{itemizationDto.journalEntryNo}}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="commentmainView show-comments">
-                                <div class="kt-widget3 ">
-                                    <div  class="kt-widget3__item ">
-                                        <div class="comments-header kt-widget3__header">
-                                            <div class="kt-widget3__user-img">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="attachment-box">
+                                    <label>Description</label>
+                                    <p>{{itemizationDto.description}}</p>
+                                </div>
+                                <select class="form-control input-medium">
+                                    <option>Comments</option>
+                                    <option>History</option>
+                                </select>
+
+                                <div class="commentmainView show-comments">
+                                    <div class="kt-widget3 ">
+                                        <div class="kt-widget3__item ">
+                                            <div class="comments-header kt-widget3__header">
+                                                <div class="kt-widget3__user-img">
+                                                    <div class="kt-user-card-v2__pic">
+                                                        <div class="kt-badge kt-badge--xl kt-badge--warning">
+                                                            I
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="kt-widget3__info">
+                                                    <a class="kt-widget3__username">
+                                                        hammad
+                                                    </a><br>
+                                                </div>
+                                                <span class="kt-widget3__status kt-font-info">
+                                                    2 days ago
+                                                </span>
+                                            </div>
+                                            <div class="kt-widget3__body show-comments-inner">
+                                                Some Comments
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group giveCommentView" *ngIf="commantBox">
+                                    <label>Comments</label>
+                                    <div (click)="commentClick()">
+                                        <div class="kt-user-card-v2">
+                                            <div class="kt-user-card-v2__pic">
                                                 <div class="kt-user-card-v2__pic">
-                                                    <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                        <!-- {{i.userName | firstLetterOfWords}} -->
-                                                        I
+                                                    <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
+                                                        <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                            alt="Pic" [src]="UserProfilePicture">
+                                                    </div>
+
+                                                    <div *ngIf="!UserProfilePicture"
+                                                        class="kt-badge kt-badge--xl kt-badge--primary">
+                                                        {{userSignInName | firstLetterOfWords}}
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="kt-widget3__info">
-                                                <a class="kt-widget3__username">
-                                                    <!-- {{i.userName}} -->
-                                                    Ihsan
-                                                </a><br>
-                                            </div>
-                                            <span class="kt-widget3__status kt-font-info">
-                                                <!-- {{i.daysCount}} -->
-                                                2 days ago
-                                            </span>
-                                        </div>
-                                        <div class="kt-widget3__body show-comments-inner">
-                                            Comments will goes here
-                                            <!-- <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">
-                                            </p> -->
+                                            <input [(ngModel)]="comment.body" class="form-control">
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group " *ngIf="!commantBox">
+                                    <label>Comments</label>
+                                    <p-editor [(ngModel)]="comment.body" name="HtmlEditorInput"
+                                        [style]="{'height':'150px'}">
+                                    </p-editor>
+                                    <button class="btn btn-brand" (click)="onComment()">Comment</button>
+                                    <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                                </div>
                             </div>
-                            <div class="form-group giveCommentView" *ngIf="commantBox">
-                                <label>Comments</label>
-                                <div (click)="commentClick()">
-                                    <div class="kt-user-card-v2">
-                                        <div class="kt-user-card-v2__pic">
 
-                                            <div class="kt-user-card-v2__pic">
-                                                <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
-                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                        alt="Pic" [src]="UserProfilePicture">
-                                                </div>
-
-                                                <div *ngIf="!UserProfilePicture"
-                                                    class="kt-badge kt-badge--xl kt-badge--primary">
-                                                    {{userSignInName | firstLetterOfWords}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <input [(ngModel)]="comment.body" class="form-control">
+                            <div class="col-sm-6">
+                                <div class="drag_drop_box">
+                                    <label>Attachments</label>
+                                    <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
+                                    </ng-uppy>
+                                    <div *ngFor="let item of attachments" class="attachments_section">
+                                        <a href="{{item.attachmentUrl}}" target="_blank" class="attachement_btn"
+                                            download="{{item.attachmentUrl}}">
+                                            <img src="../../../../assets/media/files/{{item.attachmentExtension}}">
+                                            <span>{{item.attachmentName}}</span>
+                                        </a>
+                                        <button class="cross-btn" (click)="deleteAttachment(item.id)">
+                                            <span class="fa fa-window-close"></span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group " *ngIf="!commantBox">
-                                <label>Comments</label>
-                                <p-editor [(ngModel)]="comment.body" name="HtmlEditorInput"
-                                    [style]="{'height':'150px'}">
-                                </p-editor>
-                                <button class="btn btn-brand" (click)="onComment()">Comment</button>
-                                <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
-                            </div>
                         </div>
-                        <div class="col-md-5">
-                            <div class="row">
-                             <div class="col-md-6">
-                                <div class="container py-3">
-                                    <div class="card shadow"style="border:none;width:170px">
-                                      <div class="card-body">
-                                          <div><i class="fa fa-calendar" style="font-size:40px;"></i></div>
-                                          <div class="pt-2 font-weight-bold"><span style="font-size:14px;">Some Text</span></div>
-                                          <div class=""><span style="font-size:14px;">$59556</span></div>
-                                      </div>
-                                    </div>
-                                  </div>
-                             </div>
-                             <div class="col-md-6">
-                                <div class="container py-3">
-                                    <div class="card shadow"style="border:none;width:170px">
-                                      <div class="card-body">
-                                          <div><i class="fa fa-calendar" style="font-size:40px;"></i></div>
-                                          <div class="pt-2 font-weight-bold"><span style="font-size:14px;">Some Text</span></div>
-                                          <div class=""><span style="font-size:14px;">$59556</span></div>
-                                      </div>
-                                    </div>
-                                  </div>
-                            </div>
 
-                              
-
-                               
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="drag_drop_box">
-                                        <label>Attachments</label>
-                                        <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
-                                        </ng-uppy>
-                                        <div *ngFor="let item of attachments" class="attachments_section">
-                                            <a href="{{item.attachmentUrl}}" target="_blank" class="attachement_btn"
-                                                download="{{item.attachmentUrl}}">
-                                                <img src="../../../../assets/media/files/{{item.attachmentExtension}}">
-                                                <span>{{item.attachmentName}}</span>
-                                            </a>
-                                            <button class="cross-btn" (click)="deleteAttachment(item.id)">
-                                                <span class="fa fa-window-close"></span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
+</div>
