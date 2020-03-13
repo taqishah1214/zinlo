@@ -12,5 +12,6 @@ namespace Zinlo.Reconciliation
         Task CreateOrEdit(CreateOrEditItemizationDto input);
         Task<PagedResultDto<ItemizedListDto>> GetAll(GetAllItemizationInput input);
         Task<CreateOrEditItemizationDto> GetEdit(long Id);
+        Task Delete(long Id);
     }
 }

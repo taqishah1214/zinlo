@@ -67,7 +67,8 @@ namespace Zinlo.ChartsofAccount
                                    AssigneeId = o.Assignee.Id,
                                    StatusId = (int)o.Status,
                                    Balance = o.Balance,
-                                   OverallMonthlyAssignee = getUserWithPictures
+                                   OverallMonthlyAssignee = getUserWithPictures,
+                                   Lock = o.Lock
                                };
 
             return new PagedResultDto<ChartsofAccoutsForViewDto>(
@@ -91,11 +92,33 @@ namespace Zinlo.ChartsofAccount
         protected virtual async Task Update(CreateOrEditChartsofAccountDto input)
         {
             var account = await _chartsofAccountRepository.FirstOrDefaultAsync((int)input.Id);
-            var updatedAccount = ObjectMapper.Map(input, account);
-            updatedAccount.ReconciliationType = (ReconciliationType)input.ReconciliationType;
-            updatedAccount.AccountType = (AccountType)input.AccountType;
-            await _chartsofAccountRepository.UpdateAsync(updatedAccount);
+            if ((int)account.ReconciliationType != (int)input.ReconciliationType)
+            {
+                int previousId = (int)input.Id;
+                input.Id = 0;
+
+                await Create(input);
+                var recociliationTypeOld = (ReconciliationType)account.ReconciliationType;
+                var updatedAccount = ObjectMapper.Map(input, account);
+                updatedAccount.ReconciliationType = recociliationTypeOld;
+                updatedAccount.AccountType = (AccountType)input.AccountType;
+                updatedAccount.Lock = true;
+                updatedAccount.Id = previousId;
+                await _chartsofAccountRepository.UpdateAsync(updatedAccount);
+            }
+            else
+            {
+                var updatedAccount = ObjectMapper.Map(input, account);
+                updatedAccount.ReconciliationType = (ReconciliationType)input.ReconciliationType;
+                updatedAccount.AccountType = (AccountType)input.AccountType;
+                await _chartsofAccountRepository.UpdateAsync(updatedAccount);
+            }
+               
         }
+
+
+
+
 
         protected virtual async Task Create(CreateOrEditChartsofAccountDto input)
         {
