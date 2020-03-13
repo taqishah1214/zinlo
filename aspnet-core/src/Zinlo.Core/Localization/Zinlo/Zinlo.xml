@@ -1024,5 +1024,13 @@
     <text name="ImportAccountsUploadFailed">Accounts import process has failed.</text>
     <text name="InvalidAccountsImports">Invalid Accounts imports</text>
 
+    <text name="ImportAccountsTrialBalanceProcessStart">Accounts Trial Balance import process has begun.</text>
+    <text name="ImportAccountsTrialBalanceUploadFailed">Accounts Trail Balance import process has failed.</text>
+    <text name="AllAccountsTrialBalanceSuccessfullyImportedFromExcel">Accounts Trial Balance import process has been completed successfully. All Balance in file are imported.</text>
+
+    <text name="FileCantBeConvertedToAccountsTrialBalanceList">Accounts Balance import process has failed. File is invalid.</text>
+
+
+
   </texts>
 </localizationDictionary>

@@ -50,6 +50,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   updateAssigneeOnHeader: boolean = true;
   getAccountWithAssigneeId : number = 0;
   uploadUrl = AppConsts.remoteServiceBaseUrl + '/Users/ImportAccountsFromExcel';
+  uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/Users/ImportAccountsTrialBalanceFromExcel';
 
   @ViewChild('ExcelFileUpload', { static: true }) excelFileUpload: FileUpload;
 
@@ -266,6 +267,23 @@ RedirectToCreateAccount(): void {
                 this.notify.error(this.l('ImportAccountsUploadFailed'));
             }
         });
+}
+
+uploadAccountsTrialBalanceExcel(data: { files: File }): void {
+  const formData: FormData = new FormData();
+  const file = data.files[0];
+  formData.append('file', file, file.name);
+
+  this._httpClient
+      .post<any>(this.uploadBalanceUrl, formData)
+      .pipe(finalize(() => this.excelFileUpload.clear()))
+      .subscribe(response => {
+          if (response.success) {
+              this.notify.success(this.l('ImportAccountsTrialBalanceProcessStart'));
+          } else if (response.error != null) {
+              this.notify.error(this.l('ImportAccountsTrialBalanceUploadFailed'));
+          }
+      });
 }
 
 onUploadExcelError(): void {

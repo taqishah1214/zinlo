@@ -184,5 +184,32 @@ namespace Zinlo.ChartsofAccount
             }
             return type;
         }
+
+        public async Task<bool> CheckAccountForTrialBalance(string accountName, string accountNumber,string trialBalance)
+        {
+            var result = _chartsofAccountRepository.GetAll()
+                        .Where(x => x.AccountName.Trim().ToLower() == accountName.Trim().ToLower()
+                        && x.AccountNumber.Trim().ToLower() == accountNumber.Trim().ToLower()
+                        && CompareDates(x.CreationTime) == 0)                       
+                        .FirstOrDefault();
+            if(result != null)
+            {
+                result.TrialBalance = Convert.ToDecimal(trialBalance);
+               await _chartsofAccountRepository.UpdateAsync(result);               
+                return true;
+            }
+            else
+            {
+                return false;
+            }         
+        }
+        public int CompareDates(DateTime CreattionDate)
+        {
+            DateTime dateTime = DateTime.Now;
+            DateTime date1 = new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0);
+            DateTime date2 = new DateTime(CreattionDate.Year, CreattionDate.Month, 1, 0, 0, 0);
+            int result = DateTime.Compare(date2, date1);
+            return result;
+        }
     }
 }

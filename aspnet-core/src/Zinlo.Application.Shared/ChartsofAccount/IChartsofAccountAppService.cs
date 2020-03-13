@@ -19,6 +19,7 @@ namespace Zinlo.ChartsofAccount
 
         Task ChangeStatus(long accountId, long selectedStatusId);
         Task<FileDto> GetChartsofAccountToExcel(long id);
+        Task<bool> CheckAccountForTrialBalance(string accountName, string accountNumber, string trialBalance);
 
 
 
