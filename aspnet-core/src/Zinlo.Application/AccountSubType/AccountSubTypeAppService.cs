@@ -19,6 +19,7 @@ namespace Zinlo.AccountSubType
         private readonly IRepository<AccountSubType, long> _accountSubTypeRepository;
         private readonly UserManager _userManager;
         private readonly IProfileAppService _profileAppService;
+        public  long AccountSubTypeId = 0;
 
         public AccountSubTypeAppService (IRepository<AccountSubType, long> accountSubTypeRepository, UserManager userManager, IRepository<User, long> userRepository, IProfileAppService profileAppService)
         {
@@ -57,13 +58,15 @@ namespace Zinlo.AccountSubType
         }
         protected virtual async Task Create(CreateOrEditAccountSubTypeDto input)
         {
+
             var accountSubType = ObjectMapper.Map<AccountSubType>(input);
             if (AbpSession.TenantId != null)
             {
                 accountSubType.TenantId = (int)AbpSession.TenantId;
+                accountSubType.CreatorUserId = (int)AbpSession.UserId;
             }
 
-            await _accountSubTypeRepository.InsertAsync(accountSubType);
+            AccountSubTypeId = await _accountSubTypeRepository.InsertAndGetIdAsync(accountSubType);
         }
 
         public async Task<List<NameValueDto<long>>> AccountSubTypeDropDown()
@@ -107,6 +110,25 @@ namespace Zinlo.AccountSubType
                 totalCount,
                  mappedData
             );
+        }
+
+       public async Task<long> GetAccountSubTypeIdByTitle(string title)
+        {
+            var result = _accountSubTypeRepository.GetAll().Where(x => x.Title.Trim().ToLower() == title.Trim().ToLower()).FirstOrDefault();
+            if(result != null)
+            {
+                return result.Id;
+            }
+            else
+            {
+                CreateOrEditAccountSubTypeDto input = new CreateOrEditAccountSubTypeDto()
+                {
+                    Title = title,
+                     Description = title
+                };
+               await Create(input);
+                return AccountSubTypeId;
+            }
         }
 
 

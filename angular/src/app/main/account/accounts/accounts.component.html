@@ -45,11 +45,12 @@
                                             <div class="download-modal-row row">
                                                 <div class="col-md-6 text-center" (click)="uploadaccountExcel()">
                                                     <img src="../../../../assets/img/download.png"  >
-                                                    <p>Download Trial Balance</p>
+                                                   
+                                                    <p>Download Chart of Accounts</p>
                                                 </div>
                                                 <div class="col-md-6 text-center" (click)="downloadExcelFile()">
                                                     <img src="../../../../assets/img/download.png">
-                                                    <p>Download Chart of Accounts</p>
+                                                    <p>Download Trial Balance</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -64,14 +65,15 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                            <h5 class="modal-title" id="exampleModalLongTitle"> <!--Place model title here--> </h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             </button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="drag_drop_box uppy-modal-box1">
-                                                <p>Upload Chart of Accounts</p>
+                                               
                                                 <p>Upload Trial Balance</p> 
+                                                <p>Upload Chart of Accounts</p>
                                                 <ng-uppy [config]="settings"></ng-uppy>
                                             </div>
                                             <div class="drag_drop_box uppy-modal-box2">

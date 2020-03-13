@@ -5,57 +5,56 @@ using Abp.Domain.Uow;
 using Abp.Localization;
 using Abp.Localization.Sources;
 using Abp.ObjectMapping;
+using Abp.Runtime.Session;
 using Abp.Threading;
+using Abp.UI;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zinlo.AccountSubType;
 using Zinlo.Authorization.Roles;
+using Zinlo.Authorization.Users;
 using Zinlo.ChartsofAccount.Dtos;
 using Zinlo.ChartsofAccount.Importing;
 using Zinlo.Notifications;
 using Zinlo.Storage;
-
 namespace Zinlo.ChartsofAccount
 {
    
     public class ImportChartsOfAccountToExcelJob : BackgroundJob<ImportChartsOfAccountFromExcelJobArgs>, ITransientDependency
     {
-        private readonly RoleManager _roleManager;
+              
        private readonly IChartsOfAccontListExcelDataReader _chartsOfAccontListExcelDataReader;
-        // private readonly IInvalidUserExporter _invalidUserExporter;
-        // private readonly IUserPolicy _userPolicy;
-        // private readonly IEnumerable<IPasswordValidator<User>> _passwordValidators;
-        // private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IAccountSubTypeAppService _accountSubTypeAppService;
+        private readonly IInvalidAccountsExcellExporter _invalidAccountsExporter;
         private readonly IRepository<ChartsofAccount, long>  _chartsOfAccountsrepository;
         private readonly IAppNotifier _appNotifier;
         private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly ILocalizationSource _localizationSource;
         private readonly IObjectMapper _objectMapper;
 
-      //  public UserManager UserManager { get; set; }
+        public UserManager userManager { get; set; }
 
         public ImportChartsOfAccountToExcelJob(
-            //RoleManager roleManager,
-            IChartsOfAccontListExcelDataReader chartsOfAccontListExcelDataReader,
+
+        IChartsOfAccontListExcelDataReader chartsOfAccontListExcelDataReader,
+            IAccountSubTypeAppService accountSubTypeAppService,
             IRepository<ChartsofAccount, long> chartsOfAccountsrepository,
-            //IInvalidUserExporter invalidUserExporter,
-            //IUserPolicy userPolicy,
-            //IEnumerable<IPasswordValidator<User>> passwordValidators,
-            //IPasswordHasher<User> passwordHasher,
+            IInvalidAccountsExcellExporter invalidAccountsExporter,
              IAppNotifier appNotifier,
             IBinaryObjectManager binaryObjectManager,
             ILocalizationManager localizationManager,
-            IObjectMapper objectMapper)
+            IObjectMapper objectMapper
+            
+            )
         {
-            //_roleManager = roleManager;
             _chartsOfAccontListExcelDataReader = chartsOfAccontListExcelDataReader;
             _chartsOfAccountsrepository = chartsOfAccountsrepository;
-            //_invalidUserExporter = invalidUserExporter;
-            //_userPolicy = userPolicy;
-            //_passwordValidators = passwordValidators;
-            //_passwordHasher = passwordHasher;
+            _invalidAccountsExporter = invalidAccountsExporter;
+            _accountSubTypeAppService = accountSubTypeAppService;
             _appNotifier = appNotifier;
             _binaryObjectManager = binaryObjectManager;
             _objectMapper = objectMapper;
@@ -67,23 +66,23 @@ namespace Zinlo.ChartsofAccount
         {
             using (CurrentUnitOfWork.SetTenantId(args.TenantId))
             {
-                var chartsofaccount = GetUserListFromExcelOrNull(args);
+                var chartsofaccount = GetAccountsListFromExcelOrNull(args);
                 if (chartsofaccount == null || !chartsofaccount.Any())
                 {
-                    //SendInvalidExcelNotification(args);
+                    SendInvalidExcelNotification(args);
                     return;
                 }
 
-                CreateUsers(args, chartsofaccount);
+                CreateChartsOfAccounts(args, chartsofaccount);
             }
         }
 
-        private List<CreateOrEditChartsofAccountDto> GetUserListFromExcelOrNull(ImportChartsOfAccountFromExcelJobArgs args)
+        private List<ChartsOfAccountsExcellImportDto> GetAccountsListFromExcelOrNull(ImportChartsOfAccountFromExcelJobArgs args)
         {
             try
             {
                 var file = AsyncHelper.RunSync(() => _binaryObjectManager.GetOrNullAsync(args.BinaryObjectId));
-                return _chartsOfAccontListExcelDataReader.GetUsersFromExcel(file.Bytes);
+                return _chartsOfAccontListExcelDataReader.GetAccountsFromExcel(file.Bytes);
             }
             catch (Exception)
             {
@@ -91,119 +90,145 @@ namespace Zinlo.ChartsofAccount
             }
         }
 
-        private void CreateUsers(ImportChartsOfAccountFromExcelJobArgs args, List<CreateOrEditChartsofAccountDto> users)
+        private void CreateChartsOfAccounts(ImportChartsOfAccountFromExcelJobArgs args, List<ChartsOfAccountsExcellImportDto> accounts)
         {
-            var invalidUsers = new List<CreateOrEditChartsofAccountDto>();
+            var invalidAccounts = new List<ChartsOfAccountsExcellImportDto>();
 
-            /*  foreach (var user in users)
+              foreach (var account in accounts)
               {
-                  if (user.CanBeImported())
+                  if (account.CanBeImported())
                   {
                       try
                       {
-                          AsyncHelper.RunSync(() => CreateUserAsync(user));
+                          AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(account));
                       }
                       catch (UserFriendlyException exception)
                       {
-                          user.Exception = exception.Message;
-                          invalidUsers.Add(user);
+                        account.Exception = exception.Message;
+                        invalidAccounts.Add(account);
                       }
                       catch (Exception exception)
                       {
-                          user.Exception = exception.ToString();
-                          invalidUsers.Add(user);
+                        account.Exception = exception.ToString();
+                        invalidAccounts.Add(account);
                       }
                   }
                   else
                   {
-                      invalidUsers.Add(user);
+                    invalidAccounts.Add(account);
                   }
-              }*/
-            foreach (var item in users)
+              }
+            foreach (var item in accounts)
             {
-                AsyncHelper.RunSync(() => CreateUserAsync(item));
-            }
-            
-
-            
-            AsyncHelper.RunSync(() => ProcessImportUsersResultAsync(args, invalidUsers));
+                AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(item));
+            }           
+            AsyncHelper.RunSync(() => ProcessImportAccountsResultAsync(args, invalidAccounts));
         }
 
-        private async Task CreateUserAsync(CreateOrEditChartsofAccountDto input)
+        private async Task CreateChartsOfAccountAsync(ChartsOfAccountsExcellImportDto input)
         {
-            var tenantId = CurrentUnitOfWork.GetTenantId();
-
-            //if (tenantId.HasValue)
-            //{
-            //    await _userPolicy.CheckMaxUserCountAsync(tenantId.Value);
-            //}
-
-            var account = _objectMapper.Map<ChartsofAccount>(input); //Passwords is not mapped (see mapping configuration)
+            var tenantId = CurrentUnitOfWork.GetTenantId();        
+            ChartsofAccount account = new ChartsofAccount();
             account.TenantId = (int)tenantId;
-            await _chartsOfAccountsrepository.InsertAsync(account);
-            //user.Password = input.Password;
-            //user.TenantId = tenantId;
-
-            //if (!input.Password.IsNullOrEmpty())
-            //{
-            //    await UserManager.InitializeOptionsAsync(tenantId);
-            //    foreach (var validator in _passwordValidators)
-            //    {
-            //        (await validator.ValidateAsync(UserManager, user, input.Password)).CheckErrors();
-            //    }
-
-            //    user.Password = _passwordHasher.HashPassword(user, input.Password);
-            //}
-
-            //user.Roles = new List<UserRole>();
-            //var roleList = _roleManager.Roles.ToList();
-
-            //foreach (var roleName in input.AssignedRoleNames)
-            //{
-            //    var correspondingRoleName = GetRoleNameFromDisplayName(roleName, roleList);
-            //    var role = await _roleManager.GetRoleByNameAsync(correspondingRoleName);
-            //    user.Roles.Add(new UserRole(tenantId, user.Id, role.Id));
-            //}
-
-            //(await UserManager.CreateAsync(user)).CheckErrors();
+            account.AccountName = input.AccountName;
+            account.AccountNumber = input.AccountNumber;
+            account.CreationTime = DateTime.Now.ToUniversalTime();
+            account.Status = (Status)2;
+            account.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
+            account.CreatorUserId = 3;
+            account.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);
+            account.AccountSubTypeId = await _accountSubTypeAppService.GetAccountSubTypeIdByTitle(input.AccountSubType);
+            account.Reconciled = (Reconciled)1;   //GetReconciledValue(input.);
+            account.ReconciliationType = (ReconciliationType)1;
+            await _chartsOfAccountsrepository.InsertAsync(account);                    
         }
 
-        private async Task ProcessImportUsersResultAsync(ImportChartsOfAccountFromExcelJobArgs args, List<CreateOrEditChartsofAccountDto> invalidUsers)
+        private async Task ProcessImportAccountsResultAsync(ImportChartsOfAccountFromExcelJobArgs args, List<ChartsOfAccountsExcellImportDto> invalidAccounts)
         {
-            //await _appNotifier.SendMessageAsync(
-            //       args.Account,
-            //       _localizationSource.GetString("AllUsersSuccessfullyImportedFromExcel"),
-            //       Abp.Notifications.NotificationSeverity.Success);
+            await _appNotifier.SendMessageAsync(
+                   args.User,
+                   _localizationSource.GetString("AllAccountsSuccessfullyImportedFromExcel"),
+                   Abp.Notifications.NotificationSeverity.Success);
+            
 
-
-            //if (invalidUsers.Any())
-            //{
-            //   // var file = _invalidUserExporter.ExportToFile(invalidUsers);
-            //    await _appNotifier.SomeUsersCouldntBeImported(args.Account, file.FileToken, file.FileType, file.FileName);
-            //}
-            //else
-            //{
-            //    await _appNotifier.SendMessageAsync(
-            //        args.Account,
-            //        _localizationSource.GetString("AllUsersSuccessfullyImportedFromExcel"),
-            //        Abp.Notifications.NotificationSeverity.Success);
-            //}
+            if (invalidAccounts.Any())
+            {
+                 var file = _invalidAccountsExporter.ExportToFile(invalidAccounts);
+                await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
+            }
+            else
+            {
+                await _appNotifier.SendMessageAsync(
+                    args.User,
+                    _localizationSource.GetString("AllAccountsSuccessfullyImportedFromExcel"),
+                    Abp.Notifications.NotificationSeverity.Success);
+            }
         }
 
-        //private void SendInvalidExcelNotification(ImportChartsOfAccountFromExcelJobArgs args)
-        //{
-        //    AsyncHelper.RunSync(() => _appNotifier.SendMessageAsync(
-        //        args.User,
-        //        _localizationSource.GetString("FileCantBeConvertedToUserList"),
-        //        Abp.Notifications.NotificationSeverity.Warn));
-        //}
+        private void SendInvalidExcelNotification(ImportChartsOfAccountFromExcelJobArgs args)
+        {
+            AsyncHelper.RunSync(() => _appNotifier.SendMessageAsync(
+                args.User,
+                _localizationSource.GetString("FileCantBeConvertedToAccountsList"),
+                Abp.Notifications.NotificationSeverity.Warn));
+        }
+        #region|Helpers|
+        public async Task<long> GetUserIdByEmail(string emailAddress)
+        {
+          var user = await userManager.FindByEmailAsync(emailAddress);
+            if(user != null)
+            {
+                return user.Id;
+            }
+            else
+            {
+                return 3;
+            }
+           
+        }
 
-        //private string GetRoleNameFromDisplayName(string displayName, List<Role> roleList)
-        //{
-        //    return roleList.FirstOrDefault(
-        //                r => r.DisplayName?.ToLowerInvariant() == displayName?.ToLowerInvariant()
-        //            )?.Name;
-        //}
+        public int GetReconciliationTypeValue(string name)
+        {
+            if(name.Trim().ToLower() == "itemized")
+            {
+                return 1;
+            }
+            else
+            {
+                return 2;
+            }
+        }
+        public int GetAccountTypeValue(string name)
+        {
+            if (name.Trim().ToLower() == "fixed")
+            {
+                return 1;
+            }
+            else if (name.Trim().ToLower() == "assets")
+            {
+                return 2;
+            }
+            else
+            {
+                return 3;
+            }
+        }
+        public int GetReconciledValue(string name)
+        {
+            if (name.Trim().ToLower() == "netamount")
+            {
+                return 1;
+            }
+            else if (name.Trim().ToLower() == "beginningamount")
+            {
+                return 2;
+            }
+            else
+            {
+                return 3;
+            }
+        }
+        #endregion
     }
 
 }

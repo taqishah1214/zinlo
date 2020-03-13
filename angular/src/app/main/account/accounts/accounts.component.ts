@@ -252,7 +252,6 @@ RedirectToCreateAccount(): void {
   }
 
   uploadaccountExcel(data: { files: File }): void {
-    debugger;
     const formData: FormData = new FormData();
     const file = data.files[0];
     formData.append('file', file, file.name);
@@ -262,15 +261,15 @@ RedirectToCreateAccount(): void {
         .pipe(finalize(() => this.excelFileUpload.clear()))
         .subscribe(response => {
             if (response.success) {
-                this.notify.success(this.l('ImportUsersProcessStart'));
+                this.notify.success(this.l('ImportAccountsProcessStart'));
             } else if (response.error != null) {
-                this.notify.error(this.l('ImportUsersUploadFailed'));
+                this.notify.error(this.l('ImportAccountsUploadFailed'));
             }
         });
 }
 
 onUploadExcelError(): void {
-    this.notify.error(this.l('ImportUsersUploadFailed'));
+    this.notify.error(this.l('ImportAccountsUploadFailed'));
 }
 
   downloadExcelFile(): void {

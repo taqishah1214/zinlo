@@ -8,6 +8,6 @@ namespace Zinlo.ChartsofAccount.Importing
 {
     public interface IChartsOfAccontListExcelDataReader : ITransientDependency
     {
-        List<CreateOrEditChartsofAccountDto> GetUsersFromExcel(byte[] fileBytes);
+        List<ChartsOfAccountsExcellImportDto> GetAccountsFromExcel(byte[] fileBytes);
     }
 }

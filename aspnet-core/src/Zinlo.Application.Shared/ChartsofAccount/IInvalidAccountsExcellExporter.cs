@@ -6,9 +6,8 @@ using Zinlo.Dto;
 
 namespace Zinlo.ChartsofAccount
 {
-    
-    public interface IChartsOfAccountsListExcelExporter
+  public  interface IInvalidAccountsExcellExporter
     {
-        FileDto ExportToFile(List<ChartsOfAccountsExcellExporterDto> accountsListDtos);
+        FileDto ExportToFile(List<ChartsOfAccountsExcellImportDto> accountsListDtos);
     }
 }

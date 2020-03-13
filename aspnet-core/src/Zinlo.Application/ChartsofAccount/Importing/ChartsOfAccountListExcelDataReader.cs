@@ -10,51 +10,39 @@ using Zinlo.DataExporting.Excel.EpPlus;
 
 namespace Zinlo.ChartsofAccount.Importing
 {
-    
 
-    public class ChartsOfAccountListExcelDataReader : EpPlusExcelImporterBase<CreateOrEditChartsofAccountDto>, IChartsOfAccontListExcelDataReader
+    public class ChartsOfAccountListExcelDataReader : EpPlusExcelImporterBase<ChartsOfAccountsExcellImportDto>, IChartsOfAccontListExcelDataReader
     {
         private readonly ILocalizationSource _localizationSource;
-
         public ChartsOfAccountListExcelDataReader(ILocalizationManager localizationManager)
         {
             _localizationSource = localizationManager.GetSource(ZinloConsts.LocalizationSourceName);
         }
-
-        public List<CreateOrEditChartsofAccountDto> GetUsersFromExcel(byte[] fileBytes)
+        public List<ChartsOfAccountsExcellImportDto> GetAccountsFromExcel(byte[] fileBytes)
         {
             return ProcessExcelFile(fileBytes, ProcessExcelRow);
         }
-
-        private CreateOrEditChartsofAccountDto ProcessExcelRow(ExcelWorksheet worksheet, int row)
+        private ChartsOfAccountsExcellImportDto ProcessExcelRow(ExcelWorksheet worksheet, int row)
         {
             if (IsRowEmpty(worksheet, row))
             {
                 return null;
             }
-
             var exceptionMessage = new StringBuilder();
-            var chartsofaccount = new CreateOrEditChartsofAccountDto();
-
+            var chartsofaccount = new ChartsOfAccountsExcellImportDto();
             try
             {
                 chartsofaccount.AccountName = GetRequiredValueFromRowOrNull(worksheet, row, 1, nameof(chartsofaccount.AccountName), exceptionMessage);
-                chartsofaccount.AccountNumber = GetRequiredValueFromRowOrNull(worksheet, row, 1, nameof(chartsofaccount.AccountNumber), exceptionMessage);
-
-
-                /*  user.UserName = GetRequiredValueFromRowOrNull(worksheet, row, 1, nameof(user.UserName), exceptionMessage);
-                  user.Name = GetRequiredValueFromRowOrNull(worksheet, row, 2, nameof(user.Name), exceptionMessage);
-                  user.Surname = GetRequiredValueFromRowOrNull(worksheet, row, 3, nameof(user.Surname), exceptionMessage);
-                  user.EmailAddress = GetRequiredValueFromRowOrNull(worksheet, row, 4, nameof(user.EmailAddress), exceptionMessage);
-                  user.PhoneNumber = worksheet.Cells[row, 5].Value?.ToString();
-                  user.Password = GetRequiredValueFromRowOrNull(worksheet, row, 6, nameof(user.Password), exceptionMessage);
-                  user.AssignedRoleNames = GetAssignedRoleNamesFromRow(worksheet, row, 7);*/
+                chartsofaccount.AccountNumber = GetRequiredValueFromRowOrNull(worksheet, row, 2, nameof(chartsofaccount.AccountNumber), exceptionMessage);
+                chartsofaccount.AccountType = GetRequiredValueFromRowOrNull(worksheet, row, 3, nameof(chartsofaccount.AccountType), exceptionMessage);
+                chartsofaccount.AccountSubType = GetRequiredValueFromRowOrNull(worksheet, row, 4, nameof(chartsofaccount.AccountSubType), exceptionMessage);
+                chartsofaccount.AssignedUser = GetRequiredValueFromRowOrNull(worksheet, row, 5, nameof(chartsofaccount.AssignedUser), exceptionMessage);
+                chartsofaccount.ReconciliationType = GetRequiredValueFromRowOrNull(worksheet, row, 6, nameof(chartsofaccount.ReconciliationType), exceptionMessage);
             }
             catch (System.Exception exception)
             {
-               /* user.Exception = exception.Message;*/
+                chartsofaccount.Exception = exception.Message;
             }
-
             return chartsofaccount;
         }
 
@@ -66,21 +54,8 @@ namespace Zinlo.ChartsofAccount.Importing
             {
                 return cellValue.ToString();
             }
-
             exceptionMessage.Append(GetLocalizedExceptionMessagePart(columnName));
             return null;
-        }
-
-        private string[] GetAssignedRoleNamesFromRow(ExcelWorksheet worksheet, int row, int column)
-        {
-            var cellValue = worksheet.Cells[row, column].Value;
-
-            if (cellValue == null || string.IsNullOrWhiteSpace(cellValue.ToString()))
-            {
-                return new string[0];
-            }
-
-            return cellValue.ToString().Split(',').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).ToArray();
         }
 
         private string GetLocalizedExceptionMessagePart(string parameter)
