@@ -44,6 +44,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
   StatusColorBox: any = ["bg-blue", "bg-sea-green", "bg-gray"]
   updateAssigneeOnHeader: boolean = true;
+  currentDate :any 
   getAccountWithAssigneeId : number = 0;
   constructor(private _router: Router,
     private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector,
@@ -56,6 +57,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this.AssigniBoxView = true;
     this.collapsibleRow = false;
     this.accountType = "Account Type"
+    this.currentDate = new Date();
     this.loadAccountSubType();
   }
 

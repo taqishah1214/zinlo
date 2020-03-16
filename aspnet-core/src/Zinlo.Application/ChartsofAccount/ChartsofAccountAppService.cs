@@ -33,11 +33,11 @@ namespace Zinlo.ChartsofAccount
             DateTime now = DateTime.Now;
             var CurrentDate = new DateTime(now.Year, now.Month, 1);
 
-            var query = _chartsofAccountRepository.GetAll().Include(p => p.AccountSubType).Include(p => p.Assignee)
+            var query = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == CurrentDate.Month && e.CreationTime.Year == CurrentDate.Year).Include(p => p.AccountSubType).Include(p => p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.AccountName.Contains(input.Filter))
                  .WhereIf(input.AccountType != 0, e => false || (e.AccountType == (AccountType)input.AccountType))
                  .WhereIf(input.AssigneeId != 0, e => false || (e.AssigneeId == input.AssigneeId));
-
+                 
             List<GetUserWithPicture> getUserWithPictures = new List<GetUserWithPicture>();
             getUserWithPictures = (from o in query.ToList()
                                    select new GetUserWithPicture()
