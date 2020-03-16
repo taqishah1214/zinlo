@@ -34,7 +34,7 @@
                                             Back
                                         </a>
 
-                                        <button class="btn btn-brand" (click)="RedirectToAddNew()"><i
+                                        <button *ngIf="!lock" class="btn btn-brand" (click)="RedirectToAddNew()"><i
                                             class="fa fa-plus"></i>
                                         {{"AddNew" | localize}}</button>
                                     </div>
