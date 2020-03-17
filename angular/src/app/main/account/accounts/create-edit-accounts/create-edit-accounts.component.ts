@@ -171,12 +171,47 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   onSubmit(): void {
-    if (this.editAccountCheck) {
-      this.updateAccount()
-    }
-    else {
-      this.createAccount()
-    }
+    
+    if (this.validationCheck())
+    {
+      if (this.editAccountCheck) {
+        this.updateAccount()
+      }
+      else {
+        this.createAccount()
+      }
+    }   
+  }
+
+  validationCheck() {
+    if(this.accountDto.accountName == null)
+     {
+      this.notify.error("Select the Account Name")
+      return false;
+     }
+     else if (this.accountDto.accountNumber == null)
+     {
+      this.notify.error("Select the Account Number")
+      return false;
+     }
+     else if (this.accountDto.accountType == null)
+     {
+      this.notify.error("Select the Account Type")
+      return false;
+     }
+     else if (this.accountDto.accountSubTypeId == null)
+     {
+      this.notify.error("Select the Account SubType")
+      return false;
+
+     }
+     else if (this.accountDto.reconciliationType == null)
+     {
+      this.notify.error("Select the ReconciliationType")
+      return false;
+
+     }
+     return true;
   }
 
   createAccount():void {
