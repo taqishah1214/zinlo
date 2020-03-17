@@ -188,9 +188,9 @@ namespace Zinlo.ChartsofAccount
         public async Task<bool> CheckAccountForTrialBalance(string accountName, string accountNumber,string trialBalance)
         {
             var result = _chartsofAccountRepository.GetAll()
-                        .Where(x => x.AccountName.Trim().ToLower() == accountName.Trim().ToLower()
-                        && x.AccountNumber.Trim().ToLower() == accountNumber.Trim().ToLower()
-                        && CompareDates(x.CreationTime) == 0)                       
+                        .Where(x => x.AccountName.ToLower() == accountName.Trim().ToLower()
+                        && x.AccountNumber.ToLower() == accountNumber.Trim().ToLower())
+                       // && CompareDates(x.CreationTime) == 0)                       
                         .FirstOrDefault();
             if(result != null)
             {

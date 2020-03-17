@@ -13,6 +13,8 @@ using Abp.Runtime.Session;
 using Zinlo.Authorization.Users.Importing;
 using Zinlo.ChartsofAccount;
 using Zinlo.ChartsofAccount.Importing;
+using System.Net;
+using Zinlo.ChartsofAccount.Dtos;
 
 namespace Zinlo.Web.Controllers
 {
@@ -73,25 +75,15 @@ namespace Zinlo.Web.Controllers
             }
         }
 
-
-        public async Task<JsonResult> ImportAccountsFromExcel()
+        [HttpGet]
+        public async Task<JsonResult> ImportAccountsFromExcel(string url)
         {
             try
             {
-                var file = Request.Form.Files.First();
-
-                if (file == null)
-                {
-                    throw new UserFriendlyException(L("File_Empty_Error"));
-                }
-
-                if (file.Length > 1048576 * 100) //100 MB
-                {
-                    throw new UserFriendlyException(L("File_SizeLimit_Error"));
-                }
-
+                WebRequest request = WebRequest.Create(url);
                 byte[] fileBytes;
-                using (var stream = file.OpenReadStream())
+                using (var response = request.GetResponse())
+                using (var stream = response.GetResponseStream())
                 {
                     fileBytes = stream.GetAllBytes();
                 }
@@ -115,25 +107,15 @@ namespace Zinlo.Web.Controllers
                 return Json(new AjaxResponse(new ErrorInfo(ex.Message)));
             }
         }
-
-        public async Task<JsonResult> ImportAccountsTrialBalanceFromExcel()
+        [HttpGet]
+        public async Task<JsonResult> ImportAccountsTrialBalanceFromExcel(string url)
         {
             try
-            {
-                var file = Request.Form.Files.First();
-
-                if (file == null)
-                {
-                    throw new UserFriendlyException(L("File_Empty_Error"));
-                }
-
-                if (file.Length > 1048576 * 100) //100 MB
-                {
-                    throw new UserFriendlyException(L("File_SizeLimit_Error"));
-                }
-
+            {              
+                WebRequest request = WebRequest.Create(url);
                 byte[] fileBytes;
-                using (var stream = file.OpenReadStream())
+                using (var response = request.GetResponse())
+                using (var stream = response.GetResponseStream())
                 {
                     fileBytes = stream.GetAllBytes();
                 }

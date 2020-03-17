@@ -40,8 +40,6 @@ namespace Zinlo.ChartsofAccount
                         L("AccountNumber"),
                         L("AccountType"),
                         L("AssignedUser")
-
-
                         );
 
                     AddObjects(
@@ -50,15 +48,7 @@ namespace Zinlo.ChartsofAccount
                         _ => _.AccountNumber,
                          _ => _.AccountType,
                           _ => _.AssignedUser
-
-
-
                         );
-
-                    //Formatting cells
-
-                    //var creationTimeColumn = sheet.Column(9);
-                    //creationTimeColumn.Style.Numberformat.Format = "yyyy-mm-dd";
 
                     for (var i = 1; i <= 9; i++)
                     {

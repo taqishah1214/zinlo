@@ -21,15 +21,12 @@ namespace Zinlo.ChartsofAccount.Importing
 {
     public class ImportChartsOfAccountTrialBalanceToExcelJob : BackgroundJob<ImportChartsOfAccountTrialBalanceFromExcelJobArgs>, ITransientDependency
     {
-
          private readonly IChartsOfAccontTrialBalanceListExcelDataReader _chartsOfAccontTrialBalanceListExcelDataReader;
          private readonly IChartsofAccountAppService _chartsofAccountAppService;
-    
         private readonly IAppNotifier _appNotifier;
         private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly ILocalizationSource _localizationSource;
         private readonly IObjectMapper _objectMapper;
-
         public UserManager userManager { get; set; }
 
         public ImportChartsOfAccountTrialBalanceToExcelJob(
@@ -128,21 +125,7 @@ namespace Zinlo.ChartsofAccount.Importing
             await _appNotifier.SendMessageAsync(
                    args.User,
                    _localizationSource.GetString("AllAccountsTrialBalanceSuccessfullyImportedFromExcel"),
-                   Abp.Notifications.NotificationSeverity.Success);
-
-
-            //if (invalidAccounts.Any())
-            //{
-            //    var file = _invalidAccountsExporter.ExportToFile(invalidAccounts);
-            //    await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
-            //}
-            //else
-            //{
-            //    await _appNotifier.SendMessageAsync(
-            //        args.User,
-            //        _localizationSource.GetString("AllAccountsSuccessfullyImportedFromExcel"),
-            //        Abp.Notifications.NotificationSeverity.Success);
-            //}
+                   Abp.Notifications.NotificationSeverity.Success);         
         }
 
         private void SendInvalidExcelNotification(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args)
