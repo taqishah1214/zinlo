@@ -13,6 +13,7 @@ using Abp.Application.Services.Dto;
 using Zinlo.Authorization.Users.Profile;
 using Zinlo.ClosingChecklist.Dtos;
 using NUglify.Helpers;
+using Zinlo.Dto;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -20,11 +21,12 @@ namespace Zinlo.ChartsofAccount
     {
         private readonly IRepository<ChartsofAccount, long> _chartsofAccountRepository;
         private readonly IProfileAppService _profileAppService;
-
-        public ChartsofAccountAppService(IRepository<ChartsofAccount, long> chartsofAccountRepository, IProfileAppService profileAppService)
+        private readonly IChartsOfAccountsListExcelExporter _chartsOfAccountsListExcelExporter;
+        public ChartsofAccountAppService(IRepository<ChartsofAccount, long> chartsofAccountRepository, IProfileAppService profileAppService, IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter)
         {
             _chartsofAccountRepository = chartsofAccountRepository;
             _profileAppService = profileAppService;
+            _chartsOfAccountsListExcelExporter = chartsOfAccountsListExcelExporter;
         }
 
         
@@ -186,10 +188,72 @@ namespace Zinlo.ChartsofAccount
             var account = await _chartsofAccountRepository.FirstOrDefaultAsync(id);
             if (account != null)
             {
-               result = (int)account.Reconciled;   
+                result = (int)account.Reconciled;
             }
             return result;
+        }
+        public async Task<FileDto> GetChartsofAccountToExcel(long id)
+        {
+            var accounts =  _chartsofAccountRepository.GetAll().Include(x => x.Assignee);
+            List<ChartsOfAccountsExcellExporterDto> listToExport = new List<ChartsOfAccountsExcellExporterDto>();
+            foreach (var item in accounts)
+            {
+                ChartsOfAccountsExcellExporterDto chartsOfAccountsExcellExporterDto = new ChartsOfAccountsExcellExporterDto();
+                chartsOfAccountsExcellExporterDto.AccountName = item.AccountName;
+                chartsOfAccountsExcellExporterDto.AccountNumber = item.AccountNumber;
+                chartsOfAccountsExcellExporterDto.AccountType = GetAccounttypeById((int)item.AccountType);
+                chartsOfAccountsExcellExporterDto.AssignedUser = item.Assignee.FullName;
+                listToExport.Add(chartsOfAccountsExcellExporterDto);
+            }
+            return _chartsOfAccountsListExcelExporter.ExportToFile(listToExport);
+        }
+        public string GetAccounttypeById(int id)
+        {
+            string type = string.Empty;
+            switch (id)
+            {
+                case 1:
+                    type = "Fixed";
+                    break;
+                case 2:
+                    type = "Assets";
+                    break;
+                case 3:
+                    type = "Liability";
+                    break;
 
+                default:
+                    type = "Fixed";
+                    break;
+            }
+            return type;
+        }
+
+        public async Task<bool> CheckAccountForTrialBalance(string accountName, string accountNumber,string trialBalance)
+        {
+            var result = _chartsofAccountRepository.GetAll()
+                        .Where(x => x.AccountName.ToLower() == accountName.Trim().ToLower()
+                        && x.AccountNumber.ToLower() == accountNumber.Trim().ToLower())
+                       // && CompareDates(x.CreationTime) == 0)                       
+                        .FirstOrDefault();
+            if(result != null)
+            {
+                result.TrialBalance = Convert.ToDecimal(trialBalance);
+               await _chartsofAccountRepository.UpdateAsync(result);               
+                return true;
+            }
+            else
+            {
+                return false;
+            }         
+        }
+        public int CompareDates(DateTime CreattionDate)
+        {
+            DateTime dateTime = DateTime.Now;
+            DateTime date1 = new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0);
+            DateTime date2 = new DateTime(CreattionDate.Year, CreattionDate.Month, 1, 0, 0, 0);
+            int result = DateTime.Compare(date2, date1);
+            return result;
         }
     }
 }

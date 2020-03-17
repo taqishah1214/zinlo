@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Zinlo.EntityFrameworkCore;
@@ -9,9 +10,10 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    partial class ZinloDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200313103153_ColumnTrialBalanceAddedInChartsOfAccounts")]
+    partial class ColumnTrialBalanceAddedInChartsOfAccounts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1469,17 +1471,11 @@ namespace Zinlo.Migrations
                     b.Property<long>("AssigneeId")
                         .HasColumnType("bigint");
 
-                    b.Property<double>("Balance")
-                        .HasColumnType("double precision");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("Lock")
-                        .HasColumnType("boolean");
 
                     b.Property<int>("Reconciled")
                         .HasColumnType("integer");
@@ -1958,9 +1954,6 @@ namespace Zinlo.Migrations
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Criteria")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
@@ -2052,6 +2045,9 @@ namespace Zinlo.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<DateTime>("CloseDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
 
@@ -2059,6 +2055,9 @@ namespace Zinlo.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("Month")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("OpenDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("Status")

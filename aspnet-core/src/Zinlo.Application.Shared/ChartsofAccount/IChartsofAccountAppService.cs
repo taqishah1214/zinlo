@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Zinlo.ChartsofAccount.Dtos;
+using Zinlo.Dto;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -18,7 +19,7 @@ namespace Zinlo.ChartsofAccount
         Task ChangeStatus(long accountId, long selectedStatusId);
         Task AddandUpdateBalance(double balance, long id);
         Task <int> CheckReconcilled(long id);
-
-
+        Task<FileDto> GetChartsofAccountToExcel(long id);
+        Task<bool> CheckAccountForTrialBalance(string accountName, string accountNumber, string trialBalance);
     }
 }
