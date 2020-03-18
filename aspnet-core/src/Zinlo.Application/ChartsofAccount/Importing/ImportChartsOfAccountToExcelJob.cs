@@ -37,6 +37,8 @@ namespace Zinlo.ChartsofAccount
         private readonly IObjectMapper _objectMapper;
 
         public UserManager userManager { get; set; }
+        public long TenantId = 0;
+        public long UserId = 0;
 
         public ImportChartsOfAccountToExcelJob(
 
@@ -64,6 +66,9 @@ namespace Zinlo.ChartsofAccount
         [UnitOfWork]
         public override void Execute(ImportChartsOfAccountFromExcelJobArgs args)
         {
+            TenantId = (int)args.TenantId;
+            UserId = args.User.UserId;
+
             using (CurrentUnitOfWork.SetTenantId(args.TenantId))
             {
                 var chartsofaccount = GetAccountsListFromExcelOrNull(args);
@@ -135,10 +140,10 @@ namespace Zinlo.ChartsofAccount
             account.CreationTime = DateTime.Now.ToUniversalTime();
             account.Status = (Status)2;
             account.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
-            account.CreatorUserId = 2;
+            account.CreatorUserId = UserId;
 
             account.AccountType =  (AccountType)GetAccountTypeValue(input.AccountType);
-            account.AccountSubTypeId = await _accountSubTypeAppService.GetAccountSubTypeIdByTitle(input.AccountSubType);
+            account.AccountSubTypeId = await _accountSubTypeAppService.GetAccountSubTypeIdByTitle(input.AccountSubType,UserId,TenantId);
             account.Reconciled = (Reconciled)1;   //GetReconciledValue(input.);
             account.ReconciliationType = (ReconciliationType)1;
             await _chartsOfAccountsrepository.InsertAsync(account);                    

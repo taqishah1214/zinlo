@@ -131,7 +131,7 @@ namespace Zinlo.Web.Controllers
                     BinaryObjectId = fileObject.Id,
                     User = AbpSession.ToUserIdentifier()
                 });
-
+               
                 return Json(new AjaxResponse(new { }));
             }
             catch (UserFriendlyException ex)
