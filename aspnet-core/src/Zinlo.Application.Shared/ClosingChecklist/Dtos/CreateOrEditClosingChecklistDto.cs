@@ -18,6 +18,7 @@ namespace Zinlo.Tasks.Dtos
         public int NoOfMonths { get; set; }
         public int DueOn { get; set; }
         public DateTime EndsOn { get; set; }
+        public DateTime DueDate { get; set; }
         public bool DayBeforeAfter { get; set; }
         public bool EndOfMonth { get; set; }
         public FrequencyDto Frequency { get; set; }

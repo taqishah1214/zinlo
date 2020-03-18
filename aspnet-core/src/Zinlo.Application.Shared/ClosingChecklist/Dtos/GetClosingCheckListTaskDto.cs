@@ -15,7 +15,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         
 
         public List<GetUserWithPicture> OverallMonthlyAssignee { get; set; }
-        public DateTime CreationTime { get; set; }
+        public DateTime DueDate { get; set; }
         public IEnumerable<ClosingCheckListForViewDto> Group { get; set; }
         public bool MonthStatus { get; set; }
     }

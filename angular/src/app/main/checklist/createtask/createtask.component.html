@@ -148,7 +148,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <label class="kt-radio kt-radio--single kt-radio--success">
-                                                        <input type="radio" name="radioButton" id="radioButton" [(checked)]="isChecked">
+                                                        <input type="radio" name="radioButton" id="radioButton" (change)="onDayChange()" [(checked)]="isChecked">
                                                         <span></span>
                                                     </label>
                                                 </span>
@@ -194,7 +194,7 @@
                                     <div class="form-group">
                                         <label>{{"Endson" | localize}}</label>
                                         <form class="input-arrow">
-                                            <input [(ngModel)]="checklist.endsOn" required="required"
+                                            <input [disabled]="checklist.frequency==5" [(ngModel)]="checklist.endsOn" required="required"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker
                                                 placeholder="Month" [minDate]="minDate"
                                                 [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"

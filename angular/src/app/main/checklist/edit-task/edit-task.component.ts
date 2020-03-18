@@ -232,20 +232,24 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 
   handleRadioChange() {
-    this.checklist.dayBeforeAfter = null;
+    this.checklist.dayBeforeAfter = false;
+    this.daysBeforeAfter = null;
     this.checklist.dueOn = 0;
+    this.daysBeforeAfter = null;
     this.isChecked = false;
   }
   onDaysClick(valu) {
     this.isChecked = true;
-    if (valu === 'true') {
+    if (valu == "true") {
       this.daysBeforeAfter = "Days Before";
       this.checklist.dayBeforeAfter = true
     }
-    else {
+    else if (valu == "false") {
       this.daysBeforeAfter = "Days After";
-      this.checklist.dayBeforeAfter = false;
+      this.checklist.dayBeforeAfter = false
+
     }
+    
   }
   commentClick() {
     this.commantBox = true;

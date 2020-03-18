@@ -4574,6 +4574,123 @@ export class ClosingChecklistServiceProxy {
         }
         return _observableOf<moment.Moment>(<any>null);
     }
+
+    /**
+     * @param closingMonth (optional) 
+     * @return Success
+     */
+    compareDates(closingMonth: moment.Moment | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/CompareDates?";
+        if (closingMonth === null)
+            throw new Error("The parameter 'closingMonth' cannot be null.");
+        else if (closingMonth !== undefined)
+            url_ += "ClosingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCompareDates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCompareDates(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCompareDates(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param closingMonth (optional) 
+     * @param endsOn (optional) 
+     * @return Success
+     */
+    compareTwoDates(closingMonth: moment.Moment | undefined, endsOn: moment.Moment | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/CompareTwoDates?";
+        if (closingMonth === null)
+            throw new Error("The parameter 'closingMonth' cannot be null.");
+        else if (closingMonth !== undefined)
+            url_ += "ClosingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
+        if (endsOn === null)
+            throw new Error("The parameter 'endsOn' cannot be null.");
+        else if (endsOn !== undefined)
+            url_ += "EndsOn=" + encodeURIComponent(endsOn ? "" + endsOn.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCompareTwoDates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCompareTwoDates(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCompareTwoDates(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
 }
 
 @Injectable()
@@ -17634,7 +17751,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
     id!: number;
     statusId!: number;
     assigneeId!: number;
-    creationTime!: moment.Moment;
+    dueDate!: moment.Moment;
     profilePicture!: string | undefined;
 
     constructor(data?: IClosingCheckListForViewDto) {
@@ -17655,7 +17772,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
             this.id = data["id"];
             this.statusId = data["statusId"];
             this.assigneeId = data["assigneeId"];
-            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.dueDate = data["dueDate"] ? moment(data["dueDate"].toString()) : <any>undefined;
             this.profilePicture = data["profilePicture"];
         }
     }
@@ -17676,7 +17793,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
         data["id"] = this.id;
         data["statusId"] = this.statusId;
         data["assigneeId"] = this.assigneeId;
-        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
         data["profilePicture"] = this.profilePicture;
         return data; 
     }
@@ -17690,13 +17807,13 @@ export interface IClosingCheckListForViewDto {
     id: number;
     statusId: number;
     assigneeId: number;
-    creationTime: moment.Moment;
+    dueDate: moment.Moment;
     profilePicture: string | undefined;
 }
 
 export class TasksGroup implements ITasksGroup {
     overallMonthlyAssignee!: GetUserWithPicture[] | undefined;
-    creationTime!: moment.Moment;
+    dueDate!: moment.Moment;
     group!: ClosingCheckListForViewDto[] | undefined;
     monthStatus!: boolean;
     closingCheckListForViewDto!: ClosingCheckListForViewDto;
@@ -17720,7 +17837,7 @@ export class TasksGroup implements ITasksGroup {
                 for (let item of data["overallMonthlyAssignee"])
                     this.overallMonthlyAssignee!.push(GetUserWithPicture.fromJS(item));
             }
-            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.dueDate = data["dueDate"] ? moment(data["dueDate"].toString()) : <any>undefined;
             if (Array.isArray(data["group"])) {
                 this.group = [] as any;
                 for (let item of data["group"])
@@ -17748,7 +17865,7 @@ export class TasksGroup implements ITasksGroup {
             for (let item of this.overallMonthlyAssignee)
                 data["overallMonthlyAssignee"].push(item.toJSON());
         }
-        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
         if (Array.isArray(this.group)) {
             data["group"] = [];
             for (let item of this.group)
@@ -17765,7 +17882,7 @@ export class TasksGroup implements ITasksGroup {
 
 export interface ITasksGroup {
     overallMonthlyAssignee: GetUserWithPicture[] | undefined;
-    creationTime: moment.Moment;
+    dueDate: moment.Moment;
     group: ClosingCheckListForViewDto[] | undefined;
     monthStatus: boolean;
     closingCheckListForViewDto: ClosingCheckListForViewDto;
@@ -17911,6 +18028,7 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
     noOfMonths!: number;
     dueOn!: number;
     endsOn!: moment.Moment;
+    dueDate!: moment.Moment;
     dayBeforeAfter!: boolean;
     endOfMonth!: boolean;
     frequency!: FrequencyDto;
@@ -17942,6 +18060,7 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
             this.endsOn = data["endsOn"] ? moment(data["endsOn"].toString()) : <any>undefined;
+            this.dueDate = data["dueDate"] ? moment(data["dueDate"].toString()) : <any>undefined;
             this.dayBeforeAfter = data["dayBeforeAfter"];
             this.endOfMonth = data["endOfMonth"];
             this.frequency = data["frequency"];
@@ -17981,6 +18100,7 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
         data["endsOn"] = this.endsOn ? this.endsOn.toISOString() : <any>undefined;
+        data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
         data["dayBeforeAfter"] = this.dayBeforeAfter;
         data["endOfMonth"] = this.endOfMonth;
         data["frequency"] = this.frequency;
@@ -18013,6 +18133,7 @@ export interface ICreateOrEditClosingChecklistDto {
     noOfMonths: number;
     dueOn: number;
     endsOn: moment.Moment;
+    dueDate: moment.Moment;
     dayBeforeAfter: boolean;
     endOfMonth: boolean;
     frequency: FrequencyDto;
@@ -18174,6 +18295,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     noOfMonths!: number;
     dueOn!: number;
     endsOn!: moment.Moment;
+    dueDate!: moment.Moment;
     dayBeforeAfter!: boolean;
     endOfMonth!: boolean;
     frequency!: FrequencyDto;
@@ -18219,6 +18341,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
             this.endsOn = data["endsOn"] ? moment(data["endsOn"].toString()) : <any>undefined;
+            this.dueDate = data["dueDate"] ? moment(data["dueDate"].toString()) : <any>undefined;
             this.dayBeforeAfter = data["dayBeforeAfter"];
             this.endOfMonth = data["endOfMonth"];
             this.frequency = data["frequency"];
@@ -18268,6 +18391,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
         data["endsOn"] = this.endsOn ? this.endsOn.toISOString() : <any>undefined;
+        data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
         data["dayBeforeAfter"] = this.dayBeforeAfter;
         data["endOfMonth"] = this.endOfMonth;
         data["frequency"] = this.frequency;
@@ -18302,6 +18426,7 @@ export interface IDetailsClosingCheckListDto {
     noOfMonths: number;
     dueOn: number;
     endsOn: moment.Moment;
+    dueDate: moment.Moment;
     dayBeforeAfter: boolean;
     endOfMonth: boolean;
     frequency: FrequencyDto;
