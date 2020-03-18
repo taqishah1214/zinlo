@@ -255,5 +255,16 @@ namespace Zinlo.ChartsofAccount
             int result = DateTime.Compare(date2, date1);
             return result;
         }
+
+        public async Task<double> GetTrialBalanceofAccount(long id)
+        {
+            double result = 0;
+            var account = await _chartsofAccountRepository.FirstOrDefaultAsync(id);
+            if (account != null)
+            {
+                result = (double)account.TrialBalance;
+            }
+            return result;
+        }
     }
 }

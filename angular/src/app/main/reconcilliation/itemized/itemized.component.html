@@ -294,14 +294,14 @@
                                 </div>
                                 <div class="report-box d-flex flex-wrap">
                                     <div class="report-box-inner1 w-50 px-2 text-navyblue">Trial Balance:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 0</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ {{trialBalance | formater}}</div>
                                 </div>
                                 <div class="report-box d-flex flex-wrap">
                                     <div class="report-box-inner1 w-50 px-2 text-navyblue">Variance:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ 0</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ {{variance | formater}}</div>
                                 </div>
                             </div>
-                            <div class="Check-reconcile-btn">
+                            <div class="Check-reconcile-btn ">
                                 <button class="btn btn-brand" >Check as Reconciled</button>
                             </div>
                         </div>

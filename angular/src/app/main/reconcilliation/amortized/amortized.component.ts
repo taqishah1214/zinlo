@@ -35,6 +35,13 @@ export class AmortizedComponent extends AppComponentBase {
   itemList : any = [];
   monthFilter = '100/2000';
   lock : boolean = false
+  trialBalanceBeginning : any = 0.0;
+  trialBalanceAccured: any = 0.0;
+  trialBalanceNet:any = 0.0;
+  varianceBeginning : any =0.0;
+  varianceAccured : any = 0.0;
+  varianceNet : any = 0.0
+
   constructor(
     injector: Injector,
     private _router: Router,
@@ -94,6 +101,27 @@ export class AmortizedComponent extends AppComponentBase {
     this.begininngAmount = j.totalBeginningAmount;
     this.accuredAmount= j.totalAccuredAmortization;
     this.netAmount = j.totalNetAmount;
+    
+    switch (j.reconciliedBase) {
+      case 1:
+        this.trialBalanceNet = j.totalTrialBalance
+        this.varianceNet = j.varianceNetAmount 
+        break;
+      case 2:
+        this.trialBalanceBeginning = j.totalTrialBalance
+        this.varianceBeginning = j.varianceBeginningAmount
+        this.trialBalanceAccured = j.totalTrialBalance
+        this.varianceAccured = j.varianceAccuredAmount
+        break;
+      case 3:
+        this.trialBalanceBeginning = j.totalTrialBalance
+        this.varianceBeginning = j.varianceBeginningAmount
+        this.trialBalanceAccured = j.totalTrialBalance
+        this.varianceAccured = j.varianceAccuredAmount
+        break;
+      default:
+        break;
+    }
     this.itemList = j.amortizedListForViewDtos;
     j.amortizedListForViewDtos.forEach(i => {
       i.attachments.forEach(element => {
@@ -107,6 +135,7 @@ export class AmortizedComponent extends AppComponentBase {
  
   });
 }
+
 
 filterByMonth(event): void {
   var month = event.getMonth() + 1;

@@ -85,31 +85,37 @@ namespace Zinlo.Reconciliation
                 TotalNetAmount = amortizedList.Sum(item => item.NetAmount)
             };
 
-           
+            amortizedListDto.TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId);
+
+
 
             if (input.ChartofAccountId != 0 )
             {
                 var reconcilledResult = await _chartsofAccountAppService.CheckReconcilled(input.ChartofAccountId);
+                amortizedListDto.ReconciliedBase = reconcilledResult;
                 switch (reconcilledResult)
                 {
                     case 1:
                         await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalNetAmount, input.ChartofAccountId);
+                        amortizedListDto.VarianceNetAmount = amortizedListDto.TotalNetAmount - amortizedListDto.TotalTrialBalance;
+                        amortizedListDto.VarianceBeginningAmount = 0;
+                        amortizedListDto.VarianceAccuredAmount = 0;
                         break;
                     case 2:
                         await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalBeginningAmount, input.ChartofAccountId);
+                        amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalance;
+                        amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalance;
                         break;
                     case 3:
                         await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalAccuredAmortization, input.ChartofAccountId);
+                        amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalance;
+                        amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalance;
                         break;
 
                     default:
                         break;
                 }      
             }
-
-
-
-
 
         result.Add(amortizedListDto);
             return new PagedResultDto<AmortizedListDto>(

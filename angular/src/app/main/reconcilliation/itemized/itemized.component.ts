@@ -36,6 +36,8 @@ export class ItemizedComponent extends AppComponentBase {
   monthFilter = '100/2000';
   remainingAttachmentList: any = []
   lock : boolean = false;
+  trialBalance : any;
+  variance:any;
   
 
 
@@ -93,6 +95,8 @@ export class ItemizedComponent extends AppComponentBase {
     this.primengTableHelper.hideLoadingIndicator();
     this.ItemizedList = result.items;
       this.TotalAmount = this.ItemizedList[0].totalAmount;
+      this.trialBalance = this.ItemizedList[0].totalTrialBalance;
+      this.variance = this.ItemizedList[0].variance;
       this.itemList = this.ItemizedList[0].itemizedListForViewDto;
       this.itemList.forEach(i => {
         debugger

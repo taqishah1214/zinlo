@@ -57,9 +57,9 @@ namespace Zinlo.Reconciliation
             {
                 itemizedListForViewDto = ItemizedList,
                 TotalAmount = ItemizedList.Sum(item => item.Amount),
-              
+                TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId),
             };
-
+            itemizedListDto.Variance = itemizedListDto.TotalAmount - itemizedListDto.TotalTrialBalance;
             if (input.ChartofAccountId != 0)
             {
                 await _chartsofAccountAppService.AddandUpdateBalance(itemizedListDto.TotalAmount, input.ChartofAccountId);

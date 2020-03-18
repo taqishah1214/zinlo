@@ -11,5 +11,13 @@ namespace Zinlo.Reconciliation.Dtos
         public double TotalBeginningAmount { get; set; }
         public double TotalAccuredAmortization { get; set; }
         public double TotalNetAmount { get; set; }
+        public double TotalTrialBalance { get; set; }
+        public double VarianceNetAmount { get; set; }
+        public double VarianceBeginningAmount { get; set; }
+        public double VarianceAccuredAmount { get; set; }
+
+        public int ReconciliedBase { get; set; }
+
+
     }
 }

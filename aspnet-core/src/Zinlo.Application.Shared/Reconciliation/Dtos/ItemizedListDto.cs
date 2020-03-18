@@ -8,5 +8,8 @@ namespace Zinlo.Reconciliation.Dtos
     {
         public List<ItemizedListForViewDto> itemizedListForViewDto { get; set; }
         public double TotalAmount { get; set; }
+        public double TotalTrialBalance { get; set; }
+        public double Variance { get; set; }
+
     }
 }

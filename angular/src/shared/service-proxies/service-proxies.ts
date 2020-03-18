@@ -3440,6 +3440,62 @@ export class ChartsofAccountServiceProxy {
         }
         return _observableOf<number>(<any>null);
     }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getTrialBalanceofAccount(id: number | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetTrialBalanceofAccount?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTrialBalanceofAccount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTrialBalanceofAccount(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTrialBalanceofAccount(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
 }
 
 @Injectable()
@@ -16604,6 +16660,11 @@ export class AmortizedListDto implements IAmortizedListDto {
     totalBeginningAmount!: number;
     totalAccuredAmortization!: number;
     totalNetAmount!: number;
+    totalTrialBalance!: number;
+    varianceNetAmount!: number;
+    varianceBeginningAmount!: number;
+    varianceAccuredAmount!: number;
+    reconciliedBase!: number;
 
     constructor(data?: IAmortizedListDto) {
         if (data) {
@@ -16624,6 +16685,11 @@ export class AmortizedListDto implements IAmortizedListDto {
             this.totalBeginningAmount = data["totalBeginningAmount"];
             this.totalAccuredAmortization = data["totalAccuredAmortization"];
             this.totalNetAmount = data["totalNetAmount"];
+            this.totalTrialBalance = data["totalTrialBalance"];
+            this.varianceNetAmount = data["varianceNetAmount"];
+            this.varianceBeginningAmount = data["varianceBeginningAmount"];
+            this.varianceAccuredAmount = data["varianceAccuredAmount"];
+            this.reconciliedBase = data["reconciliedBase"];
         }
     }
 
@@ -16644,6 +16710,11 @@ export class AmortizedListDto implements IAmortizedListDto {
         data["totalBeginningAmount"] = this.totalBeginningAmount;
         data["totalAccuredAmortization"] = this.totalAccuredAmortization;
         data["totalNetAmount"] = this.totalNetAmount;
+        data["totalTrialBalance"] = this.totalTrialBalance;
+        data["varianceNetAmount"] = this.varianceNetAmount;
+        data["varianceBeginningAmount"] = this.varianceBeginningAmount;
+        data["varianceAccuredAmount"] = this.varianceAccuredAmount;
+        data["reconciliedBase"] = this.reconciliedBase;
         return data; 
     }
 }
@@ -16653,6 +16724,11 @@ export interface IAmortizedListDto {
     totalBeginningAmount: number;
     totalAccuredAmortization: number;
     totalNetAmount: number;
+    totalTrialBalance: number;
+    varianceNetAmount: number;
+    varianceBeginningAmount: number;
+    varianceAccuredAmount: number;
+    reconciliedBase: number;
 }
 
 export class PagedResultDtoOfAmortizedListDto implements IPagedResultDtoOfAmortizedListDto {
@@ -22186,6 +22262,8 @@ export interface IItemizedListForViewDto {
 export class ItemizedListDto implements IItemizedListDto {
     itemizedListForViewDto!: ItemizedListForViewDto[] | undefined;
     totalAmount!: number;
+    totalTrialBalance!: number;
+    variance!: number;
 
     constructor(data?: IItemizedListDto) {
         if (data) {
@@ -22204,6 +22282,8 @@ export class ItemizedListDto implements IItemizedListDto {
                     this.itemizedListForViewDto!.push(ItemizedListForViewDto.fromJS(item));
             }
             this.totalAmount = data["totalAmount"];
+            this.totalTrialBalance = data["totalTrialBalance"];
+            this.variance = data["variance"];
         }
     }
 
@@ -22222,6 +22302,8 @@ export class ItemizedListDto implements IItemizedListDto {
                 data["itemizedListForViewDto"].push(item.toJSON());
         }
         data["totalAmount"] = this.totalAmount;
+        data["totalTrialBalance"] = this.totalTrialBalance;
+        data["variance"] = this.variance;
         return data; 
     }
 }
@@ -22229,6 +22311,8 @@ export class ItemizedListDto implements IItemizedListDto {
 export interface IItemizedListDto {
     itemizedListForViewDto: ItemizedListForViewDto[] | undefined;
     totalAmount: number;
+    totalTrialBalance: number;
+    variance: number;
 }
 
 export class PagedResultDtoOfItemizedListDto implements IPagedResultDtoOfItemizedListDto {
