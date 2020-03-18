@@ -136,7 +136,8 @@ namespace Zinlo.ChartsofAccount
             account.Status = (Status)2;
             account.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
             account.CreatorUserId = 2;
-            account.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);
+
+            account.AccountType =  (AccountType)GetAccountTypeValue(input.AccountType);
             account.AccountSubTypeId = await _accountSubTypeAppService.GetAccountSubTypeIdByTitle(input.AccountSubType);
             account.Reconciled = (Reconciled)1;   //GetReconciledValue(input.);
             account.ReconciliationType = (ReconciliationType)1;
@@ -182,7 +183,7 @@ namespace Zinlo.ChartsofAccount
             }
             else
             {
-                return 3;
+                return 2;
             }
            
         }

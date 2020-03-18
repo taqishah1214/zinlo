@@ -11,6 +11,7 @@ using Zinlo.AccountSubType.Dtos;
 using Zinlo.Authorization.Users;
 using Zinlo.Authorization.Users.Profile;
 using Microsoft.EntityFrameworkCore;
+using Abp.Runtime.Session;
 
 namespace Zinlo.AccountSubType
 {
@@ -20,6 +21,7 @@ namespace Zinlo.AccountSubType
         private readonly UserManager _userManager;
         private readonly IProfileAppService _profileAppService;
         public  long AccountSubTypeId = 0;
+       
 
         public AccountSubTypeAppService (IRepository<AccountSubType, long> accountSubTypeRepository, UserManager userManager, IRepository<User, long> userRepository, IProfileAppService profileAppService)
         {
@@ -135,21 +137,21 @@ namespace Zinlo.AccountSubType
                      Description = title
                 };
 
-               await CreateFromExcel(input);
-                return AccountSubTypeId;
+             long  id =  await CreateFromExcel(input);
+                return id;
             }
         }
-        protected virtual async Task CreateFromExcel(CreateOrEditAccountSubTypeDto input)
+        protected virtual async Task<long> CreateFromExcel(CreateOrEditAccountSubTypeDto input)
         {
 
             var accountSubType = ObjectMapper.Map<AccountSubType>(input);
             if (AbpSession.TenantId != null)
             {
                 accountSubType.TenantId = (int)AbpSession.TenantId;
-                accountSubType.CreatorUserId = (int)AbpSession.UserId;
+                accountSubType.CreatorUserId = (long)AbpSession.UserId;
             }
-
-            AccountSubTypeId = await _accountSubTypeRepository.InsertAndGetIdAsync(accountSubType);
+          long id  = await _accountSubTypeRepository.InsertAndGetIdAsync(accountSubType);
+            return id;
         }
 
 

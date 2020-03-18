@@ -42,6 +42,7 @@ using HealthChecksUISettings = HealthChecks.UI.Configuration.Settings;
 using Zinlo.Attachments;
 using Zinlo.ChartsofAccount.Importing;
 using Zinlo.ChartsofAccount;
+using Zinlo.AccountSubType;
 
 namespace Zinlo.Web.Startup
 {
@@ -72,7 +73,9 @@ namespace Zinlo.Web.Startup
             services.AddTransient<IChartsOfAccontListExcelDataReader, ChartsOfAccountListExcelDataReader>();
             services.AddTransient<IInvalidAccountsExcellExporter, InvalidAccountsExporter>();
             services.AddTransient<IChartsOfAccontTrialBalanceListExcelDataReader, ChartsOfAccountTrialBalanceListDataReader>();
-            
+            services.AddSingleton<IAccountSubTypeAppService, AccountSubTypeAppService>();
+            services.AddSingleton<IChartsofAccountAppService, ChartsofAccountAppService>();
+
             //Configure CORS for angular2 UI
             services.AddCors(options =>
             {
