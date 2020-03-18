@@ -43,7 +43,9 @@ namespace Zinlo.ChartsofAccount
                         _ => _.AccountName,
                         _ => _.AccountNumber,
                         _ => _.AccountType,
-                        _ => _.AssignedUser,
+                        _ => _.AccountSubType,
+                         _ => _.AssignedUser,
+                          _ => _.ReconciliationType,
                         _ => _.Exception
                         );
 

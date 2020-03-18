@@ -55,7 +55,7 @@ namespace Zinlo.ChartsofAccount.Importing
                 return cellValue.ToString();
             }
             exceptionMessage.Append(GetLocalizedExceptionMessagePart(columnName));
-            return null;
+            return "";
         }
 
         private string GetLocalizedExceptionMessagePart(string parameter)

@@ -884,14 +884,24 @@ export class AccountSubTypeServiceProxy {
 
     /**
      * @param title (optional) 
+     * @param userId (optional) 
+     * @param tenantId (optional) 
      * @return Success
      */
-    getAccountSubTypeIdByTitle(title: string | undefined): Observable<number> {
+    getAccountSubTypeIdByTitle(title: string | undefined, userId: number | undefined, tenantId: number | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/AccountSubType/GetAccountSubTypeIdByTitle?";
         if (title === null)
             throw new Error("The parameter 'title' cannot be null.");
         else if (title !== undefined)
             url_ += "title=" + encodeURIComponent("" + title) + "&"; 
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (tenantId === null)
+            throw new Error("The parameter 'tenantId' cannot be null.");
+        else if (tenantId !== undefined)
+            url_ += "TenantId=" + encodeURIComponent("" + tenantId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

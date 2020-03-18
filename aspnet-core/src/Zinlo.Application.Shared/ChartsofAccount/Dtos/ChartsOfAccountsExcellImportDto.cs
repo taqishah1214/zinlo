@@ -18,6 +18,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         {
             return string.IsNullOrEmpty(Exception);
         }
+        public bool isValid { get; set; }
     }
    
 }

@@ -55,8 +55,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   chartsOfAccountsfileUrl : string = "";
   chartsOfAccountsfileUrlTrialBalance : string = "";
 
-  uploadUrl = AppConsts.remoteServiceBaseUrl + '/Users/ImportAccountsFromExcel';
-  uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/Users/ImportAccountsTrialBalanceFromExcel';
+  uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
+  uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsTrialBalanceFromExcel';
 
   @ViewChild('ExcelFileUpload', { static: true }) excelFileUpload: FileUpload;
 

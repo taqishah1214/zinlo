@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Zinlo.AccountSubType;
 using Zinlo.Authorization.Roles;
@@ -103,9 +104,35 @@ namespace Zinlo.ChartsofAccount
               {
                   if (account.CanBeImported())
                   {
-                      try
+
+                    account.isValid = true;
+
+
+                    try
                       {
-                          AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(account));
+
+                        //ChartOfAccountsValidationDto validationModel = new ChartOfAccountsValidationDto();
+                        //validationModel.AssigneeEmail = account.AssignedUser;
+                        //validationModel.AccountName = account.AccountName;
+                        //validationModel.AccountNumber = account.AccountNumber;
+                        //validationModel.ReconciliationType = account.ReconciliationType;
+                        //validationModel.AccountSubType = account.AccountSubType;
+                        //validationModel.AccountType = account.AccountType;
+
+                        var result = CheckErrors(account);
+                        if(result.isValid)
+                        {
+                            AsyncHelper.RunSync(() =>  CreateChartsOfAccountAsync(account));
+                        }
+                        else
+                        {
+                            //account.Exception = "InVlid Data"; // Will decide about this msg 
+                            invalidAccounts.Add(result);
+                        }
+
+
+
+                       
                       }
                       catch (UserFriendlyException exception)
                       {
@@ -235,6 +262,59 @@ namespace Zinlo.ChartsofAccount
             }
         }
         #endregion
+        public ChartsOfAccountsExcellImportDto CheckErrors(ChartsOfAccountsExcellImportDto input)
+        {
+
+            bool isAccountName = false;
+            bool isAccountNumber = false;
+            bool isAccountType = false;
+            bool isAssignedUser = false;
+            bool isAccountSubType = false;
+            bool isReconciliationType = false;
+            bool isEmail = Regex.IsMatch(input.AssignedUser, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
+            if(isEmail)
+            {
+                var result = userManager.FindByEmailAsync(input.AssignedUser);
+                if(result == null)
+                {
+                    isAssignedUser = true;
+                }
+               
+            } 
+            if(string.IsNullOrEmpty(input.AccountName))
+            {
+                isAccountName = true;
+            }
+            if (string.IsNullOrEmpty(input.AccountNumber))
+            {
+                isAccountNumber = true;
+            }
+            if (string.IsNullOrEmpty(input.AccountType))
+            {
+                isAccountType = true;
+            }
+            if (string.IsNullOrEmpty(input.AccountSubType))
+            {
+                isAccountSubType = true;
+            }
+            if (string.IsNullOrEmpty(input.ReconciliationType))
+            {
+                isReconciliationType = true;
+            }
+            if(isAccountName == true || isAccountNumber == true || isAssignedUser == true
+                || isAccountSubType == true || isReconciliationType == true || isAccountType == true)
+            {
+                input.isValid = false;
+                input.Exception = "Some data are null!";  //Will change this msg after final logic.
+                return input;
+            }
+            else
+            {
+                return input;
+
+            }
+        }
+
     }
 
 }
