@@ -34,7 +34,7 @@
                                             Back
                                         </a>
 
-                                        <button *ngIf="!lock" class="btn btn-brand" (click)="RedirectToAddNew()"><i
+                                        <button class="btn btn-brand" (click)="RedirectToAddNew()"><i
                                             class="fa fa-plus"></i>
                                         {{"AddNew" | localize}}</button>
                                     </div>
@@ -104,7 +104,7 @@
                                         <span class="task-box">{{item.description}}</span>
                                     </td>
                                     <td class="reconciliation-cell">
-                                        <span class="">$ {{item.amount | formater }}</span>
+                                        <span class="">{{item.amount | formater }}</span>
                                     </td>
                                     <td class="accountSubtype-cell">
                                         <span class="">
@@ -290,15 +290,15 @@
                             <div class="report-container">
                                 <div class="report-box d-flex flex-wrap">
                                     <div class="report-box-inner1 w-50 px-2 text-navyblue">Total:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">${{TotalAmount | formater }}</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{TotalAmount | formater }}</div>
                                 </div>
                                 <div class="report-box d-flex flex-wrap">
                                     <div class="report-box-inner1 w-50 px-2 text-navyblue">Trial Balance:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ {{trialBalance | formater}}</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{trialBalance | formater}}</div>
                                 </div>
                                 <div class="report-box d-flex flex-wrap">
                                     <div class="report-box-inner1 w-50 px-2 text-navyblue">Variance:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">$ {{variance | formater}}</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{variance | formater}}</div>
                                 </div>
                             </div>
                             <div class="Check-reconcile-btn ">

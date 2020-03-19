@@ -35,7 +35,6 @@ export class ItemizedComponent extends AppComponentBase {
   itemList : any = [];
   monthFilter = '100/2000';
   remainingAttachmentList: any = []
-  lock : boolean = false;
   trialBalance : any;
   variance:any;
   
@@ -55,7 +54,6 @@ export class ItemizedComponent extends AppComponentBase {
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
     this.commantBox = true;
-    this.lock = history.state.data.lock;
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
 
@@ -64,16 +62,8 @@ export class ItemizedComponent extends AppComponentBase {
   RedirectToAddNew() : void {
     this._router.navigate(['/app/main/reconcilliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : 0 }} });
   }
-  RedirectToDetail(ItemizedItemId) : void {
-    if (this.lock == false)
-    {
+  RedirectToDetail(ItemizedItemId) : void {   
       this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId }} });
-
-    }
-    else {
-      this.notify.error("Reconciliation Type is change. So accounts is Lock");
-    }
-
   }
   getAllAmortizedList(event?: LazyLoadEvent){
     this.primeNgEvent = event;

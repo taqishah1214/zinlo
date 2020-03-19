@@ -68,9 +68,9 @@ namespace Zinlo.Reconciliation
                                     StartDate = o.StartDate,
                                     EndDate = o.EndDate,
                                     Description = o.Description,
-                                    AccuredAmortization = CalculateAccuredAmount(o.Description, Convert.ToInt32(o.Criteria), o.AccomulateAmount, o.Amount,o.EndDate, input.MonthFilter,o.StartDate),
+                                    AccuredAmortization = CalculateAccuredAmount(Convert.ToInt32(o.Criteria), o.AccomulateAmount, o.Amount,o.EndDate, input.MonthFilter,o.StartDate),
                                     BeginningAmount = o.Amount,
-                                    NetAmount = CalculateNetAmount(Convert.ToInt32(o.Criteria) == 2 ? CalculateAccuredAmount(o.Description, Convert.ToInt32(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate): o.AccomulateAmount, o.Amount) ,
+                                    NetAmount = CalculateNetAmount(Convert.ToInt32(o.Criteria) == 2 ? CalculateAccuredAmount( Convert.ToInt32(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate): o.AccomulateAmount, o.Amount) ,
                                     Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 2).Result        
                                }).ToList();
 
@@ -131,7 +131,7 @@ namespace Zinlo.Reconciliation
             return Result;
         }
 
-        protected virtual double CalculateAccuredAmount(string des, int CriteriaId , double AccomulateAmount, double BeginningAmount,DateTime EndDate, string Current, DateTime StartDate)
+        protected virtual double CalculateAccuredAmount( int CriteriaId , double AccomulateAmount, double BeginningAmount,DateTime EndDate, string Current, DateTime StartDate)
         {
             double Result =1;
             switch (CriteriaId)
@@ -156,11 +156,6 @@ namespace Zinlo.Reconciliation
         protected virtual double  GetAccuredAmountMonthly(double AccomulateAmount, double BeginningAmount , DateTime EndDate, string Current, DateTime StartDate)
         {
             DateTime MonthEnd =  GetValidDate(Current);
-           int DateResult =  CompareDates(EndDate, MonthEnd);
-            /*if (DateResult == -1 || DateResult > 0)
-            {
-                return BeginningAmount;
-            }*/
             if (MonthEnd >= EndDate)
             {
                 return BeginningAmount;
@@ -190,7 +185,7 @@ namespace Zinlo.Reconciliation
             }
             else
             {
-                //(MonthEnd - StartDate + 1) / (EndDate - StartDate + 1) * Original Amoun
+                //(MonthEnd - StartDate +1) / (EndDate - StartDate +1) * Original Amount
                 double month1 = (MonthEnd - StartDate).TotalDays;
                 double month2 = (EndDate - StartDate).TotalDays;
                 double Result1 = (month1 + 1);
@@ -207,13 +202,16 @@ namespace Zinlo.Reconciliation
             int year = Convert.ToInt32(current.Substring(index + 1, 4));
             if (month == 100 && year == 2000)
             {
-                // DateTime dateTime = new DateTime(2019, 8, 31, 0, 0, 0); ;
                 DateTime dateTime = DateTime.Now;
-                return dateTime;
+                var totalDays = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
+                DateTime LastDaydateTime = new DateTime(dateTime.Year, dateTime.Month, totalDays, 0, 0, 0);
+                return LastDaydateTime;
             }
             else
             {
-                return new DateTime(year, month, 1);
+                var totalDays = DateTime.DaysInMonth(year, month);
+                DateTime LastDaydateTime = new DateTime(year, month, totalDays, 0, 0, 0);
+                return LastDaydateTime;
             }
 
         }

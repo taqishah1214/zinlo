@@ -34,7 +34,6 @@ export class AmortizedComponent extends AppComponentBase {
   netAmount : any;
   itemList : any = [];
   monthFilter = '100/2000';
-  lock : boolean = false
   trialBalanceBeginning : any = 0.0;
   trialBalanceAccured: any = 0.0;
   trialBalanceNet:any = 0.0;
@@ -55,22 +54,12 @@ export class AmortizedComponent extends AppComponentBase {
     this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
-    this.lock = history.state.data.lock;
     this.commantBox = true;
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
-
-
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {
-    if (this.lock == false)
-    {
-      this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net }} });
-
-    }
-    else{
-      this.notify.error("Reconciliation Type is change. So accounts is Lock");
-    }
+    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net }} });
   }
   RedirectToAddNewItem()
   {

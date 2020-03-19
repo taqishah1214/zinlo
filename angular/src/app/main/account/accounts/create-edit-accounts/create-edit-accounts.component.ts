@@ -27,6 +27,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   recociledList: Array<{ id: number, name: string }> = [{ id: 1, name: "Net Amount" }, { id: 2, name: "Beginning Amount" }, { id: 3, name: "Accrued Amount" }];
   selectedSubTypeId : any;
   seclectedSubTypeTitle : any;
+  isAccountExist : boolean = false;
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(private _accountSubTypeService: AccountSubTypeServiceProxy,
@@ -209,9 +210,18 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
      {
       this.notify.error("Select the ReconciliationType")
       return false;
-
+     }
+     else if (this.isAccountExist)
+     {
+      this.notify.error("Account Number is already Exist.")
      }
      return true;
+  }
+
+  CheckAccountNumber() : void {
+    this._chartOfAccountService.checkAccountNoExist(this.accountDto.accountNumber).subscribe(response => {
+      this.isAccountExist = response
+    })
   }
 
   createAccount():void {

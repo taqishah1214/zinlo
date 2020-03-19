@@ -266,5 +266,23 @@ namespace Zinlo.ChartsofAccount
             }
             return result;
         }
+
+        public bool CheckAccountNoExist(string AccountNumber)
+        {
+
+            if (AccountNumber != null)
+            {
+                bool IsExist = _chartsofAccountRepository.GetAll().Any(x => x.AccountNumber.Trim().ToLower() == AccountNumber.Trim().ToLower());
+                return IsExist;
+            }
+            else
+            {
+                return false;
+            }
+
+
+
+        }
+
     }
 }

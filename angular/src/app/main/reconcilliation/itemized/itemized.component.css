@@ -180,11 +180,11 @@
     font-weight: bold;
     margin-right: 10px;
     }
-    ::ng-deep .bs-datepicker-head button.current{
+    /* ::ng-deep .bs-datepicker-head button.current{
     position:absolute;
     left:50%;
     transform: translateX(-50%);
-    }
+    } */
 
     *{
         -webkit-box-sizing: border-box;

@@ -145,15 +145,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
 
     });
   }
-editAccount(id,lock) : void {
-  if (lock == true)
-  {
-    this.notify.error("Reconciliation Type is change. So accounts is Lock");
-  }
-  else
-  {
+editAccount(id) : void { 
     this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: id,newSubTypeId : 0} } });
-  }
 }
 
 

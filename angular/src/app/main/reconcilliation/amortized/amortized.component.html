@@ -34,7 +34,7 @@
                                             Back
                                         </a>
 
-                                        <button *ngIf="!lock" class="btn btn-brand" (click)="RedirectToAddNewItem()"><i
+                                        <button class="btn btn-brand" (click)="RedirectToAddNewItem()"><i
                                             class="fa fa-plus"></i>
                                         {{"AddNew" | localize}}</button>
 
@@ -117,13 +117,13 @@
                                         <span class="task-box">{{item.description}}</span>
                                     </td>
                                     <td class="reconciliation-cell">
-                                        <span class="">$ {{item.beginningAmount | formater }}</span>
+                                        <span class=""> {{item.beginningAmount | formater }}</span>
                                     </td>
                                     <td class="accountSubtype-cell">
-                                        <span class="">$ {{item.accuredAmortization | formater }}</span>
+                                        <span class=""> {{item.accuredAmortization | formater }}</span>
                                     </td>
                                     <td class="assignee-cell">
-                                        <span class="">$ {{item.netAmount | formater}}</span>
+                                        <span class=""> {{item.netAmount | formater}}</span>
                                     </td>
                                     <td class="action-cell">
                                         <span class="">
@@ -181,10 +181,10 @@
                                             <li>
                                                 <div class="thead-box"><b>Net Amount : </b></div>
                                                 <div *ngIf="item.netAmount"  class="tdata-box">
-                                                    <span class="">$ {{item.netAmount | formater}}</span>
+                                                    <span class=""> {{item.netAmount | formater}}</span>
                                                 </div>
                                                 <div *ngIf="!item.netAmount"  class="tdata-box">
-                                                    <span class="">$ {{0 | formater}}</span>
+                                                    <span class=""> {{0 | formater}}</span>
                                                 </div>
                                                 
                                             </li>
@@ -333,21 +333,21 @@
                                     <tbody>
                                         <tr>
                                             <td class="text-navyblue">Total:</td>
-                                            <td class="text-blue">$ {{begininngAmount| formater }}</td>
-                                            <td class="text-blue">$ {{accuredAmount| formater }}</td>
-                                            <td class="text-blue">$ {{netAmount | formater}}</td>
+                                            <td class="text-blue"> {{begininngAmount| formater }}</td>
+                                            <td class="text-blue"> {{accuredAmount| formater }}</td>
+                                            <td class="text-blue"> {{netAmount | formater}}</td>
                                         </tr>
                                         <tr>
                                             <td class="text-navyblue">Trial Balance:</td>
-                                            <td class="text-blue"  >${{trialBalanceBeginning | formater}}</td>
-                                            <td class="text-blue"  >${{trialBalanceAccured | formater}}</td>
-                                            <td class="text-blue"  >${{trialBalanceNet | formater}}</td>
+                                            <td class="text-blue"  >{{trialBalanceBeginning | formater}}</td>
+                                            <td class="text-blue"  >{{trialBalanceAccured | formater}}</td>
+                                            <td class="text-blue"  >{{trialBalanceNet | formater}}</td>
                                         </tr>
                                         <tr>
                                             <td class="text-navyblue">Varience:</td>
-                                            <td class="text-blue" >$ {{varianceBeginning | formater}}</td>
-                                            <td class="text-blue" >$ {{varianceAccured | formater}}</td>
-                                            <td class="text-blue" >$ {{varianceNet | formater}}</td>
+                                            <td class="text-blue" > {{varianceBeginning | formater}}</td>
+                                            <td class="text-blue" > {{varianceAccured | formater}}</td>
+                                            <td class="text-blue" > {{varianceNet | formater}}</td>
                                         </tr>
                                     </tbody>
                                 </table>

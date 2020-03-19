@@ -107,3 +107,11 @@ color: #606060;
     display: inline-block;
     vertical-align: middle;
 }
+::ng-deep .uppy-Dashboard-inner {
+    min-height:220px !important;
+    height: 220px !important;
+    
+}
+::ng-deep table.days.weeks th:first-child, ::ng-deep table.days.weeks td:first-child {
+    display: none;
+}

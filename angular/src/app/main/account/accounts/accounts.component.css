@@ -427,9 +427,7 @@ form.task-report-form select:focus option {
     color: #000;
 }
 
-.task-box:hover{
-    background-color: #F1F2FC;
-}
+
 .record-card-body table span.category-name {
     padding: 0 8px;
     min-width: 80px;

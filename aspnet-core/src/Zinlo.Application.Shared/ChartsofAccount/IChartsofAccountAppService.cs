@@ -22,6 +22,7 @@ namespace Zinlo.ChartsofAccount
         Task<FileDto> GetChartsofAccountToExcel(long id);
         Task<bool> CheckAccountForTrialBalance(string accountName, string accountNumber, string trialBalance);
         Task<double> GetTrialBalanceofAccount(long id);
+        bool CheckAccountNoExist(string AccountNumber);
         
     }
 }

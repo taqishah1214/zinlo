@@ -80,7 +80,7 @@
 
                                                 <p>Upload Trial Balance</p>
                                                 <p>Upload Chart of Accounts</p>
-                                                <ng-uppy [config]="settings"
+                                                <ng-uppy [config]="settings" 
                                                     (uploadResult)="fileUploadedResponseTrialBalance($event)">
                                                 </ng-uppy>
                                             </div>
@@ -280,7 +280,7 @@
                                             <span class="">{{item.reconciliationType}}</span>
                                         </td>
 
-                                        <td [ngClass]="{'disabled':item.lock}" class="assignee-cell">
+                                        <td  class="assignee-cell">
                                             <div *ngIf="item.id != rowid" class="kt-user-card-v2"
                                                 (click)="openFieldUpdateAssignee(item.id)">
                                                 <div class="kt-user-card-v2__pic">
@@ -309,7 +309,7 @@
                                             <div class="btn-group">
                                                 <a *ngIf="'Pages.Categories.Edit' | permission" class="btn"
                                                     href="javascript:;"
-                                                    (click)="editAccount(item.id,item.lock)">
+                                                    (click)="editAccount(item.id)">
                                                     <img src="../../../../assets/img/edit.svg"></a>
                                                 <a *ngIf="'Pages.Categories.Delete' | permission" class="btn"
                                                     href="javascript:;" (click)="deleteAccount(item.id)">
@@ -338,7 +338,7 @@
                                                         <span class="">{{item.reconciliationType}}</span>
                                                     </div>
                                                 </li>
-                                                <li [ngClass]="{'disabled':item.lock}" class="assignee-cell collapsable-cell kt-user-card-v2">
+                                                <li  class="assignee-cell collapsable-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>Assignee : </b></div>
                                                     <div *ngIf="item.id != rowid"
                                                         (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
@@ -366,7 +366,7 @@
                                                     <div class="tdata-box">
                                                         <div class="btn-group">
                                                             <a class="btn"
-                                                                href="javascript:;" (click)="editAccount(item.id,item.lock)">                                                           
+                                                                href="javascript:;" (click)="editAccount(item.id)">                                                           
                                                                 <img src="../../../../assets/img/edit.svg"></a>
                                                             <a class="btn" href="javascript:;"
                                                                 (click)="deleteAccount(item.id)">
