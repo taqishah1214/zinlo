@@ -73,12 +73,17 @@ color: #606060;
     height: 220px !important;
     
 }
+::ng-deep table.days.weeks th:first-child, ::ng-deep table.days.weeks td:first-child {
+    display: none;
+}
 .tab_button {
     cursor: pointer;
 }
 .cursor_pointer {
     cursor: pointer;
 }
+
+
 .attachments_section{
     display: inline-block;
     background-color: #45414E14;

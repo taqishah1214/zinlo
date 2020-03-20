@@ -114,6 +114,8 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     else if (val == "Daily")
     {
       this.amortizationDto.criteria = 3;
+      this.accumulateAmount = false
+      this.amortizationDto.accomulateAmount = 0;
     }
   }
 

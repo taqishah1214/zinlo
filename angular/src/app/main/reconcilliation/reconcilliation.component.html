@@ -171,7 +171,7 @@
                                             <span class="">{{item.accountNumber}}</span>
                                             
                                         </td>
-                                        <td class="accountName-cell" (click)="reDirectToItemizedAmotized(item.reconciliationTypeId,item.id,item.accountNumber,item.accountName,item.lock)">
+                                        <td class="accountName-cell" (click)="reDirectToItemizedAmotized(item.reconciliationTypeId,item.id,item.accountNumber,item.accountName)">
                                             <span class="task-box">{{item.accountName}}</span>
                                         </td>
                                         <td class="accountType-cell">
@@ -181,7 +181,7 @@
                                             <span class="">{{item.reconciliationType}}</span>
                                         </td>
                                         <td class="accountSubtype-cell">
-                                            <span class=""> $ {{item.balance  | formater}}</span>
+                                            <span class=""> {{item.balance  | formater}}</span>
                                         </td>
                                        
                                         <td [ngClass]="{'disabled':item.lock}"  class="assignee-cell">
@@ -238,10 +238,10 @@
 
                                                     <div class="thead-box"><b> Balanace </b></div>
                                                     <div class="tdata-box">
-                                                        <span class=""> $ 111</span>
+                                                        <span class="">{{item.balance  | formater}}</span>
                                                     </div>
                                                 </li>
-                                                <li [ngClass]="{'disabled':item.lock}"  class="assignee-cell collapsable-cell kt-user-card-v2">
+                                                <li class="assignee-cell collapsable-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>Assignee : </b></div>
                                                     <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
@@ -265,7 +265,7 @@
                                                     <div class="thead-box"><b>Action : </b></div>
                                                     <form class="task-report-form">
                                                         <form class="task-report-form">
-                                                            <select [disabled]="item.lock"  onclick="console.log('test')"
+                                                            <select  onclick="console.log('test')"
                                                                 (change)="ChangeStatus($event.target.value,item.id)"
                                                                 class="form-control border-0 {{item.statusBoxColor}} text-white">
                                                                 <option value="" selected disabled hidden>
