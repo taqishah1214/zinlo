@@ -18,13 +18,14 @@ namespace Zinlo.Tasks.Dtos
         public int NoOfMonths { get; set; }
         public int DueOn { get; set; }
         public DateTime EndsOn { get; set; }
+        public DateTime DueDate { get; set; }
         public bool DayBeforeAfter { get; set; }
         public bool EndOfMonth { get; set; }
         public FrequencyDto Frequency { get; set; }
         public string CommentBody { get; set; }
-        public List<CommentDto> comments { get; set; }
+        public List<CommentDto> Comments { get; set; }
         public List<string> AttachmentsPath { get; set; }
-        public string GroupId { get; set; }
+        public Guid? GroupId { get; set; }
     }
     public enum StatusDto
     {

@@ -7,6 +7,6 @@ namespace Zinlo.ClosingChecklist.Dtos
   public  class ClosingCheckGroupDto
     {
         public long Id { get; set; }
-        public string GroupId { get; set; }
+        public Guid GroupId { get; set; }
     }
 }

@@ -150,9 +150,9 @@
                                     [resizableColumns]="primengTableHelper.resizableColumns">
                                     <ng-template pTemplate="header">
                                         <tr class="task-table-inner">
-                                            <th class="date-cell" scope="col" pSortableColumn="CreationTime">
+                                            <th class="date-cell" scope="col" pSortableColumn="ClosingMonth">
                                                 Date
-                                                <p-sortIcon field="CreationTime"></p-sortIcon>
+                                                <p-sortIcon field="DueDate"></p-sortIcon>
                                             </th>
                                             <th class="task-cell" scope="col" class="task-task-name">Task Name</th>
                                             <th class="cat-cell" scope="col" pSortableColumn="CategoryId">
@@ -182,8 +182,8 @@
                                         class="task-table-inner table-repeater">
 
                                         <td class="date-cell" (click)="redirectToDetail(j.id)" *ngIf="value === 0">
-                                            <span class=""><b>{{i.creationTime | date:'d'}}</b>
-                                                {{i.creationTime | date:'MMM'}},{{i.creationTime | date:'EEE'}}</span>
+                                            <span class=""><b>{{i.dueDate | date:'d'}}</b>
+                                                {{i.dueDate | date:'MMM'}},{{i.dueDate | date:'EEE'}}</span>
                                         </td>
                                         <td (click)="redirectToDetail(j.id)" *ngIf="value != 0">
                                             <span class="">{{""}}</span>

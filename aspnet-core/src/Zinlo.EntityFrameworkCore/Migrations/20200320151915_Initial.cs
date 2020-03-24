@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Zinlo.Migrations
 {
-    public partial class Initial_Migration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -404,6 +404,23 @@ namespace Zinlo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AccountSubTypes",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccountSubTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AppBinaryObjects",
                 columns: table => new
                 {
@@ -496,13 +513,12 @@ namespace Zinlo.Migrations
                 name: "Attachments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreationTime = table.Column<DateTime>(nullable: false),
                     CreatorUserId = table.Column<long>(nullable: true),
-                    TenantId = table.Column<int>(nullable: false),
-                    Type = table.Column<string>(nullable: true),
-                    TypeId = table.Column<int>(nullable: false),
+                    TypeId = table.Column<long>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
                     FilePath = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -543,6 +559,24 @@ namespace Zinlo.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeManagements",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    Month = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<bool>(nullable: false),
+                    IsClosed = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeManagements", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -875,6 +909,42 @@ namespace Zinlo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChartsofAccount",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    AccountNumber = table.Column<string>(nullable: true),
+                    AccountName = table.Column<string>(nullable: true),
+                    AccountType = table.Column<int>(nullable: false),
+                    ReconciliationType = table.Column<int>(nullable: false),
+                    AssigneeId = table.Column<long>(nullable: false),
+                    AccountSubTypeId = table.Column<long>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    Reconciled = table.Column<int>(nullable: false),
+                    Balance = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChartsofAccount", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChartsofAccount_AccountSubTypes_AccountSubTypeId",
+                        column: x => x.AccountSubTypeId,
+                        principalTable: "AccountSubTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChartsofAccount_AbpUsers_AssigneeId",
+                        column: x => x.AssigneeId,
+                        principalTable: "AbpUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ClosingChecklists",
                 columns: table => new
                 {
@@ -889,25 +959,26 @@ namespace Zinlo.Migrations
                     DeletionTime = table.Column<DateTime>(nullable: true),
                     TaskName = table.Column<string>(nullable: true),
                     CategoryId = table.Column<long>(nullable: false),
-                    AssigneeNameId = table.Column<long>(nullable: false),
+                    AssigneeId = table.Column<long>(nullable: false),
                     ClosingMonth = table.Column<DateTime>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     TenantId = table.Column<int>(nullable: false),
-                    Attachment = table.Column<string>(nullable: true),
                     Instruction = table.Column<string>(nullable: true),
                     NoOfMonths = table.Column<int>(nullable: false),
                     DueOn = table.Column<int>(nullable: false),
-                    EndsOn = table.Column<DateTime>(nullable: false),
+                    DueDate = table.Column<DateTime>(nullable: false),
+                    EndsOn = table.Column<DateTime>(nullable: true),
                     DayBeforeAfter = table.Column<bool>(nullable: false),
                     EndOfMonth = table.Column<bool>(nullable: false),
-                    Frequency = table.Column<int>(nullable: false)
+                    Frequency = table.Column<int>(nullable: false),
+                    GroupId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ClosingChecklists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClosingChecklists_AbpUsers_AssigneeNameId",
-                        column: x => x.AssigneeNameId,
+                        name: "FK_ClosingChecklists_AbpUsers_AssigneeId",
+                        column: x => x.AssigneeId,
                         principalTable: "AbpUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -995,6 +1066,63 @@ namespace Zinlo.Migrations
                         name: "FK_AbpRoleClaims_AbpRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AbpRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Amortizations",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    InoviceNo = table.Column<string>(nullable: true),
+                    JournalEntryNo = table.Column<string>(nullable: true),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    Amount = table.Column<double>(nullable: false),
+                    AccomulateAmount = table.Column<double>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    ChartsofAccountId = table.Column<long>(nullable: false),
+                    Criteria = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Amortizations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Amortizations_ChartsofAccount_ChartsofAccountId",
+                        column: x => x.ChartsofAccountId,
+                        principalTable: "ChartsofAccount",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Itemizations",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    InoviceNo = table.Column<string>(nullable: true),
+                    JournalEntryNo = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Amount = table.Column<double>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    ChartsofAccountId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Itemizations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Itemizations_ChartsofAccount_ChartsofAccountId",
+                        column: x => x.ChartsofAccountId,
+                        principalTable: "ChartsofAccount",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1331,6 +1459,11 @@ namespace Zinlo.Migrations
                 columns: new[] { "TenantId", "UserId" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Amortizations_ChartsofAccountId",
+                table: "Amortizations",
+                column: "ChartsofAccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AppChatMessages_TargetTenantId_TargetUserId_ReadState",
                 table: "AppChatMessages",
                 columns: new[] { "TargetTenantId", "TargetUserId", "ReadState" });
@@ -1392,14 +1525,34 @@ namespace Zinlo.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClosingChecklists_AssigneeNameId",
+                name: "IX_ChartsofAccount_AccountSubTypeId",
+                table: "ChartsofAccount",
+                column: "AccountSubTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChartsofAccount_AssigneeId",
+                table: "ChartsofAccount",
+                column: "AssigneeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClosingChecklists_AssigneeId",
                 table: "ClosingChecklists",
-                column: "AssigneeNameId");
+                column: "AssigneeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClosingChecklists_CategoryId",
                 table: "ClosingChecklists",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Itemizations_ChartsofAccountId",
+                table: "Itemizations",
+                column: "ChartsofAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeManagements_TenantId",
+                table: "TimeManagements",
+                column: "TenantId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -1477,6 +1630,9 @@ namespace Zinlo.Migrations
                 name: "AbpUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Amortizations");
+
+            migrationBuilder.DropTable(
                 name: "AppBinaryObjects");
 
             migrationBuilder.DropTable(
@@ -1504,6 +1660,12 @@ namespace Zinlo.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "Itemizations");
+
+            migrationBuilder.DropTable(
+                name: "TimeManagements");
+
+            migrationBuilder.DropTable(
                 name: "AbpEntityChanges");
 
             migrationBuilder.DropTable(
@@ -1516,7 +1678,13 @@ namespace Zinlo.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
+                name: "ChartsofAccount");
+
+            migrationBuilder.DropTable(
                 name: "AbpEntityChangeSets");
+
+            migrationBuilder.DropTable(
+                name: "AccountSubTypes");
 
             migrationBuilder.DropTable(
                 name: "AbpUsers");

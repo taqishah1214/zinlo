@@ -72,7 +72,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.commantBox = false;
     this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
     this.taskId = history.state.data.id;
-    this.active = true;
     this.categoryTitle = history.state.data.categoryTitle == "" ? "" : history.state.data.categoryTitle;
    
 
@@ -116,12 +115,17 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.getTaskForEdit.closingMonth = moment().startOf('day');
       this.getTaskForEdit.endsOn = moment().startOf('day');
 
-      if (this.getTaskForEdit.dayBeforeAfter == false) {
-        this.daysBeforeAfter = "Days After"
+      if (this.getTaskForEdit.endOfMonth) {
+        this.getTaskForEdit.dayBeforeAfter = null;
       }
-      else {
+      else if(this.getTaskForEdit.dayBeforeAfter){
         this.daysBeforeAfter = "Days Before"
       }
+      else{
+        this.daysBeforeAfter = "Days After"
+      }
+      debugger
+      this.getTaskForEdit.endOfMonth = result.endOfMonth;
       this.assigneeId = this.getTaskForEdit.assigneeId;
       this.parentassigneName = result;
       this.categoryName = this.categoryTitle != "" ? this.categoryTitle : this.getTaskForEdit.category;
@@ -133,9 +137,11 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
         i["NameAvatar"] = firstCharacterForAvatar + lastCharacterForAvatar;
       });
     });
+    this.active =true;
     this._categoryService.categoryDropDown().subscribe(result => {
       this.categoriesList = result;
     });
+
   }
   getExtensionImagePath(str) {
     var extension = str.split('.')[1];
@@ -232,20 +238,24 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 
   handleRadioChange() {
-    this.checklist.dayBeforeAfter = null;
+    this.checklist.dayBeforeAfter = false;
+    this.daysBeforeAfter = null;
     this.checklist.dueOn = 0;
+    this.daysBeforeAfter = null;
     this.isChecked = false;
   }
   onDaysClick(valu) {
     this.isChecked = true;
-    if (valu === 'true') {
+    if (valu == "true") {
       this.daysBeforeAfter = "Days Before";
       this.checklist.dayBeforeAfter = true
     }
-    else {
+    else if (valu == "false") {
       this.daysBeforeAfter = "Days After";
-      this.checklist.dayBeforeAfter = false;
+      this.checklist.dayBeforeAfter = false
+
     }
+    
   }
   commentClick() {
     this.commantBox = true;
@@ -256,7 +266,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   onComment() {
     this.commantBox = false;
   }
-  SaveTaskChanges() {
+  saveTaskChanges() {
     this.checklist.frequency = this.getTaskForEdit.frequencyId;
     this.checklist.closingMonth = moment(this.closingMonthValue);
     this.checklist.endsOn = moment(this.endsOnDateValue);
@@ -267,6 +277,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.taskName = this.getTaskForEdit.taskName;
     this.checklist.instruction = this.getTaskForEdit.instruction;
     this.checklist.dayBeforeAfter = this.getTaskForEdit.dayBeforeAfter;
+    this.checklist.groupId = this.getTaskForEdit.groupId;
     if (this.selectedUserId.selectedUserId != undefined)
     {
       this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);

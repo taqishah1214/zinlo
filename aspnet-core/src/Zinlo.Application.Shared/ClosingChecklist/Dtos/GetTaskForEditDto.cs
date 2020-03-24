@@ -29,6 +29,6 @@ namespace Zinlo.ClosingChecklist.Dtos
         public int FrequencyId { get; set; }
         public List<CommentDto> Comments { get; set; }
         public string ProfilePicture { get; set; }
-
+        public Guid GroupId { get; set; }
     }
 }

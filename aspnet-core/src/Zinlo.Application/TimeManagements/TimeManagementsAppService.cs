@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
@@ -8,6 +9,7 @@ using Zinlo.TimeManagements.Dto;
 using Abp.Application.Services.Dto;
 using Zinlo.Authorization;
 using Abp.Authorization;
+using Abp.Timing;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
 
@@ -66,6 +68,7 @@ namespace Zinlo.TimeManagements
 
         public async Task CreateOrEdit(CreateOrEditTimeManagementDto input)
         {
+            input.Month=input.Month.AddDays(1);
             var checkMonth = await CheckMonth(input.Month);
             if (checkMonth) throw new UserFriendlyException(L("ThisMonthIsAlreadyDefine"));
             if (input.Id == null)
@@ -120,7 +123,10 @@ namespace Zinlo.TimeManagements
         public async Task ChangeStatus(long id)
         {
             var timeManagement = await GetManagement(id);
-
+            if (timeManagement.Status)
+            {
+                timeManagement.IsClosed = true;
+            }
             timeManagement.Status = !timeManagement.Status;
             await _timeManagementRepository.UpdateAsync(timeManagement);
         }
@@ -144,6 +150,21 @@ namespace Zinlo.TimeManagements
                 return false;
             }
             return management.Status;
+        }
+
+        public List<TimeManagementDto> GetOpenManagement()
+        {
+            var query =  _timeManagementRepository.GetAllList().Where(p => !p.IsClosed);
+            return ObjectMapper.Map<List<TimeManagementDto>>(query);
+
+        }
+
+        public async Task<bool> CheckManagementExist(DateTime dateTime)
+        {
+            var checkManagement = await _timeManagementRepository.FirstOrDefaultAsync(p =>
+                p.Month.Month == dateTime.Month && p.Month.Year == dateTime.Year);
+            var result = checkManagement != null ? true : false;
+            return result;
         }
 
         protected virtual async Task<TimeManagement> GetManagement(long id)
