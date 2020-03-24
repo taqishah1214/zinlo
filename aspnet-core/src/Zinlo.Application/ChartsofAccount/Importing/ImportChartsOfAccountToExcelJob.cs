@@ -121,18 +121,27 @@ namespace Zinlo.ChartsofAccount
                         var data = CheckReconciliationTypeErrors(result);
                         if (data.isValid)
                         {
-                            AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(account));
+                          
+                            if (data.isValid)
+                            {
+                                AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(account));
+                            }
+                            else
+                            {
+                                //account.Exception = "InVlid Data"; // Will decide about this msg 
+                                invalidAccounts.Add(data);
+                            }
                         }
                         else
                         {
-                            //account.Exception = "InVlid Data"; // Will decide about this msg 
-                            invalidAccounts.Add(data);
+                            invalidAccounts.Add(result);
                         }
+                       
                     }
                     catch (UserFriendlyException exception)
                     {
-                        account.Exception = exception.Message;
-                        invalidAccounts.Add(account);
+                        //account.Exception = exception.Message;
+                        //invalidAccounts.Add(account);
                     }
                     //catch (Exception exception)
                     //{
@@ -156,7 +165,8 @@ namespace Zinlo.ChartsofAccount
         private async Task CreateChartsOfAccountAsync(ChartsOfAccountsExcellImportDto input)
         {
             var tenantId = CurrentUnitOfWork.GetTenantId();
-            var result = _chartsOfAccountsrepository.GetAll().ToList().Where(a => a.AccountNumber.ToLower() == input.AccountNumber.ToLower()).FirstOrDefault();
+            var allData = await _chartsOfAccountsrepository.GetAllListAsync();
+            var result = allData.Where(a => a.AccountNumber.ToLower() == input.AccountNumber.ToLower()).FirstOrDefault();
             if (result != null)
             {
                 result.TenantId = (int)tenantId;
@@ -318,11 +328,11 @@ namespace Zinlo.ChartsofAccount
             if (result == true)
             {
                 input.Exception += _localizationSource.GetString("ReconcilationError");
-                return input;
+                return  input;
             }
             else
             {
-                return input;
+                return  input;
             }
         }
 
@@ -372,12 +382,12 @@ namespace Zinlo.ChartsofAccount
                 || isAccountSubType == true || isReconciliationType == true || isAccountType == true)
             {
                 input.isValid = false;
-                input.Exception = _localizationSource.GetString("NullValuesAreNotAllowed");
+                input.Exception =  _localizationSource.GetString("NullValuesAreNotAllowed");
                 return input;
             }
             else
             {
-                return input;
+                return  input;
 
             }
         }
