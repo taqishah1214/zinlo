@@ -28,12 +28,11 @@ namespace Zinlo.ChartsofAccount
             _profileAppService = profileAppService;
             _chartsOfAccountsListExcelExporter = chartsOfAccountsListExcelExporter;
         }
-
         
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
             DateTime now = DateTime.Now;
-            var CurrentDate = new DateTime(now.Year, now.Month, 1);
+            var CurrentDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
 
             var query = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == CurrentDate.Month && e.CreationTime.Year == CurrentDate.Year).Include(p => p.AccountSubType).Include(p => p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.AccountName.Contains(input.Filter))

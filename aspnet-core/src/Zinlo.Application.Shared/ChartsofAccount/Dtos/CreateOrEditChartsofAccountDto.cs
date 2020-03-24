@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Zinlo.ChartsofAccount.Dtos
 {
-   public class CreateOrEditChartsofAccountDto : EntityDto<int?>
+   public class CreateOrEditChartsofAccountDto : CreationAuditedEntityDto<int?>
     {
         public virtual string AccountName { get; set; }
         public virtual string AccountNumber { get; set; }
@@ -14,6 +14,8 @@ namespace Zinlo.ChartsofAccount.Dtos
         public virtual long AccountSubTypeId { get; set; }
         public virtual long AssigneeId { get; set; }
         public Reconciled Reconciled { get; set; }
+        public double Balance { get; set; }
+
     }
     public enum ReconciliationType
     {
