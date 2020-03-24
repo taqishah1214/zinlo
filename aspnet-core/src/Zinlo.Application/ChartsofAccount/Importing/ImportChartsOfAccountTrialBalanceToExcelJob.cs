@@ -21,8 +21,8 @@ namespace Zinlo.ChartsofAccount.Importing
 {
     public class ImportChartsOfAccountTrialBalanceToExcelJob : BackgroundJob<ImportChartsOfAccountTrialBalanceFromExcelJobArgs>, ITransientDependency
     {
-         private readonly IChartsOfAccontTrialBalanceListExcelDataReader _chartsOfAccontTrialBalanceListExcelDataReader;
-         private readonly IChartsofAccountAppService _chartsofAccountAppService;
+        private readonly IChartsOfAccontTrialBalanceListExcelDataReader _chartsOfAccontTrialBalanceListExcelDataReader;
+        private readonly IChartsofAccountAppService _chartsofAccountAppService;
         private readonly IAppNotifier _appNotifier;
         private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly ILocalizationSource _localizationSource;
@@ -72,12 +72,12 @@ namespace Zinlo.ChartsofAccount.Importing
             try
             {
                 var file = AsyncHelper.RunSync(() => _binaryObjectManager.GetOrNullAsync(args.BinaryObjectId));
-                 var result = _chartsOfAccontTrialBalanceListExcelDataReader.GetAccountsTrialBalanceFromExcel(file.Bytes);
-                if(result.Count > 0)
+                var result = _chartsOfAccontTrialBalanceListExcelDataReader.GetAccountsTrialBalanceFromExcel(file.Bytes);
+                if (result.Count > 0)
                 {
 
                     long sum = result.Sum(x => Convert.ToInt64(x.Balance));
-                    if(sum == 0)
+                    if (sum == 0)
                     {
                         return result;
                     }
@@ -107,7 +107,7 @@ namespace Zinlo.ChartsofAccount.Importing
                         }
                         else
                         {
-                          
+
                             account.Exception = _localizationSource.GetString("NullValuesAreNotAllowed");
                             invalidAccounts.Add(account);
                         }
@@ -143,7 +143,7 @@ namespace Zinlo.ChartsofAccount.Importing
             var tenantId = CurrentUnitOfWork.GetTenantId();
             ChartsofAccount account = new ChartsofAccount();
             account.TenantId = (int)tenantId;
-         var result =   await _chartsofAccountAppService.CheckAccountForTrialBalance(input.AccountName, input.AccountNumber,input.Balance);
+            var result = await _chartsofAccountAppService.CheckAccountForTrialBalance(input.AccountName, input.AccountNumber, input.Balance);
         }
 
         private async Task ProcessImportAccountsTrialBalanceResultAsync(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args, List<ChartsOfAccountsTrialBalanceExcellImportDto> invalidAccounts)
@@ -155,7 +155,7 @@ namespace Zinlo.ChartsofAccount.Importing
             if (invalidAccounts.Any())
             {
                 var file = _invalidAccountsTrialBalanceExporter.ExportToFile(invalidAccounts);
-              //  await _hubcontext.Clients.All.SendAsync("chartOfAccount", file, "file");
+                //  await _hubcontext.Clients.All.SendAsync("chartOfAccount", file, "file");
                 await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
             }
             else
@@ -190,16 +190,16 @@ namespace Zinlo.ChartsofAccount.Importing
         }
         public bool CheckNullValues(ChartsOfAccountsTrialBalanceExcellImportDto input)
         {
-           // bool isValid = false;
-            if(string.IsNullOrEmpty(input.AccountName))
+            // bool isValid = false;
+            if (string.IsNullOrEmpty(input.AccountName))
             {
                 return true;
             }
-            else if(string.IsNullOrEmpty(input.AccountNumber))
+            else if (string.IsNullOrEmpty(input.AccountNumber))
             {
                 return true;
             }
-            else if(string.IsNullOrEmpty(input.Balance))
+            else if (string.IsNullOrEmpty(input.Balance))
             {
                 return true;
             }
@@ -207,7 +207,7 @@ namespace Zinlo.ChartsofAccount.Importing
             {
                 return false;
             }
-           
+
         }
         #endregion
     }
