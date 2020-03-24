@@ -50,7 +50,7 @@ namespace Zinlo.Web.Controllers
 
                 await BinaryObjectManager.SaveAsync(fileObject);
 
-                await BackgroundJobManager.EnqueueAsync<ImportChartsOfAccountToExcelJob, ImportChartsOfAccountFromExcelJobArgs>(new ImportChartsOfAccountFromExcelJobArgs
+               await  BackgroundJobManager.EnqueueAsync<ImportChartsOfAccountToExcelJob, ImportChartsOfAccountFromExcelJobArgs>(new ImportChartsOfAccountFromExcelJobArgs
                 {
                     TenantId = tenantId,
                     BinaryObjectId = fileObject.Id,
@@ -82,7 +82,7 @@ namespace Zinlo.Web.Controllers
 
                 await BinaryObjectManager.SaveAsync(fileObject);
 
-                await BackgroundJobManager.EnqueueAsync<ImportChartsOfAccountTrialBalanceToExcelJob, ImportChartsOfAccountTrialBalanceFromExcelJobArgs>(new ImportChartsOfAccountTrialBalanceFromExcelJobArgs
+                 BackgroundJobManager.Enqueue<ImportChartsOfAccountTrialBalanceToExcelJob, ImportChartsOfAccountTrialBalanceFromExcelJobArgs>(new ImportChartsOfAccountTrialBalanceFromExcelJobArgs
                 {
                     TenantId = tenantId,
                     BinaryObjectId = fileObject.Id,

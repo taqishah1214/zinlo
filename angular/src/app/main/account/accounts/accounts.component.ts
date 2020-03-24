@@ -6,13 +6,14 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { UserListComponentComponent } from '../../checklist/user-list-component/user-list-component.component';
-import { UppyConfig } from 'uppy-angular';
+import { UppyConfig} from 'uppy-angular';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { HttpClient } from '@angular/common/http';
 import { AppConsts } from '@shared/AppConsts';
 import { finalize } from 'rxjs/operators';
 import { FileUpload } from 'primeng/fileupload';
 import { Observable } from 'rxjs';
+import { SignalRService } from '@app/services/signalRService';
 
 @Component({
   selector: 'app-accounts',
@@ -62,7 +63,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
 
   constructor(private _router: Router,
     private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector, private _httpClient: HttpClient,
-    private _chartOfAccountService: ChartsofAccountServiceProxy, private _fileDownloadService: FileDownloadService) {
+    private _chartOfAccountService: ChartsofAccountServiceProxy, private _fileDownloadService: FileDownloadService,
+    private _signalRService: SignalRService) {
     super(injector)
     this.FilterBoxOpen = false;
   }
@@ -246,6 +248,7 @@ RedirectToCreateAccount(): void {
     }
   }
 
+
   fileUploadedResponseChartsOfAccounts(value): void {
     var response = value.successful
     response.forEach(i => {
@@ -301,6 +304,9 @@ RedirectToCreateAccount(): void {
       this.uploadAccountsTrialBalanceExcel(this.chartsOfAccountsfileUrlTrialBalance);
       this.chartsOfAccountsfileUrlTrialBalance = "";
     }
+    this._signalRService.startHubConnection();
+    var file = this._signalRService.addBasicListener();
+    
   }
 
   onUploadExcelError(): void {

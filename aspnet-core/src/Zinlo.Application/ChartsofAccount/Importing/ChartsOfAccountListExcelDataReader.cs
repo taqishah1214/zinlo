@@ -38,6 +38,7 @@ namespace Zinlo.ChartsofAccount.Importing
                 chartsofaccount.AccountSubType = GetRequiredValueFromRowOrNull(worksheet, row, 4, nameof(chartsofaccount.AccountSubType), exceptionMessage);
                 chartsofaccount.AssignedUser = GetRequiredValueFromRowOrNull(worksheet, row, 5, nameof(chartsofaccount.AssignedUser), exceptionMessage);
                 chartsofaccount.ReconciliationType = GetRequiredValueFromRowOrNull(worksheet, row, 6, nameof(chartsofaccount.ReconciliationType), exceptionMessage);
+                chartsofaccount.ReconciliationAs = GetRequiredValueFromRowOrNull(worksheet, row, 7, nameof(chartsofaccount.ReconciliationAs), exceptionMessage);
             }
             catch (System.Exception exception)
             {

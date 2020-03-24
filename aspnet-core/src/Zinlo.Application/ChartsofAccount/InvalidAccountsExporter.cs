@@ -19,7 +19,7 @@ namespace Zinlo.ChartsofAccount
         public FileDto ExportToFile(List<ChartsOfAccountsExcellImportDto> accountsListDtos)
         {
             return CreateExcelPackage(
-                "InvalidAccountsImportList.xlsx",
+                "InvalidAccountsImportListExport.xlsx",
                 excelPackage =>
                 {
                     var sheet = excelPackage.Workbook.Worksheets.Add(L("InvalidAccountsImports"));
@@ -34,7 +34,8 @@ namespace Zinlo.ChartsofAccount
                         L("AccountSubType"),
                         L("AssignedUser"),
                         L("ReconciliationType"),
-                        L("Exception")
+                         L("ReconciliationAs"),
+                        L("Error")
                       
                         );
 
@@ -46,6 +47,7 @@ namespace Zinlo.ChartsofAccount
                         _ => _.AccountSubType,
                          _ => _.AssignedUser,
                           _ => _.ReconciliationType,
+                           _ => _.ReconciliationAs,
                         _ => _.Exception
                         );
 

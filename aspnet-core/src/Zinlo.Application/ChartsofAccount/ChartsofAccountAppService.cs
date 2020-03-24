@@ -239,7 +239,8 @@ namespace Zinlo.ChartsofAccount
             if(result != null)
             {
                 result.TrialBalance = Convert.ToDecimal(trialBalance);
-               await _chartsofAccountRepository.UpdateAsync(result);               
+               await _chartsofAccountRepository.UpdateAsync(result);     
+                
                 return true;
             }
             else

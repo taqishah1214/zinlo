@@ -1049,7 +1049,11 @@
 
     <text name="FileCantBeConvertedToAccountsTrialBalanceList">Accounts Balance import process has failed. File is invalid.</text>
 
+    <text name="NullValuesAreNotAllowed">Null values are not allowed.</text>
+    <text name="ReconcilationError">Reconcilation Error.</text>
 
+
+    
 
   </texts>
 </localizationDictionary>

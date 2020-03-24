@@ -16,6 +16,7 @@ using Zinlo.MultiTenancy.Payments;
 using Zinlo.Storage;
 using Abp.Localization;
 using Zinlo.Reconciliation;
+using Zinlo.ImportsPaths;
 
 namespace Zinlo.EntityFrameworkCore
 {
@@ -31,6 +32,7 @@ namespace Zinlo.EntityFrameworkCore
         public virtual DbSet<ChartsofAccount.ChartsofAccount> ChartsofAccounts { get; set; }
         public virtual DbSet<Itemization> Itemizations { get; set; }
         public virtual DbSet<Amortization> Amortizations { get; set; }
+        public virtual DbSet<ImportsPath> ImportsPaths { get; set; }
 
 
         /* Define an IDbSet for each entity of the application */
