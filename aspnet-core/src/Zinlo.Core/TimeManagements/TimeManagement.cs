@@ -12,6 +12,7 @@ namespace Zinlo.TimeManagements
         public int TenantId { get; set; }
         public virtual DateTime Month { get; set; }
         public virtual bool Status { get; set; }
+        public virtual bool IsClosed { get; set; }
 
     }
 }

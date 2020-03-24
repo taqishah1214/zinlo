@@ -16,6 +16,7 @@ namespace Zinlo.ClosingChecklist.Dtos
 
         public string ProfilePicture { get; set; }
         public bool MonthStatus { get; set; }
+        public DateTime DueDate { get; set; }
 
         public  List<CommentDto>  Comments { get; set; }
 

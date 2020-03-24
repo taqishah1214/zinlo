@@ -15,7 +15,7 @@
 
 								<div class="form-group">
 									<label for="TimeManagement_Month">{{l("SelectMonth")}}</label>
-                                     <input [(ngModel)]="timeManagement.month._d" autocomplete="off"
+                                     <input [(ngModel)]="month" autocomplete="off"
                                      class="form-control" name="date" bsDatepicker
                                      [bsConfig]="{dateInputFormat: 'MMM/YYYY'}"
                                      (onShown)="onOpenCalendar($event)">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
@@ -17,7 +18,8 @@ namespace Zinlo.TimeManagements
 		Task Delete(EntityDto<long> input);
 		Task ChangeStatus(long id);
         Task<bool> GetMonthStatus(DateTime dateTime);
-
+        List<TimeManagementDto> GetOpenManagement();
+        Task<bool> CheckManagementExist(DateTime dateTime);
 
     }
 }

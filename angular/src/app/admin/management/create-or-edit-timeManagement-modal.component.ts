@@ -18,7 +18,7 @@ export class CreateOrEditTimeManagementModalComponent extends AppComponentBase {
     active = false;
     saving = false;
     date: Date;
-    selectedDateRange: moment.Moment[] = [moment().add(-7, 'days').startOf('day'), moment().endOf('day')];
+    month:  Date;
     timeManagement: CreateOrEditTimeManagementDto = new CreateOrEditTimeManagementDto();
 
 
@@ -35,9 +35,7 @@ export class CreateOrEditTimeManagementModalComponent extends AppComponentBase {
         };
         container.setViewMode('month');
       }
-    onChange() {
-        abp.event.trigger('app.dashboardFilters.dateRangePicker.onDateChange', this.selectedDateRange);
-      }
+    
     show(timeManagementId?: number): void {
 
         if (!timeManagementId) {
@@ -60,6 +58,8 @@ export class CreateOrEditTimeManagementModalComponent extends AppComponentBase {
 
     save(): void {
             this.saving = true;
+            debugger
+            this.timeManagement.month = moment(this.month);
             this._timeManagementsServiceProxy.createOrEdit(this.timeManagement)
              .pipe(finalize(() => { this.saving = false;}))
              .subscribe(() => {

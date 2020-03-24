@@ -1591,14 +1591,14 @@ namespace Zinlo.Migrations
                     b.Property<bool>("EndOfMonth")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("EndsOn")
+                    b.Property<DateTime?>("EndsOn")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Frequency")
                         .HasColumnType("integer");
 
-                    b.Property<string>("GroupId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Instruction")
                         .HasColumnType("text");
@@ -2054,6 +2054,9 @@ namespace Zinlo.Migrations
 
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("Month")
                         .HasColumnType("timestamp without time zone");
