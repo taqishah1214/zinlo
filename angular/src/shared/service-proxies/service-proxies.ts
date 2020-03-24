@@ -27434,6 +27434,7 @@ export interface ITenantSettingsEditDto {
 export class TimeManagementDto implements ITimeManagementDto {
     month!: moment.Moment;
     status!: boolean;
+    isClosed!: boolean;
     id!: number;
 
     constructor(data?: ITimeManagementDto) {
@@ -27449,6 +27450,7 @@ export class TimeManagementDto implements ITimeManagementDto {
         if (data) {
             this.month = data["month"] ? moment(data["month"].toString()) : <any>undefined;
             this.status = data["status"];
+            this.isClosed = data["isClosed"];
             this.id = data["id"];
         }
     }
@@ -27464,6 +27466,7 @@ export class TimeManagementDto implements ITimeManagementDto {
         data = typeof data === 'object' ? data : {};
         data["month"] = this.month ? this.month.toISOString() : <any>undefined;
         data["status"] = this.status;
+        data["isClosed"] = this.isClosed;
         data["id"] = this.id;
         return data; 
     }
@@ -27472,6 +27475,7 @@ export class TimeManagementDto implements ITimeManagementDto {
 export interface ITimeManagementDto {
     month: moment.Moment;
     status: boolean;
+    isClosed: boolean;
     id: number;
 }
 

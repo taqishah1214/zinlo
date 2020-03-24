@@ -925,7 +925,9 @@ namespace Zinlo.Migrations
                     AccountSubTypeId = table.Column<long>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     Reconciled = table.Column<int>(nullable: false),
-                    Balance = table.Column<double>(nullable: false)
+                    Balance = table.Column<double>(nullable: false),
+                    Lock = table.Column<bool>(nullable: false),
+                    TrialBalance = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1048,6 +1048,7 @@
     <text name="AllAccountsTrialBalanceSuccessfullyImportedFromExcel">Accounts Trial Balance import process has been completed successfully. All Balance in file are imported.</text>
 
     <text name="FileCantBeConvertedToAccountsTrialBalanceList">Accounts Balance import process has failed. File is invalid.</text>
+    <text name="IsClosed">Is closed</text>
 
 
 

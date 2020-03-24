@@ -18,6 +18,8 @@
     <Compile Remove="Migrations\20200114100822_added-entities.Designer.cs" />
     <Compile Remove="Migrations\20200320151535_initial.cs" />
     <Compile Remove="Migrations\20200320151535_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200324190637_Initial-Migration.cs" />
+    <Compile Remove="Migrations\20200324190637_Initial-Migration.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="28.4.4" />

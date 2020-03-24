@@ -43,11 +43,17 @@
                                         {{l('Month')}}
                                         <p-sortIcon field="timeManagement.month"></p-sortIcon>
                                     </th>
+
+                                    <th style="width: 55px" pSortableColumn="isClosed">
+                                        {{l('IsClosed')}}
+                                        <p-sortIcon field="imeManagement.isClosed"></p-sortIcon>
+                                    </th>
                                     
                                     <th style="width: 55px" pSortableColumn="status">
                                         {{l('Status')}}
                                         <p-sortIcon field="timeManagement.status"></p-sortIcon>
                                     </th>
+
 
                                 </tr>
                             </ng-template>                           
@@ -60,6 +66,17 @@
                                         </span>
                                         <span *ngIf="!record.timeManagement.month">-</span>
                                     </td>
+
+
+                                    <td style="width:55px">
+                                        <span class="ui-column-title"> {{l('IsClosed')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                                *ngIf="record.timeManagement.isClosed">{{'Yes' | localize}}</span>
+                                            <span class="kt-badge kt-badge--dark kt-badge--inline"
+                                                *ngIf="!record.timeManagement.isClosed">{{'No' | localize}}</span>
+                                    </td>
+
+
                                     <td style="width:55px">
                                         <span class="ui-column-title"> {{l('Status')}}</span>
                                         <label class="switch">
@@ -67,6 +84,8 @@
                                             <span class="slider round"></span>
                                         </label>
                                     </td>
+                                    
+                                  
 
                                 </tr>
                             </ng-template>

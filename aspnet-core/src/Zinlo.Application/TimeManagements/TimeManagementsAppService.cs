@@ -44,7 +44,8 @@ namespace Zinlo.TimeManagements
                                       {
                                           Month = o.Month,
                                           Status = o.Status,
-                                          Id = o.Id
+                                          Id = o.Id,
+                                          IsClosed = o.IsClosed
                                       }
                                   };
 

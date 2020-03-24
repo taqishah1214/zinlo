@@ -7,6 +7,7 @@ namespace Zinlo.TimeManagements.Dto
         public DateTime Month { get; set; }
 
 		public bool Status { get; set; }
+        public bool IsClosed { get; set; }
 
     }
 }
