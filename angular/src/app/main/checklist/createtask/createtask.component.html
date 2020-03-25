@@ -55,7 +55,7 @@
                                                 <input [(ngModel)]="checklist.closingMonth" (ngModelChange)="loadDaysByMonth($event)" required="required"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker 
                                                     placeholder="Select Month" class="form-control" name="date"
-                                                    bsDatepicker [minDate]="minDate"
+                                                    bsDatepicker
                                                     [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
