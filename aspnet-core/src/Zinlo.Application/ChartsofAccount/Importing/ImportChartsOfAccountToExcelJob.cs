@@ -22,6 +22,7 @@ using Zinlo.Authorization.Users;
 using Zinlo.ChartsofAccount.Dtos;
 using Zinlo.ChartsofAccount.Importing;
 using Zinlo.ImportPaths;
+using Zinlo.ImportPaths.Dto;
 using Zinlo.Notifications;
 using Zinlo.Storage;
 namespace Zinlo.ChartsofAccount
@@ -43,6 +44,7 @@ namespace Zinlo.ChartsofAccount
         public UserManager userManager { get; set; }
         public long TenantId = 0;
         public long UserId = 0;
+        public int SuccessRecordsCount = 0;
 
         public ImportChartsOfAccountToExcelJob(
 
@@ -155,6 +157,7 @@ namespace Zinlo.ChartsofAccount
                 //}
             }
             List<ChartsOfAccountsExcellImportDto> ValidRows = accounts.Except(invalidAccounts).ToList();
+            SuccessRecordsCount = ValidRows.Count;
             foreach (var item in ValidRows)
             {
                 AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(item));
@@ -214,14 +217,23 @@ namespace Zinlo.ChartsofAccount
 
             if (invalidAccounts.Any())
             {
-                var file = _invalidAccountsExporter.ExportToFile(invalidAccounts);
-                await _hubcontext.Clients.All.SendAsync("chartOfAccount", file, "file");
-                await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
+                var url = _invalidAccountsExporter.ExportToFile(invalidAccounts);
+                ImportPathDto pathDto = new ImportPathDto();
+                pathDto.FilePath = url;
+                pathDto.Type = FileTypes.ChartOfAccounts.ToString();
+                pathDto.TenantId = (int)TenantId;
+                pathDto.CreatorId = UserId;
+                pathDto.FailedRecordsCount = invalidAccounts.Count;
+                pathDto.SuccessRecordsCount = SuccessRecordsCount;
+                await _importPathsAppService.SaveFilePath(pathDto);
+
+                //   await _hubcontext.Clients.All.SendAsync("chartOfAccount", file, "file");
+                //   await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
 
 
 
                 // var filePath = _invalidAccountsExporter.ExportInvalidAccountsUrl(invalidAccounts);
-                //await _importPathsAppService.SaveFilePath(filePath);
+
                 // await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
             }
             else

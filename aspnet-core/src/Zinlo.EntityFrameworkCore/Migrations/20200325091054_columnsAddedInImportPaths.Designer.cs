@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Zinlo.EntityFrameworkCore;
@@ -9,9 +10,10 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    partial class ZinloDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200325091054_columnsAddedInImportPaths")]
+    partial class columnsAddedInImportPaths
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1743,12 +1745,7 @@ namespace Zinlo.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("text");
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("ImportsPaths");
                 });
@@ -2339,13 +2336,6 @@ namespace Zinlo.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Zinlo.ImportsPaths.ImportsPath", b =>
-                {
-                    b.HasOne("Zinlo.Authorization.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Zinlo.MultiTenancy.Payments.SubscriptionPayment", b =>

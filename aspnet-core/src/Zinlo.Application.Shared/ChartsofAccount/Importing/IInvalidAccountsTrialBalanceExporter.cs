@@ -8,6 +8,6 @@ namespace Zinlo.ChartsofAccount.Importing
 {
   public  interface IInvalidAccountsTrialBalanceExporter
     {
-        FileDto ExportToFile(List<ChartsOfAccountsTrialBalanceExcellImportDto> inputs);
+        string ExportToFile(List<ChartsOfAccountsTrialBalanceExcellImportDto> inputs);
     }
 }

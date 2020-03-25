@@ -17,6 +17,9 @@ using Zinlo.Authorization.Users;
 using Zinlo.ChartsofAccount.Dtos;
 using Zinlo.Notifications;
 using Zinlo.Storage;
+using Zinlo.ImportPaths.Dto;
+using Zinlo.ImportPaths;
+
 namespace Zinlo.ChartsofAccount.Importing
 {
     public class ImportChartsOfAccountTrialBalanceToExcelJob : BackgroundJob<ImportChartsOfAccountTrialBalanceFromExcelJobArgs>, ITransientDependency
@@ -29,7 +32,10 @@ namespace Zinlo.ChartsofAccount.Importing
         private readonly IObjectMapper _objectMapper;
         public UserManager userManager { get; set; }
         private readonly IInvalidAccountsTrialBalanceExporter _invalidAccountsTrialBalanceExporter;
-
+        private readonly IImportPathsAppService _importPathsAppService;
+        public long TenantId = 0;
+        public long UserId = 0;
+        public int SuccessRecordsCount = 0;
         public ImportChartsOfAccountTrialBalanceToExcelJob(
 
         IChartsOfAccontTrialBalanceListExcelDataReader chartsOfAccontTrialBalanceListExcelDataReader,
@@ -38,7 +44,8 @@ namespace Zinlo.ChartsofAccount.Importing
         IAppNotifier appNotifier,
             IBinaryObjectManager binaryObjectManager,
             ILocalizationManager localizationManager,
-            IObjectMapper objectMapper
+            IObjectMapper objectMapper,
+            IImportPathsAppService importPathsAppService
 
             )
         {
@@ -49,11 +56,14 @@ namespace Zinlo.ChartsofAccount.Importing
             _localizationSource = localizationManager.GetSource(ZinloConsts.LocalizationSourceName);
             _chartsofAccountAppService = chartsofAccountAppService;
             _invalidAccountsTrialBalanceExporter = invalidAccountsTrialBalanceExporter;
+            _importPathsAppService = importPathsAppService;
         }
 
         [UnitOfWork]
         public override void Execute(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args)
         {
+            TenantId = (int)args.TenantId;
+            UserId = args.User.UserId;
             using (CurrentUnitOfWork.SetTenantId(args.TenantId))
             {
                 var chartsofaccount = GetAccountsTrialBalanceListFromExcelOrNull(args);
@@ -131,6 +141,7 @@ namespace Zinlo.ChartsofAccount.Importing
                 }
             }
             List<ChartsOfAccountsTrialBalanceExcellImportDto> ValidRows = accounts.Except(invalidAccounts).ToList();
+            SuccessRecordsCount = ValidRows.Count;
             foreach (var item in ValidRows)
             {
                 AsyncHelper.RunSync(() => CreateChartsOfAccountTrialBalanceAsync(item));
@@ -154,9 +165,17 @@ namespace Zinlo.ChartsofAccount.Importing
                    Abp.Notifications.NotificationSeverity.Success);
             if (invalidAccounts.Any())
             {
-                var file = _invalidAccountsTrialBalanceExporter.ExportToFile(invalidAccounts);
+                var url = _invalidAccountsTrialBalanceExporter.ExportToFile(invalidAccounts);
+                ImportPathDto pathDto = new ImportPathDto();
+                pathDto.FilePath = url;
+                pathDto.Type = FileTypes.TrialBalance.ToString();
+                pathDto.TenantId = (int)TenantId;
+                pathDto.CreatorId = UserId;
+                pathDto.FailedRecordsCount = invalidAccounts.Count;
+                pathDto.SuccessRecordsCount = SuccessRecordsCount;
+                await _importPathsAppService.SaveFilePath(pathDto);
                 //  await _hubcontext.Clients.All.SendAsync("chartOfAccount", file, "file");
-                await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
+              //  await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
             }
             else
             {

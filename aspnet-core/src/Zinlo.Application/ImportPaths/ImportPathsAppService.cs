@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Zinlo.ImportPaths.Dto;
 using Zinlo.ImportsPaths;
 
 namespace Zinlo.ImportPaths
@@ -14,12 +15,15 @@ namespace Zinlo.ImportPaths
         {
             _importPathsRepository = importPathsRepository;
         }
-        public async Task SaveFilePath(string url)
+        public async Task SaveFilePath(ImportPathDto input)
         {
             ImportsPath importsPath = new ImportsPath();
-            importsPath.FilePath = url;
-            importsPath.TenantId = 1;
-            importsPath.CreatorUserId = 2;
+            importsPath.FilePath = input.FilePath;
+            importsPath.TenantId = input.TenantId;
+            importsPath.Type = input.Type;
+            importsPath.FailedRecordsCount = input.FailedRecordsCount;
+            importsPath.SuccessRecordsCount = input.SuccessRecordsCount;
+            importsPath.CreatorUserId = input.CreatorId;
             importsPath.CreationTime = DateTime.UtcNow;
            await _importPathsRepository.InsertAsync(importsPath);          
 

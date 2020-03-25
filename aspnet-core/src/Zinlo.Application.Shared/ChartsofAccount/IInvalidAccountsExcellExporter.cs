@@ -8,6 +8,7 @@ namespace Zinlo.ChartsofAccount
 {
   public  interface IInvalidAccountsExcellExporter
     {
-        FileDto ExportToFile(List<ChartsOfAccountsExcellImportDto> accountsListDtos);
+      //  string ExportInvalidAccountsUrl(List<ChartsOfAccountsExcellImportDto> accountsListDtos);
+        string ExportToFile(List<ChartsOfAccountsExcellImportDto> accountsListDtos);
     }
 }

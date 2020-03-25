@@ -320,4 +320,11 @@ RedirectToCreateAccount(): void {
         this._fileDownloadService.downloadTempFile(result);
       });
   }
+  downloadTrialBalanceExcelFile(): void {
+    console.log();
+    this._chartOfAccountService.loadChartsofAccountTrialBalanceToExcel()
+      .subscribe(result => {
+        this._fileDownloadService.downloadTempFile(result);
+      });
+  }
 }

@@ -21,5 +21,6 @@ namespace Zinlo.ChartsofAccount
         Task <int> CheckReconcilled(long id);
         Task<FileDto> GetChartsofAccountToExcel(long id);
         Task<bool> CheckAccountForTrialBalance(string accountName, string accountNumber, string trialBalance);
+        Task<FileDto> LoadChartsofAccountTrialBalanceToExcel();
     }
 }
