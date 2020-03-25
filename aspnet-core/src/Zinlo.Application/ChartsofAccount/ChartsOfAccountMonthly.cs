@@ -18,15 +18,15 @@ namespace Zinlo.ChartsofAccount
     {
         private readonly IRepository<ChartsofAccount, long> _chartsofAccountRepository;
         private readonly IChartsofAccountAppService _chartsofAccountAppService;
-        private readonly IRepository<Itemization, long> _itemizationRepository;
         private readonly IItemizationAppService _itemizationAppService;
+        private readonly IRepository<Itemization, long> _itemizationRepository;
 
 
         public ChartsOfAccountMonthly(IItemizationAppService itemizationAppService, IRepository<Itemization, long> itemizationRepository, IChartsofAccountAppService chartsofAccountAppService, AbpTimer timer, IRepository<ChartsofAccount, long> chartsofAccountRepository)
         : base(timer)
         {
             _itemizationRepository = itemizationRepository;
-            Timer.Period = 25200; //Every 7 Hours 
+            Timer.Period = 3600; //Every 1 Hour 
             _chartsofAccountRepository = chartsofAccountRepository;
             _chartsofAccountAppService = chartsofAccountAppService;
             _itemizationAppService = itemizationAppService;
@@ -46,7 +46,7 @@ namespace Zinlo.ChartsofAccount
             int LastDate = GetLastDateofMonth();
             if (LastDate == CurrentDate.Day)
             {
-                if (CurrentDate.Hour == 23)
+                if (CurrentDate.Hour == 22 || CurrentDate.Hour == 23)
                 {
                     return true;
                 }
@@ -74,20 +74,36 @@ namespace Zinlo.ChartsofAccount
 
                             select new CreateOrEditItemizationDto()
                             {
-                                Id = 0,
                                 InoviceNo = o.InoviceNo,
                                 JournalEntryNo = o.JournalEntryNo,
                                 Date = o.Date,
                                 Amount = 0,
                                 Description = o.Description,
                                 ChartsofAccountId = (long)newAccountId,
+                                CreationTime = o.CreationTime.AddMonths(1)
                             }).ToList();
 
             foreach(var item in itemList)
             {
+                item.Id = 0;
                 _itemizationAppService.CreateOrEdit(item);
             }
 
+        }
+
+        public bool checkBackGroundServiceAlreadyRun()
+        {
+            DateTime now = DateTime.Now;
+            var CurrentDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+            var checkNextMonthAccounts = _chartsofAccountRepository.GetAll().FirstOrDefault(e => e.CreationTime.Month == CurrentDate.Month + 1 && e.CreationTime.Year == CurrentDate.Year);
+            if (checkNextMonthAccounts == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
 
@@ -96,13 +112,13 @@ namespace Zinlo.ChartsofAccount
         {
 
             if (CheckLastHourOfMonth())
-            {
+            {    
+                
                 using (CurrentUnitOfWork.DisableFilter(AbpDataFilters.MayHaveTenant))
                 {
-                    DateTime now = DateTime.Now;
-                    var CurrentDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
-
-                    var accountsList = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == CurrentDate.Month && e.CreationTime.Year == CurrentDate.Year).Include(p => p.AccountSubType).Include(p => p.Assignee); 
+                        DateTime now = DateTime.Now;
+                        var CurrentDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+                        var accountsList = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == CurrentDate.Month && e.CreationTime.Year == CurrentDate.Year).Include(p => p.AccountSubType).Include(p => p.Assignee); 
                         var itemList = (from o in accountsList.ToList()
 
                                             select new CreateOrEditChartsofAccountDto()
@@ -120,21 +136,22 @@ namespace Zinlo.ChartsofAccount
 
                     foreach(var item in itemList)
                     {
-                        double PreviousAccountid = (double)item.Id;
+                        double PreviousAccountId = (double)item.Id;
                         item.Id = 0;
-                        await _chartsofAccountAppService.CreateOrEdit(item);
+                        double newAccountId = await _chartsofAccountAppService.CreateOrEdit(item);
                         if ((int)item.ReconciliationType == 1)
                         {
-                            ShiftItemizedItem(PreviousAccountid, 0);
+                            ShiftItemizedItem(PreviousAccountId, newAccountId);
                         }
                         else
                         {
-                            ShiftAmortizedItems(PreviousAccountid, 0);
+                            ShiftAmortizedItems(PreviousAccountId, newAccountId);
                         }
 
                     }
                     CurrentUnitOfWork.SaveChanges();
                 }
+                
             }
         }
     }
