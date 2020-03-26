@@ -111,7 +111,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.endsOnDateValue = this.getTaskForEdit.endsOn.toDate();
       this.getTaskForEdit.categoryId = history.state.data.categoryid !== 0 ? history.state.data.categoryid : this.getTaskForEdit.categoryId 
       this.frequencyId = this.getTaskForEdit.frequencyId;
-      if (this.frequencyId == 5) {
+      if (this.getTaskForEdit.frequencyId == 5) {
+        this.endsOnDateValue=null;
         this.endOnIsEnabled = false;
       }
       else {
