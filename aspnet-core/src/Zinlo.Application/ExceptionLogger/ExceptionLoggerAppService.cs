@@ -20,9 +20,7 @@ namespace Zinlo.ExceptionLogger
     public class ExceptionLoggerAppService : ZinloAppServiceBase, IExceptionLoggerAppService
     {
         private readonly IRepository<ImportsPath, long> _importsPathRepository;
-        private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
         private readonly IConfigurationRoot _appConfiguration;
-        private readonly IWebHostEnvironment _hostingEnvironment;
         public UserManager userManager { get; set; }
         public ExceptionLoggerAppService(IRepository<ImportsPath, long> importsPathRepository,
             Microsoft.Extensions.Configuration.IConfiguration configuration,
@@ -30,7 +28,6 @@ namespace Zinlo.ExceptionLogger
             )
         {
             _importsPathRepository = importsPathRepository;
-            _configuration = configuration;
             _appConfiguration = env.GetAppConfiguration();
         }
       
@@ -41,14 +38,14 @@ namespace Zinlo.ExceptionLogger
 
             var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "CreationTime asc").PageBy(input);
             var totalCount = query.Count();
-            var baseURL = _appConfiguration["App:ServerRootAddress"];
+            var baseUrl = _appConfiguration["App:ServerRootAddress"];
             var accountsList = from o in pagedAndFilteredAccounts.ToList()
                                
                                select new ExceptionLoggerForViewDto()
                                {
                                    Id = o.Id,
                                    Type = o.Type,
-                                   FilePath = baseURL + o.FilePath,
+                                   FilePath = baseUrl + o.FilePath,
                                    CreationTime = o.CreationTime,
                                    Records = o.SuccessRecordsCount + "/" + (o.FailedRecordsCount + o.SuccessRecordsCount).ToString(),
                                    CreatedBy = o.User.FullName

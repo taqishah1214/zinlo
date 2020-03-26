@@ -37,9 +37,6 @@ namespace Zinlo.ClosingChecklist
         private readonly ITimeManagementsAppService _managementsAppService;
 
         #endregion
-        #region|Global Parameters|
-        public bool Flag = true;
-        #endregion
         #region|#Constructor Dependencies|
         public ClosingChecklistAppService(IProfileAppService profileAppService,
                                           IRepository<ClosingChecklist, long> closingChecklistRepository,
