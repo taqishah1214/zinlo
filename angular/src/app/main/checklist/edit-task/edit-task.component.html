@@ -219,9 +219,11 @@
                                     <div class="form-group">
                                         <label>Ends on</label>
                                         <div class="form-group">
-                                            <form class="">
-                                                <input [(ngModel)]="endsOnDateValue" class="form-control" name="date"
-                                                    bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                            <form class="input-arrow">
+                                                <input [disabled]="getTaskForEdit.frequencyId==5" [(ngModel)]="endsOnDateValue" required="required"
+                                                    autocomplete="off" class="form-control" name="date" bsDatepicker
+                                                    placeholder="Month" [minDate]="minDate"
+                                                    [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
                                         </div>
@@ -229,8 +231,8 @@
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" name="dueOn"
-                                                (click)="handleRadioChange()" [(ngModel)]="getTaskForEdit.endOfMonth">End of
+                                            <input type="radio" [(checked)]="getTaskForEdit.endOfMonth" name="endOfMonth"
+                                                (click)="handleRadioChange()">End of
                                             month
                                             <span></span>
                                         </label>

@@ -20,6 +20,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   endOnIsEnabled: boolean = true;
   enableValue: boolean = false;
   isChecked: boolean = false;
+  endOfMonth:boolean=false;
   SelectedCategory;
   commantBox: boolean
   userSignInName: string
@@ -110,7 +111,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.endsOnDateValue = this.getTaskForEdit.endsOn.toDate();
       this.getTaskForEdit.categoryId = history.state.data.categoryid !== 0 ? history.state.data.categoryid : this.getTaskForEdit.categoryId 
       this.frequencyId = this.getTaskForEdit.frequencyId;
-      if (this.frequencyId == 5) {
+      if (this.getTaskForEdit.frequencyId == 5) {
+        this.endsOnDateValue=null;
         this.endOnIsEnabled = false;
       }
       else {
@@ -118,9 +120,11 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       }
       this.getTaskForEdit.closingMonth = moment().startOf('day');
       this.getTaskForEdit.endsOn = moment().startOf('day');
-
       if (this.getTaskForEdit.endOfMonth) {
         this.getTaskForEdit.dayBeforeAfter = null;
+        this.getTaskForEdit.dueOn=1;
+        this.getTaskForEdit.endOfMonth=true;
+        this.isChecked = false;
       }
       else if(this.getTaskForEdit.dayBeforeAfter){
         this.daysBeforeAfter = "Days Before"
@@ -207,7 +211,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     }
   }
   onDayChange() {
-    this.checklist.endOfMonth = false;
+    this.getTaskForEdit.endOfMonth = false;
     this.isChecked = true;
   }
 
@@ -241,14 +245,16 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 
   handleRadioChange() {
-    this.checklist.dayBeforeAfter = false;
+    this.getTaskForEdit.dayBeforeAfter = false;
     this.getTaskForEdit.dayBeforeAfter = null;
     this.getTaskForEdit.dueOn= 1;
+    this.getTaskForEdit.endOfMonth=true;
     this.isChecked = false;
     this.daysBeforeAfter = "\xa0";
   }
   onDaysClick(valu) {
     this.isChecked = true;
+    this.getTaskForEdit.endOfMonth=false;
     if (valu == "true") {
       this.daysBeforeAfter = "Days Before";
       this.checklist.dayBeforeAfter = true
