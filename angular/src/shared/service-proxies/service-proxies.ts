@@ -3451,15 +3451,15 @@ export class ChartsofAccountServiceProxy {
     }
 
     /**
-     * @param creattionDate (optional) 
+     * @param creationDate (optional) 
      * @return Success
      */
-    compareDates(creattionDate: moment.Moment | undefined): Observable<number> {
+    compareDates(creationDate: moment.Moment | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/CompareDates?";
-        if (creattionDate === null)
-            throw new Error("The parameter 'creattionDate' cannot be null.");
-        else if (creattionDate !== undefined)
-            url_ += "CreattionDate=" + encodeURIComponent(creattionDate ? "" + creattionDate.toJSON() : "") + "&"; 
+        if (creationDate === null)
+            throw new Error("The parameter 'creationDate' cannot be null.");
+        else if (creationDate !== undefined)
+            url_ += "creationDate=" + encodeURIComponent(creationDate ? "" + creationDate.toJSON() : "") + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3571,7 +3571,7 @@ export class ChartsofAccountServiceProxy {
         if (accountNumber === null)
             throw new Error("The parameter 'accountNumber' cannot be null.");
         else if (accountNumber !== undefined)
-            url_ += "AccountNumber=" + encodeURIComponent("" + accountNumber) + "&"; 
+            url_ += "accountNumber=" + encodeURIComponent("" + accountNumber) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

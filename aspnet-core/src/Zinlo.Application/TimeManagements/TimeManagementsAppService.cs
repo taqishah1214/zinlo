@@ -34,7 +34,7 @@ namespace Zinlo.TimeManagements
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false);
 
             var pagedAndFilteredTimeManagements = filteredTimeManagements
-                .OrderBy(input.Sorting ?? "id asc")
+                .OrderBy(input.Sorting ?? "month asc")
                 .PageBy(input);
 
             var timeManagements = from o in pagedAndFilteredTimeManagements
