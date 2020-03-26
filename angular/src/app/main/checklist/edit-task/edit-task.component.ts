@@ -96,8 +96,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   getTaskDetails(): void {
   
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
-
-      debugger
       this.getTaskForEdit = result;
       this.monthStatus = this.getTaskForEdit.monthStatus;
       this.attachments = result.attachments;
@@ -130,7 +128,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       else{
         this.daysBeforeAfter = "Days After"
       }
-      debugger
       this.getTaskForEdit.endOfMonth = result.endOfMonth;
       this.assigneeId = this.getTaskForEdit.assigneeId;
       this.parentassigneName = result;

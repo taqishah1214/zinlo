@@ -125,7 +125,7 @@ namespace Zinlo.ClosingChecklist
         #region|Create Eidt Details Delete|
         public async Task CreateOrEdit(CreateOrEditClosingChecklistDto input)
         {
-            if (input.ClosingMonth > input.EndsOn) throw new UserFriendlyException(L("ClosingMonthGreaterException"));
+            if (input.Frequency != FrequencyDto.None && input.ClosingMonth > input.EndsOn) throw new UserFriendlyException(L("ClosingMonthGreaterException"));
             if (input.Id == 0)
             {
                 await TaskIteration(input);
