@@ -209,7 +209,7 @@ namespace Zinlo.ChartsofAccount
         
         public async Task<FileDto> GetChartsofAccountToExcel(long id)
         {
-            var accounts =  _chartsofAccountRepository.GetAll().Include(x => x.Assignee);
+            var accounts =  _chartsofAccountRepository.GetAll().Include(x => x.Assignee).Include(p=>p.AccountSubType);
             List<ChartsOfAccountsExcellExporterDto> listToExport = new List<ChartsOfAccountsExcellExporterDto>();
             foreach (var item in accounts)
             {
@@ -218,6 +218,8 @@ namespace Zinlo.ChartsofAccount
                 chartsOfAccountsExcellExporterDto.AccountNumber = item.AccountNumber;
                 chartsOfAccountsExcellExporterDto.AccountType = GetAccounttypeById((int)item.AccountType);
                 chartsOfAccountsExcellExporterDto.AssignedUser = item.Assignee.FullName;
+                chartsOfAccountsExcellExporterDto.AccountSubType = item.AccountSubType.Title;
+                
                 listToExport.Add(chartsOfAccountsExcellExporterDto);
             }
             return _chartsOfAccountsListExcelExporter.ExportToFile(listToExport);

@@ -256,15 +256,8 @@ namespace Zinlo.ChartsofAccount
         public async Task<long> GetUserIdByEmail(string emailAddress)
         {
             var user = await userManager.FindByEmailAsync(emailAddress);
-            if (user != null)
-            {
-                return user.Id;
-            }
-            else
-            {
-                return 2;
-            }
-
+           
+                return user.Id;        
         }
 
         public int GetReconciliationTypeValue(string name)

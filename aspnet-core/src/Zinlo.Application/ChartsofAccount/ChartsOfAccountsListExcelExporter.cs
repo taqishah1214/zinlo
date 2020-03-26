@@ -39,6 +39,7 @@ namespace Zinlo.ChartsofAccount
                         L("AccountName"),
                         L("AccountNumber"),
                         L("AccountType"),
+                          L("AccountSubType"),
                         L("AssignedUser")
                         );
 
@@ -47,6 +48,7 @@ namespace Zinlo.ChartsofAccount
                         _ => _.AccountName,
                         _ => _.AccountNumber,
                          _ => _.AccountType,
+                          _ => _.AccountSubType,
                           _ => _.AssignedUser
                         );
 
