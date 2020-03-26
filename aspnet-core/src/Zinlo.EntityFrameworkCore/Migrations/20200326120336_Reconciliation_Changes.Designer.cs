@@ -10,8 +10,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20200313144411_Add_column_Lock_Chart_of_Account")]
-    partial class Add_column_Lock_Chart_of_Account
+    [Migration("20200326120336_Reconciliation_Changes")]
+    partial class Reconciliation_Changes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1494,6 +1494,9 @@ namespace Zinlo.Migrations
 
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
+
+                    b.Property<decimal>("TrialBalance")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 

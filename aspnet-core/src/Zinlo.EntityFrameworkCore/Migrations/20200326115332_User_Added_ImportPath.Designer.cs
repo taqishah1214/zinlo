@@ -10,8 +10,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20200303123018_Add_Status_Column_ChartsOfAccount")]
-    partial class Add_Status_Column_ChartsOfAccount
+    [Migration("20200326115332_User_Added_ImportPath")]
+    partial class User_Added_ImportPath
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1471,11 +1471,20 @@ namespace Zinlo.Migrations
                     b.Property<long>("AssigneeId")
                         .HasColumnType("bigint");
 
+                    b.Property<double>("Balance")
+                        .HasColumnType("double precision");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("Lock")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Reconciled")
+                        .HasColumnType("integer");
 
                     b.Property<int>("ReconciliationType")
                         .HasColumnType("integer");
@@ -1485,6 +1494,9 @@ namespace Zinlo.Migrations
 
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
+
+                    b.Property<decimal>("TrialBalance")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -1578,20 +1590,23 @@ namespace Zinlo.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<int>("DueOn")
                         .HasColumnType("integer");
 
                     b.Property<bool>("EndOfMonth")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("EndsOn")
+                    b.Property<DateTime?>("EndsOn")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Frequency")
                         .HasColumnType("integer");
 
-                    b.Property<string>("GroupId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Instruction")
                         .HasColumnType("text");
@@ -1703,6 +1718,44 @@ namespace Zinlo.Migrations
                     b.HasIndex("TenantId", "UserId");
 
                     b.ToTable("AppFriendships");
+                });
+
+            modelBuilder.Entity("Zinlo.ImportsPaths.ImportsPath", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("FailedRecordsCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("text");
+
+                    b.Property<int>("SuccessRecordsCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ImportsPaths");
                 });
 
             modelBuilder.Entity("Zinlo.MultiTenancy.Accounting.Invoice", b =>
@@ -1939,11 +1992,17 @@ namespace Zinlo.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("double precision");
 
+                    b.Property<long>("ChartsofAccountId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("Criteria")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -1965,6 +2024,8 @@ namespace Zinlo.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ChartsofAccountId");
+
                     b.ToTable("Amortizations");
                 });
 
@@ -1977,6 +2038,9 @@ namespace Zinlo.Migrations
 
                     b.Property<double>("Amount")
                         .HasColumnType("double precision");
+
+                    b.Property<long>("ChartsofAccountId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
@@ -2000,6 +2064,8 @@ namespace Zinlo.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ChartsofAccountId");
 
                     b.ToTable("Itemizations");
                 });
@@ -2029,19 +2095,16 @@ namespace Zinlo.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime>("CloseDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("Month")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("boolean");
 
-                    b.Property<DateTime>("OpenDate")
+                    b.Property<DateTime>("Month")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("Status")
@@ -2286,6 +2349,15 @@ namespace Zinlo.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Zinlo.ImportsPaths.ImportsPath", b =>
+                {
+                    b.HasOne("Zinlo.Authorization.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Zinlo.MultiTenancy.Payments.SubscriptionPayment", b =>
                 {
                     b.HasOne("Abp.Application.Editions.Edition", "Edition")
@@ -2312,6 +2384,24 @@ namespace Zinlo.Migrations
                     b.HasOne("Zinlo.Authorization.Users.User", "LastModifierUser")
                         .WithMany()
                         .HasForeignKey("LastModifierUserId");
+                });
+
+            modelBuilder.Entity("Zinlo.Reconciliation.Amortization", b =>
+                {
+                    b.HasOne("Zinlo.ChartsofAccount.ChartsofAccount", "ChartsofAccount")
+                        .WithMany()
+                        .HasForeignKey("ChartsofAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Zinlo.Reconciliation.Itemization", b =>
+                {
+                    b.HasOne("Zinlo.ChartsofAccount.ChartsofAccount", "ChartsofAccount")
+                        .WithMany()
+                        .HasForeignKey("ChartsofAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Abp.Application.Features.EditionFeatureSetting", b =>
