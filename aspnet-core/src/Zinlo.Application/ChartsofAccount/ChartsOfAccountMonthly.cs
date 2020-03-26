@@ -20,9 +20,12 @@ namespace Zinlo.ChartsofAccount
         private readonly IChartsofAccountAppService _chartsofAccountAppService;
         private readonly IItemizationAppService _itemizationAppService;
         private readonly IRepository<Itemization, long> _itemizationRepository;
+        private readonly IRepository<Amortization, long> _amortizationRepository;
+        private readonly IAmortizationAppService _amortizationAppService;
 
 
-        public ChartsOfAccountMonthly(IItemizationAppService itemizationAppService, IRepository<Itemization, long> itemizationRepository, IChartsofAccountAppService chartsofAccountAppService, AbpTimer timer, IRepository<ChartsofAccount, long> chartsofAccountRepository)
+
+        public ChartsOfAccountMonthly(IAmortizationAppService amortizationAppService, IRepository<Amortization, long> amortizationRepository,IItemizationAppService itemizationAppService, IRepository<Itemization, long> itemizationRepository, IChartsofAccountAppService chartsofAccountAppService, AbpTimer timer, IRepository<ChartsofAccount, long> chartsofAccountRepository)
         : base(timer)
         {
             _itemizationRepository = itemizationRepository;
@@ -30,6 +33,8 @@ namespace Zinlo.ChartsofAccount
             _chartsofAccountRepository = chartsofAccountRepository;
             _chartsofAccountAppService = chartsofAccountAppService;
             _itemizationAppService = itemizationAppService;
+            _amortizationRepository = amortizationRepository;
+            _amortizationAppService = amortizationAppService;
         }
 
         public int GetLastDateofMonth()
@@ -64,8 +69,33 @@ namespace Zinlo.ChartsofAccount
 
         public void ShiftAmortizedItems(double previousAccountId, double newAccountId)
         {
+            var amortizedItemList = _amortizationRepository.GetAll().Where(e => e.ChartsofAccount.Id == previousAccountId).Include(e => e.ChartsofAccount);
+            var itemList = (from o in amortizedItemList.ToList()
+
+                            select new CreateOrEditAmortizationDto()
+                            {
+                                Id = 0,
+                                InoviceNo = o.InoviceNo,
+                                JournalEntryNo = o.JournalEntryNo,
+                                StartDate = o.StartDate,
+                                EndDate = o.EndDate,
+                                AccomulateAmount = o.AccomulateAmount,
+                                Amount = o.Amount,
+                                Description = o.Description,
+                                ChartsofAccountId = (long)newAccountId,
+                                CreationTime = o.CreationTime.AddMonths(1),
+                                Criteria = (Reconciliation.Dtos.Criteria)o.Criteria,
+
+                            }).ToList();
+
+            foreach (var item in itemList)
+            {    
+                _amortizationAppService.CreateOrEdit(item);
+            }
 
         }
+
+        
 
         public void ShiftItemizedItem (double previousAccountId , double newAccountId)
         {
@@ -77,7 +107,7 @@ namespace Zinlo.ChartsofAccount
                                 InoviceNo = o.InoviceNo,
                                 JournalEntryNo = o.JournalEntryNo,
                                 Date = o.Date,
-                                Amount = 0,
+                                Amount = o.Amount,
                                 Description = o.Description,
                                 ChartsofAccountId = (long)newAccountId,
                                 CreationTime = o.CreationTime.AddMonths(1)
@@ -109,11 +139,11 @@ namespace Zinlo.ChartsofAccount
 
         [UnitOfWork]
         protected override async void  DoWork()
-        {
-
+        { 
             if (CheckLastHourOfMonth())
             {    
-                
+                if (checkBackGroundServiceAlreadyRun())
+                { 
                 using (CurrentUnitOfWork.DisableFilter(AbpDataFilters.MayHaveTenant))
                 {
                         DateTime now = DateTime.Now;
@@ -151,7 +181,8 @@ namespace Zinlo.ChartsofAccount
                     }
                     CurrentUnitOfWork.SaveChanges();
                 }
-                
+                }
+
             }
         }
     }
