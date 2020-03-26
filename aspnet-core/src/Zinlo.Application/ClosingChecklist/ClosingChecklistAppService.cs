@@ -13,6 +13,7 @@ using Zinlo.Comment;
 using Zinlo.Comment.Dtos;
 using Zinlo.ClosingChecklist.Dtos;
 using System.Collections.Generic;
+using Abp.UI;
 using Bogus.Extensions;
 using Zinlo.Authorization.Users;
 using Zinlo.Attachments;
@@ -124,6 +125,7 @@ namespace Zinlo.ClosingChecklist
         #region|Create Eidt Details Delete|
         public async Task CreateOrEdit(CreateOrEditClosingChecklistDto input)
         {
+            if (input.ClosingMonth > input.EndsOn) throw new UserFriendlyException(L("ClosingMonthGreaterException"));
             if (input.Id == 0)
             {
                 await TaskIteration(input);

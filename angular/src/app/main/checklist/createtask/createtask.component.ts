@@ -10,13 +10,14 @@ import { AppConsts } from '@shared/AppConsts';
 import {UserInformation} from "../../CommonFunctions/UserInformation"
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-createtask',
   templateUrl: './createtask.component.html',
   styleUrls: ['./createtask.component.css']
 })
 export class CreatetaskComponent extends AppComponentBase implements OnInit {
-  
+  saving = false;
   categories: any;
   Email: string;
   taskName: string;
@@ -152,28 +153,10 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.checklist.noOfMonths = 0;
     }
     this.errorMessage = "";
-    // if(this.checklist.frequency == 2) //Quarterly
-    // {
-    //   var monthsCount = this.getNoOfmonths(this.checklist.closingMonth,this.checklist.endsOn);
-    //   if(monthsCount < 3)
-    //   {
-    //     this.errorMessage = "Quarterly is not valid in the current range.";
-    //     this.notify.error(this.errorMessage);
-    //     return;
-    //   }
-    // }
-    // else if(this.checklist.frequency == 3) //Anually
-    // {
-    //   var monthsCount = this.getNoOfmonths(this.checklist.closingMonth,this.checklist.endsOn);
-    //   if(monthsCount < 12)
-    //   {
-    //     this.errorMessage = "Anually is not valid in the current range.";
-    //     this.notify.error(this.errorMessage);
-    //     return;
-    //   }
-    // }
-   
-    this._closingChecklistService.createOrEdit(this.checklist).subscribe(() => {
+    this.saving = true;
+    this._closingChecklistService.createOrEdit(this.checklist)
+    .pipe(finalize(() => { this.saving = false; }))
+    .subscribe(() => {
       this.redirectToTaskList();
       this.notify.success(this.l('SavedSuccessfully'));
     });

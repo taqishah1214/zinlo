@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <localizationDictionary culture="en">
   <texts>    <text name="TimeManagements">Time managements</text>
+    <text name="ClosingMonthGreaterException">Closing month is greater than ends on.</text>
     <text name="TimeManagement">Time management</text>
     <text name="OpenDate">Open date</text>
     <text name="CloseDate">Close date</text>

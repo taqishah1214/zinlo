@@ -8,12 +8,14 @@ import { Router } from '@angular/router';
 import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 import { AppConsts } from '@shared/AppConsts';
 import { StatusComponent } from '../status/status.component';
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-edit-task',
   templateUrl: './edit-task.component.html',
   styleUrls: ['./edit-task.component.css']
 })
 export class EditTaskComponent extends AppComponentBase implements OnInit {
+  saving = false;
   parentassigneName;
   endOnIsEnabled: boolean = true;
   enableValue: boolean = false;
@@ -308,7 +310,10 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.checklist.attachmentsPath = this.newAttachementPath;
     }
     this.checklist.comments = [];
-    this._closingChecklistService.createOrEdit(this.checklist).subscribe(result => {
+    this.saving = true;
+    this._closingChecklistService.createOrEdit(this.checklist)
+    .pipe(finalize(() => { this.saving = false; }))
+    .subscribe(result => {
       this.notify.success(this.l('SavedSuccessfully Updated'));
       this._router.navigate(['/app/main/checklist']);
     });

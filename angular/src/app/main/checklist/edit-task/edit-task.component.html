@@ -257,8 +257,9 @@
                     <div class="kt-portlet__head mb-2">
                     </div>
                     <div class="">
-                        <button class="btn btn-brand" (click)="saveTaskChanges()">
-                            Update
+                        <button class="btn btn-brand" (click)="saveTaskChanges()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                            <i class="fa fa-save"></i>
+                            <span>{{"Update" | localize}}</span>
                         </button>
                     </div>
                 </div>

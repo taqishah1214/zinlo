@@ -12,7 +12,6 @@ namespace Zinlo.Categories
         public int TenantId { get; set; }
         [Required]
         public virtual string Title { get; set; }
-        [Required]
         public virtual string Description { get; set; }
     }
 }
