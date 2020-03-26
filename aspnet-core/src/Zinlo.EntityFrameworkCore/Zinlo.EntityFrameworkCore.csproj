@@ -20,6 +20,12 @@
     <Compile Remove="Migrations\20200320151535_initial.Designer.cs" />
     <Compile Remove="Migrations\20200324190637_Initial-Migration.cs" />
     <Compile Remove="Migrations\20200324190637_Initial-Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200326110317_Excel_Detail.cs" />
+    <Compile Remove="Migrations\20200326110317_Excel_Detail.Designer.cs" />
+    <Compile Remove="Migrations\20200326115332_User_Added_ImportPath.cs" />
+    <Compile Remove="Migrations\20200326115332_User_Added_ImportPath.Designer.cs" />
+    <Compile Remove="Migrations\20200326120336_Reconciliation_Changes.cs" />
+    <Compile Remove="Migrations\20200326120336_Reconciliation_Changes.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="28.4.4" />

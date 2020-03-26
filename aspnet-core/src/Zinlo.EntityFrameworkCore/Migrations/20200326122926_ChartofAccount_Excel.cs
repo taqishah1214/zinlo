@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Zinlo.Migrations
 {
-    public partial class Excel_Detail : Migration
+    public partial class ChartofAccount_Excel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,7 +21,7 @@ namespace Zinlo.Migrations
                     Type = table.Column<string>(nullable: true),
                     FailedRecordsCount = table.Column<int>(nullable: false),
                     SuccessRecordsCount = table.Column<int>(nullable: false),
-                    UserId = table.Column<long>(nullable: true)
+                    UserId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,7 +31,7 @@ namespace Zinlo.Migrations
                         column: x => x.UserId,
                         principalTable: "AbpUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

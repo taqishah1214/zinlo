@@ -10,8 +10,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20200326110317_Excel_Detail")]
-    partial class Excel_Detail
+    [Migration("20200326122926_ChartofAccount_Excel")]
+    partial class ChartofAccount_Excel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1748,7 +1748,7 @@ namespace Zinlo.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("text");
 
-                    b.Property<long?>("UserId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -2353,7 +2353,9 @@ namespace Zinlo.Migrations
                 {
                     b.HasOne("Zinlo.Authorization.Users.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Zinlo.MultiTenancy.Payments.SubscriptionPayment", b =>
