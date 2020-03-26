@@ -229,8 +229,8 @@
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" value="true" name="dueOn"
-                                                (click)="handleRadioChange()" [(ngModel)]="getTaskForEdit.endOfMonth">End of
+                                            <input type="radio" [(checked)]="getTaskForEdit.endOfMonth" name="endOfMonth"
+                                                (click)="handleRadioChange()">End of
                                             month
                                             <span></span>
                                         </label>

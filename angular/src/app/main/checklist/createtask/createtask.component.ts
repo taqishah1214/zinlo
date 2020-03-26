@@ -229,6 +229,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.dayBeforeAfter = false;
     this.daysBeforeAfter = null;
     this.checklist.dueOn = 1;
+    this.checklist.endOfMonth = true;
     this.SelectionMsg = "\xa0";
     this.isChecked = false;
   }
