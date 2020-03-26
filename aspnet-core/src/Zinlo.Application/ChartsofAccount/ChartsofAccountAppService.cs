@@ -26,12 +26,13 @@ namespace Zinlo.ChartsofAccount
         private readonly IChartsOfAccountsListExcelExporter _chartsOfAccountsListExcelExporter;
         private readonly IRepository<Amortization, long> _amortizationRepository;
         private readonly IRepository<Itemization, long> _itemizationRepository;
+        private readonly IChartsOfAccountsTrialBalanceExcelExporter _chartsOfAccountsTrialBalanceExcelExporter;
 
 
 
 
 
-        public ChartsofAccountAppService(IRepository<Itemization, long> itemizationRepository, IRepository<Amortization, long> amortizationRepository, IRepository<ChartsofAccount, long> chartsofAccountRepository, IProfileAppService profileAppService, IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter)
+        public ChartsofAccountAppService(IRepository<Itemization, long> itemizationRepository, IRepository<Amortization, long> amortizationRepository, IRepository<ChartsofAccount, long> chartsofAccountRepository, IProfileAppService profileAppService, IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter, IChartsOfAccountsTrialBalanceExcelExporter chartsOfAccountsTrialBalanceExcelExporter)
         {
             _amortizationRepository = amortizationRepository;
             _itemizationRepository = itemizationRepository;
@@ -44,9 +45,9 @@ namespace Zinlo.ChartsofAccount
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
             DateTime now = DateTime.Now;
-            var CurrentDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+            var currentDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
 
-            var query = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == CurrentDate.Month && e.CreationTime.Year == CurrentDate.Year).Include(p => p.AccountSubType).Include(p => p.Assignee)
+            var query = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == currentDate.Month && e.CreationTime.Year == currentDate.Year).Include(p => p.AccountSubType).Include(p => p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.AccountName.Contains(input.Filter))
                  .WhereIf(input.AccountType != 0, e => false || (e.AccountType == (AccountType)input.AccountType))
                  .WhereIf(input.AssigneeId != 0, e => false || (e.AssigneeId == input.AssigneeId));
@@ -76,7 +77,7 @@ namespace Zinlo.ChartsofAccount
                                    AccountSubType = o.AccountSubType != null ? o.AccountSubType.Title : "",
                                    ReconciliationTypeId = o.ReconciliationType != 0 ? (int)o.ReconciliationType : 0,
                                    AssigneeName = o.Assignee != null ? o.Assignee.FullName : "",
-                                   ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : "",
+                                   ProfilePicture = o.Assignee != null && o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : "",
                                    AssigneeId = o.Assignee.Id,
                                    StatusId = (int)o.Status,
                                    Balance = o.Balance,
@@ -110,14 +111,14 @@ namespace Zinlo.ChartsofAccount
             if ((int)account.ReconciliationType != (int)input.ReconciliationType)
             {
                 await _chartsofAccountRepository.DeleteAsync(account);
-                int PreviousAccountId =  (int)input.Id;
+                int previousAccountId =  (int)input.Id;
                 if ((int)account.ReconciliationType == 1)
                 {
-                    _itemizationRepository.Delete(await _itemizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == PreviousAccountId));
+                    _itemizationRepository.Delete(await _itemizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == previousAccountId));
                 }
                 else
                 {
-                    _amortizationRepository.Delete(await _amortizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == PreviousAccountId));
+                    _amortizationRepository.Delete(await _amortizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == previousAccountId));
                 }
 
                 input.Id = 0;
@@ -237,7 +238,7 @@ namespace Zinlo.ChartsofAccount
         }
         public string GetAccounttypeById(int id)
         {
-            string type = string.Empty;
+            string type;
             switch (id)
             {
                 case 1:
@@ -276,11 +277,11 @@ namespace Zinlo.ChartsofAccount
                 return false;
             }         
         }
-        public int CompareDates(DateTime CreattionDate)
+        public int CompareDates(DateTime creationDate)
         {
             DateTime dateTime = DateTime.Now;
             DateTime date1 = new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0);
-            DateTime date2 = new DateTime(CreattionDate.Year, CreattionDate.Month, 1, 0, 0, 0);
+            DateTime date2 = new DateTime(creationDate.Year, creationDate.Month, 1, 0, 0, 0);
             int result = DateTime.Compare(date2, date1);
             return result;
         }
@@ -296,13 +297,13 @@ namespace Zinlo.ChartsofAccount
             return result;
         }
 
-        public bool CheckAccountNoExist(string AccountNumber)
+        public bool CheckAccountNoExist(string accountNumber)
         {
 
-            if (AccountNumber != null)
+            if (accountNumber != null)
             {
-                bool IsExist = _chartsofAccountRepository.GetAll().Any(x => x.AccountNumber.Trim().ToLower() == AccountNumber.Trim().ToLower());
-                return IsExist;
+                bool isExist = _chartsofAccountRepository.GetAll().Any(x => x.AccountNumber.Trim().ToLower() == accountNumber.Trim().ToLower());
+                return isExist;
             }
             else
             {
