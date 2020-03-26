@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import {ClosingChecklistServiceProxy,ChangeStatusDto}from '@shared/service-proxies/service-proxies';
 import { Router } from '@angular/router';
 
@@ -11,6 +11,7 @@ export class StatusComponent implements OnInit {
 
   @Input() StatusList: any;
   @Input() TaskId : any;
+  @Output() messageEvent = new EventEmitter<number>();
   _changeStatus: ChangeStatusDto = new ChangeStatusDto();
 
   constructor( private _closingChecklistService: ClosingChecklistServiceProxy ,private _router: Router) { }
@@ -26,11 +27,14 @@ export class StatusComponent implements OnInit {
     this.ChangeValue(value);
     this._changeStatus.statusId = value;
     this._changeStatus.taskId = this.TaskId;
-    this._closingChecklistService.changeStatus(this._changeStatus).subscribe(result => 
-    {
-      
-    });
-    this.RedirectToDetail(this.TaskId)
+    if(this.TaskId != 0){
+      this._closingChecklistService.changeStatus(this._changeStatus).subscribe();
+      this.RedirectToDetail(this.TaskId)
+    }
+    else{
+      this.messageEvent.emit(this._changeStatus.statusId);
+    }
+    
   }
 
   ChangeValue(value): void {

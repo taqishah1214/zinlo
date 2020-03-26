@@ -7,6 +7,7 @@ import { UserListComponentComponent } from '../user-list-component/user-list-com
 import { Router } from '@angular/router';
 import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 import { AppConsts } from '@shared/AppConsts';
+import { StatusComponent } from '../status/status.component';
 @Component({
   selector: 'app-edit-task',
   templateUrl: './edit-task.component.html',
@@ -50,6 +51,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   UserProfilePicture : any;
   checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
   monthStatus : boolean;
+  @ViewChild(StatusComponent, { static: false }) selectedStatusId: StatusComponent;
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   days: any;
@@ -68,10 +70,10 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   initializePageParameters(): void {
     this.enableValue = false;
     this.isChecked = true;
-    this.taskId = history.state.data.id;
     this.commantBox = false;
     this.userSignInName = this.appSession.user.name.toString().charAt(0).toUpperCase();
     this.taskId = history.state.data.id;
+    this.active = true;
     this.categoryTitle = history.state.data.categoryTitle == "" ? "" : history.state.data.categoryTitle;
    
 
@@ -92,6 +94,8 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   getTaskDetails(): void {
   
     this._closingChecklistService.getTaskForEdit(this.taskId).subscribe(result => {
+
+      debugger
       this.getTaskForEdit = result;
       this.monthStatus = this.getTaskForEdit.monthStatus;
       this.attachments = result.attachments;
@@ -137,7 +141,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
         i["NameAvatar"] = firstCharacterForAvatar + lastCharacterForAvatar;
       });
     });
-    this.active =true;
+    
     this._categoryService.categoryDropDown().subscribe(result => {
       this.categoriesList = result;
     });
@@ -285,6 +289,14 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     else
     {
       this.checklist.assigneeId = this.getTaskForEdit.assigneeId;
+    }
+    if (this.selectedStatusId._changeStatus.statusId != undefined)
+    {
+      this.checklist.status = Number(this.selectedStatusId._changeStatus.statusId);
+    }
+    else
+    {
+      this.checklist.status = this.getTaskForEdit.statusId;
     }
     this.checklist.id = this.taskId;
     if (this.attachmentPaths != null) {
