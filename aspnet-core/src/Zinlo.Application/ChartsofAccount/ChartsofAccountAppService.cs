@@ -15,6 +15,7 @@ using Zinlo.ClosingChecklist.Dtos;
 using NUglify.Helpers;
 using Zinlo.Dto;
 using Zinlo.ChartsofAccount.Importing;
+using Zinlo.Reconciliation;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -23,23 +24,27 @@ namespace Zinlo.ChartsofAccount
         private readonly IRepository<ChartsofAccount, long> _chartsofAccountRepository;
         private readonly IProfileAppService _profileAppService;
         private readonly IChartsOfAccountsListExcelExporter _chartsOfAccountsListExcelExporter;
-        private readonly IChartsOfAccountsTrialBalanceExcelExporter _chartsOfAccountsTrialBalanceExcelExporter;
-        public ChartsofAccountAppService(IRepository<ChartsofAccount, long> chartsofAccountRepository, IProfileAppService profileAppService,
-            IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter,
-            IChartsOfAccountsTrialBalanceExcelExporter chartsOfAccountsTrialBalanceExcelExporter
-            )
+        private readonly IRepository<Amortization, long> _amortizationRepository;
+        private readonly IRepository<Itemization, long> _itemizationRepository;
+
+
+
+
+
+        public ChartsofAccountAppService(IRepository<Itemization, long> itemizationRepository, IRepository<Amortization, long> amortizationRepository, IRepository<ChartsofAccount, long> chartsofAccountRepository, IProfileAppService profileAppService, IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter)
         {
+            _amortizationRepository = amortizationRepository;
+            _itemizationRepository = itemizationRepository;
             _chartsofAccountRepository = chartsofAccountRepository;
             _profileAppService = profileAppService;
             _chartsOfAccountsListExcelExporter = chartsOfAccountsListExcelExporter;
             _chartsOfAccountsTrialBalanceExcelExporter = chartsOfAccountsTrialBalanceExcelExporter;
         }
-
         
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
             DateTime now = DateTime.Now;
-            var CurrentDate = new DateTime(now.Year, now.Month, 1);
+            var CurrentDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
 
             var query = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == CurrentDate.Month && e.CreationTime.Year == CurrentDate.Year).Include(p => p.AccountSubType).Include(p => p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.AccountName.Contains(input.Filter))
@@ -85,50 +90,51 @@ namespace Zinlo.ChartsofAccount
            );
 
         }
-        public async Task CreateOrEdit(CreateOrEditChartsofAccountDto input)
+        public async Task<double> CreateOrEdit(CreateOrEditChartsofAccountDto input)
         {
-            if (input.Id == null)
+            if (input.Id == null || input.Id == 0)
             {
-                await Create(input);
+               return await Create(input);
+               
             }
             else
             {
-                await Update(input);
+              return await Update(input);
             }
 
         }
-        protected virtual async Task Update(CreateOrEditChartsofAccountDto input)
+        protected virtual async Task<double> Update(CreateOrEditChartsofAccountDto input)
         {
             var account = await _chartsofAccountRepository.FirstOrDefaultAsync((int)input.Id);
+
             if ((int)account.ReconciliationType != (int)input.ReconciliationType)
             {
-                int previousId = (int)input.Id;
-                input.Id = 0;
+                await _chartsofAccountRepository.DeleteAsync(account);
+                int PreviousAccountId =  (int)input.Id;
+                if ((int)account.ReconciliationType == 1)
+                {
+                    _itemizationRepository.Delete(await _itemizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == PreviousAccountId));
+                }
+                else
+                {
+                    _amortizationRepository.Delete(await _amortizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == PreviousAccountId));
+                }
 
-                await Create(input);
-                var recociliationTypeOld = (ReconciliationType)account.ReconciliationType;
-                var updatedAccount = ObjectMapper.Map(input, account);
-                updatedAccount.ReconciliationType = recociliationTypeOld;
-                updatedAccount.AccountType = (AccountType)input.AccountType;
-                updatedAccount.Lock = true;
-                updatedAccount.Id = previousId;
-                await _chartsofAccountRepository.UpdateAsync(updatedAccount);
+                input.Id = 0;
+                return await Create(input);
             }
             else
             {
                 var updatedAccount = ObjectMapper.Map(input, account);
                 updatedAccount.ReconciliationType = (ReconciliationType)input.ReconciliationType;
                 updatedAccount.AccountType = (AccountType)input.AccountType;
-                await _chartsofAccountRepository.UpdateAsync(updatedAccount);
+               double accountId  =  await _chartsofAccountRepository.InsertOrUpdateAndGetIdAsync(updatedAccount);
+                return accountId;
             }
                
         }
 
-
-
-
-
-        protected virtual async Task Create(CreateOrEditChartsofAccountDto input)
+        protected virtual async Task<double> Create(CreateOrEditChartsofAccountDto input)
         {
             var account = ObjectMapper.Map<ChartsofAccount>(input);
             account.Status = (Status)2;
@@ -136,7 +142,8 @@ namespace Zinlo.ChartsofAccount
             {
                 account.TenantId = (int)AbpSession.TenantId;
             }
-            await _chartsofAccountRepository.InsertAsync(account);
+            double accountId =  _chartsofAccountRepository.InsertAndGetId(account);
+            return accountId;
         }
         public async Task Delete(long id)
         {

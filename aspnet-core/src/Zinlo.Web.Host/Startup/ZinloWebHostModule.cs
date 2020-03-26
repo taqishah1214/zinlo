@@ -14,6 +14,7 @@ using Abp.Reflection.Extensions;
 using Abp.Threading.BackgroundWorkers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Zinlo.ChartsofAccount;
 using Zinlo.Configuration;
 using Zinlo.EntityFrameworkCore;
 using Zinlo.MultiTenancy;
@@ -63,6 +64,8 @@ namespace Zinlo.Web.Startup
                 var workManager = IocManager.Resolve<IBackgroundWorkerManager>();
                 workManager.Add(IocManager.Resolve<SubscriptionExpirationCheckWorker>());
                 workManager.Add(IocManager.Resolve<SubscriptionExpireEmailNotifierWorker>());
+                workManager.Add(IocManager.Resolve<ChartsOfAccountMonthly>());
+
             }
 
             ConfigureExternalAuthProviders();

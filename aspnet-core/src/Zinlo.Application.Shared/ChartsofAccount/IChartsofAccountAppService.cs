@@ -11,7 +11,7 @@ namespace Zinlo.ChartsofAccount
 {
    public interface IChartsofAccountAppService : IApplicationService
     {
-        Task CreateOrEdit(CreateOrEditChartsofAccountDto input);
+        Task<double> CreateOrEdit(CreateOrEditChartsofAccountDto input);
         Task Delete(long id);
         Task<GetAccountForEditDto> GetAccountForEdit(long id);
         Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input);

@@ -15,5 +15,6 @@ namespace Zinlo.Reconciliation
         Task <CreateOrEditAmortizationDto> GetAmortizedItemDetails (long Id);
 
 
+
     }
 }
