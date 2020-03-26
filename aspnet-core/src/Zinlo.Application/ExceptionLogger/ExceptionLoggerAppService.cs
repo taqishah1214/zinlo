@@ -8,16 +8,30 @@ using Zinlo.ImportsPaths;
 using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Identity;
+using Zinlo.Authorization.Users;
+using AutoMapper.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
+using Zinlo.Configuration;
 
 namespace Zinlo.ExceptionLogger
 {
     public class ExceptionLoggerAppService : ZinloAppServiceBase, IExceptionLoggerAppService
     {
         private readonly IRepository<ImportsPath, long> _importsPathRepository;
-        public ExceptionLoggerAppService(IRepository<ImportsPath, long> importsPathRepository)
+        private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
+        private readonly IConfigurationRoot _appConfiguration;
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public UserManager userManager { get; set; }
+        public ExceptionLoggerAppService(IRepository<ImportsPath, long> importsPathRepository,
+            Microsoft.Extensions.Configuration.IConfiguration configuration,
+            IWebHostEnvironment env
+            )
         {
             _importsPathRepository = importsPathRepository;
+            _configuration = configuration;
+            _appConfiguration = env.GetAppConfiguration();
         }
       
         public async Task<PagedResultDto<ExceptionLoggerForViewDto>> GetAll(GetAllExceptionsInput input)
@@ -25,20 +39,19 @@ namespace Zinlo.ExceptionLogger
             var query = _importsPathRepository.GetAll().Include(p => p.User)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.FilePath.Contains(input.Filter));
 
-            var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+            var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "CreationTime asc").PageBy(input);
             var totalCount = query.Count();
-
-            var accountsList = from o in pagedAndFilteredAccounts
-
+            var baseURL = _appConfiguration["App:ServerRootAddress"];
+            var accountsList = from o in pagedAndFilteredAccounts.ToList()
+                               
                                select new ExceptionLoggerForViewDto()
                                {
                                    Id = o.Id,
                                    Type = o.Type,
-                                   FilePath = o.FilePath,
+                                   FilePath = baseURL + o.FilePath,
                                    CreationTime = o.CreationTime,
-                                   FailedRecordsCount = o.FailedRecordsCount,
-                                   SuccessRecordsCount = o.SuccessRecordsCount,
-                                   CreatedBy = o.User.FullName                                 
+                                   Records = o.SuccessRecordsCount + "/" + (o.FailedRecordsCount + o.SuccessRecordsCount).ToString(),
+                                   CreatedBy = o.User.FullName
                                };
 
             return new PagedResultDto<ExceptionLoggerForViewDto>(

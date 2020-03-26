@@ -1,0 +1,153 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{"Exceptions" | localize}}</span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        {{"ExceptionsHeaderInfo" | localize}}
+                    </span>
+                </div>
+                <!-- <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button (click)="createCategory()" *ngIf="'Pages.Categories.Create' | permission"
+                            class="btn btn-primary"><i class="fa fa-plus"></i> {{"AddNew" | localize}}</button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <form class="kt-form" autocomplete="new-password">
+                        <div>
+                            <!-- <div class="row align-items-center mb-4">
+                                <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
+                                    <div class="kt-input-icon kt-input-icon--left">
+                                        <input (input)="getCategories()" [(ngModel)]="filterText" name="filterText"
+                                            autoFocus class="form-control m-input"
+                                            [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="kt-input-icon__icon kt-input-icon__icon--left">
+                                            <span><i class="la la-search"></i></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="categories-table primeng-datatable-container"
+                            [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getAllExceptions($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        
+                                        <th>
+                                            Date
+
+                                        </th>
+                                        <th>
+                                            Type
+
+                                        </th>
+                                        <th>
+                                            User
+
+                                        </th>
+                                       
+
+                                       
+                                        <th>
+                                          Records
+   
+                                           </th>
+                                           <th>
+                                            Error
+     
+                                             </th>
+                                    </tr>
+
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 20%">
+                                            <span class="ui-column-title"> {{'Name' | localize}}</span>
+                                            <!-- {{record.category.creationDate | date:'MMM d, y, h:mm a'}} -->
+                                            {{record.creationTime | momentFormat:'L'}}
+                                        </td>
+                                        <td style="width: 20%">
+                                            <span class="ui-column-title"> {{'UserName' | localize}}</span>
+                                            {{record.type}}
+                                        </td>
+                                        <td style="width: 20%">
+                                            <span class="ui-column-title"> {{'Name' | localize}}</span>
+                                            {{record.createdBy}}
+                                        </td>                                                                  
+                                        <td style="width: 20%">
+                                            <span class="ui-column-title"> {{'UserName' | localize}}</span>
+                                            {{record.records}}
+                                        </td>
+                                        <td style="width: 20%">
+                                            <span class="ui-column-title"> {{'UserName' | localize}}</span>
+                                            <!-- {{record.filePath}} -->
+                                            <a href="{{record.filePath}}" target="_blank" >Download</a>
+                                        </td>
+                                        <!-- <td style="width: 20%">
+                                            <span class="ui-column-title"> {{'UserName' | localize}}</span>
+                                            {{record.failedRecordsCount}}
+                                        </td> -->
+
+                                        <!-- <td data-field="OrderID" class="kt-datatable__cell"><span>
+                                                <div class="kt-user-card-v2">
+                                                    <div class="kt-user-card-v2__pic">
+                                                        <div  *ngIf="record.profilePicture" class="kt-badge kt-badge--xl">
+                                                            <img
+                                                            class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                            alt="Pic" [src]="record.profilePicture">
+                                                        </div>
+                                                        
+                                                        <div  *ngIf="!record.profilePicture"class="kt-badge kt-badge--xl kt-badge--primary">{{record.createdBy | firstLetterOfWords}}</div>
+                                                    </div>
+                                                    <div class="kt-user-card-v2__details"> <span
+                                                            class="kt-user-card-v2__name">
+                                                            {{record.createdBy}}</span> </div>
+                                                </div>
+                                            </span>
+                                        </td> -->
+                                       
+
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getAllExceptions($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

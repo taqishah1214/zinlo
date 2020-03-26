@@ -24,6 +24,8 @@ namespace Zinlo.ImportPaths
             importsPath.FailedRecordsCount = input.FailedRecordsCount;
             importsPath.SuccessRecordsCount = input.SuccessRecordsCount;
             importsPath.CreatorUserId = input.CreatorId;
+            importsPath.UserId = input.CreatorId;
+            
             importsPath.CreationTime = DateTime.UtcNow;
            await _importPathsRepository.InsertAsync(importsPath);          
 
