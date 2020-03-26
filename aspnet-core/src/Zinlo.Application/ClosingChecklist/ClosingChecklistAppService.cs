@@ -146,36 +146,43 @@ namespace Zinlo.ClosingChecklist
                 }
                 var managementDetail = _managementsAppService.GetOpenManagement();
 
-                
-                // Closing Tasks which are not in Open Tasks.. If Month NOT exists in OPEN, create
-                // IF Closing tasks exists in ManagementDetails, delete it from closing tasks.
                 foreach (var item in managementDetail)
                 {
                      var task =  taskList.FirstOrDefault(p => p.ClosingMonth.Year == item.Month.Year && p.ClosingMonth.Month == item.Month.Month);
                      if (task != null) await _closingChecklistRepository.DeleteAsync(task);
                 }
 
-                input.Id = 0;
                 await TaskIteration(input);
             }
         }
 
         private async Task TaskIteration(CreateOrEditClosingChecklistDto input)
         {
-           
-            input.ClosingMonth = input.ClosingMonth.AddDays(1);
-            input.EndsOn = input.EndsOn.AddDays(1);
-            input.EndsOn = input.EndsOn;
+            Guid? oldGroupId = null;
+            if (input.Id == 0)
+            {
+                input.ClosingMonth = input.ClosingMonth.AddDays(1);
+                input.EndsOn = input.EndsOn.AddDays(1);
+            }
+            else
+            {
+                oldGroupId = input.GroupId;
+                input.Id = 0;
+            }
             input.GroupId = Guid.NewGuid();
 
             if (input.EndOfMonth) input.DueOn = 0;
                 switch (input.Frequency)
             {
                 case FrequencyDto.None:
+                {
+                    input.DueDate = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+
+                    if (input.Id == 0 || (oldGroupId != null && !await CheckTaskExist(input.ClosingMonth, (Guid)oldGroupId)))
                     {
-                        input.DueDate = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
                         await Create(input);
-                        break;
+                    }
+                    break;
                     }
                 case FrequencyDto.Monthly:
                     {
@@ -184,7 +191,10 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            await Create(input);
+                            if (input.Id == 0 || (oldGroupId != null && !await CheckTaskExist(input.ClosingMonth, (Guid)oldGroupId)))
+                            {
+                                await Create(input);
+                            }
                             var nextMonth = input.ClosingMonth.AddMonths(1);
                             input.ClosingMonth = nextMonth;
 
@@ -199,7 +209,10 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            await Create(input);
+                            if (input.Id == 0 || (oldGroupId != null && !await CheckTaskExist(input.ClosingMonth, (Guid)oldGroupId)))
+                            {
+                                await Create(input);
+                            }
                             var nextMonth = input.ClosingMonth.AddMonths(3);
                             input.ClosingMonth = nextMonth;
 
@@ -214,7 +227,10 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            await Create(input);
+                            if (input.Id == 0 || (oldGroupId != null && !await CheckTaskExist(input.ClosingMonth, (Guid)oldGroupId)))
+                            {
+                                await Create(input);
+                            }
                             var nextMonth = input.ClosingMonth.AddYears(1);
                             input.ClosingMonth = nextMonth;
 
@@ -229,7 +245,10 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            await Create(input);
+                            if (input.Id == 0 || (oldGroupId != null && !await CheckTaskExist(input.ClosingMonth, (Guid) oldGroupId)))
+                            {
+                                await Create(input);
+                            }
                             var nextMonth = input.ClosingMonth.AddMonths(input.NoOfMonths);
                             input.ClosingMonth = nextMonth;
 
@@ -240,11 +259,11 @@ namespace Zinlo.ClosingChecklist
             }
         }
 
-        private int GetMonthDifference(DateTime start, DateTime end)
+        private static int GetMonthDifference(DateTime start, DateTime end)
         {
             return ((end.Year * 12 + end.Month) - (start.Year * 12 + start.Month)) + 1;
         }
-        private int GetDifferenceInYears(DateTime startDate, DateTime endDate)
+        private static int GetDifferenceInYears(DateTime startDate, DateTime endDate)
         {
             int years = endDate.Year - startDate.Year;
 
@@ -450,6 +469,14 @@ namespace Zinlo.ClosingChecklist
         protected virtual async Task<bool> GetMonthStatus(DateTime dateTime)
         {
             return await _managementsAppService.GetMonthStatus(dateTime);
+        }
+
+        private async Task<bool> CheckTaskExist(DateTime closingMonth, Guid groupId)
+        {
+            var ifTaskExist = await _closingChecklistRepository.FirstOrDefaultAsync(p =>
+                p.GroupId == groupId && p.ClosingMonth.Month == closingMonth.Month &&
+                p.ClosingMonth.Year == closingMonth.Year);
+            return ifTaskExist != null;
         }
         #endregion
     }
