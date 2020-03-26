@@ -55,7 +55,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   days: any;
-  daysBeforeAfter: string;
+  daysBeforeAfter: string="\xa0";
 
   constructor(private userInfo: UserInformation,private _categoryService: CategoriesServiceProxy, private _attachmentService: AttachmentsServiceProxy, injector: Injector, private _closingChecklistService: ClosingChecklistServiceProxy, private _router: Router) {
     super(injector)
@@ -243,10 +243,10 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
   handleRadioChange() {
     this.checklist.dayBeforeAfter = false;
-    this.daysBeforeAfter = null;
-    this.checklist.dueOn = 0;
-    this.daysBeforeAfter = null;
+    this.getTaskForEdit.dayBeforeAfter = null;
+    this.getTaskForEdit.dueOn= 1;
     this.isChecked = false;
+    this.daysBeforeAfter = "\xa0";
   }
   onDaysClick(valu) {
     this.isChecked = true;
