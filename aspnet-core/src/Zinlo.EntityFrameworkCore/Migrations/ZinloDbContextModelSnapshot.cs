@@ -1588,20 +1588,23 @@ namespace Zinlo.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<int>("DueOn")
                         .HasColumnType("integer");
 
                     b.Property<bool>("EndOfMonth")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("EndsOn")
+                    b.Property<DateTime?>("EndsOn")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Frequency")
                         .HasColumnType("integer");
 
-                    b.Property<string>("GroupId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Instruction")
                         .HasColumnType("text");
@@ -1743,7 +1746,7 @@ namespace Zinlo.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("text");
 
-                    b.Property<long>("UserId")
+                    b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -2096,6 +2099,9 @@ namespace Zinlo.Migrations
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("Month")
                         .HasColumnType("timestamp without time zone");
 
@@ -2345,9 +2351,7 @@ namespace Zinlo.Migrations
                 {
                     b.HasOne("Zinlo.Authorization.Users.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Zinlo.MultiTenancy.Payments.SubscriptionPayment", b =>

@@ -10,8 +10,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20200313144411_Add_column_Lock_Chart_of_Account")]
-    partial class Add_column_Lock_Chart_of_Account
+    [Migration("20200324191401_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1495,6 +1495,9 @@ namespace Zinlo.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
 
+                    b.Property<decimal>("TrialBalance")
+                        .HasColumnType("numeric");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccountSubTypeId");
@@ -1587,20 +1590,23 @@ namespace Zinlo.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<int>("DueOn")
                         .HasColumnType("integer");
 
                     b.Property<bool>("EndOfMonth")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("EndsOn")
+                    b.Property<DateTime?>("EndsOn")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Frequency")
                         .HasColumnType("integer");
 
-                    b.Property<string>("GroupId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Instruction")
                         .HasColumnType("text");
@@ -2056,6 +2062,9 @@ namespace Zinlo.Migrations
 
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("Month")
                         .HasColumnType("timestamp without time zone");
