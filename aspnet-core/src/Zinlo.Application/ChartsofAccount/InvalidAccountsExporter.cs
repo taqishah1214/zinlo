@@ -74,7 +74,7 @@ namespace Zinlo.ChartsofAccount
                     }
                     excelPackage.SaveAs(new FileInfo(path));
                 });
-            return path;
+            return "Uploads-Attachments/" + filePath;
 
         }      
     }

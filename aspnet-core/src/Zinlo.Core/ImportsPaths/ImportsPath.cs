@@ -15,5 +15,6 @@ namespace Zinlo.ImportsPaths
         public int FailedRecordsCount { get; set; }
         public int SuccessRecordsCount { get; set;}
         public virtual User User { get; set; }
+        public virtual long UserId { get; set; }
     }
 }
