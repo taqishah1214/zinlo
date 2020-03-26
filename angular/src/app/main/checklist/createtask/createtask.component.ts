@@ -31,7 +31,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   UserProfilePicture: any;
   enableValue: boolean = false;
   endOnIsEnabled: boolean = true;
-  SelectionMsg: string = "";
+  SelectionMsg: string = "\xa0";
   userName : string;
   attachmentPaths: any = [];
   newAttachementPath: string[] = [];
@@ -211,11 +211,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   handleRadioChange() {
     this.checklist.dayBeforeAfter = false;
     this.daysBeforeAfter = null;
-    this.checklist.dueOn = 0;
-    this.SelectionMsg = "";
+    this.checklist.dueOn = 1;
+    this.SelectionMsg = "\xa0";
     this.isChecked = false;
   }
   onDaysClick(valu) {
+    this.checklist.endOfMonth = false;
     this.isChecked = true;
     if (valu == "true") {
       this.SelectionMsg = "Days Before";
