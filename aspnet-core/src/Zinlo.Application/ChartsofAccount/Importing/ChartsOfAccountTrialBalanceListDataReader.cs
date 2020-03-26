@@ -20,7 +20,7 @@ namespace Zinlo.ChartsofAccount.Importing
         }
         public List<ChartsOfAccountsTrialBalanceExcellImportDto> GetAccountsTrialBalanceFromExcel(byte[] fileBytes)
         {
-            return ProcessExcelFile(fileBytes, ProcessExcelRow);
+             return ProcessExcelFile(fileBytes, ProcessExcelRow);          
         }
         private ChartsOfAccountsTrialBalanceExcellImportDto ProcessExcelRow(ExcelWorksheet worksheet, int row)
         {
@@ -33,7 +33,7 @@ namespace Zinlo.ChartsofAccount.Importing
             try
             {
                 chartsofaccount.AccountNumber = GetRequiredValueFromRowOrNull(worksheet, row, 1, nameof(chartsofaccount.AccountNumber), exceptionMessage);
-                chartsofaccount.AccountName = GetRequiredValueFromRowOrNull(worksheet, row, 2, nameof(chartsofaccount.AccountName), exceptionMessage);
+                chartsofaccount.AccountName = GetRequiredValueFromRowOrNull(worksheet, row,2, nameof(chartsofaccount.AccountName), exceptionMessage);
                 chartsofaccount.Balance = GetRequiredValueFromRowOrNull(worksheet, row, 3, nameof(chartsofaccount.Balance), exceptionMessage);             
             }
             catch (System.Exception exception)

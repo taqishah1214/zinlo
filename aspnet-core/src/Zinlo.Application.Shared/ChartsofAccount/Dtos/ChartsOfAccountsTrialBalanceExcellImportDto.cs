@@ -16,4 +16,9 @@ namespace Zinlo.ChartsofAccount.Dtos
             return string.IsNullOrEmpty(Exception);
         }
     }
+    public enum FileTypes
+    {
+        ChartOfAccounts,
+        TrialBalance
+    }
 }

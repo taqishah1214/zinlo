@@ -14,6 +14,7 @@ using Zinlo.Authorization.Users.Profile;
 using Zinlo.ClosingChecklist.Dtos;
 using NUglify.Helpers;
 using Zinlo.Dto;
+using Zinlo.ChartsofAccount.Importing;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -22,11 +23,16 @@ namespace Zinlo.ChartsofAccount
         private readonly IRepository<ChartsofAccount, long> _chartsofAccountRepository;
         private readonly IProfileAppService _profileAppService;
         private readonly IChartsOfAccountsListExcelExporter _chartsOfAccountsListExcelExporter;
-        public ChartsofAccountAppService(IRepository<ChartsofAccount, long> chartsofAccountRepository, IProfileAppService profileAppService, IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter)
+        private readonly IChartsOfAccountsTrialBalanceExcelExporter _chartsOfAccountsTrialBalanceExcelExporter;
+        public ChartsofAccountAppService(IRepository<ChartsofAccount, long> chartsofAccountRepository, IProfileAppService profileAppService,
+            IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter,
+            IChartsOfAccountsTrialBalanceExcelExporter chartsOfAccountsTrialBalanceExcelExporter
+            )
         {
             _chartsofAccountRepository = chartsofAccountRepository;
             _profileAppService = profileAppService;
             _chartsOfAccountsListExcelExporter = chartsOfAccountsListExcelExporter;
+            _chartsOfAccountsTrialBalanceExcelExporter = chartsOfAccountsTrialBalanceExcelExporter;
         }
 
         
@@ -192,6 +198,7 @@ namespace Zinlo.ChartsofAccount
             }
             return result;
         }
+        
         public async Task<FileDto> GetChartsofAccountToExcel(long id)
         {
             var accounts =  _chartsofAccountRepository.GetAll().Include(x => x.Assignee);
@@ -206,6 +213,20 @@ namespace Zinlo.ChartsofAccount
                 listToExport.Add(chartsOfAccountsExcellExporterDto);
             }
             return _chartsOfAccountsListExcelExporter.ExportToFile(listToExport);
+        }
+        public async Task<FileDto> LoadChartsofAccountTrialBalanceToExcel()
+        {
+            var accounts = _chartsofAccountRepository.GetAll().Include(x => x.Assignee);
+            List<ChartsOfAccountsTrialBalanceExcellImportDto> listToExport = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
+            foreach (var item in accounts)
+            {
+                ChartsOfAccountsTrialBalanceExcellImportDto model = new ChartsOfAccountsTrialBalanceExcellImportDto();
+                model.AccountName = item.AccountName;
+                model.AccountNumber = item.AccountNumber;
+                model.Balance = item.TrialBalance.ToString();
+                listToExport.Add(model);
+            }
+            return _chartsOfAccountsTrialBalanceExcelExporter.ExportToExcell(listToExport);
         }
         public string GetAccounttypeById(int id)
         {
@@ -239,7 +260,8 @@ namespace Zinlo.ChartsofAccount
             if(result != null)
             {
                 result.TrialBalance = Convert.ToDecimal(trialBalance);
-               await _chartsofAccountRepository.UpdateAsync(result);               
+               await _chartsofAccountRepository.UpdateAsync(result);     
+                
                 return true;
             }
             else

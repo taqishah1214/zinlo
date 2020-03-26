@@ -42,6 +42,8 @@ using HealthChecksUISettings = HealthChecks.UI.Configuration.Settings;
 using Zinlo.Attachments;
 using Zinlo.ChartsofAccount.Importing;
 using Zinlo.ChartsofAccount;
+using Zinlo.AccountSubType;
+using Zinlo.ImportPaths;
 
 namespace Zinlo.Web.Startup
 {
@@ -72,7 +74,9 @@ namespace Zinlo.Web.Startup
             services.AddTransient<IChartsOfAccontListExcelDataReader, ChartsOfAccountListExcelDataReader>();
             services.AddTransient<IInvalidAccountsExcellExporter, InvalidAccountsExporter>();
             services.AddTransient<IChartsOfAccontTrialBalanceListExcelDataReader, ChartsOfAccountTrialBalanceListDataReader>();
-            
+            services.AddTransient<IAccountSubTypeAppService, AccountSubTypeAppService>();
+            services.AddTransient<IChartsofAccountAppService, ChartsofAccountAppService>();
+            services.AddTransient<IImportPathsAppService, ImportPathsAppService>();            
             //Configure CORS for angular2 UI
             services.AddCors(options =>
             {
@@ -244,6 +248,7 @@ namespace Zinlo.Web.Startup
             {
                 endpoints.MapHub<AbpCommonHub>("/signalr");
                 endpoints.MapHub<ChatHub>("/signalr-chat");
+                endpoints.MapHub<JobHub.JobHub>("/signalr-job");
 
                 endpoints.MapControllerRoute("defaultWithArea", "{area}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");

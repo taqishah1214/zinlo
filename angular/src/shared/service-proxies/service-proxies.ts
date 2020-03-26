@@ -884,14 +884,24 @@ export class AccountSubTypeServiceProxy {
 
     /**
      * @param title (optional) 
+     * @param userId (optional) 
+     * @param tenantId (optional) 
      * @return Success
      */
-    getAccountSubTypeIdByTitle(title: string | undefined): Observable<number> {
+    getAccountSubTypeIdByTitle(title: string | undefined, userId: number | undefined, tenantId: number | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/AccountSubType/GetAccountSubTypeIdByTitle?";
         if (title === null)
             throw new Error("The parameter 'title' cannot be null.");
         else if (title !== undefined)
             url_ += "title=" + encodeURIComponent("" + title) + "&"; 
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (tenantId === null)
+            throw new Error("The parameter 'tenantId' cannot be null.");
+        else if (tenantId !== undefined)
+            url_ += "TenantId=" + encodeURIComponent("" + tenantId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3242,6 +3252,57 @@ export class ChartsofAccountServiceProxy {
     }
 
     protected processGetChartsofAccountToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    loadChartsofAccountTrialBalanceToExcel(): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/LoadChartsofAccountTrialBalanceToExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLoadChartsofAccountTrialBalanceToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLoadChartsofAccountTrialBalanceToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processLoadChartsofAccountTrialBalanceToExcel(response: HttpResponseBase): Observable<FileDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -6964,6 +7025,70 @@ export class HostSettingsServiceProxy {
     }
 
     protected processSendTestEmail(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class ImportPathsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    saveFilePath(body: ImportPathDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ImportPaths/SaveFilePath";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSaveFilePath(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSaveFilePath(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSaveFilePath(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -21409,6 +21534,62 @@ export class SendTestEmailInput implements ISendTestEmailInput {
 
 export interface ISendTestEmailInput {
     emailAddress: string | undefined;
+}
+
+export class ImportPathDto implements IImportPathDto {
+    filePath!: string | undefined;
+    type!: string | undefined;
+    failedRecordsCount!: number;
+    successRecordsCount!: number;
+    tenantId!: number;
+    creatorId!: number;
+
+    constructor(data?: IImportPathDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.filePath = data["filePath"];
+            this.type = data["type"];
+            this.failedRecordsCount = data["failedRecordsCount"];
+            this.successRecordsCount = data["successRecordsCount"];
+            this.tenantId = data["tenantId"];
+            this.creatorId = data["creatorId"];
+        }
+    }
+
+    static fromJS(data: any): ImportPathDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ImportPathDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filePath"] = this.filePath;
+        data["type"] = this.type;
+        data["failedRecordsCount"] = this.failedRecordsCount;
+        data["successRecordsCount"] = this.successRecordsCount;
+        data["tenantId"] = this.tenantId;
+        data["creatorId"] = this.creatorId;
+        return data; 
+    }
+}
+
+export interface IImportPathDto {
+    filePath: string | undefined;
+    type: string | undefined;
+    failedRecordsCount: number;
+    successRecordsCount: number;
+    tenantId: number;
+    creatorId: number;
 }
 
 export class InstallDto implements IInstallDto {

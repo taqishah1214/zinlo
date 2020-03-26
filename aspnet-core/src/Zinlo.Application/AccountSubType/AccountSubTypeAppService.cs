@@ -11,6 +11,8 @@ using Zinlo.AccountSubType.Dtos;
 using Zinlo.Authorization.Users;
 using Zinlo.Authorization.Users.Profile;
 using Microsoft.EntityFrameworkCore;
+using Abp.Runtime.Session;
+using Abp;
 
 namespace Zinlo.AccountSubType
 {
@@ -20,6 +22,7 @@ namespace Zinlo.AccountSubType
         private readonly UserManager _userManager;
         private readonly IProfileAppService _profileAppService;
         public  long AccountSubTypeId = 0;
+       
 
         public AccountSubTypeAppService (IRepository<AccountSubType, long> accountSubTypeRepository, UserManager userManager, IRepository<User, long> userRepository, IProfileAppService profileAppService)
         {
@@ -120,7 +123,7 @@ namespace Zinlo.AccountSubType
             );
         }
 
-       public async Task<long> GetAccountSubTypeIdByTitle(string title)
+       public async Task<long> GetAccountSubTypeIdByTitle(string title, long UserId, long TenantId)
         {
             var result = _accountSubTypeRepository.GetAll().Where(x => x.Title.Trim().ToLower() == title.Trim().ToLower()).FirstOrDefault();
             if(result != null)
@@ -135,21 +138,31 @@ namespace Zinlo.AccountSubType
                      Description = title
                 };
 
-               await CreateFromExcel(input);
-                return AccountSubTypeId;
+             long  id =  await CreateFromExcel(input, UserId, TenantId);
+                return id;
             }
         }
-        protected virtual async Task CreateFromExcel(CreateOrEditAccountSubTypeDto input)
+        protected virtual async Task<long> CreateFromExcel(CreateOrEditAccountSubTypeDto input,long UserId, long TenantId)
         {
 
             var accountSubType = ObjectMapper.Map<AccountSubType>(input);
-            if (AbpSession.TenantId != null)
-            {
-                accountSubType.TenantId = (int)AbpSession.TenantId;
-                accountSubType.CreatorUserId = (int)AbpSession.UserId;
-            }
+            //if (AbpSession.TenantId != null)
+            //{
+            //    accountSubType.TenantId = (int)AbpSession.TenantId;
+            //    accountSubType.CreatorUserId = (long)AbpSession.UserId;
+            //}
+            //  var ursId = GetCurrentUser();
+            // var tId = AbpSession.TenantId;
 
-            AccountSubTypeId = await _accountSubTypeRepository.InsertAndGetIdAsync(accountSubType);
+            // var user = AbpSession.ToUserIdentifier();
+            accountSubType.CreatorUserId = UserId;
+            accountSubType.TenantId = (int)TenantId;
+            
+
+
+
+          long id  = await _accountSubTypeRepository.InsertAndGetIdAsync(accountSubType);
+            return id;
         }
 
 

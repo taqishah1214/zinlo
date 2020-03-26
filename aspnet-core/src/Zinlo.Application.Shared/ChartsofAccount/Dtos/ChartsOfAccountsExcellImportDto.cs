@@ -13,11 +13,14 @@ namespace Zinlo.ChartsofAccount.Dtos
         public string AssignedUser { get; set; }
         public string AccountSubType{ get; set; }
         public string ReconciliationType{ get; set; }
+        public string ReconciliationAs { get; set; }
         public string Exception { get; set; }
         public bool CanBeImported()
         {
             return string.IsNullOrEmpty(Exception);
         }
+        public bool isValid { get; set; }
+
     }
    
 }

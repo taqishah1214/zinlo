@@ -9,34 +9,42 @@ using Abp.Runtime.Session;
 using Abp.Threading;
 using Abp.UI;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Zinlo.AccountSubType;
 using Zinlo.Authorization.Roles;
 using Zinlo.Authorization.Users;
 using Zinlo.ChartsofAccount.Dtos;
 using Zinlo.ChartsofAccount.Importing;
+using Zinlo.ImportPaths;
+using Zinlo.ImportPaths.Dto;
 using Zinlo.Notifications;
 using Zinlo.Storage;
 namespace Zinlo.ChartsofAccount
 {
-   
+
     public class ImportChartsOfAccountToExcelJob : BackgroundJob<ImportChartsOfAccountFromExcelJobArgs>, ITransientDependency
     {
-              
-       private readonly IChartsOfAccontListExcelDataReader _chartsOfAccontListExcelDataReader;
+        private readonly IImportPathsAppService _importPathsAppService;
+        private readonly IChartsOfAccontListExcelDataReader _chartsOfAccontListExcelDataReader;
         private readonly IAccountSubTypeAppService _accountSubTypeAppService;
         private readonly IInvalidAccountsExcellExporter _invalidAccountsExporter;
-        private readonly IRepository<ChartsofAccount, long>  _chartsOfAccountsrepository;
+        private readonly IRepository<ChartsofAccount, long> _chartsOfAccountsrepository;
         private readonly IAppNotifier _appNotifier;
         private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly ILocalizationSource _localizationSource;
         private readonly IObjectMapper _objectMapper;
+        private readonly IHubContext<JobHub.JobHub> _hubcontext;
 
         public UserManager userManager { get; set; }
+        public long TenantId = 0;
+        public long UserId = 0;
+        public int SuccessRecordsCount = 0;
 
         public ImportChartsOfAccountToExcelJob(
 
@@ -47,8 +55,10 @@ namespace Zinlo.ChartsofAccount
              IAppNotifier appNotifier,
             IBinaryObjectManager binaryObjectManager,
             ILocalizationManager localizationManager,
-            IObjectMapper objectMapper
-            
+            IObjectMapper objectMapper,
+            IImportPathsAppService importPathsAppService,
+            IHubContext<JobHub.JobHub> hubContext
+
             )
         {
             _chartsOfAccontListExcelDataReader = chartsOfAccontListExcelDataReader;
@@ -59,11 +69,16 @@ namespace Zinlo.ChartsofAccount
             _binaryObjectManager = binaryObjectManager;
             _objectMapper = objectMapper;
             _localizationSource = localizationManager.GetSource(ZinloConsts.LocalizationSourceName);
+            _importPathsAppService = importPathsAppService;
+            _hubcontext = hubContext;
         }
 
         [UnitOfWork]
         public override void Execute(ImportChartsOfAccountFromExcelJobArgs args)
         {
+            TenantId = (int)args.TenantId;
+            UserId = args.User.UserId;
+
             using (CurrentUnitOfWork.SetTenantId(args.TenantId))
             {
                 var chartsofaccount = GetAccountsListFromExcelOrNull(args);
@@ -94,53 +109,102 @@ namespace Zinlo.ChartsofAccount
         {
             var invalidAccounts = new List<ChartsOfAccountsExcellImportDto>();
 
-              foreach (var account in accounts)
-              {
-                  if (account.CanBeImported())
-                  {
-                      try
-                      {
-                          AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(account));
-                      }
-                      catch (UserFriendlyException exception)
-                      {
-                        account.Exception = exception.Message;
-                        invalidAccounts.Add(account);
-                      }
-                      catch (Exception exception)
-                      {
-                        account.Exception = exception.ToString();
-                        invalidAccounts.Add(account);
-                      }
-                  }
-                  else
-                  {
-                    invalidAccounts.Add(account);
-                  }
-              }
-            foreach (var item in accounts)
+            foreach (var account in accounts)
+            {
+                if (account.CanBeImported())
+                {
+
+                    account.isValid = true;
+
+
+                    try
+                    {
+                        var result = CheckErrors(account);
+                        var data = CheckReconciliationTypeErrors(result);
+                        if (data.isValid)
+                        {
+                          
+                            if (data.isValid)
+                            {
+                                AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(account));
+                            }
+                            else
+                            {
+                                //account.Exception = "InVlid Data"; // Will decide about this msg 
+                                invalidAccounts.Add(data);
+                            }
+                        }
+                        else
+                        {
+                            invalidAccounts.Add(result);
+                        }
+                       
+                    }
+                    catch (UserFriendlyException exception)
+                    {
+                        //account.Exception = exception.Message;
+                        //invalidAccounts.Add(account);
+                    }
+                    //catch (Exception exception)
+                    //{
+                    //  account.Exception = exception.ToString();
+                    //  invalidAccounts.Add(account);
+                    //}
+                }
+                //else
+                //{
+                //  invalidAccounts.Add(account);
+                //}
+            }
+            List<ChartsOfAccountsExcellImportDto> ValidRows = accounts.Except(invalidAccounts).ToList();
+            SuccessRecordsCount = ValidRows.Count;
+            foreach (var item in ValidRows)
             {
                 AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(item));
-            }           
+            }
             AsyncHelper.RunSync(() => ProcessImportAccountsResultAsync(args, invalidAccounts));
         }
 
         private async Task CreateChartsOfAccountAsync(ChartsOfAccountsExcellImportDto input)
         {
-            var tenantId = CurrentUnitOfWork.GetTenantId();        
-            ChartsofAccount account = new ChartsofAccount();
-            account.TenantId = (int)tenantId;
-            account.AccountName = input.AccountName;
-            account.AccountNumber = input.AccountNumber;
-            account.CreationTime = DateTime.Now.ToUniversalTime();
-            account.Status = (Status)2;
-            account.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
-            account.CreatorUserId = 2;
-            account.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);
-            account.AccountSubTypeId = await _accountSubTypeAppService.GetAccountSubTypeIdByTitle(input.AccountSubType);
-            account.Reconciled = (Reconciled)1;   //GetReconciledValue(input.);
-            account.ReconciliationType = (ReconciliationType)1;
-            await _chartsOfAccountsrepository.InsertAsync(account);                    
+            var tenantId = CurrentUnitOfWork.GetTenantId();
+            var allData = await _chartsOfAccountsrepository.GetAllListAsync();
+            var result = allData.Where(a => a.AccountNumber.ToLower() == input.AccountNumber.ToLower()).FirstOrDefault();
+            if (result != null)
+            {
+                result.TenantId = (int)tenantId;
+                result.AccountName = input.AccountName;
+                result.CreationTime = DateTime.Now.ToUniversalTime();
+                result.Status = (Status)2;
+                result.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
+                result.CreatorUserId = UserId;
+
+                result.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);
+                result.AccountSubTypeId = await _accountSubTypeAppService.GetAccountSubTypeIdByTitle(input.AccountSubType, UserId, TenantId);
+                result.Reconciled = (Reconciled)GetReconciledValue(input.ReconciliationAs);
+                result.ReconciliationType = (ReconciliationType)GetReconcilationTypeValue(input.ReconciliationType);
+
+                await _chartsOfAccountsrepository.UpdateAsync(result);
+            }
+            else
+            {
+                ChartsofAccount account = new ChartsofAccount();
+                account.TenantId = (int)tenantId;
+                account.AccountName = input.AccountName;
+                account.AccountNumber = input.AccountNumber;
+                account.CreationTime = DateTime.Now.ToUniversalTime();
+                account.Status = (Status)2;
+                account.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
+                account.CreatorUserId = UserId;
+
+                account.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);
+                account.AccountSubTypeId = await _accountSubTypeAppService.GetAccountSubTypeIdByTitle(input.AccountSubType, UserId, TenantId);
+                account.Reconciled = (Reconciled)GetReconciledValue(input.ReconciliationAs);
+                account.ReconciliationType = (ReconciliationType)GetReconcilationTypeValue(input.ReconciliationType);
+
+                await _chartsOfAccountsrepository.InsertAsync(account);
+
+            }
         }
 
         private async Task ProcessImportAccountsResultAsync(ImportChartsOfAccountFromExcelJobArgs args, List<ChartsOfAccountsExcellImportDto> invalidAccounts)
@@ -149,12 +213,28 @@ namespace Zinlo.ChartsofAccount
                    args.User,
                    _localizationSource.GetString("AllAccountsSuccessfullyImportedFromExcel"),
                    Abp.Notifications.NotificationSeverity.Success);
-            
+
 
             if (invalidAccounts.Any())
             {
-                 var file = _invalidAccountsExporter.ExportToFile(invalidAccounts);
-                await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
+                var url = _invalidAccountsExporter.ExportToFile(invalidAccounts);
+                ImportPathDto pathDto = new ImportPathDto();
+                pathDto.FilePath = url;
+                pathDto.Type = FileTypes.ChartOfAccounts.ToString();
+                pathDto.TenantId = (int)TenantId;
+                pathDto.CreatorId = UserId;
+                pathDto.FailedRecordsCount = invalidAccounts.Count;
+                pathDto.SuccessRecordsCount = SuccessRecordsCount;
+                await _importPathsAppService.SaveFilePath(pathDto);
+
+                //   await _hubcontext.Clients.All.SendAsync("chartOfAccount", file, "file");
+                //   await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
+
+
+
+                // var filePath = _invalidAccountsExporter.ExportInvalidAccountsUrl(invalidAccounts);
+
+                // await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
             }
             else
             {
@@ -175,21 +255,21 @@ namespace Zinlo.ChartsofAccount
         #region|Helpers|
         public async Task<long> GetUserIdByEmail(string emailAddress)
         {
-          var user = await userManager.FindByEmailAsync(emailAddress);
-            if(user != null)
+            var user = await userManager.FindByEmailAsync(emailAddress);
+            if (user != null)
             {
                 return user.Id;
             }
             else
             {
-                return 3;
+                return 2;
             }
-           
+
         }
 
         public int GetReconciliationTypeValue(string name)
         {
-            if(name.Trim().ToLower() == "itemized")
+            if (name.Trim().ToLower() == "itemized")
             {
                 return 1;
             }
@@ -213,6 +293,19 @@ namespace Zinlo.ChartsofAccount
                 return 3;
             }
         }
+
+        public int GetReconcilationTypeValue(string name)
+        {
+            if (name.Trim().ToLower() == "itemized")
+            {
+                return 1;
+            }
+            else
+            {
+                return 2;
+            }
+        }
+
         public int GetReconciledValue(string name)
         {
             if (name.Trim().ToLower() == "netamount")
@@ -223,12 +316,94 @@ namespace Zinlo.ChartsofAccount
             {
                 return 2;
             }
-            else
+            else if (name.Trim().ToLower() == "accruedAmount")
             {
                 return 3;
             }
+            else
+            {
+                return 0;
+            }
         }
+
+        public ChartsOfAccountsExcellImportDto CheckReconciliationTypeErrors(ChartsOfAccountsExcellImportDto input)
+        {
+            bool result = false;
+            string[] strReconciledArray = { "Netamount", "Beginningamount", "AccruedAmount" };
+            if (!string.IsNullOrEmpty(input.ReconciliationType))
+            {
+                if (input.ReconciliationType.Trim().ToLower() == "amortization")
+                {
+                    result = !Array.Exists(strReconciledArray, E => E == input.ReconciliationAs);
+                }
+            }
+            if (result == true)
+            {
+                input.Exception += _localizationSource.GetString("ReconcilationError");
+                return  input;
+            }
+            else
+            {
+                return  input;
+            }
+        }
+
         #endregion
+        public ChartsOfAccountsExcellImportDto CheckErrors(ChartsOfAccountsExcellImportDto input)
+        {
+
+            bool isAccountName = false;
+            bool isAccountNumber = false;
+            bool isAccountType = false;
+            bool isAssignedUser = false;
+            bool isAccountSubType = false;
+            bool isReconciliationType = false;
+
+            bool isEmail = Regex.IsMatch(input.AssignedUser, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
+            if (isEmail)
+            {
+                var result = userManager.FindByEmailAsync(input.AssignedUser);
+                if (result == null)
+                {
+                    isAssignedUser = true;
+                }
+
+            }
+            if (string.IsNullOrEmpty(input.AccountName))
+            {
+                isAccountName = true;
+            }
+            if (string.IsNullOrEmpty(input.AccountNumber))
+            {
+                isAccountNumber = true;
+            }
+            if (string.IsNullOrEmpty(input.AccountType))
+            {
+                isAccountType = true;
+            }
+            if (string.IsNullOrEmpty(input.AccountSubType))
+            {
+                isAccountSubType = true;
+            }
+            if (string.IsNullOrEmpty(input.ReconciliationType))
+            {
+                isReconciliationType = true;
+            }
+
+            if (isAccountName == true || isAccountNumber == true || isAssignedUser == true
+                || isAccountSubType == true || isReconciliationType == true || isAccountType == true)
+            {
+                input.isValid = false;
+                input.Exception =  _localizationSource.GetString("NullValuesAreNotAllowed");
+                return input;
+            }
+            else
+            {
+                return  input;
+
+            }
+        }
+
     }
 
 }
