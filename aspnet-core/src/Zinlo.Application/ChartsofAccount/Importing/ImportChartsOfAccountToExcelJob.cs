@@ -108,6 +108,7 @@ namespace Zinlo.ChartsofAccount
         private void CreateChartsOfAccounts(ImportChartsOfAccountFromExcelJobArgs args, List<ChartsOfAccountsExcellImportDto> accounts)
         {
             var invalidAccounts = new List<ChartsOfAccountsExcellImportDto>();
+            var validRecords = new List<ChartsOfAccountsExcellImportDto>();
 
             foreach (var account in accounts)
             {
@@ -123,22 +124,32 @@ namespace Zinlo.ChartsofAccount
                         var data = CheckReconciliationTypeErrors(result);
                         if (data.isValid)
                         {
-                          
-                            if (data.isValid)
+                            var finalResult =  CheckAssignee(data);
+                            if(finalResult.isValid)
                             {
-                                AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(account));
+                                validRecords.Add(data);
                             }
                             else
                             {
-                                //account.Exception = "InVlid Data"; // Will decide about this msg 
                                 invalidAccounts.Add(data);
                             }
+
+                            //if (data.isValid)
+                            //{
+                            //    validRecords.Add(account);
+                            //    // AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(account));
+                            //}
+                            //else
+                            //{
+                            //    //account.Exception = "InVlid Data"; // Will decide about this msg 
+                            //    invalidAccounts.Add(data);
+                            //}
                         }
                         else
                         {
                             invalidAccounts.Add(result);
                         }
-                       
+
                     }
                     catch (UserFriendlyException exception)
                     {
@@ -157,8 +168,8 @@ namespace Zinlo.ChartsofAccount
                 //}
             }
             List<ChartsOfAccountsExcellImportDto> ValidRows = accounts.Except(invalidAccounts).ToList();
-            SuccessRecordsCount = ValidRows.Count;
-            foreach (var item in ValidRows)
+            SuccessRecordsCount = validRecords.Count;
+            foreach (var item in validRecords)
             {
                 AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(item));
             }
@@ -256,8 +267,8 @@ namespace Zinlo.ChartsofAccount
         public async Task<long> GetUserIdByEmail(string emailAddress)
         {
             var user = await userManager.FindByEmailAsync(emailAddress);
-           
-                return user.Id;        
+
+            return user.Id;
         }
 
         public int GetReconciliationTypeValue(string name)
@@ -333,14 +344,38 @@ namespace Zinlo.ChartsofAccount
             if (result == true)
             {
                 input.Exception += _localizationSource.GetString("ReconcilationError");
-                return  input;
+                return input;
             }
             else
             {
-                return  input;
+                return input;
             }
         }
+        public ChartsOfAccountsExcellImportDto CheckAssignee(ChartsOfAccountsExcellImportDto input)
+        {
+            bool isEmail = Regex.IsMatch(input.AssignedUser, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
+            if (isEmail)
+            {
+                var result =  userManager.FindByEmailAsync(input.AssignedUser);
+                if (result.Result != null)
+                {
 
+                    return input;
+                }
+                else
+                {
+                    input.isValid = false;
+                    input.Exception += _localizationSource.GetString("AssigneeDoesNotExist");
+                    return input;
+                }
+
+            }
+            else
+            {
+                input.isValid = false;
+                return input;
+            }
+        }
         #endregion
         public ChartsOfAccountsExcellImportDto CheckErrors(ChartsOfAccountsExcellImportDto input)
         {
@@ -348,20 +383,10 @@ namespace Zinlo.ChartsofAccount
             bool isAccountName = false;
             bool isAccountNumber = false;
             bool isAccountType = false;
-            bool isAssignedUser = false;
             bool isAccountSubType = false;
             bool isReconciliationType = false;
 
-            bool isEmail = Regex.IsMatch(input.AssignedUser, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
-            if (isEmail)
-            {
-                var result = userManager.FindByEmailAsync(input.AssignedUser);
-                if (result == null)
-                {
-                    isAssignedUser = true;
-                }
 
-            }
             if (string.IsNullOrEmpty(input.AccountName))
             {
                 isAccountName = true;
@@ -383,16 +408,16 @@ namespace Zinlo.ChartsofAccount
                 isReconciliationType = true;
             }
 
-            if (isAccountName == true || isAccountNumber == true || isAssignedUser == true
+            if (isAccountName == true || isAccountNumber == true
                 || isAccountSubType == true || isReconciliationType == true || isAccountType == true)
             {
                 input.isValid = false;
-                input.Exception =  _localizationSource.GetString("NullValuesAreNotAllowed");
+                input.Exception = _localizationSource.GetString("NullValuesAreNotAllowed");
                 return input;
             }
             else
             {
-                return  input;
+                return input;
 
             }
         }

@@ -45,7 +45,8 @@
     <text name="False">False</text>
     <text name="MinValue">Min</text>
     <text name="MaxValue">Max</text>
-
+    <text name="AssigneeDoesNotExist">Assignee Does Not Exist,</text>
+    
     <text name="HomePage">Home page</text>
     <text name="AboutUs">About us</text>
     <text name="Administration">Administration</text>

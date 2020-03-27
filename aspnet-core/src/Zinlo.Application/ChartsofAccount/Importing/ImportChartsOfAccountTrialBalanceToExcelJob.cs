@@ -103,7 +103,6 @@ namespace Zinlo.ChartsofAccount.Importing
         private void CreateChartsOfAccountsTrialBalance(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args, List<ChartsOfAccountsTrialBalanceExcellImportDto> accounts)
         {
             var invalidAccounts = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
-
             foreach (var account in accounts)
             {
                 if (account.CanBeImported())

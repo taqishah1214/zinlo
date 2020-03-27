@@ -25,6 +25,8 @@ namespace Zinlo.ChartsofAccount
         public double Balance { get; set; }
         public bool Lock { get; set; }
         public Decimal TrialBalance { get; set; }
+      
+
     }
     public enum ReconciliationType
     {
