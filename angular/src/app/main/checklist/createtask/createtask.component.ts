@@ -127,7 +127,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.checklist.endOfMonth = false;
     }
 
-    console.log(this.checklist.dueOn = Number(this.checklist.dueOn));
+    this.checklist.dueOn = Number(this.checklist.dueOn);
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
    
@@ -194,6 +194,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   onChange(val) {
     if (val == 5) {
       this.endOnIsEnabled = false;
+      this.checklist.endsOn=this.checklist.closingMonth
     }
     else {
       this.endOnIsEnabled = true;
@@ -211,9 +212,9 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   }
   handleRadioChange() {
     this.checklist.dayBeforeAfter = false;
+    this.checklist.endOfMonth = true;
     this.daysBeforeAfter = null;
     this.checklist.dueOn = 1;
-    this.checklist.endOfMonth = true;
     this.SelectionMsg = "\xa0";
     this.isChecked = false;
   }

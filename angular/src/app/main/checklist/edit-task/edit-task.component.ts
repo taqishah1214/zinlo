@@ -112,7 +112,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.getTaskForEdit.categoryId = history.state.data.categoryid !== 0 ? history.state.data.categoryid : this.getTaskForEdit.categoryId 
       this.frequencyId = this.getTaskForEdit.frequencyId;
       if (this.getTaskForEdit.frequencyId == 5) {
-        this.endsOnDateValue=null;
         this.endOnIsEnabled = false;
       }
       else {
@@ -198,6 +197,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   OnFrequencyChange(val) {
     if (val == 5) {
       this.endOnIsEnabled = false;
+      this.endsOnDateValue=this.closingMonthValue;
     }
     else {
       this.endOnIsEnabled = true;
@@ -245,7 +245,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 
   handleRadioChange() {
-    this.getTaskForEdit.dayBeforeAfter = false;
     this.getTaskForEdit.dayBeforeAfter = null;
     this.getTaskForEdit.dueOn= 1;
     this.getTaskForEdit.endOfMonth=true;
@@ -257,11 +256,11 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.getTaskForEdit.endOfMonth=false;
     if (valu == "true") {
       this.daysBeforeAfter = "Days Before";
-      this.checklist.dayBeforeAfter = true
+      this.getTaskForEdit.dayBeforeAfter = true
     }
     else if (valu == "false") {
       this.daysBeforeAfter = "Days After";
-      this.checklist.dayBeforeAfter = false
+      this.getTaskForEdit.dayBeforeAfter = false
 
     }
     
@@ -285,7 +284,10 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.noOfMonths = this.getTaskForEdit.noOfMonths;
     this.checklist.taskName = this.getTaskForEdit.taskName;
     this.checklist.instruction = this.getTaskForEdit.instruction;
-    this.checklist.dayBeforeAfter = this.getTaskForEdit.dayBeforeAfter;
+    if (this.getTaskForEdit.endOfMonth) 
+    {
+      this.checklist.dayBeforeAfter = false;
+    }
     this.checklist.groupId = this.getTaskForEdit.groupId;
     if (this.selectedUserId.selectedUserId != undefined)
     {

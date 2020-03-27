@@ -170,7 +170,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <label class="kt-radio kt-radio--single kt-radio--success">
-                                                        <input type="radio" [(checked)]="isChecked" name="dueOn">
+                                                        <input type="radio" [(checked)]="isChecked" (change)="onDayChange()" name="dueOn">
                                                         <span></span>
                                                     </label>
                                                 </span>
@@ -232,8 +232,7 @@
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
                                             <input type="radio" [(checked)]="getTaskForEdit.endOfMonth" name="endOfMonth"
-                                                (click)="handleRadioChange()">End of
-                                            month
+                                                (click)="handleRadioChange()">{{"Endofmonth" | localize}}
                                             <span></span>
                                         </label>
                                     </div>
