@@ -21,7 +21,7 @@
     <text name="MonthRange">Month range</text>
     <text name="Management">Management</text>
     <text name="ThisMonthIsAlreadyDefined">This month is already defined.</text>
-
+    
     <text name="Tests">Tests</text>
     <text name="CreateNew">Create new</text>
     <text name="Test">Test</text>
@@ -1020,6 +1020,7 @@
     <text name="AddNew">Add new</text>
     <text name="CreateTask">Create Task</text>
     <text name="DuplicateTask">Duplicate Task</text>
+    <text name="Duplicate">Duplicate</text>
     <text name="TaskName">Task Name</text>
     <text name="Assignee">Assignee</text>
     <text name="Comments">Comments</text>
@@ -1041,6 +1042,8 @@
     <!--Category-->
     <text name="EditCategory">Edit category</text>
     <text name="CreateCategory">Create category</text>
+    <text name="EditTask">Edit Task</text>
+    <text name="TaskDetails">Task Details</text>
     
     <text name="AllAccountsSuccessfullyImportedFromExcel">Accounts import process has been completed successfully. All Accounts in file are imported.</text>
     <text name="FileCantBeConvertedToAccountsList">Accounts import process has failed. File is invalid.</text>
@@ -1058,10 +1061,16 @@
     <text name="NullValuesAreNotAllowed">Null values are not allowed.</text>
     <text name="ReconcilationError">Reconcilation Error.</text>
     <text name="DueDate">Due date</text>
+    <text name="Checklist">Checklist</text>
 
 
+    <!--status-->
 
-    
+    <text name="NotStarted">Not Started</text>
+    <text name="InProcess">In Process</text>
+    <text name="OnHold">On Hold</text>
+    <text name="Completed">Completed</text>
+    <text name="DueBy">Due By</text>
 
   </texts>
 </localizationDictionary>

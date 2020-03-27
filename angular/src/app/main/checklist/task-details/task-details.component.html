@@ -5,13 +5,13 @@
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h3 class="text-navyblue kt-portlet__head-title">
-                            Task Details
+                            {{"TaskDetails" | localize}}
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <a href="javascript: void(0);" (click)="BackToTaskList()">
                             <i class="la la-arrow-left"></i>
-                            Back
+                            {{"Back" | localize}}
                         </a>
                     </div>
                 </div>
@@ -26,11 +26,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    Category <span
+                                    {{"Category" | localize}} <span
                                         class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.categoryName}}</span>
-                                    Closing Month <span
+                                    {{"ClosingMonth" | localize}} <span
                                         class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth | date:'MMMM, yyyy'}}</span>
-                                    Due By <span
+                                    {{"DueBy" | localize}} <span
                                         class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.dueDate | date:'d MMMM, yyyy'}}</span>
                                 </div>
 
@@ -54,8 +54,8 @@
                             <div class="row">
                                 <div class="col-5">
                                     <select class="form-control input-medium">
-                                        <option>Comments</option>
-                                        <option>History</option>
+                                        <option>{{"Comments" | localize}}</option>
+                                        <option>{{"History" | localize}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                 </div>
                             </div>
                             <div [ngClass]="{'disabled':!monthStatus}"class="form-group giveCommentView" *ngIf="commantBox">
-                                <label>Comments</label>
+                                <label>{{"Comments" | localize}}</label>
                                 <div (click)="commentClick()">
                                     <div class="kt-user-card-v2">
                                         <div class="kt-user-card-v2__pic">
@@ -109,13 +109,13 @@
                             </div>
 
                             <div class="form-group "  *ngIf="!commantBox">
-                                <label>Comments</label>
+                                <label>{{"Comments" | localize}}</label>
                                 <p-editor [disabled]="!taskDetailObject.monthStatus" [(ngModel)]="comment.body" name="HtmlEditorInput"
                                     [style]="{'height':'150px'}">
                                 </p-editor>
                                 <div class="btnMargin" >
-                                    <button class="btn btn-brand" (click)="onComment()">Comment</button>
-                                    <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                                    <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                    <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
                                 </div>
                                
                             </div>
@@ -147,7 +147,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div [ngClass]="{'disabled':!monthStatus}" class="drag_drop_box">
-                                        <label>Attachments</label>
+                                        <label>{{"Attachments" | localize}}</label>
                                         <ng-uppy  [config]="settings" (uploadResult)="fileUploadedResponse($event)">
                                         </ng-uppy>
                                         <div *ngFor="let item of attachments" class="attachments_section">
