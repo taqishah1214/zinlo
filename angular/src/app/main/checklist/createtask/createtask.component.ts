@@ -81,6 +81,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.closingMonthModalBox = false;
     this.enableValue = false;
     this.isChecked = true;
+    this.checklist.dueOn = 1;
     this.checklist.assigneeId = 0;
     if(history.state.data.createOrDuplicate != undefined){
       this.createOrDuplicate = history.state.data.createOrDuplicate;
@@ -126,7 +127,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.checklist.endOfMonth = false;
     }
 
-    this.checklist.dueOn = Number(this.checklist.dueOn);
+    console.log(this.checklist.dueOn = Number(this.checklist.dueOn));
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
    
