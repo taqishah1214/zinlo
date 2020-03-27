@@ -3,6 +3,8 @@ import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy, CreateOrEditCh
 import { Router } from '@angular/router';
 import { UserListComponentComponent } from '@app/main/checklist/user-list-component/user-list-component.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-create-edit-accounts',
@@ -10,7 +12,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
   styleUrls: ['./create-edit-accounts.component.css']
 })
 export class CreateEditAccountsComponent extends AppComponentBase implements OnInit  {
-
+  saving = false;
   accountSubTypeName: any =  "Select Account Sub Type";
   accountSubTypeList: any;
   accountType: any;
@@ -226,19 +228,23 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
 
   createAccount():void {
     this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
-    this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
+    this.saving = true;
+    this._chartOfAccountService.createOrEdit(this.accountDto).pipe(finalize(() => { this.saving = false; }))
+    .subscribe(response => {
       this.notify.success(this.l('Account Successfully Created.'));
       this.redirectToAccountsList();
     }) 
   }
 
  
-  updateAccount() : void {   
+  updateAccount() : void { 
+    this.saving = true;  
     if (this.selectedUserId.selectedUserId != undefined)
     {
       this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
     }
-    this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
+    this._chartOfAccountService.createOrEdit(this.accountDto).pipe(finalize(() => { this.saving = false; }))
+    .subscribe(response => {
       this.notify.success(this.l('Account Successfully Updated.'));
       this.redirectToAccountsList();
     })

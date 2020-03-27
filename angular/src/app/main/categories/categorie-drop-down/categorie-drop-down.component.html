@@ -2,7 +2,7 @@
         <label>Category</label>
         <button type="button"  data-toggle="dropdown" class="btn btn-secondary dropdown-toggle"
             aria-expanded="false">{{categoryName}}</button>
-        <div class="dropdown-menu" [(ngModel)]="categoryName" ngDefaultControl>
+        <div class="dropdown-menu" name="categoryName" [(ngModel)]="categoryName" ngDefaultControl>
             <a class="dropdown-item" *ngFor="let item of categoriesList"
                 (click)="categoryClick(item.value,item.name)">
                 {{item.name}}</a>

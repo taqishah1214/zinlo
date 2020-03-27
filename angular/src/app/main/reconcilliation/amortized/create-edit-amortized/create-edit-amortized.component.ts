@@ -5,6 +5,8 @@ import { UserListComponentComponent } from '@app/main/checklist/user-list-compon
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UppyConfig } from 'uppy-angular';
 import { AppConsts } from '@shared/AppConsts';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-create-edit-amortized',
@@ -25,6 +27,8 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   accountName : any;
   accountNo : any;
   attachments: any;
+  saving = false;  
+
   
 
 
@@ -133,7 +137,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
 
 
   updateAmortizedItem() : void  { 
-
+    this.saving = true;  
     if (this.attachmentPaths != null) {
       this.newAttachementPath = [];
       this.attachmentPaths.forEach(element => {
@@ -142,7 +146,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
 
       this.amortizationDto.attachmentsPath = this.newAttachementPath;
     }
-    this._reconcialtionService.createOrEdit(this.amortizationDto).subscribe(response => {
+    this._reconcialtionService.createOrEdit(this.amortizationDto).pipe(finalize(() => { this.saving = false; })).subscribe(response => {
       this.notify.success(this.l('Amortized Item Successfully Updated.'));
       this.redirectToAmortizedList();
     }) 
@@ -150,7 +154,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
 
 
   createAmortizedItem():void {
-
+    this.saving = true;  
     if (this.attachmentPaths != null) {
       this.newAttachementPath = [];
       this.attachmentPaths.forEach(element => {
@@ -160,7 +164,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
       this.amortizationDto.attachmentsPath = this.newAttachementPath;
     }
 
-    this._reconcialtionService.createOrEdit(this.amortizationDto).subscribe(response => {
+    this._reconcialtionService.createOrEdit(this.amortizationDto).pipe(finalize(() => { this.saving = false; })).subscribe(response => {
       this.notify.success(this.l('Amortized Item  Successfully Created.'));
       this.redirectToAmortizedList();
     }) 

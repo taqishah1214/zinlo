@@ -15,6 +15,7 @@
                         </a>
                     </div>
                 </div>
+                <form #taskForm="ngForm" id="taskform" >
                 <div class="kt-portlet__body">
                     <div class="row">
                         <div class="col-md-7">
@@ -42,7 +43,7 @@
                                             <form class="">
                                                 <input disabled [(ngModel)]="closingMonthValue" class="form-control" name="date"
                                                     bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                                    (onShown)="onOpenCalendar($event)">
+                                                    autocomplete="off" (onShown)="onOpenCalendar($event)">
                                             </form>
                                         </div>
                                     </div>
@@ -53,7 +54,7 @@
                                     <div class="form-group">
                                         <label for="TaskName"> Task Name</label>
                                         <input type="text" class="form-control  bsDatepicker"
-                                            [(ngModel)]="getTaskForEdit.taskName">
+                                        autocomplete="off" [(ngModel)]="getTaskForEdit.taskName" name="taskName">
                                     </div>
                                 </div>
                                 <div [ngClass]="{'disabled':!monthStatus}" class="col-md-6">
@@ -156,7 +157,8 @@
                                         <label>Frequency</label>
                                         <select class=" border border-default bg-white form-control input-medium"
                                             (change)="OnFrequencyChange($event.target.value)"
-                                            [(ngModel)]="getTaskForEdit.frequencyId">
+                                            [(ngModel)]="getTaskForEdit.frequencyId" name = "frequencyId" >
+                                            
                                             <option value="5">None</option>
                                             <option value="1">Monthly</option>
                                             <option value="2">Quarterly</option>
@@ -175,7 +177,7 @@
                                                     </label>
                                                 </span>
                                                 <select class="border border-default bg-white form-control input-medium"
-                                                    (change)="onDayChange()" [(ngModel)]="getTaskForEdit.dueOn">
+                                                    (change)="onDayChange()" name="dueOn" [(ngModel)]="getTaskForEdit.dueOn">
                                                     <option *ngFor="let item of days;" [value]="item.value">
                                                         {{item.name}}
                                                     </option>
@@ -198,13 +200,14 @@
                                         <label>No of Months</label>
                                         <input type="text" name="noOfMonths" [disabled]="enableValue == false"
                                             class="form-control bsDatepicker" [(ngModel)]="getTaskForEdit.noOfMonths"
-                                            (onShown)="onOpenCalendar($event)">
+                                            autocomplete="off" (onShown)="onOpenCalendar($event)">
                                     </div>
                                     <label>&nbsp;</label>
                                     <div class="form-group">
                                         <select class="border border-default bg-white form-control input-medium"
                                             (change)="onDaysClick($event.target.value)"
-                                            [(ngModel)]="getTaskForEdit.dayBeforeAfter">
+                                            [(ngModel)]="getTaskForEdit.dayBeforeAfter"
+                                            name="dayBeforeAfter">
                                             <option value=null disabled hidden>None</option>
                                             <option value=true>{{"DaysBefore" | localize}}</option>
                                             <option value=false>{{"DaysAfter" | localize}}</option>
@@ -259,12 +262,13 @@
                     <div class="kt-portlet__head mb-2">
                     </div>
                     <div class="">
-                        <button class="btn btn-brand" (click)="saveTaskChanges()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                        <button class="btn btn-brand" (click)="saveTaskChanges()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid">
                             <i class="fa fa-save"></i>
                             <span>{{"Update" | localize}}</span>
                         </button>
                     </div>
                 </div>
+            </form>
             </div>
         </div>
     </div>

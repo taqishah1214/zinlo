@@ -5,6 +5,8 @@ import { UserListComponentComponent } from '@app/main/checklist/user-list-compon
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UppyConfig } from 'uppy-angular';
 import { AppConsts } from '@shared/AppConsts';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-create-edit-itemized',
@@ -25,6 +27,8 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   recordId: number;
   newAttachementPath: string[] = [];
   attachments: any;
+  saving = false;
+
 
   constructor(private _itemizationServiceProxy : ItemizationServiceProxy,
     private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector) {
@@ -70,6 +74,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     container.setViewMode('month');
   }
   SaveItem(){
+    this.saving = true;  
     if (this.attachmentPaths != null) {
       this.newAttachementPath = [];
       this.attachmentPaths.forEach(element => {
@@ -79,7 +84,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   this.itemizedDto.attachmentsPath = this.newAttachementPath;
 }
     this.itemizedDto.chartsofAccountId = this.accountId;
-    this._itemizationServiceProxy.createOrEdit(this.itemizedDto).subscribe(response => {
+    this._itemizationServiceProxy.createOrEdit(this.itemizedDto).pipe(finalize(() => { this.saving = false; })).subscribe(response => {
       this.notify.success(this.l('Item Successfully Created.'));
       this.redirectToItemsList();
     })

@@ -918,25 +918,20 @@
         }
         .assignee-cell{
             display: none;
-            cursor: pointer;
         }
         .assignee-cell-item{
             display: flex;
         }
         .accountNo-cell {
             width: 120px;
-            cursor: pointer;
         }
-        .accountName-cell {
-            cursor: pointer;
-        }
+        
         .toggle-btn-cell .taggle-btn{
             display: table-cell;
             cursor: pointer;
         }
         .category-selector{
             width: 150px;
-            cursor: pointer;
         }
         .category-selector .dropdown-menu{
             width: 150px;
@@ -1070,7 +1065,6 @@
     }
     .accountNo-cell{
         width: 160px;
-        cursor: pointer;
     }
     .accountNo-cell span {
         width: 100%;
@@ -1080,19 +1074,15 @@
     }
     .accountSubtype-cell {
         width: 200px;
-        cursor: pointer;
     }
     .reconciliation-cell{
-        cursor: pointer;
         width: 220px;
     }
     .accountType-cell{
         width: 170px;
-        cursor: pointer;
     }
     .assignee-cell {
         width:260px;
-        cursor: pointer;
     } 
     
     .action-cell  {
