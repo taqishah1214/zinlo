@@ -30,7 +30,7 @@ export class ErrorLogComponent extends AppComponentBase {
     ngOnInit() {
     }
 
-    getAllExceptions(event?: LazyLoadEvent) {
+    getAllErrorLog(event?: LazyLoadEvent) {
         if (this.primengTableHelper.shouldResetPaging(event)) {
             this.paginator.changePage(0);
             return;

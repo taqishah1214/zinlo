@@ -25,7 +25,7 @@
                         <!--<Primeng-TurboTable-Start>-->
                         <div class="categories-table primeng-datatable-container"
                             [busyIf]="primengTableHelper.isLoading">
-                            <p-table #dataTable (onLazyLoad)="getAllExceptions($event)"
+                            <p-table #dataTable (onLazyLoad)="getAllErrorLog($event)"
                                 [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [scrollable]="true" ScrollWidth="100%"
@@ -78,7 +78,7 @@
                             <div class="primeng-paging-container">
                                 <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
                                              #paginator
-                                             (onPageChange)="getTimeManagements($event)"
+                                             (onPageChange)="getAllErrorLog($event)"
                                              [totalRecords]="primengTableHelper.totalRecordsCount"
                                              [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
                                 </p-paginator>
