@@ -1,5 +1,5 @@
    <div class="form-group category-selector">
-        <label>Category</label>
+        <label>{{"Category" | localize}}</label>
         <button type="button"  data-toggle="dropdown" class="btn btn-secondary dropdown-toggle"
             aria-expanded="false">{{categoryName}}</button>
         <div class="dropdown-menu" [(ngModel)]="categoryName" ngDefaultControl>
@@ -7,7 +7,8 @@
                 (click)="categoryClick(item.value,item.name)">
                 {{item.name}}</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" (click)="routeToAddNewCategory()">+AddNew</a>
+            <a class="dropdown-item" (click)="routeToAddNewCategory()"><i class="fa fa-plus"></i>
+                {{"AddNew" | localize}}</a>
         </div>
     </div>
   

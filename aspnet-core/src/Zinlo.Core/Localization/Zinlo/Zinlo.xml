@@ -24,16 +24,23 @@
     
     <text name="Tests">Tests</text>
     <text name="CreateNew">Create new</text>
+    <text name="Create">Create</text>
+    <text name="Update">Update</text>
     <text name="Test">Test</text>
     <text name="TestsHeaderInfo">Tests header info</text>
     <text name="CreateNewTest">Create new test</text>
     <text name="EditTest">Edit test</text>
     <text name="DeleteTest">Delete test</text>
     <text name="Categories">Categories</text>
+    <text name="AllCategories">All Categories</text>
     <text name="Exceptions">Exceptions</text>
     <text name="Category">Category</text>
     <text name="Description">Description</text>
     <text name="Title">Title</text>
+    <text name="CreatedOn">Created On</text>
+    <text name="Created">Created By</text>
+    
+    <text name="CategorywithsameNamealreadyexist.">Category with same Name already exist.</text>
     <text name="CategoriesHeaderInfo">Manage categories.</text>
     <text name="ExceptionsHeaderInfo">Manage Exceptions.</text>
     <text name="CreateNewCategory">Create new category</text>
@@ -1069,8 +1076,31 @@
     <text name="NotStarted">Not Started</text>
     <text name="InProcess">In Process</text>
     <text name="OnHold">On Hold</text>
-    <text name="Completed">Completed</text>
+    <text name="Completed">Completed</text>AllStatuses
+    <text name="AllStatuses">All Statuses</text>
     <text name="DueBy">Due By</text>
+    
+    
+    <!--Account-->
+    <text name="Create a New Account">Create a New Account</text>
+    <text name="Edit Account">Edit Account</text>
+    <text name="Account Name">Account Name</text>
+    <text name="Account No">Account No</text>
+    <text name="Account Number is already exist.">Account Number is already exist.</text>
+    <text name="Account Type">Account Type</text>
+    <text name="Account Sub-Type">Account Sub-Type</text>
+    <text name="Reconcillation Type">Reconcillation Type</text>
+    <text name="Charts of Account">Charts of Account</text>
+    <text name="Download Trial Balance">Download Trial Balance</text>
+    <text name="Download Chart of Accounts">Download Chart of Accounts</text>
+    <text name="Upload Trial Balance">Upload Trial Balance</text>
+    <text name="Upload Chart of Accounts">Upload Chart of Accounts</text>
+    <text name="Reconciliation">Reconciliation</text>
+    <text name="Trial Balance Format">Trial Balance Format</text>
+    <text name="Account Code">Account Code</text>
+    <text name="Account Balance">Account Balance</text>
+    <text name="Charts Of Account Format">Charts Of Account Format</text>
+    <text name="Account Sub type">Account Sub Type</text>
 
   </texts>
 </localizationDictionary>

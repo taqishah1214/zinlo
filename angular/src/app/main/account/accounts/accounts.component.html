@@ -3,7 +3,7 @@
         <div class="kt-subheader__main">
             <h3 class="kt-subheader__title">
                 <img src="./assets/media/ClosingCheckList/chartofaccount.svg" alt="clipboard">
-                <span class="headSpace" > Charts of Account</span>
+                <span class="headSpace" > {{"Charts of Account" | localize}}</span>
             </h3>
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
             <span class="kt-subheader__desc">
@@ -30,11 +30,11 @@
                             <div class="record-card-header-bottom-inner1">
                                 <button class="btn btn-images" data-toggle="modal" data-target="#kt_modal_1">
                                     <img src="../../../../assets/img/download.png">
-                                    Download
+                                    {{"Download" | localize}}
                                 </button>
                                 <button class="btn btn-images" data-toggle="modal" data-target="#kt_modal_2">
                                     <img src="../../../../assets/img/upload.png">
-                                    Upload
+                                    {{"Upload" | localize}}
                                 </button>
                             </div>
                             <!-- Modal For Download -->
@@ -48,17 +48,17 @@
                                                     <img src="../../../../assets/img/download.png">
 
 
-                                                    <p>Download Trial Balance</p>
+                                                    <p>{{"Download Trial Balance" |localize}}</p>
                                                 </div>
                                                 <div class="col-md-6 text-center" (click)="downloadExcelFile()">
                                                     <img src="../../../../assets/img/download.png">
-                                                    <p>Download Chart of Accounts</p>
+                                                    <p>{{"Download Chart of Accounts" | localize}}</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Cancel</button>
+                                                data-dismiss="modal">{{"Cancel" | localize}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -78,8 +78,8 @@
                                         <div class="modal-body">
                                             <div class="drag_drop_box uppy-modal-box1">
 
-                                                <p>Upload Trial Balance</p>
-                                                <p>Upload Chart of Accounts</p>
+                                                <p>{{"Upload Trial Balance" | localize}}</p>
+                                                <p>{{"Upload Chart of Accounts" | localize}}</p>
                                                 <ng-uppy [config]="settings" 
                                                     (uploadResult)="fileUploadedResponseTrialBalance($event)">
                                                 </ng-uppy>
@@ -92,41 +92,41 @@
 
                                             <div class="row modal-bottom-record">
                                                 <div class="col-md-6">
-                                                    <p>Trial Balance Format </p>
+                                                    <p>{{"Trial Balance Format" | localize}} </p>
                                                     <div class="inner-col-record border border-default">
 
                                                         <div class="row">
                                                             <div class="modal-bottom-row-col">
-                                                                <p>Account Code</p>
+                                                                <p>{{"Account Code" | localize}}</p>
                                                             </div>
                                                             <div class="modal-bottom-row-col">
-                                                                <p>Account Name</p>
+                                                                <p>{{"Account Name" | localize}}</p>
                                                             </div>
                                                             <div class="modal-bottom-row-col">
-                                                                <p>Account Balance</p>
+                                                                <p>{{"Account Balance" | localize}}</p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <p>Charts Of Account Format </p>
+                                                    <p>{{"Charts Of Account Format" | localize}} </p>
                                                     <div class="inner-col-record border border-default">
 
                                                         <div class="row">
                                                             <div class="modal-bottom-row-col">
-                                                                <p>Account Code</p>
+                                                                <p>{{"Account Code" | localize}}</p>
                                                             </div>
                                                             <div class="modal-bottom-row-col">
-                                                                <p>Account Name</p>
+                                                                <p>{{"Account Name" | localize}}</p>
                                                             </div>
                                                             <div class="modal-bottom-row-col">
-                                                                <p>Account Balance</p>
+                                                                <p>{{"Account Balance" | localize}}</p>
                                                             </div>
                                                             <div class="modal-bottom-row-col">
-                                                                <p>Account Name</p>
+                                                                <p>{{"Account Name" | localize}}</p>
                                                             </div>
                                                             <div class="modal-bottom-row-col">
-                                                                <p>Account Balance</p>
+                                                                <p>{{"Account Balance" | localize}}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -138,8 +138,8 @@
 
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" (click)="SaveChanges()" >Save changes</button>
+                                                data-dismiss="modal">{{"Close" | localize}}</button>
+                                            <button type="button" class="btn btn-primary" (click)="SaveChanges()" >{{"Save changes" | localize}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -226,28 +226,28 @@
                                     <ng-template pTemplate="header">
                                         <tr class="task-table-inner">
                                             <th class="accountNo-cell" scope="col" pSortableColumn="AccountNumber">
-                                                Account No
+                                                {{"Account No" |localize}}
                                                 <p-sortIcon field="AccountNumber"></p-sortIcon>
                                             </th>
                                             <th class="accountName-cell" scope="col">
-                                                Account Name
+                                                {{"Account Name" | localize}}
                                             </th>
                                             <th class="accountType-cell" scope="col" pSortableColumn="AccountType">
-                                                Account Type
+                                                {{"Account Type" | localize}}
                                                 <p-sortIcon field="AccountType"></p-sortIcon>
                                             </th>
                                             <th class="accountSubtype-cell" scope="col">
-                                                Account Sub type
+                                                {{"Account Sub type" | localize}}
                                             </th>
                                             <th class="reconciliation-cell" scope="col">
-                                                Reconciliation Type
+                                                {{"Reconciliation Type" | localize}}
                                             </th>
                                             <th class="assignee-cell" scope="col" pSortableColumn="AssigneeId">
-                                                Assignee
+                                                {{"Assignee" | localize}}
                                                 <p-sortIcon field="AssigneeId"></p-sortIcon>
                                             </th>
                                             <th class="action-cell" scope="col">
-                                                Action
+                                                {{"Action" | localize}}
                                             </th>
 
                                             <th class="cell-none">
@@ -327,19 +327,19 @@
                                             <ul>
                                                 <li class="accountSubtype-cell collapsable-cell">
 
-                                                    <div class="thead-box"><b>Account Sub Type : </b></div>
+                                                    <div class="thead-box"><b>{{"Account Sub Type" | localize}} : </b></div>
                                                     <div class="tdata-box">
                                                         <span class="">{{item.accountSubType}}</span>
                                                     </div>
                                                 </li>
                                                 <li class="reconciliation-cell collapsable-cell">
-                                                    <div class="thead-box"><b>Reconciliation : </b></div>
+                                                    <div class="thead-box"><b>{{"Reconciliation" | localize}} : </b></div>
                                                     <div class="tdata-box">
                                                         <span class="">{{item.reconciliationType}}</span>
                                                     </div>
                                                 </li>
                                                 <li  class="assignee-cell collapsable-cell kt-user-card-v2">
-                                                    <div class="thead-box"><b>Assignee : </b></div>
+                                                    <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
                                                     <div *ngIf="item.id != rowid"
                                                         (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
@@ -362,7 +362,7 @@
                                                     </div>
                                                 </li>
                                                 <li  class="action-cell-item collapsable-cell">
-                                                    <div class="thead-box"><b>Action : </b></div>
+                                                    <div class="thead-box"><b>{{"Action" | localize}} : </b></div>
                                                     <div class="tdata-box">
                                                         <div class="btn-group">
                                                             <a class="btn"

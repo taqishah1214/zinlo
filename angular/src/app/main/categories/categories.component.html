@@ -57,23 +57,23 @@
                                         </th>
 
                                         <th>
-                                            Description
+                                            {{"Description" | localize}}
 
                                         </th>
                                         <th pSortableColumn="CreationTime">
-                                            Created On
+                                            {{"CreatedOn" | localize}}
                                             <p-sortIcon field="CreationTime"></p-sortIcon>
                                         </th>
 
                                         <th pSortableColumn="CreatorUserId">
-                                            Created By
+                                            {{"CreatedBy" | localize}}
                                             <p-sortIcon field="CreatorUserId"></p-sortIcon>
                                         </th>
 
 
                                         <th
                                             [hidden]="!(['Pages.Categories.Edit', 'Pages.Categories.Delete'] | permissionAny)">
-                                            Actions</th>
+                                            {{"Actions" | localize}}</th>
                                     </tr>
 
 
