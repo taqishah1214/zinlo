@@ -3658,118 +3658,6 @@ export class ChartsofAccountServiceProxy {
         }
         return _observableOf<boolean>(<any>null);
     }
-
-    /**
-     * @param value (optional) 
-     * @return Success
-     */
-    getReconcilationType(value: number | undefined): Observable<string> {
-        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetReconcilationType?";
-        if (value === null)
-            throw new Error("The parameter 'value' cannot be null.");
-        else if (value !== undefined)
-            url_ += "value=" + encodeURIComponent("" + value) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetReconcilationType(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetReconcilationType(<any>response_);
-                } catch (e) {
-                    return <Observable<string>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<string>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetReconcilationType(response: HttpResponseBase): Observable<string> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<string>(<any>null);
-    }
-
-    /**
-     * @param value (optional) 
-     * @return Success
-     */
-    getReconcilationAsValue(value: number | undefined): Observable<string> {
-        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetReconcilationAsValue?";
-        if (value === null)
-            throw new Error("The parameter 'value' cannot be null.");
-        else if (value !== undefined)
-            url_ += "value=" + encodeURIComponent("" + value) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetReconcilationAsValue(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetReconcilationAsValue(<any>response_);
-                } catch (e) {
-                    return <Observable<string>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<string>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetReconcilationAsValue(response: HttpResponseBase): Observable<string> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<string>(<any>null);
-    }
 }
 
 @Injectable()
@@ -6454,7 +6342,7 @@ export class EditionServiceProxy {
 }
 
 @Injectable()
-export class ErrorLogServiceProxy {
+export class ExceptionLoggerServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -6471,8 +6359,8 @@ export class ErrorLogServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfErrorLogForViewDto> {
-        let url_ = this.baseUrl + "/api/services/app/ErrorLog/GetAll?";
+    getAll(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfExceptionLoggerForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/ExceptionLogger/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
         else if (filter !== undefined)
@@ -6506,14 +6394,14 @@ export class ErrorLogServiceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<PagedResultDtoOfErrorLogForViewDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfExceptionLoggerForViewDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PagedResultDtoOfErrorLogForViewDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfExceptionLoggerForViewDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfErrorLogForViewDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfExceptionLoggerForViewDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -6524,7 +6412,7 @@ export class ErrorLogServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfErrorLogForViewDto.fromJS(resultData200);
+            result200 = PagedResultDtoOfExceptionLoggerForViewDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6532,7 +6420,7 @@ export class ErrorLogServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PagedResultDtoOfErrorLogForViewDto>(<any>null);
+        return _observableOf<PagedResultDtoOfExceptionLoggerForViewDto>(<any>null);
     }
 
     /**
@@ -6540,11 +6428,11 @@ export class ErrorLogServiceProxy {
      * @return Success
      */
     rollBackTrialBalance(id: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/ErrorLog/RollBackTrialBalance?";
+        let url_ = this.baseUrl + "/api/services/app/ExceptionLogger/RollBackTrialBalance?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -20679,7 +20567,7 @@ export interface IMoveTenantsToAnotherEditionDto {
     targetEditionId: number;
 }
 
-export class ErrorLogForViewDto implements IErrorLogForViewDto {
+export class ExceptionLoggerForViewDto implements IExceptionLoggerForViewDto {
     id!: number;
     type!: string | undefined;
     records!: string | undefined;
@@ -20688,7 +20576,7 @@ export class ErrorLogForViewDto implements IErrorLogForViewDto {
     creationTime!: moment.Moment;
     isRollBacked!: boolean;
 
-    constructor(data?: IErrorLogForViewDto) {
+    constructor(data?: IExceptionLoggerForViewDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -20709,9 +20597,9 @@ export class ErrorLogForViewDto implements IErrorLogForViewDto {
         }
     }
 
-    static fromJS(data: any): ErrorLogForViewDto {
+    static fromJS(data: any): ExceptionLoggerForViewDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ErrorLogForViewDto();
+        let result = new ExceptionLoggerForViewDto();
         result.init(data);
         return result;
     }
@@ -20729,7 +20617,7 @@ export class ErrorLogForViewDto implements IErrorLogForViewDto {
     }
 }
 
-export interface IErrorLogForViewDto {
+export interface IExceptionLoggerForViewDto {
     id: number;
     type: string | undefined;
     records: string | undefined;
@@ -20739,11 +20627,11 @@ export interface IErrorLogForViewDto {
     isRollBacked: boolean;
 }
 
-export class PagedResultDtoOfErrorLogForViewDto implements IPagedResultDtoOfErrorLogForViewDto {
+export class PagedResultDtoOfExceptionLoggerForViewDto implements IPagedResultDtoOfExceptionLoggerForViewDto {
     totalCount!: number;
-    items!: ErrorLogForViewDto[] | undefined;
+    items!: ExceptionLoggerForViewDto[] | undefined;
 
-    constructor(data?: IPagedResultDtoOfErrorLogForViewDto) {
+    constructor(data?: IPagedResultDtoOfExceptionLoggerForViewDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -20758,14 +20646,14 @@ export class PagedResultDtoOfErrorLogForViewDto implements IPagedResultDtoOfErro
             if (Array.isArray(data["items"])) {
                 this.items = [] as any;
                 for (let item of data["items"])
-                    this.items!.push(ErrorLogForViewDto.fromJS(item));
+                    this.items!.push(ExceptionLoggerForViewDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): PagedResultDtoOfErrorLogForViewDto {
+    static fromJS(data: any): PagedResultDtoOfExceptionLoggerForViewDto {
         data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfErrorLogForViewDto();
+        let result = new PagedResultDtoOfExceptionLoggerForViewDto();
         result.init(data);
         return result;
     }
@@ -20782,9 +20670,9 @@ export class PagedResultDtoOfErrorLogForViewDto implements IPagedResultDtoOfErro
     }
 }
 
-export interface IPagedResultDtoOfErrorLogForViewDto {
+export interface IPagedResultDtoOfExceptionLoggerForViewDto {
     totalCount: number;
-    items: ErrorLogForViewDto[] | undefined;
+    items: ExceptionLoggerForViewDto[] | undefined;
 }
 
 export class CreateFriendshipRequestInput implements ICreateFriendshipRequestInput {

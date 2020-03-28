@@ -49,7 +49,8 @@ export class ErrorLogComponent extends AppComponentBase {
             this.exceptionsList.array.forEach(element => {
               element.filePath = AppConsts.remoteServiceBaseUrl + element.filePath;
             });
-         
+            this.primengTableHelper.records = [];
+            this.primengTableHelper.records = this.exceptionsList;
         });
     }
     downloadFile(path){

@@ -74,7 +74,7 @@ namespace Zinlo.ChartsofAccount.Importing
                     return;
                 }
 
-                CreateChartsOfAccountsTrialBalance(args, chartsofaccount);
+                CreateChartsOfAccountsTrialBalance(args, chartsofaccount);              
             }
 
         }
@@ -84,13 +84,13 @@ namespace Zinlo.ChartsofAccount.Importing
             try
             {
                 var file = AsyncHelper.RunSync(() => _binaryObjectManager.GetOrNullAsync(args.BinaryObjectId));
-                var isTrue = _chartsofAccountAppService.CheckAccounts();
-                if (isTrue == false)
+               var isTrue = _chartsofAccountAppService.CheckAccounts();
+                if(isTrue == false)
                 {
                     #region ||
                     _appNotifier.SendMessageAsync(
                        args.User,
-                       _localizationSource.GetString("ZeroAccountsErrorMessaage"),
+                       _localizationSource.GetString("ZeroAccountsErrorMessaage"),                   
                        Abp.Notifications.NotificationSeverity.Success);
                     #endregion
                     return new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
@@ -105,7 +105,7 @@ namespace Zinlo.ChartsofAccount.Importing
                     {
                         return result;
                     }
-                }
+                }             
                 return new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
             }
             catch (Exception ex)
@@ -114,7 +114,7 @@ namespace Zinlo.ChartsofAccount.Importing
             }
         }
 
-        private async Task CreateChartsOfAccountsTrialBalance(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args, List<ChartsOfAccountsTrialBalanceExcellImportDto> accounts)
+        private async Task  CreateChartsOfAccountsTrialBalance(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args, List<ChartsOfAccountsTrialBalanceExcellImportDto> accounts)
         {
             var invalidAccounts = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
             var list = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
@@ -172,15 +172,15 @@ namespace Zinlo.ChartsofAccount.Importing
             foreach (var item in list)
             {
                 AsyncHelper.RunSync(() => CreateChartsOfAccountTrialBalanceAsync(item));
-                // await  CreateChartsOfAccountTrialBalanceAsync(item);
+             // await  CreateChartsOfAccountTrialBalanceAsync(item);
             }
             AsyncHelper.RunSync(() => ProcessImportAccountsTrialBalanceResultAsync(args, invalidAccounts));
         }
 
-        private async Task CreateChartsOfAccountTrialBalanceAsync(ChartsOfAccountsTrialBalanceExcellImportDto input)
+        private  async Task CreateChartsOfAccountTrialBalanceAsync(ChartsOfAccountsTrialBalanceExcellImportDto input)
         {
             var tenantId = CurrentUnitOfWork.GetTenantId();
-            /// ChartsofAccount account = new ChartsofAccount();
+           /// ChartsofAccount account = new ChartsofAccount();
 
             var output = new ChartsOfAccountsTrialBalanceExcellImportDto();
             output.AccountName = input.AccountName;
@@ -249,7 +249,7 @@ namespace Zinlo.ChartsofAccount.Importing
             {
                 isAccountNameIsNull = true;
                 errorMessage += "AccountName,";
-                // return true;
+               // return true;
             }
             else if (string.IsNullOrEmpty(input.AccountNumber))
             {
@@ -263,8 +263,8 @@ namespace Zinlo.ChartsofAccount.Importing
                 errorMessage += "Balance";
                 // return true;
             }
-
-            if (isAccountNameIsNull == true || isAccountNumberIsNull == true || isBalanceIsNull == true)
+           
+            if(isAccountNameIsNull == true || isAccountNumberIsNull == true || isBalanceIsNull == true)
             {
                 result.Exception = errorMessage + _localizationSource.GetString("EmptyValuesError");
                 result.isTrue = true;

@@ -134,7 +134,7 @@ namespace Zinlo.ChartsofAccount
                                 invalidAccounts.Add(data);
                             }
 
-
+                          
                         }
                         else
                         {
@@ -144,10 +144,10 @@ namespace Zinlo.ChartsofAccount
                     }
                     catch (UserFriendlyException exception)
                     {
-
+                        
                     }
-
-                }
+                   
+                }              
             }
             List<ChartsOfAccountsExcellImportDto> ValidRows = accounts.Except(invalidAccounts).ToList();
             SuccessRecordsCount = validRecords.Count;
@@ -160,7 +160,7 @@ namespace Zinlo.ChartsofAccount
             pathDto.CreatorId = UserId;
             pathDto.FailedRecordsCount = 0;
             pathDto.SuccessRecordsCount = 0;
-            loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
+          loggedFileId =  _importPathsAppService.SaveFilePath(pathDto);
             #endregion
 
             foreach (var item in validRecords)
@@ -418,7 +418,7 @@ namespace Zinlo.ChartsofAccount
             if (isAccountName == true || isAccountNumber == true
                 || isAccountSubType == true || isReconciliationType == true || isAccountType == true)
             {
-
+                
                 input.isValid = false;
                 input.Exception = errorMessage + _localizationSource.GetString("EmptyValuesError");
                 return input;

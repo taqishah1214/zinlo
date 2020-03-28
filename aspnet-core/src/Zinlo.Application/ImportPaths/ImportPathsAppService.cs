@@ -27,14 +27,14 @@ namespace Zinlo.ImportPaths
             importsPath.UserId = input.CreatorId;
             importsPath.IsRollBacked = false;
             importsPath.CreationTime = DateTime.UtcNow;
-            return _importPathsRepository.InsertAndGetId(importsPath);
+          return  _importPathsRepository.InsertAndGetId(importsPath);          
 
         }
 
         public async Task UpdateFilePath(ImportPathDto input)
         {
-            var output = _importPathsRepository.FirstOrDefault(input.Id);
-            if (output != null)
+            var output =  _importPathsRepository.FirstOrDefault(input.Id);
+            if(output != null)
             {
                 output.FilePath = input.FilePath;
                 output.FailedRecordsCount = input.FailedRecordsCount;
