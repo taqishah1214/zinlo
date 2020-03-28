@@ -2,10 +2,16 @@
 
 namespace Zinlo.Migrations
 {
-    public partial class AddedColumnVersionIdInChartOfAccounts : Migration
+    public partial class Version_Added_COA : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<bool>(
+                name: "IsRollBacked",
+                table: "ImportsPaths",
+                nullable: false,
+                defaultValue: false);
+
             migrationBuilder.AddColumn<long>(
                 name: "VersionId",
                 table: "ChartsofAccount",
@@ -15,6 +21,10 @@ namespace Zinlo.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "IsRollBacked",
+                table: "ImportsPaths");
+
             migrationBuilder.DropColumn(
                 name: "VersionId",
                 table: "ChartsofAccount");

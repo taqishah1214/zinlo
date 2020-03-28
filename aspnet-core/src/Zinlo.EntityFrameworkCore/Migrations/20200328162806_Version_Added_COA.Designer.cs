@@ -10,8 +10,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20200328144511_AddedColumnVersionIdInChartOfAccounts")]
-    partial class AddedColumnVersionIdInChartOfAccounts
+    [Migration("20200328162806_Version_Added_COA")]
+    partial class Version_Added_COA
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
