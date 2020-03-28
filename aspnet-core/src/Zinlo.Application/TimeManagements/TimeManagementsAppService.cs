@@ -12,6 +12,7 @@ using Abp.Authorization;
 using Abp.Timing;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
+using Zinlo.ChartsofAccount;
 
 namespace Zinlo.TimeManagements
 {
@@ -19,12 +20,14 @@ namespace Zinlo.TimeManagements
     public class TimeManagementsAppService : ZinloAppServiceBase, ITimeManagementsAppService
     {
         private readonly IRepository<TimeManagement, long> _timeManagementRepository;
+        private readonly IChartsofAccountAppService _chartsofAccountAppService;
 
 
-        public TimeManagementsAppService(IRepository<TimeManagement, long> timeManagementRepository)
+
+        public TimeManagementsAppService(IRepository<TimeManagement, long> timeManagementRepository, IChartsofAccountAppService chartsofAccountAppService)
         {
             _timeManagementRepository = timeManagementRepository;
-
+            _chartsofAccountAppService = chartsofAccountAppService;
         }
 
         public async Task<PagedResultDto<GetTimeManagementForViewDto>> GetAll(GetAllTimeManagementsInput input)
@@ -106,6 +109,7 @@ namespace Zinlo.TimeManagements
 
 
             await _timeManagementRepository.InsertAsync(timeManagement);
+            await _chartsofAccountAppService.ShiftChartsOfAccountToSpecficMonth(input.Month);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements_Edit)]

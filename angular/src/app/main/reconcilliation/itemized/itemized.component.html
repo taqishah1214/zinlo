@@ -61,7 +61,7 @@
                         <div class="table-box itemzied-item-table">
                         <!--<Primeng-TurboTable-Start>-->
                         <div class="task-table" [busyIf]="primengTableHelper.isLoading">
-                            <p-table #dataTable class=" record-table" (onLazyLoad)="getAllAmortizedList($event)"
+                            <p-table #dataTable class=" record-table" (onLazyLoad)="getAllItemizedList($event)"
                                 [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [scrollable]="true" ScrollWidth="100%"
@@ -70,7 +70,7 @@
                                 <ng-template pTemplate="header">
                                     <tr  class="task-table-inner">
                                         <th class="accountNo-cell" scope="col" pSortableColumn="AccountNumber">
-                                            Start Date
+                                            Date
                                             <p-sortIcon field="AccountNumber"></p-sortIcon>
                                         </th>
                                         <th class="accountName-cell" scope="col" pSortableColumn="AccountType">
@@ -211,7 +211,7 @@
                     <div class="pagination-block">
                         <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
                             [totalRecords]="primengTableHelper.totalRecordsCount"
-                            (onPageChange)="getAllAmortizedList($event)"
+                            (onPageChange)="getAllItemizedList($event)"
                             [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                             class="paginator-counter">
                         </p-paginator>

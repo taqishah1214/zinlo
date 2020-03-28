@@ -153,6 +153,8 @@ namespace Zinlo.ChartsofAccount
 
                                             select new CreateOrEditChartsofAccountDto()
                                             {
+                                                Id = (int)o.Id,
+                                                CreatorUserId = o.CreatorUserId,
                                                 AccountName = o.AccountName,
                                                 AccountNumber = o.AccountNumber,
                                                 AccountType = (Dtos.AccountType)o.AccountType,
@@ -162,6 +164,7 @@ namespace Zinlo.ChartsofAccount
                                                 Balance = 0,
                                                 CreationTime = o.CreationTime.AddMonths(1),
                                                 AssigneeId = o.Assignee.Id
+
                                             }).ToList();
 
                     foreach(var item in itemList)

@@ -2,12 +2,15 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import * as _ from 'lodash';
-import {  ItemizationServiceProxy } from '@shared/service-proxies/service-proxies';
+import {  ItemizationServiceProxy,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto } from '@shared/service-proxies/service-proxies';
 import { UserInformation } from '../../CommonFunctions/UserInformation';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { AppConsts } from '@shared/AppConsts';
+import * as moment from 'moment';
+import { add, subtract } from 'add-subtract-date';
+
 @Component({
   selector: 'app-itemized',
   templateUrl: './itemized.component.html',
@@ -33,10 +36,13 @@ export class ItemizedComponent extends AppComponentBase {
   accuredAmount :any;
   netAmount : any;
   itemList : any = [];
-  monthFilter = '100/2000';
+  monthFilter = new Date();
   remainingAttachmentList: any = []
   trialBalance : any;
   variance:any;
+  AccountNumber : any  = "";
+  CreateTimeManagementDto : CreateOrEditTimeManagementDto = new CreateOrEditTimeManagementDto()
+
   
 
 
@@ -44,7 +50,8 @@ export class ItemizedComponent extends AppComponentBase {
     injector: Injector,
     private _router: Router,
     private userInfo: UserInformation,
-    private _itemizedService:ItemizationServiceProxy
+    private _itemizedService:ItemizationServiceProxy,
+    private _timeManagementsServiceProxy :TimeManagementsServiceProxy,
 
   ) {
     super(injector);
@@ -65,7 +72,7 @@ export class ItemizedComponent extends AppComponentBase {
   RedirectToDetail(ItemizedItemId) : void {   
       this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId }} });
   }
-  getAllAmortizedList(event?: LazyLoadEvent){
+  getAllItemizedList(event?: LazyLoadEvent){
     this.primeNgEvent = event;
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
@@ -75,7 +82,9 @@ export class ItemizedComponent extends AppComponentBase {
   this.primengTableHelper.showLoadingIndicator();
   this._itemizedService.getAll(
     this.filterText,
-    this.accountId,
+    this.AccountNumber == "" ? this.accountId : 0,
+    moment(this.monthFilter),
+    this.AccountNumber,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
     this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -102,11 +111,32 @@ export class ItemizedComponent extends AppComponentBase {
 }
 
 filterByMonth(event): void {
-  var month = event.getMonth() + 1;
-  this.monthFilter = month + "/" + event.getFullYear()
-  this.getAllAmortizedList(this.primeNgEvent);
+  this.monthFilter = new Date(add(event, 2, "day"));;
+  this._timeManagementsServiceProxy.checkManagementExist(moment(this.monthFilter)).subscribe(result => { 
+    if (result)
+    {
+      this.AccountNumber = this.accountNo;
+      this.getAllItemizedList(this.primeNgEvent);
+    }
+    else
+    {
+      this.CreateTimeManagementDto.month =  moment(this.monthFilter)
+      this.CreateTimeManagementDto.status =  false
+      this.message.confirm(
+        'Are you want to define this month as closing month.',
+        this.l(' Selected Month Does not Exist'),
+        (isConfirmed) => {
+          if (isConfirmed) {
+            this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
+              this.AccountNumber = this.accountNo;
+              this.getAllItemizedList(this.primeNgEvent);
+             })      
+          }
+        }
+      );
+    }  
+  })
 }
-
 getExtensionImagePath(str) {
 
   var extension = str.split('.')[1];

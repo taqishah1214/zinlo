@@ -34,10 +34,11 @@ namespace Zinlo.Reconciliation
         #endregion
         #region|Get All|
         public async Task<PagedResultDto<ItemizedListDto>> GetAll(GetAllItemizationInput input)
-        {     
-            var query = _itemizationRepository.GetAll()
-                 .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))  
-                 .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId);
+        {
+            var query = _itemizationRepository.GetAll().Where(e => e.CreationTime.Month == input.MonthFilter.Month && e.CreationTime.Year == input.MonthFilter.Year)
+              .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
+              .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId)
+              .WhereIf(!string.IsNullOrWhiteSpace(input.AccountNumer), e => false || e.ChartsofAccount.AccountNumber == input.AccountNumer);
 
             var pagedAndFilteredItems = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var totalCount = query.Count();

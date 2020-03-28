@@ -16,6 +16,7 @@ using NUglify.Helpers;
 using Zinlo.Dto;
 using Zinlo.ChartsofAccount.Importing;
 using Zinlo.Reconciliation;
+using Zinlo.Reconciliation.Dtos;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -311,10 +312,105 @@ namespace Zinlo.ChartsofAccount
             {
                 return false;
             }
+        }
 
+        public async Task ShiftAmortizedItems(double previousAccountId, double newAccountId,DateTime closingMonth)
+        {
+            var amortizedItemList = _amortizationRepository.GetAll().Where(e => e.ChartsofAccount.Id == previousAccountId).Include(e => e.ChartsofAccount);
+            var itemList = (from o in amortizedItemList.ToList()
 
+                            select new CreateOrEditAmortizationDto()
+                            {
+                                Id =0,
+                                InoviceNo = o.InoviceNo,
+                                JournalEntryNo = o.JournalEntryNo,
+                                StartDate = o.StartDate,
+                                EndDate = o.EndDate,
+                                AccomulateAmount = o.AccomulateAmount,
+                                Amount = o.Amount,
+                                Description = o.Description,
+                                ChartsofAccountId = (long)newAccountId,
+                                CreationTime = closingMonth,
+                                Criteria = (Reconciliation.Dtos.Criteria)o.Criteria,
+                                CreatorUserId = o.CreatorUserId,
+                            }).ToList();
+
+            foreach (var item in itemList)
+            {
+                var newItem = ObjectMapper.Map<Amortization>(item);
+                await _amortizationRepository.InsertAsync(newItem);
+            }
 
         }
 
+
+
+        public async Task ShiftItemizedItem(double previousAccountId, double newAccountId, DateTime closingMonth)
+        {
+            var itemizedItemList = _itemizationRepository.GetAll().Where(e => e.ChartsofAccount.Id == previousAccountId).Include(e => e.ChartsofAccount);
+            var itemList = (from o in itemizedItemList.ToList()
+
+                            select new CreateOrEditItemizationDto()
+                            {
+                                Id = 0,
+                                InoviceNo = o.InoviceNo,
+                                JournalEntryNo = o.JournalEntryNo,
+                                Date = o.Date,
+                                Amount = o.Amount,
+                                Description = o.Description,
+                                ChartsofAccountId = (long)newAccountId,
+                                CreationTime = closingMonth,
+                                CreatorUserId = o.CreatorUserId,
+                            }).ToList();
+
+            foreach (var item in itemList)
+            {
+                var newitem = ObjectMapper.Map<Itemization>(item);
+                await _itemizationRepository.InsertAsync(newitem);
+            }
+
+        }
+
+        public async Task ShiftChartsOfAccountToSpecficMonth(DateTime ClosingMonth)
+        {
+           var accountsExistCheck = await _chartsofAccountRepository.FirstOrDefaultAsync(e => e.CreationTime.Month == ClosingMonth.Month);
+            if (accountsExistCheck == null)
+            {
+                var currentMonthAccounts = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == DateTime.Now.Month).Include(a => a.Assignee).Include(a => a.AccountSubType);
+                var itemList = (from o in currentMonthAccounts.ToList()
+
+                                select new CreateOrEditChartsofAccountDto()
+                                {
+                                    Id = (int)o.Id,
+                                    CreatorUserId = o.CreatorUserId,
+                                    AccountName = o.AccountName,
+                                    AccountNumber = o.AccountNumber,
+                                    AccountType = (Dtos.AccountType)o.AccountType,
+                                    ReconciliationType = (Dtos.ReconciliationType)o.ReconciliationType,
+                                    AccountSubTypeId = o.AccountSubType.Id,
+                                    Reconciled = (Dtos.Reconciled)o.Reconciled,
+                                    Balance = 0,
+                                    CreationTime = ClosingMonth,
+                                    AssigneeId = o.Assignee.Id
+                                }).ToList();
+
+                foreach (var item in itemList)
+                {
+                    double PreviousAccountId = (double)item.Id;
+                    item.Id = 0;
+                    double newAccountId = await CreateOrEdit(item);
+                    if ((int)item.ReconciliationType == 1)
+                    {
+                        await ShiftItemizedItem(PreviousAccountId, newAccountId, ClosingMonth);
+                    }
+                    else
+                    {
+                        await ShiftAmortizedItems(PreviousAccountId, newAccountId, ClosingMonth);
+                    }
+
+                }
+
+            }
+        }
     }
 }

@@ -144,7 +144,6 @@ namespace Zinlo.ClosingChecklist
                     }
                 }
                 var managementDetail = _managementsAppService.GetOpenManagement();
-
                 foreach (var item in managementDetail)
                 {
                     var task = taskList.FirstOrDefault(p => p.ClosingMonth.Year == item.Month.Year && p.ClosingMonth.Month == item.Month.Month);

@@ -50,13 +50,11 @@ namespace Zinlo.Reconciliation
 
         public async Task<PagedResultDto<AmortizedListDto>> GetAll(GetAllAmortizationInput input)
         {
-            int index = input.MonthFilter.IndexOf('/');
-            int month = Convert.ToInt32(input.MonthFilter.Substring(0, index));
-            int year = Convert.ToInt32(input.MonthFilter.Substring(index + 1, 4));
-            var query = _amortizationRepository.GetAll()
-                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
-                .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId);
-                
+            var query = _amortizationRepository.GetAll().Where(e => e.CreationTime.Month == input.MonthFilter.Month && e.CreationTime.Year == input.MonthFilter.Year)
+               .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
+               .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId)
+               .WhereIf(!string.IsNullOrWhiteSpace(input.AccountNumer), e => false || e.ChartsofAccount.AccountNumber == input.AccountNumer);
+
 
             var pagedAndFilteredItems = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
             var totalCount = query.Count();
@@ -68,9 +66,9 @@ namespace Zinlo.Reconciliation
                                     StartDate = o.StartDate,
                                     EndDate = o.EndDate,
                                     Description = o.Description,
-                                    AccuredAmortization = CalculateAccuredAmount(Convert.ToInt32(o.Criteria), o.AccomulateAmount, o.Amount,o.EndDate, input.MonthFilter,o.StartDate),
+                                    AccuredAmortization = CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount,o.EndDate, input.MonthFilter,o.StartDate),
                                     BeginningAmount = o.Amount,
-                                    NetAmount = CalculateNetAmount(Convert.ToInt32(o.Criteria) == 2 ? CalculateAccuredAmount( Convert.ToInt32(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate): o.AccomulateAmount, o.Amount) ,
+                                    NetAmount = CalculateNetAmount((int)(o.Criteria) == 2 ? CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate): o.AccomulateAmount, o.Amount) ,
                                     Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 2).Result        
                                }).ToList();
 
@@ -131,7 +129,7 @@ namespace Zinlo.Reconciliation
             return Result;
         }
 
-        protected virtual double CalculateAccuredAmount( int CriteriaId , double AccomulateAmount, double BeginningAmount,DateTime EndDate, string Current, DateTime StartDate)
+        protected virtual double CalculateAccuredAmount( int CriteriaId , double AccomulateAmount, double BeginningAmount,DateTime EndDate, DateTime Current, DateTime StartDate)
         {
             double Result =1;
             switch (CriteriaId)
@@ -153,7 +151,7 @@ namespace Zinlo.Reconciliation
             return Result;
         }
 
-        protected virtual double  GetAccuredAmountMonthly(double AccomulateAmount, double BeginningAmount , DateTime EndDate, string Current, DateTime StartDate)
+        protected virtual double  GetAccuredAmountMonthly(double AccomulateAmount, double BeginningAmount , DateTime EndDate, DateTime Current, DateTime StartDate)
         {
             DateTime MonthEnd =  GetValidDate(Current);
             if (MonthEnd >= EndDate)
@@ -173,7 +171,7 @@ namespace Zinlo.Reconciliation
                 return Result3;
             }
         }
-        protected virtual double GetAccuredAmountDaily(double AccomulateAmount, double BeginningAmount, DateTime EndDate, string Current, DateTime StartDate)
+        protected virtual double GetAccuredAmountDaily(double AccomulateAmount, double BeginningAmount, DateTime EndDate, DateTime Current, DateTime StartDate)
         {
 
 
@@ -195,25 +193,11 @@ namespace Zinlo.Reconciliation
            
         }
 
-        public DateTime GetValidDate(string current)
+        public DateTime GetValidDate(DateTime dateTime)
         {
-            int index = current.IndexOf('/');
-            int month = Convert.ToInt32(current.Substring(0, index));
-            int year = Convert.ToInt32(current.Substring(index + 1, 4));
-            if (month == 100 && year == 2000)
-            {
-                DateTime dateTime = DateTime.Now;
                 var totalDays = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
                 DateTime LastDaydateTime = new DateTime(dateTime.Year, dateTime.Month, totalDays, 0, 0, 0);
                 return LastDaydateTime;
-            }
-            else
-            {
-                var totalDays = DateTime.DaysInMonth(year, month);
-                DateTime LastDaydateTime = new DateTime(year, month, totalDays, 0, 0, 0);
-                return LastDaydateTime;
-            }
-
         }
 
         public int CompareDates(DateTime EndDate,DateTime MonthEnd)

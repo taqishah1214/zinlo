@@ -74,6 +74,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     this.collapsibleRow = false;
     this.accountType = "Account Type"
     this.loadAccountSubType();
+    
   }
 
   accountTypeClick(id, name): void {
@@ -238,7 +239,8 @@ RedirectToCreateAccount(): void {
     },
     plugins: {
       Webcam: false
-    }
+    },
+    allowMultipleUploads : false
   }
 
 
@@ -286,6 +288,7 @@ RedirectToCreateAccount(): void {
       });
   }
 
+  
   SaveChanges() :void{
     if(this.chartsOfAccountsfileUrl != "")
     {
@@ -299,7 +302,6 @@ RedirectToCreateAccount(): void {
     }
     this._signalRService.startHubConnection();
     var file = this._signalRService.addBasicListener();
-    
   }
 
   onUploadExcelError(): void {

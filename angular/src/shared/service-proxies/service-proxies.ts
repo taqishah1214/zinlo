@@ -1068,12 +1068,13 @@ export class AmortizationServiceProxy {
      * @param filter (optional) 
      * @param chartofAccountId (optional) 
      * @param monthFilter (optional) 
+     * @param accountNumer (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, chartofAccountId: number | undefined, monthFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfAmortizedListDto> {
+    getAll(filter: string | undefined, chartofAccountId: number | undefined, monthFilter: moment.Moment | undefined, accountNumer: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfAmortizedListDto> {
         let url_ = this.baseUrl + "/api/services/app/Amortization/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -1086,7 +1087,11 @@ export class AmortizationServiceProxy {
         if (monthFilter === null)
             throw new Error("The parameter 'monthFilter' cannot be null.");
         else if (monthFilter !== undefined)
-            url_ += "MonthFilter=" + encodeURIComponent("" + monthFilter) + "&"; 
+            url_ += "MonthFilter=" + encodeURIComponent(monthFilter ? "" + monthFilter.toJSON() : "") + "&"; 
+        if (accountNumer === null)
+            throw new Error("The parameter 'accountNumer' cannot be null.");
+        else if (accountNumer !== undefined)
+            url_ += "AccountNumer=" + encodeURIComponent("" + accountNumer) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -1146,15 +1151,15 @@ export class AmortizationServiceProxy {
     }
 
     /**
-     * @param current (optional) 
+     * @param dateTime (optional) 
      * @return Success
      */
-    getValidDate(current: string | undefined): Observable<moment.Moment> {
+    getValidDate(dateTime: moment.Moment | undefined): Observable<moment.Moment> {
         let url_ = this.baseUrl + "/api/services/app/Amortization/GetValidDate?";
-        if (current === null)
-            throw new Error("The parameter 'current' cannot be null.");
-        else if (current !== undefined)
-            url_ += "current=" + encodeURIComponent("" + current) + "&"; 
+        if (dateTime === null)
+            throw new Error("The parameter 'dateTime' cannot be null.");
+        else if (dateTime !== undefined)
+            url_ += "dateTime=" + encodeURIComponent(dateTime ? "" + dateTime.toJSON() : "") + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3616,6 +3621,182 @@ export class ChartsofAccountServiceProxy {
             }));
         }
         return _observableOf<boolean>(<any>null);
+    }
+
+    /**
+     * @param previousAccountId (optional) 
+     * @param newAccountId (optional) 
+     * @param closingMonth (optional) 
+     * @return Success
+     */
+    shiftAmortizedItems(previousAccountId: number | undefined, newAccountId: number | undefined, closingMonth: moment.Moment | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/ShiftAmortizedItems?";
+        if (previousAccountId === null)
+            throw new Error("The parameter 'previousAccountId' cannot be null.");
+        else if (previousAccountId !== undefined)
+            url_ += "previousAccountId=" + encodeURIComponent("" + previousAccountId) + "&"; 
+        if (newAccountId === null)
+            throw new Error("The parameter 'newAccountId' cannot be null.");
+        else if (newAccountId !== undefined)
+            url_ += "newAccountId=" + encodeURIComponent("" + newAccountId) + "&"; 
+        if (closingMonth === null)
+            throw new Error("The parameter 'closingMonth' cannot be null.");
+        else if (closingMonth !== undefined)
+            url_ += "closingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processShiftAmortizedItems(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processShiftAmortizedItems(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processShiftAmortizedItems(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param previousAccountId (optional) 
+     * @param newAccountId (optional) 
+     * @param closingMonth (optional) 
+     * @return Success
+     */
+    shiftItemizedItem(previousAccountId: number | undefined, newAccountId: number | undefined, closingMonth: moment.Moment | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/ShiftItemizedItem?";
+        if (previousAccountId === null)
+            throw new Error("The parameter 'previousAccountId' cannot be null.");
+        else if (previousAccountId !== undefined)
+            url_ += "previousAccountId=" + encodeURIComponent("" + previousAccountId) + "&"; 
+        if (newAccountId === null)
+            throw new Error("The parameter 'newAccountId' cannot be null.");
+        else if (newAccountId !== undefined)
+            url_ += "newAccountId=" + encodeURIComponent("" + newAccountId) + "&"; 
+        if (closingMonth === null)
+            throw new Error("The parameter 'closingMonth' cannot be null.");
+        else if (closingMonth !== undefined)
+            url_ += "closingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processShiftItemizedItem(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processShiftItemizedItem(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processShiftItemizedItem(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param closingMonth (optional) 
+     * @return Success
+     */
+    shiftChartsOfAccountToSpecficMonth(closingMonth: moment.Moment | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/ShiftChartsOfAccountToSpecficMonth?";
+        if (closingMonth === null)
+            throw new Error("The parameter 'closingMonth' cannot be null.");
+        else if (closingMonth !== undefined)
+            url_ += "ClosingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processShiftChartsOfAccountToSpecficMonth(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processShiftChartsOfAccountToSpecficMonth(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processShiftChartsOfAccountToSpecficMonth(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
     }
 }
 
@@ -7495,12 +7676,14 @@ export class ItemizationServiceProxy {
     /**
      * @param filter (optional) 
      * @param chartofAccountId (optional) 
+     * @param monthFilter (optional) 
+     * @param accountNumer (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, chartofAccountId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfItemizedListDto> {
+    getAll(filter: string | undefined, chartofAccountId: number | undefined, monthFilter: moment.Moment | undefined, accountNumer: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfItemizedListDto> {
         let url_ = this.baseUrl + "/api/services/app/Itemization/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -7510,6 +7693,14 @@ export class ItemizationServiceProxy {
             throw new Error("The parameter 'chartofAccountId' cannot be null.");
         else if (chartofAccountId !== undefined)
             url_ += "ChartofAccountId=" + encodeURIComponent("" + chartofAccountId) + "&"; 
+        if (monthFilter === null)
+            throw new Error("The parameter 'monthFilter' cannot be null.");
+        else if (monthFilter !== undefined)
+            url_ += "MonthFilter=" + encodeURIComponent(monthFilter ? "" + monthFilter.toJSON() : "") + "&"; 
+        if (accountNumer === null)
+            throw new Error("The parameter 'accountNumer' cannot be null.");
+        else if (accountNumer !== undefined)
+            url_ += "AccountNumer=" + encodeURIComponent("" + accountNumer) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
