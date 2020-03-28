@@ -41,7 +41,7 @@ namespace Zinlo.ChartsofAccount
             _chartsOfAccountsListExcelExporter = chartsOfAccountsListExcelExporter;
             _chartsOfAccountsTrialBalanceExcelExporter = chartsOfAccountsTrialBalanceExcelExporter;
         }
-        
+
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
             DateTime now = DateTime.Now;
@@ -51,7 +51,7 @@ namespace Zinlo.ChartsofAccount
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.AccountName.Contains(input.Filter))
                  .WhereIf(input.AccountType != 0, e => false || (e.AccountType == (AccountType)input.AccountType))
                  .WhereIf(input.AssigneeId != 0, e => false || (e.AssigneeId == input.AssigneeId));
-                 
+
             List<GetUserWithPicture> getUserWithPictures = new List<GetUserWithPicture>();
             getUserWithPictures = (from o in query.ToList()
                                    select new GetUserWithPicture()
@@ -95,12 +95,12 @@ namespace Zinlo.ChartsofAccount
         {
             if (input.Id == null || input.Id == 0)
             {
-               return await Create(input);
-               
+                return await Create(input);
+
             }
             else
             {
-              return await Update(input);
+                return await Update(input);
             }
 
         }
@@ -111,7 +111,7 @@ namespace Zinlo.ChartsofAccount
             if ((int)account.ReconciliationType != (int)input.ReconciliationType)
             {
                 await _chartsofAccountRepository.DeleteAsync(account);
-                int previousAccountId =  (int)input.Id;
+                int previousAccountId = (int)input.Id;
                 if ((int)account.ReconciliationType == 1)
                 {
                     _itemizationRepository.Delete(await _itemizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == previousAccountId));
@@ -129,10 +129,10 @@ namespace Zinlo.ChartsofAccount
                 var updatedAccount = ObjectMapper.Map(input, account);
                 updatedAccount.ReconciliationType = (ReconciliationType)input.ReconciliationType;
                 updatedAccount.AccountType = (AccountType)input.AccountType;
-               double accountId  =  await _chartsofAccountRepository.InsertOrUpdateAndGetIdAsync(updatedAccount);
+                double accountId = await _chartsofAccountRepository.InsertOrUpdateAndGetIdAsync(updatedAccount);
                 return accountId;
             }
-               
+
         }
 
         protected virtual async Task<double> Create(CreateOrEditChartsofAccountDto input)
@@ -143,7 +143,7 @@ namespace Zinlo.ChartsofAccount
             {
                 account.TenantId = (int)AbpSession.TenantId;
             }
-            double accountId =  _chartsofAccountRepository.InsertAndGetId(account);
+            double accountId = _chartsofAccountRepository.InsertAndGetId(account);
             return accountId;
         }
         public async Task Delete(long id)
@@ -206,10 +206,10 @@ namespace Zinlo.ChartsofAccount
             }
             return result;
         }
-        
+
         public async Task<FileDto> GetChartsofAccountToExcel(long id)
         {
-            var accounts =  _chartsofAccountRepository.GetAll().Include(x => x.Assignee).Include(p=>p.AccountSubType);
+            var accounts = _chartsofAccountRepository.GetAll().Include(x => x.Assignee).Include(p => p.AccountSubType);
             List<ChartsOfAccountsExcellExporterDto> listToExport = new List<ChartsOfAccountsExcellExporterDto>();
             foreach (var item in accounts)
             {
@@ -220,7 +220,7 @@ namespace Zinlo.ChartsofAccount
                 chartsOfAccountsExcellExporterDto.AssignedUser = item.Assignee.EmailAddress;
                 chartsOfAccountsExcellExporterDto.AccountSubType = item.AccountSubType.Title;
                 chartsOfAccountsExcellExporterDto.ReconciliationType = GetReconcilationType((int)item.ReconciliationType);
-                chartsOfAccountsExcellExporterDto.ReconciliationAs = GetReconcilationAsValue( (int)item.Reconciled);
+                chartsOfAccountsExcellExporterDto.ReconciliationAs = GetReconcilationAsValue((int)item.Reconciled);
 
 
                 listToExport.Add(chartsOfAccountsExcellExporterDto);
@@ -268,18 +268,20 @@ namespace Zinlo.ChartsofAccount
             var result = _chartsofAccountRepository.GetAll()
                         .Where(x => x.AccountName.ToLower() == input.AccountName.Trim().ToLower()
                         && x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower())
-                       // && CompareDates(x.CreationTime) == 0)                       
+                        // && CompareDates(x.CreationTime) == 0)                       
                         .FirstOrDefault();
-            if(result != null)
+            if (result != null)
             {
                 result.TrialBalance = Convert.ToDecimal(input.Balance);
                 result.VersionId = input.VersionId;
-               await _chartsofAccountRepository.UpdateAsync(result);     
-                
+                await _chartsofAccountRepository.UpdateAsync(result);
+
                 return true;
             }
-
-            return false;
+            else
+            {
+                return false;
+            }
         }
         public int CompareDates(DateTime creationDate)
         {
@@ -309,12 +311,15 @@ namespace Zinlo.ChartsofAccount
                 bool isExist = _chartsofAccountRepository.GetAll().Any(x => x.AccountNumber.Trim().ToLower() == accountNumber.Trim().ToLower());
                 return isExist;
             }
-
-            return false;
+            else
+            {
+                return false;
+            }
 
 
 
         }
+
         public bool CheckAccounts()
         {
             var result = _chartsofAccountRepository.GetAll().Count();
@@ -340,34 +345,6 @@ namespace Zinlo.ChartsofAccount
             }
 
 
-
-        }
-
-        public bool CheckAccounts()
-        {
-            var result = _chartsofAccountRepository.GetAll().Count();
-            if(result > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public string GetReconcilationType(int value)
-        {
-            if(value == 1)
-            {
-                return "Itemized";
-            }
-            else
-            {
-                return "Amortization";
-            }
-           
-
         }
         public string GetReconcilationAsValue(int value)
         {
@@ -390,28 +367,6 @@ namespace Zinlo.ChartsofAccount
             }
 
 
-        }
-        public string GetReconcilationAsValue(int value)
-        {
-            if (value == 1)
-            {
-                return "NetAmount";
-            }
-           else if(value == 2)
-            {
-                return "BeginningAmount";
-            }
-            else if(value == 3)
-            {
-                
-               return "AccruedAmount";
-            }
-            else
-            {
-                return string.Empty;
-            }
-
-            
         }
     }
 }
