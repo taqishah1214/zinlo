@@ -5,13 +5,13 @@
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Edit Task
+                            {{"EditTask" | localize}}
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <a (click)="redirectToTaskDetails()">
                             <i class="la la-arrow-left"></i>
-                            Back
+                            {{"Back" | localize}}
                         </a>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group category-selector">
-                                        <label>Category</label>
+                                        <label>{{"Category" | localize}}</label>
                                         <button type="button" class="btn btn-secondary dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">{{categoryName}}</button>
@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="dateOfBirth">Closing Month</label>
+                                        <label for="dateOfBirth">{{"ClosingMonth" | localize}}</label>
                                         <div class="form-group">
                                             <form class="">
                                                 <input disabled [(ngModel)]="closingMonthValue" class="form-control" name="date"
@@ -51,14 +51,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="TaskName"> Task Name</label>
+                                        <label for="TaskName"> {{"Task Name" | localize}}</label>
                                         <input type="text" class="form-control  bsDatepicker"
                                             [(ngModel)]="getTaskForEdit.taskName">
                                     </div>
                                 </div>
                                 <div [ngClass]="{'disabled':!monthStatus}" class="col-md-6">
                                     <div class="form-group">
-                                        <label>Assignee</label>
+                                        <label>{{"Assignee" | localize}}</label>
                                         <app-user-list-component  comingChangeReguest="" userId={{assigneeId}}>
                                         </app-user-list-component>
                                     </div>
@@ -70,12 +70,12 @@
                                         <button class="btn btn-secondary dropdown-toggle" type="button"
                                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
-                                            Comment
+                                            {{"Comment" | localize}}
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a class="dropdown-item" href="#" data-toggle="kt-tooltip"
                                                 title="Tooltip title" data-placement="right" data-skin="dark"
-                                                data-container="body">Action</a>
+                                                data-container="body">{{"Action" | localize}}</a>
                                         </div>
                                     </div>
                                     <div class="commentmainView show-comments">
@@ -106,7 +106,7 @@
                                     </div>
 
                                     <div [ngClass]="{'disabled':!monthStatus}"  class="form-group giveCommentView" *ngIf="!commantBox">
-                                        <label>Comments</label>
+                                        <label>{{"Comments" | localize}}</label>
                                         <div (click)="commentClick()">
                                             <div class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic">
@@ -128,20 +128,20 @@
                                         </div>
                                     </div>
                                     <div class="form-group giveCommentView"  *ngIf="commantBox">
-                                        <label>Comments</label>
+                                        <label>{{"Comments" | localize}}</label>
                                         <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
                                         </p-editor>
                                         <div class="btnMargin" >
-                                        <button class="btn btn-brand" (click)="onComment()">Comment</button>
-                                        <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                                        <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                        <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
                                     </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label>Instruction</label>
+                                    <label>{{"Instruction" | localize}}</label>
                                     <div class="form-group">
                                         <p-editor [(ngModel)]="getTaskForEdit.instruction" name="HtmlEditorInput"
                                             [style]="{'height':'150px'}"></p-editor>
@@ -153,24 +153,24 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Frequency</label>
+                                        <label>{{"Frequency" | localize}}</label>
                                         <select class=" border border-default bg-white form-control input-medium"
                                             (change)="OnFrequencyChange($event.target.value)"
                                             [(ngModel)]="getTaskForEdit.frequencyId">
-                                            <option value="5">None</option>
-                                            <option value="1">Monthly</option>
-                                            <option value="2">Quarterly</option>
-                                            <option value="3">Annually</option>
-                                            <option value="4">XNumberOfMonths</option>
+                                            <option value="5">{{"None" | localize}}</option>
+                                            <option value="1">{{"Monthly" | localize}}</option>
+                                            <option value="2">{{"Quarterly" | localize}}</option>
+                                            <option value="3">{{"Annually" | localize}}</option>
+                                            <option value="4">{{"EveryXNumberOfMonths" | localize}} </option>
                                         </select>
                                     </div>
                                     <div class="form-group DueOn">
-                                        <label>Due on</label>
+                                        <label>{{"Dueon" | localize}}</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <label class="kt-radio kt-radio--single kt-radio--success">
-                                                        <input type="radio" [(checked)]="isChecked" name="dueOn">
+                                                        <input type="radio" [(checked)]="isChecked" (change)="onDayChange()" name="dueOn">
                                                         <span></span>
                                                     </label>
                                                 </span>
@@ -186,7 +186,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Status</label>
+                                        <label>{{"Status" | localize}}</label>
                                             <div class="kt-datatable__cell" [ngClass]="{'disabled':!monthStatus}">
                                                 <app-status [TaskId]="0" [StatusList]=getTaskForEdit.status>
                                                 </app-status>
@@ -195,7 +195,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>No of Months</label>
+                                        <label>{{"NoofMonths" | localize}}</label>
                                         <input type="text" name="noOfMonths" [disabled]="enableValue == false"
                                             class="form-control bsDatepicker" [(ngModel)]="getTaskForEdit.noOfMonths"
                                             (onShown)="onOpenCalendar($event)">
@@ -205,19 +205,19 @@
                                         <select class="border border-default bg-white form-control input-medium"
                                             (change)="onDaysClick($event.target.value)"
                                             [(ngModel)]="getTaskForEdit.dayBeforeAfter">
-                                            <option value=null disabled hidden>None</option>
+                                            <option value=null disabled hidden>{{"None" | localize}}</option>
                                             <option value=true>{{"DaysBefore" | localize}}</option>
                                             <option value=false>{{"DaysAfter" | localize}}</option>
                                         </select>
                                     </div>
                                     <div class="duplicate_box">
                                         <button type="button" class="btn btn-outline-primary"
-                                            (click)="duplicateTask()">Duplicate</button>
+                                            (click)="duplicateTask()">{{"Duplicate" | localize}}</button>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Ends on</label>
+                                        <label>{{"Endson" | localize}}</label>
                                         <div class="form-group">
                                             <form class="input-arrow">
                                                 <input [disabled]="getTaskForEdit.frequencyId==5" [(ngModel)]="endsOnDateValue" required="required"
@@ -232,15 +232,14 @@
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
                                             <input type="radio" [(checked)]="getTaskForEdit.endOfMonth" name="endOfMonth"
-                                                (click)="handleRadioChange()">End of
-                                            month
+                                                (click)="handleRadioChange()">{{"Endofmonth" | localize}}
                                             <span></span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div [ngClass]="{'disabled':!monthStatus}" class="drag_drop_box">
-                                <label>Attachments</label>
+                                <label>{{"Attachments" | localize}}</label>
                                 <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
                                 </ng-uppy>
                                 <div *ngFor="let item of attachments" class="attachments_section">

@@ -4,10 +4,10 @@
         {{StatusList}}
     </button>
     <div class="dropdown-menu drop_down_class"  aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" (click)="ChangeStatus(1)" >Not Started</a>
-        <a class="dropdown-item" (click)="ChangeStatus(2)" >In Process</a>
-        <a class="dropdown-item" (click)="ChangeStatus(3)" >On Hold</a>
-        <a class="dropdown-item" (click)="ChangeStatus(4)" >Completed</a>
+        <a class="dropdown-item" (click)="ChangeStatus(1)" >{{"NotStarted" | localize}}</a>
+        <a class="dropdown-item" (click)="ChangeStatus(2)" >{{"InProcess" | localize}}</a>
+        <a class="dropdown-item" (click)="ChangeStatus(3)" >{{"OnHold" | localize}}</a>
+        <a class="dropdown-item" (click)="ChangeStatus(4)" >{{"Completed" | localize}}</a>
     </div>
 </div>
 
