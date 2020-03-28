@@ -1,4 +1,5 @@
-﻿using Abp.Application.Services.Dto;
+﻿using System.IO;
+using Abp.Application.Services.Dto;
 using Abp.Collections.Extensions;
 using Abp.Domain.Repositories;
 using System.Linq;
@@ -21,7 +22,6 @@ namespace Zinlo.ExceptionLogger
     {
         private readonly IRepository<ImportsPath, long> _importsPathRepository;
         private readonly IConfigurationRoot _appConfiguration;
-        public UserManager userManager { get; set; }
         public ExceptionLoggerAppService(IRepository<ImportsPath, long> importsPathRepository,
             Microsoft.Extensions.Configuration.IConfiguration configuration,
             IWebHostEnvironment env
@@ -45,7 +45,7 @@ namespace Zinlo.ExceptionLogger
                                {
                                    Id = o.Id,
                                    Type = o.Type,
-                                   FilePath = baseUrl + o.FilePath,
+                                   FilePath = o.FilePath,
                                    CreationTime = o.CreationTime,
                                    Records = o.SuccessRecordsCount + "/" + (o.FailedRecordsCount + o.SuccessRecordsCount).ToString(),
                                    CreatedBy = o.User.FullName

@@ -307,14 +307,13 @@ RedirectToCreateAccount(): void {
   }
 
   downloadExcelFile(): void {
-    console.log();
     this._chartOfAccountService.getChartsofAccountToExcel(0)
       .subscribe(result => {
+        debugger
         this._fileDownloadService.downloadTempFile(result);
       });
   }
   downloadTrialBalanceExcelFile(): void {
-    console.log();
     this._chartOfAccountService.loadChartsofAccountTrialBalanceToExcel()
       .subscribe(result => {
         this._fileDownloadService.downloadTempFile(result);

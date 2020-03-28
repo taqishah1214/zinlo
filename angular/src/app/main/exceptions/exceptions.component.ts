@@ -1,13 +1,12 @@
-import { Component, Injector, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Injector, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Table } from 'primeng/components/table/table';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import * as _ from 'lodash';
-import { CategoriesServiceProxy, ExceptionLoggerServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ExceptionLoggerServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppConsts } from '@shared/AppConsts';
+
 @Component({
   selector: 'app-exceptions',
   templateUrl: './exceptions.component.html',
@@ -20,12 +19,12 @@ export class ExceptionsComponent extends AppComponentBase {
     @Output() recordid = new EventEmitter<number>();
     advancedFiltersAreShown = false;
     filterText = '';
+    fileUrl;
     exceptionsList: any;
+   
     constructor(
         injector: Injector,
-        private _exceptionServiceProxy: ExceptionLoggerServiceProxy,
-        private _router: Router
-    ) {
+        private _exceptionServiceProxy: ExceptionLoggerServiceProxy) {
         super(injector);
     }
     ngOnInit() {
@@ -53,6 +52,9 @@ export class ExceptionsComponent extends AppComponentBase {
             this.primengTableHelper.records = [];
             this.primengTableHelper.records = this.exceptionsList;
         });
+    }
+    downloadFile(path){
+        window.open(AppConsts.remoteServiceBaseUrl+"/"+path);
     }
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
