@@ -612,7 +612,7 @@ table.table.record-table td, table.table.record-table th {
 .category-selector button::after {
     position: absolute;
     font-size: 11px;
-    color: #a1a5b9;
+    color: transparent;
     top: 50%;
     left: 0;
     right: 0;
