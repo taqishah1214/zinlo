@@ -36,6 +36,7 @@ namespace Zinlo.ChartsofAccount.Importing
         public long TenantId = 0;
         public long UserId = 0;
         public int SuccessRecordsCount = 0;
+        public long loggedFileId = 0;
         public ImportChartsOfAccountTrialBalanceToExcelJob(
 
         IChartsOfAccontTrialBalanceListExcelDataReader chartsOfAccontTrialBalanceListExcelDataReader,
@@ -73,8 +74,9 @@ namespace Zinlo.ChartsofAccount.Importing
                     return;
                 }
 
-                CreateChartsOfAccountsTrialBalance(args, chartsofaccount);
+                CreateChartsOfAccountsTrialBalance(args, chartsofaccount);              
             }
+
         }
 
         private List<ChartsOfAccountsTrialBalanceExcellImportDto> GetAccountsTrialBalanceListFromExcelOrNull(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args)
@@ -82,6 +84,18 @@ namespace Zinlo.ChartsofAccount.Importing
             try
             {
                 var file = AsyncHelper.RunSync(() => _binaryObjectManager.GetOrNullAsync(args.BinaryObjectId));
+               var isTrue = _chartsofAccountAppService.CheckAccounts();
+                if(isTrue == false)
+                {
+                    #region ||
+                    _appNotifier.SendMessageAsync(
+                       args.User,
+                       _localizationSource.GetString("ZeroAccountsErrorMessaage"),                   
+                       Abp.Notifications.NotificationSeverity.Success);
+                    #endregion
+                    return new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
+                }
+
                 var result = _chartsOfAccontTrialBalanceListExcelDataReader.GetAccountsTrialBalanceFromExcel(file.Bytes);
                 if (result.Count > 0)
                 {
@@ -91,7 +105,7 @@ namespace Zinlo.ChartsofAccount.Importing
                     {
                         return result;
                     }
-                }
+                }             
                 return new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
             }
             catch (Exception ex)
@@ -100,9 +114,10 @@ namespace Zinlo.ChartsofAccount.Importing
             }
         }
 
-        private void CreateChartsOfAccountsTrialBalance(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args, List<ChartsOfAccountsTrialBalanceExcellImportDto> accounts)
+        private async Task  CreateChartsOfAccountsTrialBalance(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args, List<ChartsOfAccountsTrialBalanceExcellImportDto> accounts)
         {
             var invalidAccounts = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
+            var list = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
             foreach (var account in accounts)
             {
                 if (account.CanBeImported())
@@ -110,15 +125,17 @@ namespace Zinlo.ChartsofAccount.Importing
                     try
                     {
                         var result = CheckNullValues(account);
-                        if (result == false)
+                        if (result.isTrue)
                         {
-                            AsyncHelper.RunSync(() => CreateChartsOfAccountTrialBalanceAsync(account));
+
+                            account.Exception = result.Exception;      // _localizationSource.GetString("NullValuesAreNotAllowed");
+                            invalidAccounts.Add(account);
                         }
                         else
                         {
 
-                            account.Exception = _localizationSource.GetString("NullValuesAreNotAllowed");
-                            invalidAccounts.Add(account);
+                            list.Add(account);
+                            // AsyncHelper.RunSync(() => CreateChartsOfAccountTrialBalanceAsync(account));
                         }
 
                     }
@@ -140,47 +157,75 @@ namespace Zinlo.ChartsofAccount.Importing
                 }
             }
             List<ChartsOfAccountsTrialBalanceExcellImportDto> ValidRows = accounts.Except(invalidAccounts).ToList();
-            SuccessRecordsCount = ValidRows.Count;
-            foreach (var item in ValidRows)
+            SuccessRecordsCount = list.Count;
+            #region|Log intial info|
+            ImportPathDto pathDto = new ImportPathDto();
+            pathDto.FilePath = "";
+            pathDto.Type = FileTypes.TrialBalance.ToString();
+            pathDto.TenantId = (int)TenantId;
+            pathDto.CreatorId = UserId;
+            pathDto.FailedRecordsCount = 0;
+            pathDto.SuccessRecordsCount = 0;
+            loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
+            #endregion
+            list = list.Select(x => { x.VersionId = loggedFileId; return x; }).ToList();
+            foreach (var item in list)
             {
                 AsyncHelper.RunSync(() => CreateChartsOfAccountTrialBalanceAsync(item));
+             // await  CreateChartsOfAccountTrialBalanceAsync(item);
             }
             AsyncHelper.RunSync(() => ProcessImportAccountsTrialBalanceResultAsync(args, invalidAccounts));
         }
 
-        private async Task CreateChartsOfAccountTrialBalanceAsync(ChartsOfAccountsTrialBalanceExcellImportDto input)
+        private  async Task CreateChartsOfAccountTrialBalanceAsync(ChartsOfAccountsTrialBalanceExcellImportDto input)
         {
             var tenantId = CurrentUnitOfWork.GetTenantId();
-            ChartsofAccount account = new ChartsofAccount();
-            account.TenantId = (int)tenantId;
-            var result = await _chartsofAccountAppService.CheckAccountForTrialBalance(input.AccountName, input.AccountNumber, input.Balance);
+           /// ChartsofAccount account = new ChartsofAccount();
+
+            var output = new ChartsOfAccountsTrialBalanceExcellImportDto();
+            output.AccountName = input.AccountName;
+            output.AccountNumber = input.AccountNumber;
+            output.Balance = input.Balance;
+            output.VersionId = input.VersionId;
+            _chartsofAccountAppService.CheckAccountForTrialBalance(output);
         }
 
         private async Task ProcessImportAccountsTrialBalanceResultAsync(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args, List<ChartsOfAccountsTrialBalanceExcellImportDto> invalidAccounts)
         {
-            await _appNotifier.SendMessageAsync(
-                   args.User,
-                   _localizationSource.GetString("AllAccountsTrialBalanceSuccessfullyImportedFromExcel"),
-                   Abp.Notifications.NotificationSeverity.Success);
+            ////await _appNotifier.SendMessageAsync(
+            ////       args.User,
+            ////       _localizationSource.GetString("AllAccountsTrialBalanceSuccessfullyImportedFromExcel"),
+            ////       Abp.Notifications.NotificationSeverity.Success);
             if (invalidAccounts.Any())
             {
+                #region|Update log|
                 var url = _invalidAccountsTrialBalanceExporter.ExportToFile(invalidAccounts);
                 ImportPathDto pathDto = new ImportPathDto();
+                pathDto.Id = loggedFileId;
                 pathDto.FilePath = url;
-                pathDto.Type = FileTypes.TrialBalance.ToString();
-                pathDto.TenantId = (int)TenantId;
-                pathDto.CreatorId = UserId;
                 pathDto.FailedRecordsCount = invalidAccounts.Count;
                 pathDto.SuccessRecordsCount = SuccessRecordsCount;
-                await _importPathsAppService.SaveFilePath(pathDto);
-                //  await _hubcontext.Clients.All.SendAsync("chartOfAccount", file, "file");
-              //  await _appNotifier.SomeUsersCouldntBeImported(args.User, file.FileToken, file.FileType, file.FileName);
+                await _importPathsAppService.UpdateFilePath(pathDto);
+                #endregion
+                await _appNotifier.SendMessageAsync(
+                  args.User,
+                  _localizationSource.GetString("SomeAccountsTrialBalanceSuccessfullyImportedFromExcel"),
+                  Abp.Notifications.NotificationSeverity.Success);
             }
             else
             {
+                #region|Update log|               
+                ImportPathDto pathDto = new ImportPathDto();
+                pathDto.Id = loggedFileId;
+                pathDto.FilePath = "";
+                pathDto.FailedRecordsCount = invalidAccounts.Count;
+                pathDto.SuccessRecordsCount = SuccessRecordsCount;
+                await _importPathsAppService.UpdateFilePath(pathDto);
+                #endregion
+
                 await _appNotifier.SendMessageAsync(
                     args.User,
-                    _localizationSource.GetString("AllAccountsSuccessfullyImportedFromExcel"),
+                    _localizationSource.GetString("AllAccountsTrialBalanceSuccessfullyImportedFromExcel"),
                     Abp.Notifications.NotificationSeverity.Success);
             }
         }
@@ -192,38 +237,43 @@ namespace Zinlo.ChartsofAccount.Importing
                 _localizationSource.GetString("FileCantBeConvertedToAccountsTrialBalanceList"),
                 Abp.Notifications.NotificationSeverity.Warn));
         }
-        #region|Helpers|
-        public async Task<long> GetUserIdByEmail(string emailAddress)
+        #region|Helpers|      
+        public ChartOfAccountsValidationDto CheckNullValues(ChartsOfAccountsTrialBalanceExcellImportDto input)
         {
-            var user = await userManager.FindByEmailAsync(emailAddress);
-            if (user != null)
-            {
-                return user.Id;
-            }
-            else
-            {
-                return 3;
-            }
-
-        }
-        public bool CheckNullValues(ChartsOfAccountsTrialBalanceExcellImportDto input)
-        {
-            // bool isValid = false;
+            string errorMessage = string.Empty;
+            bool isAccountNameIsNull = false;
+            bool isAccountNumberIsNull = false;
+            bool isBalanceIsNull = false;
+            var result = new ChartOfAccountsValidationDto();
             if (string.IsNullOrEmpty(input.AccountName))
             {
-                return true;
+                isAccountNameIsNull = true;
+                errorMessage += "AccountName,";
+               // return true;
             }
             else if (string.IsNullOrEmpty(input.AccountNumber))
             {
-                return true;
+                isAccountNumberIsNull = true;
+                errorMessage += "AccountNumber,";
+                // return true;
             }
             else if (string.IsNullOrEmpty(input.Balance))
             {
-                return true;
+                isBalanceIsNull = true;
+                errorMessage += "Balance";
+                // return true;
+            }
+           
+            if(isAccountNameIsNull == true || isAccountNumberIsNull == true || isBalanceIsNull == true)
+            {
+                result.Exception = errorMessage + _localizationSource.GetString("EmptyValuesError");
+                result.isTrue = true;
+                return result;
             }
             else
             {
-                return false;
+                result.isTrue = false;
+                return result;
             }
 
         }

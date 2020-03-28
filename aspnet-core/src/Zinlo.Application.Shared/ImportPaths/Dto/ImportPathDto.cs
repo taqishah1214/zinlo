@@ -6,6 +6,7 @@ namespace Zinlo.ImportPaths.Dto
 {
   public  class ImportPathDto
     {
+        public long Id { get; set; }
         public string FilePath { get; set; }
         public string Type { get; set; }
         public int FailedRecordsCount { get; set; }

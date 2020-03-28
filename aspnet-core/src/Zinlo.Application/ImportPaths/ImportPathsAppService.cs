@@ -15,7 +15,7 @@ namespace Zinlo.ImportPaths
         {
             _importPathsRepository = importPathsRepository;
         }
-        public async Task SaveFilePath(ImportPathDto input)
+        public long SaveFilePath(ImportPathDto input)
         {
             ImportsPath importsPath = new ImportsPath();
             importsPath.FilePath = input.FilePath;
@@ -25,9 +25,23 @@ namespace Zinlo.ImportPaths
             importsPath.SuccessRecordsCount = input.SuccessRecordsCount;
             importsPath.CreatorUserId = input.CreatorId;
             importsPath.UserId = input.CreatorId;
-            
+            importsPath.IsRollBacked = false;
             importsPath.CreationTime = DateTime.UtcNow;
-           await _importPathsRepository.InsertAsync(importsPath);          
+          return  _importPathsRepository.InsertAndGetId(importsPath);          
+
+        }
+
+        public async Task UpdateFilePath(ImportPathDto input)
+        {
+            var output =  _importPathsRepository.FirstOrDefault(input.Id);
+            if(output != null)
+            {
+                output.FilePath = input.FilePath;
+                output.FailedRecordsCount = input.FailedRecordsCount;
+                output.SuccessRecordsCount = input.SuccessRecordsCount;
+                await _importPathsRepository.UpdateAsync(output);
+
+            }
 
         }
     }

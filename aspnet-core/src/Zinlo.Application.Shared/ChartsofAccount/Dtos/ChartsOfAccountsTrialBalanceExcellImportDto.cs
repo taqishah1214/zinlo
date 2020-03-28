@@ -11,6 +11,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         public string AccountNumber { get; set; }
         public string Balance { get; set; }
         public string Exception { get; set; }
+        public long VersionId { get; set; }
         public bool CanBeImported()
         {
             return string.IsNullOrEmpty(Exception);

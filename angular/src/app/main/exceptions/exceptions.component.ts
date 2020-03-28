@@ -45,17 +45,22 @@ export class ExceptionsComponent extends AppComponentBase {
         ).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
+            console.log(result.items)
             this.primengTableHelper.hideLoadingIndicator();
             this.exceptionsList = result.items;
             this.exceptionsList.array.forEach(element => {
               element.filePath = AppConsts.remoteServiceBaseUrl + element.filePath;
             });
-            this.primengTableHelper.records = [];
-            this.primengTableHelper.records = this.exceptionsList;
+         
         });
     }
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
     }   
+    RollBack(id) : void{
+    this._exceptionServiceProxy.rollBackTrialBalance(id).subscribe(x=>{
+       this.getAllExceptions();
+    })
+    }
 }
 

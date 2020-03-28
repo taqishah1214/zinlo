@@ -10,5 +10,6 @@ namespace Zinlo.ExceptionLogger
    public interface IExceptionLoggerAppService
     {
         Task<PagedResultDto<ExceptionLoggerForViewDto>> GetAll(GetAllExceptionsInput input);
+        Task RollBackTrialBalance(long Id);
     }
 }

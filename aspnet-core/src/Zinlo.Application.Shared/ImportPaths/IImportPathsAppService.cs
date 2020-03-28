@@ -8,6 +8,7 @@ namespace Zinlo.ImportPaths
 {
   public  interface IImportPathsAppService
     {
-        Task SaveFilePath(ImportPathDto input);
+        long SaveFilePath(ImportPathDto input);
+        Task UpdateFilePath(ImportPathDto input);
     }
 }

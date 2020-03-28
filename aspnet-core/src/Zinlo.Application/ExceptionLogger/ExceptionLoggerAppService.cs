@@ -20,15 +20,18 @@ namespace Zinlo.ExceptionLogger
     public class ExceptionLoggerAppService : ZinloAppServiceBase, IExceptionLoggerAppService
     {
         private readonly IRepository<ImportsPath, long> _importsPathRepository;
+        private readonly IRepository<ChartsofAccount.ChartsofAccount,long> _chartOfAccountRepository;
         private readonly IConfigurationRoot _appConfiguration;
         public UserManager userManager { get; set; }
         public ExceptionLoggerAppService(IRepository<ImportsPath, long> importsPathRepository,
             Microsoft.Extensions.Configuration.IConfiguration configuration,
-            IWebHostEnvironment env
+            IRepository<ChartsofAccount.ChartsofAccount, long> chartOfAccountRepository,
+        IWebHostEnvironment env
             )
         {
             _importsPathRepository = importsPathRepository;
             _appConfiguration = env.GetAppConfiguration();
+            _chartOfAccountRepository = chartOfAccountRepository;
         }
       
         public async Task<PagedResultDto<ExceptionLoggerForViewDto>> GetAll(GetAllExceptionsInput input)
@@ -45,10 +48,11 @@ namespace Zinlo.ExceptionLogger
                                {
                                    Id = o.Id,
                                    Type = o.Type,
-                                   FilePath = baseUrl + o.FilePath,
+                                   FilePath = o.FilePath != ""? baseUrl + o.FilePath:"",
                                    CreationTime = o.CreationTime,
                                    Records = o.SuccessRecordsCount + "/" + (o.FailedRecordsCount + o.SuccessRecordsCount).ToString(),
-                                   CreatedBy = o.User.FullName
+                                   CreatedBy = o.User.EmailAddress,
+                                   IsRollBacked = o.IsRollBacked
                                };
 
             return new PagedResultDto<ExceptionLoggerForViewDto>(
@@ -56,6 +60,20 @@ namespace Zinlo.ExceptionLogger
                accountsList.ToList()
            );
 
+        }
+
+        public async Task RollBackTrialBalance(long Id)
+        {
+          var result = _chartOfAccountRepository.GetAll().Where(x => x.VersionId == Id).ToList();
+            foreach (var item in result)
+            {
+                item.TrialBalance = 0;
+                item.VersionId = 0;              
+               await _chartOfAccountRepository.UpdateAsync(item);
+            }
+            var versionFile = _importsPathRepository.FirstOrDefault(Id);
+            versionFile.IsRollBacked = true;
+            _importsPathRepository.Update(versionFile);
         }
     }
 }

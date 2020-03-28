@@ -217,9 +217,12 @@ namespace Zinlo.ChartsofAccount
                 chartsOfAccountsExcellExporterDto.AccountName = item.AccountName;
                 chartsOfAccountsExcellExporterDto.AccountNumber = item.AccountNumber;
                 chartsOfAccountsExcellExporterDto.AccountType = GetAccounttypeById((int)item.AccountType);
-                chartsOfAccountsExcellExporterDto.AssignedUser = item.Assignee.FullName;
+                chartsOfAccountsExcellExporterDto.AssignedUser = item.Assignee.EmailAddress;
                 chartsOfAccountsExcellExporterDto.AccountSubType = item.AccountSubType.Title;
-                
+                chartsOfAccountsExcellExporterDto.ReconciliationType = GetReconcilationType((int)item.ReconciliationType);
+                chartsOfAccountsExcellExporterDto.ReconciliationAs = GetReconcilationAsValue( (int)item.Reconciled);
+
+
                 listToExport.Add(chartsOfAccountsExcellExporterDto);
             }
             return _chartsOfAccountsListExcelExporter.ExportToFile(listToExport);
@@ -260,16 +263,17 @@ namespace Zinlo.ChartsofAccount
             return type;
         }
 
-        public async Task<bool> CheckAccountForTrialBalance(string accountName, string accountNumber,string trialBalance)
+        public async Task<bool> CheckAccountForTrialBalance(ChartsOfAccountsTrialBalanceExcellImportDto input)
         {
             var result = _chartsofAccountRepository.GetAll()
-                        .Where(x => x.AccountName.ToLower() == accountName.Trim().ToLower()
-                        && x.AccountNumber.ToLower() == accountNumber.Trim().ToLower())
+                        .Where(x => x.AccountName.ToLower() == input.AccountName.Trim().ToLower()
+                        && x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower())
                        // && CompareDates(x.CreationTime) == 0)                       
                         .FirstOrDefault();
             if(result != null)
             {
-                result.TrialBalance = Convert.ToDecimal(trialBalance);
+                result.TrialBalance = Convert.ToDecimal(input.Balance);
+                result.VersionId = input.VersionId;
                await _chartsofAccountRepository.UpdateAsync(result);     
                 
                 return true;
@@ -316,5 +320,53 @@ namespace Zinlo.ChartsofAccount
 
         }
 
+        public bool CheckAccounts()
+        {
+            var result = _chartsofAccountRepository.GetAll().Count();
+            if(result > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public string GetReconcilationType(int value)
+        {
+            if(value == 1)
+            {
+                return "Itemized";
+            }
+            else
+            {
+                return "Amortization";
+            }
+           
+
+        }
+        public string GetReconcilationAsValue(int value)
+        {
+            if (value == 1)
+            {
+                return "NetAmount";
+            }
+           else if(value == 2)
+            {
+                return "BeginningAmount";
+            }
+            else if(value == 3)
+            {
+                
+               return "AccruedAmount";
+            }
+            else
+            {
+                return string.Empty;
+            }
+
+            
+        }
     }
 }
