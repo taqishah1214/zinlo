@@ -6301,7 +6301,7 @@ export class EditionServiceProxy {
 }
 
 @Injectable()
-export class ExceptionLoggerServiceProxy {
+export class ErrorLogServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -6318,8 +6318,8 @@ export class ExceptionLoggerServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfExceptionLoggerForViewDto> {
-        let url_ = this.baseUrl + "/api/services/app/ExceptionLogger/GetAll?";
+    getAll(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfErrorLogForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/ErrorLog/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
         else if (filter !== undefined)
@@ -6353,14 +6353,14 @@ export class ExceptionLoggerServiceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<PagedResultDtoOfExceptionLoggerForViewDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfErrorLogForViewDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PagedResultDtoOfExceptionLoggerForViewDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfErrorLogForViewDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfExceptionLoggerForViewDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfErrorLogForViewDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -6371,7 +6371,7 @@ export class ExceptionLoggerServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfExceptionLoggerForViewDto.fromJS(resultData200);
+            result200 = PagedResultDtoOfErrorLogForViewDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6379,7 +6379,7 @@ export class ExceptionLoggerServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PagedResultDtoOfExceptionLoggerForViewDto>(<any>null);
+        return _observableOf<PagedResultDtoOfErrorLogForViewDto>(<any>null);
     }
 }
 
@@ -20366,7 +20366,7 @@ export interface IMoveTenantsToAnotherEditionDto {
     targetEditionId: number;
 }
 
-export class ExceptionLoggerForViewDto implements IExceptionLoggerForViewDto {
+export class ErrorLogForViewDto implements IErrorLogForViewDto {
     id!: number;
     type!: string | undefined;
     records!: string | undefined;
@@ -20374,7 +20374,7 @@ export class ExceptionLoggerForViewDto implements IExceptionLoggerForViewDto {
     filePath!: string | undefined;
     creationTime!: moment.Moment;
 
-    constructor(data?: IExceptionLoggerForViewDto) {
+    constructor(data?: IErrorLogForViewDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -20394,9 +20394,9 @@ export class ExceptionLoggerForViewDto implements IExceptionLoggerForViewDto {
         }
     }
 
-    static fromJS(data: any): ExceptionLoggerForViewDto {
+    static fromJS(data: any): ErrorLogForViewDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ExceptionLoggerForViewDto();
+        let result = new ErrorLogForViewDto();
         result.init(data);
         return result;
     }
@@ -20413,7 +20413,7 @@ export class ExceptionLoggerForViewDto implements IExceptionLoggerForViewDto {
     }
 }
 
-export interface IExceptionLoggerForViewDto {
+export interface IErrorLogForViewDto {
     id: number;
     type: string | undefined;
     records: string | undefined;
@@ -20422,11 +20422,11 @@ export interface IExceptionLoggerForViewDto {
     creationTime: moment.Moment;
 }
 
-export class PagedResultDtoOfExceptionLoggerForViewDto implements IPagedResultDtoOfExceptionLoggerForViewDto {
+export class PagedResultDtoOfErrorLogForViewDto implements IPagedResultDtoOfErrorLogForViewDto {
     totalCount!: number;
-    items!: ExceptionLoggerForViewDto[] | undefined;
+    items!: ErrorLogForViewDto[] | undefined;
 
-    constructor(data?: IPagedResultDtoOfExceptionLoggerForViewDto) {
+    constructor(data?: IPagedResultDtoOfErrorLogForViewDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -20441,14 +20441,14 @@ export class PagedResultDtoOfExceptionLoggerForViewDto implements IPagedResultDt
             if (Array.isArray(data["items"])) {
                 this.items = [] as any;
                 for (let item of data["items"])
-                    this.items!.push(ExceptionLoggerForViewDto.fromJS(item));
+                    this.items!.push(ErrorLogForViewDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): PagedResultDtoOfExceptionLoggerForViewDto {
+    static fromJS(data: any): PagedResultDtoOfErrorLogForViewDto {
         data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfExceptionLoggerForViewDto();
+        let result = new PagedResultDtoOfErrorLogForViewDto();
         result.init(data);
         return result;
     }
@@ -20465,9 +20465,9 @@ export class PagedResultDtoOfExceptionLoggerForViewDto implements IPagedResultDt
     }
 }
 
-export interface IPagedResultDtoOfExceptionLoggerForViewDto {
+export interface IPagedResultDtoOfErrorLogForViewDto {
     totalCount: number;
-    items: ExceptionLoggerForViewDto[] | undefined;
+    items: ErrorLogForViewDto[] | undefined;
 }
 
 export class CreateFriendshipRequestInput implements ICreateFriendshipRequestInput {

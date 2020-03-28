@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Zinlo.ExceptionLogger.Dto
+namespace Zinlo.ErrorLog.Dto
 {
-    public class ExceptionLoggerForViewDto
+    public class ErrorLogForViewDto
     {
         public long Id { get; set; }
         public string Type { get; set; }

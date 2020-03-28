@@ -38,7 +38,7 @@ export class AppNavigationService {
 
             new AppMenuItem('Reconciliation', 'Pages.Reconciliation', 'flaticon-interface-8', '/app/main/reconcilliation', [ 
             ]),
-            new AppMenuItem('Error Log', 'Pages.Reconciliation', 'flaticon-interface-8', '/app/main/exceptions', [ 
+            new AppMenuItem('ErrorLog', '', 'flaticon-interface-8', '/app/main/errorlog', [ 
             ]),
 
            // new AppMenuItem('Tests', 'Pages.Tests', 'flaticon-more', '/app/main/tests/tests'),
@@ -49,7 +49,7 @@ export class AppNavigationService {
             new AppMenuItem('Management', 'Pages.Administration.TimeManagements', 'flaticon-business', '/app/admin/management'),
             
                 //new AppMenuItem('Languages', 'Pages.Administration.Languages', 'flaticon-tabs', '/app/admin/languages'),
-                //new AppMenuItem('AuditLogs', 'Pages.Administration.AuditLogs', 'flaticon-folder-1', '/app/admin/auditLogs'),
+                new AppMenuItem('AuditLogs', 'Pages.Administration.AuditLogs', 'flaticon-folder-1', '/app/admin/auditLogs'),
                 //new AppMenuItem('Maintenance', 'Pages.Administration.Host.Maintenance', 'flaticon-lock', '/app/admin/maintenance'),
                 //new AppMenuItem('Subscription', 'Pages.Administration.Tenant.SubscriptionManagement', 'flaticon-refresh', '/app/admin/subscription-management'),
                 //new AppMenuItem('VisualSettings', 'Pages.Administration.UiCustomization', 'flaticon-medical', '/app/admin/ui-customization'),
