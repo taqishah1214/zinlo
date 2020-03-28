@@ -38,7 +38,7 @@ export class AppNavigationService {
 
             new AppMenuItem('Reconciliation', 'Pages.Reconciliation', 'flaticon-interface-8', '/app/main/reconcilliation', [ 
             ]),
-            new AppMenuItem('ErrorLog', '', 'flaticon-interface-8', '/app/main/errorlog', [ 
+            new AppMenuItem('ImportLog', '', 'flaticon-interface-8', '/app/main/errorlog', [ 
             ]),
 
            // new AppMenuItem('Tests', 'Pages.Tests', 'flaticon-more', '/app/main/tests/tests'),

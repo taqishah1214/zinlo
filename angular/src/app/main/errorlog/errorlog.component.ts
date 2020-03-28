@@ -49,8 +49,7 @@ export class ErrorLogComponent extends AppComponentBase {
             this.exceptionsList.array.forEach(element => {
               element.filePath = AppConsts.remoteServiceBaseUrl + element.filePath;
             });
-            this.primengTableHelper.records = [];
-            this.primengTableHelper.records = this.exceptionsList;
+         
         });
     }
     downloadFile(path){
@@ -58,6 +57,11 @@ export class ErrorLogComponent extends AppComponentBase {
     }
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
-    }   
+    }
+    rollBack(id) : void{
+        this._errorlogServiceProxy.rollBackTrialBalance(id).subscribe(x=>{
+           this.getAllErrorLog();
+        })
+        }   
 }
 

@@ -25,7 +25,7 @@ namespace Zinlo.ChartsofAccount
         public double Balance { get; set; }
         public bool Lock { get; set; }
         public Decimal TrialBalance { get; set; }
-      
+        public long VersionId { get; set; }
 
     }
     public enum ReconciliationType
@@ -40,10 +40,10 @@ namespace Zinlo.ChartsofAccount
         Liability = 3
     }
 
-    public enum  Status
+    public enum Status
     {
         InProcess = 1,
-        Open = 2 , 
+        Open = 2,
         Complete = 3
     }
 

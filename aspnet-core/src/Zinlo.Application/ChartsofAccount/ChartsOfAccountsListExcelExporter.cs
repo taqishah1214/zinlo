@@ -40,7 +40,9 @@ namespace Zinlo.ChartsofAccount
                         L("AccountNumber"),
                         L("AccountType"),
                           L("AccountSubType"),
-                        L("AssignedUser")
+                        L("AssignedUser"),
+                         L("ReconciliationType"),
+                         L("ReconciliationAs")
                         );
 
                     AddObjects(
@@ -49,7 +51,9 @@ namespace Zinlo.ChartsofAccount
                         _ => _.AccountNumber,
                          _ => _.AccountType,
                           _ => _.AccountSubType,
-                          _ => _.AssignedUser
+                          _ => _.AssignedUser,
+                           _ => _.ReconciliationType,
+                            _ => _.ReconciliationAs
                         );
 
                     for (var i = 1; i <= 9; i++)

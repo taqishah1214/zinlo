@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-using Abp.Application.Services;
-using Abp.Application.Services.Dto;
+﻿using Abp.Application.Services.Dto;
+using System.Threading.Tasks;
 using Zinlo.ErrorLog.Dto;
 
 namespace Zinlo.ErrorLog
 {
-   public interface IErrorLogAppService : IApplicationService
+    public interface IErrorLogAppService
     {
         Task<PagedResultDto<ErrorLogForViewDto>> GetAll(GetAllErroLogInput input);
+        Task RollBackTrialBalance(long id);
     }
 }

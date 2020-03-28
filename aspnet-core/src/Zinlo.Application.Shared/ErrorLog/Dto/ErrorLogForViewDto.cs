@@ -10,5 +10,6 @@ namespace Zinlo.ErrorLog.Dto
         public string CreatedBy { get; set; }
         public string FilePath { get; set; }
         public DateTime CreationTime { get; set; }
+        public bool IsRollBacked { get; set; }
     }
 }

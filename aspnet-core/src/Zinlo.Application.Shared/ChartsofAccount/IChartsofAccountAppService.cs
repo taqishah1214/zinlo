@@ -9,7 +9,7 @@ using Zinlo.Dto;
 
 namespace Zinlo.ChartsofAccount
 {
-   public interface IChartsofAccountAppService : IApplicationService
+    public interface IChartsofAccountAppService : IApplicationService
     {
         Task<double> CreateOrEdit(CreateOrEditChartsofAccountDto input);
         Task Delete(long id);
@@ -18,12 +18,13 @@ namespace Zinlo.ChartsofAccount
         Task ChangeAccountsAssignee(long accountId, long assigneeId);
         Task ChangeStatus(long accountId, long selectedStatusId);
         Task AddandUpdateBalance(double balance, long id);
-        Task <int> CheckReconcilled(long id);
+        Task<int> CheckReconcilled(long id);
         Task<FileDto> GetChartsofAccountToExcel(long id);
-        Task<bool> CheckAccountForTrialBalance(string accountName, string accountNumber, string trialBalance);
+        Task<bool> CheckAccountForTrialBalance(ChartsOfAccountsTrialBalanceExcellImportDto input);
         Task<double> GetTrialBalanceofAccount(long id);
         bool CheckAccountNoExist(string AccountNumber);
-        
+
         Task<FileDto> LoadChartsofAccountTrialBalanceToExcel();
+        bool CheckAccounts();
     }
 }
