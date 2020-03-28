@@ -333,15 +333,26 @@ namespace Zinlo.ChartsofAccount
                 return false;
             }
         }
+        public string GetReconcilationType(int value)
+        {
+            if (value == 1)
+            {
+                return "Itemized";
+            }
+            else
+            {
+                return "Amortization";
+            }
 
-        public async Task ShiftAmortizedItems(double previousAccountId, double newAccountId,DateTime closingMonth)
+        }
+        public async Task ShiftAmortizedItems(double previousAccountId, double newAccountId, DateTime closingMonth)
         {
             var amortizedItemList = _amortizationRepository.GetAll().Where(e => e.ChartsofAccount.Id == previousAccountId).Include(e => e.ChartsofAccount);
             var itemList = (from o in amortizedItemList.ToList()
 
                             select new CreateOrEditAmortizationDto()
                             {
-                                Id =0,
+                                Id = 0,
                                 InoviceNo = o.InoviceNo,
                                 JournalEntryNo = o.JournalEntryNo,
                                 StartDate = o.StartDate,
@@ -393,7 +404,7 @@ namespace Zinlo.ChartsofAccount
 
         public async Task ShiftChartsOfAccountToSpecficMonth(DateTime ClosingMonth)
         {
-           var accountsExistCheck = await _chartsofAccountRepository.FirstOrDefaultAsync(e => e.CreationTime.Month == ClosingMonth.Month);
+            var accountsExistCheck = await _chartsofAccountRepository.FirstOrDefaultAsync(e => e.CreationTime.Month == ClosingMonth.Month);
             if (accountsExistCheck == null)
             {
                 var currentMonthAccounts = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == DateTime.Now.Month).Include(a => a.Assignee).Include(a => a.AccountSubType);
@@ -427,6 +438,8 @@ namespace Zinlo.ChartsofAccount
                     {
                         await ShiftAmortizedItems(PreviousAccountId, newAccountId, ClosingMonth);
                     }
+                }
+            }
         }
         public string GetReconcilationAsValue(int value)
         {
@@ -448,7 +461,9 @@ namespace Zinlo.ChartsofAccount
                 return string.Empty;
             }
 
-            }
         }
     }
 }
+
+
+
