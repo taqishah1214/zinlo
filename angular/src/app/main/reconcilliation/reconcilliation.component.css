@@ -439,6 +439,7 @@ form.task-report-form select:focus option {
 
 .task-box:hover{
     background-color: #F1F2FC;
+    cursor: pointer;
 }
 .record-card-body table span.category-name {
     padding: 0 8px;
@@ -903,6 +904,7 @@ table.table.record-table td, table.table.record-table th {
     width: 20px;
 }
 .assignee-cell .kt-user-card-v2__pic{
+    cursor: pointer;
     display: flex;
     align-items: center;
 }

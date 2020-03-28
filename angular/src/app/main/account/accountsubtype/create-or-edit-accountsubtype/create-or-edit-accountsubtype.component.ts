@@ -2,6 +2,8 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { AccountSubTypeServiceProxy, CreateOrEditAccountSubTypeDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-create-or-edit-accountsubtype',
@@ -11,6 +13,7 @@ import { Router } from '@angular/router';
 export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implements OnInit {
   accountsSubType : CreateOrEditAccountSubTypeDto = new CreateOrEditAccountSubTypeDto()
   accountSubTypeId : number;
+  saving = false;
   constructor(private accountSubTypeServiceProxy: AccountSubTypeServiceProxy , injector: Injector,private _router: Router) {
     super(injector) 
   }
@@ -25,7 +28,8 @@ export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implem
   }
 
   onSubmit() : void {
-   this.accountSubTypeServiceProxy.createOrEdit(this.accountsSubType).subscribe(result => {
+    this.saving = true;  
+   this.accountSubTypeServiceProxy.createOrEdit(this.accountsSubType).pipe(finalize(() => { this.saving = false; })).subscribe(result => {
     this.notify.success(this.l('SavedSuccessfully'));
     this.redirect(this.accountsSubType.title,result);
     

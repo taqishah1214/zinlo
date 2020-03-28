@@ -11,5 +11,10 @@ namespace Zinlo.Reconciliation.Dtos
 
         public long ChartofAccountId { get; set; }
 
+        public DateTime MonthFilter { get; set; }
+
+        public string AccountNumer { get; set; }
+
+
     }
 }

@@ -41,14 +41,14 @@
                                                             <div class="form-group">
                                                                 <label for="InvoiceNo">Invoice No.</label>
                                                                 <input type="text" name="inoviceNo" class="form-control"
-                                                                    [(ngModel)]="amortizationDto.inoviceNo">
+                                                                    [(ngModel)]="amortizationDto.inoviceNo" autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="TaskName">Journal Entry No.</label>
                                                                 <input type="text" name="accountNumber" class="form-control"
-                                                                    [(ngModel)]="amortizationDto.journalEntryNo">
+                                                                    [(ngModel)]="amortizationDto.journalEntryNo" autocomplete="off" >
                                                             </div>
                                                         </div>
                                                     </div>
@@ -81,12 +81,12 @@
                                                         <div class="col-md-6">
                                                             <label for="TaskName">Amount</label>
                                                             <input type="text" name="amount" class="form-control"
-                                                            [(ngModel)]="amortizationDto.amount">
+                                                            [(ngModel)]="amortizationDto.amount" autocomplete="off">
                                                         </div>
                                                         <div *ngIf="accumulateAmount" class="col-md-6">
                                                             <label for="TaskName">Accumulate Amount</label>
                                                             <input type="text" name="accomulateAmount" class="form-control"
-                                                            [(ngModel)]="amortizationDto.accomulateAmount">
+                                                            [(ngModel)]="amortizationDto.accomulateAmount" autocomplete="off">
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -95,7 +95,7 @@
                                                                 <label for="description">Description</label>
                                                                 <textarea class="form-control" required [(ngModel)]="amortizationDto.description"
                                                                     id="description" name="description" 
-                                                                     ></textarea>
+                                                                    autocomplete="off" ></textarea>
                                                             </div>   
                                                         </div>
                                                     </div>
@@ -120,7 +120,7 @@
                                             <div class="kt-portlet__head">
                                             </div>
                                             <div class="form-group margin-top-5">
-                                                <button class="btn btn-brand" type="submit">
+                                                <button [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" class="btn btn-brand" type="submit">
                                                     {{buttonTitle}}
                                                 </button>
                                             </div>

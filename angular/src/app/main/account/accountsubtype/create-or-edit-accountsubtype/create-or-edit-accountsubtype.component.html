@@ -22,7 +22,7 @@
                                 <div class="form-group">
                                     <label for="title">Title</label>
                                     <input autofocus type="text" class="form-control" id="title" name="title"
-                                        [(ngModel)]="accountsSubType.title">
+                                    autocomplete="off" [(ngModel)]="accountsSubType.title">
                                 </div>
                             </div>
                         </div>
@@ -30,14 +30,14 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="description">Description</label>
-                                        <textarea class="form-control" [(ngModel)]="accountsSubType.description"  id="description" name="description"></textarea>
+                                        <textarea class="form-control" [(ngModel)]="accountsSubType.description" autocomplete="off" id="description" name="description"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="kt-portlet__head">
                         </div>
                         <div class="form-group margin-top-5">
-                            <button class="btn btn-brand" type="submit">
+                            <button [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" class="btn btn-brand" type="submit">
                                 Save
                             </button>
                         </div>

@@ -26,14 +26,14 @@
                                         <div class="form-group">
                                             <label for="InvoiceNo">Invoice No.</label>
                                             <input type="text" name="inoviceNo" class="form-control"
-                                                [(ngModel)]="itemizedDto.inoviceNo">
+                                                [(ngModel)]="itemizedDto.inoviceNo" autocomplete="off" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="TaskName">Journal Entry No.</label>
                                             <input type="text" name="journalEntryNo" class="form-control"
-                                                [(ngModel)]="itemizedDto.journalEntryNo">
+                                                [(ngModel)]="itemizedDto.journalEntryNo" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                                         <div class="form-group">
                                             <label for="Amount">Amount</label>
                                             <input type="text" name="amount" class="form-control"
-                                                [(ngModel)]="itemizedDto.amount">
+                                                [(ngModel)]="itemizedDto.amount" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
                                             <label for="description">Description</label>
                                             <textarea class="form-control" required [(ngModel)]="itemizedDto.description"
                                                 id="description" name="description" 
-                                                 ></textarea>
+                                                autocomplete="off" ></textarea>
                                         </div>   
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@
                         <div class="kt-portlet__head">
                         </div>
                         <div class="form-group margin-top-5">
-                            <button (click)="SaveItem()" class="btn btn-brand" type="submit">
+                            <button [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="SaveItem()" class="btn btn-brand" type="submit">
                                 {{Save}}
                             </button>                     
                         </div>

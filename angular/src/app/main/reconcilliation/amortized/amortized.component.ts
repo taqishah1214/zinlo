@@ -2,12 +2,15 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import * as _ from 'lodash';
-import { CategoriesServiceProxy, AmortizationServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AmortizationServiceProxy ,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto } from '@shared/service-proxies/service-proxies';
 import { UserInformation } from '../../CommonFunctions/UserInformation';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { AppConsts } from '@shared/AppConsts';
+import * as moment from 'moment';
+import { add, subtract } from 'add-subtract-date';
+
 @Component({
   selector: 'app-amortized',
   templateUrl: './amortized.component.html',
@@ -33,19 +36,21 @@ export class AmortizedComponent extends AppComponentBase {
   accuredAmount :any;
   netAmount : any;
   itemList : any = [];
-  monthFilter = '100/2000';
+  monthFilter = new Date();
   trialBalanceBeginning : any = 0.0;
   trialBalanceAccured: any = 0.0;
   trialBalanceNet:any = 0.0;
   varianceBeginning : any =0.0;
   varianceAccured : any = 0.0;
-  varianceNet : any = 0.0
-
+  varianceNet : any = 0.0;
+  AccountNumber : any  = "";
+  CreateTimeManagementDto : CreateOrEditTimeManagementDto = new CreateOrEditTimeManagementDto()
   constructor(
     injector: Injector,
     private _router: Router,
     private userInfo: UserInformation,
-    private _amortizationService:AmortizationServiceProxy
+    private _amortizationService:AmortizationServiceProxy,
+    private _timeManagementsServiceProxy :TimeManagementsServiceProxy,
 
   ) {
     super(injector);
@@ -76,8 +81,9 @@ export class AmortizedComponent extends AppComponentBase {
   this.primengTableHelper.showLoadingIndicator();
   this._amortizationService.getAll(
     this.filterText,
-    this.accountId,
-    this.monthFilter,
+    this.AccountNumber == "" ? this.accountId : 0,
+    moment(this.monthFilter),
+    this.AccountNumber,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
     this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -125,11 +131,32 @@ export class AmortizedComponent extends AppComponentBase {
   });
 }
 
-
 filterByMonth(event): void {
-  var month = event.getMonth() + 1;
-  this.monthFilter = month + "/" + event.getFullYear()
-  this.getAllAmortizedList(this.primeNgEvent);
+  this.monthFilter = new Date(add(event, 2, "day"));;
+  this._timeManagementsServiceProxy.checkManagementExist(moment(this.monthFilter)).subscribe(result => { 
+    if (result)
+    {
+      this.AccountNumber = this.accountNo;
+      this.getAllAmortizedList(this.primeNgEvent);
+    }
+    else
+    {
+      this.CreateTimeManagementDto.month =  moment(this.monthFilter)
+      this.CreateTimeManagementDto.status =  false
+      this.message.confirm(
+        'You want to define this month.',
+        this.l(' Selected month does not Exist'),
+        (isConfirmed) => {
+          if (isConfirmed) {
+            this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
+              this.AccountNumber = this.accountNo;
+              this.getAllAmortizedList(this.primeNgEvent);
+             })      
+          }
+        }
+      );
+    }  
+  })
 }
 
 getExtensionImagePath(str) {
