@@ -32,8 +32,8 @@ namespace Zinlo.ChartsofAccount.Importing
             var chartsofaccount = new ChartsOfAccountsTrialBalanceExcellImportDto();
             try
             {
-                chartsofaccount.AccountNumber = GetRequiredValueFromRowOrNull(worksheet, row, 1, nameof(chartsofaccount.AccountNumber), exceptionMessage);
-                chartsofaccount.AccountName = GetRequiredValueFromRowOrNull(worksheet, row,2, nameof(chartsofaccount.AccountName), exceptionMessage);
+                chartsofaccount.AccountName = GetRequiredValueFromRowOrNull(worksheet, row, 1, nameof(chartsofaccount.AccountName), exceptionMessage);
+                chartsofaccount.AccountNumber = GetRequiredValueFromRowOrNull(worksheet, row,2, nameof(chartsofaccount.AccountNumber), exceptionMessage);
                 chartsofaccount.Balance = GetRequiredValueFromRowOrNull(worksheet, row, 3, nameof(chartsofaccount.Balance), exceptionMessage);             
             }
             catch (System.Exception exception)
