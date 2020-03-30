@@ -84,6 +84,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
 import { DropdownModule } from 'primeng/dropdown';
+import { ImportLogComponent } from '../admin/importlog/importlog.component';
 
 // Metronic
 import { PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -125,7 +126,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         DropdownModule
     ],
     declarations: [
-		ManagementComponent,
+        ManagementComponent,
+        ImportLogComponent,
 		CreateOrEditTimeManagementModalComponent,
         UsersComponent,
         PermissionComboComponent,

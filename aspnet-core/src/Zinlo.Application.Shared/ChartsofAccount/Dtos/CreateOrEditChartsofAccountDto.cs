@@ -1,11 +1,8 @@
 ﻿using Abp.Application.Services.Dto;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Zinlo.ChartsofAccount.Dtos
 {
-   public class CreateOrEditChartsofAccountDto : CreationAuditedEntityDto<int?>
+    public class CreateOrEditChartsofAccountDto : CreationAuditedEntityDto<int>
     {
         public virtual string AccountName { get; set; }
         public virtual string AccountNumber { get; set; }

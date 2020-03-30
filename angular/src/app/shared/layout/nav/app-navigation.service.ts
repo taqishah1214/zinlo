@@ -38,8 +38,6 @@ export class AppNavigationService {
 
             new AppMenuItem('Reconciliation', 'Pages.Reconciliation', 'flaticon-interface-8', '/app/main/reconcilliation', [ 
             ]),
-            new AppMenuItem('ImportLog', '', 'flaticon-interface-8', '/app/main/errorlog', [ 
-            ]),
 
            // new AppMenuItem('Tests', 'Pages.Tests', 'flaticon-more', '/app/main/tests/tests'),
              new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
@@ -47,7 +45,7 @@ export class AppNavigationService {
                 new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
                 new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),
             new AppMenuItem('Management', 'Pages.Administration.TimeManagements', 'flaticon-business', '/app/admin/management'),
-            
+            new AppMenuItem('ImportLog', '', 'flaticon-interface-8', '/app/admin/importlog', [ ]),
                 //new AppMenuItem('Languages', 'Pages.Administration.Languages', 'flaticon-tabs', '/app/admin/languages'),
                 new AppMenuItem('AuditLogs', 'Pages.Administration.AuditLogs', 'flaticon-folder-1', '/app/admin/auditLogs'),
                 //new AppMenuItem('Maintenance', 'Pages.Administration.Host.Maintenance', 'flaticon-lock', '/app/admin/maintenance'),

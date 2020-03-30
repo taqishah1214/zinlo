@@ -4,15 +4,17 @@ import { Table } from 'primeng/components/table/table';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import * as _ from 'lodash';
-import { ErrorLogServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ImportLogServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppConsts } from '@shared/AppConsts';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
 
 @Component({
-  selector: 'app-errorlog',
-  templateUrl: './errorlog.component.html',
-  styleUrls: ['./errorlog.component.css']
+  selector: 'app-importlog',
+  templateUrl: './importlog.component.html',
+  styleUrls: ['./importlog.component.css'],
+  animations: [appModuleAnimation()]
 })
-export class ErrorLogComponent extends AppComponentBase {
+export class ImportLogComponent extends AppComponentBase {
 
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
@@ -24,19 +26,19 @@ export class ErrorLogComponent extends AppComponentBase {
    
     constructor(
         injector: Injector,
-        private _errorlogServiceProxy: ErrorLogServiceProxy) {
+        private _importlogServiceProxy: ImportLogServiceProxy) {
         super(injector);
     }
     ngOnInit() {
     }
 
-    getAllErrorLog(event?: LazyLoadEvent) {
+    getAllImportLog(event?: LazyLoadEvent) {
         if (this.primengTableHelper.shouldResetPaging(event)) {
             this.paginator.changePage(0);
             return;
         }
         this.primengTableHelper.showLoadingIndicator();
-        this._errorlogServiceProxy.getAll(
+        this._importlogServiceProxy.getAll(
             this.filterText,
             this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getSkipCount(this.paginator, event),
@@ -60,8 +62,8 @@ export class ErrorLogComponent extends AppComponentBase {
         this.paginator.changePage(this.paginator.getPage());
     }
     rollBack(id) : void{
-        this._errorlogServiceProxy.rollBackTrialBalance(id).subscribe(x=>{
-           this.getAllErrorLog();
+        this._importlogServiceProxy.rollBackTrialBalance(id).subscribe(x=>{
+           this.getAllImportLog();
         })
         }   
 }

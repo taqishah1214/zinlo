@@ -51,7 +51,7 @@ import { ZeroRefreshTokenService } from '@account/auth/zero-refresh-token.servic
         ApiServiceProxies.ChartsofAccountServiceProxy,
         ApiServiceProxies.AmortizationServiceProxy,
         ApiServiceProxies.ItemizationServiceProxy,
-        ApiServiceProxies.ErrorLogServiceProxy,
+        ApiServiceProxies.ImportLogServiceProxy,
         { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]

@@ -20,21 +20,12 @@ namespace Zinlo.Categories
     public class CategoriesAppService : ZinloAppServiceBase, ICategoriesAppService
     {
         private readonly IRepository<Category, long> _categoryRepository;
-        private readonly UserManager _userManager;
         private readonly IProfileAppService _profileAppService;
         public CategoriesAppService(IRepository<Category, long> categoryRepository, UserManager userManager, IRepository<User, long> userRepository, IProfileAppService profileAppService)
         {
             _categoryRepository = categoryRepository;
-            _userManager = userManager;
             _profileAppService = profileAppService;
         }
-        private string GetUserNameById(long UserId)
-        {
-            string userName = string.Empty;
-            userName = _userManager.GetUserById(UserId).FullName;
-            return userName;
-        }
-
         public async Task<PagedResultDto<GetCategoryForViewDto>> GetAll(GetAllCategoriesInput input)
         {
             var filteredCategories = _categoryRepository.GetAll()
@@ -48,9 +39,12 @@ namespace Zinlo.Categories
             var mappedData = ObjectMapper.Map<List<GetCategoryForViewDto>>(pagedAndFilteredCategories);
             foreach (var data in mappedData)
             {
-                var userDetail = UserManager.GetUserById((long)data.UserId);
-                data.CreatedBy = userDetail.FullName;
-                data.ProfilePicture = userDetail.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)userDetail.ProfilePictureId).Result.ProfilePicture : "";
+                if (data.UserId != null)
+                {
+                    var userDetail = UserManager.GetUserById((long)data.UserId);
+                    data.CreatedBy = userDetail.FullName;
+                    data.ProfilePicture = userDetail.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)userDetail.ProfilePictureId).Result.ProfilePicture : "";
+                }
             }
             return new PagedResultDto<GetCategoryForViewDto>(
                 totalCount,
@@ -99,15 +93,19 @@ namespace Zinlo.Categories
             {
                 category.TenantId = (int)AbpSession.TenantId;
             }
-           long id  =  await _categoryRepository.InsertAndGetIdAsync(category);
+            var id  =  await _categoryRepository.InsertAndGetIdAsync(category);
             return id;
         }
 
         [AbpAuthorize(AppPermissions.Pages_Categories_Edit)]
         protected virtual async Task<long> Update(CreateOrEditCategoryDto input)
         {
-            var category = await _categoryRepository.FirstOrDefaultAsync((int)input.Id);
-            ObjectMapper.Map(input, category);
+            if (input.Id != null)
+            {
+                var category = await _categoryRepository.FirstOrDefaultAsync((int)input.Id);
+                ObjectMapper.Map(input, category);
+            }
+
             return (long)input.Id;
         }
 
@@ -136,8 +134,8 @@ namespace Zinlo.Categories
         {
             if(input != null)
             {
-                bool IsExist = _categoryRepository.GetAll().Any(x => x.Title.Trim().ToLower() == input.Trim().ToLower());
-                return IsExist;
+                bool isExist = _categoryRepository.GetAll().Any(x => x.Title.Trim().ToLower() == input.Trim().ToLower());
+                return isExist;
             }
             else
             {
