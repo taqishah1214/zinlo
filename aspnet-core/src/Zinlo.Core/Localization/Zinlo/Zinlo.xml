@@ -105,6 +105,8 @@
     <text name="Yes">Yes</text>
     <text name="No">No</text>
     <text name="MySettings">My settings</text>
+    <text name="SuccessfullyRolledBack">Successfully rolled back.</text>
+    <text name="RollBackWarningMessage">Trial balance will be rolled back.</text>
     <text name="Logout">Logout</text>
     <text name="Reset">Reset</text>
     <text name="ResetPermissionsTooltip">This button immediately resets user specific permission settings and saves changes. The user will only have permissions from assigned roles.</text>

@@ -62,9 +62,19 @@ export class ImportLogComponent extends AppComponentBase {
         this.paginator.changePage(this.paginator.getPage());
     }
     rollBack(id) : void{
-        this._importlogServiceProxy.rollBackTrialBalance(id).subscribe(x=>{
-           this.getAllImportLog();
-        })
+        this.message.confirm(
+            this.l('RollBackWarningMessage'),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._importlogServiceProxy.rollBackTrialBalance(id)
+                        .subscribe(() => {
+                            this.getAllImportLog();
+                            this.notify.success(this.l('SuccessfullyRolledBack'));
+                        });
+                }
+            }
+        );
         }   
 }
 

@@ -33,25 +33,28 @@
                                 [resizableColumns]="primengTableHelper.resizableColumns">
                                 <ng-template pTemplate="header">
                                     <tr> 
-                                        <th style="width: 200px" pSortableColumn="creationTime">
+                                        <th style="width: 150px" pSortableColumn="creationTime">
                                             {{l('Date')}}
                                             <p-sortIcon field="record.creationTime"></p-sortIcon>
                                         </th>
-                                        <th style="width: 150px"> {{l('Type')}} </th>
+                                        <th style="width: 150px"  pSortableColumn="type"> 
+                                            {{l('Type')}} 
+                                            <p-sortIcon field="record.type"></p-sortIcon>
+                                        </th>
 
-                                        <th style="width: 200px"> {{l('User')}} </th>
+                                        <th style="width: 220px"> {{l('User')}} </th>
 
-                                        <th style="width: 150px">{{l('Records')}}</th>
+                                        <th style="width: 80px">{{l('Record')}}</th>
 
-                                        <th style="width: 80px"> {{l('Erros')}} </th>
+                                        <th style="width: 80px"> {{l('ErrorForImport')}} </th>
 
-                                        <th style="width: 100px"> {{l('Action')}} </th>
+                                        <th style="width: 120px"> {{l('Action')}} </th>
                                     </tr>
 
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit">
                                     <tr>
-                                        <td style="width: 200px">
+                                        <td style="width: 150px">
                                             <span class="ui-column-title"> {{l('Date')}}</span>
                                             {{record.creationTime | momentFormat:'L hh:mm a'}}
                                         </td>
@@ -59,20 +62,20 @@
                                             <span class="ui-column-title"> {{l('Type')}}</span>
                                             {{record.type}}
                                         </td>
-                                        <td style="width: 200px">
+                                        <td style="width: 220px">
                                             <span class="ui-column-title"> {{l('User')}}</span>
                                             {{record.createdBy}}
                                         </td>                                                                  
-                                        <td style="width: 150px">
-                                            <span class="ui-column-title"> {{l('Records')}}</span>
+                                        <td style="width: 80px">
+                                            <span class="ui-column-title"> {{l('Record')}}</span>
                                             {{record.records}}
                                         </td>
                                         <td style="width: 80px">
-                                            <span class="ui-column-title"> {{l('Error')}}</span>
+                                            <span class="ui-column-title"> {{l('ErrorForImport')}}</span>
                                             <a *ngIf="record.filePath" style="color: #848fe4;cursor: pointer !important;" (click)="downloadFile(record.filePath)">Download</a>
-                                            <a *ngIf="!record.filePath">-</a>
+                                            <a *ngIf="!record.filePath">N/A</a>
                                         </td>
-                                            <td style="width: 100px">
+                                            <td style="width: 120px">
                                                 <a  *ngIf="!record.isRollBacked && record.type == 'TrialBalance'" class="btn"
                                                 href="javascript:;" (click)="rollBack(record.id)">
                                                 <img src="../../../../assets/img/edit.svg"></a>
