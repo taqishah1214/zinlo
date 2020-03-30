@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Zinlo.ErrorLog.Dto
+namespace Zinlo.ImportLog.Dto
 {
-    public class ErrorLogForViewDto
+    public class ImportLogForViewDto
     {
         public long Id { get; set; }
         public string Type { get; set; }

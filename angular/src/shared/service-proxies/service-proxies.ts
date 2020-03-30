@@ -3446,62 +3446,6 @@ export class ChartsofAccountServiceProxy {
     }
 
     /**
-     * @param creationDate (optional) 
-     * @return Success
-     */
-    compareDates(creationDate: moment.Moment | undefined): Observable<number> {
-        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/CompareDates?";
-        if (creationDate === null)
-            throw new Error("The parameter 'creationDate' cannot be null.");
-        else if (creationDate !== undefined)
-            url_ += "creationDate=" + encodeURIComponent(creationDate ? "" + creationDate.toJSON() : "") + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCompareDates(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCompareDates(<any>response_);
-                } catch (e) {
-                    return <Observable<number>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<number>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processCompareDates(response: HttpResponseBase): Observable<number> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<number>(<any>null);
-    }
-
-    /**
      * @param id (optional) 
      * @return Success
      */
@@ -3853,7 +3797,7 @@ export class ChartsofAccountServiceProxy {
         if (closingMonth === null)
             throw new Error("The parameter 'closingMonth' cannot be null.");
         else if (closingMonth !== undefined)
-            url_ += "ClosingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
+            url_ += "closingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -6635,141 +6579,6 @@ export class EditionServiceProxy {
 }
 
 @Injectable()
-export class ErrorLogServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "";
-    }
-
-    /**
-     * @param filter (optional) 
-     * @param sorting (optional) 
-     * @param skipCount (optional) 
-     * @param maxResultCount (optional) 
-     * @return Success
-     */
-    getAll(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfErrorLogForViewDto> {
-        let url_ = this.baseUrl + "/api/services/app/ErrorLog/GetAll?";
-        if (filter === null)
-            throw new Error("The parameter 'filter' cannot be null.");
-        else if (filter !== undefined)
-            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
-        if (sorting === null)
-            throw new Error("The parameter 'sorting' cannot be null.");
-        else if (sorting !== undefined)
-            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
-        if (skipCount === null)
-            throw new Error("The parameter 'skipCount' cannot be null.");
-        else if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
-        if (maxResultCount === null)
-            throw new Error("The parameter 'maxResultCount' cannot be null.");
-        else if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAll(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAll(<any>response_);
-                } catch (e) {
-                    return <Observable<PagedResultDtoOfErrorLogForViewDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<PagedResultDtoOfErrorLogForViewDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfErrorLogForViewDto> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfErrorLogForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<PagedResultDtoOfErrorLogForViewDto>(<any>null);
-    }
-
-    /**
-     * @param id (optional) 
-     * @return Success
-     */
-    rollBackTrialBalance(id: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/ErrorLog/RollBackTrialBalance?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRollBackTrialBalance(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processRollBackTrialBalance(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processRollBackTrialBalance(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
-}
-
-@Injectable()
 export class FriendshipServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -7498,6 +7307,141 @@ export class HostSettingsServiceProxy {
     }
 
     protected processSendTestEmail(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class ImportLogServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfImportLogForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/ImportLog/GetAll?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfImportLogForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfImportLogForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfImportLogForViewDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfImportLogForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfImportLogForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    rollBackTrialBalance(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ImportLog/RollBackTrialBalance?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRollBackTrialBalance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRollBackTrialBalance(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRollBackTrialBalance(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -17965,7 +17909,7 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
     balance!: number;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
-    id!: number | undefined;
+    id!: number;
 
     constructor(data?: ICreateOrEditChartsofAccountDto) {
         if (data) {
@@ -18027,7 +17971,7 @@ export interface ICreateOrEditChartsofAccountDto {
     balance: number;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
-    id: number | undefined;
+    id: number;
 }
 
 export class GetAccountForEditDto implements IGetAccountForEditDto {
@@ -20870,114 +20814,6 @@ export interface IMoveTenantsToAnotherEditionDto {
     targetEditionId: number;
 }
 
-export class ErrorLogForViewDto implements IErrorLogForViewDto {
-    id!: number;
-    type!: string | undefined;
-    records!: string | undefined;
-    createdBy!: string | undefined;
-    filePath!: string | undefined;
-    creationTime!: moment.Moment;
-    isRollBacked!: boolean;
-
-    constructor(data?: IErrorLogForViewDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.type = data["type"];
-            this.records = data["records"];
-            this.createdBy = data["createdBy"];
-            this.filePath = data["filePath"];
-            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
-            this.isRollBacked = data["isRollBacked"];
-        }
-    }
-
-    static fromJS(data: any): ErrorLogForViewDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ErrorLogForViewDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["type"] = this.type;
-        data["records"] = this.records;
-        data["createdBy"] = this.createdBy;
-        data["filePath"] = this.filePath;
-        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
-        data["isRollBacked"] = this.isRollBacked;
-        return data; 
-    }
-}
-
-export interface IErrorLogForViewDto {
-    id: number;
-    type: string | undefined;
-    records: string | undefined;
-    createdBy: string | undefined;
-    filePath: string | undefined;
-    creationTime: moment.Moment;
-    isRollBacked: boolean;
-}
-
-export class PagedResultDtoOfErrorLogForViewDto implements IPagedResultDtoOfErrorLogForViewDto {
-    totalCount!: number;
-    items!: ErrorLogForViewDto[] | undefined;
-
-    constructor(data?: IPagedResultDtoOfErrorLogForViewDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.totalCount = data["totalCount"];
-            if (Array.isArray(data["items"])) {
-                this.items = [] as any;
-                for (let item of data["items"])
-                    this.items!.push(ErrorLogForViewDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PagedResultDtoOfErrorLogForViewDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfErrorLogForViewDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["totalCount"] = this.totalCount;
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IPagedResultDtoOfErrorLogForViewDto {
-    totalCount: number;
-    items: ErrorLogForViewDto[] | undefined;
-}
-
 export class CreateFriendshipRequestInput implements ICreateFriendshipRequestInput {
     userId!: number;
     tenantId!: number | undefined;
@@ -22245,6 +22081,114 @@ export class SendTestEmailInput implements ISendTestEmailInput {
 
 export interface ISendTestEmailInput {
     emailAddress: string | undefined;
+}
+
+export class ImportLogForViewDto implements IImportLogForViewDto {
+    id!: number;
+    type!: string | undefined;
+    records!: string | undefined;
+    createdBy!: string | undefined;
+    filePath!: string | undefined;
+    creationTime!: moment.Moment;
+    isRollBacked!: boolean;
+
+    constructor(data?: IImportLogForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.type = data["type"];
+            this.records = data["records"];
+            this.createdBy = data["createdBy"];
+            this.filePath = data["filePath"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.isRollBacked = data["isRollBacked"];
+        }
+    }
+
+    static fromJS(data: any): ImportLogForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ImportLogForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["type"] = this.type;
+        data["records"] = this.records;
+        data["createdBy"] = this.createdBy;
+        data["filePath"] = this.filePath;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["isRollBacked"] = this.isRollBacked;
+        return data; 
+    }
+}
+
+export interface IImportLogForViewDto {
+    id: number;
+    type: string | undefined;
+    records: string | undefined;
+    createdBy: string | undefined;
+    filePath: string | undefined;
+    creationTime: moment.Moment;
+    isRollBacked: boolean;
+}
+
+export class PagedResultDtoOfImportLogForViewDto implements IPagedResultDtoOfImportLogForViewDto {
+    totalCount!: number;
+    items!: ImportLogForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfImportLogForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items!.push(ImportLogForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfImportLogForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfImportLogForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfImportLogForViewDto {
+    totalCount: number;
+    items: ImportLogForViewDto[] | undefined;
 }
 
 export class ImportPathDto implements IImportPathDto {

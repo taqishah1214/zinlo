@@ -18,6 +18,7 @@ import { TenantsComponent } from './tenants/tenants.component';
 import { UiCustomizationComponent } from './ui-customization/ui-customization.component';
 import { UsersComponent } from './users/users.component';
 import { ManagementComponent } from './management/management.component';
+import { ImportLogComponent } from '../admin/importlog/importlog.component';
 @NgModule({
     imports: [
         RouterModule.forChild([
@@ -42,6 +43,7 @@ import { ManagementComponent } from './management/management.component';
                     { path: 'demo-ui-components', component: DemoUiComponentsComponent, data: { permission: 'Pages.DemoUiComponents' } },
                     { path: 'install', component: InstallComponent },
                     { path: 'ui-customization', component: UiCustomizationComponent },
+                    { path: 'importlog', component: ImportLogComponent, data: { }  },
                     { path: '', redirectTo: 'hostDashboard', pathMatch: 'full' }
                 ]
             }

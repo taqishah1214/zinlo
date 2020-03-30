@@ -4,11 +4,11 @@
             <div [class]="containerClass">
                 <div class="kt-subheader__main">
                     <h3 class="kt-subheader__title">
-                        <span>{{"ErrorLog" | localize}}</span>
+                        <span>{{"ImportLog" | localize}}</span>
                     </h3>
                     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
                     <span class="kt-subheader__desc">
-                        {{"ErrorLogHeaderInfo" | localize}}
+                        {{"ImportLogHeaderInfo" | localize}}
                     </span>
                 </div>
             </div>
@@ -25,7 +25,7 @@
                         <!--<Primeng-TurboTable-Start>-->
                         <div class="categories-table primeng-datatable-container"
                             [busyIf]="primengTableHelper.isLoading">
-                            <p-table #dataTable (onLazyLoad)="getAllErrorLog($event)"
+                            <p-table #dataTable (onLazyLoad)="getAllImportLog($event)"
                                 [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [scrollable]="true" ScrollWidth="100%"
@@ -83,7 +83,7 @@
                             <div class="primeng-paging-container">
                                 <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
                                              #paginator
-                                             (onPageChange)="getAllErrorLog($event)"
+                                             (onPageChange)="getAllImportLog($event)"
                                              [totalRecords]="primengTableHelper.totalRecordsCount"
                                              [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
                                 </p-paginator>

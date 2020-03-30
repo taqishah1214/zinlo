@@ -1,37 +1,28 @@
-﻿using Abp.Application.Services.Dto;
-using Abp.Domain.Repositories;
-using System.Linq;
-using System.Threading.Tasks;
-using Zinlo.ImportsPaths;
+﻿using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
+using Abp.Application.Services.Dto;
+using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Zinlo.Authorization.Users;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Hosting;
-using Zinlo.Configuration;
 using Zinlo.ErrorLog.Dto;
+using Zinlo.ImportLog.Dto;
+using Zinlo.ImportsPaths;
 
-namespace Zinlo.ErrorLog
+namespace Zinlo.ImportLog
 {
-    public class ErrorLogAppService : ZinloAppServiceBase, IErrorLogAppService
+    public class ImportLogAppService : ZinloAppServiceBase, IImportLogAppService
     {
         private readonly IRepository<ImportsPath, long> _importsPathRepository;
         private readonly IRepository<ChartsofAccount.ChartsofAccount, long> _chartOfAccountRepository;
-        private readonly IConfigurationRoot _appConfiguration;
-        public UserManager userManager { get; set; }
-        public ErrorLogAppService(IRepository<ImportsPath, long> importsPathRepository,
-            Microsoft.Extensions.Configuration.IConfiguration configuration,
-            IRepository<ChartsofAccount.ChartsofAccount, long> chartOfAccountRepository,
-        IWebHostEnvironment env
-            )
+        public ImportLogAppService(IRepository<ImportsPath, long> importsPathRepository,
+            IRepository<ChartsofAccount.ChartsofAccount, long> chartOfAccountRepository)
         {
             _importsPathRepository = importsPathRepository;
-            _appConfiguration = env.GetAppConfiguration();
             _chartOfAccountRepository = chartOfAccountRepository;
         }
 
-        public async Task<PagedResultDto<ErrorLogForViewDto>> GetAll(GetAllErroLogInput input)
+        public async Task<PagedResultDto<ImportLogForViewDto>> GetAll(GetAllImportLogInput input)
         {
             var query = _importsPathRepository.GetAll().Include(p => p.User)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.FilePath.Contains(input.Filter));
@@ -40,7 +31,7 @@ namespace Zinlo.ErrorLog
             var totalCount = query.Count();
             var accountsList = from o in pagedAndFilteredAccounts.ToList()
 
-                               select new ErrorLogForViewDto()
+                               select new ImportLogForViewDto()
                                {
                                    Id = o.Id,
                                    Type = o.Type,
@@ -51,7 +42,7 @@ namespace Zinlo.ErrorLog
                                    IsRollBacked = o.IsRollBacked
                                };
 
-            return new PagedResultDto<ErrorLogForViewDto>(
+            return new PagedResultDto<ImportLogForViewDto>(
                totalCount,
                accountsList.ToList()
            );

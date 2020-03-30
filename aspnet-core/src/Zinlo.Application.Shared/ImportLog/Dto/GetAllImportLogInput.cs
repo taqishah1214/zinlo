@@ -2,7 +2,7 @@
 
 namespace Zinlo.ErrorLog.Dto
 {
-    public class GetAllErroLogInput : PagedAndSortedResultRequestDto
+    public class GetAllImportLogInput : PagedAndSortedResultRequestDto
     {
         public string Filter { get; set; }
     }
