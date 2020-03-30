@@ -6,6 +6,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { UppyConfig } from 'uppy-angular';
 import { AppConsts } from '@shared/AppConsts';
 import { finalize } from 'rxjs/operators';
+import * as moment from 'moment';
 
 
 @Component({
@@ -45,6 +46,9 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
       this.title = "Edit Item";
       this.Save = "Update";
       this.getDetailsofItem(this.ItemizedItemId);
+    }
+    else {
+      this.itemizedDto.closingMonth = moment(new Date())
     }
   
   }

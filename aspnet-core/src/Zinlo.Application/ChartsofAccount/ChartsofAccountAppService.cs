@@ -43,7 +43,7 @@ namespace Zinlo.ChartsofAccount
 
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
-            var query = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == DateTime.Now.Month && e.CreationTime.Year == DateTime.Now.Year).Include(p => p.AccountSubType).Include(p => p.Assignee)
+            var query = _chartsofAccountRepository.GetAll().Where(e => e.ClosingMonth.Month == DateTime.Now.Month && e.ClosingMonth.Year == DateTime.Now.Year).Include(p => p.AccountSubType).Include(p => p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.Contains(input.Filter))
                  .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
                  .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId));
@@ -316,7 +316,7 @@ namespace Zinlo.ChartsofAccount
                                 Amount = o.Amount,
                                 Description = o.Description,
                                 ChartsofAccountId = (long)newAccountId,
-                                CreationTime = closingMonth,
+                                ClosingMonth = closingMonth,
                                 Criteria = (Reconciliation.Dtos.Criteria)o.Criteria,
                                 CreatorUserId = o.CreatorUserId,
                             }).ToList();
@@ -345,7 +345,7 @@ namespace Zinlo.ChartsofAccount
                                 Amount = o.Amount,
                                 Description = o.Description,
                                 ChartsofAccountId = newAccountId,
-                                CreationTime = closingMonth,
+                                ClosingMonth = closingMonth,
                                 CreatorUserId = o.CreatorUserId,
                             }).ToList();
 
@@ -375,7 +375,7 @@ namespace Zinlo.ChartsofAccount
                                     AccountSubTypeId = o.AccountSubType.Id,
                                     Reconciled = (Dtos.Reconciled)o.Reconciled,
                                     Balance = 0,
-                                    CreationTime = closingMonth,
+                                    ClosingMonth = closingMonth,
                                     AssigneeId = o.Assignee.Id
                                 }).ToList();
 

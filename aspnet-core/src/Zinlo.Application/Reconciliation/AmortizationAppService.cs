@@ -50,7 +50,7 @@ namespace Zinlo.Reconciliation
 
         public async Task<PagedResultDto<AmortizedListDto>> GetAll(GetAllAmortizationInput input)
         {
-            var query = _amortizationRepository.GetAll().Where(e => e.CreationTime.Month == input.MonthFilter.Month && e.CreationTime.Year == input.MonthFilter.Year)
+            var query = _amortizationRepository.GetAll().Where(e => e.ClosingMonth.Month == input.MonthFilter.Month && e.ClosingMonth.Year == input.MonthFilter.Year)
                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
                .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId)
                .WhereIf(!string.IsNullOrWhiteSpace(input.AccountNumer), e => false || e.ChartsofAccount.AccountNumber == input.AccountNumer);
@@ -215,7 +215,7 @@ namespace Zinlo.Reconciliation
         {
             input.EndDate = input.EndDate.AddDays(1);
             input.StartDate = input.StartDate.AddDays(1);
-            input.CreationTime = input.CreationTime.AddDays(1);
+            input.ClosingMonth = input.ClosingMonth.AddDays(1);
             var item = ObjectMapper.Map<Amortization>(input);
             var itemAddedId = await _amortizationRepository.InsertAndGetIdAsync(item);
             if (input.AttachmentsPath != null)

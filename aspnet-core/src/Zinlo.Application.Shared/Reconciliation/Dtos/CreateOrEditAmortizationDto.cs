@@ -19,6 +19,9 @@ namespace Zinlo.Reconciliation.Dtos
         public List<string> AttachmentsPath { get; set; }
         public List<GetAttachmentsDto> Attachments { get; set; }
         public Criteria Criteria { get; set; }
+        public DateTime ClosingMonth { get; set; }
+
+
 
     }
     public enum Criteria

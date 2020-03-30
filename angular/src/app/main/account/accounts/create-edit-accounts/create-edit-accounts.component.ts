@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserListComponentComponent } from '@app/main/checklist/user-list-component/user-list-component.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { finalize } from 'rxjs/operators';
+import * as moment from 'moment';
 
 
 @Component({
@@ -30,7 +31,6 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   selectedSubTypeId : any;
   seclectedSubTypeTitle : any;
   isAccountExist : boolean = false;
-
   date : any;
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -231,6 +231,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
 
   createAccount():void {
     this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
+    this.accountDto.closingMonth = moment(new Date())
     this.saving = true;
     this._chartOfAccountService.createOrEdit(this.accountDto).pipe(finalize(() => { this.saving = false; }))
     .subscribe(response => {

@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using System;
 
 namespace Zinlo.ChartsofAccount.Dtos
 {
@@ -12,6 +13,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         public virtual long AssigneeId { get; set; }
         public Reconciled Reconciled { get; set; }
         public double Balance { get; set; }
+        public DateTime ClosingMonth { get; set; }
 
     }
     public enum ReconciliationType

@@ -16,6 +16,8 @@ namespace Zinlo.Reconciliation.Dtos
         public long ChartsofAccountId { get; set; }
         public List<string> AttachmentsPath { get; set; }   
         public List<GetAttachmentsDto> Attachments { get; set; }
+        public DateTime ClosingMonth { get; set; }
+
 
 
     }
