@@ -11,6 +11,8 @@ import { CategoriesComponent } from '../categories.component';
 })
 export class CreateOrEditCategoryComponent extends AppComponentBase implements OnInit {
   getCaregoryId: string = "";
+  active = false;
+  saving = false;
   public saveBtnText: string = "Create";
   public formTitle: string = "Create a Category";
   @ViewChild(CategoriesComponent, { static: false }) child: CategoriesComponent;
@@ -58,8 +60,9 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
 
   onSubmit(): void {
     if (this.isCategoryExist == false) {
+      this.saving = true;
       this._categoriesServiceProxy.createOrEdit(this.categoryobj)
-      .pipe(finalize(() => { }))
+      .pipe(finalize(() => { this.saving = false;}))
       .subscribe(result => {
         this.backToRoute(this.categoryobj.title,result);
         this.notify.info(this.l('SavedSuccessfully'));
