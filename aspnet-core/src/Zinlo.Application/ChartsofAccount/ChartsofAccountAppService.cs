@@ -237,7 +237,7 @@ namespace Zinlo.ChartsofAccount
             switch (id)
             {
                 case 1:
-                    type = "Fixed";
+                    type = "Equity";
                     break;
                 case 2:
                     type = "Assets";
@@ -247,7 +247,7 @@ namespace Zinlo.ChartsofAccount
                     break;
 
                 default:
-                    type = "Fixed";
+                    type = "Equity";
                     break;
             }
             return type;

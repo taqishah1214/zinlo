@@ -2,6 +2,8 @@ import { Component, OnInit, EventEmitter, Output, Input, OnChanges, SimpleChange
 import { UserServiceProxy, ClosingChecklistServiceProxy, ChangeAssigneeDto, ChartsofAccountServiceProxy } from '@shared/service-proxies/service-proxies';
 import { OnChange } from 'ngx-bootstrap';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { UserDateService } from "../../../services/user-date.service";
+
 
 
 @Component({
@@ -10,7 +12,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
   styleUrls: ['./user-list-component.component.css']
 })
 export class UserListComponentComponent implements OnInit, OnChanges {
-
+  userList : any;
   users: any;
   input: any;
   public selectedUserId: any;
@@ -23,16 +25,17 @@ export class UserListComponentComponent implements OnInit, OnChanges {
   @Output() messageEvent = new EventEmitter<string>();
   @ViewChild(NgSelectComponent, { static: true }) ngSelect: NgSelectComponent;
   @Output("callBack") callBack: EventEmitter<any> = new EventEmitter();
-  constructor(private userService: UserServiceProxy,
+  constructor(private userService: UserServiceProxy,private userDate: UserDateService,
     private cdf: ChangeDetectorRef,
     private _closingChecklistService: ClosingChecklistServiceProxy,
     private _chartOfAccountService: ChartsofAccountServiceProxy) { }
 
 
   ngOnInit() {
+    this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     if (this.disable === "true") {
       this.disable = true
-    }
+    }  
     if (this.userId != 0) {
       this.getSelectedUserIdandPicture()
     }

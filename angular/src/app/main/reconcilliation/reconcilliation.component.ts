@@ -40,7 +40,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   remainingUserForHeader: any = [];
   accountSubTypes: any = [];
   accountType : any;
-  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
+  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
   StatusColorBox: any = ["bg-blue", "bg-sea-green", "bg-gray"]
   updateAssigneeOnHeader: boolean = true;

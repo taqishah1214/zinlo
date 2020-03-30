@@ -35,7 +35,7 @@ namespace Zinlo.ChartsofAccount
     }
     public enum AccountType
     {
-        Fixed = 1,
+        Equity = 1,
         Assets = 2,
         Liability = 3
     }
