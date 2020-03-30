@@ -308,8 +308,11 @@ RedirectToCreateAccount(): void {
       this.uploadAccountsTrialBalanceExcel(this.chartsOfAccountsfileUrlTrialBalance);
       this.chartsOfAccountsfileUrlTrialBalance = "";
     }
-    this._signalRService.startHubConnection();
-    var file = this._signalRService.addBasicListener();
+
+   
+
+    // this._signalRService.startHubConnection();
+    // var file = this._signalRService.addBasicListener();
   }
 
   onUploadExcelError(): void {

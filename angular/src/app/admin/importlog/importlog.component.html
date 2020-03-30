@@ -4,11 +4,11 @@
             <div [class]="containerClass">
                 <div class="kt-subheader__main">
                     <h3 class="kt-subheader__title">
-                        <span>{{"ErrorLog" | localize}}</span>
+                        <span>{{"ImportLog" | localize}}</span>
                     </h3>
                     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
                     <span class="kt-subheader__desc">
-                        {{"ErrorLogHeaderInfo" | localize}}
+                        {{"ImportLogHeaderInfo" | localize}}
                     </span>
                 </div>
             </div>
@@ -25,7 +25,7 @@
                         <!--<Primeng-TurboTable-Start>-->
                         <div class="categories-table primeng-datatable-container"
                             [busyIf]="primengTableHelper.isLoading">
-                            <p-table #dataTable (onLazyLoad)="getAllErrorLog($event)"
+                            <p-table #dataTable (onLazyLoad)="getAllImportLog($event)"
                                 [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [scrollable]="true" ScrollWidth="100%"
@@ -33,47 +33,50 @@
                                 [resizableColumns]="primengTableHelper.resizableColumns">
                                 <ng-template pTemplate="header">
                                     <tr> 
-                                        <th style="width: 20%" pSortableColumn="creationTime">
+                                        <th style="width: 200px" pSortableColumn="creationTime">
                                             {{l('Date')}}
                                             <p-sortIcon field="record.creationTime"></p-sortIcon>
                                         </th>
-                                        <th style="width: 20%"> {{l('Type')}} </th>
+                                        <th style="width: 150px"> {{l('Type')}} </th>
 
-                                        <th style="width: 20%"> {{l('User')}} </th>
+                                        <th style="width: 200px"> {{l('User')}} </th>
 
-                                        <th style="width: 20%">{{l('Records')}}</th>
+                                        <th style="width: 150px">{{l('Records')}}</th>
 
-                                        <th style="width: 20%"> {{l('Erros')}} </th>
+                                        <th style="width: 80px"> {{l('Erros')}} </th>
 
-                                        <th style="width: 20%"> {{l('Action')}} </th>
+                                        <th style="width: 100px"> {{l('Action')}} </th>
                                     </tr>
 
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit">
                                     <tr>
-                                        <td style="width: 20%">
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title"> {{l('Date')}}</span>
                                             {{record.creationTime | momentFormat:'L hh:mm a'}}
                                         </td>
-                                        <td style="width: 20%">
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title"> {{l('Type')}}</span>
                                             {{record.type}}
                                         </td>
-                                        <td style="width: 20%">
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title"> {{l('User')}}</span>
                                             {{record.createdBy}}
                                         </td>                                                                  
-                                        <td style="width: 20%">
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title"> {{l('Records')}}</span>
                                             {{record.records}}
                                         </td>
-                                        <td style="width: 20%">
+                                        <td style="width: 80px">
+                                            <span class="ui-column-title"> {{l('Error')}}</span>
                                             <a *ngIf="record.filePath" style="color: #848fe4;cursor: pointer !important;" (click)="downloadFile(record.filePath)">Download</a>
                                             <a *ngIf="!record.filePath">-</a>
                                         </td>
-                                        <div *ngIf="record.type == 'TrialBalance'">
-                                            <td *ngIf="!record.isRollBacked">
-                                                <a  class="btn"
+                                            <td style="width: 100px">
+                                                <a  *ngIf="!record.isRollBacked && record.type == 'TrialBalance'" class="btn"
                                                 href="javascript:;" (click)="rollBack(record.id)">
                                                 <img src="../../../../assets/img/edit.svg"></a>
                                             </td>
-                                        </div>
                                     </tr>
                                 </ng-template>
                             </p-table>
@@ -83,14 +86,15 @@
                             <div class="primeng-paging-container">
                                 <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
                                              #paginator
-                                             (onPageChange)="getAllErrorLog($event)"
+                                             (onPageChange)="getAllImportLog($event)"
                                              [totalRecords]="primengTableHelper.totalRecordsCount"
                                              [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
                                 </p-paginator>
-                                <span class="total-records-count">
-                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
-                                </span>
+                               
                             </div>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
                         </div>
                         <!--<Primeng-TurboTable-End>-->
                     </div>

@@ -37,6 +37,7 @@ namespace Zinlo.ChartsofAccount.Importing
         public long UserId = 0;
         public int SuccessRecordsCount = 0;
         public long loggedFileId = 0;
+        public bool isAccountsZero = false;
         public ImportChartsOfAccountTrialBalanceToExcelJob(
 
         IChartsOfAccontTrialBalanceListExcelDataReader chartsOfAccontTrialBalanceListExcelDataReader,
@@ -87,12 +88,8 @@ namespace Zinlo.ChartsofAccount.Importing
                var isTrue = _chartsofAccountAppService.CheckAccounts();
                 if(isTrue == false)
                 {
-                    #region ||
-                    _appNotifier.SendMessageAsync(
-                       args.User,
-                       _localizationSource.GetString("ZeroAccountsErrorMessaage"),                   
-                       Abp.Notifications.NotificationSeverity.Success);
-                    #endregion
+                    isAccountsZero = true;
+                  
                     return new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
                 }
 
@@ -232,10 +229,25 @@ namespace Zinlo.ChartsofAccount.Importing
 
         private void SendInvalidExcelNotification(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args)
         {
-            AsyncHelper.RunSync(() => _appNotifier.SendMessageAsync(
-                args.User,
-                _localizationSource.GetString("FileCantBeConvertedToAccountsTrialBalanceList"),
-                Abp.Notifications.NotificationSeverity.Warn));
+            if(isAccountsZero)
+            {
+                isAccountsZero = false;
+                #region ||
+                _appNotifier.SendMessageAsync(
+                   args.User,
+                   _localizationSource.GetString("ZeroAccountsErrorMessaage"),
+                   Abp.Notifications.NotificationSeverity.Success);
+                #endregion
+            }
+            else
+            {
+                AsyncHelper.RunSync(() => _appNotifier.SendMessageAsync(
+               args.User,
+               _localizationSource.GetString("FileCantBeConvertedToAccountsTrialBalanceList"),
+               Abp.Notifications.NotificationSeverity.Warn));
+            }
+
+           
         }
         #region|Helpers|      
         public ChartOfAccountsValidationDto CheckNullValues(ChartsOfAccountsTrialBalanceExcellImportDto input)

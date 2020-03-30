@@ -18,7 +18,7 @@ import { ItemizedComponent } from './reconcilliation/itemized/itemized.component
 import { AmortizedComponent } from './reconcilliation/amortized/amortized.component';
 import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-details/itemized-details.component';
 import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component';
-import { ErrorLogComponent } from './errorlog/errorlog.component';
+
 
 @NgModule({
     imports: [
@@ -45,7 +45,6 @@ import { ErrorLogComponent } from './errorlog/errorlog.component';
                     { path: 'reconcilliation/amortized', component: AmortizedComponent, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'reconcilliation/itemized/itemized-details', component: ItemizedDetailsComponent, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'reconcilliation/amortized/amortized-details', component: AmortizedDetailsComponent, data: { permission: 'Pages.ClosingChecklist' }},
-                    { path: 'errorlog', component: ErrorLogComponent, data: { }  },
 
 
                 ]

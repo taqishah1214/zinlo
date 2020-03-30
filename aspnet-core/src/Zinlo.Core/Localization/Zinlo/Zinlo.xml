@@ -1054,8 +1054,8 @@
     <text name="NullValuesAreNotAllowed">Null values are not allowed.</text>
     <text name="ReconcilationError">Reconcilation Error.</text>
     <text name="DueDate">Due date</text>
-    <text name="ErrorLog">Error Log</text>
-    <text name="ErrorLogHeaderInfo">Manage error log</text>
+    <text name="ImportLog">Import Log</text>
+    <text name="ImportLogHeaderInfo">Manage import log</text>
 
 
     <!--status-->

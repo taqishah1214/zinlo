@@ -11,7 +11,7 @@ namespace Zinlo.ChartsofAccount
 {
     public interface IChartsofAccountAppService : IApplicationService
     {
-        Task<double> CreateOrEdit(CreateOrEditChartsofAccountDto input);
+        Task<long> CreateOrEdit(CreateOrEditChartsofAccountDto input);
         Task Delete(long id);
         Task<GetAccountForEditDto> GetAccountForEdit(long id);
         Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input);
@@ -22,11 +22,9 @@ namespace Zinlo.ChartsofAccount
         Task<FileDto> GetChartsofAccountToExcel(long id);
         Task<bool> CheckAccountForTrialBalance(ChartsOfAccountsTrialBalanceExcellImportDto input);
         Task<double> GetTrialBalanceofAccount(long id);
-        bool CheckAccountNoExist(string AccountNumber);    
+        bool CheckAccountNoExist(string accountNumber);    
         Task<FileDto> LoadChartsofAccountTrialBalanceToExcel();
-        Task ShiftChartsOfAccountToSpecficMonth(DateTime ClosingMonth);
-
-
+        Task ShiftChartsOfAccountToSpecficMonth(DateTime closingMonth);
         bool CheckAccounts();
     }
 }

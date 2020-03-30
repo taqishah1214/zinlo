@@ -8,8 +8,7 @@ namespace Zinlo.AccountSubType.Dtos
 {	public class CreateOrEditAccountSubTypeDto : EntityDto<int?>
 	{
 		[Required]
-		public string Title { get; set; }
-		[Required]
+		public string Title { get; set; }		
 		public string Description { get; set; }
 
 	}

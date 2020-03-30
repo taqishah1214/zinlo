@@ -44,7 +44,6 @@ import { ItemizedComponent } from './reconcilliation/itemized/itemized.component
 import { AmortizedComponent } from './reconcilliation/amortized/amortized.component';;
 import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-details/itemized-details.component';
 import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component';
-import { ErrorLogComponent } from './errorlog/errorlog.component';
 
 
 
@@ -98,8 +97,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 ItemizedComponent,
                 AmortizedComponent ,
                 ItemizedDetailsComponent ,
-                AmortizedDetailsComponent ,
-                ErrorLogComponent   
+                AmortizedDetailsComponent   
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
