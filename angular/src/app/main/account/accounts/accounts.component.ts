@@ -47,7 +47,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   remainingUserForHeader: any = [];
   accountSubTypes: any = [];
   accountType: any;
-  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
+  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" },{ id: 0, name: "Clear" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
   updateAssigneeOnHeader: boolean = true;
   getAccountWithAssigneeId: number = 0;
@@ -78,10 +78,18 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   }
 
   accountTypeClick(id, name): void {
-    this.accountType = name
-    this.accountTypeFilter = id
-    this.updateAssigneeOnHeader = false;
-    this.getAllAccounts()
+    if (id == 0) {
+      this.accountType = "Account Type"
+      this.accountTypeFilter = id;
+      this.updateAssigneeOnHeader = false;
+      this.getAllAccounts()
+    }
+    else{
+      this.accountType = name
+      this.accountTypeFilter = id
+      this.updateAssigneeOnHeader = false;
+      this.getAllAccounts()
+    } 
   }
 
   openFieldUpdateAssignee(record) {

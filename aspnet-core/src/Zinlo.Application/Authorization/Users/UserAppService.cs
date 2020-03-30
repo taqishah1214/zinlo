@@ -29,6 +29,7 @@ using Zinlo.Dto;
 using Zinlo.Notifications;
 using Zinlo.Url;
 using Zinlo.Organizations.Dto;
+using Zinlo.Authorization.Users.Profile;
 
 namespace Zinlo.Authorization.Users
 {
@@ -54,6 +55,7 @@ namespace Zinlo.Authorization.Users
         private readonly UserManager _userManager;
         private readonly IRepository<UserOrganizationUnit, long> _userOrganizationUnitRepository;
         private readonly IRepository<OrganizationUnitRole, long> _organizationUnitRoleRepository;
+        private readonly IProfileAppService _profileAppService;
 
         public UserAppService(
             RoleManager roleManager,
@@ -72,7 +74,8 @@ namespace Zinlo.Authorization.Users
             IRoleManagementConfig roleManagementConfig,
             UserManager userManager,
             IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository,
-            IRepository<OrganizationUnitRole, long> organizationUnitRoleRepository)
+            IRepository<OrganizationUnitRole, long> organizationUnitRoleRepository,
+            IProfileAppService profileAppService)
         {
             _roleManager = roleManager;
             _userEmailer = userEmailer;
@@ -93,6 +96,7 @@ namespace Zinlo.Authorization.Users
             _roleRepository = roleRepository;
 
             AppUrlService = NullAppUrlService.Instance;
+            _profileAppService = profileAppService;
         }
 
         public async Task<PagedResultDto<UserListDto>> GetUsers(GetUsersInput input)
@@ -468,5 +472,22 @@ namespace Zinlo.Authorization.Users
             var assets = await query.ToListAsync();
             return assets;
         }
+
+       public async Task<List<UserListofCurrentTenantDto>> GetAllUsers()
+        {
+
+            var query = await UserManager.Users.ToListAsync();
+            var userList = (from o in query
+                            select new UserListofCurrentTenantDto()
+                            {
+                                id = o.Id,
+                                Name = o.FullName,
+                                ProfilePicture = o.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.ProfilePictureId).Result.ProfilePicture : ""
+                            });
+
+            return userList.ToList();
+        }
+
+
     }
 }

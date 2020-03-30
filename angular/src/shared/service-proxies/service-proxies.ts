@@ -15455,6 +15455,61 @@ export class UserServiceProxy {
         }
         return _observableOf<NameValueDtoOfInt64[]>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    getAllUsers(): Observable<UserListofCurrentTenantDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/User/GetAllUsers";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllUsers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllUsers(<any>response_);
+                } catch (e) {
+                    return <Observable<UserListofCurrentTenantDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserListofCurrentTenantDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllUsers(response: HttpResponseBase): Observable<UserListofCurrentTenantDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UserListofCurrentTenantDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserListofCurrentTenantDto[]>(<any>null);
+    }
 }
 
 @Injectable()
@@ -29667,6 +29722,50 @@ export interface ICreateOrUpdateUserInput {
     sendActivationEmail: boolean;
     setRandomPassword: boolean;
     organizationUnits: number[] | undefined;
+}
+
+export class UserListofCurrentTenantDto implements IUserListofCurrentTenantDto {
+    id!: number;
+    name!: string | undefined;
+    profilePicture!: string | undefined;
+
+    constructor(data?: IUserListofCurrentTenantDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.profilePicture = data["profilePicture"];
+        }
+    }
+
+    static fromJS(data: any): UserListofCurrentTenantDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserListofCurrentTenantDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["profilePicture"] = this.profilePicture;
+        return data; 
+    }
+}
+
+export interface IUserListofCurrentTenantDto {
+    id: number;
+    name: string | undefined;
+    profilePicture: string | undefined;
 }
 
 export class LinkToUserInput implements ILinkToUserInput {

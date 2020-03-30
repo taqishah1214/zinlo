@@ -4,12 +4,12 @@
             <div class="kt-portlet" id="kt_portlet">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
+                        <h3 class="text-navyblue kt-portlet__head-title">
                             {{"EditTask" | localize}}
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
-                        <a (click)="redirectToTaskDetails()">
+                        <a href="javascript: void(0);" (click)="redirectToTaskDetails()">
                             <i class="la la-arrow-left"></i>
                             {{"Back" | localize}}
                         </a>
@@ -157,7 +157,7 @@
                                         <label>{{"Frequency" | localize}}</label>
                                         <select class=" border border-default bg-white form-control input-medium"
                                             (change)="OnFrequencyChange($event.target.value)"
-                                            [(ngModel)]="getTaskForEdit.frequencyId">
+                                            [(ngModel)]="getTaskForEdit.frequencyId" name="frequencyId">
                                             <option value="5">{{"None" | localize}}</option>
                                             <option value="1">{{"Monthly" | localize}}</option>
                                             <option value="2">{{"Quarterly" | localize}}</option>
@@ -205,7 +205,7 @@
                                     <div class="form-group">
                                         <select class="border border-default bg-white form-control input-medium"
                                             (change)="onDaysClick($event.target.value)"
-                                            [(ngModel)]="getTaskForEdit.dayBeforeAfter">
+                                            [(ngModel)]="getTaskForEdit.dayBeforeAfter" name="dayBeforeAfter">
                                             <option value=null disabled hidden>{{"None" | localize}}</option>
                                             <option value=true>{{"DaysBefore" | localize}}</option>
                                             <option value=false>{{"DaysAfter" | localize}}</option>
@@ -221,7 +221,7 @@
                                         <label>{{"Endson" | localize}}</label>
                                         <div class="form-group">
                                             <form class="input-arrow">
-                                                <input [disabled]="getTaskForEdit.frequencyId==5" [(ngModel)]="endsOnDateValue" required="required"
+                                                <input [disabled]="endOnIsEnabled == false" [(ngModel)]="endsOnDateValue" required="required"
                                                     autocomplete="off" class="form-control" name="date" bsDatepicker
                                                     placeholder="Month" [minDate]="minDate"
                                                     [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"

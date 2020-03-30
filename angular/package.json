@@ -27,6 +27,7 @@
     "@angular/router": "^8.2.5",
     "@aspnet/signalr": "^1.1.4",
     "@ng-select/ng-select": "^3.7.2",
+    "@ngrx/store": "^9.0.0",
     "@swimlane/ngx-charts": "^12.0.1",
     "@uppy/core": "^1.7.1",
     "@uppy/dashboard": "^1.5.2",

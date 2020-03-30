@@ -28,5 +28,7 @@ namespace Zinlo.Authorization.Users
         Task UnlockUser(EntityDto<long> input);
 
         Task<List<NameValueDto<long>>> UserDropDown();
+
+        Task<List<UserListofCurrentTenantDto>> GetAllUsers();
     }
 }
