@@ -201,7 +201,7 @@ namespace Zinlo.ChartsofAccount
                 account.Status = (Status)2;
                 account.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
                 account.CreatorUserId = UserId;
-
+                account.ClosingMonth = DateTime.Now;
                 account.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);
                 account.AccountSubTypeId = await _accountSubTypeAppService.GetAccountSubTypeIdByTitle(input.AccountSubType, UserId, TenantId);
                 account.ReconciliationType = (ReconciliationType)GetReconcilationTypeValue(input.ReconciliationType);
