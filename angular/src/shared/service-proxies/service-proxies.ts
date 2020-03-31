@@ -16702,6 +16702,7 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
     attachmentsPath!: string[] | undefined;
     attachments!: GetAttachmentsDto[] | undefined;
     criteria!: Criteria;
+    closingMonth!: moment.Moment;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -16736,6 +16737,7 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
                     this.attachments!.push(GetAttachmentsDto.fromJS(item));
             }
             this.criteria = data["criteria"];
+            this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -16770,6 +16772,7 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
                 data["attachments"].push(item.toJSON());
         }
         data["criteria"] = this.criteria;
+        data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -16789,6 +16792,7 @@ export interface ICreateOrEditAmortizationDto {
     attachmentsPath: string[] | undefined;
     attachments: GetAttachmentsDto[] | undefined;
     criteria: Criteria;
+    closingMonth: moment.Moment;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
@@ -17937,7 +17941,7 @@ export interface IPagedResultDtoOfChartsofAccoutsForViewDto {
 }
 
 export enum AccountType {
-    Fixed = 1,
+    Equity = 1,
     Assets = 2,
     Liability = 3,
 }
@@ -17962,6 +17966,7 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
     assigneeId!: number;
     reconciled!: Reconciled;
     balance!: number;
+    closingMonth!: moment.Moment;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -17985,6 +17990,7 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
             this.assigneeId = data["assigneeId"];
             this.reconciled = data["reconciled"];
             this.balance = data["balance"];
+            this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -18008,6 +18014,7 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
         data["assigneeId"] = this.assigneeId;
         data["reconciled"] = this.reconciled;
         data["balance"] = this.balance;
+        data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -18024,6 +18031,7 @@ export interface ICreateOrEditChartsofAccountDto {
     assigneeId: number;
     reconciled: Reconciled;
     balance: number;
+    closingMonth: moment.Moment;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
@@ -22787,6 +22795,7 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
     chartsofAccountId!: number;
     attachmentsPath!: string[] | undefined;
     attachments!: GetAttachmentsDto[] | undefined;
+    closingMonth!: moment.Moment;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -22818,6 +22827,7 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
                 for (let item of data["attachments"])
                     this.attachments!.push(GetAttachmentsDto.fromJS(item));
             }
+            this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -22849,6 +22859,7 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
             for (let item of this.attachments)
                 data["attachments"].push(item.toJSON());
         }
+        data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -22865,6 +22876,7 @@ export interface ICreateOrEditItemizationDto {
     chartsofAccountId: number;
     attachmentsPath: string[] | undefined;
     attachments: GetAttachmentsDto[] | undefined;
+    closingMonth: moment.Moment;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;

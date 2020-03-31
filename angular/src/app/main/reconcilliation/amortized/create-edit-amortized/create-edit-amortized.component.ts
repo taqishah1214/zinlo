@@ -6,6 +6,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { UppyConfig } from 'uppy-angular';
 import { AppConsts } from '@shared/AppConsts';
 import { finalize } from 'rxjs/operators';
+import * as moment from 'moment';
 
 
 
@@ -95,6 +96,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   }
 
   createNewAccount() : void {
+    this.amortizationDto.closingMonth = moment(new Date())
     this.amortizationDto.criteria = 1;
     this.title = "Create a Item"
     this.buttonTitle =  "Create"
