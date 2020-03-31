@@ -299,7 +299,7 @@ namespace Zinlo.ChartsofAccount
         {
             if (accountNumber != null)
             {
-                var isExist = await _chartsofAccountRepository.FirstOrDefaultAsync(e => !e.IsArchive && e.AccountNumber.Trim().ToLower() == accountNumber.Trim().ToLower());
+                var isExist = await _chartsofAccountRepository.FirstOrDefaultAsync(e => e.AccountNumber.Trim().ToLower() == accountNumber.Trim().ToLower());
                 if (isExist != null) return true;
             }
             return false;
@@ -375,7 +375,7 @@ namespace Zinlo.ChartsofAccount
             var accountsExistCheck = await _chartsofAccountRepository.FirstOrDefaultAsync(e => e.ClosingMonth.Month == closingMonth.Month);
             if (accountsExistCheck == null)
             {
-                var currentMonthAccounts = _chartsofAccountRepository.GetAll().Where(e => e.ClosingMonth.Month == DateTime.Now.Month && e.IsArchive == false).Include(a => a.Assignee).Include(a => a.AccountSubType);
+                var currentMonthAccounts = _chartsofAccountRepository.GetAll().Where(e => e.ClosingMonth.Month == DateTime.Now.Month).Include(a => a.Assignee).Include(a => a.AccountSubType);
                 var itemList = (from o in currentMonthAccounts.ToList()
 
                                 select new CreateOrEditChartsofAccountDto()
