@@ -3,7 +3,7 @@
         <div class="kt-subheader__main">
             <h3 class="kt-subheader__title">
                 <img src="./assets/media/ClosingCheckList/clipboard.svg" alt="clipboard">
-                <span class="headSpace">Checklist</span>
+                <span class="headSpace">{{"Checklist" | localize}}</span>
             </h3>
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
             <span class="kt-subheader__desc">
@@ -103,18 +103,18 @@
                                             <select class="form-control border-grey" [(ngModel)]="filterStatus"
                                                 (change)="filterByStatus($event)" id="exampleFormControlSelect1"
                                                 name="filterStatus">
-                                                <option value="0">All Statuses</option>
-                                                <option value="1">Not Started</option>
-                                                <option value="2">In Process</option>
-                                                <option value="3">On Hold</option>
-                                                <option value="4">Completed</option>
+                                                <option value="0">{{"AllStatuses" | localize}}</option>
+                                                <option value="1">{{"NotStarted" | localize}}</option>
+                                                <option value="2">{{"InProcess" | localize}}</option>
+                                                <option value="3">{{"OnHold" | localize}}</option>
+                                                <option value="4">{{"Completed" | localize}}</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <select class="form-control border-grey" name="categoryFilter"
                                                 [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
                                                 id="exampleFormControlSelect2">
-                                                <option value="0">All Categories</option>
+                                                <option value="0">{{"AllCategories" | localize}}</option>
                                                 <option *ngFor="let item of category;" [value]="item.value">
                                                     {{item.name}}
                                                 </option>
@@ -156,15 +156,15 @@
                                             </th>
                                             <th class="task-cell" scope="col" class="task-task-name">Task Name</th>
                                             <th class="cat-cell" scope="col" pSortableColumn="CategoryId">
-                                                Category
+                                                {{"Category" | localize}}
                                                 <p-sortIcon field="CategoryId"></p-sortIcon>
                                             </th>
                                             <th class="status-cell" scope="col" pSortableColumn="Status">
-                                                Status
+                                                {{"Status" | localize}}
                                                 <p-sortIcon field="Status"></p-sortIcon>
                                             </th>
                                             <th class="assignee-cell" scope="col" pSortableColumn="AssigneeId">
-                                                Assignee
+                                                {{"Assignee" | localize}}
                                                 <p-sortIcon field="AssigneeId"></p-sortIcon>
                                             </th>
                                             <th class="cell-none">
@@ -202,10 +202,10 @@
                                                     class="form-control border-0 {{j.StatusColor}} text-white">
                                                     <option value="" selected disabled hidden>
                                                         {{j.status}}</option>
-                                                    <option value="1">Not Started</option>
-                                                    <option value="2">In Process</option>
-                                                    <option value="3">On Hold</option>
-                                                    <option value="4">Completed</option>
+                                                    <option value="1">{{"NotStarted" | localize}}</option>
+                                                    <option value="2">{{"InProcess" | localize}}</option>
+                                                    <option value="3">{{"OnHold" | localize}}</option>
+                                                    <option value="4">{{"Completed" | localize}}</option>
                                                 </select>
                                             </form>
                                         </td>
@@ -243,7 +243,7 @@
                                         <td *ngIf="collapsibleRow == true && j.id == collapsibleRowId" colspan="6">
                                             <ul>
                                                 <li class="assignee-cell-item kt-user-card-v2">
-                                                    <div class="thead-box"><b>Assignee : </b></div>
+                                                    <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
                                                     <div class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div *ngIf="j.profilePicture" class="kt-badge kt-badge--xl">
@@ -269,7 +269,7 @@
                                                 </li>
 
                                                 <li class="status-cell-item">
-                                                    <div class="thead-box"><b>Status : </b></div>
+                                                    <div class="thead-box"><b>{{"Status" | localize}} : </b></div>
                                                     <div class="tdata-box">
                                                         <form class="task-report-form">
                                                             <select onclick="console.log('test')"
@@ -277,16 +277,16 @@
                                                                 class="form-control border-0 {{j.StatusColor}} text-white">
                                                                 <option value="" selected disabled hidden>
                                                                     {{j.status}}</option>
-                                                                <option value="1">Not Started</option>
-                                                                <option value="2">In Process</option>
-                                                                <option value="3">On Hold</option>
-                                                                <option value="4">Completed</option>
-                                                            </select>
+                                                                    <option value="1">{{"NotStarted" | localize}}</option>
+                                                                    <option value="2">{{"InProcess" | localize}}</option>
+                                                                    <option value="3">{{"OnHold" | localize}}</option>
+                                                                    <option value="4">{{"Completed" | localize}}</option>
+                                                                </select>
                                                         </form>
                                                     </div>
                                                 </li>
                                                 <li class="category-cell-item">
-                                                    <div class="thead-box"><b>Category : </b></div>
+                                                    <div class="thead-box"><b>{{"Category" | localize}} : </b></div>
                                                     <div class="tdata-box">
                                                         <span class="category-name bg-lightgrey">{{j.category}}</span>
                                                     </div>

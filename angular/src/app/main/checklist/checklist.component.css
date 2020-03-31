@@ -656,6 +656,7 @@ table.table.record-table td, table.table.record-table th {
 
 @media only screen and (max-width:1470px){
     .date-cell {
+        cursor: pointer;
         width: 110px;
     }
     .cat-cell {
@@ -685,8 +686,10 @@ table.table.record-table td, table.table.record-table th {
         display: flex;
     }
     .date-cell {
+        cursor: pointer;
         width: 120px;
     }
+    
     .toggle-btn-cell .taggle-btn{
         display: block;
     }

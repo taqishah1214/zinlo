@@ -5,8 +5,8 @@
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            <span *ngIf="editAccountCheck == false">Create a New Account</span>
-                            <span *ngIf="editAccountCheck == true">Edit Account</span>
+                            <span *ngIf="editAccountCheck == false">{{"Create a New Account" |localize}}</span>
+                            <span *ngIf="editAccountCheck == true">{{"Edit Account" | localize}}</span>
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
@@ -23,17 +23,17 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="TaskName">Account Name</label>
-                                            <input type="text" autocomplete="off" name="accountName" class="form-control"
+                                            <label for="TaskName">{{"Account Name" | localize}}</label>
+                                            <input type="text" name="accountName" class="form-control"
                                                 [(ngModel)]="accountDto.accountName">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="TaskName"> Account No.</label>
-                                            <input type="text" autocomplete="off" name="accountNumber" (focusout)="CheckAccountNumber()" class="form-control"
+                                            <label for="TaskName"> {{"Account No" | localize}}.</label>
+                                            <input type="text" name="accountNumber" (focusout)="CheckAccountNumber()" class="form-control"
                                                 [(ngModel)]="accountDto.accountNumber">
-                                                <span style="color:red" *ngIf="isAccountExist">Account number already exist.</span>   
+                                                <span style="color:red" *ngIf="isAccountExist">{{"Account Number is already exist." | localize}}</span>   
                                         </div>
                                     </div>
                                 </div>
@@ -41,20 +41,21 @@
                                     <div class="col-md-6">
 
                                         <div class="form-group category-selector">
-                                            <label for="TaskName">Account Type</label>
+                                            <label for="TaskName">{{"Account Type" | localize}}</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{accountType}}</button>
                                             <div class="dropdown-menu" >
                                                 <a class="dropdown-item" *ngFor="let item of accountTypeList"
                                                     (click)="accountTypeClick(item.id,item.name)">
-                                                    {{item.name}}</a>
+                                                    {{item.name}}
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group category-selector">
-                                            <label for="TaskName">Account Sub-Type</label>
+                                            <label for="TaskName">{{"Account Sub-Type" | localize}}</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{accountSubTypeName}}</button>
@@ -64,20 +65,21 @@
                                                     {{item.name}}</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item"
-                                                    (click)="routeToAddNewAccountSubType()">+AddNew</a>
+                                                    (click)="routeToAddNewAccountSubType()"><i class="fa fa-plus"></i>
+                                                    {{"AddNew" | localize}}</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Assignee</label>
+                                        <label>{{"Assignee" | localize}}</label>
                                         <app-user-list-component comingChangeReguest = "" userId = {{selectedUserID}} ></app-user-list-component>
                                     </div>
                                     <div class="col-md-6">
 
                                         <div class="form-group category-selector">
-                                            <label for="TaskName">Reconcillation Type</label>
+                                            <label for="TaskName">{{"Reconcillation Type" | localize}}</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{reconcillationType}}</button>
@@ -94,7 +96,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div *ngIf="reconciledBox" class="form-group category-selector">
-                                            <label for="TaskName">Reconciled As</label>
+                                            <label for="TaskName">{{"Reconciled As" | localize}}</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{recociled}}</button>
@@ -111,11 +113,11 @@
                         <div class="kt-portlet__head">
                         </div>
                         <div class="form-group margin-top-5">
-                            <button *ngIf="editAccountCheck == false" class="btn btn-brand" type="submit"  [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
-                                Create
+                            <button *ngIf="editAccountCheck == false" class="btn btn-brand" type="submit">
+                                {{"Create" | localize}}
                             </button>
-                            <button *ngIf="editAccountCheck == true" class="btn btn-brand" type="submit"  [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
-                                Update
+                            <button *ngIf="editAccountCheck == true" class="btn btn-brand" type="submit">
+                                {{"Update" | localize}}
                             </button>
                         </div>
                     </form>

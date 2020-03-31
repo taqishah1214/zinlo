@@ -21,17 +21,17 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="title">Title</label>
+                                    <label for="title">{{"Title" | localize}}</label>
                                     <input autofocus type="text" class="form-control" id="title"  required (focusout)="CheckCategory()" name="title"
-                                    autocomplete="off" [(ngModel)]="categoryobj.title">
-                                        <span style="color:red" *ngIf="isCategoryExist">Category with same Name already exist.</span>
+                                        [(ngModel)]="categoryobj.title">
+                                        <span style="color:red" *ngIf="isCategoryExist">{{"CategorywithsameNamealreadyexist" | localize}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="description">Description</label>
+                                    <label for="description">{{"Description" | localize}}</label>
                                     <textarea class="form-control" [(ngModel)]="categoryobj.description"
                                         id="description" name="description" (keydown.enter)="save($event)"
                                          ></textarea>
