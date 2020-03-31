@@ -26,7 +26,7 @@ namespace Zinlo.ChartsofAccount
         public bool Lock { get; set; }
         public Decimal TrialBalance { get; set; }
         public long VersionId { get; set; }
-
+        public bool IsArchive { get; set; }
     }
     public enum ReconciliationType
     {

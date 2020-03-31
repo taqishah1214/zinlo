@@ -138,7 +138,9 @@ namespace Zinlo.ChartsofAccount
         }
         public async Task Delete(long id)
         {
-            await _chartsofAccountRepository.DeleteAsync(id);
+            var account = await _chartsofAccountRepository.FirstOrDefaultAsync(id);
+            account.IsArchive = true;
+           await _chartsofAccountRepository.UpdateAsync(account);
         }
         public async Task<GetAccountForEditDto> GetAccountForEdit(long id)
         {
