@@ -20,6 +20,8 @@ namespace Zinlo.Reconciliation
         public virtual ChartsofAccount.ChartsofAccount ChartsofAccount { get; set; }
         public long ChartsofAccountId { get; set; }
         public Criteria Criteria { get; set; }
+        public DateTime ClosingMonth { get; set; }
+
 
     }
     public enum Criteria

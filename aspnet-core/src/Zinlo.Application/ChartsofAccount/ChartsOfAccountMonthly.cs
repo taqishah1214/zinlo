@@ -83,8 +83,10 @@ namespace Zinlo.ChartsofAccount
                                 Amount = o.Amount,
                                 Description = o.Description,
                                 ChartsofAccountId = (long)newAccountId,
-                                CreationTime = o.CreationTime.AddMonths(1),
+                                ClosingMonth = o.CreationTime.AddMonths(1),
                                 Criteria = (Reconciliation.Dtos.Criteria)o.Criteria,
+                                CreatorUserId = o.CreatorUserId,
+
 
                             }).ToList();
 
@@ -104,13 +106,14 @@ namespace Zinlo.ChartsofAccount
 
                             select new CreateOrEditItemizationDto()
                             {
+                                CreatorUserId = o.CreatorUserId,
                                 InoviceNo = o.InoviceNo,
                                 JournalEntryNo = o.JournalEntryNo,
                                 Date = o.Date,
                                 Amount = o.Amount,
                                 Description = o.Description,
                                 ChartsofAccountId = (long)newAccountId,
-                                CreationTime = o.CreationTime.AddMonths(1)
+                                ClosingMonth = o.CreationTime.AddMonths(1)
                             }).ToList();
 
             foreach(var item in itemList)
@@ -125,7 +128,7 @@ namespace Zinlo.ChartsofAccount
         {
             DateTime now = DateTime.Now;
             var CurrentDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
-            var checkNextMonthAccounts = _chartsofAccountRepository.GetAll().FirstOrDefault(e => e.CreationTime.Month == CurrentDate.Month + 1 && e.CreationTime.Year == CurrentDate.Year);
+            var checkNextMonthAccounts = _chartsofAccountRepository.GetAll().FirstOrDefault(e => e.ClosingMonth.Month == CurrentDate.Month + 1 && e.ClosingMonth.Year == CurrentDate.Year);
             if (checkNextMonthAccounts == null)
             {
                 return true;
@@ -148,7 +151,7 @@ namespace Zinlo.ChartsofAccount
                 {
                         DateTime now = DateTime.Now;
                         var CurrentDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
-                        var accountsList = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == CurrentDate.Month && e.CreationTime.Year == CurrentDate.Year).Include(p => p.AccountSubType).Include(p => p.Assignee); 
+                        var accountsList = _chartsofAccountRepository.GetAll().Where(e => e.ClosingMonth.Month == CurrentDate.Month && e.ClosingMonth.Year == CurrentDate.Year).Include(p => p.AccountSubType).Include(p => p.Assignee); 
                         var itemList = (from o in accountsList.ToList()
 
                                             select new CreateOrEditChartsofAccountDto()
@@ -162,7 +165,7 @@ namespace Zinlo.ChartsofAccount
                                                 AccountSubTypeId = o.AccountSubType.Id,
                                                 Reconciled = (Dtos.Reconciled)o.Reconciled,
                                                 Balance = 0,
-                                                CreationTime = o.CreationTime.AddMonths(1),
+                                                ClosingMonth = o.CreationTime.AddMonths(1),
                                                 AssigneeId = o.Assignee.Id
 
                                             }).ToList();
