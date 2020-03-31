@@ -25,15 +25,15 @@
                                         <div class="form-group">
                                             <label for="TaskName">{{"Account Name" | localize}}</label>
                                             <input type="text" name="accountName" class="form-control"
-                                                [(ngModel)]="accountDto.accountName">
+                                                [(ngModel)]="accountDto.accountName" autocomplete="off" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="TaskName"> {{"Account No" | localize}}.</label>
                                             <input type="text" name="accountNumber" (focusout)="CheckAccountNumber()" class="form-control"
-                                                [(ngModel)]="accountDto.accountNumber">
-                                                <span style="color:red" *ngIf="isAccountExist">{{"Account Number is already exist." | localize}}</span>   
+                                                [(ngModel)]="accountDto.accountNumber" autocomplete="off">
+                                                <span style="color:red" *ngIf="isAccountExist">{{"Account number already exist." | localize}}</span>   
                                         </div>
                                     </div>
                                 </div>
@@ -113,10 +113,10 @@
                         <div class="kt-portlet__head">
                         </div>
                         <div class="form-group margin-top-5">
-                            <button *ngIf="editAccountCheck == false" class="btn btn-brand" type="submit">
+                            <button *ngIf="editAccountCheck == false" class="btn btn-brand" type="submit"  [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                                 {{"Create" | localize}}
                             </button>
-                            <button *ngIf="editAccountCheck == true" class="btn btn-brand" type="submit">
+                            <button *ngIf="editAccountCheck == true" class="btn btn-brand" type="submit"  [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" >
                                 {{"Update" | localize}}
                             </button>
                         </div>

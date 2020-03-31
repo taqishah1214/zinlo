@@ -101,18 +101,29 @@ namespace Zinlo.ChartsofAccount
 
             if ((int)account.ReconciliationType != (int)input.ReconciliationType)
             {
+                DateTime ClosingMonth = account.ClosingMonth;
                 await _chartsofAccountRepository.DeleteAsync(account);
                 var previousAccountId = input.Id;
                 if ((int)account.ReconciliationType == 1)
                 {
-                    _itemizationRepository.Delete(await _itemizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == previousAccountId));
+                    var query = await _itemizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == previousAccountId && x.ClosingMonth.Month == DateTime.Now.Month);
+                    if (query != null)
+                    {
+                        _itemizationRepository.Delete(query);
+                    }
+
                 }
                 else
                 {
-                    _amortizationRepository.Delete(await _amortizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == previousAccountId));
+                    var query = await _amortizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == previousAccountId && x.ClosingMonth.Month == DateTime.Now.Month);
+                    if (query != null)
+                    {
+                        _amortizationRepository.Delete(query);
+                    }
                 }
 
                 input.Id = 0;
+                input.ClosingMonth = ClosingMonth;
                 return await Create(input);
             }
 
@@ -140,7 +151,7 @@ namespace Zinlo.ChartsofAccount
         {
             var account = await _chartsofAccountRepository.FirstOrDefaultAsync(id);
             account.IsArchive = true;
-           await _chartsofAccountRepository.UpdateAsync(account);
+            await _chartsofAccountRepository.UpdateAsync(account);
         }
         public async Task<GetAccountForEditDto> GetAccountForEdit(long id)
         {
@@ -283,12 +294,12 @@ namespace Zinlo.ChartsofAccount
             return result;
         }
 
-        public bool CheckAccountNoExist(string accountNumber)
+        public async Task<bool> CheckAccountNumber(string accountNumber)
         {
             if (accountNumber != null)
             {
-                bool isExist = _chartsofAccountRepository.GetAll().Any(x => x.AccountNumber.Trim().ToLower() == accountNumber.Trim().ToLower());
-                return isExist;
+                var isExist = await _chartsofAccountRepository.FirstOrDefaultAsync(e => !e.IsArchive && e.AccountNumber.Trim().ToLower() == accountNumber.Trim().ToLower());
+                if (isExist != null) return true;
             }
             return false;
         }
@@ -304,7 +315,7 @@ namespace Zinlo.ChartsofAccount
         }
         public async Task ShiftAmortizedItems(double previousAccountId, double newAccountId, DateTime closingMonth)
         {
-            var amortizedItemList = _amortizationRepository.GetAll().Where(e => e.ChartsofAccount.Id == previousAccountId).Include(e => e.ChartsofAccount);
+            var amortizedItemList = _amortizationRepository.GetAll().Where(e => e.ChartsofAccount.Id == previousAccountId && e.ClosingMonth.Month == DateTime.Now.Month).Include(e => e.ChartsofAccount);
             var itemList = (from o in amortizedItemList.ToList()
 
                             select new CreateOrEditAmortizationDto()
@@ -335,7 +346,7 @@ namespace Zinlo.ChartsofAccount
 
         public async Task ShiftItemizedItem(long previousAccountId, long newAccountId, DateTime closingMonth)
         {
-            var itemizedItemList = _itemizationRepository.GetAll().Where(e => e.ChartsofAccount.Id == previousAccountId).Include(e => e.ChartsofAccount);
+            var itemizedItemList = _itemizationRepository.GetAll().Where(e => e.ChartsofAccount.Id == previousAccountId && e.ClosingMonth.Month == DateTime.Now.Month).Include(e => e.ChartsofAccount);
             var itemList = (from o in itemizedItemList.ToList()
 
                             select new CreateOrEditItemizationDto()
@@ -360,10 +371,10 @@ namespace Zinlo.ChartsofAccount
 
         public async Task ShiftChartsOfAccountToSpecficMonth(DateTime closingMonth)
         {
-            var accountsExistCheck = await _chartsofAccountRepository.FirstOrDefaultAsync(e => e.CreationTime.Month == closingMonth.Month);
+            var accountsExistCheck = await _chartsofAccountRepository.FirstOrDefaultAsync(e => e.ClosingMonth.Month == closingMonth.Month);
             if (accountsExistCheck == null)
             {
-                var currentMonthAccounts = _chartsofAccountRepository.GetAll().Where(e => e.CreationTime.Month == DateTime.Now.Month).Include(a => a.Assignee).Include(a => a.AccountSubType);
+                var currentMonthAccounts = _chartsofAccountRepository.GetAll().Where(e => e.ClosingMonth.Month == DateTime.Now.Month && e.IsArchive == false).Include(a => a.Assignee).Include(a => a.AccountSubType);
                 var itemList = (from o in currentMonthAccounts.ToList()
 
                                 select new CreateOrEditChartsofAccountDto()
@@ -411,6 +422,7 @@ namespace Zinlo.ChartsofAccount
                     return string.Empty;
             }
         }
+
     }
 }
 

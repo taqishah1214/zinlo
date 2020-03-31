@@ -3505,8 +3505,8 @@ export class ChartsofAccountServiceProxy {
      * @param accountNumber (optional) 
      * @return Success
      */
-    checkAccountNoExist(accountNumber: string | undefined): Observable<boolean> {
-        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/CheckAccountNoExist?";
+    checkAccountNumber(accountNumber: string | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/CheckAccountNumber?";
         if (accountNumber === null)
             throw new Error("The parameter 'accountNumber' cannot be null.");
         else if (accountNumber !== undefined)
@@ -3522,11 +3522,11 @@ export class ChartsofAccountServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCheckAccountNoExist(response_);
+            return this.processCheckAccountNumber(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCheckAccountNoExist(<any>response_);
+                    return this.processCheckAccountNumber(<any>response_);
                 } catch (e) {
                     return <Observable<boolean>><any>_observableThrow(e);
                 }
@@ -3535,7 +3535,7 @@ export class ChartsofAccountServiceProxy {
         }));
     }
 
-    protected processCheckAccountNoExist(response: HttpResponseBase): Observable<boolean> {
+    protected processCheckAccountNumber(response: HttpResponseBase): Observable<boolean> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 

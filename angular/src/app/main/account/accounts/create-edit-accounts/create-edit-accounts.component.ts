@@ -33,7 +33,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   selectedSubTypeId : any;
   seclectedSubTypeTitle : any;
   isAccountExist : boolean = false;
-  date : any;
+  date : Date = new Date();
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(private _accountSubTypeService: AccountSubTypeServiceProxy,
@@ -259,12 +259,14 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   CheckAccountNumber() : void {
-    this._chartOfAccountService.checkAccountNoExist(this.accountDto.accountNumber).subscribe(response => {
+    this._chartOfAccountService.checkAccountNumber(this.accountDto.accountNumber).subscribe(response => {
       this.isAccountExist = response
     })
   }
 
   createAccount():void {
+    this.saving = true;
+    this.accountDto.closingMonth = moment(this.date)
     if(history.state.data.userId){
       this.accountDto.assigneeId=history.state.data.userId
     }
@@ -286,6 +288,8 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     {
       this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
     }
+   
+    this.saving = true;
     this._chartOfAccountService.createOrEdit(this.accountDto).pipe(finalize(() => { this.saving = false; }))
     .subscribe(response => {
       this.notify.success(this.l('Account Successfully Updated.'));

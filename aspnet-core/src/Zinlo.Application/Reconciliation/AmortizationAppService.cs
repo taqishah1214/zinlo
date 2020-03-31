@@ -215,7 +215,7 @@ namespace Zinlo.Reconciliation
         {
             input.EndDate = input.EndDate.AddDays(1);
             input.StartDate = input.StartDate.AddDays(1);
-            input.ClosingMonth = input.ClosingMonth.AddDays(1);
+            //input.ClosingMonth = input.ClosingMonth.AddDays(1);
             var item = ObjectMapper.Map<Amortization>(input);
             var itemAddedId = await _amortizationRepository.InsertAndGetIdAsync(item);
             if (input.AttachmentsPath != null)
