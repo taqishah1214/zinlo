@@ -29,7 +29,7 @@ namespace Zinlo.EntityFrameworkCore
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Comment.Comment> Comments { get; set; }
         public virtual DbSet<AccountSubType.AccountSubType> AccountSubTypes { get; set; }
-        public virtual DbSet<ChartsofAccount.ChartsofAccount> ChartsofAccounts { get; set; }
+        public virtual DbSet<ChartofAccounts.ChartofAccounts> ChartsofAccounts { get; set; }
         public virtual DbSet<Itemization> Itemizations { get; set; }
         public virtual DbSet<Amortization> Amortizations { get; set; }
         public virtual DbSet<ImportsPath> ImportsPaths { get; set; }

@@ -1,15 +1,13 @@
-﻿using Abp.Domain.Entities;
-using Abp.Domain.Entities.Auditing;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 using Zinlo.Authorization.Users;
 
-namespace Zinlo.ChartsofAccount
+namespace Zinlo.ChartofAccounts
 {
-    [Table("ChartsofAccount")]
-    public class ChartsofAccount : CreationAuditedEntity<long>, IMustHaveTenant
+    [Table("ChartofAccounts")]
+    public class ChartofAccounts : FullAuditedEntity<long>, IMustHaveTenant
     {
         public int TenantId { get; set; }
         public string AccountNumber { get; set; }
@@ -26,7 +24,6 @@ namespace Zinlo.ChartsofAccount
         public bool Lock { get; set; }
         public Decimal TrialBalance { get; set; }
         public long VersionId { get; set; }
-        public bool IsArchive { get; set; }
         public DateTime ClosingMonth { get; set; }
     }
     public enum ReconciliationType
