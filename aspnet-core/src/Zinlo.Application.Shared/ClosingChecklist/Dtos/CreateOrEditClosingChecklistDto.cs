@@ -19,7 +19,7 @@ namespace Zinlo.Tasks.Dtos
         public int DueOn { get; set; }
         public DateTime EndsOn { get; set; }
         public DateTime DueDate { get; set; }
-        public bool DayBeforeAfter { get; set; }
+        public DaysBeforeAfterDto DayBeforeAfter { get; set; }
         public bool EndOfMonth { get; set; }
         public FrequencyDto Frequency { get; set; }
         public string CommentBody { get; set; }
@@ -41,5 +41,11 @@ namespace Zinlo.Tasks.Dtos
         Annually = 3,
         XNumberOfMonths = 4,
         None = 5
+    }
+    public enum DaysBeforeAfterDto
+    {
+        None = 1,
+        DaysBefore = 2,
+        DaysAfter = 3
     }
 }

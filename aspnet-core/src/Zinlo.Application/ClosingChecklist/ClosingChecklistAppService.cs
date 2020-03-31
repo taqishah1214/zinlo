@@ -2,25 +2,21 @@
 using Abp.Domain.Repositories;
 using System;
 using System.Threading.Tasks;
-using Abp.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
-using Zinlo.Authorization;
 using Zinlo.Tasks.Dtos;
 using Zinlo.Comment;
 using Zinlo.Comment.Dtos;
 using Zinlo.ClosingChecklist.Dtos;
 using System.Collections.Generic;
 using Abp.UI;
-using Bogus.Extensions;
 using Zinlo.Authorization.Users;
 using Zinlo.Attachments;
 using Zinlo.Attachments.Dtos;
 using Zinlo.Authorization.Users.Profile;
 using NUglify.Helpers;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using Zinlo.TimeManagements;
 using Zinlo.TimeManagements.Dto;
 
@@ -451,14 +447,14 @@ namespace Zinlo.ClosingChecklist
         {
             return DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
         }
-        public DateTime GetNextIterationDateAfterDueDate(bool isDaysBefore, DateTime closingMonth, int numberOfDays, bool endsOfMonth)
+        public DateTime GetNextIterationDateAfterDueDate(DaysBeforeAfterDto daysBeforeAfter, DateTime closingMonth, int numberOfDays, bool endsOfMonth)
         {
             var nextDate = closingMonth;
             if (endsOfMonth)
             {
                 nextDate = new DateTime(closingMonth.Year, closingMonth.Month, (GetTotalDaysByMonth(closingMonth)));
             }
-            else if (isDaysBefore)
+            else if (daysBeforeAfter == DaysBeforeAfterDto.DaysBefore)
             {
                 nextDate = new DateTime(closingMonth.Year, closingMonth.Month, (GetTotalDaysByMonth(closingMonth) - numberOfDays));
             }
