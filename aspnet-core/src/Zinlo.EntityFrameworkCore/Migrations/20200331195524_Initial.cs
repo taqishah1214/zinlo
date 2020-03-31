@@ -413,7 +413,7 @@ namespace Zinlo.Migrations
                     CreatorUserId = table.Column<long>(nullable: true),
                     TenantId = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -536,7 +536,7 @@ namespace Zinlo.Migrations
                     CreatorUserId = table.Column<long>(nullable: true),
                     TenantId = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -909,13 +909,45 @@ namespace Zinlo.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChartsofAccount",
+                name: "ImportsPaths",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreationTime = table.Column<DateTime>(nullable: false),
                     CreatorUserId = table.Column<long>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    FilePath = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
+                    FailedRecordsCount = table.Column<int>(nullable: false),
+                    SuccessRecordsCount = table.Column<int>(nullable: false),
+                    UserId = table.Column<long>(nullable: false),
+                    IsRollBacked = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImportsPaths", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ImportsPaths_AbpUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AbpUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChartofAccounts",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
                     TenantId = table.Column<int>(nullable: false),
                     AccountNumber = table.Column<string>(nullable: true),
                     AccountName = table.Column<string>(nullable: true),
@@ -927,19 +959,21 @@ namespace Zinlo.Migrations
                     Reconciled = table.Column<int>(nullable: false),
                     Balance = table.Column<double>(nullable: false),
                     Lock = table.Column<bool>(nullable: false),
-                    TrialBalance = table.Column<decimal>(nullable: false)
+                    TrialBalance = table.Column<decimal>(nullable: false),
+                    VersionId = table.Column<long>(nullable: false),
+                    ClosingMonth = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChartsofAccount", x => x.Id);
+                    table.PrimaryKey("PK_ChartofAccounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChartsofAccount_AccountSubTypes_AccountSubTypeId",
+                        name: "FK_ChartofAccounts_AccountSubTypes_AccountSubTypeId",
                         column: x => x.AccountSubTypeId,
                         principalTable: "AccountSubTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ChartsofAccount_AbpUsers_AssigneeId",
+                        name: "FK_ChartofAccounts_AbpUsers_AssigneeId",
                         column: x => x.AssigneeId,
                         principalTable: "AbpUsers",
                         principalColumn: "Id",
@@ -970,7 +1004,7 @@ namespace Zinlo.Migrations
                     DueOn = table.Column<int>(nullable: false),
                     DueDate = table.Column<DateTime>(nullable: false),
                     EndsOn = table.Column<DateTime>(nullable: true),
-                    DayBeforeAfter = table.Column<bool>(nullable: false),
+                    DayBeforeAfter = table.Column<int>(nullable: false),
                     EndOfMonth = table.Column<bool>(nullable: false),
                     Frequency = table.Column<int>(nullable: false),
                     GroupId = table.Column<Guid>(nullable: false)
@@ -1089,15 +1123,16 @@ namespace Zinlo.Migrations
                     AccomulateAmount = table.Column<double>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     ChartsofAccountId = table.Column<long>(nullable: false),
-                    Criteria = table.Column<int>(nullable: false)
+                    Criteria = table.Column<int>(nullable: false),
+                    ClosingMonth = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Amortizations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Amortizations_ChartsofAccount_ChartsofAccountId",
+                        name: "FK_Amortizations_ChartofAccounts_ChartsofAccountId",
                         column: x => x.ChartsofAccountId,
-                        principalTable: "ChartsofAccount",
+                        principalTable: "ChartofAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1116,15 +1151,16 @@ namespace Zinlo.Migrations
                     Date = table.Column<DateTime>(nullable: false),
                     Amount = table.Column<double>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    ChartsofAccountId = table.Column<long>(nullable: false)
+                    ChartsofAccountId = table.Column<long>(nullable: false),
+                    ClosingMonth = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Itemizations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Itemizations_ChartsofAccount_ChartsofAccountId",
+                        name: "FK_Itemizations_ChartofAccounts_ChartsofAccountId",
                         column: x => x.ChartsofAccountId,
-                        principalTable: "ChartsofAccount",
+                        principalTable: "ChartofAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1527,13 +1563,13 @@ namespace Zinlo.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChartsofAccount_AccountSubTypeId",
-                table: "ChartsofAccount",
+                name: "IX_ChartofAccounts_AccountSubTypeId",
+                table: "ChartofAccounts",
                 column: "AccountSubTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChartsofAccount_AssigneeId",
-                table: "ChartsofAccount",
+                name: "IX_ChartofAccounts_AssigneeId",
+                table: "ChartofAccounts",
                 column: "AssigneeId");
 
             migrationBuilder.CreateIndex(
@@ -1545,6 +1581,11 @@ namespace Zinlo.Migrations
                 name: "IX_ClosingChecklists_CategoryId",
                 table: "ClosingChecklists",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImportsPaths_UserId",
+                table: "ImportsPaths",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Itemizations_ChartsofAccountId",
@@ -1662,6 +1703,9 @@ namespace Zinlo.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "ImportsPaths");
+
+            migrationBuilder.DropTable(
                 name: "Itemizations");
 
             migrationBuilder.DropTable(
@@ -1680,7 +1724,7 @@ namespace Zinlo.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "ChartsofAccount");
+                name: "ChartofAccounts");
 
             migrationBuilder.DropTable(
                 name: "AbpEntityChangeSets");

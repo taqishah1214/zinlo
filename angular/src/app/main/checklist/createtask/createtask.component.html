@@ -1,4 +1,4 @@
-<div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid add-task">
+<div *ngIf="active" class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid add-task">
     <div class="row">
         <div class="kt-subheader kt-grid__item">
             <div [class]="containerClass">
@@ -148,7 +148,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <label class="kt-radio kt-radio--single kt-radio--success">
-                                                        <input type="radio" name="radioButton" id="radioButton" (change)="onDayChange()" [(checked)]="isChecked">
+                                                        <input type="radio" value="false" name="endOfMonth" [(ngModel)]="checklist.endOfMonth" checked="checked" >
                                                         <span></span>
                                                     </label>
                                                 </span>
@@ -183,10 +183,10 @@
                                     <div class="form-group">
                                         <label>&nbsp;&nbsp;</label>
                                         <select class="bg-white border form-control input-medium"
-                                            (change)="onDaysClick($event.target.value)" [(ngModel)]="daysBeforeAfter" name="daysBeforeAfter">
-                                            <option value=null disabled hidden>None</option>
-                                            <option value=true>{{"DaysBefore" | localize}}</option>
-                                            <option value=false>{{"DaysAfter" | localize}}</option>
+                                            (change)="onDaysClick($event.target.value)" [(ngModel)]="checklist.daysBeforeAfter" name="daysBeforeAfter">
+                                            <option value="1" >None</option>
+                                            <option value="2">{{"DaysBefore" | localize}}</option>
+                                            <option value="3">{{"DaysAfter" | localize}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -204,8 +204,7 @@
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" value="true" name="endOfMonth" placeholder="Month"
-                                                (click)="handleRadioChange()" [(checked)]="checklist.endOfMonth">{{"Endofmonth" | localize}}
+                                            <input type="radio" value="true" name="endOfMonth"  >{{"Endofmonth" | localize}}
                                             <span></span>
                                         </label>
                                     </div>

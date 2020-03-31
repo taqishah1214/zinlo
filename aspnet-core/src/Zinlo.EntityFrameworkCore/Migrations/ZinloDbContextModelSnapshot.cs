@@ -1598,8 +1598,8 @@ namespace Zinlo.Migrations
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("DayBeforeAfter")
-                        .HasColumnType("boolean");
+                    b.Property<int>("DayBeforeAfter")
+                        .HasColumnType("integer");
 
                     b.Property<long?>("DeleterUserId")
                         .HasColumnType("bigint");

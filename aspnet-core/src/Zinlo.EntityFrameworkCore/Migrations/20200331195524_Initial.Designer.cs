@@ -10,8 +10,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20200328162806_Version_Added_COA")]
-    partial class Version_Added_COA
+    [Migration("20200331195524_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1166,7 +1166,6 @@ namespace Zinlo.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("TenantId")
@@ -1448,7 +1447,7 @@ namespace Zinlo.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Zinlo.ChartsofAccount.ChartsofAccount", b =>
+            modelBuilder.Entity("Zinlo.ChartofAccounts.ChartofAccounts", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -1473,10 +1472,28 @@ namespace Zinlo.Migrations
                     b.Property<double>("Balance")
                         .HasColumnType("double precision");
 
+                    b.Property<DateTime>("ClosingMonth")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("Lock")
@@ -1506,7 +1523,7 @@ namespace Zinlo.Migrations
 
                     b.HasIndex("AssigneeId");
 
-                    b.ToTable("ChartsofAccount");
+                    b.ToTable("ChartofAccounts");
                 });
 
             modelBuilder.Entity("Zinlo.Chat.ChatMessage", b =>
@@ -1583,8 +1600,8 @@ namespace Zinlo.Migrations
                     b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("DayBeforeAfter")
-                        .HasColumnType("boolean");
+                    b.Property<int>("DayBeforeAfter")
+                        .HasColumnType("integer");
 
                     b.Property<long?>("DeleterUserId")
                         .HasColumnType("bigint");
@@ -2000,6 +2017,9 @@ namespace Zinlo.Migrations
                     b.Property<long>("ChartsofAccountId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime>("ClosingMonth")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
 
@@ -2046,6 +2066,9 @@ namespace Zinlo.Migrations
 
                     b.Property<long>("ChartsofAccountId")
                         .HasColumnType("bigint");
+
+                    b.Property<DateTime>("ClosingMonth")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
@@ -2324,7 +2347,7 @@ namespace Zinlo.Migrations
                         .HasForeignKey("LastModifierUserId");
                 });
 
-            modelBuilder.Entity("Zinlo.ChartsofAccount.ChartsofAccount", b =>
+            modelBuilder.Entity("Zinlo.ChartofAccounts.ChartofAccounts", b =>
                 {
                     b.HasOne("Zinlo.AccountSubType.AccountSubType", "AccountSubType")
                         .WithMany()
@@ -2393,7 +2416,7 @@ namespace Zinlo.Migrations
 
             modelBuilder.Entity("Zinlo.Reconciliation.Amortization", b =>
                 {
-                    b.HasOne("Zinlo.ChartsofAccount.ChartsofAccount", "ChartsofAccount")
+                    b.HasOne("Zinlo.ChartofAccounts.ChartofAccounts", "ChartsofAccount")
                         .WithMany()
                         .HasForeignKey("ChartsofAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2402,7 +2425,7 @@ namespace Zinlo.Migrations
 
             modelBuilder.Entity("Zinlo.Reconciliation.Itemization", b =>
                 {
-                    b.HasOne("Zinlo.ChartsofAccount.ChartsofAccount", "ChartsofAccount")
+                    b.HasOne("Zinlo.ChartofAccounts.ChartofAccounts", "ChartsofAccount")
                         .WithMany()
                         .HasForeignKey("ChartsofAccountId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -38,9 +38,10 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   public isChecked: boolean = false;
   days: any;
   users: any;
-  checklist: CreateOrEditClosingChecklistDto = new CreateOrEditClosingChecklistDto();
+  checklist: CreateOrEditClosingChecklistDto;
   minDate: Date = new Date()
   categoryTitle : any;
+  active = false;
   createOrDuplicate : boolean = true;
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -75,6 +76,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   }
 
   initializePageParameters() {
+    this.checklist = new CreateOrEditClosingChecklistDto();
     this.userName = this.appSession.user.name.toString();
     this.commantBox = true;
     this.closingMonthInputBox = true;
@@ -82,7 +84,9 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.enableValue = false;
     this.isChecked = true;
     this.checklist.dueOn = 1;
+    this.checklist.endOfMonth = false;
     this.checklist.assigneeId = 0;
+    debugger
     if(history.state.data.createOrDuplicate != undefined){
       this.createOrDuplicate = history.state.data.createOrDuplicate;
       this.checklist.taskName = history.state.data.title;
@@ -93,6 +97,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     {
       this.checklist.categoryId = history.state.data.categoryid 
     }
+    this.active = true;
   }
 
   onOpenCalendar(container) {
@@ -112,13 +117,8 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   redirectToTaskList(): void {
     this._router.navigate(['/app/main/checklist']);
   }
-  EndofMonthSelected(): void {
-    this.checklist.endOfMonth = true;
-    this.checklist.dayBeforeAfter = false;
-  }
-  EndofMonthUnselected(): void {
-    this.checklist.endOfMonth = false;
-  }
+
+
   onCreateTask(): void {
      if (this.checklist.endOfMonth) {
       this.checklist.endOfMonth = true;
@@ -211,7 +211,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.isChecked = true;
   }
   handleRadioChange() {
-    this.checklist.dayBeforeAfter = false;
+   
     this.checklist.endOfMonth = true;
     this.daysBeforeAfter = null;
     this.checklist.dueOn = 1;
@@ -223,11 +223,11 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.isChecked = true;
     if (valu == "true") {
       this.SelectionMsg = "Days Before";
-      this.checklist.dayBeforeAfter = true
+      
     }
     else if (valu == "false") {
       this.SelectionMsg = "Days After";
-      this.checklist.dayBeforeAfter = false
+     
 
     }
     

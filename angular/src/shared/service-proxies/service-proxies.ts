@@ -4748,18 +4748,17 @@ export class ClosingChecklistServiceProxy {
     }
 
     /**
-     * @param isDaysBefore (optional) 
      * @param closingMonth (optional) 
      * @param numberOfDays (optional) 
      * @param endsOfMonth (optional) 
      * @return Success
      */
-    getNextIterationDateAfterDueDate(isDaysBefore: boolean | undefined, closingMonth: moment.Moment | undefined, numberOfDays: number | undefined, endsOfMonth: boolean | undefined): Observable<moment.Moment> {
+    getNextIterationDateAfterDueDate(daysBeforeAfter: DaysBeforeAfterDto, closingMonth: moment.Moment | undefined, numberOfDays: number | undefined, endsOfMonth: boolean | undefined): Observable<moment.Moment> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetNextIterationDateAfterDueDate?";
-        if (isDaysBefore === null)
-            throw new Error("The parameter 'isDaysBefore' cannot be null.");
-        else if (isDaysBefore !== undefined)
-            url_ += "isDaysBefore=" + encodeURIComponent("" + isDaysBefore) + "&"; 
+        if (daysBeforeAfter === undefined || daysBeforeAfter === null)
+            throw new Error("The parameter 'daysBeforeAfter' must be defined and cannot be null.");
+        else
+            url_ += "daysBeforeAfter=" + encodeURIComponent("" + daysBeforeAfter) + "&"; 
         if (closingMonth === null)
             throw new Error("The parameter 'closingMonth' cannot be null.");
         else if (closingMonth !== undefined)
@@ -18651,6 +18650,12 @@ export enum StatusDto {
     Completed = 4,
 }
 
+export enum DaysBeforeAfterDto {
+    None = 1,
+    DaysBefore = 2,
+    DaysAfter = 3,
+}
+
 export enum FrequencyDto {
     Monthly = 1,
     Quarterly = 2,
@@ -18734,7 +18739,7 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
     dueOn!: number;
     endsOn!: moment.Moment;
     dueDate!: moment.Moment;
-    dayBeforeAfter!: boolean;
+    dayBeforeAfter!: DaysBeforeAfterDto;
     endOfMonth!: boolean;
     frequency!: FrequencyDto;
     commentBody!: string | undefined;
@@ -18839,7 +18844,7 @@ export interface ICreateOrEditClosingChecklistDto {
     dueOn: number;
     endsOn: moment.Moment;
     dueDate: moment.Moment;
-    dayBeforeAfter: boolean;
+    dayBeforeAfter: DaysBeforeAfterDto;
     endOfMonth: boolean;
     frequency: FrequencyDto;
     commentBody: string | undefined;
@@ -19005,7 +19010,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     noOfMonths!: number;
     dueOn!: number;
     endsOn!: moment.Moment;
-    dayBeforeAfter!: boolean;
+    dayBeforeAfter!: DaysBeforeAfterDto;
     endOfMonth!: boolean;
     frequency!: FrequencyDto;
     commentBody!: string | undefined;
@@ -19136,7 +19141,7 @@ export interface IDetailsClosingCheckListDto {
     noOfMonths: number;
     dueOn: number;
     endsOn: moment.Moment;
-    dayBeforeAfter: boolean;
+    dayBeforeAfter: DaysBeforeAfterDto;
     endOfMonth: boolean;
     frequency: FrequencyDto;
     commentBody: string | undefined;
