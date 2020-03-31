@@ -2,11 +2,13 @@
 using Abp.Domain.Entities.Auditing;
 using System;
 using System.Collections.Generic;
+using Abp.Auditing;
 using Zinlo.Authorization.Users;
 using Zinlo.Categories;
 
 namespace Zinlo.ClosingChecklist
-{
+{ 
+    [Audited]
     public class ClosingChecklist : FullAuditedEntity<long>, IMustHaveTenant
     {
         public virtual string TaskName { get; set; }
@@ -16,15 +18,18 @@ namespace Zinlo.ClosingChecklist
         public virtual long AssigneeId { get; set; }
         public virtual DateTime ClosingMonth { get; set; }
         public Status Status { get; set; }
+        [DisableAuditing]
         public int TenantId { get; set; }
         public string Instruction { get; set; }
         public int NoOfMonths { get; set; }
+        [DisableAuditing]
         public int DueOn { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime? EndsOn { get; set; }
         public bool DayBeforeAfter { get; set; }
         public bool EndOfMonth { get; set; }
         public Frequency Frequency { get; set; }
+        [DisableAuditing]
         public Guid GroupId { get; set; }
     }
     public enum Status
