@@ -10,16 +10,17 @@ import { AppComponentBase } from '@shared/common/app-component-base';
   styleUrls: ['./create-edit-accounts.component.css']
 })
 export class CreateEditAccountsComponent extends AppComponentBase implements OnInit  {
-
+  check:boolean=false;
+  name:string="Moeen"
   accountSubTypeName: any =  "Select Account Sub Type";
   accountSubTypeList: any;
-  accountType: any;
+  accountType: any = "Select Account Type";
   accountId : number;
   selectedUserID : any;
   editAccountCheck :  boolean = false;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Fixed" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
-  reconcillationType: any;
+  reconcillationType: any="Select Reconcillation Type";
   assigniId : number;
   accountDto: CreateOrEditChartsofAccountDto = new CreateOrEditChartsofAccountDto()
   reconciledBox : boolean = false
@@ -37,6 +38,21 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
 
   ngOnInit() {   
    this.accountId = history.state.data.id;
+   this.accountDto.accountName=history.state.data.name
+   this.accountDto.accountNumber=history.state.data.number
+   this.accountDto.accountType=history.state.data.type
+   this.accountDto.reconciliationType=history.state.data.reconciliation
+   this.reconcillationType=history.state.data.reconcillationName
+   this.accountType = history.state.data.typeName
+   this.recociled = history.state.data.reconciledName
+   this.accountDto.reconciled = history.state.data.reconciledID;
+   this.reconcillationClick(history.state.data.reconciliation, history.state.data.reconcillationName);
+   if(!this.accountType){
+    this.accountType="Select Account Type";
+   }
+   if(!this.reconcillationType){
+     this.reconcillationType="Select Reconcillation Type";
+   }
     this.getAccountSubTypeForDropDown();
     if ( this.accountId != 0)
     {
@@ -50,9 +66,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   createNewAccount() : void {
-    this.reconcillationType = "Select Reconcillation Type"
-    this.accountType = "Select Account Type"
-    this.selectedUserID = 0;
+    this.selectedUserID=history.state.data.userId;
     this.selectedSubTypeId = history.state.data.newSubTypeId;
     if (this.selectedSubTypeId != 0)
     {
@@ -71,22 +85,42 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   editAccount() : void {
     this.editAccountCheck = true;
     this._chartOfAccountService.getAccountForEdit( this.accountId).subscribe(result => {
-       this.accountDto.accountName = result.accountName
-       this.accountDto.accountNumber = result.accountNumber
+       if(!history.state.data.name){
+        this.accountDto.accountName = result.accountName
+       }
+       if(!history.state.data.number){
+        this.accountDto.accountNumber = result.accountNumber
+       }
+       if(!history.state.data.typeName){
        this.accountType = this.getNameofAccountTypeAndReconcillationReconcilled(result.accountType,"accountType")
+       }
+       if(!history.state.data.reconcillationName){
        this.reconcillationType = this.getNameofAccountTypeAndReconcillationReconcilled(result.reconcillationType,"reconcillation")
-       
+       }
        if (result.reconciledId != 0)
        {
         this.reconciledBox = true
-        this.recociled = this.getNameofAccountTypeAndReconcillationReconcilled(result.reconciledId,"recociledList")
-        this.accountDto.reconciled = result.reconciledId
+        
+        if(!history.state.data.reconciledName){
+          this.recociled = this.getNameofAccountTypeAndReconcillationReconcilled(result.reconciledId,"recociledList")
+          this.accountDto.reconciled = result.reconciledId
+        }
       }    
        this.accountDto.id = result.id;
-       this.accountDto.accountType = result.accountType
+       if(!history.state.data.type){
+        this.accountDto.accountType = result.accountType
+      }
+      if(!history.state.data.userId){
        this.selectedUserID = result.assigniId;
-       this.accountDto.reconciliationType = result.reconcillationType
        this.accountDto.assigneeId = result.assigniId
+      }
+      else{
+        this.accountDto.assigneeId = history.state.data.userId;       
+        this.selectedUserID=history.state.data.userId;
+      }
+      if(!history.state.data.reconciliation){
+       this.accountDto.reconciliationType = result.reconcillationType
+      }
        this.selectedSubTypeId = history.state.data.newSubTypeId;     
        if (this.selectedSubTypeId != 0)
        {
@@ -152,6 +186,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     }
   }
   accountTypeClick(id, name): void {
+    
     this.accountType = name;
     this.accountDto.accountType = id;
   }
@@ -163,10 +198,10 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   routeToAddNewAccountSubType(): void {
     if (this.accountId != 0)
     {
-      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: this.accountId , previousRoute : "account"} } });
+      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: this.accountId , previousRoute : "account", name: this.accountDto.accountName, number:this.accountDto.accountNumber, type:this.accountDto.accountType,reconciliation:this.accountDto.reconciliationType,typeName:this.accountType,reconcillationName:this.reconcillationType, userId:Number(this.selectedUserId.selectedUserId),reconciledID:this.accountDto.reconciled,reconciledName:this.recociled} } });
     }
     else {
-      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: 0, previousRoute : "account" } } });
+      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: 0, previousRoute : "account", name: this.accountDto.accountName, number:this.accountDto.accountNumber, type:this.accountDto.accountType ,reconciliation:this.accountDto.reconciliationType, typeName:this.accountType,reconcillationName:this.reconcillationType, userId:Number(this.selectedUserId.selectedUserId),reconciledID:this.accountDto.reconciled,reconciledName:this.recociled} } });
 
     }
   }
@@ -225,7 +260,12 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   createAccount():void {
-    this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
+    if(history.state.data.userId){
+      this.accountDto.assigneeId=history.state.data.userId
+    }
+    else if (this.selectedUserId.selectedUserId != undefined){
+      this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
+    }
     this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
       this.notify.success(this.l('Account Successfully Created.'));
       this.redirectToAccountsList();
@@ -233,8 +273,11 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
  
-  updateAccount() : void {   
-    if (this.selectedUserId.selectedUserId != undefined)
+  updateAccount() : void {
+    if(history.state.data.userId){
+      this.accountDto.assigneeId=history.state.data.userId
+    }
+    else if (this.selectedUserId.selectedUserId != undefined)
     {
       this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
     }

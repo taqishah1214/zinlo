@@ -4,7 +4,7 @@
             <div [class]="containerClass">
                 <div class="kt-subheader__main">
                     <h3 class="kt-subheader__title">
-                        <span>Account Sub Type</span>
+                        <span>{{"Account Sub Type" | localize}}</span>
                     </h3>
                     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
                     <span class="kt-subheader__desc">
@@ -56,23 +56,23 @@
                                         </th>
 
                                         <th>
-                                            Description
+                                            {{"Description" | localize}}
 
                                         </th>
                                         <th pSortableColumn="CreationTime">
-                                            Created On
+                                            {{"CreatedOn" | localize}}
                                             <p-sortIcon field="CreationTime"></p-sortIcon>
                                         </th>
 
                                         <th pSortableColumn="CreatorUserId">
-                                            Created By
+                                            {{"CreatedBy" | localize}}
                                             <p-sortIcon field="CreatorUserId"></p-sortIcon>
                                         </th>
 
 
                                         <th
                                             [hidden]="!(['Pages.Categories.Edit', 'Pages.Categories.Delete'] | permissionAny)">
-                                            Actions</th>
+                                            {{"Actions" | localize}}</th>
                                     </tr>
 
 

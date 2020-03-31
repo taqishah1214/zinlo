@@ -38,7 +38,7 @@
     <text name="Description">Description</text>
     <text name="Title">Title</text>
     <text name="CreatedOn">Created On</text>
-    <text name="Created">Created By</text>
+    <text name="CreatedBy">Created By</text>
     
     <text name="CategorywithsameNamealreadyexist.">Category with same Name already exist.</text>
     <text name="CategoriesHeaderInfo">Manage categories.</text>
@@ -60,6 +60,8 @@
     <text name="Administration">Administration</text>
     <text name="Roles">Roles</text>
     <text name="Users">Users</text>
+    <text name="User">User</text>
+    <text name="Records">Records</text>
     <text name="InvalidFormMessage">Your form is invalid. Please check and correct it.</text>
     <text name="InvalidUserNameOrPassword">Invalid user name or password</text>
     <text name="ThereIsNoTenantDefinedWithName{0}">There is no tenant defined with name {0}</text>
@@ -1089,7 +1091,7 @@
     <text name="Account Number is already exist.">Account Number is already exist.</text>
     <text name="Account Type">Account Type</text>
     <text name="Account Sub-Type">Account Sub-Type</text>
-    <text name="Reconcillation Type">Reconcillation Type</text>
+    <text name="Reconciliation Type">Reconciliation Type</text>
     <text name="Charts of Account">Charts of Account</text>
     <text name="Download Trial Balance">Download Trial Balance</text>
     <text name="Download Chart of Accounts">Download Chart of Accounts</text>
@@ -1101,6 +1103,9 @@
     <text name="Account Balance">Account Balance</text>
     <text name="Charts Of Account Format">Charts Of Account Format</text>
     <text name="Account Sub type">Account Sub Type</text>
+    <text name="Save changes">Save changes</text>
+    <text name="Create Account Sub Type">Create Account Sub Type</text>
+    <text name="Type">Type</text>
 
   </texts>
 </localizationDictionary>
