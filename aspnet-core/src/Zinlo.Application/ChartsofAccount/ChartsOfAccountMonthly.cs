@@ -16,7 +16,7 @@ namespace Zinlo.ChartsofAccount
 {
    public class ChartsOfAccountMonthly :PeriodicBackgroundWorkerBase, ISingletonDependency
     {
-        private readonly IRepository<ChartsofAccount, long> _chartsofAccountRepository;
+        private readonly IRepository<ChartofAccounts.ChartofAccounts, long> _chartsofAccountRepository;
         private readonly IChartsofAccountAppService _chartsofAccountAppService;
         private readonly IItemizationAppService _itemizationAppService;
         private readonly IRepository<Itemization, long> _itemizationRepository;
@@ -25,7 +25,7 @@ namespace Zinlo.ChartsofAccount
 
 
 
-        public ChartsOfAccountMonthly(IAmortizationAppService amortizationAppService, IRepository<Amortization, long> amortizationRepository,IItemizationAppService itemizationAppService, IRepository<Itemization, long> itemizationRepository, IChartsofAccountAppService chartsofAccountAppService, AbpTimer timer, IRepository<ChartsofAccount, long> chartsofAccountRepository)
+        public ChartsOfAccountMonthly(IAmortizationAppService amortizationAppService, IRepository<Amortization, long> amortizationRepository,IItemizationAppService itemizationAppService, IRepository<Itemization, long> itemizationRepository, IChartsofAccountAppService chartsofAccountAppService, AbpTimer timer, IRepository<ChartofAccounts.ChartofAccounts, long> chartsofAccountRepository)
         : base(timer)
         {
             _itemizationRepository = itemizationRepository;

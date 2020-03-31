@@ -14,9 +14,9 @@ namespace Zinlo.ImportLog
     public class ImportLogAppService : ZinloAppServiceBase, IImportLogAppService
     {
         private readonly IRepository<ImportsPath, long> _importsPathRepository;
-        private readonly IRepository<ChartsofAccount.ChartsofAccount, long> _chartOfAccountRepository;
+        private readonly IRepository<ChartofAccounts.ChartofAccounts, long> _chartOfAccountRepository;
         public ImportLogAppService(IRepository<ImportsPath, long> importsPathRepository,
-            IRepository<ChartsofAccount.ChartsofAccount, long> chartOfAccountRepository)
+            IRepository<ChartofAccounts.ChartofAccounts, long> chartOfAccountRepository)
         {
             _importsPathRepository = importsPathRepository;
             _chartOfAccountRepository = chartOfAccountRepository;

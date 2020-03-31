@@ -11,15 +11,18 @@ using Abp.Application.Services.Dto;
 using Zinlo.Authorization.Users.Profile;
 using Zinlo.ClosingChecklist.Dtos;
 using NUglify.Helpers;
+using Zinlo.ChartofAccounts;
 using Zinlo.Dto;
 using Zinlo.Reconciliation;
 using Zinlo.Reconciliation.Dtos;
+using AccountType = Zinlo.ChartofAccounts.AccountType;
+using ReconciliationType = Zinlo.ChartofAccounts.ReconciliationType;
 
 namespace Zinlo.ChartsofAccount
 {
     public class ChartsofAccountAppService : ZinloAppServiceBase, IChartsofAccountAppService
     {
-        private readonly IRepository<ChartsofAccount, long> _chartsofAccountRepository;
+        private readonly IRepository<ChartofAccounts.ChartofAccounts, long> _chartsofAccountRepository;
         private readonly IProfileAppService _profileAppService;
         private readonly IChartsOfAccountsListExcelExporter _chartsOfAccountsListExcelExporter;
         private readonly IRepository<Amortization, long> _amortizationRepository;
@@ -28,7 +31,7 @@ namespace Zinlo.ChartsofAccount
 
         public ChartsofAccountAppService(IRepository<Itemization, long> itemizationRepository,
                                          IRepository<Amortization, long> amortizationRepository,
-                                         IRepository<ChartsofAccount, long> chartsofAccountRepository,
+                                         IRepository<ChartofAccounts.ChartofAccounts, long> chartsofAccountRepository,
                                          IProfileAppService profileAppService,
                                          IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter,
                                          IChartsOfAccountsTrialBalanceExcelExporter chartsOfAccountsTrialBalanceExcelExporter)
@@ -43,7 +46,7 @@ namespace Zinlo.ChartsofAccount
 
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
-            var query = _chartsofAccountRepository.GetAll().Where(e => e.ClosingMonth.Month == DateTime.Now.Month && e.ClosingMonth.Year == DateTime.Now.Year && e.IsArchive == false).Include(p => p.AccountSubType).Include(p => p.Assignee)
+            var query = _chartsofAccountRepository.GetAll().Where(e => e.ClosingMonth.Month == DateTime.Now.Month && e.ClosingMonth.Year == DateTime.Now.Year).Include(p => p.AccountSubType).Include(p => p.Assignee)
                  .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.Contains(input.Filter))
                  .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
                  .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId));
@@ -127,7 +130,7 @@ namespace Zinlo.ChartsofAccount
 
         protected virtual async Task<long> Create(CreateOrEditChartsofAccountDto input)
         {
-            var account = ObjectMapper.Map<ChartsofAccount>(input);
+            var account = ObjectMapper.Map<ChartofAccounts.ChartofAccounts>(input);
             account.Status = (Status)2;
             if (AbpSession.TenantId != null)
             {
@@ -138,9 +141,7 @@ namespace Zinlo.ChartsofAccount
         }
         public async Task Delete(long id)
         {
-            var account = await _chartsofAccountRepository.FirstOrDefaultAsync(id);
-            account.IsArchive = true;
-           await _chartsofAccountRepository.UpdateAsync(account);
+            await _chartsofAccountRepository.DeleteAsync(id);
         }
         public async Task<GetAccountForEditDto> GetAccountForEdit(long id)
         {

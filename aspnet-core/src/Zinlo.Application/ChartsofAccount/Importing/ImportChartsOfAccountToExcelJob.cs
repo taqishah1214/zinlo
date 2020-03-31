@@ -19,12 +19,17 @@ using System.Threading.Tasks;
 using Zinlo.AccountSubType;
 using Zinlo.Authorization.Roles;
 using Zinlo.Authorization.Users;
+using Zinlo.ChartofAccounts;
 using Zinlo.ChartsofAccount.Dtos;
 using Zinlo.ChartsofAccount.Importing;
 using Zinlo.ImportPaths;
 using Zinlo.ImportPaths.Dto;
 using Zinlo.Notifications;
 using Zinlo.Storage;
+using AccountType = Zinlo.ChartofAccounts.AccountType;
+using Reconciled = Zinlo.ChartofAccounts.Reconciled;
+using ReconciliationType = Zinlo.ChartofAccounts.ReconciliationType;
+
 namespace Zinlo.ChartsofAccount
 {
 
@@ -34,7 +39,7 @@ namespace Zinlo.ChartsofAccount
         private readonly IChartsOfAccontListExcelDataReader _chartsOfAccontListExcelDataReader;
         private readonly IAccountSubTypeAppService _accountSubTypeAppService;
         private readonly IInvalidAccountsExcellExporter _invalidAccountsExporter;
-        private readonly IRepository<ChartsofAccount, long> _chartsOfAccountsrepository;
+        private readonly IRepository<ChartofAccounts.ChartofAccounts, long> _chartsOfAccountsrepository;
         private readonly IAppNotifier _appNotifier;
         private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly ILocalizationSource _localizationSource;
@@ -50,7 +55,7 @@ namespace Zinlo.ChartsofAccount
 
         IChartsOfAccontListExcelDataReader chartsOfAccontListExcelDataReader,
             IAccountSubTypeAppService accountSubTypeAppService,
-            IRepository<ChartsofAccount, long> chartsOfAccountsrepository,
+            IRepository<ChartofAccounts.ChartofAccounts, long> chartsOfAccountsrepository,
             IInvalidAccountsExcellExporter invalidAccountsExporter,
              IAppNotifier appNotifier,
             IBinaryObjectManager binaryObjectManager,
@@ -193,7 +198,7 @@ namespace Zinlo.ChartsofAccount
             }
             else
             {
-                ChartsofAccount account = new ChartsofAccount();
+                ChartofAccounts.ChartofAccounts account = new ChartofAccounts.ChartofAccounts();
                 account.TenantId = (int)tenantId;
                 account.AccountName = input.AccountName;
                 account.AccountNumber = input.AccountNumber;

@@ -186,8 +186,8 @@ namespace Zinlo
             configuration.CreateMap<Comment.Comment, CreateOrEditCommentDto>().ReverseMap();
 
             //ChartsofAccount
-            configuration.CreateMap<CreateOrEditChartsofAccountDto, ChartsofAccount.ChartsofAccount>().ReverseMap();
-            configuration.CreateMap<GetAccountForEditDto, ChartsofAccount.ChartsofAccount>().ReverseMap();
+            configuration.CreateMap<CreateOrEditChartsofAccountDto, ChartofAccounts.ChartofAccounts>().ReverseMap();
+            configuration.CreateMap<GetAccountForEditDto, ChartofAccounts.ChartofAccounts>().ReverseMap();
 
             //Reconciliation
             configuration.CreateMap<CreateOrEditItemizationDto, Itemization>().ReverseMap();
