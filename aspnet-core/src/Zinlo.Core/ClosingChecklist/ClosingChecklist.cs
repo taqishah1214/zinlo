@@ -22,7 +22,7 @@ namespace Zinlo.ClosingChecklist
         public int DueOn { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime? EndsOn { get; set; }
-        public bool DayBeforeAfter { get; set; }
+        public DaysBeforeAfter DayBeforeAfter { get; set; }
         public bool EndOfMonth { get; set; }
         public Frequency Frequency { get; set; }
         public Guid GroupId { get; set; }
@@ -41,5 +41,11 @@ namespace Zinlo.ClosingChecklist
         Annually = 3,
         XNumberOfMonths = 4,
         None = 5
+    }
+    public enum DaysBeforeAfter
+    {
+        None = 1,
+        DaysBefore = 2,
+        DaysAfter = 3
     }
 }
