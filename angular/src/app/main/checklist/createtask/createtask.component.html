@@ -120,8 +120,25 @@
                                 <div class="col-md-12">
                                     <label class="bg-color">{{"Instruction" | localize}}</label>
                                     <div class="form-group">
-                                        <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
-                                            [style]="{'height':'150px'}"></p-editor>
+                                        <!-- <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
+                                            [style]="{'height':'150px'}"></p-editor> -->
+<!-- 
+                                            <editor
+  apiKey="no-api-key"
+  cloudChannel="5"
+  [disabled]="false"
+  id=""
+  [init]="{  }"
+  initialValue=""
+  [inline]="false"
+  plugins=""
+  tagName="div"
+  toolbar=""
+></editor> -->
+
+<editor  apiKey="no-api-key" [init]="{plugins: 'link', selector: 'textarea', menubar: 'insert',toolbar: 'link' }"></editor>
+
+
                                     </div>
 
                                 </div>

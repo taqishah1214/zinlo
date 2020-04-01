@@ -6,7 +6,7 @@ import { CategoriesComponent } from './categories/categories.component';
 
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PaginatorModule } from 'primeng/paginator';
-import { EditorModule } from 'primeng/editor';
+ import { EditorModule } from 'primeng/editor';
 import { InputMaskModule } from 'primeng/inputmask'; import { FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
 
@@ -45,6 +45,7 @@ import { AmortizedComponent } from './reconcilliation/amortized/amortized.compon
 import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-details/itemized-details.component';
 import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component';
 
+import { EditorModule as editor } from '@tinymce/tinymce-angular';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
@@ -73,6 +74,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 IgxCalendarModule,
                 UppyAngularModule,
                 NgSelectModule,
+                editor
         ],
         declarations: [
                 CategoriesComponent,

@@ -11,12 +11,29 @@ import {UserInformation} from "../../CommonFunctions/UserInformation"
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { finalize } from 'rxjs/operators';
+
+
+import {
+	
+	OnDestroy,
+	AfterViewInit,
+	EventEmitter,
+	Input,
+	Output
+} from "@angular/core";
+
+ 
+
+
+
+
 @Component({
   selector: 'app-createtask',
   templateUrl: './createtask.component.html',
   styleUrls: ['./createtask.component.css']
 })
 export class CreatetaskComponent extends AppComponentBase implements OnInit {
+  tinymce: any;
   saving = false;
   categories: any;
   Email: string;
@@ -62,6 +79,8 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.loadDaysDropdown();
    
   }
+
+  
 
   getProfilePicture() {
     this.userInfo.getProfilePicture();
@@ -248,4 +267,8 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     Nomonths+= date2.getMonth() +1; // we should add + 1 to get correct month number
     return Nomonths <= 0 ? 0 : Nomonths;
 }
+
+
+
+
 }

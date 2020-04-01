@@ -1043,6 +1043,13 @@
     d3-shape "^1.2.0"
     d3-time-format "^2.1.0"
 
+"@tinymce/tinymce-angular@^3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-angular/-/tinymce-angular-3.5.0.tgz#6b13565f02b4a323a6039d06d65d76cd1efe4da3"
+  integrity sha512-nMq/VwLQGJ/arOaqkX6//BR5l7OVCvv5p5gwpv1U0niHCsOmpVLP04mvY3UiuNSrnw5O1CxUOWZ9uhXgPfVVBQ==
+  dependencies:
+    tslib "^1.9.0"
+
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
