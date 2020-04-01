@@ -270,8 +270,8 @@ namespace Zinlo.ChartsofAccount
         public async Task<bool> CheckAccountForTrialBalance(ChartsOfAccountsTrialBalanceExcellImportDto input)
         {
 
-            var result = _chartsofAccountRepository.FirstOrDefault(x => x.AccountName.ToLower()== input.AccountName.Trim().ToLower()
-                            && x.AccountNumber.ToLower() ==  input.AccountNumber.Trim().ToLower());
+            var result = await _chartsofAccountRepository.FirstOrDefaultAsync(x => x.AccountName.ToLower().Equals(input.AccountName.Trim().ToLower())
+                                                                              && x.AccountNumber.ToLower().Equals(input.AccountNumber.Trim().ToLower()));
 
 
             if (result != null)
