@@ -18870,7 +18870,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     noOfMonths!: number;
     dueOn!: number;
     endsOn!: moment.Moment;
-    dayBeforeAfter!: boolean;
+    dayBeforeAfter!: DaysBeforeAfterDto;
     endOfMonth!: boolean;
     monthStatus!: boolean;
     categoryId!: number;
@@ -18981,7 +18981,7 @@ export interface IGetTaskForEditDto {
     noOfMonths: number;
     dueOn: number;
     endsOn: moment.Moment;
-    dayBeforeAfter: boolean;
+    dayBeforeAfter: DaysBeforeAfterDto;
     endOfMonth: boolean;
     monthStatus: boolean;
     categoryId: number;

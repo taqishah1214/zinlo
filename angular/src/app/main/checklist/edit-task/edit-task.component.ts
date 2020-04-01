@@ -120,15 +120,15 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.getTaskForEdit.closingMonth = moment().startOf('day');
       this.getTaskForEdit.endsOn = moment().startOf('day');
       if (this.getTaskForEdit.endOfMonth) {
-        this.getTaskForEdit.dayBeforeAfter = null;
+        this.getTaskForEdit.dayBeforeAfter = 1;
         this.getTaskForEdit.dueOn=1;
         this.getTaskForEdit.endOfMonth=true;
         this.isChecked = false;
       }
-      else if(this.getTaskForEdit.dayBeforeAfter){
+      else if(this.getTaskForEdit.dayBeforeAfter == 2){
         this.daysBeforeAfter = "Days Before"
       }
-      else{
+      else if(this.getTaskForEdit.dayBeforeAfter == 3){
         this.daysBeforeAfter = "Days After"
       }
       this.getTaskForEdit.endOfMonth = result.endOfMonth;
@@ -250,20 +250,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.getTaskForEdit.endOfMonth=true;
     this.isChecked = false;
     this.daysBeforeAfter = "\xa0";
-  }
-  onDaysClick(valu) {
-    this.isChecked = true;
-    this.getTaskForEdit.endOfMonth=false;
-    if (valu == "true") {
-      this.daysBeforeAfter = "Days Before";
-      this.getTaskForEdit.dayBeforeAfter = true
-    }
-    else if (valu == "false") {
-      this.daysBeforeAfter = "Days After";
-      this.getTaskForEdit.dayBeforeAfter = false
-
-    }
-    
   }
   commentClick() {
     this.commantBox = true;

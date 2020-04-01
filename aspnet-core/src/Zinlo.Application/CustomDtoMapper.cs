@@ -156,6 +156,7 @@ namespace Zinlo
             configuration.CreateMap<DetailsClosingCheckListDto, ClosingChecklist.ClosingChecklist>().ReverseMap();
             configuration.CreateMap<GetTaskForEditDto, ClosingChecklist.ClosingChecklist>().ReverseMap().
                 ForMember(dto=>dto.AssigniName,entity=>entity.MapFrom(p=>p.Assignee.FullName)).
+                ForMember(dto=>dto.DayBeforeAfter,entity=>entity.MapFrom(p=>p.DayBeforeAfter)).
                 ForMember(dto=>dto.Category, entity=>entity.MapFrom(p=>p.Category.Title)).
                 ForMember(dto=>dto.Status, entity=>entity.MapFrom(p=>p.Status.ToString())).
                 ForMember(dto=>dto.StatusId, entity=>entity.MapFrom(p=>(int)p.Status)).

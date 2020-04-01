@@ -42,11 +42,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   minDate: Date = new Date()
   categoryTitle : any;
   active = false;
+  endOfMonth: string;
   createOrDuplicate : boolean = true;
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild(IgxMonthPickerComponent, { static: true }) monthPicker: IgxMonthPickerComponent;
-  daysBeforeAfter : string = null;
+  daysBeforeAfter : any = 1;
   DaysByMonth: Date = new Date();
   errorMessage = "";
   constructor
@@ -83,7 +84,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.closingMonthModalBox = false;
     this.enableValue = false;
     this.isChecked = true;
-    this.checklist.dueOn = 1;
+    this.checklist.dayBeforeAfter = 1;
     this.checklist.endOfMonth = false;
     this.checklist.assigneeId = 0;
     debugger
@@ -120,11 +121,16 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
 
 
   onCreateTask(): void {
-     if (this.checklist.endOfMonth) {
-      this.checklist.endOfMonth = true;
+    debugger
+     if (this.endOfMonth === "true") {
+       this.checklist.endOfMonth = true;
+      this.checklist.dayBeforeAfter = 1;
+      this.checklist.dueOn = 1;
     }
     else {
+      this.checklist.dayBeforeAfter = this.daysBeforeAfter;
       this.checklist.endOfMonth = false;
+      if(this.checklist.dueOn == null)this.checklist.dueOn = 1;
     }
 
     this.checklist.dueOn = Number(this.checklist.dueOn);
@@ -213,7 +219,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   handleRadioChange() {
    
     this.checklist.endOfMonth = true;
-    this.daysBeforeAfter = null;
+    this.daysBeforeAfter = 1;
     this.checklist.dueOn = 1;
     this.SelectionMsg = "\xa0";
     this.isChecked = false;

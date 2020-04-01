@@ -148,14 +148,14 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <label class="kt-radio kt-radio--single kt-radio--success">
-                                                        <input type="radio" value="false" name="endOfMonth" [(ngModel)]="checklist.endOfMonth" checked="checked" >
+                                                        <input type="radio" value="false" name="endOfMonth" [(ngModel)]="endOfMonth" >
                                                         <span></span>
                                                     </label>
                                                 </span>
                                             </div>
                                             <select class="border border-default bg-white form-control input-medium"
                                                 (change)="onDayChange()" [(ngModel)]="checklist.dueOn" id="dueOn" name="dueOn">
-                                                <option *ngFor="let item of days;" [value]="item.value">
+                                                <option *ngFor="let item of days;" [value]="item.value" [selected]="item === 1">
                                                     {{item.name}}
                                                 </option>
                                             </select>
@@ -183,10 +183,10 @@
                                     <div class="form-group">
                                         <label>&nbsp;&nbsp;</label>
                                         <select class="bg-white border form-control input-medium"
-                                            (change)="onDaysClick($event.target.value)" [(ngModel)]="checklist.daysBeforeAfter" name="daysBeforeAfter">
-                                            <option value="1" >None</option>
-                                            <option value="2">{{"DaysBefore" | localize}}</option>
-                                            <option value="3">{{"DaysAfter" | localize}}</option>
+                                            (change)="onDaysClick($event.target.value)" [(ngModel)]="daysBeforeAfter" name="daysBeforeAfter">
+                                            <option [value]=1 >{{"None" | localize}}</option>
+                                            <option [value]=2>{{"DaysBefore" | localize}}</option>
+                                            <option [value]=3>{{"DaysAfter" | localize}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -204,7 +204,7 @@
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" value="true" name="endOfMonth"  >{{"Endofmonth" | localize}}
+                                            <input type="radio" value="true" name="endOfMonth" [(ngModel)]="endOfMonth" >{{"Endofmonth" | localize}}
                                             <span></span>
                                         </label>
                                     </div>
