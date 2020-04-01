@@ -68,7 +68,7 @@ namespace Zinlo.Reconciliation
                                     Description = o.Description,
                                     AccuredAmortization = CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount,o.EndDate, input.MonthFilter,o.StartDate),
                                     BeginningAmount = o.Amount,
-                                    NetAmount = CalculateNetAmount((int)(o.Criteria) == 2 ? CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate): o.AccomulateAmount, o.Amount) ,
+                                    NetAmount = CalculateNetAmount((int)(o.Criteria) == 2 || (int)(o.Criteria) == 3 ? CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate): o.AccomulateAmount, o.Amount) ,
                                     Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 2).Result        
                                }).ToList();
 
@@ -171,24 +171,24 @@ namespace Zinlo.Reconciliation
                 return Result3;
             }
         }
-        protected virtual double GetAccuredAmountDaily(double AccomulateAmount, double BeginningAmount, DateTime EndDate, DateTime Current, DateTime StartDate)
+        protected virtual double GetAccuredAmountDaily(double AccomulateAmount, double beginningAmount, DateTime EndDate, DateTime Current, DateTime StartDate)
         {
-
 
             DateTime MonthEnd = GetValidDate(Current);
             int DateResult = CompareDates(EndDate, MonthEnd);
             if (MonthEnd >= EndDate)
             {
-                return BeginningAmount;
+                return beginningAmount;
             }
             else
             {
+                //(MonthEnd.Date - StartDate.Date)
                 //(MonthEnd - StartDate +1) / (EndDate - StartDate +1) * Original Amount
-                double month1 = (MonthEnd - StartDate).TotalDays;
-                double month2 = (EndDate - StartDate).TotalDays;
-                double Result1 = (month1 + 1);
-                double Result2 = (month2 + 1);
-                return(Result1 / Result2) * BeginningAmount;
+                double month1 = (MonthEnd.Date.Subtract(StartDate.Date).Days)+1;
+                double month2 = (EndDate.Date.Subtract(StartDate.Date).Days)+1 ;
+                double divideMonths = (month1 / month2);
+                double result = divideMonths * beginningAmount;
+                return result;
             }
            
         }
@@ -212,10 +212,7 @@ namespace Zinlo.Reconciliation
 
 
         protected virtual async Task Create(CreateOrEditAmortizationDto input)
-        {
-            input.EndDate = input.EndDate.AddDays(1);
-            input.StartDate = input.StartDate.AddDays(1);
-            //input.ClosingMonth = input.ClosingMonth.AddDays(1);
+        {            
             var item = ObjectMapper.Map<Amortization>(input);
             var itemAddedId = await _amortizationRepository.InsertAndGetIdAsync(item);
             if (input.AttachmentsPath != null)
