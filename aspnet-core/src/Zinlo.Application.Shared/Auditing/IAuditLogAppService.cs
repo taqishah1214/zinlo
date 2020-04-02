@@ -20,6 +20,7 @@ namespace Zinlo.Auditing
         Task<FileDto> GetEntityChangesToExcel(GetEntityChangeInput input);
 
         Task<List<EntityPropertyChangeDto>> GetEntityPropertyChanges(long entityChangeId);
+        Task<List<EntityPropertyHistory>> GetEntityHistory(string entityId, string entityFullName);
 
         List<NameValueDto> GetEntityHistoryObjectTypes();
     }

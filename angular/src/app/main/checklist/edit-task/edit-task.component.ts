@@ -245,7 +245,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   }
 
   handleRadioChange() {
-    this.getTaskForEdit.dayBeforeAfter = null;
+    this.getTaskForEdit.dayBeforeAfter = 1;
     this.getTaskForEdit.dueOn= 1;
     this.getTaskForEdit.endOfMonth=true;
     this.isChecked = false;
@@ -261,6 +261,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.commantBox = false;
   }
   saveTaskChanges() {
+    debugger
     this.checklist.frequency = this.getTaskForEdit.frequencyId;
     this.checklist.closingMonth = moment(this.closingMonthValue);
     this.checklist.endsOn = moment(this.endsOnDateValue);
@@ -272,8 +273,10 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.instruction = this.getTaskForEdit.instruction;
     if (this.getTaskForEdit.endOfMonth) 
     {
-      // this.checklist.dayBeforeAfter = false;
+      this.checklist.dayBeforeAfter = 1;
+      this.checklist.dueOn = 1;
     }
+    this.checklist.dayBeforeAfter = this.getTaskForEdit.dayBeforeAfter
     this.checklist.groupId = this.getTaskForEdit.groupId;
     if (this.selectedUserId.selectedUserId != undefined)
     {
