@@ -120,23 +120,30 @@
                                 <div class="col-md-12">
                                     <label class="bg-color">{{"Instruction" | localize}}</label>
                                     <div class="form-group">
-                                        <!-- <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
-                                            [style]="{'height':'150px'}"></p-editor> -->
-<!-- 
+                                        <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
+                                            [style]="{'height':'150px'}"></p-editor>
                                             <editor
   apiKey="no-api-key"
   cloudChannel="5"
   [disabled]="false"
   id=""
-  [init]="{  }"
+  [init]="config"
   initialValue=""
   [inline]="false"
   plugins=""
   tagName="div"
   toolbar=""
-></editor> -->
+></editor>
+<!-- [init]="{plugins: 'link', selector: 'textarea', menubar: 'insert',toolbar: 'link' }" -->
 
-<editor  apiKey="no-api-key" [init]="{plugins: 'link', selector: 'textarea', menubar: 'insert',toolbar: 'link' }"></editor>
+<editor  [init]="result" apiKey="no-api-key" ></editor> 
+
+<textarea name="" id="" cols="30" rows="10"></textarea>
+
+ <input name="image" type="file" id="upload" class="hidden" onchange="">
+
+ <!--Start-->
+ <!--End-->
 
 
                                     </div>

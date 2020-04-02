@@ -22,7 +22,7 @@ import {
 	Output
 } from "@angular/core";
 
- 
+declare var $: any;
 
 
 
@@ -268,6 +268,25 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     return Nomonths <= 0 ? 0 : Nomonths;
 }
 
+config:any={
+
+  selector: "textarea",  // change this value according to your HTML
+  plugins: "link",
+  menubar: "insert",
+  toolbar: "link",
+  link_class_list: [
+    {title: 'None', value: ''},
+    {title: 'Dog', value: 'dog'},
+    {title: 'Cat', value: 'cat'}
+  ]
+}
+
+ result : any = ({
+  selector: 'textarea',  // change this value according to your HTML
+  automatic_uploads: true,
+  images_upload_url: 'postAcceptor.php',
+  images_reuse_filename: true
+});
 
 
 
