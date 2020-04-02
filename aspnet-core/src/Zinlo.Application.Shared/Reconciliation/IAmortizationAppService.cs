@@ -13,8 +13,7 @@ namespace Zinlo.Reconciliation
         Task Delete(long Id);
         Task<PagedResultDto<AmortizedListDto>> GetAll(GetAllAmortizationInput input);
         Task <CreateOrEditAmortizationDto> GetAmortizedItemDetails (long Id);
-
-
+        Task PostCommentOnList(string CommentBody, long ChartofAccountId);
 
     }
 }

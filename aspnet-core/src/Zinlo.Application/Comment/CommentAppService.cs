@@ -39,8 +39,8 @@ namespace Zinlo.Comment
         public async Task<List<CommentDto>> GetComments(int type, long typeId)
         {
             List<CommentDto> commentList = new List<CommentDto>();
-            // var taskComments = await _commentRepository.GetAll().Where(x => x.Type== (CommentType)type && x.TypeId == typeId).ToListAsync();
-            var taskComments = await _commentRepository.GetAll().Where(x => x.TypeId == typeId).ToListAsync();
+             var taskComments = await _commentRepository.GetAll().Where(x => x.Type== (CommentType)type && x.TypeId == typeId).ToListAsync();
+            //var taskComments = await _commentRepository.GetAll().Where(x => x.Type == type).ToListAsync();
             if (taskComments.Count > 0)
             {
                 foreach (var comment in taskComments)

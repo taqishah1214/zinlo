@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Zinlo.Attachments.Dtos;
+using Zinlo.Comment.Dtos;
 
 namespace Zinlo.Reconciliation.Dtos
 {
@@ -20,6 +21,8 @@ namespace Zinlo.Reconciliation.Dtos
         public List<GetAttachmentsDto> Attachments { get; set; }
         public Criteria Criteria { get; set; }
         public DateTime ClosingMonth { get; set; }
+        public string CommentBody { get; set; }
+        public List<CommentDto> Comments { get; set; }
 
 
 

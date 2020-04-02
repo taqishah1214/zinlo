@@ -12,6 +12,8 @@ using Abp.Linq.Extensions;
 using Zinlo.Attachments.Dtos;
 using Zinlo.Attachments;
 using Zinlo.ChartsofAccount;
+using Zinlo.Comment.Dtos;
+using Zinlo.Comment;
 
 namespace Zinlo.Reconciliation
 {
@@ -20,15 +22,17 @@ namespace Zinlo.Reconciliation
         private readonly IRepository<Itemization, long> _itemizationRepository;
         private readonly IAttachmentAppService _attachmentAppService;
         private readonly IChartsofAccountAppService _chartsofAccountAppService;
+        private readonly ICommentAppService _commentAppService;
+
 
 
         #region|#Constructor|
-        public ItemizationAppService(IChartsofAccountAppService chartsofAccountAppService,IRepository<Itemization,long> itemizationRepository, IAttachmentAppService attachmentAppService)
+        public ItemizationAppService(ICommentAppService commentAppService, IChartsofAccountAppService chartsofAccountAppService,IRepository<Itemization,long> itemizationRepository, IAttachmentAppService attachmentAppService)
         {
             _itemizationRepository = itemizationRepository;
             _attachmentAppService = attachmentAppService;
             _chartsofAccountAppService = chartsofAccountAppService;
-
+            _commentAppService = commentAppService;
 
     }
         #endregion
@@ -61,6 +65,7 @@ namespace Zinlo.Reconciliation
                 TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId),
             };
             itemizedListDto.Variance = itemizedListDto.TotalAmount - itemizedListDto.TotalTrialBalance;
+            itemizedListDto.Comments = await _commentAppService.GetComments((int)CommentType.ItemizedList, input.ChartofAccountId);
             if (input.ChartofAccountId != 0)
             {
                 await _chartsofAccountAppService.AddandUpdateBalance(itemizedListDto.TotalAmount, input.ChartofAccountId);
@@ -96,6 +101,23 @@ namespace Zinlo.Reconciliation
             await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
   
         }
+        public async Task PostComment(string comment, long TypeId, CommentTypeDto CommentType)
+        {
+            if (!String.IsNullOrWhiteSpace(comment))
+            {
+                var commentDto = new CreateOrEditCommentDto()
+                {
+                    Body = comment,
+                    Type = CommentType,
+                    TypeId = TypeId
+                };
+                await _commentAppService.Create(commentDto);
+            }
+           
+
+        }
+
+        
 
 
         protected virtual async Task Create(CreateOrEditItemizationDto input)
@@ -111,8 +133,13 @@ namespace Zinlo.Reconciliation
             {
                 await PostAttachments(input.AttachmentsPath, itemAddedId, 3);
             }
+            if (!String.IsNullOrWhiteSpace(input.CommentBody))
+            {
+                await PostComment(input.CommentBody, itemAddedId, CommentTypeDto.ItemizedItem);
+            }
 
         }
+
         protected virtual async Task Update(CreateOrEditItemizationDto input)
         {
             var item = await _itemizationRepository.FirstOrDefaultAsync(input.Id);
@@ -123,6 +150,10 @@ namespace Zinlo.Reconciliation
             {
                 await PostAttachments(input.AttachmentsPath, input.Id, 3);
             }
+            if (!String.IsNullOrWhiteSpace(input.CommentBody))
+            {
+                await PostComment(input.CommentBody, input.Id, CommentTypeDto.ItemizedItem);
+            }
         }
 
         public async Task<CreateOrEditItemizationDto> GetEdit(long Id)
@@ -130,6 +161,7 @@ namespace Zinlo.Reconciliation
             var item = await _itemizationRepository.FirstOrDefaultAsync(x => x.Id == Id);
             var output = ObjectMapper.Map<CreateOrEditItemizationDto>(item);
             output.Attachments = await _attachmentAppService.GetAttachmentsPath(Id, 3);
+            output.Comments = await _commentAppService.GetComments((int)CommentType.ItemizedItem, Id);
             return output;
         }
 
@@ -138,7 +170,9 @@ namespace Zinlo.Reconciliation
             await _itemizationRepository.DeleteAsync(Id);
         }
 
-       
+        
+
+
 
         #endregion
     }

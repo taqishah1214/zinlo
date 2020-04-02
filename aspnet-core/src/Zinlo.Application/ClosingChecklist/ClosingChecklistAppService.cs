@@ -312,6 +312,16 @@ namespace Zinlo.ClosingChecklist
         protected virtual async Task Update(CreateOrEditClosingChecklistDto input)
         {
             var task = await _closingChecklistRepository.FirstOrDefaultAsync((int)input.Id);
+            if (!String.IsNullOrWhiteSpace(input.CommentBody))
+            {
+                var commentDto = new CreateOrEditCommentDto()
+                {
+                    Body = input.CommentBody,
+                    Type = CommentTypeDto.ClosingChecklist,
+                    TypeId = input.Id
+                };
+                await _commentAppService.Create(commentDto);
+            }
             if ((Frequency)input.Frequency == task.Frequency)
             {
                 if (input.EndOfMonth)
@@ -329,7 +339,7 @@ namespace Zinlo.ClosingChecklist
             var task = await _closingChecklistRepository.GetAll().Include(a => a.Assignee).Include(a => a.Category).FirstOrDefaultAsync(x => x.Id == id);
             var output = ObjectMapper.Map<GetTaskForEditDto>(task);
             output.MonthStatus = await GetMonthStatus(task.ClosingMonth);
-            output.Comments = await _commentAppService.GetComments(1, id);
+            output.Comments = await _commentAppService.GetComments((int)CommentTypeDto.ClosingChecklist, id);
             output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
             output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture : "";
             return output;
@@ -345,7 +355,7 @@ namespace Zinlo.ClosingChecklist
                 output.Status = (StatusDto)task.Status;
                 output.CategoryName = task.Category.Title;
                 output.CategoryId = task.CategoryId;
-                output.Comments = await _commentAppService.GetComments(1, task.Id);
+                output.Comments = await _commentAppService.GetComments((int)CommentTypeDto.ClosingChecklist, task.Id);
                 output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
                 output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue
                     ? "data:image/jpeg;base64," + _profileAppService

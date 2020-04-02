@@ -69,6 +69,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   }
   SaveComments(): void {
     this.comment.typeId = this.recordId;
+    this.comment.type = 1;
     this._commentServiceProxy.create(this.comment).subscribe(result => {
       this.comment.body = "";
       this.notify.success(this.l('Comment is successfully posted'));
