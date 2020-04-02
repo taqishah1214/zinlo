@@ -13,6 +13,7 @@ using Abp.PlugIns;
 using Abp.Timing;
 using Castle.Facilities.Logging;
 using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,7 @@ using Stripe;
 using ILoggerFactory = Microsoft.Extensions.Logging.ILoggerFactory;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
+using Hangfire.SqlServer;
 using HealthChecks.UI.Client;
 using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -134,14 +136,12 @@ namespace Zinlo.Web.Startup
                 SiteKey = _appConfiguration["Recaptcha:SiteKey"],
                 SecretKey = _appConfiguration["Recaptcha:SecretKey"]
             });
-
             if (WebConsts.HangfireDashboardEnabled)
             {
                 //Hangfire(Enable to use Hangfire instead of default job manager)
                 services.AddHangfire(config =>
-                {
-                    config.UseSqlServerStorage(_appConfiguration.GetConnectionString("Default"));
-                });
+                    config.UsePostgreSqlStorage(_appConfiguration.GetConnectionString("Default")));
+
             }
 
             if (WebConsts.GraphQL.Enabled)
@@ -222,10 +222,11 @@ namespace Zinlo.Web.Startup
             if (WebConsts.HangfireDashboardEnabled)
             {
                 //Hangfire dashboard &server(Enable to use Hangfire instead of default job manager)
-                app.UseHangfireDashboard(WebConsts.HangfireDashboardEndPoint, new DashboardOptions
-                {
-                    Authorization = new[] { new AbpHangfireAuthorizationFilter(AppPermissions.Pages_Administration_HangfireDashboard) }
-                });
+                //app.UseHangfireDashboard(WebConsts.HangfireDashboardEndPoint, new DashboardOptions
+                //{
+                //    Authorization = new[] { new AbpHangfireAuthorizationFilter(AppPermissions.Pages_Administration_HangfireDashboard) }
+                //});
+                app.UseHangfireDashboard();
                 app.UseHangfireServer();
             }
 
