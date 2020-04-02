@@ -58,7 +58,7 @@
                                         </div>
                                     </div>
                                 </div>
-                               
+                
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -86,6 +86,45 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="comment col-md-12">
+                                    <div class="form-group" *ngIf="commantBox">
+                                        <label>{{"Comments" | localize}}</label>
+                                        <div (click)="commentClick()">
+                                            <div class="kt-user-card-v2">
+                                                <div class="kt-user-card-v2__pic">
+                                                    <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
+                                                        <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                            alt="Pic" [src]="UserProfilePicture">
+                                                    </div>
+    
+                                                    <div *ngIf="!UserProfilePicture"
+                                                        class="kt-badge kt-badge--xl kt-badge--primary">
+                                                        {{userName | firstLetterOfWords}}
+                                                    </div>
+                                                </div>
+                                                <div innerHTML="{{itemizedDto.commentBody}}"
+                                                    class="form-control create-comments"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" *ngIf="commantModal">
+                                        <label>{{"Comments" | localize}}</label>
+                                        <p-editor [(ngModel)]="itemizedDto.commentBody"
+                                            (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
+                                            [style]="{'height':'150px'}">
+                                        </p-editor>
+                                        <div class="btnMargin" >
+                                        <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                        <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
+                                    </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
                         </div>
                         <div class="kt-portlet__head">
                         </div>

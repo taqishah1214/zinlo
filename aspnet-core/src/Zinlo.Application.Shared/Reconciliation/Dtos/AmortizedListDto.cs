@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Zinlo.Comment.Dtos;
 
 namespace Zinlo.Reconciliation.Dtos
 {
@@ -15,7 +16,7 @@ namespace Zinlo.Reconciliation.Dtos
         public double VarianceNetAmount { get; set; }
         public double VarianceBeginningAmount { get; set; }
         public double VarianceAccuredAmount { get; set; }
-
+        public List<CommentDto> Comments { get; set; }
         public int ReconciliedBase { get; set; }
 
 

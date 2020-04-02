@@ -11,5 +11,9 @@ namespace Zinlo.Comment.Dtos
     public enum CommentTypeDto
     {
         ClosingChecklist =1,
+        ItemizedItem = 2,
+        AmortizedItem = 3,
+        ItemizedList = 4,
+        AmortizedList = 5,
     }
 }

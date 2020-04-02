@@ -96,7 +96,6 @@ export class AmortizedComponent extends AppComponentBase {
     this.begininngAmount = j.totalBeginningAmount;
     this.accuredAmount= j.totalAccuredAmortization;
     this.netAmount = j.totalNetAmount;
-    
     switch (j.reconciliedBase) {
       case 1:
         this.trialBalanceNet = j.totalTrialBalance

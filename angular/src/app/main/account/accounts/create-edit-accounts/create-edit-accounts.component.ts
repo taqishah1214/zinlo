@@ -254,6 +254,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
      else if (this.isAccountExist)
      {
       this.notify.error("Account Number is already Exist.")
+      return false;
      }
      return true;
   }
