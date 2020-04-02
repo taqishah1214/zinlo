@@ -252,7 +252,7 @@ namespace Zinlo.Auditing
                             UserId = (long)entityChangeSet.UserId,
                             NewValue = entityPropertyChange.NewValue,
                             OriginalValue = entityPropertyChange.OriginalValue,
-                            PropertyName = entityPropertyChange.PropertyTypeFullName
+                            PropertyName = entityPropertyChange.PropertyName
                         };
             return query.ToListAsync();
         }
