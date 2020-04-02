@@ -124,18 +124,17 @@ namespace Zinlo.ClosingChecklist
                 await TaskIteration(input);
             }
             else
-            {   
-                var currentTaskDetail =await _closingChecklistRepository.FirstOrDefaultAsync(p => p.Id == input.Id);
+            {
+                var currentTaskDetail = await _closingChecklistRepository.FirstOrDefaultAsync(p => p.Id == input.Id);
                 if (currentTaskDetail.Frequency == (Frequency)input.Frequency && currentTaskDetail.EndsOn.GetValueOrDefault().Year == input.EndsOn.Year && currentTaskDetail.EndsOn.GetValueOrDefault().Month == input.EndsOn.Month)
                 {
-                    if (currentTaskDetail.EndOfMonth == input.EndOfMonth && currentTaskDetail.DueOn == input.DueOn && currentTaskDetail.DayBeforeAfter ==
-                        (DaysBeforeAfter)input.DayBeforeAfter)
+                    if (!(currentTaskDetail.EndOfMonth == input.EndOfMonth && currentTaskDetail.DueOn == input.DueOn &&
+                         currentTaskDetail.DayBeforeAfter == (DaysBeforeAfter)input.DayBeforeAfter))
                     {
                         input.DueDate = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
                     }
-
-                    var task = ObjectMapper.Map<ClosingChecklist>(input);
-                    await Update(task);
+                    ObjectMapper.Map(input, currentTaskDetail);
+                    await CreateComment(input.CommentBody, input.Id);
                 }
                 else
                 {
@@ -161,7 +160,7 @@ namespace Zinlo.ClosingChecklist
                         CurrentUnitOfWork.SaveChanges();
                     }
 
-                    await TaskIteration(input); 
+                    await TaskIteration(input);
                 }
             }
         }
@@ -181,9 +180,7 @@ namespace Zinlo.ClosingChecklist
                 oldGroupId = input.GroupId;
                 forEdit = true;
             }
-            
-
-            if (input.EndOfMonth) input.DueOn = 0;
+            if (input.EndOfMonth) input.DueOn = 1;
             switch (input.Frequency)
             {
                 case FrequencyDto.None:
@@ -223,7 +220,7 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            if (input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth,(Guid)input.GroupId)))
+                            if (input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);
@@ -292,7 +289,6 @@ namespace Zinlo.ClosingChecklist
 
             return years;
         }
-        //[AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
         protected virtual async Task Create(CreateOrEditClosingChecklistDto input)
         {
 
@@ -303,16 +299,8 @@ namespace Zinlo.ClosingChecklist
             }
             var checklistId = await _closingChecklistRepository.InsertAndGetIdAsync(task);
 
-            if (!String.IsNullOrWhiteSpace(input.CommentBody))
-            {
-                var commentDto = new CreateOrEditCommentDto()
-                {
-                    Body = input.CommentBody,
-                    Type = CommentTypeDto.ClosingChecklist,
-                    TypeId = checklistId
-                };
-                await _commentAppService.Create(commentDto);
-            }
+            await CreateComment(input.CommentBody, checklistId);
+
             if (input.AttachmentsPath != null)
             {
                 PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto
@@ -324,19 +312,18 @@ namespace Zinlo.ClosingChecklist
                 await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
             }
         }
-        protected virtual async Task Update(ClosingChecklist entity)
+        private async Task CreateComment(string commentBody, long taskId)
         {
-            // if (!String.IsNullOrWhiteSpace(input.CommentBody))
-            // {
-            //     var commentDto = new CreateOrEditCommentDto()
-            //     {
-            //         Body = input.CommentBody,
-            //         Type = CommentTypeDto.ClosingChecklist,
-            //         TypeId = input.Id
-            //     };
-            //     await _commentAppService.Create(commentDto);
-            // }
-            await _closingChecklistRepository.UpdateAsync(entity);
+            if (!String.IsNullOrWhiteSpace(commentBody))
+            {
+                var commentDto = new CreateOrEditCommentDto()
+                {
+                    Body = commentBody,
+                    Type = CommentTypeDto.ClosingChecklist,
+                    TypeId = taskId
+                };
+                await _commentAppService.Create(commentDto);
+            }
         }
         public async Task<GetTaskForEditDto> GetTaskForEdit(long id)
         {

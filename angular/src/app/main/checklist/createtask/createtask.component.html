@@ -148,17 +148,17 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <label class="kt-radio kt-radio--single kt-radio--success">
-                                                        <input type="radio" value="false" name="endOfMonth" [(ngModel)]="endOfMonth" >
+                                                        <input type="radio" [(checked)]="isChecked" (change)="onDayChange()" name="dueOn">
                                                         <span></span>
                                                     </label>
                                                 </span>
                                             </div>
                                             <select class="border border-default bg-white form-control input-medium"
-                                                (change)="onDayChange()" [(ngModel)]="checklist.dueOn" id="dueOn" name="dueOn">
-                                                <option *ngFor="let item of days;" [value]="item.value" [selected]="item === 1">
-                                                    {{item.name}}
-                                                </option>
-                                            </select>
+                                            (change)="onDayChange()" name="dueOn" [(ngModel)]="checklist.dueOn">
+                                            <option *ngFor="let item of days;" [value]="item.value">
+                                                {{item.name}}
+                                            </option>
+                                        </select>
                                         </div>
                                     </div>
                                     <div class="row"  *ngIf="SelectionMsg != null">
@@ -204,7 +204,8 @@
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" value="true" name="endOfMonth" [(ngModel)]="endOfMonth" >{{"Endofmonth" | localize}}
+                                            <input type="radio" [(checked)]="checklist.endOfMonth" name="endOfMonth"
+                                                (click)="handleRadioChange()">{{"Endofmonth" | localize}}
                                             <span></span>
                                         </label>
                                     </div>

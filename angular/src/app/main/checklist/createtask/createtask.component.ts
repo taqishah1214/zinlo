@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, Injector, ViewEncapsulation, OnChanges } from '@angular/core';
-import { Router, Data } from '@angular/router';
+import { Component, OnInit, ViewChild, Injector } from '@angular/core';
+import { Router } from '@angular/router';
 import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
@@ -8,9 +8,9 @@ import { UppyConfig } from 'uppy-angular';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppConsts } from '@shared/AppConsts';
 import {UserInformation} from "../../CommonFunctions/UserInformation"
-import { moment } from 'ngx-bootstrap/chronos/test/chain';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { finalize } from 'rxjs/operators';
+import { add, subtract } from 'add-subtract-date';
+import * as moment from 'moment';
 @Component({
   selector: 'app-createtask',
   templateUrl: './createtask.component.html',
@@ -42,6 +42,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   minDate: Date = new Date()
   categoryTitle : any;
   active = false;
+  dayBeforeAfter = 1;
   endOfMonth: string;
   createOrDuplicate : boolean = true;
   @ViewChild(CategorieDropDownComponent, { static: false }) selectedCategoryId: CategorieDropDownComponent;
@@ -60,8 +61,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   ngOnInit() {
     this.getProfilePicture(); 
     this.initializePageParameters();
-    this.loadDaysDropdown();
-   
   }
 
   getProfilePicture() {
@@ -84,7 +83,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.closingMonthModalBox = false;
     this.enableValue = false;
     this.isChecked = true;
-    this.checklist.dayBeforeAfter = 1;
+    this.dayBeforeAfter = 1;
     this.checklist.endOfMonth = false;
     this.checklist.assigneeId = 0;
     debugger
@@ -100,7 +99,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     }
     this.active = true;
   }
-
+  handleRadioChange() {
+    this.dayBeforeAfter = 1;
+    this.checklist.dueOn= this.days[0];
+    this.checklist.endOfMonth=true;
+    this.isChecked = false;
+  }
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
       container._store.dispatch(container._actions.select(event.date));
@@ -122,8 +126,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
 
   onCreateTask(): void {
     debugger
-     if (this.endOfMonth === "true") {
-       this.checklist.endOfMonth = true;
+     if (this.checklist.endOfMonth) {
       this.checklist.dayBeforeAfter = 1;
       this.checklist.dueOn = 1;
     }
@@ -216,14 +219,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = false;
     this.isChecked = true;
   }
-  handleRadioChange() {
-   
-    this.checklist.endOfMonth = true;
-    this.daysBeforeAfter = 1;
-    this.checklist.dueOn = 1;
-    this.SelectionMsg = "\xa0";
-    this.isChecked = false;
-  }
+ 
   onDaysClick(valu) {
     this.checklist.endOfMonth = false;
     this.isChecked = true;
@@ -233,19 +229,15 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     }
     else if (valu == "false") {
       this.SelectionMsg = "Days After";
-     
-
-    }
-    
+    }  
   }
-  loadDaysDropdown(): void {
-    this._closingChecklistService.getCurrentMonthDays(this.checklist.closingMonth).subscribe(result => {
-      this.days = result;
-     
-    });
-  }
+  
   loadDaysByMonth(event):void{
-    this.loadDaysDropdown();
+    var month = moment(new Date(add(this.checklist.closingMonth, 2, "day")));
+    this._closingChecklistService.getCurrentMonthDays(month).subscribe(result => {
+      this.days = result;
+      this.checklist.dueOn =this.days[0];
+    });
   }
    getNoOfmonths(date1, date2) {
     var Nomonths;
