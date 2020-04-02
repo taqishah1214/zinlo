@@ -26,12 +26,14 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   advancedFiltersAreShown = false;
+  account:boolean=false;
+  balance:boolean=true;
   filterText = '';
   accountTypeFilter: number = 0;
   categoryFilter: number = 0;
   statusFilter: number = 0;
   tasksList: any;
-  list: any = []
+  list: any = [];
   chartsOfAccountList: any = []
   UserSpecficchartsOfAccountList: any = []
   id: number;
@@ -68,6 +70,22 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     super(injector)
     this.FilterBoxOpen = false;
   }
+  onClose(){
+    console.log(this.chartsOfAccountsfileUrl)
+    console.log("moeen")
+  }
+  onBreadChange(value){
+    if(value=="Upload Trial Balance")
+    {
+      this.account=false;
+      this.balance=true;
+    }
+    else if(value=="Upload Chart of Accounts")
+    {
+      this.balance=false;
+      this.account=true;
+    }
+ }
   ngOnInit() {
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
@@ -76,17 +94,14 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     this.loadAccountSubType();
     
   }
-
-  accountTypeClick(id, name): void {
-    if (id == 0) {
-      this.accountType = "Account Type"
-      this.accountTypeFilter = id;
+  accountTypeClick(event): void {
+    if (parseInt(event.target.value) == 0) {
+      this.accountTypeFilter = parseInt(event.target.value)
       this.updateAssigneeOnHeader = false;
       this.getAllAccounts()
     }
     else{
-      this.accountType = name
-      this.accountTypeFilter = id
+      this.accountTypeFilter = parseInt(event.target.value)
       this.updateAssigneeOnHeader = false;
       this.getAllAccounts()
     } 
@@ -228,7 +243,8 @@ RedirectToCreateAccount(): void {
   }
   ResetGrid(): void {
     this.accountType = "Account Type"
-    this.accountTypeFilter = 0
+    this.accountTypeFilter = 0;
+    this.categoryFilter=0;
     this.updateAssigneeOnHeader = true;
     this.getAccountWithAssigneeId = 0;
     this.getAllAccounts();
@@ -251,7 +267,14 @@ RedirectToCreateAccount(): void {
     allowMultipleUploads : false
   }
 
-
+  fileUploadOption(value){
+    if(this.balance){
+      this.fileUploadedResponseTrialBalance(value)
+    }
+    else if(this.account){
+      this.fileUploadedResponseChartsOfAccounts(value)
+    }
+  }
   fileUploadedResponseChartsOfAccounts(value): void {
     var response = value.successful
     response.forEach(i => {
@@ -260,7 +283,9 @@ RedirectToCreateAccount(): void {
     this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
     this.chartsOfAccountsfileUrl = this.attachmentPathsChartsofAccounts[0].toString();
    // this.uploadaccountExcel(url);
+   
   }
+  
 
   fileUploadedResponseTrialBalance(value): void {
     var response = value.successful

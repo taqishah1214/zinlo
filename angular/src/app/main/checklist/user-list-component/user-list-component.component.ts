@@ -42,6 +42,7 @@ export class UserListComponentComponent implements OnInit, OnChanges {
     else {
       this.getUserDefaultPicture()
     }
+    
   }
 
   ngOnChanges(changes: SimpleChanges): void {

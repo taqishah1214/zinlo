@@ -71,7 +71,12 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   createNewAccount() : void {
+    if(history.state.data.userId){
     this.selectedUserID=history.state.data.userId;
+    }
+    else{
+      this.selectedUserID=0;
+    }
     this.selectedSubTypeId = history.state.data.newSubTypeId;
     if (this.selectedSubTypeId != 0)
     {
@@ -90,6 +95,16 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   editAccount() : void {
     this.editAccountCheck = true;
     this._chartOfAccountService.getAccountForEdit( this.accountId).subscribe(result => {
+      if(history.state.data.userId){
+        this.accountDto.assigneeId=history.state.data.userId
+      }
+      else if (this.selectedUserId.selectedUserId != undefined)
+      {
+        this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
+      }
+      else {
+        this.accountDto.assigneeId=0;
+      }
        if(!history.state.data.name){
         this.accountDto.accountName = result.accountName
        }
@@ -201,6 +216,10 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   routeToAddNewAccountSubType(): void {
+    if(this.selectedUserId.selectedUserId==undefined)
+    {
+      console.log(this.selectedUserId.selectedUserId=0)
+    }
     if (this.accountId != 0)
     {
       this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: this.accountId , previousRoute : "account", name: this.accountDto.accountName, number:this.accountDto.accountNumber, type:this.accountDto.accountType,reconciliation:this.accountDto.reconciliationType,typeName:this.accountType,reconcillationName:this.reconcillationType, userId:Number(this.selectedUserId.selectedUserId),reconciledID:this.accountDto.reconciled,reconciledName:this.recociled} } });
@@ -254,6 +273,12 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
      else if (this.isAccountExist)
      {
       this.notify.error("Account Number is already Exist.")
+      return false;
+     }
+     else if (this.selectedUserID==undefined)
+     {
+      this.notify.error("Select an Assignee")
+      return false;
      }
      return true;
   }
@@ -281,14 +306,6 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
 
  
   updateAccount() : void {
-    if(history.state.data.userId){
-      this.accountDto.assigneeId=history.state.data.userId
-    }
-    else if (this.selectedUserId.selectedUserId != undefined)
-    {
-      this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
-    }
-   
     this.saving = true;
     this._chartOfAccountService.createOrEdit(this.accountDto).pipe(finalize(() => { this.saving = false; }))
     .subscribe(response => {
