@@ -118,6 +118,7 @@ namespace Zinlo.Auditing
         #endregion
 
         #region entity changes 
+
         public List<NameValueDto> GetEntityHistoryObjectTypes()
         {
             var entityHistoryObjectTypes = new List<NameValueDto>();
@@ -233,6 +234,27 @@ namespace Zinlo.Auditing
                 .WhereIf(!input.EntityTypeFullName.IsNullOrWhiteSpace(), item => item.EntityChange.EntityTypeFullName.Contains(input.EntityTypeFullName));
 
             return query;
+        }
+        public Task<List<EntityPropertyHistory>> GetEntityHistory(string entityId, string entityFullName)
+        {
+            var query = from entityChangeSet in _entityChangeSetRepository.GetAll()
+                        join entityChange in _entityChangeRepository.GetAll() on entityChangeSet.Id equals entityChange
+                            .EntityChangeSetId
+                        join entityPropertyChange in _entityPropertyChangeRepository.GetAll() on entityChange.Id equals
+                            entityPropertyChange.EntityChangeId
+                        join user in _userRepository.GetAll() on entityChangeSet.UserId equals user.Id
+                        where entityChange.EntityId == entityId && entityPropertyChange.OriginalValue != null
+                                                                     && entityPropertyChange.PropertyName !=
+                                                                     "LastModificationTime"
+                                                                     && entityChange.EntityTypeFullName == entityFullName
+                        select new EntityPropertyHistory()
+                        {
+                            UserId = (long)entityChangeSet.UserId,
+                            NewValue = entityPropertyChange.NewValue,
+                            OriginalValue = entityPropertyChange.OriginalValue,
+                            PropertyName = entityPropertyChange.PropertyTypeFullName
+                        };
+            return query.ToListAsync();
         }
         #endregion
     }
