@@ -48,6 +48,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     this.ItemizedItemId = history.state.data.ItemizedItemId;
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
+    this.getProfilePicture();
     if(this.ItemizedItemId != 0)
     {
       this.title = "Edit Item";

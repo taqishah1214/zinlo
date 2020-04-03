@@ -213,18 +213,7 @@ namespace Zinlo.Reconciliation
             int result = DateTime.Compare(date2, date1);
             return result;
         }
-        public async Task PostComment(string comment, long TypeId, CommentTypeDto CommentType)
-        {
-            var commentDto = new CreateOrEditCommentDto()
-            {
-                Body = comment,
-                Type = CommentType,
-                TypeId = TypeId
-            };
-            await _commentAppService.Create(commentDto);
-
-        }
-
+      
 
         protected virtual async Task Create(CreateOrEditAmortizationDto input)
         {            
@@ -274,12 +263,20 @@ namespace Zinlo.Reconciliation
             return data;
         }
 
-        public async Task PostCommentOnList(string CommentBody, long ChartofAccountId)
+        public async Task PostComment(string comment, long TypeId, CommentTypeDto CommentType)
         {
-            if (!String.IsNullOrWhiteSpace(CommentBody))
+            if (!String.IsNullOrWhiteSpace(comment))
             {
-                await PostComment(CommentBody, ChartofAccountId, CommentTypeDto.AmortizedList);
+                var commentDto = new CreateOrEditCommentDto()
+                {
+                    Body = comment,
+                    Type = CommentType,
+                    TypeId = TypeId
+                };
+                await _commentAppService.Create(commentDto);
             }
+
+
         }
 
 
