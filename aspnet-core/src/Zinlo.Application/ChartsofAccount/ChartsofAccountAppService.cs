@@ -269,10 +269,11 @@ namespace Zinlo.ChartsofAccount
 
         public async Task<bool> CheckAccountForTrialBalance(ChartsOfAccountsTrialBalanceExcellImportDto input)
         {
-            var result = _chartsofAccountRepository
-                        .GetAll()
-                        .FirstOrDefault(x => string.Equals(x.AccountName, input.AccountName.Trim(), StringComparison.CurrentCultureIgnoreCase)
-                                             && string.Equals(x.AccountNumber, input.AccountNumber.Trim(), StringComparison.CurrentCultureIgnoreCase));
+
+            var result = await _chartsofAccountRepository.FirstOrDefaultAsync(x => x.AccountName.ToLower().Equals(input.AccountName.Trim().ToLower())
+                                                                              && x.AccountNumber.ToLower().Equals(input.AccountNumber.Trim().ToLower()));
+
+
             if (result != null)
             {
                 result.TrialBalance = Convert.ToDecimal(input.Balance);

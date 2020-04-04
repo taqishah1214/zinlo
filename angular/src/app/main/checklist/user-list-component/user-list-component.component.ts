@@ -55,22 +55,27 @@ export class UserListComponentComponent implements OnInit, OnChanges {
 
   getUserDefaultPicture(): void {
     this.input = this.defaultUser[0].id;
-    this.users = this.defaultUser;
+    let updateLock = false;
+    this.users.forEach(element => {
+      if (element.id === -1)
+      {
+        updateLock = true
+      }
+    });
+    if (updateLock == false) {
+      this.users.push({ id: -1, name: " Enter the Assignee Name", picture: "../../../../assets/media/files/emptyUser.svg" });
+    }
   }
+
+
 
   getSelectedUserIdandPicture(): void {
-    this._closingChecklistService.getUserWithPicture("", this.userId).subscribe(result => {
-      this.users = result;
-      this.input = this.users[0].id;
+    this.users.forEach(element => {
+      if (element.id == this.userId){
+        this.input = element.id;
+      }
     });
   }
-
-  onSearchUsers(event): void {
-    this._closingChecklistService.getUserWithPicture(event, 0).subscribe(result => {
-      this.users = result;
-    });
-  }
-
 
   userOnChange(value): void {
     this.selectedUserId = value;

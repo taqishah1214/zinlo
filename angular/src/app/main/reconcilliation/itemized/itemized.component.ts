@@ -42,7 +42,8 @@ export class ItemizedComponent extends AppComponentBase {
   variance:any;
   AccountNumber : any  = "";
   CreateTimeManagementDto : CreateOrEditTimeManagementDto = new CreateOrEditTimeManagementDto()
-
+  comment : any = ""
+  postedCommentList : any =[]
   
 
 
@@ -97,8 +98,8 @@ export class ItemizedComponent extends AppComponentBase {
       this.trialBalance = this.ItemizedList[0].totalTrialBalance;
       this.variance = this.ItemizedList[0].variance;
       this.itemList = this.ItemizedList[0].itemizedListForViewDto;
+      this.postedCommentList = this.ItemizedList[0].comments;
       this.itemList.forEach(i => {
-        debugger
         i.attachments.forEach((element,index) => {
             var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
             element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
@@ -177,9 +178,14 @@ BackToReconcileList() {
 
   onComment(): void {
     this.commantBox = true;
+    this._itemizedService.postComment(this.comment,this.accountId,4).subscribe((result)=> {
+      this.getAllItemizedList(this.primeNgEvent);
+      this.comment = ""
+    })
   }
   onCancelComment(): void {
     this.commantBox = true;
+    this.comment = "";
   }
 
 }

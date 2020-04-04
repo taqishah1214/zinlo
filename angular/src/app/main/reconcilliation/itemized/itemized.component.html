@@ -228,33 +228,34 @@
                                     <option>History</option>
                                 </select>
                             </div>
+
                             <div class="commentmainView show-comments">
                                 <div class="kt-widget3 ">
-                                    <div class="kt-widget3__item ">
+                                    <div *ngFor="let i of postedCommentList" class="kt-widget3__item ">
                                         <div class="comments-header kt-widget3__header">
                                             <div class="kt-widget3__user-img">
                                                 <div class="kt-user-card-v2__pic">
                                                     <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                    </div>
+                                                        {{i.userName | firstLetterOfWords}}</div>
                                                 </div>
                                             </div>
                                             <div class="kt-widget3__info">
                                                 <a class="kt-widget3__username">
-                                                    hammmad
+                                                    {{i.userName}}
                                                 </a><br>
                                             </div>
                                             <span class="kt-widget3__status kt-font-info">
-                                                2 days 2020
+                                                {{i.creationDateTime | momentFormat:'DD MMMM YYYY'}}
                                             </span>
                                         </div>
                                         <div class="kt-widget3__body show-comments-inner">
-                                            <p class="kt-widget3__text commentViewBox">
-                                              Some Comments 
+                                            <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group giveCommentView" *ngIf="commantBox">
                                 <label>Comments</label>
                                 <div (click)="commentClick()">
@@ -280,7 +281,9 @@
 
                             <div class="form-group " *ngIf="!commantBox">
                                 <label>Comments</label>
-                                <p-editor name="HtmlEditorInput" [style]="{'height':'150px'}">
+                                <p-editor [(ngModel)]="comment"
+                                            (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
+                                            [style]="{'height':'150px'}">
                                 </p-editor>
                                 <button class="btn btn-brand" (click)="onComment()">Comment</button>
                                 <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>

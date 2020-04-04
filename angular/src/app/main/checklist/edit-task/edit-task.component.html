@@ -207,9 +207,9 @@
                                         <select class="border border-default bg-white form-control input-medium"
                                             (change)="onDaysClick($event.target.value)"
                                             [(ngModel)]="getTaskForEdit.dayBeforeAfter" name="dayBeforeAfter">
-                                            <option value=null disabled hidden>{{"None" | localize}}</option>
-                                            <option value=true>{{"DaysBefore" | localize}}</option>
-                                            <option value=false>{{"DaysAfter" | localize}}</option>
+                                            <option [value]=1 >{{"None" | localize}}</option>
+                                            <option [value]=2>{{"DaysBefore" | localize}}</option>
+                                            <option [value]=3>{{"DaysAfter" | localize}}</option>
                                         </select>
                                     </div>
                                     <div class="duplicate_box">

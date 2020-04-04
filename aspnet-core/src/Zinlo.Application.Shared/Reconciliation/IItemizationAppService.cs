@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Zinlo.Comment.Dtos;
 using Zinlo.Reconciliation.Dtos;
 
 namespace Zinlo.Reconciliation
@@ -12,6 +13,7 @@ namespace Zinlo.Reconciliation
         Task CreateOrEdit(CreateOrEditItemizationDto input);
         Task<PagedResultDto<ItemizedListDto>> GetAll(GetAllItemizationInput input);
         Task<CreateOrEditItemizationDto> GetEdit(long Id);
+        Task PostComment(string comment, long TypeId, CommentTypeDto CommentType);
         Task Delete(long Id);
     }
 }

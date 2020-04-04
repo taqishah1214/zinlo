@@ -19,7 +19,6 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   attachments: any;
   commentsData: any = [];
   newAttachmentPaths: any = [];
-  comment: CreateOrEditCommentDto = new CreateOrEditCommentDto();
   postAttachment: PostAttachmentsPathDto = new PostAttachmentsPathDto();
   userSignInName: any;
   assigneeId: any = 0;
@@ -31,6 +30,9 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   amortizationDto: CreateOrEditAmortizationDto = new CreateOrEditAmortizationDto()
   netAmount : any;
   accuredAmount : any;
+  postedCommentList : any = [];
+  comment : "";
+
 
   constructor(
     injector: Injector,
@@ -76,7 +78,10 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     this.getTaskDetails();
   }
   SaveComments(): void {
-   
+    this._amortizationService.postComment(this.comment,this.amortrizedItemId,5).subscribe((result)=> {
+      this.comment = ""
+      this.getTaskDetails();
+    }) 
   }
   onCancelComment(): void {
     this.commantBox = true;
@@ -90,12 +95,14 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo}} });
   }
   
+  
 
   getTaskDetails(): void {
     
     this._amortizationService.getAmortizedItemDetails(this.amortrizedItemId).subscribe(result => {
       this.amortizationDto = result
       this.attachments = result.attachments;
+      this.postedCommentList = result.comments
       this.attachments.forEach(element => {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
         element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)

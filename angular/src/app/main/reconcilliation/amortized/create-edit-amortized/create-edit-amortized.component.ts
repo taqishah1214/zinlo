@@ -7,6 +7,8 @@ import { UppyConfig } from 'uppy-angular';
 import { AppConsts } from '@shared/AppConsts';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
+import {UserInformation} from "../../../CommonFunctions/UserInformation"
+
 
 
 
@@ -30,21 +32,27 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   accountNo : any;
   attachments: any;
   saving = false;  
+  commantModal : Boolean;
+  commantBox : Boolean;
+  userName :any;
+  UserProfilePicture: any;
 
-  
 
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(
     private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector,
-    private _reconcialtionService : AmortizationServiceProxy) {
+    private _reconcialtionService : AmortizationServiceProxy,private userInfo: UserInformation) {
     super(injector)
   }
 
   ngOnInit() {   
     this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
+    this.userName = this.appSession.user.name.toString();
     this.accountNo = history.state.data.accountNo
+    this.commantBox = true;
+    this.getProfilePicture();
     this.amortrizedItemId = history.state.data.amortrizedItemId;
     if ( this.amortrizedItemId != 0)
     {     
@@ -63,6 +71,20 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     return extension;
   }
 
+  commentClick(): void {
+    this.commantModal = true;
+    this.commantBox = false;
+  }
+  onComment(): void {
+    this.commantModal = false;
+    this.commantBox = true;
+  }
+  onCancelComment(): void {
+    this.amortizationDto.commentBody = "";
+    this.commantModal = false;
+    this.commantBox = true;
+  }
+
   getAmortizedItemDetails() : void {
     this.title = "Edit a Item"
     this.buttonTitle =  "Save"
@@ -76,6 +98,17 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
         element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl+"/" + element.attachmentPath
       });
     })
+  }
+  getProfilePicture() {
+    this.userInfo.getProfilePicture();
+    this.userInfo.profilePicture.subscribe(
+      data => {
+        this.UserProfilePicture = data.valueOf();
+     });
+    if (this.UserProfilePicture == undefined)
+    {
+      this.UserProfilePicture = "";
+    }
   }
   
   deleteAttachment(id): void {

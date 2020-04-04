@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Zinlo.Attachments.Dtos;
 using Zinlo.Comment.Dtos;
+using Zinlo.Tasks.Dtos;
 
 namespace Zinlo.ClosingChecklist.Dtos
 {
@@ -21,7 +22,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public int NoOfMonths { get; set; }
         public int DueOn { get; set; }
         public DateTime EndsOn { get; set; }
-        public bool DayBeforeAfter { get; set; }
+        public DaysBeforeAfterDto DayBeforeAfter { get; set; }
         public bool EndOfMonth { get; set; }
         public bool MonthStatus { get; set; }
         public long CategoryId { get; set; }

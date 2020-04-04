@@ -21,6 +21,9 @@
     cursor: pointer;
 
 }
+.comment{
+    width: 500px
+    }
 .select .options .option:hover:not(.btn-option){
 	color: white;
 	background-color: #000;

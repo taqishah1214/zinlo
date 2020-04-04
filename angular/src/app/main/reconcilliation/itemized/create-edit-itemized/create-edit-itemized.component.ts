@@ -7,6 +7,8 @@ import { UppyConfig } from 'uppy-angular';
 import { AppConsts } from '@shared/AppConsts';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
+import {UserInformation} from "../../../CommonFunctions/UserInformation"
+
 
 
 @Component({
@@ -24,23 +26,29 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   accountNo : any;
   accountId : any;
   ItemizedItemId : any;
+  UserProfilePicture: any;
   attachmentPaths: any = [];
   recordId: number;
   newAttachementPath: string[] = [];
   attachments: any;
   saving = false;
-
+  userName : string;
+  commantModal : Boolean;
+  commantBox : Boolean;
 
   constructor(private _itemizationServiceProxy : ItemizationServiceProxy,
-    private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector) {
+    private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector, private userInfo: UserInformation) {
     super(injector)
   }
 
   ngOnInit() {   
     this.accountId = history.state.data.accountId
+    this.userName = this.appSession.user.name.toString();
+    this.commantBox = true;
     this.ItemizedItemId = history.state.data.ItemizedItemId;
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
+    this.getProfilePicture();
     if(this.ItemizedItemId != 0)
     {
       this.title = "Edit Item";
@@ -52,6 +60,33 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     }
   
   }
+
+  commentClick(): void {
+    this.commantModal = true;
+    this.commantBox = false;
+  }
+  onComment(): void {
+    this.commantModal = false;
+    this.commantBox = true;
+  }
+  onCancelComment(): void {
+    this.itemizedDto.commentBody = "";
+    this.commantModal = false;
+    this.commantBox = true;
+  }
+
+  getProfilePicture() {
+    this.userInfo.getProfilePicture();
+    this.userInfo.profilePicture.subscribe(
+      data => {
+        this.UserProfilePicture = data.valueOf();
+     });
+    if (this.UserProfilePicture == undefined)
+    {
+      this.UserProfilePicture = "";
+    }
+  }
+
   redirectToItemsList () : void {
     this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
   }

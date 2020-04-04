@@ -19,7 +19,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   attachments: any;
   commentsData: any = [];
   newAttachmentPaths: any = [];
-  comment: CreateOrEditCommentDto = new CreateOrEditCommentDto();
+  comment:  ""
   postAttachment: PostAttachmentsPathDto = new PostAttachmentsPathDto();
   userSignInName: any;
   assigneeId: any = 0;
@@ -31,6 +31,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   itemizationDto: CreateOrEditItemizationDto = new CreateOrEditItemizationDto()
   netAmount : any;
   accuredAmount : any;
+  postedCommentList : any = [];
 
   constructor(
     injector: Injector,
@@ -70,12 +71,12 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   }
   onComment(): void {
     this.commantBox = true;
-    this.SaveComments();
-    this.getTaskDetails();
+    this._itemizationService.postComment(this.comment,this.itemizedItemId,2).subscribe((result)=> {
+      this.comment = ""
+      this.getTaskDetails();
+    })   
   }
-  SaveComments(): void {
-   
-  }
+ 
   onCancelComment(): void {
     this.commantBox = true;
   }
@@ -93,6 +94,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
     this._itemizationService.getEdit(this.itemizedItemId).subscribe(result => {
       this.itemizationDto = result
       this.attachments = result.attachments;
+      this.postedCommentList = result.comments
       this.attachments.forEach(element => {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
         element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)

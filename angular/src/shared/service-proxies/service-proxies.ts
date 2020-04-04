@@ -1322,6 +1322,68 @@ export class AmortizationServiceProxy {
         }
         return _observableOf<CreateOrEditAmortizationDto>(<any>null);
     }
+
+    /**
+     * @param comment (optional) 
+     * @param typeId (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    postComment(comment: string | undefined, typeId: number | undefined, body: CommentTypeDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Amortization/PostComment?";
+        if (comment === null)
+            throw new Error("The parameter 'comment' cannot be null.");
+        else if (comment !== undefined)
+            url_ += "comment=" + encodeURIComponent("" + comment) + "&"; 
+        if (typeId === null)
+            throw new Error("The parameter 'typeId' cannot be null.");
+        else if (typeId !== undefined)
+            url_ += "TypeId=" + encodeURIComponent("" + typeId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostComment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostComment(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPostComment(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -2154,6 +2216,71 @@ export class AuditLogServiceProxy {
             }));
         }
         return _observableOf<EntityPropertyChangeDto[]>(<any>null);
+    }
+
+    /**
+     * @param entityId (optional) 
+     * @param entityFullName (optional) 
+     * @return Success
+     */
+    getEntityHistory(entityId: string | undefined, entityFullName: string | undefined): Observable<EntityPropertyHistory[]> {
+        let url_ = this.baseUrl + "/api/services/app/AuditLog/GetEntityHistory?";
+        if (entityId === null)
+            throw new Error("The parameter 'entityId' cannot be null.");
+        else if (entityId !== undefined)
+            url_ += "entityId=" + encodeURIComponent("" + entityId) + "&"; 
+        if (entityFullName === null)
+            throw new Error("The parameter 'entityFullName' cannot be null.");
+        else if (entityFullName !== undefined)
+            url_ += "entityFullName=" + encodeURIComponent("" + entityFullName) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEntityHistory(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEntityHistory(<any>response_);
+                } catch (e) {
+                    return <Observable<EntityPropertyHistory[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EntityPropertyHistory[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEntityHistory(response: HttpResponseBase): Observable<EntityPropertyHistory[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(EntityPropertyHistory.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EntityPropertyHistory[]>(<any>null);
     }
 }
 
@@ -8059,6 +8186,68 @@ export class ItemizationServiceProxy {
     }
 
     protected processPostAttachments(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param comment (optional) 
+     * @param typeId (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    postComment(comment: string | undefined, typeId: number | undefined, body: CommentTypeDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Itemization/PostComment?";
+        if (comment === null)
+            throw new Error("The parameter 'comment' cannot be null.");
+        else if (comment !== undefined)
+            url_ += "comment=" + encodeURIComponent("" + comment) + "&"; 
+        if (typeId === null)
+            throw new Error("The parameter 'typeId' cannot be null.");
+        else if (typeId !== undefined)
+            url_ += "TypeId=" + encodeURIComponent("" + typeId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostComment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostComment(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPostComment(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -16689,6 +16878,70 @@ export enum Criteria {
     Daily = 3,
 }
 
+export class CommentDto implements ICommentDto {
+    type!: string | undefined;
+    typeId!: number;
+    body!: string | undefined;
+    userName!: string | undefined;
+    creationDateTime!: moment.Moment | undefined;
+    profilePicture!: string | undefined;
+    daysCount!: string | undefined;
+    id!: number;
+
+    constructor(data?: ICommentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.type = data["type"];
+            this.typeId = data["typeId"];
+            this.body = data["body"];
+            this.userName = data["userName"];
+            this.creationDateTime = data["creationDateTime"] ? moment(data["creationDateTime"].toString()) : <any>undefined;
+            this.profilePicture = data["profilePicture"];
+            this.daysCount = data["daysCount"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): CommentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CommentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["typeId"] = this.typeId;
+        data["body"] = this.body;
+        data["userName"] = this.userName;
+        data["creationDateTime"] = this.creationDateTime ? this.creationDateTime.toISOString() : <any>undefined;
+        data["profilePicture"] = this.profilePicture;
+        data["daysCount"] = this.daysCount;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICommentDto {
+    type: string | undefined;
+    typeId: number;
+    body: string | undefined;
+    userName: string | undefined;
+    creationDateTime: moment.Moment | undefined;
+    profilePicture: string | undefined;
+    daysCount: string | undefined;
+    id: number;
+}
+
 export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto {
     inoviceNo!: string | undefined;
     journalEntryNo!: string | undefined;
@@ -16702,6 +16955,8 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
     attachments!: GetAttachmentsDto[] | undefined;
     criteria!: Criteria;
     closingMonth!: moment.Moment;
+    commentBody!: string | undefined;
+    comments!: CommentDto[] | undefined;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -16737,6 +16992,12 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
             }
             this.criteria = data["criteria"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
+            this.commentBody = data["commentBody"];
+            if (Array.isArray(data["comments"])) {
+                this.comments = [] as any;
+                for (let item of data["comments"])
+                    this.comments!.push(CommentDto.fromJS(item));
+            }
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -16772,6 +17033,12 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
         }
         data["criteria"] = this.criteria;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
+        data["commentBody"] = this.commentBody;
+        if (Array.isArray(this.comments)) {
+            data["comments"] = [];
+            for (let item of this.comments)
+                data["comments"].push(item.toJSON());
+        }
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -16792,6 +17059,8 @@ export interface ICreateOrEditAmortizationDto {
     attachments: GetAttachmentsDto[] | undefined;
     criteria: Criteria;
     closingMonth: moment.Moment;
+    commentBody: string | undefined;
+    comments: CommentDto[] | undefined;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
@@ -16878,6 +17147,7 @@ export class AmortizedListDto implements IAmortizedListDto {
     varianceNetAmount!: number;
     varianceBeginningAmount!: number;
     varianceAccuredAmount!: number;
+    comments!: CommentDto[] | undefined;
     reconciliedBase!: number;
 
     constructor(data?: IAmortizedListDto) {
@@ -16903,6 +17173,11 @@ export class AmortizedListDto implements IAmortizedListDto {
             this.varianceNetAmount = data["varianceNetAmount"];
             this.varianceBeginningAmount = data["varianceBeginningAmount"];
             this.varianceAccuredAmount = data["varianceAccuredAmount"];
+            if (Array.isArray(data["comments"])) {
+                this.comments = [] as any;
+                for (let item of data["comments"])
+                    this.comments!.push(CommentDto.fromJS(item));
+            }
             this.reconciliedBase = data["reconciliedBase"];
         }
     }
@@ -16928,6 +17203,11 @@ export class AmortizedListDto implements IAmortizedListDto {
         data["varianceNetAmount"] = this.varianceNetAmount;
         data["varianceBeginningAmount"] = this.varianceBeginningAmount;
         data["varianceAccuredAmount"] = this.varianceAccuredAmount;
+        if (Array.isArray(this.comments)) {
+            data["comments"] = [];
+            for (let item of this.comments)
+                data["comments"].push(item.toJSON());
+        }
         data["reconciliedBase"] = this.reconciliedBase;
         return data; 
     }
@@ -16942,6 +17222,7 @@ export interface IAmortizedListDto {
     varianceNetAmount: number;
     varianceBeginningAmount: number;
     varianceAccuredAmount: number;
+    comments: CommentDto[] | undefined;
     reconciliedBase: number;
 }
 
@@ -16991,6 +17272,14 @@ export class PagedResultDtoOfAmortizedListDto implements IPagedResultDtoOfAmorti
 export interface IPagedResultDtoOfAmortizedListDto {
     totalCount: number;
     items: AmortizedListDto[] | undefined;
+}
+
+export enum CommentTypeDto {
+    ClosingChecklist = 1,
+    ItemizedItem = 2,
+    AmortizedItem = 3,
+    ItemizedList = 4,
+    AmortizedList = 5,
 }
 
 export class PostAttachmentsPathDto implements IPostAttachmentsPathDto {
@@ -17444,6 +17733,58 @@ export interface IEntityPropertyChangeDto {
     propertyName: string | undefined;
     propertyTypeFullName: string | undefined;
     tenantId: number | undefined;
+    id: number;
+}
+
+export class EntityPropertyHistory implements IEntityPropertyHistory {
+    userId!: number;
+    newValue!: string | undefined;
+    originalValue!: string | undefined;
+    propertyName!: string | undefined;
+    id!: number;
+
+    constructor(data?: IEntityPropertyHistory) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.userId = data["userId"];
+            this.newValue = data["newValue"];
+            this.originalValue = data["originalValue"];
+            this.propertyName = data["propertyName"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): EntityPropertyHistory {
+        data = typeof data === 'object' ? data : {};
+        let result = new EntityPropertyHistory();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["newValue"] = this.newValue;
+        data["originalValue"] = this.originalValue;
+        data["propertyName"] = this.propertyName;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IEntityPropertyHistory {
+    userId: number;
+    newValue: string | undefined;
+    originalValue: string | undefined;
+    propertyName: string | undefined;
     id: number;
 }
 
@@ -18664,70 +19005,6 @@ export enum FrequencyDto {
     None = 5,
 }
 
-export class CommentDto implements ICommentDto {
-    type!: string | undefined;
-    typeId!: number;
-    body!: string | undefined;
-    userName!: string | undefined;
-    creationDateTime!: moment.Moment | undefined;
-    profilePicture!: string | undefined;
-    daysCount!: string | undefined;
-    id!: number;
-
-    constructor(data?: ICommentDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.type = data["type"];
-            this.typeId = data["typeId"];
-            this.body = data["body"];
-            this.userName = data["userName"];
-            this.creationDateTime = data["creationDateTime"] ? moment(data["creationDateTime"].toString()) : <any>undefined;
-            this.profilePicture = data["profilePicture"];
-            this.daysCount = data["daysCount"];
-            this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): CommentDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CommentDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["type"] = this.type;
-        data["typeId"] = this.typeId;
-        data["body"] = this.body;
-        data["userName"] = this.userName;
-        data["creationDateTime"] = this.creationDateTime ? this.creationDateTime.toISOString() : <any>undefined;
-        data["profilePicture"] = this.profilePicture;
-        data["daysCount"] = this.daysCount;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface ICommentDto {
-    type: string | undefined;
-    typeId: number;
-    body: string | undefined;
-    userName: string | undefined;
-    creationDateTime: moment.Moment | undefined;
-    profilePicture: string | undefined;
-    daysCount: string | undefined;
-    id: number;
-}
-
 export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChecklistDto {
     taskName!: string | undefined;
     categoryId!: number;
@@ -18870,7 +19147,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     noOfMonths!: number;
     dueOn!: number;
     endsOn!: moment.Moment;
-    dayBeforeAfter!: boolean;
+    dayBeforeAfter!: DaysBeforeAfterDto;
     endOfMonth!: boolean;
     monthStatus!: boolean;
     categoryId!: number;
@@ -18981,7 +19258,7 @@ export interface IGetTaskForEditDto {
     noOfMonths: number;
     dueOn: number;
     endsOn: moment.Moment;
-    dayBeforeAfter: boolean;
+    dayBeforeAfter: DaysBeforeAfterDto;
     endOfMonth: boolean;
     monthStatus: boolean;
     categoryId: number;
@@ -19270,10 +19547,6 @@ export class NameValueDtoOfString implements INameValueDtoOfString {
 export interface INameValueDtoOfString {
     name: string | undefined;
     value: string | undefined;
-}
-
-export enum CommentTypeDto {
-    ClosingChecklist = 1,
 }
 
 export class CreateOrEditCommentDto implements ICreateOrEditCommentDto {
@@ -22692,6 +22965,7 @@ export class ItemizedListDto implements IItemizedListDto {
     totalAmount!: number;
     totalTrialBalance!: number;
     variance!: number;
+    comments!: CommentDto[] | undefined;
 
     constructor(data?: IItemizedListDto) {
         if (data) {
@@ -22712,6 +22986,11 @@ export class ItemizedListDto implements IItemizedListDto {
             this.totalAmount = data["totalAmount"];
             this.totalTrialBalance = data["totalTrialBalance"];
             this.variance = data["variance"];
+            if (Array.isArray(data["comments"])) {
+                this.comments = [] as any;
+                for (let item of data["comments"])
+                    this.comments!.push(CommentDto.fromJS(item));
+            }
         }
     }
 
@@ -22732,6 +23011,11 @@ export class ItemizedListDto implements IItemizedListDto {
         data["totalAmount"] = this.totalAmount;
         data["totalTrialBalance"] = this.totalTrialBalance;
         data["variance"] = this.variance;
+        if (Array.isArray(this.comments)) {
+            data["comments"] = [];
+            for (let item of this.comments)
+                data["comments"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -22741,6 +23025,7 @@ export interface IItemizedListDto {
     totalAmount: number;
     totalTrialBalance: number;
     variance: number;
+    comments: CommentDto[] | undefined;
 }
 
 export class PagedResultDtoOfItemizedListDto implements IPagedResultDtoOfItemizedListDto {
@@ -22801,6 +23086,8 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
     attachmentsPath!: string[] | undefined;
     attachments!: GetAttachmentsDto[] | undefined;
     closingMonth!: moment.Moment;
+    commentBody!: string | undefined;
+    comments!: CommentDto[] | undefined;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -22833,6 +23120,12 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
                     this.attachments!.push(GetAttachmentsDto.fromJS(item));
             }
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
+            this.commentBody = data["commentBody"];
+            if (Array.isArray(data["comments"])) {
+                this.comments = [] as any;
+                for (let item of data["comments"])
+                    this.comments!.push(CommentDto.fromJS(item));
+            }
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -22865,6 +23158,12 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
                 data["attachments"].push(item.toJSON());
         }
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
+        data["commentBody"] = this.commentBody;
+        if (Array.isArray(this.comments)) {
+            data["comments"] = [];
+            for (let item of this.comments)
+                data["comments"].push(item.toJSON());
+        }
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -22882,6 +23181,8 @@ export interface ICreateOrEditItemizationDto {
     attachmentsPath: string[] | undefined;
     attachments: GetAttachmentsDto[] | undefined;
     closingMonth: moment.Moment;
+    commentBody: string | undefined;
+    comments: CommentDto[] | undefined;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;

@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Zinlo.Attachments.Dtos;
 using Zinlo.Attachments;
 using Zinlo.ChartsofAccount;
+using Zinlo.Comment;
+using Zinlo.Comment.Dtos;
 
 namespace Zinlo.Reconciliation
 {
@@ -21,13 +23,17 @@ namespace Zinlo.Reconciliation
         private readonly IRepository<Amortization, long> _amortizationRepository;
         private readonly IAttachmentAppService _attachmentAppService;
         private readonly IChartsofAccountAppService _chartsofAccountAppService;
+        private readonly ICommentAppService _commentAppService;
+
 
         #region|#Constructor|
-        public AmortizationAppService(IChartsofAccountAppService chartsofAccountAppService, IRepository<Amortization, long> amortizationRepository,IAttachmentAppService attachmentAppService)
+        public AmortizationAppService(ICommentAppService commentAppService,IChartsofAccountAppService chartsofAccountAppService, IRepository<Amortization, long> amortizationRepository,IAttachmentAppService attachmentAppService)
         {
             _attachmentAppService = attachmentAppService;
             _amortizationRepository = amortizationRepository;
             _chartsofAccountAppService = chartsofAccountAppService;
+            _commentAppService = commentAppService;
+
         }
         #endregion
         #region|Create Edit|
@@ -68,7 +74,7 @@ namespace Zinlo.Reconciliation
                                     Description = o.Description,
                                     AccuredAmortization = CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount,o.EndDate, input.MonthFilter,o.StartDate),
                                     BeginningAmount = o.Amount,
-                                    NetAmount = CalculateNetAmount((int)(o.Criteria) == 2 ? CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate): o.AccomulateAmount, o.Amount) ,
+                                    NetAmount = CalculateNetAmount((int)(o.Criteria) == 2 || (int)(o.Criteria) == 3 ? CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate): o.AccomulateAmount, o.Amount) ,
                                     Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 2).Result        
                                }).ToList();
 
@@ -84,7 +90,7 @@ namespace Zinlo.Reconciliation
             };
 
             amortizedListDto.TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId);
-
+            amortizedListDto.Comments = await _commentAppService.GetComments((int)CommentType.AmortizedList, input.ChartofAccountId);
 
 
             if (input.ChartofAccountId != 0 )
@@ -171,24 +177,24 @@ namespace Zinlo.Reconciliation
                 return Result3;
             }
         }
-        protected virtual double GetAccuredAmountDaily(double AccomulateAmount, double BeginningAmount, DateTime EndDate, DateTime Current, DateTime StartDate)
+        protected virtual double GetAccuredAmountDaily(double AccomulateAmount, double beginningAmount, DateTime EndDate, DateTime Current, DateTime StartDate)
         {
-
 
             DateTime MonthEnd = GetValidDate(Current);
             int DateResult = CompareDates(EndDate, MonthEnd);
             if (MonthEnd >= EndDate)
             {
-                return BeginningAmount;
+                return beginningAmount;
             }
             else
             {
+                //(MonthEnd.Date - StartDate.Date)
                 //(MonthEnd - StartDate +1) / (EndDate - StartDate +1) * Original Amount
-                double month1 = (MonthEnd - StartDate).TotalDays;
-                double month2 = (EndDate - StartDate).TotalDays;
-                double Result1 = (month1 + 1);
-                double Result2 = (month2 + 1);
-                return(Result1 / Result2) * BeginningAmount;
+                double month1 = (MonthEnd.Date.Subtract(StartDate.Date).Days)+1;
+                double month2 = (EndDate.Date.Subtract(StartDate.Date).Days)+1 ;
+                double divideMonths = (month1 / month2);
+                double result = divideMonths * beginningAmount;
+                return result;
             }
            
         }
@@ -207,15 +213,10 @@ namespace Zinlo.Reconciliation
             int result = DateTime.Compare(date2, date1);
             return result;
         }
-
-       
-
+      
 
         protected virtual async Task Create(CreateOrEditAmortizationDto input)
-        {
-            input.EndDate = input.EndDate.AddDays(1);
-            input.StartDate = input.StartDate.AddDays(1);
-            //input.ClosingMonth = input.ClosingMonth.AddDays(1);
+        {            
             var item = ObjectMapper.Map<Amortization>(input);
             var itemAddedId = await _amortizationRepository.InsertAndGetIdAsync(item);
             if (input.AttachmentsPath != null)
@@ -226,7 +227,11 @@ namespace Zinlo.Reconciliation
                 postAttachmentsPathDto.Type = 2;
                 await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
             }
-          
+            if (!String.IsNullOrWhiteSpace(input.CommentBody))
+            {
+                await PostComment(input.CommentBody, itemAddedId, CommentTypeDto.AmortizedItem);
+            }
+
 
         }
         protected virtual async Task Update(CreateOrEditAmortizationDto input)
@@ -242,6 +247,10 @@ namespace Zinlo.Reconciliation
                 postAttachmentsPathDto.Type = 2;
                 await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
             }
+            if (!String.IsNullOrWhiteSpace(input.CommentBody))
+            {
+                await PostComment(input.CommentBody, input.Id, CommentTypeDto.AmortizedItem);
+            }
         }
 
         public async Task<CreateOrEditAmortizationDto> GetAmortizedItemDetails(long Id)
@@ -249,11 +258,26 @@ namespace Zinlo.Reconciliation
             CreateOrEditAmortizationDto ItemData = new CreateOrEditAmortizationDto();
             var item = await _amortizationRepository.FirstOrDefaultAsync(x => x.Id == Id);
             ItemData.Attachments = await _attachmentAppService.GetAttachmentsPath(Id, 2);
+            ItemData.Comments = await _commentAppService.GetComments((int)CommentType.AmortizedItem, Id);
             var data = ObjectMapper.Map(item, ItemData);
             return data;
         }
 
-       
+        public async Task PostComment(string comment, long TypeId, CommentTypeDto CommentType)
+        {
+            if (!String.IsNullOrWhiteSpace(comment))
+            {
+                var commentDto = new CreateOrEditCommentDto()
+                {
+                    Body = comment,
+                    Type = CommentType,
+                    TypeId = TypeId
+                };
+                await _commentAppService.Create(commentDto);
+            }
+
+
+        }
 
 
 

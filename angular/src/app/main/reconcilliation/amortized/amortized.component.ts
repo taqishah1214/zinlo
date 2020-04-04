@@ -44,7 +44,10 @@ export class AmortizedComponent extends AppComponentBase {
   varianceAccured : any = 0.0;
   varianceNet : any = 0.0;
   AccountNumber : any  = "";
-  CreateTimeManagementDto : CreateOrEditTimeManagementDto = new CreateOrEditTimeManagementDto()
+  CreateTimeManagementDto : CreateOrEditTimeManagementDto = new CreateOrEditTimeManagementDto();
+  postedCommentList : any =[]
+  comment : any = ""
+
   constructor(
     injector: Injector,
     private _router: Router,
@@ -92,11 +95,11 @@ export class AmortizedComponent extends AppComponentBase {
     this.primengTableHelper.records = result.items;
     this.primengTableHelper.hideLoadingIndicator();
     this.amortizedItemList = result.items;
+    this.postedCommentList = this.amortizedItemList[0].comments;
     this.amortizedItemList.forEach(j => {  
     this.begininngAmount = j.totalBeginningAmount;
     this.accuredAmount= j.totalAccuredAmortization;
     this.netAmount = j.totalNetAmount;
-    
     switch (j.reconciliedBase) {
       case 1:
         this.trialBalanceNet = j.totalTrialBalance
@@ -199,6 +202,10 @@ BackToReconcileList() {
 
   onComment(): void {
     this.commantBox = true;
+    this._amortizationService.postComment(this.comment,this.accountId,5).subscribe((result)=> {
+      this.getAllAmortizedList(this.primeNgEvent);
+      this.comment = ""
+    })
   }
   onCancelComment(): void {
     this.commantBox = true;
