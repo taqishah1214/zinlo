@@ -10,7 +10,7 @@ import { LazyLoadEvent } from 'primeng/api';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent extends AppComponentBase{
+export class UsersComponent extends AppComponentBase implements OnInit {
 //   cars: any = [];
 
 //   lazyCars: any =[];
@@ -27,14 +27,14 @@ export class UsersComponent extends AppComponentBase{
 
 //   sortOptions: any = [];
 
-//   constructor(injector :  Injector) {
-//     super(injector);
-//   }
+  constructor(injector :  Injector) {
+    super(injector);
+  }
 
-//   ngOnInit() {
-//       this.brands = [
-//           'Audi', 'BMW', 'Fiat', 'Ford', 'Honda', 'Jaguar', 'Mercedes', 'Renault', 'Volvo', 'VW'
-//       ];
+  ngOnInit() {
+      //this.brands = [
+        //  'Audi', 'BMW', 'Fiat', 'Ford', 'Honda', 'Jaguar', 'Mercedes', 'Renault', 'Volvo', 'VW'
+//];
 
 //       this.colors = [
 //           'Black', 'White', 'Red', 'Blue', 'Silver', 'Green', 'Yellow'
@@ -51,7 +51,7 @@ export class UsersComponent extends AppComponentBase{
 //           {label: 'Newest First', value: '!year'},
 //           {label: 'Oldest First', value: 'year'}
 //       ];
-//   }
+   }
 
 //   generateCar() {
 //       return {

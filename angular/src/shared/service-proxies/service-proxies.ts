@@ -22432,6 +22432,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
     filePath!: string | undefined;
     creationTime!: moment.Moment;
     isRollBacked!: boolean;
+    successFilePath!: string | undefined;
 
     constructor(data?: IImportLogForViewDto) {
         if (data) {
@@ -22451,6 +22452,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
             this.filePath = data["filePath"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.isRollBacked = data["isRollBacked"];
+            this.successFilePath = data["successFilePath"];
         }
     }
 
@@ -22470,6 +22472,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
         data["filePath"] = this.filePath;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["isRollBacked"] = this.isRollBacked;
+        data["successFilePath"] = this.successFilePath;
         return data; 
     }
 }
@@ -22482,6 +22485,7 @@ export interface IImportLogForViewDto {
     filePath: string | undefined;
     creationTime: moment.Moment;
     isRollBacked: boolean;
+    successFilePath: string | undefined;
 }
 
 export class PagedResultDtoOfImportLogForViewDto implements IPagedResultDtoOfImportLogForViewDto {
@@ -22540,6 +22544,7 @@ export class ImportPathDto implements IImportPathDto {
     successRecordsCount!: number;
     tenantId!: number;
     creatorId!: number;
+    successFilePath!: string | undefined;
 
     constructor(data?: IImportPathDto) {
         if (data) {
@@ -22559,6 +22564,7 @@ export class ImportPathDto implements IImportPathDto {
             this.successRecordsCount = data["successRecordsCount"];
             this.tenantId = data["tenantId"];
             this.creatorId = data["creatorId"];
+            this.successFilePath = data["successFilePath"];
         }
     }
 
@@ -22578,6 +22584,7 @@ export class ImportPathDto implements IImportPathDto {
         data["successRecordsCount"] = this.successRecordsCount;
         data["tenantId"] = this.tenantId;
         data["creatorId"] = this.creatorId;
+        data["successFilePath"] = this.successFilePath;
         return data; 
     }
 }
@@ -22590,6 +22597,7 @@ export interface IImportPathDto {
     successRecordsCount: number;
     tenantId: number;
     creatorId: number;
+    successFilePath: string | undefined;
 }
 
 export class InstallDto implements IInstallDto {
@@ -29990,9 +29998,6 @@ export class UserListofCurrentTenantDto implements IUserListofCurrentTenantDto {
     id!: number;
     name!: string | undefined;
     profilePicture!: string | undefined;
-    creationTime!: moment.Moment;
-    status!: boolean;
-    email!: string | undefined;
 
     constructor(data?: IUserListofCurrentTenantDto) {
         if (data) {
@@ -30008,9 +30013,6 @@ export class UserListofCurrentTenantDto implements IUserListofCurrentTenantDto {
             this.id = data["id"];
             this.name = data["name"];
             this.profilePicture = data["profilePicture"];
-            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
-            this.status = data["status"];
-            this.email = data["email"];
         }
     }
 
@@ -30026,9 +30028,6 @@ export class UserListofCurrentTenantDto implements IUserListofCurrentTenantDto {
         data["id"] = this.id;
         data["name"] = this.name;
         data["profilePicture"] = this.profilePicture;
-        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["email"] = this.email;
         return data; 
     }
 }
@@ -30037,9 +30036,6 @@ export interface IUserListofCurrentTenantDto {
     id: number;
     name: string | undefined;
     profilePicture: string | undefined;
-    creationTime: moment.Moment;
-    status: boolean;
-    email: string | undefined;
 }
 
 export class LinkToUserInput implements ILinkToUserInput {
