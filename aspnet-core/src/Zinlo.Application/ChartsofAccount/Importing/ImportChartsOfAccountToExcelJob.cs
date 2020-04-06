@@ -289,8 +289,8 @@ namespace Zinlo.ChartsofAccount
             }
         }
         public int GetAccountTypeValue(string name)
-        {
-            if (name.Trim().ToLower() == "fixed")
+        {     
+            if (name.Trim().ToLower() == "equity")
             {
                 return 1;
             }
@@ -298,10 +298,11 @@ namespace Zinlo.ChartsofAccount
             {
                 return 2;
             }
-            else
+            else if (name.Trim().ToLower() == "liability")
             {
                 return 3;
             }
+            return 0;
         }
 
         public int GetReconcilationTypeValue(string name)
@@ -326,7 +327,7 @@ namespace Zinlo.ChartsofAccount
             {
                 return 2;
             }
-            else if (name.Trim().ToLower() == "accruedAmount")
+            else if (name.Trim().ToLower() == "accruedamount")
             {
                 return 3;
             }

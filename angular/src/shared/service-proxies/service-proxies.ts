@@ -29990,6 +29990,9 @@ export class UserListofCurrentTenantDto implements IUserListofCurrentTenantDto {
     id!: number;
     name!: string | undefined;
     profilePicture!: string | undefined;
+    creationTime!: moment.Moment;
+    status!: boolean;
+    email!: string | undefined;
 
     constructor(data?: IUserListofCurrentTenantDto) {
         if (data) {
@@ -30005,6 +30008,9 @@ export class UserListofCurrentTenantDto implements IUserListofCurrentTenantDto {
             this.id = data["id"];
             this.name = data["name"];
             this.profilePicture = data["profilePicture"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.status = data["status"];
+            this.email = data["email"];
         }
     }
 
@@ -30020,6 +30026,9 @@ export class UserListofCurrentTenantDto implements IUserListofCurrentTenantDto {
         data["id"] = this.id;
         data["name"] = this.name;
         data["profilePicture"] = this.profilePicture;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["email"] = this.email;
         return data; 
     }
 }
@@ -30028,6 +30037,9 @@ export interface IUserListofCurrentTenantDto {
     id: number;
     name: string | undefined;
     profilePicture: string | undefined;
+    creationTime: moment.Moment;
+    status: boolean;
+    email: string | undefined;
 }
 
 export class LinkToUserInput implements ILinkToUserInput {
