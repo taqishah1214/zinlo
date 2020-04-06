@@ -192,7 +192,7 @@
                                             <span style="cursor: pointer;" class="task-box"><span
                                                     class="task-box-dot-{{j.StatusColor}}"></span><b>{{j.taskName}}</b></span>
                                         </td>
-                                        <td class="cat-cell" style="cursor: default;" (click)="redirectToDetail(j.id)">
+                                        <td class="cat-cell" style="cursor: pointer;" (click)="redirectToDetail(j.id)">
                                             <span class="category-name bg-lightgrey">{{j.category}}</span>
                                         </td>
                                         <td [ngClass]="{'disabled':!monthStatus}" class="status-cell">

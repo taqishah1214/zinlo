@@ -72,11 +72,87 @@
                                             <h5 class="modal-title" id="exampleModalLongTitle">
                                                 <!--Place model title here-->
                                             </h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button type="button" class="close" (click)="onClose()"data-dismiss="modal" aria-label="Close">
                                             </button>
                                         </div>
-                                        <div class="modal-body">
+                                        <div class="modal-body upload-body">
+                                            <div class="form-group py-0 my-0">
+                                                <div class="kt-radio py-0 my-0">
+                                                    <label class="kt-radio kt-radio--tick kt-radio--success mx-4">
+                                                        <input type="radio" name="radio" checked value="Upload Trial Balance" (change)="onBreadChange($event.target.value)"> Upload Trial Balance
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--tick kt-radio--success">
+                                                        <input type="radio" name="radio" value="Upload Chart of Accounts" (change)="onBreadChange($event.target.value)"> Upload Chart of Accounts
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                            </div>
                                             <div class="drag_drop_box uppy-modal-box1">
+
+                                                <p *ngIf="balance">Upload Trial Balance</p>
+                                                
+                                                <p *ngIf="account">Upload Chart of Accounts</p>
+                                                <ng-uppy *ngIf="account||balance"[config]="settings" 
+                                                    (uploadResult)="fileUploadOption($event)">
+                                                </ng-uppy>
+                                            </div>
+                                            <div *ngIf="account">
+                                                
+                                                <div class="row modal-bottom-record">
+                                                   <div class="col-md-12">
+                                                       <p>{{"Charts Of Account Format" | localize}} <a style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Upload Sample File" | localize}}</u></a></p>
+                                                       <div class="inner-col-record border border-default">
+   
+                                                           <div class="row">
+                                                               <div class="modal-bottom-row-col1">
+                                                                   <p>{{"Account Name" | localize}}</p>
+                                                               </div>
+                                                               <div class="modal-bottom-row-col1">
+                                                                   <p>{{"Account Number" | localize}}</p>
+                                                               </div>
+                                                               <div class="modal-bottom-row-col1">
+                                                                   <p>{{"Account Type" | localize}}</p>
+                                                               </div>
+                                                               <div class="modal-bottom-row-col1">
+                                                                   <p>{{"Account Sub Type" | localize}}</p>
+                                                               </div>
+                                                               <div class="modal-bottom-row-col1">
+                                                                   <p>{{"Assigned User" | localize}}</p>
+                                                               </div>
+                                                               <div class="modal-bottom-row-col1">
+                                                                    <p>{{"Reconciliation type" | localize}}</p>
+                                                                </div>
+                                                                <div class="modal-bottom-row-col1">
+                                                                    <p>{{"Reconciliation as" | localize}}</p>
+                                                                </div>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                                </div>
+                                        </div>
+                                        <div *ngIf="balance">
+                                            <div class="row modal-bottom-record">
+                                                <div class="col-md-12">
+                                                    <p>{{"Trial Balance Format" | localize}} <a style="color:blue;margin-left: 20px;cursor: pointer;"><u>Upload Sample File</u></a></p>
+                                                    <div class="inner-col-record border border-default">
+
+                                                        <div class="row">
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>{{"Account Name" | localize}}</p>
+                                                            </div>
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>{{"Account Number" | localize}}</p>
+                                                            </div>
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>{{"Balance" | localize}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                            <!-- <div class="drag_drop_box uppy-modal-box1">
 
                                                 <p>{{"Upload Trial Balance" | localize}}</p>
                                                 <p>{{"Upload Chart of Accounts" | localize}}</p>
@@ -131,12 +207,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
 
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
+                                                data-dismiss="modal">{{"Close" | localize}}</button>
                                             <button type="button" class="btn btn-primary"  data-dismiss="modal" (click)="SaveChanges()" >Save changes</button>
                                         </div>
                                     </div>
@@ -151,17 +227,23 @@
                                             <input type="text" autoFocus (input)="searchWithName()"
                                                 [(ngModel)]="filterText" name="filterText"
                                                 [placeholder]="l('SearchWithThreeDot')" class="border-grey">
+                                               
                                         </div>
                                     </form>
-                                    <div class="form-group category-selector">
-                                        <button type="button" class="btn btn-secondary text-dark dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">{{accountType}}</button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" *ngFor="let item of accountTypeList"
-                                                (click)="accountTypeClick(item.id,item.name)">
-                                                {{item.name}}</a>
-                                        </div>
+                                    <div class="block-btn">
+                                        <select class="form-control border-grey" name="categoryFilter"
+                                            [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
+                                            id="exampleFormControlSelect2">
+                                            <option value="0">{{accountType}}</option>
+                                            <option *ngFor="let item of accountTypeList;" [value]="item.id">
+                                                {{item.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="block-btn">
+                                        <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()">
+                                            <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
+                                        </button>
                                     </div>
                                     <div class="users-box-parent">
                                         <div class="users-box">

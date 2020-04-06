@@ -602,17 +602,18 @@ table.table.record-table td, table.table.record-table th {
     width: 100%;
     color:#EBEDF2;
     border:1px solid #EBEDF2;
+
+    background-color: rgb(241,242,252);
     height: 36px;
 }
 .category-selector button:focus{
-    background-color: transparent;
+    background-color: rgb(241,242,252);
     box-shadow: none;
     outline: none;
 }
 .category-selector button::after {
     position: absolute;
     font-size: 11px;
-    color: transparent;
     top: 50%;
     left: 0;
     right: 0;
@@ -622,8 +623,20 @@ table.table.record-table td, table.table.record-table th {
 
 }
 .category-selector .dropdown-menu{
-    width: 170px;
+    width:150px !important;
+    border:1px solid #3498DB !important;
+    border-radius: 0px;
+    background-color:  rgb(241,242,252);
+    box-shadow: none;
 }
+.category-selector .dropdown-menu .dropdown-item{
+    font-size: 14.5px;
+    padding-left: 35px;
+}
+.category-selector .dropdown-menu .dropdown-item:hover{
+    background-color: #3498DB;
+}
+
 @media only screen and (max-width:1900px){
     .table-row-collapsible .accountSubtype-cell{
         display: none;
@@ -912,9 +925,9 @@ table.table.record-table td, table.table.record-table th {
 }
 .uppy-modal ::ng-deep .uppy-Dashboard-inner {
     min-height:100px !important;
-    height: 100px !important;
-    min-width: 50% !important;
-    width: 50% !important;
+    height: 200px !important;
+    min-width: 100% !important;
+    width: 100% !important;
 } 
 .uppy-modal .modal-dialog {
     max-width: 1000px;
@@ -928,12 +941,12 @@ table.table.record-table td, table.table.record-table th {
     position: relative;
 }
 .uppy-modal .modal-dialog ::ng-deep .drag-drop-area .uppy-Root {
-    width: 50% !important;
+    width: 100% !important;
+    margin-left: 0% 5% !important;
 }
 .uppy-modal .modal-dialog ::ng-deep .drag-drop-area ::ng-deep .uppy-Root:nth-child(1),
 .download-modal-row .col-md-6:nth-child(1){
     padding-right: 30px !important;
-    border-right: 1px solid #E2E3E5 !important;
 }
 .uppy-modal .modal-dialog ::ng-deep .drag-drop-area ::ng-deep .uppy-Root:nth-child(2),
 .download-modal-row .col-md-6:nth-child(2){
@@ -944,7 +957,6 @@ table.table.record-table td, table.table.record-table th {
 }
 .uppy-modal .modal-dialog .uppy-modal-box1 ::ng-deep .drag-drop-area::after,
 .download-modal-row::after {
-    content: "OR" !important;
     width: 40px !important;
     height: 40px !important;
     position: absolute !important;
@@ -971,7 +983,7 @@ table.table.record-table td, table.table.record-table th {
     width:100%;
 }
 .uppy-modal .modal-dialog .uppy-modal-box1 > p {
-    width: 50%;
+    width: 100%;
     display: inline-block;
     text-align: center;
     color: #0F2757;
@@ -980,6 +992,10 @@ table.table.record-table td, table.table.record-table th {
 }
 .modal-bottom-row-col {
     width: 33.33%;
+    padding: 5px;
+}
+.modal-bottom-row-col1 {
+    width: 14.2%;
     padding: 5px;
 }
 .row.modal-bottom-record {
@@ -1002,9 +1018,6 @@ table.table.record-table td, table.table.record-table th {
     border-radius: 5px;
     padding: 10px;
 }
-.modal-bottom-row-col p {
-    font-size: 8px;
-}
 .uppy-modal .modal-footer,
 .download-modal .modal-footer  {
     justify-content: center;
@@ -1013,6 +1026,7 @@ table.table.record-table td, table.table.record-table th {
 .uppy-modal .modal-header,
 .download-modal .modal-header {
     border: 0;
+    padding: 5px !important;
 }
 .download-modal .modal-dialog {
     max-width: 1000px;
@@ -1027,4 +1041,8 @@ table.table.record-table td, table.table.record-table th {
 .download-modal-row .col-md-6 img {
     width: 60px;
     margin-bottom: 20px;
+}
+.upload-body{
+    padding-top: 0px !important;
+    margin-top: 0px !important;
 }
