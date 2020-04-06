@@ -19023,8 +19023,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
     comments!: CommentDto[] | undefined;
     attachmentsPath!: string[] | undefined;
     groupId!: string | undefined;
-    creationTime!: moment.Moment;
-    creatorUserId!: number | undefined;
     id!: number;
 
     constructor(data?: ICreateOrEditClosingChecklistDto) {
@@ -19063,8 +19061,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
                     this.attachmentsPath!.push(item);
             }
             this.groupId = data["groupId"];
-            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
-            this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
         }
     }
@@ -19103,8 +19099,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
                 data["attachmentsPath"].push(item);
         }
         data["groupId"] = this.groupId;
-        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
-        data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
         return data; 
     }
@@ -19128,8 +19122,6 @@ export interface ICreateOrEditClosingChecklistDto {
     comments: CommentDto[] | undefined;
     attachmentsPath: string[] | undefined;
     groupId: string | undefined;
-    creationTime: moment.Moment;
-    creatorUserId: number | undefined;
     id: number;
 }
 
@@ -19293,8 +19285,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     commentBody!: string | undefined;
     attachmentsPath!: string[] | undefined;
     groupId!: string | undefined;
-    creationTime!: moment.Moment;
-    creatorUserId!: number | undefined;
     id!: number;
 
     constructor(data?: IDetailsClosingCheckListDto) {
@@ -19343,8 +19333,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
                     this.attachmentsPath!.push(item);
             }
             this.groupId = data["groupId"];
-            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
-            this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
         }
     }
@@ -19393,8 +19381,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
                 data["attachmentsPath"].push(item);
         }
         data["groupId"] = this.groupId;
-        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
-        data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
         return data; 
     }
@@ -19424,8 +19410,6 @@ export interface IDetailsClosingCheckListDto {
     commentBody: string | undefined;
     attachmentsPath: string[] | undefined;
     groupId: string | undefined;
-    creationTime: moment.Moment;
-    creatorUserId: number | undefined;
     id: number;
 }
 
