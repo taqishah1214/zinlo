@@ -19,6 +19,7 @@ namespace Zinlo.ImportPaths
         {
             ImportsPath importsPath = new ImportsPath();
             importsPath.FilePath = input.FilePath;
+            importsPath.SuccessFilePath = input.SuccessFilePath;
             importsPath.TenantId = input.TenantId;
             importsPath.Type = input.Type;
             importsPath.FailedRecordsCount = input.FailedRecordsCount;
@@ -38,7 +39,7 @@ namespace Zinlo.ImportPaths
             {
                 output.FilePath = input.FilePath;
                 output.FailedRecordsCount = input.FailedRecordsCount;
-                output.SuccessRecordsCount = input.SuccessRecordsCount;
+                output.SuccessRecordsCount = input.SuccessRecordsCount;             
                 await _importPathsRepository.UpdateAsync(output);
 
             }

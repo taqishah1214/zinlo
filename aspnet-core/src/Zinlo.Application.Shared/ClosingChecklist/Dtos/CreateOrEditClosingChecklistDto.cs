@@ -1,13 +1,11 @@
-﻿using Abp.Application.Services.Dto;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using Zinlo.Attachments.Dtos;
+using Abp.Application.Services.Dto;
 using Zinlo.Comment.Dtos;
 
-namespace Zinlo.Tasks.Dtos
+namespace Zinlo.ClosingChecklist.Dtos
 {
-    public class CreateOrEditClosingChecklistDto : CreationAuditedEntityDto<long>
+    public class CreateOrEditClosingChecklistDto : EntityDto<long>
     {
         public virtual string TaskName { get; set; }
         public virtual long CategoryId { get; set; }

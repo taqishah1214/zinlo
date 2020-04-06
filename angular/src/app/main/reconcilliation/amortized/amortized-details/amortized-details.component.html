@@ -5,13 +5,13 @@
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h3 class="text-navyblue kt-portlet__head-title">
-                            Amortized Details
+                            {{"Amortized Details" | localize}}
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <a href="javascript: void(0);" (click)="BackToList()">
                             <i class="la la-arrow-left"></i>
-                            Back
+                            {{"Back" | localize}}
                         </a>
                         <div class="btn-group">
 
@@ -34,28 +34,27 @@
                                 <div class="item-card-box d-flex flex-wrap">
                                     <div class="item-card rounded mr-3 mb-3">
                                         <img src="../../../../assets/img/calendar-o.svg" alt="bill" class="my-3">
-                                        <span class="d-block mb-1 text-navyblue item-card-title">Start Date</span>
+                                        <span class="d-block mb-1 text-navyblue item-card-title">{{"Start Date" | localize}}</span>
                                         <span class="d-block text-lightgrey">{{amortizationDto.startDate | date}}</span>
                                     </div>
                                     <div class="item-card rounded mr-3 mb-3">
                                         <img src="../../../../assets/img/calendar-o.svg" alt="bill" class="my-3">
-                                        <span class="d-block mb-1 text-navyblue item-card-title">End Date</span>
+                                        <span class="d-block mb-1 text-navyblue item-card-title">{{"End Date" | localize}}</span>
                                         <span class="d-block text-lightgrey">{{amortizationDto.endDate | date}}</span>
                                     </div>
                                     <div class="item-card rounded mr-3 mb-3">
                                         <img src="../../../../assets/img/money.svg" alt="bill" class="my-3">
-                                        <span class="d-block mb-1 text-navyblue item-card-title">Beginning Amount</span>
+                                        <span class="d-block mb-1 text-navyblue item-card-title">{{"Beginning Amount" | localize}}</span>
                                         <span class="d-block text-lightgrey">$ {{amortizationDto.amount | formater}}</span>
                                     </div>
                                     <div class="item-card rounded mr-3 mb-3">
                                         <img src="../../../../assets/img/money.svg" alt="bill" class="my-3">
-                                        <span class="d-block mb-1 text-navyblue item-card-title">Accrued
-                                            Amortization</span>
+                                        <span class="d-block mb-1 text-navyblue item-card-title">{{"Accrued Amortization" | localize}}</span>
                                         <span class="d-block text-lightgrey">$ {{accuredAmount | formater}}</span>
                                     </div>
                                     <div class="item-card rounded mr-3 mb-3">
                                         <img src="../../../../assets/img/money.svg" alt="bill" class="my-3">
-                                        <span class="d-block mb-1 text-navyblue item-card-title">Net Amount</span>
+                                        <span class="d-block mb-1 text-navyblue item-card-title">{{"Net Amount" | localize}}</span>
                                         <span class="d-block text-lightgrey">$ {{netAmount | formater}}</span>
                                     </div>
                                 </div>
@@ -64,13 +63,12 @@
                                 <div class="item-card-box d-flex flex-wrap">
                                     <div class="item-card rounded mr-3 mb-3">
                                         <img src="../../../../assets/img/bill.svg" alt="bill" class="my-3">
-                                        <span class="d-block mb-1 text-navyblue item-card-title">Invoice No.</span>
+                                        <span class="d-block mb-1 text-navyblue item-card-title">{{"Invoice No" | localize}}.</span>
                                         <span class="d-block text-lightgrey">{{amortizationDto.inoviceNo}}</span>
                                     </div>
                                     <div class="item-card rounded mr-3 mb-3">
                                         <img src="../../../../assets/img/calendar-o.svg" alt="bill" class="my-3">
-                                        <span class="d-block mb-1 text-navyblue item-card-title">Journal Entry
-                                            No.</span>
+                                        <span class="d-block mb-1 text-navyblue item-card-title">{{"Journal Entry No" | localize}}.</span>
                                         <span class="d-block text-lightgrey">{{amortizationDto.journalEntryNo}}</span>
                                     </div>
                                 </div>
@@ -80,42 +78,42 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="attachment-box">
-                                    <label>Description</label>
+                                    <label>{{"Description" | localize}}</label>
                                     <p>{{amortizationDto.description}}</p>
                                 </div>
                                 <select class="form-control input-medium">
-                                    <option>Comments</option>
-                                    <option>History</option>
+                                    <option>{{"Comments" | localize}}</option>
+                                    <option>{{"History" | localize}}</option>
                                 </select>
 
                                 <div class="commentmainView show-comments">
                                     <div class="kt-widget3 ">
-                                        <div class="kt-widget3__item ">
+                                        <div *ngFor="let i of postedCommentList" class="kt-widget3__item ">
                                             <div class="comments-header kt-widget3__header">
                                                 <div class="kt-widget3__user-img">
                                                     <div class="kt-user-card-v2__pic">
                                                         <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                            I
-                                                        </div>
+                                                            {{i.userName | firstLetterOfWords}}</div>
                                                     </div>
                                                 </div>
                                                 <div class="kt-widget3__info">
                                                     <a class="kt-widget3__username">
-                                                        hammad
+                                                        {{i.userName}}
                                                     </a><br>
                                                 </div>
                                                 <span class="kt-widget3__status kt-font-info">
-                                                    2 days ago
+                                                    {{i.creationDateTime | momentFormat:'DD MMMM YYYY'}}
                                                 </span>
                                             </div>
                                             <div class="kt-widget3__body show-comments-inner">
-                                                Some Comments
+                                                <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group giveCommentView" *ngIf="commantBox">
-                                    <label>Comments</label>
+                                    <label>{{"Comments" | localize}}</label>
                                     <div (click)="commentClick()">
                                         <div class="kt-user-card-v2">
                                             <div class="kt-user-card-v2__pic">
@@ -131,24 +129,24 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input [(ngModel)]="comment.body" class="form-control">
+                                            <input [(ngModel)]="comment" class="form-control">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group " *ngIf="!commantBox">
-                                    <label>Comments</label>
-                                    <p-editor [(ngModel)]="comment.body" name="HtmlEditorInput"
+                                    <label>{{"Comments" | localize}}</label>
+                                    <p-editor [(ngModel)]="comment" name="HtmlEditorInput"
                                         [style]="{'height':'150px'}">
                                     </p-editor>
-                                    <button class="btn btn-brand" (click)="onComment()">Comment</button>
-                                    <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                                    <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                    <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="drag_drop_box">
-                                    <label>Attachments</label>
+                                    <label>{{"Attachments" | localize}}</label>
                                     <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
                                     </ng-uppy>
                                     <div *ngFor="let item of attachments" class="attachments_section">

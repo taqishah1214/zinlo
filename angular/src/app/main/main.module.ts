@@ -43,7 +43,9 @@ import { CreateEditAmortizedComponent } from './reconcilliation/amortized/create
 import { ItemizedComponent } from './reconcilliation/itemized/itemized.component'
 import { AmortizedComponent } from './reconcilliation/amortized/amortized.component';;
 import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-details/itemized-details.component';
-import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component';
+import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component';;
+import { UsersComponent } from './users/users.component';
+import {VirtualScrollerModule} from 'primeng/virtualscroller';
 
 
 
@@ -73,6 +75,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 IgxCalendarModule,
                 UppyAngularModule,
                 NgSelectModule,
+                VirtualScrollerModule
         ],
         declarations: [
                 CategoriesComponent,
@@ -97,7 +100,9 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 ItemizedComponent,
                 AmortizedComponent ,
                 ItemizedDetailsComponent ,
-                AmortizedDetailsComponent   
+                AmortizedDetailsComponent ,
+                UsersComponent ,
+                
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

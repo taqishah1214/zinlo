@@ -24,14 +24,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="InvoiceNo">Invoice No.</label>
+                                            <label for="InvoiceNo">{{"Invoice No" | localize}}.</label>
                                             <input type="text" name="inoviceNo" class="form-control"
                                                 [(ngModel)]="itemizedDto.inoviceNo" autocomplete="off" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="TaskName">Journal Entry No.</label>
+                                            <label for="TaskName">{{"Journal Entry No" | localize}}.</label>
                                             <input type="text" name="journalEntryNo" class="form-control"
                                                 [(ngModel)]="itemizedDto.journalEntryNo" autocomplete="off">
                                         </div>
@@ -41,7 +41,7 @@
                                     <div class="col-md-6">
 
                                         <div class="form-group category-selector">
-                                            <label for="Date">Date</label>
+                                            <label for="Date">{{"Date" | localize}}</label>
                                             <input [(ngModel)]="itemizedDto.date" required="required"
                                             class="form-control" name="date" bsDatepicker
                                             placeholder="Select Date" autocomplete="off" class="form-control" name="date"
@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="Amount">Amount</label>
+                                            <label for="Amount">{{"Amount" | localize}}</label>
                                             <input type="text" name="amount" class="form-control"
                                                 [(ngModel)]="itemizedDto.amount" autocomplete="off">
                                         </div>
@@ -62,7 +62,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="description">Description</label>
+                                            <label for="description">{{"Description" | localize}}</label>
                                             <textarea class="form-control" required [(ngModel)]="itemizedDto.description"
                                                 id="description" name="description" 
                                                 autocomplete="off" ></textarea>
@@ -72,7 +72,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="drag_drop_box">
-                                    <label class="bg-color">Attachments</label>
+                                    <label class="bg-color">{{"Attachments" | localize}}</label>
                                     <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
                                     <div *ngFor="let item of attachments" class="attachments_section">
                                         <a href="{{item.attachmentUrl}}" target="_blank" class="attachement_btn"

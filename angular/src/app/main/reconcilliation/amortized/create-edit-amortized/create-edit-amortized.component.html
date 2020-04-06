@@ -24,13 +24,13 @@
                                                         <div class="kt-portlet__body tab_button">
                                                             <ul class="nav nav-pills nav-fill" role="tablist">
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link active" data-toggle="tab" (click)="tabFilter('Manual')">Manual</a>
+                                                                    <a class="nav-link active" data-toggle="tab" (click)="tabFilter('Manual')">{{"Manual" | localize}}</a>
                                                                 </li>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" data-toggle="tab" (click)="tabFilter('Monthly')">Monthly</a>
+                                                                    <a class="nav-link" data-toggle="tab" (click)="tabFilter('Monthly')">{{"Monthly" | localize}}</a>
                                                                 </li>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" data-toggle="tab" (click)="tabFilter('Daily')">Daily</a>
+                                                                    <a class="nav-link" data-toggle="tab" (click)="tabFilter('Daily')">{{"Daily" | localize}}</a>
                                                                 </li>
                                                             </ul>                                    
                                                         </div>
@@ -39,14 +39,14 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label for="InvoiceNo">Invoice No.</label>
+                                                                <label for="InvoiceNo">{{"Invoice No" | localize}}.</label>
                                                                 <input type="text" name="inoviceNo" class="form-control"
                                                                     [(ngModel)]="amortizationDto.inoviceNo" autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label for="TaskName">Journal Entry No.</label>
+                                                                <label for="TaskName">{{"Journal Entry No" | localize}}.</label>
                                                                 <input type="text" name="accountNumber" class="form-control"
                                                                     [(ngModel)]="amortizationDto.journalEntryNo" autocomplete="off" >
                                                             </div>
@@ -55,7 +55,7 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group category-selector">
-                                                                <label for="Date">Start Date</label>
+                                                                <label for="Date">{{"Start Date" | localize}}</label>
                                                                 <input [(ngModel)]="amortizationDto.startDate" required="required"
                                                                 class="form-control " name="startDate" bsDatepicker
                                                                 placeholder="Select Date" class="form-control" autocomplete="off" name="date"
@@ -68,7 +68,7 @@
                                                            
 
                                                             <div class="form-group category-selector">
-                                                                <label for="Date">End Date</label>
+                                                                <label for="Date">{{"End Date" | localize}}</label>
                                                                 <input [(ngModel)]="amortizationDto.endDate"  required="required"
                                                                 class="form-control" name="endDate" bsDatepicker
                                                                 placeholder="Select Date" class="form-control" autocomplete="off" name="date"
@@ -79,12 +79,12 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <label for="TaskName">Amount</label>
+                                                            <label for="TaskName">{{"Amount" | localize}}</label>
                                                             <input type="text" name="amount" class="form-control"
                                                             [(ngModel)]="amortizationDto.amount" autocomplete="off">
                                                         </div>
                                                         <div *ngIf="accumulateAmount" class="col-md-6">
-                                                            <label for="TaskName">Accumulate Amount</label>
+                                                            <label for="TaskName">{{"Accumulate Amount" | localize}}</label>
                                                             <input type="text" name="accomulateAmount" class="form-control"
                                                             [(ngModel)]="amortizationDto.accomulateAmount" autocomplete="off">
                                                         </div>
@@ -92,7 +92,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12 pt-4">
                                                             <div class="form-group">
-                                                                <label for="description">Description</label>
+                                                                <label for="description">{{"Description" | localize}}</label>
                                                                 <textarea class="form-control" required [(ngModel)]="amortizationDto.description"
                                                                     id="description" name="description" 
                                                                     autocomplete="off" ></textarea>
@@ -102,7 +102,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="drag_drop_box">
-                                                        <label class="bg-color">Attachments</label>
+                                                        <label class="bg-color">{{"Attachments" | localize}}</label>
                                                         <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
                                                         <div *ngFor="let item of attachments" class="attachments_section">
                                                             <a href="{{item.attachmentUrl}}" target="_blank" class="attachement_btn"
@@ -117,6 +117,45 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group" *ngIf="commantBox">
+                                                        <label>{{"Comments" | localize}}</label>
+                                                        <div (click)="commentClick()">
+                                                            <div class="kt-user-card-v2">
+                                                                <div class="kt-user-card-v2__pic">
+                                                                    <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
+                                                                        <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                                            alt="Pic" [src]="UserProfilePicture">
+                                                                    </div>
+                    
+                                                                    <div *ngIf="!UserProfilePicture"
+                                                                        class="kt-badge kt-badge--xl kt-badge--primary">
+                                                                        {{userName | firstLetterOfWords}}
+                                                                    </div>
+                                                                </div>
+                                                                <div innerHTML="{{amortizationDto.commentBody}}"
+                                                                    class="form-control create-comments"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                
+                                                    <div class="form-group" *ngIf="commantModal">
+                                                        <label>{{"Comments" | localize}}</label>
+                                                        <p-editor [(ngModel)]="amortizationDto.commentBody"
+                                                            (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
+                                                            [style]="{'height':'150px'}">
+                                                        </p-editor>
+                                                        <div class="btnMargin" >
+                                                        <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                                        <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
+                                                    </div>
+                                                    </div>
+                
+                                                </div>
+                                            </div>
+
                                             <div class="kt-portlet__head">
                                             </div>
                                             <div class="form-group margin-top-5">

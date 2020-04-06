@@ -1268,68 +1268,6 @@ export class AmortizationServiceProxy {
     }
 
     /**
-     * @param comment (optional) 
-     * @param typeId (optional) 
-     * @param body (optional) 
-     * @return Success
-     */
-    postComment(comment: string | undefined, typeId: number | undefined, body: CommentTypeDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Amortization/PostComment?";
-        if (comment === null)
-            throw new Error("The parameter 'comment' cannot be null.");
-        else if (comment !== undefined)
-            url_ += "comment=" + encodeURIComponent("" + comment) + "&"; 
-        if (typeId === null)
-            throw new Error("The parameter 'typeId' cannot be null.");
-        else if (typeId !== undefined)
-            url_ += "TypeId=" + encodeURIComponent("" + typeId) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processPostComment(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processPostComment(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processPostComment(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
-
-    /**
      * @param id (optional) 
      * @return Success
      */
@@ -1386,35 +1324,40 @@ export class AmortizationServiceProxy {
     }
 
     /**
-     * @param commentBody (optional) 
-     * @param chartofAccountId (optional) 
+     * @param comment (optional) 
+     * @param typeId (optional) 
+     * @param body (optional) 
      * @return Success
      */
-    postCommentOnList(commentBody: string | undefined, chartofAccountId: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Amortization/PostCommentOnList?";
-        if (commentBody === null)
-            throw new Error("The parameter 'commentBody' cannot be null.");
-        else if (commentBody !== undefined)
-            url_ += "CommentBody=" + encodeURIComponent("" + commentBody) + "&"; 
-        if (chartofAccountId === null)
-            throw new Error("The parameter 'chartofAccountId' cannot be null.");
-        else if (chartofAccountId !== undefined)
-            url_ += "ChartofAccountId=" + encodeURIComponent("" + chartofAccountId) + "&"; 
+    postComment(comment: string | undefined, typeId: number | undefined, body: CommentTypeDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Amortization/PostComment?";
+        if (comment === null)
+            throw new Error("The parameter 'comment' cannot be null.");
+        else if (comment !== undefined)
+            url_ += "comment=" + encodeURIComponent("" + comment) + "&"; 
+        if (typeId === null)
+            throw new Error("The parameter 'typeId' cannot be null.");
+        else if (typeId !== undefined)
+            url_ += "TypeId=" + encodeURIComponent("" + typeId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processPostCommentOnList(response_);
+            return this.processPostComment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processPostCommentOnList(<any>response_);
+                    return this.processPostComment(<any>response_);
                 } catch (e) {
                     return <Observable<void>><any>_observableThrow(e);
                 }
@@ -1423,7 +1366,7 @@ export class AmortizationServiceProxy {
         }));
     }
 
-    protected processPostCommentOnList(response: HttpResponseBase): Observable<void> {
+    protected processPostComment(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -2273,6 +2216,71 @@ export class AuditLogServiceProxy {
             }));
         }
         return _observableOf<EntityPropertyChangeDto[]>(<any>null);
+    }
+
+    /**
+     * @param entityId (optional) 
+     * @param entityFullName (optional) 
+     * @return Success
+     */
+    getEntityHistory(entityId: string | undefined, entityFullName: string | undefined): Observable<EntityPropertyHistory[]> {
+        let url_ = this.baseUrl + "/api/services/app/AuditLog/GetEntityHistory?";
+        if (entityId === null)
+            throw new Error("The parameter 'entityId' cannot be null.");
+        else if (entityId !== undefined)
+            url_ += "entityId=" + encodeURIComponent("" + entityId) + "&"; 
+        if (entityFullName === null)
+            throw new Error("The parameter 'entityFullName' cannot be null.");
+        else if (entityFullName !== undefined)
+            url_ += "entityFullName=" + encodeURIComponent("" + entityFullName) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEntityHistory(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEntityHistory(<any>response_);
+                } catch (e) {
+                    return <Observable<EntityPropertyHistory[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EntityPropertyHistory[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEntityHistory(response: HttpResponseBase): Observable<EntityPropertyHistory[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(EntityPropertyHistory.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EntityPropertyHistory[]>(<any>null);
     }
 }
 
@@ -17728,6 +17736,58 @@ export interface IEntityPropertyChangeDto {
     id: number;
 }
 
+export class EntityPropertyHistory implements IEntityPropertyHistory {
+    userId!: number;
+    newValue!: string | undefined;
+    originalValue!: string | undefined;
+    propertyName!: string | undefined;
+    id!: number;
+
+    constructor(data?: IEntityPropertyHistory) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.userId = data["userId"];
+            this.newValue = data["newValue"];
+            this.originalValue = data["originalValue"];
+            this.propertyName = data["propertyName"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): EntityPropertyHistory {
+        data = typeof data === 'object' ? data : {};
+        let result = new EntityPropertyHistory();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["newValue"] = this.newValue;
+        data["originalValue"] = this.originalValue;
+        data["propertyName"] = this.propertyName;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IEntityPropertyHistory {
+    userId: number;
+    newValue: string | undefined;
+    originalValue: string | undefined;
+    propertyName: string | undefined;
+    id: number;
+}
+
 export class CacheDto implements ICacheDto {
     name!: string | undefined;
 
@@ -18963,8 +19023,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
     comments!: CommentDto[] | undefined;
     attachmentsPath!: string[] | undefined;
     groupId!: string | undefined;
-    creationTime!: moment.Moment;
-    creatorUserId!: number | undefined;
     id!: number;
 
     constructor(data?: ICreateOrEditClosingChecklistDto) {
@@ -19003,8 +19061,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
                     this.attachmentsPath!.push(item);
             }
             this.groupId = data["groupId"];
-            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
-            this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
         }
     }
@@ -19043,8 +19099,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
                 data["attachmentsPath"].push(item);
         }
         data["groupId"] = this.groupId;
-        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
-        data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
         return data; 
     }
@@ -19068,8 +19122,6 @@ export interface ICreateOrEditClosingChecklistDto {
     comments: CommentDto[] | undefined;
     attachmentsPath: string[] | undefined;
     groupId: string | undefined;
-    creationTime: moment.Moment;
-    creatorUserId: number | undefined;
     id: number;
 }
 
@@ -19233,8 +19285,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     commentBody!: string | undefined;
     attachmentsPath!: string[] | undefined;
     groupId!: string | undefined;
-    creationTime!: moment.Moment;
-    creatorUserId!: number | undefined;
     id!: number;
 
     constructor(data?: IDetailsClosingCheckListDto) {
@@ -19283,8 +19333,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
                     this.attachmentsPath!.push(item);
             }
             this.groupId = data["groupId"];
-            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
-            this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
         }
     }
@@ -19333,8 +19381,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
                 data["attachmentsPath"].push(item);
         }
         data["groupId"] = this.groupId;
-        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
-        data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
         return data; 
     }
@@ -19364,8 +19410,6 @@ export interface IDetailsClosingCheckListDto {
     commentBody: string | undefined;
     attachmentsPath: string[] | undefined;
     groupId: string | undefined;
-    creationTime: moment.Moment;
-    creatorUserId: number | undefined;
     id: number;
 }
 
@@ -22372,6 +22416,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
     filePath!: string | undefined;
     creationTime!: moment.Moment;
     isRollBacked!: boolean;
+    successFilePath!: string | undefined;
 
     constructor(data?: IImportLogForViewDto) {
         if (data) {
@@ -22391,6 +22436,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
             this.filePath = data["filePath"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.isRollBacked = data["isRollBacked"];
+            this.successFilePath = data["successFilePath"];
         }
     }
 
@@ -22410,6 +22456,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
         data["filePath"] = this.filePath;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["isRollBacked"] = this.isRollBacked;
+        data["successFilePath"] = this.successFilePath;
         return data; 
     }
 }
@@ -22422,6 +22469,7 @@ export interface IImportLogForViewDto {
     filePath: string | undefined;
     creationTime: moment.Moment;
     isRollBacked: boolean;
+    successFilePath: string | undefined;
 }
 
 export class PagedResultDtoOfImportLogForViewDto implements IPagedResultDtoOfImportLogForViewDto {
@@ -22480,6 +22528,7 @@ export class ImportPathDto implements IImportPathDto {
     successRecordsCount!: number;
     tenantId!: number;
     creatorId!: number;
+    successFilePath!: string | undefined;
 
     constructor(data?: IImportPathDto) {
         if (data) {
@@ -22499,6 +22548,7 @@ export class ImportPathDto implements IImportPathDto {
             this.successRecordsCount = data["successRecordsCount"];
             this.tenantId = data["tenantId"];
             this.creatorId = data["creatorId"];
+            this.successFilePath = data["successFilePath"];
         }
     }
 
@@ -22518,6 +22568,7 @@ export class ImportPathDto implements IImportPathDto {
         data["successRecordsCount"] = this.successRecordsCount;
         data["tenantId"] = this.tenantId;
         data["creatorId"] = this.creatorId;
+        data["successFilePath"] = this.successFilePath;
         return data; 
     }
 }
@@ -22530,6 +22581,7 @@ export interface IImportPathDto {
     successRecordsCount: number;
     tenantId: number;
     creatorId: number;
+    successFilePath: string | undefined;
 }
 
 export class InstallDto implements IInstallDto {

@@ -39,7 +39,8 @@ namespace Zinlo.ImportLog
                                    CreationTime = o.CreationTime,
                                    Records = o.SuccessRecordsCount + "/" + (o.FailedRecordsCount + o.SuccessRecordsCount),
                                    CreatedBy = o.User.EmailAddress,
-                                   IsRollBacked = o.IsRollBacked
+                                   IsRollBacked = o.IsRollBacked,
+                                   SuccessFilePath = o.SuccessFilePath != ""? o.SuccessFilePath: ""
                                };
 
             return new PagedResultDto<ImportLogForViewDto>(

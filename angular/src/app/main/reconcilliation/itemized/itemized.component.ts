@@ -185,7 +185,7 @@ BackToReconcileList() {
   }
   onCancelComment(): void {
     this.commantBox = true;
-    this.comment = false;
+    this.comment = "";
   }
 
 }
