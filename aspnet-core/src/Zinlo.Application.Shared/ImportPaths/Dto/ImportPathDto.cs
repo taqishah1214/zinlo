@@ -13,5 +13,6 @@ namespace Zinlo.ImportPaths.Dto
         public int SuccessRecordsCount { get; set; }
         public int TenantId { get; set; }
         public long CreatorId { get; set; }
+        public string SuccessFilePath { get; set; }
     }
 }
