@@ -1018,12 +1018,6 @@ table.table.record-table td, table.table.record-table th {
     border-radius: 5px;
     padding: 10px;
 }
-.modal-bottom-row-col p {
-    font-size: 8px;
-}
-.modal-bottom-row-col1 p {
-    font-size: 8px;
-}
 .uppy-modal .modal-footer,
 .download-modal .modal-footer  {
     justify-content: center;

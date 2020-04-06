@@ -1085,6 +1085,7 @@
     <text name="Edit Account">Edit Account</text>
     <text name="Account Name">Account Name</text>
     <text name="Account No">Account No</text>
+    <text name="Account Number">Account Number</text>
     <text name="Account Number is already exist.">Account Number is already exist.</text>
     <text name="Account Type">Account Type</text>
     <text name="Account Sub-Type">Account Sub-Type</text>
@@ -1102,7 +1103,9 @@
     <text name="Account Sub type">Account Sub Type</text>
     <text name="Save changes">Save changes</text>
     <text name="Create Account Sub Type">Create Account Sub Type</text>
+    <text name="Upload Sample File">Upload Sample File</text>
+    <text name="Charts Of Account Format">Charts Of Account Format</text>
+    <text name="Trial Balance Format">Trial Balance Format</text>
     <text name="Type">Type</text>
-
   </texts>
 </localizationDictionary>
