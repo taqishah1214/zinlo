@@ -61,6 +61,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   ngOnInit() {
     this.getProfilePicture(); 
     this.initializePageParameters();
+    this.loadDaysDropdown();
   }
 
   getProfilePicture() {
@@ -86,6 +87,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.dayBeforeAfter = 1;
     this.checklist.endOfMonth = false;
     this.checklist.assigneeId = 0;
+    this.checklist.dueOn =1;
     debugger
     if(history.state.data.createOrDuplicate != undefined){
       this.createOrDuplicate = history.state.data.createOrDuplicate;
@@ -101,9 +103,10 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   }
   handleRadioChange() {
     this.dayBeforeAfter = 1;
-    this.checklist.dueOn= this.days[0];
+    this.checklist.dueOn= 1;
     this.checklist.endOfMonth=true;
     this.isChecked = false;
+    this.SelectionMsg = "\xa0"
   }
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
@@ -220,18 +223,26 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.isChecked = true;
   }
  
-  onDaysClick(valu) {
-    this.checklist.endOfMonth = false;
-    this.isChecked = true;
-    if (valu == "true") {
+  onDaysClick(value) {
+    if (value == 2) {
       this.SelectionMsg = "Days Before";
-      
+      this.checklist.endOfMonth = false;
     }
-    else if (valu == "false") {
+    else if (value == 3) {
       this.SelectionMsg = "Days After";
+      this.checklist.endOfMonth = false;
     }  
+    else if (value == 1) {
+      this.SelectionMsg = "\xa0"
+    }
   }
-  
+  loadDaysDropdown(): void {
+    var month = moment(new Date(add(this.checklist.closingMonth, 2, "day")));
+    this._closingChecklistService.getCurrentMonthDays(month).subscribe(result => {
+      this.days = result;
+      this.checklist.dueOn =this.days[0];
+    });
+  }
   loadDaysByMonth(event):void{
     var month = moment(new Date(add(this.checklist.closingMonth, 2, "day")));
     this._closingChecklistService.getCurrentMonthDays(month).subscribe(result => {

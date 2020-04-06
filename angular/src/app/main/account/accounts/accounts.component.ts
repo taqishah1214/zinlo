@@ -49,7 +49,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   remainingUserForHeader: any = [];
   accountSubTypes: any = [];
   accountType: any;
-  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" },{ id: 0, name: "Clear" }];
+  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
   updateAssigneeOnHeader: boolean = true;
   getAccountWithAssigneeId: number = 0;

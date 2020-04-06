@@ -214,7 +214,19 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.getTaskForEdit.endOfMonth = false;
     this.isChecked = true;
   }
-
+  onDaysClick(value){
+    if(value==2){
+    this.getTaskForEdit.endOfMonth = false;
+    this.daysBeforeAfter="DaysBefore"
+    }
+    else if(value==3){
+      this.getTaskForEdit.endOfMonth = false;
+      this.daysBeforeAfter="DaysAfter"
+    }
+    else if(value==1){
+      this.daysBeforeAfter="\xa0"
+    }
+  }
   loadDaysDropdown(): void {
     this._closingChecklistService.getCurrentMonthDays(this.getTaskForEdit.closingMonth).subscribe(result => {
       this.days = result;
