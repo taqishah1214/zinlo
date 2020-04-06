@@ -3,11 +3,11 @@
         <button type="button"  data-toggle="dropdown" class="btn btn-secondary dropdown-toggle"
             aria-expanded="false">{{categoryName}}</button>
         <div class="dropdown-menu" name="categoryName" [(ngModel)]="categoryName" ngDefaultControl>
-            <a class="dropdown-item" *ngFor="let item of categoriesList"
+            <a href="javascript:void(0)" class="dropdown-item" *ngFor="let item of categoriesList"
                 (click)="categoryClick(item.value,item.name)">
-                {{item.name}}</a>
+                <span>{{item.name}}</span></a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" (click)="routeToAddNewCategory()"><i class="fa fa-plus"></i>
+            <a href="javascript:void(0)" class="dropdown-item" (click)="routeToAddNewCategory()"><i class="fa fa-plus"></i>
                 {{"AddNew" | localize}}</a>
         </div>
     </div>

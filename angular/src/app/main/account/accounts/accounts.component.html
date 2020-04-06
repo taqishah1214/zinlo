@@ -79,20 +79,20 @@
                                             <div class="form-group py-0 my-0">
                                                 <div class="kt-radio py-0 my-0">
                                                     <label class="kt-radio kt-radio--tick kt-radio--success mx-4">
-                                                        <input type="radio" name="radio" checked value="Upload Trial Balance" (change)="onBreadChange($event.target.value)"> Upload Trial Balance
+                                                        <input type="radio" name="radio" checked value="Upload Trial Balance" (change)="onBreadChange($event.target.value)"> {{"Upload Trial Balance" | localize}}
                                                         <span></span>
                                                     </label>
                                                     <label class="kt-radio kt-radio--tick kt-radio--success">
-                                                        <input type="radio" name="radio" value="Upload Chart of Accounts" (change)="onBreadChange($event.target.value)"> Upload Chart of Accounts
+                                                        <input type="radio" name="radio" value="Upload Chart of Accounts" (change)="onBreadChange($event.target.value)"> {{"Upload Chart of Accounts" | localize}}
                                                         <span></span>
                                                     </label>
                                                 </div>
                                             </div>
                                             <div class="drag_drop_box uppy-modal-box1">
 
-                                                <p *ngIf="balance">Upload Trial Balance</p>
+                                                <p *ngIf="balance">{{"Upload Trial Balance" | localize}}</p>
                                                 
-                                                <p *ngIf="account">Upload Chart of Accounts</p>
+                                                <p *ngIf="account">{{"Upload Chart of Accounts" | localize}}</p>
                                                 <ng-uppy *ngIf="account||balance"[config]="settings" 
                                                     (uploadResult)="fileUploadOption($event)">
                                                 </ng-uppy>
@@ -101,7 +101,7 @@
                                                 
                                                 <div class="row modal-bottom-record">
                                                    <div class="col-md-12">
-                                                       <p>{{"Charts Of Account Format" | localize}} <a href="../../../../assets/ChartOfAccountsList.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;" download="ChartOfAccountsList.xlsx"><u>{{"Upload Sample File" | localize}}</u></a></p>
+                                                       <p>{{"Charts Of Account Format" | localize}} <a href="../../../../assets/ChartOfAccountsList.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;" download="ChartOfAccountsList.xlsx"><u>{{"Download Sample File" | localize}}</u></a></p>
                                                        <div class="inner-col-record border border-default">
    
                                                            <div class="row">
@@ -134,7 +134,7 @@
                                         <div *ngIf="balance">
                                             <div class="row modal-bottom-record">
                                                 <div class="col-md-12">
-                                                    <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="../../../../assets/TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>Upload Sample File</u></a></p>
+                                                    <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a></p>
                                                     <div class="inner-col-record border border-default">
 
                                                         <div class="row">
