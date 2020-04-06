@@ -65,6 +65,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { TextMaskModule } from 'angular2-text-mask';
 import { ImageCropperModule } from 'ngx-image-cropper';
 
+
 // Metronic
 import { PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -133,6 +134,7 @@ import { ScrollTopComponent } from './shared/layout/scroll-top.component';
         SessionTimeoutModalComponent,
         SessionTimeoutComponent,
         MenuSearchBarComponent,
+        
     ],
     imports: [
         ngCommon.CommonModule,
@@ -161,7 +163,8 @@ import { ScrollTopComponent } from './shared/layout/scroll-top.component';
         TextMaskModule,
         ImageCropperModule,
         AutoCompleteModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        
        
     ],
     providers: [

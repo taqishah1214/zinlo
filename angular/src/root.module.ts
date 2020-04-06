@@ -34,6 +34,7 @@ import { CookieConsentService } from '@shared/common/session/cookie-consent.serv
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
 import { LocaleMappingService } from '@shared/locale-mapping.service';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 export function appInitializerFactory(
     injector: Injector,
@@ -238,7 +239,8 @@ function handleLogoutRequest(authService: AppAuthService) {
         ServiceProxyModule,
         HttpClientModule,
         RootRoutingModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        InfiniteScrollModule
     ],
     declarations: [
         RootComponent

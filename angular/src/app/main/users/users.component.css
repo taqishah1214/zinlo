@@ -43,3 +43,8 @@
 .primeng-paging-container .total-records-count{
     float: right;
 }
+  .search-results {
+    height: 100px;
+    overflow: scroll;
+    flex: none;
+  }
