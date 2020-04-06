@@ -1075,7 +1075,8 @@
     <text name="NotStarted">Not Started</text>
     <text name="InProcess">In Process</text>
     <text name="OnHold">On Hold</text>
-    <text name="Completed">Completed</text>AllStatuses
+    <text name="Completed">Completed</text>
+    <text name="Open">Open</text>
     <text name="AllStatuses">All Statuses</text>
     <text name="DueBy">Due By</text>
     
@@ -1085,6 +1086,7 @@
     <text name="Edit Account">Edit Account</text>
     <text name="Account Name">Account Name</text>
     <text name="Account No">Account No</text>
+    <text name="Account Number">Account Number</text>
     <text name="Account Number is already exist.">Account Number is already exist.</text>
     <text name="Account Type">Account Type</text>
     <text name="Account Sub-Type">Account Sub-Type</text>
@@ -1102,7 +1104,10 @@
     <text name="Account Sub type">Account Sub Type</text>
     <text name="Save changes">Save changes</text>
     <text name="Create Account Sub Type">Create Account Sub Type</text>
+    <text name="Upload Sample File">Upload Sample File</text>
     <text name="Type">Type</text>
-
+    <text name="Assigned User">Assigned User</text>
+    <text name="Reconciliation type">Reconciliation type</text>
+    <text name="Reconciliation as">Reconciliation as</text>
   </texts>
 </localizationDictionary>
