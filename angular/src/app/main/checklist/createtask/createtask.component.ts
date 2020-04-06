@@ -102,7 +102,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.active = true;
   }
   handleRadioChange() {
-    this.dayBeforeAfter = 1;
+    this.daysBeforeAfter = 1;
     this.checklist.dueOn= 1;
     this.checklist.endOfMonth=true;
     this.isChecked = false;
@@ -136,7 +136,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     else {
       this.checklist.dayBeforeAfter = this.daysBeforeAfter;
       this.checklist.endOfMonth = false;
-      if(this.checklist.dueOn == null)this.checklist.dueOn = 1;
+      this.checklist.dueOn = 1;
     }
 
     this.checklist.dueOn = Number(this.checklist.dueOn);
@@ -227,27 +227,29 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     if (value == 2) {
       this.SelectionMsg = "Days Before";
       this.checklist.endOfMonth = false;
+      this.isChecked = true;
     }
     else if (value == 3) {
       this.SelectionMsg = "Days After";
       this.checklist.endOfMonth = false;
+      this.isChecked = true;
     }  
     else if (value == 1) {
       this.SelectionMsg = "\xa0"
+      this.isChecked = true;
     }
   }
   loadDaysDropdown(): void {
     var month = moment(new Date(add(this.checklist.closingMonth, 2, "day")));
     this._closingChecklistService.getCurrentMonthDays(month).subscribe(result => {
       this.days = result;
-      this.checklist.dueOn =this.days[0];
     });
   }
   loadDaysByMonth(event):void{
     var month = moment(new Date(add(this.checklist.closingMonth, 2, "day")));
     this._closingChecklistService.getCurrentMonthDays(month).subscribe(result => {
       this.days = result;
-      this.checklist.dueOn =this.days[0];
+      this.checklist.dueOn =1
     });
   }
    getNoOfmonths(date1, date2) {
