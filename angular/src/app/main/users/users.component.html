@@ -41,19 +41,18 @@
             </div>
         </div>
     </div>
-</div>
 
 
 
-
-
-
-
-
-
-<!-- <div  class="row" >
-    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-        <div class="col-xl-3">
+<!-- <div class="kt-container  kt-grid__item kt-grid__item--fluid">
+    <div class="row">
+ 
+<p-virtualScroller [value]="lazyCars"  [itemSize]="150" [rows]="100" [cache]="false" 
+        [lazy]="true" (onLazyLoad)="loadCarsLazy($event)" [totalRecords]="totalLazyCarsLength">
+    <ng-template let-car pTemplate="item" let-i="index">
+       
+    
+              <div class="col-xl-3">
             <div class="kt-portlet kt-portlet--height-fluid">
                 <div class="kt-portlet__head kt-portlet__head--noborder">
                     <div class="kt-portlet__head-label">
@@ -108,15 +107,15 @@
                             <div class="kt-widget__item">
                                 <div class="kt-widget__contact">
                                     <span class="kt-widget__label">User Name:</span>
-                                    <span class="kt-widget__data">{{record.userName}}</span>
+                                    <span class="kt-widget__data">{{car?.year}}</span>
                                 </div>
                                 <div class="kt-widget__contact">
                                     <span class="kt-widget__label">Email:</span>
-                                    <a href="#" class="kt-widget__data">{{record.userName}}</a>
+                                    <a href="#" class="kt-widget__data">{{car?.year}}</a>
                                 </div>
                                 <div class="kt-widget__contact">
                                     <span class="kt-widget__label">Creation Date:</span>
-                                    <a href="#" class="kt-widget__data">{{record.userName}}</a>
+                                    <a href="#" class="kt-widget__data">{{car?.year}}</a>
                                 </div>
                                 <div class="kt-widget__contact">
                                     <span class="kt-widget__label">Status:</span>
@@ -137,13 +136,52 @@
                 </div>
             </div>
         </div>
-    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </ng-template>
+    <ng-template let-car pTemplate="loadingItem">
+        <div class="ui-g car-item empty-car-item">
+            <div class="ui-g-12 ui-md-2">
+                <div class="empty-car-item-index"></div>
+            </div>
+            <div class="ui-g-12 ui-md-2">
+                <div class="empty-car-item-image"></div>
+            </div>
+            <div class="ui-g-12 ui-md-8">
+                <div class="ui-g">
+                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
+                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
+                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
+                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-virtualScroller>
+
+
+
+
+    
+  
+
+
+        
+
 </div>
-
-
- -->
-
-
+</div>
+</div> -->
 
 
 
@@ -153,25 +191,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-       
-
-
-
-
-
-
-
-
+   
 
 
