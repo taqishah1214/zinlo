@@ -1043,6 +1043,8 @@
     <text name="Endson">Ends on</text>
     <text name="Endofmonth">End of month</text>
     <text name="Attachments">Attachments</text>
+    <text name="No Attachments">No Attachments</text>
+
 
     <!--Category-->
     <text name="EditCategory">Edit category</text>
@@ -1075,7 +1077,8 @@
     <text name="NotStarted">Not Started</text>
     <text name="InProcess">In Process</text>
     <text name="OnHold">On Hold</text>
-    <text name="Completed">Completed</text>AllStatuses
+    <text name="Completed">Completed</text>
+    <text name="Open">Open</text>
     <text name="AllStatuses">All Statuses</text>
     <text name="DueBy">Due By</text>
     
@@ -1085,6 +1088,7 @@
     <text name="Edit Account">Edit Account</text>
     <text name="Account Name">Account Name</text>
     <text name="Account No">Account No</text>
+    <text name="Account Number">Account Number</text>
     <text name="Account Number is already exist.">Account Number is already exist.</text>
     <text name="Account Type">Account Type</text>
     <text name="Account Sub-Type">Account Sub-Type</text>
@@ -1102,7 +1106,25 @@
     <text name="Account Sub type">Account Sub Type</text>
     <text name="Save changes">Save changes</text>
     <text name="Create Account Sub Type">Create Account Sub Type</text>
+    <text name="Upload Sample File">Upload Sample File</text>
     <text name="Type">Type</text>
-
+    <text name="Assigned User">Assigned User</text>
+    
+    
+    
+    <text name="Reconciliation type">Reconciliation type</text>
+    <text name="Reconciliation as">Reconciliation as</text>
+    <text name="Trial Balance">Trial Balance</text>
+    <text name="Variance">Variance</text>
+    <text name="Check as Reconciled">Check as Reconciled</text>
+    <text name="Itemized Details">Itemized Details</text>
+    <text name="Journal Entry No">Journal Entry No</text>
+    <text name="Start Date">Start Date</text>
+    <text name="End Date">End Date</text>
+    <text name="Beginning Amount">Beginning Amount</text>
+    <text name="Accrued Amortization">Accrued Amortization</text>
+    <text name="Net Amount">Net Amount</text>
+    <text name="Manual">Manual</text>
+    <text name="Accumulate Amount">Accumulate Amount</text>
   </texts>
 </localizationDictionary>

@@ -11,6 +11,9 @@
 .comment-wrapper > p{
     padding-left: 60px;
 }
+.btn-pointer:hover{
+    cursor: pointer;
+}
 .custom-text-area{
     height: 500px;
     border-radius: 4px;

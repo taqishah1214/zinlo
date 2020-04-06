@@ -20,9 +20,9 @@
                                         <span>{{"Itemized List" | localize}}</span>
                                     </h3>
                                     <h6 class="ml-3 mb-0">
-                                        Account No
+                                        {{"Account No" | localize}}
                                         <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountNo}}</span>
-                                        Account Name
+                                        {{"Account Name" | localize}}
                                         <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountName}}</span>
                                     </h6>
 
@@ -31,7 +31,7 @@
                                     <div class="kt-subheader__wrapper">
                                         <a class="mr-3" href="javascript: void(0);" (click)="BackToReconcileList()">
                                             <i class="la la-arrow-left"></i>
-                                            Back
+                                            {{"Back" | localize}}
                                         </a>
 
                                         <button class="btn btn-brand" (click)="RedirectToAddNew()"><i
@@ -70,18 +70,18 @@
                                 <ng-template pTemplate="header">
                                     <tr  class="task-table-inner">
                                         <th class="accountNo-cell" scope="col" pSortableColumn="AccountNumber">
-                                            Date
+                                            {{"Date" | localize}}
                                             <p-sortIcon field="AccountNumber"></p-sortIcon>
                                         </th>
                                         <th class="accountName-cell" scope="col" pSortableColumn="AccountType">
-                                            Description
+                                            {{"Description" | localize}}
                                             <p-sortIcon field="AccountType"></p-sortIcon>
                                         </th>
                                         <th class="reconciliation-cell" scope="col">
-                                            Amount
+                                            {{"Amount" | localize}}
                                         </th>
                                         <th class="accountSubtype-cell" scope="col">
-                                            Attachments
+                                            {{"Attachments" | localize}}
                                         </th>
                                         
 
@@ -138,7 +138,7 @@
                                                 <div  class="drag_drop_box">
                                                      <div  class="attachments_section_none">
                                                         <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
-                                                            <span>No Attachments</span>
+                                                            <span>{{"No Attachments" | localize}}</span>
                                                         </a>
                                                     </div>    
                                                 </div>
@@ -159,7 +159,7 @@
                                     <td>
                                         <ul>
                                             <li >
-                                                <div class="thead-box"><b> Attachments : </b></div>
+                                                <div class="thead-box"><b> {{"Attachments" | localize}} : </b></div>
                                                 <div class="tdata-box d-flex">
                                                     <div class="d-flex">
                                                         <div *ngIf="item.attachments?.length > 0" class="drag_drop_box">
@@ -191,7 +191,7 @@
                                                         <div  class="drag_drop_box">
                                                              <div  class="attachments_section_none">
                                                                 <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
-                                                                    <span>No Attachments</span>
+                                                                    <span>{{"No Attachments" | localize}}</span>
                                                                 </a>
                                                             </div>    
                                                         </div>
@@ -224,8 +224,8 @@
                         <div class="col-md-6">
                             <div>
                                 <select class="input-medium">
-                                    <option>Comments</option>
-                                    <option>History</option>
+                                    <option>{{"Comments" | localize}}</option>
+                                    <option>{{"History" | localize}}</option>
                                 </select>
                             </div>
 
@@ -257,7 +257,7 @@
                             </div>
 
                             <div class="form-group giveCommentView" *ngIf="commantBox">
-                                <label>Comments</label>
+                                <label>{{"Comments" | localize}}</label>
                                 <div (click)="commentClick()">
                                     <div class="kt-user-card-v2">
                                         <div class="kt-user-card-v2__pic">
@@ -280,32 +280,32 @@
                             </div>
 
                             <div class="form-group " *ngIf="!commantBox">
-                                <label>Comments</label>
+                                <label>{{"Comments" | localize}}</label>
                                 <p-editor [(ngModel)]="comment"
                                             (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
                                 </p-editor>
-                                <button class="btn btn-brand" (click)="onComment()">Comment</button>
-                                <button class="btn btn-brand" (click)="onCancelComment()">Cancel</button>
+                                <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
                             </div>
                         </div>
                        <div class="col-md-6">
                             <div class="report-container">
                                 <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">Total:</div>
+                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Total" | localize}}:</div>
                                     <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{TotalAmount | formater }}</div>
                                 </div>
                                 <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">Trial Balance:</div>
+                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Trial Balance" | localize}}:</div>
                                     <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{trialBalance | formater}}</div>
                                 </div>
                                 <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">Variance:</div>
+                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Variance" | localize}}:</div>
                                     <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{variance | formater}}</div>
                                 </div>
                             </div>
                             <div class="Check-reconcile-btn ">
-                                <button class="btn btn-brand" >Check as Reconciled</button>
+                                <button class="btn btn-brand" >{{"Check as Reconciled" | localize}}</button>
                             </div>
                         </div>
                     </div>

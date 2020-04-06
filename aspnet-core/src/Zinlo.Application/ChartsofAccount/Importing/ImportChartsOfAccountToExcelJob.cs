@@ -114,6 +114,18 @@ namespace Zinlo.ChartsofAccount
         {
             var invalidAccounts = new List<ChartsOfAccountsExcellImportDto>();
             var validRecords = new List<ChartsOfAccountsExcellImportDto>();
+            var fileUrl = _invalidAccountsExporter.ExportToFile(accounts);
+            #region|Log intial info|
+            ImportPathDto pathDto = new ImportPathDto();
+            pathDto.FilePath = "";
+            pathDto.SuccessFilePath = fileUrl;
+            pathDto.Type = FileTypes.ChartOfAccounts.ToString();
+            pathDto.TenantId = (int)TenantId;
+            pathDto.CreatorId = UserId;
+            pathDto.FailedRecordsCount = 0;
+            pathDto.SuccessRecordsCount = 0;
+            loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
+            #endregion
 
             foreach (var account in accounts)
             {
@@ -158,14 +170,15 @@ namespace Zinlo.ChartsofAccount
             SuccessRecordsCount = validRecords.Count;
 
             #region|Log intial info|
-            ImportPathDto pathDto = new ImportPathDto();
-            pathDto.FilePath = "";
-            pathDto.Type = FileTypes.ChartOfAccounts.ToString();
-            pathDto.TenantId = (int)TenantId;
-            pathDto.CreatorId = UserId;
-            pathDto.FailedRecordsCount = 0;
-            pathDto.SuccessRecordsCount = 0;
-          loggedFileId =  _importPathsAppService.SaveFilePath(pathDto);
+            ImportPathDto pathDtoUpdate = new ImportPathDto();
+            pathDtoUpdate.Id = loggedFileId;
+            pathDtoUpdate.FilePath = "";
+            pathDtoUpdate.Type = FileTypes.ChartOfAccounts.ToString();
+            pathDtoUpdate.TenantId = (int)TenantId;
+            pathDtoUpdate.CreatorId = UserId;
+            pathDtoUpdate.FailedRecordsCount = 0;
+            pathDtoUpdate.SuccessRecordsCount = 0;
+          _importPathsAppService.UpdateFilePath(pathDtoUpdate);
             #endregion
 
             foreach (var item in validRecords)
@@ -289,8 +302,8 @@ namespace Zinlo.ChartsofAccount
             }
         }
         public int GetAccountTypeValue(string name)
-        {
-            if (name.Trim().ToLower() == "fixed")
+        {     
+            if (name.Trim().ToLower() == "equity")
             {
                 return 1;
             }
@@ -298,10 +311,11 @@ namespace Zinlo.ChartsofAccount
             {
                 return 2;
             }
-            else
+            else if (name.Trim().ToLower() == "liability")
             {
                 return 3;
             }
+            return 0;
         }
 
         public int GetReconcilationTypeValue(string name)
@@ -326,7 +340,7 @@ namespace Zinlo.ChartsofAccount
             {
                 return 2;
             }
-            else if (name.Trim().ToLower() == "accruedAmount")
+            else if (name.Trim().ToLower() == "accruedamount")
             {
                 return 3;
             }

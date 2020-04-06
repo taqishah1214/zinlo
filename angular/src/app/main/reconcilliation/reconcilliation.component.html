@@ -3,7 +3,7 @@
         <div class="kt-subheader__main">
             <h3 class="kt-subheader__title">
                 <img src="./assets/media/ClosingCheckList/reconcilliation.svg" alt="clipboard">
-                <span class="headSpace"> Reconciliation</span>
+                <span class="headSpace"> {{"Reconciliation" | localize}}</span>
             </h3>
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
             <span class="kt-subheader__desc">
@@ -120,28 +120,28 @@
                                     <ng-template pTemplate="header">
                                         <tr class="task-table-inner">
                                             <th class="accountNo-cell" scope="col" pSortableColumn="AccountNumber">
-                                                Account No
+                                                {{"Account No" | localize}}
                                                 <p-sortIcon field="AccountNumber"></p-sortIcon>
                                             </th>
                                             <th class="accountName-cell" scope="col" >
-                                                Account Name
+                                                {{"Account Name" | localize}}
                                             </th>
                                             <th class="accountType-cell" scope="col" pSortableColumn="AccountType">
-                                                Account Type
+                                                {{"Account Type" | localize}}
                                                 <p-sortIcon field="AccountType"></p-sortIcon>
                                             </th>
                                             <th class="reconciliation-cell" scope="col">
-                                                Reconciliation Type     
+                                                {{"Reconciliation Type" | localize}}    
                                             </th>
                                             <th class="accountSubtype-cell" scope="col">
-                                                Balance
+                                                {{"Balance" | localize}}
                                             </th>
                                             <th class="assignee-cell" scope="col" pSortableColumn="AssigneeId">
-                                                Assignee
+                                                {{"Assignee" | localize}}
                                                 <p-sortIcon field="AssigneeId"></p-sortIcon>
                                             </th>
                                             <th class="action-cell" scope="col">
-                                                Status
+                                                {{"Status" | localize}}
                                             </th>
 
                                             <th class="cell-none">
@@ -204,9 +204,9 @@
                                                     class="form-control border-0 {{item.statusBoxColor}} text-white">
                                                     <option value="" selected disabled hidden>
                                                         {{item.statusName}}</option>
-                                                    <option value="1">In Process</option>
-                                                    <option value="2">Open</option>
-                                                    <option value="3">Completed</option>
+                                                    <option value="1">{{"InProcess" | localize}}</option>
+                                                    <option value="2">{{"Open" | localize}}</option>
+                                                    <option value="3">{{"Completed" | localize}}</option>
                                                 </select>
                                             </form>
                                         </td>
@@ -219,20 +219,20 @@
                                         <td>
                                             <ul>
                                                 <li class="reconciliation-cell collapsable-cell">
-                                                    <div class="thead-box"><b>Reconciliation : </b></div>
+                                                    <div class="thead-box"><b>{{"Reconciliation" | localize}} : </b></div>
                                                     <div class="tdata-box">
                                                         <span class="">{{item.reconciliationType}}</span>
                                                     </div>
                                                 </li>
                                                 <li class="accountSubtype-cell collapsable-cell">
 
-                                                    <div class="thead-box"><b> Balanace </b></div>
+                                                    <div class="thead-box"><b> {{"Balanace" | localize}} </b></div>
                                                     <div class="tdata-box">
                                                         <span class="">{{item.balance  | formater}}</span>
                                                     </div>
                                                 </li>
                                                 <li class="assignee-cell collapsable-cell kt-user-card-v2">
-                                                    <div class="thead-box"><b>Assignee : </b></div>
+                                                    <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
                                                     <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div *ngIf="item.profilePicture"
@@ -252,7 +252,7 @@
                                                     </div>
                                                 </li>
                                                 <li class="action-cell-item collapsable-cell">
-                                                    <div class="thead-box"><b>Action : </b></div>
+                                                    <div class="thead-box"><b>{{"Action" | localize}} : </b></div>
                                                     <form class="task-report-form">
                                                         <form class="task-report-form">
                                                             <select  onclick="console.log('test')"
@@ -260,9 +260,9 @@
                                                                 class="form-control border-0 {{item.statusBoxColor}} text-white">
                                                                 <option value="" selected disabled hidden>
                                                                     {{item.statusName}}</option>
-                                                                <option value="1">In Process</option>
-                                                                <option value="2">Open</option>
-                                                                <option value="3">Completed</option>
+                                                                <option value="1">{{"InProcess" | localize}}</option>
+                                                                <option value="2">{{"Open" | localize}}</option>
+                                                                <option value="3">{{"Completed" | localize }}</option>
                                                             </select>
                                                         </form>
                                                     </form>

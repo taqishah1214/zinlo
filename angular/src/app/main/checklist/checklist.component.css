@@ -278,6 +278,7 @@ form.search-form .form-group{
 }
 form.search-form .form-group::after{
     content: "";
+    background:center center/cover url(./../../../assets/img/search.png); 
   width: 16px;
   height: 16px;
   position: absolute;

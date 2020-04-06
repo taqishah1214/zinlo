@@ -50,7 +50,7 @@
 
                                         <th style="width: 120px"> {{l('Action')}} </th>
                                     </tr>
-
+                                    
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit">
                                     <tr>
@@ -60,7 +60,9 @@
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title"> {{l('Type')}}</span>
-                                            {{record.type}}
+                                           
+                                            <a *ngIf="record.successFilePath" style="color: #848fe4;cursor: pointer !important;" (click)="downloadFile(record.successFilePath)"> {{record.type}}</a>
+                                            <a *ngIf="!record.successFilePath">{{record.type}}</a>
                                         </td>
                                         <td style="width: 220px">
                                             <span class="ui-column-title"> {{l('User')}}</span>

@@ -115,6 +115,18 @@ namespace Zinlo.ChartsofAccount.Importing
         {
             var invalidAccounts = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
             var list = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
+            var fileUrl = _invalidAccountsTrialBalanceExporter.ExportToFile(accounts);
+            #region|Log intial info|
+            ImportPathDto pathDto = new ImportPathDto();
+            pathDto.FilePath = "";
+            pathDto.Type = FileTypes.TrialBalance.ToString();
+            pathDto.TenantId = (int)TenantId;
+            pathDto.CreatorId = UserId;
+            pathDto.FailedRecordsCount = 0;
+            pathDto.SuccessRecordsCount = 0;
+            pathDto.SuccessFilePath = fileUrl;
+            loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
+            #endregion        
             foreach (var account in accounts)
             {
                 if (account.CanBeImported())
@@ -156,14 +168,15 @@ namespace Zinlo.ChartsofAccount.Importing
             List<ChartsOfAccountsTrialBalanceExcellImportDto> ValidRows = accounts.Except(invalidAccounts).ToList();
             SuccessRecordsCount = list.Count;
             #region|Log intial info|
-            ImportPathDto pathDto = new ImportPathDto();
-            pathDto.FilePath = "";
-            pathDto.Type = FileTypes.TrialBalance.ToString();
-            pathDto.TenantId = (int)TenantId;
-            pathDto.CreatorId = UserId;
-            pathDto.FailedRecordsCount = 0;
-            pathDto.SuccessRecordsCount = 0;
-            loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
+            ImportPathDto pathDtoUpdate = new ImportPathDto();
+            pathDtoUpdate.Id = loggedFileId;
+            pathDtoUpdate.FilePath = "";
+            pathDtoUpdate.Type = FileTypes.TrialBalance.ToString();
+            pathDtoUpdate.TenantId = (int)TenantId;
+            pathDtoUpdate.CreatorId = UserId;
+            pathDtoUpdate.FailedRecordsCount = 0;
+            pathDtoUpdate.SuccessRecordsCount = 0;
+           await _importPathsAppService.UpdateFilePath(pathDtoUpdate);
             #endregion
             list = list.Select(x => { x.VersionId = loggedFileId; return x; }).ToList();
             foreach (var item in list)
@@ -225,6 +238,16 @@ namespace Zinlo.ChartsofAccount.Importing
                     _localizationSource.GetString("AllAccountsTrialBalanceSuccessfullyImportedFromExcel"),
                     Abp.Notifications.NotificationSeverity.Success);
             }
+        }
+        private void LoggImportFile(ImportPathDto input)
+        {
+
+            ImportPathDto pathDto = new ImportPathDto();
+            pathDto.Id = loggedFileId;
+            pathDto.FilePath = "";
+            pathDto.FailedRecordsCount = input.FailedRecordsCount;
+            pathDto.SuccessRecordsCount = SuccessRecordsCount;
+             _importPathsAppService.SaveFilePath(pathDto);
         }
 
         private void SendInvalidExcelNotification(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args)

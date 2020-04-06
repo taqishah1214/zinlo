@@ -1,0 +1,45 @@
+.filter-by-user {
+    list-style-type: none;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.filter-by-user li {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: -15px;
+}
+
+.fc-unthemed .fc-toolbar .fc-button {
+    color: #74788d;
+    background: transparent;
+    border: 1px solid #ebedf2;
+}
+
+.custom-categories-table tr td,
+.custom-categories-table tr th {
+    padding: 8px 15px !important;
+    max-width: 200px;
+    width: 20%;
+}
+
+.custom-categories-table tr td .btn-group .btn {
+    padding: 0 10px 0 0;
+}
+
+/* .categories-table .ui-table .ui-table-thead > tr > th,  */
+.categories-table .ui-table .ui-table-tbody > tr:nth-child(even),
+.categories-table .ui-table .ui-table-tbody > tr:nth-child(odd) {
+    background-color: transparent;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.primeng-paging-container {
+    padding-top: 15px;
+}
+.primeng-paging-container .ui-paginator{
+    text-align: left !important;
+}
+.primeng-paging-container .total-records-count{
+    float: right;
+}
