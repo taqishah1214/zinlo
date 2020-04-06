@@ -1,4 +1,3 @@
-<div [@routerTransition]>
     <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
         <div class="kt-subheader kt-grid__item">
             <div [class]="containerClass">
@@ -44,114 +43,105 @@
 
 
 
-<!-- <div class="kt-container  kt-grid__item kt-grid__item--fluid">
-    <div class="row">
+
  
-<p-virtualScroller [value]="lazyCars"  [itemSize]="150" [rows]="100" [cache]="false" 
-        [lazy]="true" (onLazyLoad)="loadCarsLazy($event)" [totalRecords]="totalLazyCarsLength">
+<p-virtualScroller [value]="lazyCars" [itemSize]="150" [rows]="100" [cache]="false" [lazy]="true"
+    (onLazyLoad)="loadCarsLazy($event)" [totalRecords]="totalLazyCarsLength">
     <ng-template let-car pTemplate="item" let-i="index">
-       
-    
-              <div class="col-xl-3">
-            <div class="kt-portlet kt-portlet--height-fluid">
-                <div class="kt-portlet__head kt-portlet__head--noborder">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-    
-                        </h3>
-                    </div>
-                    <div class="kt-portlet__head-toolbar">
-                        <a href="#" class="btn btn-icon" data-toggle="dropdown">
-                            <i class="flaticon-more-1 kt-font-brand"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <ul class="kt-nav">
-                                <li class="kt-nav__item">
-                                    <a href="#" class="kt-nav__link">
-                                        <i class="kt-nav__link-icon flaticon2-line-chart"></i>
-                                        <span class="kt-nav__link-text">Edit </span>
-                                    </a>
-                                </li>
-                                <li class="kt-nav__item">
-                                    <a href="#" class="kt-nav__link">
-                                        <i class="kt-nav__link-icon flaticon2-send"></i>
-                                        <span class="kt-nav__link-text">premission</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="kt-portlet__body">
-                    <div class="kt-widget kt-widget--user-profile-2">
-                        <div class="kt-widget__head">
-                            <div class="kt-widget__media">
-                                <img class="kt-widget__img kt-hidden-" src="./assets/media/users/100_5.jpg" alt="image">
-                                <div class="kt-widget__pic kt-widget__pic--brand kt-font-brand kt-font-boldest kt-hidden">
-                                    JM
-                                </div>
+    <!-- <div class="kt-container  kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+                <div class="col-xl-3">
+                    <div class="kt-portlet kt-portlet--height-fluid">
+                        <div class="kt-portlet__head kt-portlet__head--noborder">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+
+                                </h3>
                             </div>
-    
-                            <div class="kt-widget__info">
-                                <a href="#" class="kt-widget__username">
-                                    hammad
+                            <div class="kt-portlet__head-toolbar">
+                                <a href="#" class="btn btn-icon" data-toggle="dropdown">
+                                    <i class="flaticon-more-1 kt-font-brand"></i>
                                 </a>
-    
-                                <span class="kt-widget__desc">
-                                    Atr Direcrtor
-                                </span>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <ul class="kt-nav">
+                                        <li class="kt-nav__item">
+                                            <a href="#" class="kt-nav__link">
+                                                <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+                                                <span class="kt-nav__link-text">Edit </span>
+                                            </a>
+                                        </li>
+                                        <li class="kt-nav__item">
+                                            <a href="#" class="kt-nav__link">
+                                                <i class="kt-nav__link-icon flaticon2-send"></i>
+                                                <span class="kt-nav__link-text">premission</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-    
-                        <div class="kt-widget__body">
-                            <div class="kt-widget__item">
-                                <div class="kt-widget__contact">
-                                    <span class="kt-widget__label">User Name:</span>
-                                    <span class="kt-widget__data">{{car?.year}}</span>
+                        <div class="kt-portlet__body">
+                            <div class="kt-widget kt-widget--user-profile-2">
+                                <div class="kt-widget__head">
+                                    <div class="kt-widget__media">
+                                        <img class="kt-widget__img kt-hidden-" src="./assets/media/users/100_5.jpg"
+                                            alt="image">
+                                        <div
+                                            class="kt-widget__pic kt-widget__pic--brand kt-font-brand kt-font-boldest kt-hidden">
+                                            JM
+                                        </div>
+                                    </div>
+
+                                    <div class="kt-widget__info">
+                                        <a href="#" class="kt-widget__username">
+                                            hammad
+                                        </a>
+
+                                        <span class="kt-widget__desc">
+                                            Atr Direcrtor
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="kt-widget__contact">
-                                    <span class="kt-widget__label">Email:</span>
-                                    <a href="#" class="kt-widget__data">{{car?.year}}</a>
-                                </div>
-                                <div class="kt-widget__contact">
-                                    <span class="kt-widget__label">Creation Date:</span>
-                                    <a href="#" class="kt-widget__data">{{car?.year}}</a>
-                                </div>
-                                <div class="kt-widget__contact">
-                                    <span class="kt-widget__label">Status:</span>
-                                    <span class="kt-widget__data">
-                                        <div class="col-3">
-                                            <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--primary">
-                                                <label>
-                                                    <input type="checkbox" checked="checked">
-                                                    <span></span>
-                                                </label>
+
+                                <div class="kt-widget__body">
+                                    <div class="kt-widget__item">
+                                        <div class="kt-widget__contact">
+                                            <span class="kt-widget__label">User Name:</span>
+                                            <span class="kt-widget__data">{{car?.year}}</span>
+                                        </div>
+                                        <div class="kt-widget__contact">
+                                            <span class="kt-widget__label">Email:</span>
+                                            <a href="#" class="kt-widget__data">{{car?.year}}</a>
+                                        </div>
+                                        <div class="kt-widget__contact">
+                                            <span class="kt-widget__label">Creation Date:</span>
+                                            <a href="#" class="kt-widget__data">{{car?.year}}</a>
+                                        </div>
+                                        <div class="kt-widget__contact">
+                                            <span class="kt-widget__label">Status:</span>
+                                            <span class="kt-widget__data">
+                                                <div class="col-3">
+                                                    <span
+                                                        class="kt-switch kt-switch--outline kt-switch--icon kt-switch--primary">
+                                                        <label>
+                                                            <input type="checkbox" checked="checked">
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
                                             </span>
                                         </div>
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </ng-template>
+    </div> -->
+</ng-template>
     <ng-template let-car pTemplate="loadingItem">
-        <div class="ui-g car-item empty-car-item">
+        <!-- <div class="ui-g car-item empty-car-item">
             <div class="ui-g-12 ui-md-2">
                 <div class="empty-car-item-index"></div>
             </div>
@@ -160,28 +150,34 @@
             </div>
             <div class="ui-g-12 ui-md-8">
                 <div class="ui-g">
-                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
-                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
-                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
-                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
+                    <div class="ui-g-12">
+                        <div class="empty-car-item-text"></div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="empty-car-item-text"></div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="empty-car-item-text"></div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="empty-car-item-text"></div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </ng-template>
 </p-virtualScroller>
 
 
 
 
-    
-  
 
 
-        
 
-</div>
-</div>
-</div> -->
+
+
+
+
 
 
 

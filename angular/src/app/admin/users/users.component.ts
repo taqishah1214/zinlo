@@ -66,7 +66,7 @@ export class UsersComponent extends AppComponentBase implements AfterViewInit {
 
         this._userServiceProxy.getUsers(
             this.filterText,
-            null,
+            this.permissionFilterTreeModal.getSelectedPermissions(),
             this.role !== '' ? parseInt(this.role) : undefined,
             this.onlyLockedUsers,
             this.primengTableHelper.getSorting(this.dataTable),
