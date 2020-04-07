@@ -1,10 +1,13 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { UppyConfig } from 'uppy-angular';
-import { ClosingChecklistServiceProxy, AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto, DetailsClosingCheckListDto } from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy, AuditLogServiceProxy,AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto, DetailsClosingCheckListDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 import { AppConsts } from '@shared/AppConsts';
+import { UserDateService } from "../../../services/user-date.service";
+
+
 @Component({
   selector: 'app-task-details',
   templateUrl: './task-details.component.html',
@@ -25,6 +28,13 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   assigneeId: any = 0;
   UserProfilePicture: any;
   monthStatus : boolean;
+  historyOfTask: any = [];
+  assigniHistory : any = [];
+  statusHistory: any = [];
+  users : any = [];
+  commentShow = true;
+  HistoryList : any =[];
+
 
   constructor(
     injector: Injector,
@@ -32,19 +42,84 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     private _closingChecklistService: ClosingChecklistServiceProxy,
     private _commentServiceProxy: CommentServiceProxy,
     private _attachmentService: AttachmentsServiceProxy,
-    private userInfo: UserInformation
+    private userInfo: UserInformation,
+    private _auditLogService : AuditLogServiceProxy,
+    private userDate: UserDateService
   ) {
     super(injector);
   }
 
   ngOnInit() {
+    this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.userSignInName = this.appSession.user.name.toString().toUpperCase();
     this.commantBox = true;
     this.recordId = history.state.data.id;
     this.getTaskDetails(this.recordId);
     this.getProfilePicture();
+    this.getAuditLogOfTask();
   }
 
+
+  getAuditLogOfTask() {
+    this._auditLogService.getEntityHistory(this.recordId.toString(), "Zinlo.ClosingChecklist.ClosingChecklist").subscribe(resp => {
+      this.historyOfTask = resp
+      this.historyOfTask.forEach(element => {
+        switch (element.propertyName) {
+          case "AssigneeId":         
+            element["result"] =  this.setAssigniHistoryParam(element)
+            debugger
+            break;
+          case "Status":          
+            element["result"] = this.setStatusHistoryParam(element)
+            debugger
+            break;
+          default:
+            console.log("not found");
+            break;
+        }
+        ;
+      });
+    })
+    console.log("r", this.historyOfTask)
+  }
+
+  findTheUserFromList(id) : number{
+  return this.users.findIndex(x => x.id === id);
+  }
+
+ setAssigniHistoryParam(item){
+   let array : any = []
+  array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] = this.users[this.findTheUserFromList(parseInt(item.newValue))]; 
+  array["PreviousValue"] = this.users[this.findTheUserFromList(parseInt(item.originalValue))]; 
+  return array
+ }
+
+ setStatusHistoryParam(item){
+  let array : any = []
+
+  array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] = this.findStatusName(parseInt(item.newValue)); 
+  array["PreviousValue"] = this.findStatusName(parseInt(item.originalValue)); 
+  return array
+}
+
+  findStatusName(value): string {
+
+    switch (value) {
+      case 1:
+        return "Not Started"
+      case 2:
+        return "In Process"
+      case 3:
+        return "On Hold"
+      case 4:
+        return "Completed"
+      default:
+        return ""
+    }
+
+  }
 
   getProfilePicture() {
     this.userInfo.getProfilePicture();
@@ -121,6 +196,15 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
 
     }
 
+  }
+
+  onChangeCommentOrHistory(value){
+    if (value == 1)
+   {
+    this.commentShow = true
+   }else {
+    this.commentShow = false
+   }
   }
 
   fileUploadedResponse(value): void {
