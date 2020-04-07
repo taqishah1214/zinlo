@@ -3,13 +3,13 @@
         <div class="kt-portlet__head-label">
 
             <h3 class="kt-portlet__head-title">
-                Member Activity
+                {{"WidgetMemberActivity" | localize}}
             </h3>
 
         </div>
         <div class="kt-portlet__head-toolbar">
             <button (click)="memberActivityTable.reload()" class="btn btn-primary"><i
-                    class="fa fa-sync"></i> Refresh</button>
+                    class="fa fa-sync"></i> {{"Refresh" | localize}}</button>
         </div>
     </div>
     <div class="kt-portlet__body"  [perfectScrollbar]>
@@ -18,19 +18,19 @@
                 <thead>
                     <tr class="uppercase">
                         <th colspan="2">
-                            MEMBER
+                            {{"MEMBER" | localize}}
                         </th>
                         <th>
-                            Earnings
+                            {{"Earnings" | localize}}
                         </th>
                         <th>
-                            CASES
+                            {{"CASES" | localize}}
                         </th>
                         <th>
-                            CLOSED
+                            {{"CLOSED" | localize}}
                         </th>
                         <th>
-                            RATE
+                            {{"RATE" | localize}}
                         </th>
                     </tr>
                 </thead>

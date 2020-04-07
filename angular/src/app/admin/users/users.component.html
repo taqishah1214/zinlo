@@ -1,4 +1,4 @@
-<div [@routerTransition]>
+<!-- <div [@routerTransition]>
     <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
         <div class="kt-subheader kt-grid__item">
             <div [class]="containerClass">
@@ -115,8 +115,8 @@
                     </form>
 
                     <div class="row align-items-center">
-                        <!--<Primeng-TurboTable-Start>-->
-                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <Primeng-TurboTable-Start>-->
+                        <!-- <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
                             <p-table #dataTable (onLazyLoad)="getUsers($event)" [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [scrollable]="true" ScrollWidth="100%"
@@ -254,13 +254,163 @@
                                 </span>
                             </div>
                         </div>
-                        <!--<Primeng-TurboTable-End>-->
-                    </div>
+                        <Primeng-TurboTable-End>
+                     </div>
                 </div>
             </div>
         </div>
 
         <createOrEditUserModal #createOrEditUserModal (modalSave)="getUsers()"></createOrEditUserModal>
-        <editUserPermissionsModal #editUserPermissionsModal></editUserPermissionsModal>
+        <editUserPermissionsModal #editUserPermissionsModal></editUserPermissionsModal> -->
+    <!-- </div> -->
+<!-- </div> --> 
+
+
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader kt-grid__item">
+        <div [class]="containerClass">
+            <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title">
+                    <span>{{"Administration" | localize}}</span>
+                </h3>
+                <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                <span class="kt-subheader__desc">
+                    {{"Users" | localize}}
+                </span>
+            </div>
+            <div class="kt-subheader__toolbar">
+                <div class="kt-subheader__wrapper">
+                    <button (click)="createUser()" class="btn btn-primary"><i class="fa fa-plus"></i> {{"AddNew" | localize}}</button>
+                </div>
+            </div>
+        </div>
     </div>
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="new-password">
+                    <div>
+                        <div class="row align-items-center mb-4">
+                            <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
+                                <div class="kt-input-icon kt-input-icon--left">
+                                    <input [(ngModel)]="filterText"  name="filterText" (input)="getAllUsers()" autoFocus
+                                        class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                        type="text">
+                                    <span class="kt-input-icon__icon kt-input-icon__icon--left">
+                                        <span><i class="la la-search"></i></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditUserModal #createOrEditUserModal (modalSave)="getAllUsers()"></createOrEditUserModal>
+        <editUserPermissionsModal #editUserPermissionsModal></editUserPermissionsModal>
+
 </div>
+
+
+
+
+
+
+
+
+
+    <div class="kt-container  kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+
+                <div class="col-xl-3" *ngFor="let item of userList">
+                    <div class="kt-portlet kt-portlet--height-fluid">
+                        <div class="kt-portlet__head kt-portlet__head--noborder">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+
+                                </h3>
+                            </div>
+                            <div class="kt-portlet__head-toolbar">
+                                <a class="btn btn-icon" data-toggle="dropdown">
+                                    <i class="flaticon-more-1 kt-font-brand"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <ul class="kt-nav">
+                                        <li class="kt-nav__item">
+                                            <a onclick=""  class="kt-nav__link">
+                                                <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+                                                <span (click)="createOrEditUserModal.show(item.id)"  class="kt-nav__link-text">Edit </span>
+                                            </a>
+                                        </li>
+                                        <li class="kt-nav__item">
+                                            <a class="kt-nav__link">
+                                                <i class="kt-nav__link-icon flaticon2-send"></i>
+                                                <span (click)="editUserPermissionsModal.show(item.id, item.userName)" class="kt-nav__link-text">Premission</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body">
+                            <div class="kt-widget kt-widget--user-profile-2">
+                                <div class="kt-widget__head">
+                                    <div class="kt-widget__media">
+                                        <img *ngIf="item.profilePicture" class="kt-widget__img kt-hidden-" src="{{item.profilePicture}}"
+                                            alt="image">
+                                        <div *ngIf="!item.profilePicture" class="kt-widget__pic kt-widget__pic--brand kt-font-brand kt-font-boldest">
+                                             {{item.name }}
+                                        </div>
+                                    </div>
+
+                                    <div class="kt-widget__info">
+                                        <a href="#" class="kt-widget__username">
+                                            {{item.name}}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="kt-widget__body">
+                                    <div class="kt-widget__item">
+                                        <div class="kt-widget__contact">
+                                            <span class="kt-widget__label">User Name:</span>
+                                            <span class="kt-widget__data">{{item.userName}}</span>
+                                        </div>
+                                        <div class="kt-widget__contact">
+                                            <span class="kt-widget__label">Email:</span>
+                                            <a class="kt-widget__data">{{item.email}}</a>
+                                        </div>
+                                        <div class="kt-widget__contact">
+                                            <span class="kt-widget__label">Creation Date:</span>
+                                            <a  class="kt-widget__data">{{item.creationTime | momentFormat:'DD MMMM YYYY'}}</a>
+                                        </div>
+                                        <div class="kt-widget__contact">
+                                            <span class="kt-widget__label">Status:</span>
+                                            <span class="kt-widget__data">
+                                                <div class="col-3">
+                                                    <span
+                                                        class="kt-switch kt-switch--outline kt-switch--icon kt-switch--primary">
+                                                        <label>
+                                                            <input type="checkbox" checked="{{item.status}}">
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    
+
+
+
