@@ -191,7 +191,7 @@ namespace Zinlo.ChartsofAccount
         private async Task CreateChartsOfAccountAsync(ChartsOfAccountsExcellImportDto input)
         {
             var tenantId = CurrentUnitOfWork.GetTenantId();
-            var allData = await _chartsOfAccountsrepository.GetAllListAsync();
+            var allData =  _chartsOfAccountsrepository.GetAllListAsync().Result.Where(x=>x.IsDeleted == false).ToList();
             var result = allData.Where(a => a.AccountNumber.ToLower() == input.AccountNumber.ToLower()).FirstOrDefault();
             if (result != null)
             {

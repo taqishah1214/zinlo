@@ -17987,6 +17987,7 @@ export class EntityPropertyHistory implements IEntityPropertyHistory {
     newValue!: string | undefined;
     originalValue!: string | undefined;
     propertyName!: string | undefined;
+    changeTime!: moment.Moment;
     id!: number;
 
     constructor(data?: IEntityPropertyHistory) {
@@ -18004,6 +18005,7 @@ export class EntityPropertyHistory implements IEntityPropertyHistory {
             this.newValue = data["newValue"];
             this.originalValue = data["originalValue"];
             this.propertyName = data["propertyName"];
+            this.changeTime = data["changeTime"] ? moment(data["changeTime"].toString()) : <any>undefined;
             this.id = data["id"];
         }
     }
@@ -18021,6 +18023,7 @@ export class EntityPropertyHistory implements IEntityPropertyHistory {
         data["newValue"] = this.newValue;
         data["originalValue"] = this.originalValue;
         data["propertyName"] = this.propertyName;
+        data["changeTime"] = this.changeTime ? this.changeTime.toISOString() : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -18031,6 +18034,7 @@ export interface IEntityPropertyHistory {
     newValue: string | undefined;
     originalValue: string | undefined;
     propertyName: string | undefined;
+    changeTime: moment.Moment;
     id: number;
 }
 
