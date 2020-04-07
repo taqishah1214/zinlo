@@ -33,7 +33,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   statusHistory: any = [];
   users : any = [];
   commentShow = true;
-  HistoryList : any =[];
+  historyList : any =[];
 
 
   constructor(
@@ -63,15 +63,14 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   getAuditLogOfTask() {
     this._auditLogService.getEntityHistory(this.recordId.toString(), "Zinlo.ClosingChecklist.ClosingChecklist").subscribe(resp => {
       this.historyOfTask = resp
-      this.historyOfTask.forEach(element => {
+      this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
           case "AssigneeId":         
             element["result"] =  this.setAssigniHistoryParam(element)
-            debugger
+            debugger;
             break;
           case "Status":          
             element["result"] = this.setStatusHistoryParam(element)
-            debugger
             break;
           default:
             console.log("not found");
