@@ -274,7 +274,8 @@ namespace Zinlo.ChartsofAccount
             //                                                                  && x.AccountNumber.ToLower().Equals(input.AccountNumber.Trim().ToLower()));
 
             var result = await _chartsofAccountRepository.FirstOrDefaultAsync(x => x.AccountName.ToLower() == input.AccountName.Trim().ToLower()
-                                                                      && x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower());
+                                                                      && x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower()
+                                                                      && x.IsDeleted == false);
 
             if (result != null)
             {
