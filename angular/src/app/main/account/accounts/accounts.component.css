@@ -928,6 +928,7 @@ table.table.record-table td, table.table.record-table th {
     height: 200px !important;
     min-width: 100% !important;
     width: 100% !important;
+    margin-left: 14px;
 } 
 .uppy-modal .modal-dialog {
     max-width: 1000px;
@@ -992,11 +993,13 @@ table.table.record-table td, table.table.record-table th {
 }
 .modal-bottom-row-col {
     width: 33.33%;
-    padding: 5px;
+    height: 40px;
+    padding-top:9px ;
 }
 .modal-bottom-row-col1 {
     width: 14.2%;
-    padding: 5px;
+    padding:0px 5px;
+    height: 40px;
 }
 .row.modal-bottom-record {
     margin-top:30px;
