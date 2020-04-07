@@ -294,7 +294,7 @@
                         <div class="row align-items-center mb-4">
                             <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
                                 <div class="kt-input-icon kt-input-icon--left">
-                                    <input [(ngModel)]="filterText"  name="filterText" (input)="getAllUsers()" autoFocus
+                                    <input [(ngModel)]="filterText"  name="filterText"  autoFocus
                                         class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
                                         type="text">
                                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
@@ -362,7 +362,7 @@
                                         <img *ngIf="item.profilePicture" class="kt-widget__img kt-hidden-" src="{{item.profilePicture}}"
                                             alt="image">
                                         <div *ngIf="!item.profilePicture" class="kt-widget__pic kt-widget__pic--brand kt-font-brand kt-font-boldest">
-                                             {{item.name }}
+                                             {{item.name | firstLetterOfWords }}
                                         </div>
                                     </div>
 

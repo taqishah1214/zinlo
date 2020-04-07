@@ -490,7 +490,7 @@ namespace Zinlo.Authorization.Users
 
         public async Task<List<GetAllUsersList>> GetAllUserList(string filter, int count)
         {
-            var query = await UserManager.Users.WhereIf(!string.IsNullOrWhiteSpace(filter), e => e.FullName.Contains(filter)).ToListAsync();
+          var query = await UserManager.Users.WhereIf(!string.IsNullOrWhiteSpace(filter), e => e.FullName.Contains(filter)).ToListAsync();
                 var userList = (from o in query
                                 select new GetAllUsersList()
                                 {

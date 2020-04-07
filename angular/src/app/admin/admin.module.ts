@@ -85,6 +85,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
 import { DropdownModule } from 'primeng/dropdown';
 import { ImportLogComponent } from '../admin/importlog/importlog.component';
+import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';;
 
 
 // Metronic
@@ -124,7 +125,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         TextMaskModule,
         ImageCropperModule,
         PerfectScrollbarModule,
-        DropdownModule
+        DropdownModule,
+        FirstLetterOfWords
     ],
     declarations: [
         ManagementComponent,

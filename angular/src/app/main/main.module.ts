@@ -78,6 +78,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 NgSelectModule,
                 VirtualScrollerModule,
                 InfiniteScrollModule,
+                FirstLetterOfWords
                 
         ],
         declarations: [
@@ -104,7 +105,6 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 ItemizedDetailsComponent ,
                 AmortizedDetailsComponent ,
                 UsersComponent ,
-                FirstLetterOfWords
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

@@ -172,7 +172,6 @@ export class UsersComponent extends AppComponentBase   {
         super(_injector);
     }
    
-
     ngOnInit() {
         this.getAllUsers()
     }
