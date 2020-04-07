@@ -19204,6 +19204,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     noOfMonths!: number;
     dueOn!: number;
     endsOn!: moment.Moment;
+    dueDate!: moment.Moment;
     dayBeforeAfter!: DaysBeforeAfterDto;
     endOfMonth!: boolean;
     monthStatus!: boolean;
@@ -19242,6 +19243,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
             this.endsOn = data["endsOn"] ? moment(data["endsOn"].toString()) : <any>undefined;
+            this.dueDate = data["dueDate"] ? moment(data["dueDate"].toString()) : <any>undefined;
             this.dayBeforeAfter = data["dayBeforeAfter"];
             this.endOfMonth = data["endOfMonth"];
             this.monthStatus = data["monthStatus"];
@@ -19284,6 +19286,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
         data["endsOn"] = this.endsOn ? this.endsOn.toISOString() : <any>undefined;
+        data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
         data["dayBeforeAfter"] = this.dayBeforeAfter;
         data["endOfMonth"] = this.endOfMonth;
         data["monthStatus"] = this.monthStatus;
@@ -19315,6 +19318,7 @@ export interface IGetTaskForEditDto {
     noOfMonths: number;
     dueOn: number;
     endsOn: moment.Moment;
+    dueDate: moment.Moment;
     dayBeforeAfter: DaysBeforeAfterDto;
     endOfMonth: boolean;
     monthStatus: boolean;

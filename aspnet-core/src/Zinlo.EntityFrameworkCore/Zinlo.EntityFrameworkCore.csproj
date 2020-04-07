@@ -26,6 +26,8 @@
     <Compile Remove="Migrations\20200326115332_User_Added_ImportPath.Designer.cs" />
     <Compile Remove="Migrations\20200326120336_Reconciliation_Changes.cs" />
     <Compile Remove="Migrations\20200326120336_Reconciliation_Changes.Designer.cs" />
+    <Compile Remove="Migrations\20200407085230_Versioning.cs" />
+    <Compile Remove="Migrations\20200407085230_Versioning.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="28.4.4" />

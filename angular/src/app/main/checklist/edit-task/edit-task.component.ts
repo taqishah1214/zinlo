@@ -275,6 +275,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   saveTaskChanges() {
     debugger
     this.checklist.frequency = this.getTaskForEdit.frequencyId;
+    this.checklist.dueDate = this.getTaskForEdit.dueDate;
     this.checklist.closingMonth = moment(this.closingMonthValue);
     this.checklist.endsOn = moment(this.endsOnDateValue);
     this.checklist.categoryId = this.getTaskForEdit.categoryId;

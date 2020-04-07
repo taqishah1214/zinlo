@@ -246,6 +246,9 @@ namespace Zinlo.Auditing
                         where entityChange.EntityId == entityId && entityPropertyChange.OriginalValue != null
                                                                      && entityPropertyChange.PropertyName !=
                                                                      "LastModificationTime"
+                                                                     && entityPropertyChange.PropertyName != 
+                                                                     "LastModifierUserId"
+
                                                                      && entityChange.EntityTypeFullName == entityFullName
                         select new EntityPropertyHistory()
                         {
