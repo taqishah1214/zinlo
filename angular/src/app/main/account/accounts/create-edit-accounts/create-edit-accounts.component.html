@@ -46,7 +46,7 @@
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{accountType}}</button>
                                             <div class="dropdown-menu" >
-                                                <a class="dropdown-item" *ngFor="let item of accountTypeList"
+                                                <a href="javascript:void(0)" class="dropdown-item" *ngFor="let item of accountTypeList"
                                                     (click)="accountTypeClick(item.id,item.name)">
                                                     {{item.name}}
                                                 </a>
@@ -60,11 +60,11 @@
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{accountSubTypeName}}</button>
                                             <div class="dropdown-menu" >
-                                                <a class="dropdown-item" *ngFor="let item of accountSubTypeList"
+                                                <a href="javascript:void(0)"class="dropdown-item" *ngFor="let item of accountSubTypeList"
                                                     (click)="accountSubTypeClick(item.value,item.name)">
                                                     {{item.name}}</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item"
+                                                <a href="javascript:void(0)" class="dropdown-item"
                                                     (click)="routeToAddNewAccountSubType()"><i class="fa fa-plus"></i>
                                                     {{"AddNew" | localize}}</a>
                                             </div>
@@ -84,7 +84,7 @@
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{reconcillationType}}</button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" *ngFor="let item of reconcillationTypeList"
+                                                <a href="javascript:void(0)" class="dropdown-item" *ngFor="let item of reconcillationTypeList"
                                                     (click)="reconcillationClick(item.id,item.name)">
                                                     {{item.name}}</a>
                                             </div>
@@ -101,7 +101,7 @@
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{recociled}}</button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" *ngFor="let item of recociledList"
+                                                <a href="javascript:void(0)"class="dropdown-item" *ngFor="let item of recociledList"
                                                     (click)="recociledClick(item.id,item.name)">
                                                     {{item.name}}</a>
                                             </div>
@@ -114,10 +114,12 @@
                         </div>
                         <div class="form-group margin-top-5">
                             <button *ngIf="editAccountCheck == false" class="btn btn-brand" type="submit"  [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
-                                {{"Create" | localize}}
+                                <i class="fa fa-save"></i>
+                                <span>{{"Create" | localize}}</span>
                             </button>
                             <button *ngIf="editAccountCheck == true" class="btn btn-brand" type="submit"  [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" >
-                                {{"Update" | localize}}
+                                <i class="fa fa-save"></i>
+                                <span>{{"Update" | localize}}</span>
                             </button>
                         </div>
                     </form>

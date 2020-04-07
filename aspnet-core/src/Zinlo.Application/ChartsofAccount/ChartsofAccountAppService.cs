@@ -213,7 +213,7 @@ namespace Zinlo.ChartsofAccount
 
         public async Task<FileDto> GetChartsofAccountToExcel(long id)
         {
-            var accounts = _chartsofAccountRepository.GetAll().Include(x => x.Assignee).Include(p => p.AccountSubType);
+            var accounts = _chartsofAccountRepository.GetAll().Where(x=>x.IsDeleted == false).Include(x => x.Assignee).Include(p => p.AccountSubType);
             var listToExport = new List<ChartsOfAccountsExcellExporterDto>();
             foreach (var item in accounts)
             {
@@ -236,7 +236,7 @@ namespace Zinlo.ChartsofAccount
         }
         public async Task<FileDto> LoadChartsofAccountTrialBalanceToExcel()
         {
-            var accounts = _chartsofAccountRepository.GetAll().Include(x => x.Assignee);
+            var accounts = _chartsofAccountRepository.GetAll().Where(x=>x.IsDeleted == false).Include(x => x.Assignee);
             var listToExport = accounts.Select(item => new ChartsOfAccountsTrialBalanceExcellImportDto
             {
                 AccountName = item.AccountName,
@@ -270,9 +270,11 @@ namespace Zinlo.ChartsofAccount
         public async Task<bool> CheckAccountForTrialBalance(ChartsOfAccountsTrialBalanceExcellImportDto input)
         {
 
-            var result = await _chartsofAccountRepository.FirstOrDefaultAsync(x => x.AccountName.ToLower().Equals(input.AccountName.Trim().ToLower())
-                                                                              && x.AccountNumber.ToLower().Equals(input.AccountNumber.Trim().ToLower()));
+            //var result = await _chartsofAccountRepository.FirstOrDefaultAsync(x => x.AccountName.ToLower().Equals(input.AccountName.Trim().ToLower())
+            //                                                                  && x.AccountNumber.ToLower().Equals(input.AccountNumber.Trim().ToLower()));
 
+            var result = await _chartsofAccountRepository.FirstOrDefaultAsync(x => x.AccountName.ToLower() == input.AccountName.Trim().ToLower()
+                                                                      && x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower());
 
             if (result != null)
             {
