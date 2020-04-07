@@ -56,13 +56,17 @@
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit">
                                     <tr>
-                                        <td style="width: 130px;text-align:center">
-                                            <div class="btn-group dropdown" dropdown>
-                                                <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
-                                                    <i class="fa fa-cog"></i><span class="caret"></span>
-                                                    {{"Actions" | localize}}
+
+
+
+                                        <td style="width: 130px"
+                                        [hidden]="!(['Pages.Editions.Edit', 'Pages.Editions.Delete'] | permissionAny)">
+                                            <div class="btn-group dropdown">
+                                                <button class="custom_toggle_btn dropdown-toggle btn btn-sm"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-cog settings_icon"></i>
                                                 </button>
-                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                <ul class="dropdown-menu">
                                                     <li>
                                                         <a href="javascript:;"
                                                             *ngIf="'Pages.Editions.Edit' | permission"
@@ -83,24 +87,30 @@
                                                 </ul>
                                             </div>
                                         </td>
+
+
                                         <td>
                                             <span class="ui-column-title">{{'EditionName' | localize}}</span>
                                             {{record.displayName}}
                                         </td>
-                                    <td>
-                                        <span class="ui-column-title">{{'Price' | localize}}</span>
-                                        <span
-                                            *ngIf="record.dailyPrice || record.weeklyPrice || record.monthlyPrice || record.annualPrice">
-                                            {{appSession.application.currencySign}}{{record.dailyPrice}} {{"Daily" | localize }} /
-                                            {{appSession.application.currencySign}}{{record.weeklyPrice}} {{"Weekly" | localize }} /
-                                            {{appSession.application.currencySign}}{{record.monthlyPrice}} {{"Monthly" | localize }} /
-                                            {{appSession.application.currencySign}}{{record.annualPrice}} {{"Annual" | localize }}
-                                        </span>
-                                        <span
-                                            *ngIf="!record.dailyPrice && !record.weeklyPrice && !record.monthlyPrice && !record.annualPrice">
-                                            {{"Free" | localize}}
-                                        </span>
-                                    </td>
+                                        <td>
+                                            <span class="ui-column-title">{{'Price' | localize}}</span>
+                                            <span
+                                                *ngIf="record.dailyPrice || record.weeklyPrice || record.monthlyPrice || record.annualPrice">
+                                                {{appSession.application.currencySign}}{{record.dailyPrice}}
+                                                {{"Daily" | localize }} /
+                                                {{appSession.application.currencySign}}{{record.weeklyPrice}}
+                                                {{"Weekly" | localize }} /
+                                                {{appSession.application.currencySign}}{{record.monthlyPrice}}
+                                                {{"Monthly" | localize }} /
+                                                {{appSession.application.currencySign}}{{record.annualPrice}}
+                                                {{"Annual" | localize }}
+                                            </span>
+                                            <span
+                                                *ngIf="!record.dailyPrice && !record.weeklyPrice && !record.monthlyPrice && !record.annualPrice">
+                                                {{"Free" | localize}}
+                                            </span>
+                                        </td>
                                         <td>
                                             <span class="ui-column-title">{{'IsTrialActive' | localize}}</span>
                                             <span *ngIf="record.trialDayCount">

@@ -244,18 +244,14 @@ namespace Zinlo.Auditing
                             entityPropertyChange.EntityChangeId
                         join user in _userRepository.GetAll() on entityChangeSet.UserId equals user.Id
                         where entityChange.EntityId == entityId && entityPropertyChange.OriginalValue != null
-                                                                     && entityPropertyChange.PropertyName !=
-                                                                     "LastModificationTime"
-                                                                     && entityPropertyChange.PropertyName != 
-                                                                     "LastModifierUserId"
-
-                                                                     && entityChange.EntityTypeFullName == entityFullName
+                                                                && entityChange.EntityTypeFullName == entityFullName
                         select new EntityPropertyHistory()
                         {
                             UserId = (long)entityChangeSet.UserId,
                             NewValue = entityPropertyChange.NewValue,
                             OriginalValue = entityPropertyChange.OriginalValue,
-                            PropertyName = entityPropertyChange.PropertyName
+                            PropertyName = entityPropertyChange.PropertyName,
+                            ChangeTime = entityChange.ChangeTime
                         };
             return query.ToListAsync();
         }
