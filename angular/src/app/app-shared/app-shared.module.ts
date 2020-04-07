@@ -4,7 +4,6 @@ import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';
 
 
 
-
 @NgModule({
   declarations: [
     FirstLetterOfWords
@@ -12,8 +11,8 @@ import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';
   imports: [
     CommonModule
   ],
-  exports: [
+  exports : [
     FirstLetterOfWords
   ]
 })
-export class SharedModule { }
+export class AppSharedModule { }

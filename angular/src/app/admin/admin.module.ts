@@ -85,13 +85,13 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
 import { DropdownModule } from 'primeng/dropdown';
 import { ImportLogComponent } from '../admin/importlog/importlog.component';
-import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';;
-
 
 // Metronic
 import { PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { PermissionTreeModalComponent } from './shared/permission-tree-modal.component';
 import { ManagementComponent } from './management/management.component';
+import { AppSharedModule } from '@app/app-shared/app-shared.module';
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
 };
@@ -126,7 +126,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         ImageCropperModule,
         PerfectScrollbarModule,
         DropdownModule,
-        FirstLetterOfWords
+        AppSharedModule
     ],
     declarations: [
         ManagementComponent,

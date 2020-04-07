@@ -46,7 +46,8 @@ import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized
 import { UsersComponent } from './users/users.component';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';;
+import { SharedModule } from 'primeng/components/common/shared';
+import { AppSharedModule } from '@app/app-shared/app-shared.module';
 
 
 
@@ -78,7 +79,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 NgSelectModule,
                 VirtualScrollerModule,
                 InfiniteScrollModule,
-                FirstLetterOfWords
+                SharedModule,
+                AppSharedModule
                 
         ],
         declarations: [
