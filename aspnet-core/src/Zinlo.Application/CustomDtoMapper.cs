@@ -46,6 +46,7 @@ using Zinlo.ChartsofAccount.Dtos;
 using Zinlo.Reconciliation.Dtos;
 using Zinlo.Reconciliation;
 using Zinlo.TimeManagements.Dto;
+using Zinlo.Versions.Dto;
 
 namespace Zinlo
 {
@@ -169,6 +170,7 @@ namespace Zinlo
 
             //Category
             configuration.CreateMap<CategoryDto, Category>().ReverseMap();
+            configuration.CreateMap<CreateOrEditVersion, Versions.Version>().ReverseMap();
             configuration.CreateMap<CreateOrEditCategoryDto, Category>().ReverseMap();
             configuration.CreateMap<GetCategoryForViewDto, Category>().ReverseMap()
                 .ForMember(dto=>dto.UserId, entity=> entity.MapFrom(p=>p.CreatorUserId))

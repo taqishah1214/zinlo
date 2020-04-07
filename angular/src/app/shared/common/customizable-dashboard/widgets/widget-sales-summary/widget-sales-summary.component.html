@@ -2,7 +2,7 @@
     <div class="kt-portlet__head">
         <div class="kt-portlet__head-label">
             <h3 class="kt-portlet__head-title">
-                Sales Summary
+                {{"WidgetSalesSummary" | localize}}
             </h3>
         </div>
         <div class="kt-portlet__head-toolbar" *ngIf="salesSummaryChart && !salesSummaryChart.loading">
@@ -35,7 +35,7 @@
         <div class="row list-separated text-center">
             <div class="col-md-3 col-sm-3 col-xs-6">
                 <h6>
-                    Total Sales
+                    {{"WidgetTotalSales" | localize}}
                 </h6>
                 <div>
                     <span counto class="kt-font-danger kt-font-bolder" [step]="30" [duration]="1"
@@ -48,7 +48,7 @@
             </div>
             <div class="col-md-3 col-sm-3 col-xs-6">
                 <h6>
-                    Revenue
+                    {{"Revenue" | localize}}
                 </h6>
                 <div class="uppercase font-hg font-green-haze">
                     <span counto class="kt-font-warning kt-font-bolder" [step]="30" [duration]="1"
@@ -61,7 +61,7 @@
             </div>
             <div class="col-md-3 col-sm-3 col-xs-6">
                 <h6>
-                    Expenses
+                    {{"Expenses" | localize}}
                 </h6>
                 <div class="uppercase font-hg font-purple">
                     <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"
@@ -74,7 +74,7 @@
             </div>
             <div class="col-md-3 col-sm-3 col-xs-6">
                 <h6>
-                    Growth
+                    {{"Growth" | localize}}
                 </h6>
                 <div class="uppercase font-hg font-blue-sharp">
                     <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"

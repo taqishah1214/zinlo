@@ -488,6 +488,22 @@ namespace Zinlo.Authorization.Users
             return userList.ToList();
         }
 
-
+        public async Task<List<GetAllUsersList>> GetAllUserList(string filter, int count)
+        {
+          var query = await UserManager.Users.WhereIf(!string.IsNullOrWhiteSpace(filter), e => e.FullName.Contains(filter)).ToListAsync();
+                var userList = (from o in query
+                                select new GetAllUsersList()
+                                {
+                                    id = o.Id,
+                                    Name = o.FullName,
+                                    ProfilePicture = o.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.ProfilePictureId).Result.ProfilePicture : "",
+                                    Status = o.IsActive,
+                                    Email = o.EmailAddress,
+                                    CreationTime = o.CreationTime,
+                                    UserName = o.UserName
+                                }).Take(count);
+                return userList.ToList();
+                       
+        }
     }
 }

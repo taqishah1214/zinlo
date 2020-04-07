@@ -30,5 +30,8 @@ namespace Zinlo.Authorization.Users
         Task<List<NameValueDto<long>>> UserDropDown();
 
         Task<List<UserListofCurrentTenantDto>> GetAllUsers();
+
+        Task<List<GetAllUsersList>> GetAllUserList(string filter , int count );
+
     }
 }

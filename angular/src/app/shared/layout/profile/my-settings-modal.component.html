@@ -66,7 +66,7 @@
                         <tab *ngIf="!isMultiTenancyEnabled || isTwoFactorLoginEnabledForApplication" heading="{{'TwoFactorLogin' | localize}}">
                             <div>
                                 <h4>
-                                    Google Authenticator
+                                    {{"Google Authenticator" | localize}}
                                 </h4>
 
                                 <div [hidden]="!isGoogleAuthenticatorEnabled">
@@ -77,7 +77,7 @@
                                         <img [src]="user.qrCodeSetupImageUrl" />
                                     </div>
                                     <small>
-                                        {{"GoogleAuthenticatorReferrerLink" | localize}}: <a href="https://support.google.com/accounts/answer/1066447" target="_blank" rel="noopener noreferrer">Google Authenticator</a>
+                                        {{"GoogleAuthenticatorReferrerLink" | localize}}: <a href="https://support.google.com/accounts/answer/1066447" target="_blank" rel="noopener noreferrer">{{"Google Authenticator" | localize}}</a>
                                     </small>
                                 </div>
 

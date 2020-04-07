@@ -15642,6 +15642,71 @@ export class UserServiceProxy {
         }
         return _observableOf<UserListofCurrentTenantDto[]>(<any>null);
     }
+
+    /**
+     * @param filter (optional) 
+     * @param count (optional) 
+     * @return Success
+     */
+    getAllUserList(filter: string | undefined, count: number | undefined): Observable<GetAllUsersList[]> {
+        let url_ = this.baseUrl + "/api/services/app/User/GetAllUserList?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (count === null)
+            throw new Error("The parameter 'count' cannot be null.");
+        else if (count !== undefined)
+            url_ += "count=" + encodeURIComponent("" + count) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllUserList(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllUserList(<any>response_);
+                } catch (e) {
+                    return <Observable<GetAllUsersList[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetAllUsersList[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllUserList(response: HttpResponseBase): Observable<GetAllUsersList[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetAllUsersList.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetAllUsersList[]>(<any>null);
+    }
 }
 
 @Injectable()
@@ -19139,6 +19204,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     noOfMonths!: number;
     dueOn!: number;
     endsOn!: moment.Moment;
+    dueDate!: moment.Moment;
     dayBeforeAfter!: DaysBeforeAfterDto;
     endOfMonth!: boolean;
     monthStatus!: boolean;
@@ -19177,6 +19243,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
             this.endsOn = data["endsOn"] ? moment(data["endsOn"].toString()) : <any>undefined;
+            this.dueDate = data["dueDate"] ? moment(data["dueDate"].toString()) : <any>undefined;
             this.dayBeforeAfter = data["dayBeforeAfter"];
             this.endOfMonth = data["endOfMonth"];
             this.monthStatus = data["monthStatus"];
@@ -19219,6 +19286,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
         data["endsOn"] = this.endsOn ? this.endsOn.toISOString() : <any>undefined;
+        data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
         data["dayBeforeAfter"] = this.dayBeforeAfter;
         data["endOfMonth"] = this.endOfMonth;
         data["monthStatus"] = this.monthStatus;
@@ -19250,6 +19318,7 @@ export interface IGetTaskForEditDto {
     noOfMonths: number;
     dueOn: number;
     endsOn: moment.Moment;
+    dueDate: moment.Moment;
     dayBeforeAfter: DaysBeforeAfterDto;
     endOfMonth: boolean;
     monthStatus: boolean;
@@ -30020,6 +30089,66 @@ export interface IUserListofCurrentTenantDto {
     id: number;
     name: string | undefined;
     profilePicture: string | undefined;
+}
+
+export class GetAllUsersList implements IGetAllUsersList {
+    id!: number;
+    name!: string | undefined;
+    profilePicture!: string | undefined;
+    status!: boolean;
+    email!: string | undefined;
+    creationTime!: moment.Moment;
+    userName!: string | undefined;
+
+    constructor(data?: IGetAllUsersList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.profilePicture = data["profilePicture"];
+            this.status = data["status"];
+            this.email = data["email"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.userName = data["userName"];
+        }
+    }
+
+    static fromJS(data: any): GetAllUsersList {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllUsersList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["profilePicture"] = this.profilePicture;
+        data["status"] = this.status;
+        data["email"] = this.email;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["userName"] = this.userName;
+        return data; 
+    }
+}
+
+export interface IGetAllUsersList {
+    id: number;
+    name: string | undefined;
+    profilePicture: string | undefined;
+    status: boolean;
+    email: string | undefined;
+    creationTime: moment.Moment;
+    userName: string | undefined;
 }
 
 export class LinkToUserInput implements ILinkToUserInput {

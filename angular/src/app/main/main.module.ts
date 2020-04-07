@@ -30,7 +30,6 @@ import { StatusComponent } from './checklist/status/status.component';
 import { EditTaskComponent } from './checklist/edit-task/edit-task.component';
 import { Checklist } from './checklist/checklist.component';;
 import { CreatetaskComponent } from './checklist/createtask/createtask.component'
-import { FirstLetterOfWords } from '@shared/customPipe/firstLetterOfWords';;
 import {Formater} from "@shared/customPipe/formatter"
 import { CreateOrEditAccountsubtypeComponent } from './account/accountsubtype/create-or-edit-accountsubtype/create-or-edit-accountsubtype.component';
 import { AccountsubtypeComponent } from './account/accountsubtype/accountsubtype.component';
@@ -46,6 +45,9 @@ import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-de
 import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component';;
 import { UsersComponent } from './users/users.component';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { SharedModule } from 'primeng/components/common/shared';
+import { AppSharedModule } from '@app/app-shared/app-shared.module';
 
 
 
@@ -75,7 +77,11 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 IgxCalendarModule,
                 UppyAngularModule,
                 NgSelectModule,
-                VirtualScrollerModule
+                VirtualScrollerModule,
+                InfiniteScrollModule,
+                SharedModule,
+                AppSharedModule
+                
         ],
         declarations: [
                 CategoriesComponent,
@@ -88,7 +94,6 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 TaskDetailsComponent,
                 StatusComponent,
                 EditTaskComponent,
-                FirstLetterOfWords,  
                 Formater,             
                 CreateOrEditAccountsubtypeComponent,
                 AccountsubtypeComponent,
@@ -102,7 +107,6 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 ItemizedDetailsComponent ,
                 AmortizedDetailsComponent ,
                 UsersComponent ,
-                
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
