@@ -1,7 +1,6 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using System;
-using System.Collections.Generic;
 using Abp.Auditing;
 using Zinlo.Authorization.Users;
 using Zinlo.Categories;
@@ -11,6 +10,10 @@ namespace Zinlo.ClosingChecklist
     [Audited]
     public class ClosingChecklist : FullAuditedEntity<long>, IMustHaveTenant
     {
+        [DisableAuditing]
+        public override DateTime? LastModificationTime { get; set; }
+        [DisableAuditing]
+        public override long? LastModifierUserId { get; set; }
         public virtual string TaskName { get; set; }
         public Category Category { get; set; }
         public virtual long CategoryId { get; set; }

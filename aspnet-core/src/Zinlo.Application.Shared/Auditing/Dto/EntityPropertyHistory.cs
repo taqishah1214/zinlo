@@ -1,3 +1,4 @@
+using System;
 using Abp.Application.Services.Dto;
 
 namespace Zinlo.Auditing.Dto
@@ -11,6 +12,7 @@ namespace Zinlo.Auditing.Dto
         public string OriginalValue { get; set; }
 
         public string PropertyName { get; set; }
+        public DateTime ChangeTime { get; set; }
 
     }
 }

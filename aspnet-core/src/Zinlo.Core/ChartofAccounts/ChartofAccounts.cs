@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Abp.Auditing;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using Zinlo.Authorization.Users;
@@ -7,8 +8,14 @@ using Zinlo.Authorization.Users;
 namespace Zinlo.ChartofAccounts
 {
     [Table("ChartofAccounts")]
+    [Audited]
     public class ChartofAccounts : FullAuditedEntity<long>, IMustHaveTenant
     {
+        [DisableAuditing]
+        public override DateTime? LastModificationTime { get; set; }
+        [DisableAuditing]
+        public override long? LastModifierUserId { get; set; }
+        [DisableAuditing]
         public int TenantId { get; set; }
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
@@ -23,6 +30,7 @@ namespace Zinlo.ChartofAccounts
         public double Balance { get; set; }
         public bool Lock { get; set; }
         public Decimal TrialBalance { get; set; }
+        [DisableAuditing]
         public long VersionId { get; set; }
         public DateTime ClosingMonth { get; set; }
     }
