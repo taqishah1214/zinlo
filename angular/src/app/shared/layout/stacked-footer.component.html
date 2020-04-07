@@ -8,7 +8,7 @@
                         <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=' + currentTheme.baseSettings.menu.asideSkin + '&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" height="38" />
                     </a>
                     <div class="kt-footer__copyright">
-                        Zinlo <span *ngIf="appSession.tenant && appSession.tenant.edition && appSession.tenant.edition.displayName"> {{appSession.tenant.edition.displayName}}</span> | v{{appSession.application.version}} [{{releaseDate}}]
+                        {{"Zinlo" | localize}} <span *ngIf="appSession.tenant && appSession.tenant.edition && appSession.tenant.edition.displayName"> {{appSession.tenant.edition.displayName}}</span> | v{{appSession.application.version}} [{{releaseDate}}]
                     </div>
                 </div>
                 <div class="kt-footer__menu">
