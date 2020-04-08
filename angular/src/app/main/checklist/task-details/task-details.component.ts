@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { UppyConfig } from 'uppy-angular';
-import { ClosingChecklistServiceProxy, AuditLogServiceProxy,AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto, DetailsClosingCheckListDto } from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy,CategoriesServiceProxy, AuditLogServiceProxy,AttachmentsServiceProxy, PostAttachmentsPathDto, CommentServiceProxy, CreateOrEditCommentDto, DetailsClosingCheckListDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 import { AppConsts } from '@shared/AppConsts';
@@ -44,7 +44,9 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     private _attachmentService: AttachmentsServiceProxy,
     private userInfo: UserInformation,
     private _auditLogService : AuditLogServiceProxy,
-    private userDate: UserDateService
+    private userDate: UserDateService,
+    private _categoriesService: CategoriesServiceProxy,
+    
   ) {
     super(injector);
   }
@@ -67,11 +69,23 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
         switch (element.propertyName) {
           case "AssigneeId":         
             element["result"] =  this.setAssigniHistoryParam(element)
-            debugger;
             break;
-          case "Status":          
+            case "Status":          
             element["result"] = this.setStatusHistoryParam(element)
             break;
+            case "TaskName":          
+            element["result"] = this.setTaskNameHistoryParam(element)
+            break;
+            case "DueDate":          
+            element["result"] = this.setDueDateHistoryParam(element)
+            break;
+            case "DayBeforeAfter":          
+            element["result"] = this.setDaysBeforeAfterHistoryParam(element)
+            break;
+            case "CategoryId":          
+            element["result"] = this.setDaysCategoryIdHistoryParam(element)
+            break;
+            
           default:
             console.log("not found");
             break;
@@ -79,11 +93,53 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
         ;
       });
     })
-    console.log("r", this.historyOfTask)
   }
 
   findTheUserFromList(id) : number{
   return this.users.findIndex(x => x.id === id);
+  }
+
+  setDaysCategoryIdHistoryParam(item){
+  let array : any = []
+   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+   array["NewValue"] = this.getCategoryTitleWithName(parseInt(item.newValue)); 
+   array["PreviousValue"] = this.getCategoryTitleWithName(parseInt(item.originalValue)); 
+   return array
+  }
+  
+  getCategoryTitleWithName(id) {
+    this._categoriesService.getCategoryForEdit(id).subscribe(resp => {
+      return resp.category.title;
+    })
+  }
+
+  getDaysBeforeAfterNameWith(id) {
+    switch (id) {
+      case 1:
+        return "None"
+      case 2:
+        return "DaysBefore"
+      case 3:
+        return "DaysAfter"
+      default:
+        return ""
+    }
+  }
+
+  setDaysBeforeAfterHistoryParam(item){
+    let array : any = []
+   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+   array["NewValue"] = this.getDaysBeforeAfterNameWith(parseInt(item.newValue)); 
+   array["PreviousValue"] = this.getDaysBeforeAfterNameWith(parseInt(item.originalValue)); 
+   return array
+  }
+  
+  setDueDateHistoryParam(item){
+    let array : any = []
+   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+   array["NewValue"] = item.newValue; 
+   array["PreviousValue"] = item.originalValue; 
+   return array
   }
 
  setAssigniHistoryParam(item){
@@ -96,10 +152,17 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
 
  setStatusHistoryParam(item){
   let array : any = []
-
   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
   array["NewValue"] = this.findStatusName(parseInt(item.newValue)); 
   array["PreviousValue"] = this.findStatusName(parseInt(item.originalValue)); 
+  return array
+}
+
+setTaskNameHistoryParam(item){
+  let array : any = []
+  array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] = item.newValue; 
+  array["PreviousValue"] = item.originalValue; 
   return array
 }
 
