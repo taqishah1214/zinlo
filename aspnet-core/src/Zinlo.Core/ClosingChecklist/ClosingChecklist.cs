@@ -25,8 +25,8 @@ namespace Zinlo.ClosingChecklist
         public int TenantId { get; set; }
         public string Instruction { get; set; }
         public int NoOfMonths { get; set; }
-        [DisableAuditing]
         public int DueOn { get; set; }
+        [DisableAuditing]
         public DateTime DueDate { get; set; }
         public DateTime? EndsOn { get; set; }
         public DaysBeforeAfter DayBeforeAfter { get; set; }

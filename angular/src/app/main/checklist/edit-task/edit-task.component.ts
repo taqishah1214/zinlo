@@ -287,7 +287,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     if (this.getTaskForEdit.endOfMonth) 
     {
       this.checklist.dayBeforeAfter = 1;
-      this.checklist.dueOn = 1;
+      this.checklist.dueOn = 0;
     }
     this.checklist.dayBeforeAfter = this.getTaskForEdit.dayBeforeAfter
     this.checklist.groupId = this.getTaskForEdit.groupId;

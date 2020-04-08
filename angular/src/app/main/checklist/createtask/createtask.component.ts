@@ -103,7 +103,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   }
   handleRadioChange() {
     this.daysBeforeAfter = 1;
-    this.checklist.dueOn= 1;
+    this.checklist.dueOn= 0;
     this.checklist.endOfMonth=true;
     this.isChecked = false;
     this.SelectionMsg = "\xa0"
@@ -128,15 +128,13 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
 
 
   onCreateTask(): void {
-    debugger
      if (this.checklist.endOfMonth) {
       this.checklist.dayBeforeAfter = 1;
-      this.checklist.dueOn = 1;
+      this.checklist.dueOn = 0;
     }
     else {
       this.checklist.dayBeforeAfter = this.daysBeforeAfter;
       this.checklist.endOfMonth = false;
-      this.checklist.dueOn = 1;
     }
 
     this.checklist.dueOn = Number(this.checklist.dueOn);
