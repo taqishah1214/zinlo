@@ -91,18 +91,6 @@
                                 <div class="kt-widget3 ">
                                     <div *ngFor="let i of historyOfTask" class="kt-widget3__item ">
                                         <div class="comments-header kt-widget3__header">
-                                            <!-- <div class="kt-widget3__user-img">
-                                                <div *ngIf="i.result.ChangeOccurUser.profilePicture" class="kt-badge kt-badge--xl">
-                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                        alt="Pic" [src]="UserProfilePicture">
-                                                </div>
-
-                                                <div *ngIf="!i.result.ChangeOccurUser.profilePicture" class="kt-user-card-v2__pic">
-                                                    <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                       
-                                                    </div>
-                                                </div>
-                                            </div> -->
 
                                             <div class="kt-user-card-v2__pic">
                                                 <!-- <div *ngIf="i.result.ChangeOccurUser.profilePicture" class="kt-badge kt-badge--xl">
@@ -122,31 +110,66 @@
                                                 </a><br>
                                             </div>
                                             <span class="kt-widget3__status kt-font-info">
-                                                {{i.changeTime | momentFormat:' YYYY-MMMM-DD HH:mm:ss'}}
+                                                {{i.changeTime | momentFormat:' YYYY MMMM DD HH:mm:ss'}}
                                             </span>
                                         </div>
                                          <div *ngIf="i.propertyName == 'AssigneeId'" class="kt-widget3__body show-comments-inner">
-                                            <p class="kt-widget3__text commentViewBox">
-                                               {{i.result.ChangeOccurUser.name}} change the Assignee                                               
-                                            </p>
+                                            <div class="work-info-inner2">
+                                                <div class="work-info-container">
+                                                    <div class="work-info-container-inner1">
+                                                        <span>{{i.result.ChangeOccurUser.name}} changes the Assignee </span>
+                                                    </div>
+                                                    <span class="arrow"> </span>
+                                                    <div class="work-info-container-inner2">
+                                                        <div class="kt-widget3__user-img">
+                                                        <div class="kt-user-card-v2__pic">
+                                                            <div
+                                                            class="kt-badge kt-badge--xl kt-badge--danger">
+                                                                {{i.result.PreviousValue.name | firstLetterOfWords}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        <span class="arrow">-></span>
+                                                        <div class="kt-widget3__user-img">
+                                                        <div class="kt-user-card-v2__pic">
+                                                            <div
+                                                            class="kt-badge kt-badge--xl kt-badge--warning">
+                                                                {{i.result.NewValue.name | firstLetterOfWords}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+
+
+
                                             
                                         </div>
 
                                         <div *ngIf="i.propertyName == 'Status'" class="kt-widget3__body show-comments-inner"style="width:100%">
                                            
 
-                                                <div class="col-md-3 pt-3">
-                                                    <span class="">{{i.result.ChangeOccurUser.name}} Changed the Status</span>
+                                                <div class="work-info-inner2">
+                                                    <div class="work-info-container">
+                                                        <div class="work-info-container-inner1">
+                                                            <span>{{i.result.ChangeOccurUser.name}} changes the Status </span>
+                                                        </div>
+                                                        <span class="arrow">    </span>
+                                                        <div class="work-info-container-inner2">
+                                                            <div class="tdata-box">
+
+                                                                <span class="kt-badge  kt-badge--primary kt-badge--inline kt-badge--pill"> {{i.result.PreviousValue}}</span>
+
+                                                          </div>
+                                                          <span class="arrow">-></span>
+                                                          <div class="tdata-box">
+                                                            <span class="kt-badge  kt-badge--danger kt-badge--inline kt-badge--pill">{{i.result.NewValue}}</span>
+                                                          </div>
+                                                        </div> 
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <button class="btn btn-primary text-white px-5">
-                                                        {{i.result.PreviousValue}}
-                                                    </button>
-                                                    <i class="fas fa-arrow-right py-2 mx-3" style="size:30px;"></i>
-                                                    <button class="btn btn-primary text-white px-5">
-                                                        {{i.result.NewValue}}
-                                                    </button>
-                                                </div>
+
                                         </div> 
 
                                     </div>
