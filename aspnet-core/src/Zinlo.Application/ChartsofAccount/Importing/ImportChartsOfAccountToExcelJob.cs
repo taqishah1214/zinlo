@@ -191,8 +191,7 @@ namespace Zinlo.ChartsofAccount
         private async Task CreateChartsOfAccountAsync(ChartsOfAccountsExcellImportDto input)
         {
             var tenantId = CurrentUnitOfWork.GetTenantId();
-            var allData =  _chartsOfAccountsrepository.GetAllListAsync().Result.Where(x=>x.IsDeleted == false).ToList();
-            var result = allData.Where(a => a.AccountNumber.ToLower() == input.AccountNumber.ToLower()).FirstOrDefault();
+            var result = await _chartsOfAccountsrepository.FirstOrDefaultAsync(a => a.AccountNumber.ToLower() == input.AccountNumber.ToLower());
             if (result != null)
             {
                 result.TenantId = (int)tenantId;
@@ -353,7 +352,7 @@ namespace Zinlo.ChartsofAccount
         public ChartsOfAccountsExcellImportDto CheckReconciliationTypeErrors(ChartsOfAccountsExcellImportDto input)
         {
             bool result = false;
-            string[] strReconciledArray = { "netamount", "beginningamount", "accruedamount" };
+            string[] strReconciledArray = { "netamount", "beginningamount", "accruedamount" }; 
             if (!string.IsNullOrEmpty(input.ReconciliationType))
             {
                 if (input.ReconciliationType.Trim().ToLower() == "amortization")
@@ -367,10 +366,7 @@ namespace Zinlo.ChartsofAccount
                 input.Exception += _localizationSource.GetString("ReconcilationError");
                 return input;
             }
-            else
-            {
-                return input;
-            }
+            return input;
         }
         public ChartsOfAccountsExcellImportDto CheckAssignee(ChartsOfAccountsExcellImportDto input)
         {

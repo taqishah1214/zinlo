@@ -9,6 +9,7 @@ using Abp.AspNetZeroCore.Web.Authentication.External.OpenIdConnect;
 using Abp.AspNetZeroCore.Web.Authentication.External.WsFederation;
 using Abp.Configuration.Startup;
 using Abp.Dependency;
+using Abp.Hangfire.Configuration;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Abp.Threading.BackgroundWorkers;
@@ -42,6 +43,7 @@ namespace Zinlo.Web.Startup
             Configuration.MultiTenancy.TenantIdResolveKey = "Abp-TenantId";
             Configuration.MultiTenancy.Resolvers.Insert(0, typeof(DomainTenantResolveContributor));
             Configuration.Modules.AspNetZero().LicenseCode = _appConfiguration["AbpZeroLicenseCode"];
+            Configuration.BackgroundJobs.UseHangfire();
         }
 
         public override void Initialize()
