@@ -106,7 +106,7 @@ namespace Zinlo.ClosingChecklist
                     ProfilePicture = y.ProfilePicture,
                 }
                 )
-            }).OrderBy(x => x.DueDate);
+            });
 
 
             return new PagedResultDto<TasksGroup>(
