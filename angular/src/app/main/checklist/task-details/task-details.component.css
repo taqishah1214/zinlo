@@ -70,6 +70,7 @@
 
 .show-comments{
     margin-top: 10px;
+    width:100% !important;
 }
 .statusBox {
     width: 114% !important;
