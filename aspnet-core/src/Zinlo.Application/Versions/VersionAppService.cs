@@ -36,8 +36,11 @@ namespace Zinlo.Versions
         public async Task<bool> ActiveVersion(long id)
         {
             var getInActiveVersion = await _versionRepository.FirstOrDefaultAsync(p => p.Id == id);
-            var getActiveVersion = GetActiveVersion((int)getInActiveVersion.Type,getInActiveVersion.TypeId);
-            getInActiveVersion.Active = false;
+            var getActiveVersion = await _versionRepository.FirstOrDefaultAsync(p=>p.Active && p.TypeId == getInActiveVersion.TypeId && p.Type == getInActiveVersion.Type);
+            getInActiveVersion.Active = true;
+            getActiveVersion.Active = false;
+            await _versionRepository.UpdateAsync(getInActiveVersion);
+            await _versionRepository.UpdateAsync(getActiveVersion);
             return true;
 
 
