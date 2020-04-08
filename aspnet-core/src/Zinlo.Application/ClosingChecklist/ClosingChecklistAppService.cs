@@ -106,7 +106,7 @@ namespace Zinlo.ClosingChecklist
                     ProfilePicture = y.ProfilePicture,
                 }
                 )
-            }).OrderBy(x => x.DueDate);
+            });
 
 
             return new PagedResultDto<TasksGroup>(
@@ -141,7 +141,7 @@ namespace Zinlo.ClosingChecklist
                     var taskList = _closingChecklistRepository.GetAll().Where(p => p.GroupId == input.GroupId).ToList();
                     foreach (var task in taskList)
                     {
-                        var checkManagementExist = _managementsAppService.CheckManagementExist(task.ClosingMonth).Result;
+                        var checkManagementExist = await _managementsAppService.CheckManagementExist(task.ClosingMonth);
                         if (!checkManagementExist)
                         {
                             var managementDto = new CreateOrEditTimeManagementDto
@@ -180,7 +180,7 @@ namespace Zinlo.ClosingChecklist
                 oldGroupId = input.GroupId;
                 forEdit = true;
             }
-            if (input.EndOfMonth) input.DueOn = 1;
+            if (input.EndOfMonth) input.DueOn = 0;
             switch (input.Frequency)
             {
                 case FrequencyDto.None:
