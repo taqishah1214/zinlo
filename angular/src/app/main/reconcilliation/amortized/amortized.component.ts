@@ -47,6 +47,7 @@ export class AmortizedComponent extends AppComponentBase {
   CreateTimeManagementDto : CreateOrEditTimeManagementDto = new CreateOrEditTimeManagementDto();
   postedCommentList : any =[]
   comment : any = ""
+  reconciliedBase : any
 
   constructor(
     injector: Injector,
@@ -100,6 +101,7 @@ export class AmortizedComponent extends AppComponentBase {
     this.begininngAmount = j.totalBeginningAmount;
     this.accuredAmount= j.totalAccuredAmortization;
     this.netAmount = j.totalNetAmount;
+    this.reconciliedBase = j.reconciliedBase
     switch (j.reconciliedBase) {
       case 1:
         this.trialBalanceNet = j.totalTrialBalance
@@ -210,5 +212,38 @@ BackToReconcileList() {
   onCancelComment(): void {
     this.commantBox = true;
   }
+
+  reconciliedAccount() {
+    this.message.confirm(
+      'The variance is equal to 0. Do you want to reconciled this account',
+       "",
+      (isConfirmed) => {
+        if (isConfirmed) {
+          this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
+            this.notify.success(this.l('Account is successfully reconciled.'));
+            this._router.navigate(['/app/main/reconcilliation']);
+           })      
+        }
+      }
+    );
+  }
+
+
+  reconciledClick() {
+    if (this.varianceBeginning == 0 && this.varianceAccured == 0){
+     this.reconciliedAccount()
+    }
+    else if (this.varianceNet ==0 && this.reconciliedBase== 1)
+    {
+      this.reconciliedAccount()
+    }
+    else {
+      this.notify.error(this.l('Variance is not equal 0. So you cannot reconciled this account'));
+
+    }
+
+  }
+
+
 
 }
