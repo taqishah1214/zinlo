@@ -353,7 +353,7 @@ namespace Zinlo.ChartsofAccount
         public ChartsOfAccountsExcellImportDto CheckReconciliationTypeErrors(ChartsOfAccountsExcellImportDto input)
         {
             bool result = false;
-            string[] strReconciledArray = { "netamount", "beginningamount", "accruedamount" };
+            string[] strReconciledArray = { "netamount", "beginningamount", "accruedamount" }; 
             if (!string.IsNullOrEmpty(input.ReconciliationType))
             {
                 if (input.ReconciliationType.Trim().ToLower() == "amortization")
@@ -369,6 +369,7 @@ namespace Zinlo.ChartsofAccount
             }
             else
             {
+                input.ReconciliationAs = "";
                 return input;
             }
         }
