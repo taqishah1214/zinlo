@@ -220,7 +220,7 @@ BackToReconcileList() {
       (isConfirmed) => {
         if (isConfirmed) {
           this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
-            this.notify.success(this.l('Account is successfully reconciled.'));
+            this.notify.success(this.l('Variance is equal to 0, hence the account is reconciled'));
             this._router.navigate(['/app/main/reconcilliation']);
            })      
         }
@@ -238,7 +238,7 @@ BackToReconcileList() {
       this.reconciliedAccount()
     }
     else {
-      this.notify.error(this.l('Variance is not equal 0. So you cannot reconciled this account'));
+      this.notify.error(this.l('Variance is not equal to 0, hence the account is not reconciled'));
 
     }
 
