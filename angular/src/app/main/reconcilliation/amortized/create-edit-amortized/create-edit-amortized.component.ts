@@ -161,14 +161,15 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
 
   onSubmit(): void {
     this.amortizationDto.chartsofAccountId = this.accountId;
-    if (this.amortrizedItemId != 0)
-    {
-      this.updateAmortizedItem()
+    if(this.validationCheck()){
+      if (this.amortrizedItemId != 0)
+      {
+        this.updateAmortizedItem()
+      }
+      else{
+        this.createAmortizedItem()
+      }
     }
-    else{
-      this.createAmortizedItem()
-    }
-    
   }
 
 
@@ -206,7 +207,39 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     }) 
   }
 
- 
+  validationCheck() {
+    if(this.amortizationDto.inoviceNo == null)
+     {
+      this.notify.error("Select the Invoice Number")
+      return false;
+     }
+     else if(this.amortizationDto.journalEntryNo == null)
+     {
+      this.notify.error("Select the Journal Entry Number")
+      return false;
+     }
+     else if(this.amortizationDto.startDate == null)
+     {
+      this.notify.error("Select the Start Date")
+      return false;
+     }
+     else if(this.amortizationDto.endDate == null)
+     {
+      this.notify.error("Select the End Date")
+      return false;
+     }
+     else if(this.amortizationDto.amount == null)
+     {
+      this.notify.error("Select the Amount")
+      return false;
+     }
+     else if(this.amortizationDto.accomulateAmount == null)
+     {
+      this.notify.error("Select the Accomulate Amount")
+      return false;
+     }
+     return true;
+    }
   fileUploadedResponse(value): void {
     var response = value.successful
     response.forEach(i => {
