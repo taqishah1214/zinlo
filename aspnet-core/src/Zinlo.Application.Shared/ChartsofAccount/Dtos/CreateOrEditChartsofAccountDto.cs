@@ -3,7 +3,7 @@ using System;
 
 namespace Zinlo.ChartsofAccount.Dtos
 {
-    public class CreateOrEditChartsofAccountDto : CreationAuditedEntityDto<int>
+    public class CreateOrEditChartsofAccountDto : CreationAuditedEntityDto<long>
     {
         public virtual string AccountName { get; set; }
         public virtual string AccountNumber { get; set; }

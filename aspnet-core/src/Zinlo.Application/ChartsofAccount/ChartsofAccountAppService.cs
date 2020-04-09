@@ -112,6 +112,7 @@ namespace Zinlo.ChartsofAccount
         protected virtual async Task<long> Update(CreateOrEditChartsofAccountDto input)
         {
             var account = await _chartsofAccountRepository.FirstOrDefaultAsync(input.Id);
+            input.CreationTime = account.CreationTime;
 
             if ((int)account.ReconciliationType != (int)input.ReconciliationType)
             {
@@ -178,6 +179,9 @@ namespace Zinlo.ChartsofAccount
             mappedAccount.AccountName = account.AccountName;
             mappedAccount.AccountNumber = account.AccountNumber;
             mappedAccount.ReconciledId = (int)account.Reconciled;
+            mappedAccount.ClosingMonth = account.ClosingMonth;
+            mappedAccount.CreatorUserId = account.CreatorUserId;
+            mappedAccount.CreationTime = account.CreationTime;
             return mappedAccount;
         }
 

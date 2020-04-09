@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Abp.Domain.Entities.Auditing;
 
 namespace Zinlo.ChartsofAccount.Dtos
 {
-    public class GetAccountForEditDto
+    public class GetAccountForEditDto : CreationAuditedEntity<long>
     {
-        public long Id { get; set; }
         public string  AccountName { get; set; }
         public string AccountNumber { get; set; }
         public string  AccountSubType { get; set; }
@@ -15,7 +15,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         public int ReconcillationType { get; set; }
         public int AccountType { get; set; }
         public long AccountSubTypeId { get; set; }
-
+        public DateTime ClosingMonth { get; set; }
         public int ReconciledId  { get; set; }
     }
 }
