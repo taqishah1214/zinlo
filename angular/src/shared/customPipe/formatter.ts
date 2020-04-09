@@ -7,6 +7,6 @@ export class Formater implements PipeTransform
 {
     transform(value: any, args: any[]): any {
         if (!value) { return ''; }
-        return new Intl.NumberFormat('en-IN').format(value);
+        return new Intl.NumberFormat('en-IN',{maximumSignificantDigits: 15 }).format(value);
       }
 }
