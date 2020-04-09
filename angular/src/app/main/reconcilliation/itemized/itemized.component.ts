@@ -188,4 +188,28 @@ BackToReconcileList() {
     this.comment = "";
   }
 
+  reconciledClick() {
+    if ( this.variance == 0) {
+
+      this.message.confirm(
+        'The variance is equal to 0. Do you want to reconciled this account',
+         "",
+        (isConfirmed) => {
+          if (isConfirmed) {
+            this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
+              this.notify.success(this.l('Variance is equal to 0, hence the account is reconciled.'));
+              this._router.navigate(['/app/main/reconcilliation']);
+             })      
+          }
+        }
+      );
+
+    }
+    else
+    {
+      this.notify.error(this.l('Variance is not equal to 0, hence the account is not reconciled'));
+    }
+
+  }
+
 }
