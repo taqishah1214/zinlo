@@ -54,6 +54,7 @@ export class ItemizedComponent extends AppComponentBase {
   historyList : any =[];
   AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
   userSignInName: string;
+  StatusColorBox: any = ["bg-blue", "bg-sea-green", "bg-gray"]
 
 
   constructor(
@@ -244,8 +245,6 @@ BackToReconcileList() {
 
 
   onChangeCommentOrHistory(value){
-    console.log(this.historyOfTask)
-    debugger;
     if (value == 1)
    {
     this.commentShow = true
@@ -255,8 +254,9 @@ BackToReconcileList() {
   }
 
   getAuditLogOfAccount() {
-    this._auditLogService.getEntityHistory("1".toString(), "Zinlo.ClosingChecklist.ClosingChecklist").subscribe(resp => {
+    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts").subscribe(resp => {
       this.historyOfTask = resp
+      debugger
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
           case "AssigneeId":         
@@ -265,21 +265,13 @@ BackToReconcileList() {
             case "Status":          
             element["result"] = this.setStatusHistoryParam(element)
             break;
-            case "TaskName":          
-            element["result"] = this.setTaskNameHistoryParam(element)
+            case "AccountName":          
+            element["result"] = this.setAccountNameHistoryParam(element)
             break;
-            case "DueDate":          
-            element["result"] = this.setDueDateHistoryParam(element)
+            case "AccountType":          
+            element["result"] = this.setAccountTypeHistoryParam(element)
             break;
-            case "DayBeforeAfter":          
-            element["result"] = this.setDaysBeforeAfterHistoryParam(element)
-            break;
-            case "CategoryId":          
-            element["result"] = this.setDaysCategoryIdHistoryParam(element)
-            debugger;
-            break;
-            
-          default:
+            default:
             console.log("not found");
             break;
         }
@@ -298,51 +290,14 @@ BackToReconcileList() {
   return this.users.findIndex(x => x.id === id);
   }
 
-  setDaysCategoryIdHistoryParam(item){
-  let array : any = []
-   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
-   array["NewValue"] = this.getCategoryTitleWithName(parseInt(item.newValue)); 
-   array["PreviousValue"] = this.getCategoryTitleWithName(parseInt(item.originalValue)); 
-   debugger;
-   return array
-  }
-
-  getRandomNo() {
-    let a =  Math.random() * (6 - 0) + 0;
-    return ;
-  }
   
- async getCategoryTitleWithName(id) {
-   return ""
-  }
-
-  getDaysBeforeAfterNameWith(id) {
-    switch (id) {
-      case 1:
-        return "None"
-      case 2:
-        return "DaysBefore"
-      case 3:
-        return "DaysAfter"
-      default:
-        return ""
-    }
-  }
-
-  setDaysBeforeAfterHistoryParam(item){
-    let array : any = []
-   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
-   array["NewValue"] = this.getDaysBeforeAfterNameWith(parseInt(item.newValue)); 
-   array["PreviousValue"] = this.getDaysBeforeAfterNameWith(parseInt(item.originalValue)); 
-   return array
-  }
   
-  setDueDateHistoryParam(item){
+  setAccountTypeHistoryParam(item){
     let array : any = []
-   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
-   array["NewValue"] = item.newValue; 
-   array["PreviousValue"] = item.originalValue; 
-   return array
+    array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+    array["NewValue"] = this.findAccountTypeName(parseInt(item.newValue)); 
+    array["PreviousValue"] = this.findAccountTypeName(parseInt(item.originalValue)); 
+    return array
   }
 
  setAssigniHistoryParam(item,index){
@@ -359,11 +314,13 @@ BackToReconcileList() {
   let array : any = []
   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
   array["NewValue"] = this.findStatusName(parseInt(item.newValue)); 
+  array["NewValueColor"] = this.findStatusColor(parseInt(item.newValue)); 
   array["PreviousValue"] = this.findStatusName(parseInt(item.originalValue)); 
+  array["PreviousColor"] = this.findStatusColor(parseInt(item.originalValue)); 
   return array
 }
 
-setTaskNameHistoryParam(item){
+setAccountNameHistoryParam(item){
   let array : any = []
   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
   array["NewValue"] = item.newValue; 
@@ -375,19 +332,45 @@ setTaskNameHistoryParam(item){
 
     switch (value) {
       case 1:
-        return "Not Started"
-      case 2:
         return "In Process"
+      case 2:
+        return "Open"
       case 3:
-        return "On Hold"
-      case 4:
-        return "Completed"
+        return "Complete"
       default:
         return ""
     }
 
   }
 
+  findStatusColor(id) :string {
+    if (id == 1) {
+      return this.StatusColorBox[0]
+    }
+    else if (id == 2) {
+      return this.StatusColorBox[2]
+    }
+    else if (id == 3) {
+      return this.StatusColorBox[1]
+    }
+  }
+
+  findAccountTypeName(value) :string
+  {
+
+
+    switch (value) {
+      case 1:
+        return "Equity"
+      case 2:
+        return "Assets"
+      case 3:
+        return "Liability"
+      default:
+        return ""
+    }
+
+  }
 
 
 

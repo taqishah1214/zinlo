@@ -248,16 +248,15 @@
                                             <div class="mb-2 notification-line1">
                                                 <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>{{i.propertyName}}</span> {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
                                             </div>
-                                            <div>
-                                                <span class="kt-badge kt-badge--brand kt-badge--inline">{{i.result.PreviousValue}}</span>
+                                            <div> 
+                                                <span class="statusWidth border-0 {{i.result.PreviousColor}} text-white">{{i.result.PreviousValue}}</span>
                                                 <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2">
-                                                <span class="kt-badge kt-badge--success kt-badge--inline">{{i.result.NewValue}}</span>
-
+                                                <span class="statusWidth border-0 {{i.result.NewValueColor}} text-white">{{i.result.NewValue}}</span>
                                             </div>
                                         </div>
                                     </div>
                                                             
-                                    <div *ngIf="i.propertyName == 'TaskName' || i.propertyName == 'DayBeforeAfter' || i.propertyName == 'DueDate'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                    <div *ngIf="i.propertyName == 'AccountName' || i.propertyName == 'AccountName'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
                                         <div class="activity-inner-a mb-3">
                                             <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
                                         </div>
@@ -265,12 +264,6 @@
                                             <div class="mb-2 notification-line1">
                                                 <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>{{i.propertyName}}</span> {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
                                             </div>
-                                            <div *ngIf="i.propertyName == 'DueDate'">
-                                                <span class="text-lightgrey">{{i.result.PreviousValue  | momentFormat:' MMMM YYYY'}}</span>
-                                                <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2">
-                                                <span>{{i.result.NewValue | momentFormat:' MMMM YYYY'}}</span>
-                                            </div>
-
                                             <div>
                                                 <span class="text-lightgrey">{{i.result.PreviousValue}}</span>
                                                 <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2">

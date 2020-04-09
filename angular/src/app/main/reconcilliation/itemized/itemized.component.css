@@ -1311,7 +1311,13 @@
     height: 250px;
     overflow: scroll;
     }
-
+.statusWidth{
+    width: 100px;
+    align-items: center;
+    height: 25px;
+    border-radius: 5px;
+    text-align: center;
+}
     /*Pre used classes*/
     .bg-lightgrey{
         background-color: #f1f2fc!important;
