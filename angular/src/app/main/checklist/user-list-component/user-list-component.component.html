@@ -1,5 +1,5 @@
 <div class="form-group search-field">
-    <ng-select [disabled]="disable"  bindLabel="name" placeholder="Search users" appendTo="body" [searchable]="true" [clearable]="true"
+    <ng-select [disabled]="disable"  bindLabel="name" placeholder="Search users"  [searchable]="true" [clearable]="true"
          [(ngModel)]="input" name="input" (change) = "userOnChange($event)">
         <ng-option [value]="item.id" *ngFor="let item of users">
             <img *ngIf="item.picture" class="imagedropdown" src="{{item.picture}}"/>
