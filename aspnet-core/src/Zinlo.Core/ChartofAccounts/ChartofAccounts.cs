@@ -17,6 +17,7 @@ namespace Zinlo.ChartofAccounts
         public override long? LastModifierUserId { get; set; }
         [DisableAuditing]
         public int TenantId { get; set; }
+        [DisableAuditing]
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
         public AccountType AccountType { get; set; }
@@ -24,14 +25,19 @@ namespace Zinlo.ChartofAccounts
         public long AssigneeId { get; set; }
         public virtual User Assignee { get; set; }
         public long AccountSubTypeId { get; set; }
+        //
         public Status Status { get; set; }
         public virtual AccountSubType.AccountSubType AccountSubType { get; set; }
         public Reconciled Reconciled { get; set; }
+        [DisableAuditing]
         public double Balance { get; set; }
+        [DisableAuditing]
         public bool Lock { get; set; }
+        [DisableAuditing]
         public Decimal TrialBalance { get; set; }
         [DisableAuditing]
         public long VersionId { get; set; }
+        [DisableAuditing]
         public DateTime ClosingMonth { get; set; }
     }
     public enum ReconciliationType

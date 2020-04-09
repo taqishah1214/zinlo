@@ -18746,7 +18746,6 @@ export interface ICreateOrEditChartsofAccountDto {
 }
 
 export class GetAccountForEditDto implements IGetAccountForEditDto {
-    id!: number;
     accountName!: string | undefined;
     accountNumber!: string | undefined;
     accountSubType!: string | undefined;
@@ -18755,7 +18754,11 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
     reconcillationType!: number;
     accountType!: number;
     accountSubTypeId!: number;
+    closingMonth!: moment.Moment;
     reconciledId!: number;
+    creationTime!: moment.Moment;
+    creatorUserId!: number | undefined;
+    id!: number;
 
     constructor(data?: IGetAccountForEditDto) {
         if (data) {
@@ -18768,7 +18771,6 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
 
     init(data?: any) {
         if (data) {
-            this.id = data["id"];
             this.accountName = data["accountName"];
             this.accountNumber = data["accountNumber"];
             this.accountSubType = data["accountSubType"];
@@ -18777,7 +18779,11 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
             this.reconcillationType = data["reconcillationType"];
             this.accountType = data["accountType"];
             this.accountSubTypeId = data["accountSubTypeId"];
+            this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.reconciledId = data["reconciledId"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = data["creatorUserId"];
+            this.id = data["id"];
         }
     }
 
@@ -18790,7 +18796,6 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
         data["accountName"] = this.accountName;
         data["accountNumber"] = this.accountNumber;
         data["accountSubType"] = this.accountSubType;
@@ -18799,13 +18804,16 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
         data["reconcillationType"] = this.reconcillationType;
         data["accountType"] = this.accountType;
         data["accountSubTypeId"] = this.accountSubTypeId;
+        data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["reconciledId"] = this.reconciledId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["id"] = this.id;
         return data; 
     }
 }
 
 export interface IGetAccountForEditDto {
-    id: number;
     accountName: string | undefined;
     accountNumber: string | undefined;
     accountSubType: string | undefined;
@@ -18814,7 +18822,11 @@ export interface IGetAccountForEditDto {
     reconcillationType: number;
     accountType: number;
     accountSubTypeId: number;
+    closingMonth: moment.Moment;
     reconciledId: number;
+    creationTime: moment.Moment;
+    creatorUserId: number | undefined;
+    id: number;
 }
 
 export class ChartsOfAccountsTrialBalanceExcellImportDto implements IChartsOfAccountsTrialBalanceExcellImportDto {
