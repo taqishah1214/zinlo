@@ -43,7 +43,6 @@ import { ItemizedComponent } from './reconcilliation/itemized/itemized.component
 import { AmortizedComponent } from './reconcilliation/amortized/amortized.component';;
 import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-details/itemized-details.component';
 import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component';;
-import { UsersComponent } from './users/users.component';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SharedModule } from 'primeng/components/common/shared';
@@ -106,7 +105,6 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 AmortizedComponent ,
                 ItemizedDetailsComponent ,
                 AmortizedDetailsComponent ,
-                UsersComponent ,
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
