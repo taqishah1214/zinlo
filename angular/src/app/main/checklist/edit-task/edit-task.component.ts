@@ -9,6 +9,7 @@ import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 import { AppConsts } from '@shared/AppConsts';
 import { StatusComponent } from '../status/status.component';
 import { finalize } from 'rxjs/operators';
+import { add, subtract } from 'add-subtract-date';
 @Component({
   selector: 'app-edit-task',
   templateUrl: './edit-task.component.html',
@@ -306,6 +307,12 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     else
     {
       this.checklist.status = this.getTaskForEdit.statusId;
+    }
+    if(this.checklist.frequency == 5){
+      this.checklist.endsOn = null;
+    }
+    else{
+      this.checklist.endsOn = add(this.checklist.endsOn, 2, "day")
     }
     this.checklist.id = this.taskId;
     if (this.attachmentPaths != null) {

@@ -88,7 +88,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = false;
     this.checklist.assigneeId = 0;
     this.checklist.dueOn =1;
-    debugger
     if(history.state.data.createOrDuplicate != undefined){
       this.createOrDuplicate = history.state.data.createOrDuplicate;
       this.checklist.taskName = history.state.data.title;
@@ -128,6 +127,12 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
 
 
   onCreateTask(): void {
+    if(this.checklist.frequency == 5){
+      this.checklist.endsOn = null;
+    }
+    else{
+      this.checklist.endsOn = add(this.checklist.endsOn, 2, "day")
+    }
      if (this.checklist.endOfMonth) {
       this.checklist.dayBeforeAfter = 1;
       this.checklist.dueOn = 0;
@@ -136,7 +141,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.checklist.dayBeforeAfter = this.daysBeforeAfter;
       this.checklist.endOfMonth = false;
     }
-
+    this.checklist.endsOn =add(this.checklist.endsOn, 2, "day")
     this.checklist.dueOn = Number(this.checklist.dueOn);
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1

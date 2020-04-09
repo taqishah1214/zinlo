@@ -10,6 +10,12 @@
 
 }
 
+body {
+    position: relative;
+}
+::ng-deep ng-dropdown-panel {
+    transition: opacity 0.1s linear;
+}
 .imagedropdown{
     width:25px;
      height:25px;

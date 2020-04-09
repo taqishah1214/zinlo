@@ -35,6 +35,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   users : any = [];
   commentShow = true;
   historyList : any =[];
+  AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
 
 
   constructor(
@@ -69,7 +70,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
           case "AssigneeId":         
-            element["result"] =  this.setAssigniHistoryParam(element)
+            element["result"] =  this.setAssigniHistoryParam(element,index)
             break;
             case "Status":          
             element["result"] = this.setStatusHistoryParam(element)
@@ -85,6 +86,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
             break;
             case "CategoryId":          
             element["result"] = this.setDaysCategoryIdHistoryParam(element)
+            debugger;
             break;
             
           default:
@@ -96,6 +98,12 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     })
   }
 
+
+  
+
+
+
+
   findTheUserFromList(id) : number{
   return this.users.findIndex(x => x.id === id);
   }
@@ -105,11 +113,18 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
    array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
    array["NewValue"] = this.getCategoryTitleWithName(parseInt(item.newValue)); 
    array["PreviousValue"] = this.getCategoryTitleWithName(parseInt(item.originalValue)); 
+   debugger;
    return array
   }
+
+  getRandomNo() {
+    let a =  Math.random() * (6 - 0) + 0;
+    return ;
+  }
   
-  getCategoryTitleWithName(id) {
-    this._categoriesService.getCategoryForEdit(id).subscribe(resp => {
+ async getCategoryTitleWithName(id) {
+    await this._categoriesService.getCategoryForEdit(id).subscribe(resp => {
+      debugger;
       return resp.category.title;
     })
   }
@@ -143,11 +158,13 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
    return array
   }
 
- setAssigniHistoryParam(item){
+ setAssigniHistoryParam(item,index){
    let array : any = []
   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
-  array["NewValue"] = this.users[this.findTheUserFromList(parseInt(item.newValue))]; 
+  array["NewValue"] = this.users[this.findTheUserFromList(parseInt(item.newValue))];
+  array["colorNewValue"] = "bg-magenta"
   array["PreviousValue"] = this.users[this.findTheUserFromList(parseInt(item.originalValue))]; 
+  array["colorPreviousValue"] = "bg-purple"
   return array
  }
 
@@ -263,6 +280,8 @@ setTaskNameHistoryParam(item){
   }
 
   onChangeCommentOrHistory(value){
+    console.log(this.historyOfTask)
+    debugger;
     if (value == 1)
    {
     this.commentShow = true
