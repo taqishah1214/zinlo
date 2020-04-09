@@ -51,52 +51,135 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-5">
-                                    <select (change)="onChangeCommentOrHistory($event.target.value)" class="form-control input-medium">
-                                        <option value="1" >{{"Comments" | localize}}</option>
-                                        <option value="2">{{"History" | localize}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div *ngIf="commentShow" class="commentmainView show-comments">
-                                <div class="kt-widget3 ">
-                                    <div *ngFor="let i of commentsData" class="kt-widget3__item ">
-                                        <div class="comments-header kt-widget3__header">
-                                            <div class="kt-widget3__user-img">
-                                                <div class="kt-user-card-v2__pic">
-                                                    <div class="kt-badge kt-badge--xl kt-badge--warning">
-                                                        {{i.userName | firstLetterOfWords}}</div>
+                     
+                                       
+                               
+                                    <div class="activity-box">
+                                        <h5>Activity</h5>
+                                        <div class="activity-inner d-flex flex-wrap">
+                                            <div class="activity-inner-a mb-3">
+                                                <span>Show:</span>
+                                            </div>
+                                            <div class="activity-inner-b mb-3">
+                                                <div class="mb-2 notification-line1">
+                                                    <a (click)="onChangeCommentOrHistory(1)" class="small-btn bg-lightgrey mr-2">Comments</a>
+                                                    <a (click)="onChangeCommentOrHistory(2)" class="small-btn bg-grey">History</a>
                                                 </div>
                                             </div>
-                                            <div class="kt-widget3__info">
-                                                <a class="kt-widget3__username">
-                                                    {{i.userName}}
-                                                </a><br>
-                                            </div>
-                                            <span class="kt-widget3__status kt-font-info">
-                                                {{i.daysCount}}
-                                            </span>
                                         </div>
-                                        <div class="kt-widget3__body show-comments-inner">
-                                            <p class="kt-widget3__text commentViewBox" >
-                                            </p>
+                                    </div>
+                                    <div *ngIf="!commentShow" >
+                                    <div  *ngFor="let i of historyOfTask"  class="activity-box">
+
+                                        <div *ngIf="i.propertyName == 'Status'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                            <div class="activity-inner-a mb-3">
+                                                <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
+                                            </div>
+                                            <div class="activity-inner-b mb-3">
+                                                <div class="mb-2 notification-line1">
+                                                    <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>{{i.propertyName}}</span> {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
+                                                </div>
+                                                <div>
+                                                    <span class="kt-badge kt-badge--brand kt-badge--inline">{{i.result.PreviousValue}}</span>
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2">
+                                                    <span class="kt-badge kt-badge--success kt-badge--inline">{{i.result.NewValue}}</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                
+                                      
+                                        <div *ngIf="i.propertyName == 'TaskName' || i.propertyName == 'DayBeforeAfter' || i.propertyName == 'DueDate'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                            <div class="activity-inner-a mb-3">
+                                                <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
+                                            </div>
+                                            <div class="activity-inner-b mb-3">
+                                                <div class="mb-2 notification-line1">
+                                                    <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>{{i.propertyName}}</span> {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
+                                                </div>
+                                                <div *ngIf="i.propertyName == 'DueDate'">
+                                                    <span class="text-lightgrey">{{i.result.PreviousValue  | momentFormat:' MMMM YYYY'}}</span>
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2">
+                                                    <span>{{i.result.NewValue | momentFormat:' MMMM YYYY'}}</span>
+                                                </div>
+
+                                                <div>
+                                                    <span class="text-lightgrey">{{i.result.PreviousValue}}</span>
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2">
+                                                    <span>{{i.result.NewValue}}</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                
+                                        <div *ngIf="i.propertyName == 'AssigneeId'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                            <div class="activity-inner-a mb-3">
+                                                <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
+                                            </div>
+
+                                            <!-- <div class="kt-user-card-v2__pic">
+                                                <div *ngIf="i.result.ChangeOccurUser.profilePicture" class="kt-badge kt-badge--xl">
+                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                        alt="Pic" [src]="UserProfilePicture">
+                                                </div>
+
+                                                <div *ngIf="!i.result.ChangeOccurUser.profilePicture"
+                                                    class="kt-badge kt-badge--xl kt-badge--primary">
+                                                    {{i.result.ChangeOccurUser.name  | firstLetterOfWords}}
+                                                </div>
+                                            </div> -->
+
+                                            <div class="activity-inner-b mb-3">
+                                                <div class="mb-2 notification-line1">
+                                                    <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>Assignee</span>{{i.changeTime | momentFormat:'Do MMM YY LTS'}}
+                                                </div>
+                                                <div>
+                                                    <div class="badge2 {{i.result.colorPreviousValue}} d-inline-flex align-items-center justify-content-center">{{i.result.PreviousValue.name | firstLetterOfWords}}</div>
+                                                    <span>{{i.result.PreviousValue.name}}</span>
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2">
+                                                    <div class="badge2 {{i.result.colorNewValue}} d-inline-flex align-items-center justify-content-center">{{i.result.NewValue.name | firstLetterOfWords}}</div>
+                                                    <span>{{i.result.NewValue.name}}</span>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </div>
+                                    <div *ngIf="commentShow" class="kt-widget3 ">
+                                    <div  class="commentmainView show-comments">
+                                        <div class="kt-widget3 ">
+                                            <div *ngFor="let i of commentsData" class="kt-widget3__item ">
+                                                <div class="comments-header kt-widget3__header">
+                                                    <div class="kt-widget3__user-img">
+                                                        <div class="kt-user-card-v2__pic">
+                                                            <div class="kt-badge kt-badge--xl kt-badge--warning">
+                                                                {{i.userName | firstLetterOfWords}}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="kt-widget3__info">
+                                                        <a class="kt-widget3__username">
+                                                            {{i.userName}}
+                                                        </a><br>
+                                                    </div>
+                                                    <span class="kt-widget3__status kt-font-info">
+                                                        {{i.daysCount}}
+                                                    </span>
+                                                </div>
+                                                <div class="kt-widget3__body show-comments-inner">
+                                                    <p class="kt-widget3__text commentViewBox"  innerHTML="{{i.body}}" >
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div *ngIf="!commentShow" class="commentmainView show-comments">
-                                
-                                <div class="kt-widget3 ">
-                                    <div *ngFor="let i of historyOfTask" class="kt-widget3__item ">
+                                    <!-- <div *ngFor="let i of historyOfTask" class="kt-widget3__item ">
                                         <div class="comments-header kt-widget3__header">
-
                                             <div class="kt-user-card-v2__pic">
-                                                <!-- <div *ngIf="i.result.ChangeOccurUser.profilePicture" class="kt-badge kt-badge--xl">
+                                                <div *ngIf="i.result.ChangeOccurUser.profilePicture" class="kt-badge kt-badge--xl">
                                                     <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
                                                         alt="Pic" [src]="i.result.ChangeOccurUser.profilePicture">
-                                                </div> -->
+                                                </div> 
 
                                                 <div
                                                     class="kt-badge kt-badge--xl kt-badge--primary">
@@ -172,10 +255,9 @@
 
                                         </div> 
 
-                                    </div>
-                                </div>
+                                    </div> -->
 
-                            </div>
+                            
 
                             <div [ngClass]="{'disabled':!monthStatus}"class="form-group giveCommentView" *ngIf="commantBox">
                                 <label>{{"Comments" | localize}}</label>
