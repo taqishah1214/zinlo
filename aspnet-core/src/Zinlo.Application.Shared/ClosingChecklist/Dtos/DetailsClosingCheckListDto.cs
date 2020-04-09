@@ -21,6 +21,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public  List<CommentDto>  Comments { get; set; }
 
         public List<GetAttachmentsDto> Attachments { get; set; }
+        public bool IsDeleted { get; set; }
     }
     
 }

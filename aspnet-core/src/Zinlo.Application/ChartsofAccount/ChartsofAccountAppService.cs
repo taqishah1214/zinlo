@@ -17,6 +17,7 @@ using Zinlo.Reconciliation;
 using Zinlo.Reconciliation.Dtos;
 using AccountType = Zinlo.ChartofAccounts.AccountType;
 using ReconciliationType = Zinlo.ChartofAccounts.ReconciliationType;
+using Abp.Domain.Uow;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -28,13 +29,14 @@ namespace Zinlo.ChartsofAccount
         private readonly IRepository<Amortization, long> _amortizationRepository;
         private readonly IRepository<Itemization, long> _itemizationRepository;
         private readonly IChartsOfAccountsTrialBalanceExcelExporter _chartsOfAccountsTrialBalanceExcelExporter;
-
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
         public ChartsofAccountAppService(IRepository<Itemization, long> itemizationRepository,
                                          IRepository<Amortization, long> amortizationRepository,
                                          IRepository<ChartofAccounts.ChartofAccounts, long> chartsofAccountRepository,
                                          IProfileAppService profileAppService,
                                          IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter,
-                                         IChartsOfAccountsTrialBalanceExcelExporter chartsOfAccountsTrialBalanceExcelExporter)
+                                         IChartsOfAccountsTrialBalanceExcelExporter chartsOfAccountsTrialBalanceExcelExporter,
+                                         IUnitOfWorkManager unitOfWorkManager)
         {
             _amortizationRepository = amortizationRepository;
             _itemizationRepository = itemizationRepository;
@@ -42,51 +44,60 @@ namespace Zinlo.ChartsofAccount
             _profileAppService = profileAppService;
             _chartsOfAccountsListExcelExporter = chartsOfAccountsListExcelExporter;
             _chartsOfAccountsTrialBalanceExcelExporter = chartsOfAccountsTrialBalanceExcelExporter;
+            _unitOfWorkManager = unitOfWorkManager;
         }
 
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
-            var query = _chartsofAccountRepository.GetAll().Where(e => e.ClosingMonth.Month == DateTime.Now.Month && e.ClosingMonth.Year == DateTime.Now.Year).Include(p => p.AccountSubType).Include(p => p.Assignee)
-                 .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.Contains(input.Filter))
-                 .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
-                 .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId));
+           
+            using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
+            {
+                var query = _chartsofAccountRepository.GetAll().Where(e => e.ClosingMonth.Month == DateTime.Now.Month && e.ClosingMonth.Year == DateTime.Now.Year).Include(p => p.AccountSubType).Include(p => p.Assignee)
+                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.Contains(input.Filter))
+                .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
+                .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
+             .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
 
-            var getUserWithPictures = (from o in query.ToList()
-                                       select new GetUserWithPicture()
-                                       {
-                                           Id = o.AssigneeId,
-                                           Name = o.Assignee.FullName,
-                                           Picture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
-                                       }).ToList();
+                var getUserWithPictures = (from o in query.ToList()
+                                           select new GetUserWithPicture()
+                                           {
+                                               Id = o.AssigneeId,
+                                               Name = o.Assignee.FullName,
+                                               Picture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
+                                           }).ToList();
 
-            getUserWithPictures = getUserWithPictures.DistinctBy(p => new { p.Id, p.Name }).ToList();
-            var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
-            var totalCount = query.Count();
+                getUserWithPictures = getUserWithPictures.DistinctBy(p => new { p.Id, p.Name }).ToList();
+                var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+                var totalCount = query.Count();
 
-            var accountsList = from o in pagedAndFilteredAccounts.ToList()
+                var accountsList = from o in pagedAndFilteredAccounts.ToList()
 
-                               select new ChartsofAccoutsForViewDto()
-                               {
-                                   Id = o.Id,
-                                   AccountName = o.AccountName,
-                                   AccountNumber = o.AccountNumber,
-                                   AccountTypeId = (int)o.AccountType,
-                                   AccountSubTypeId = o.AccountSubType.Id,
-                                   AccountSubType = o.AccountSubType != null ? o.AccountSubType.Title : "",
-                                   ReconciliationTypeId = o.ReconciliationType != 0 ? (int)o.ReconciliationType : 0,
-                                   AssigneeName = o.Assignee != null ? o.Assignee.FullName : "",
-                                   ProfilePicture = o.Assignee != null && o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : "",
-                                   AssigneeId = o.Assignee.Id,
-                                   StatusId = (int)o.Status,
-                                   Balance = o.Balance,
-                                   OverallMonthlyAssignee = getUserWithPictures,
-                                   Lock = o.Lock
-                               };
+                                   select new ChartsofAccoutsForViewDto()
+                                   {
+                                       Id = o.Id,
+                                       AccountName = o.AccountName,
+                                       AccountNumber = o.AccountNumber,
+                                       AccountTypeId = (int)o.AccountType,
+                                       AccountSubTypeId = o.AccountSubType.Id,
+                                       AccountSubType = o.AccountSubType != null ? o.AccountSubType.Title : "",
+                                       ReconciliationTypeId = o.ReconciliationType != 0 ? (int)o.ReconciliationType : 0,
+                                       AssigneeName = o.Assignee != null ? o.Assignee.FullName : "",
+                                       ProfilePicture = o.Assignee != null && o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : "",
+                                       AssigneeId = o.Assignee.Id,
+                                       StatusId = (int)o.Status,
+                                       Balance = o.Balance,
+                                       OverallMonthlyAssignee = getUserWithPictures,
+                                       Lock = o.Lock,
+                                       IsDeleted = o.IsDeleted
 
-            return new PagedResultDto<ChartsofAccoutsForViewDto>(
-               totalCount,
-               accountsList.ToList()
-           );
+                                   };
+
+                return new PagedResultDto<ChartsofAccoutsForViewDto>(
+                   totalCount,
+                   accountsList.ToList()
+               );
+
+            }
 
         }
         public async Task<long> CreateOrEdit(CreateOrEditChartsofAccountDto input)
@@ -428,6 +439,16 @@ namespace Zinlo.ChartsofAccount
             }
         }
 
+        public async Task RestoreAccount(long id)
+        {
+            using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
+            {
+                var account = await _chartsofAccountRepository.FirstOrDefaultAsync(id);
+                account.IsDeleted = false;
+                await _chartsofAccountRepository.UpdateAsync(account);
+            }
+               
+        }
     }
 }
 

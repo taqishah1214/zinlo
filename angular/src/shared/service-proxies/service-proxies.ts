@@ -2885,12 +2885,13 @@ export class ChartsofAccountServiceProxy {
      * @param filter (optional) 
      * @param accountType (optional) 
      * @param assigneeId (optional) 
+     * @param allOrActive (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, accountType: number | undefined, assigneeId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
+    getAll(filter: string | undefined, accountType: number | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
         let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -2904,6 +2905,10 @@ export class ChartsofAccountServiceProxy {
             throw new Error("The parameter 'assigneeId' cannot be null.");
         else if (assigneeId !== undefined)
             url_ += "AssigneeId=" + encodeURIComponent("" + assigneeId) + "&"; 
+        if (allOrActive === null)
+            throw new Error("The parameter 'allOrActive' cannot be null.");
+        else if (allOrActive !== undefined)
+            url_ += "AllOrActive=" + encodeURIComponent("" + allOrActive) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -4022,6 +4027,58 @@ export class ChartsofAccountServiceProxy {
         }
         return _observableOf<string>(<any>null);
     }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    restoreAccount(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/RestoreAccount?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRestoreAccount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRestoreAccount(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRestoreAccount(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -4223,12 +4280,13 @@ export class ClosingChecklistServiceProxy {
      * @param statusFilter (optional) 
      * @param dateFilter (optional) 
      * @param assigneeId (optional) 
+     * @param allOrActive (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, assigneeId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
+    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -4254,6 +4312,10 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'assigneeId' cannot be null.");
         else if (assigneeId !== undefined)
             url_ += "AssigneeId=" + encodeURIComponent("" + assigneeId) + "&"; 
+        if (allOrActive === null)
+            throw new Error("The parameter 'allOrActive' cannot be null.");
+        else if (allOrActive !== undefined)
+            url_ += "AllOrActive=" + encodeURIComponent("" + allOrActive) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -4942,6 +5004,58 @@ export class ClosingChecklistServiceProxy {
             }));
         }
         return _observableOf<moment.Moment>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    restoreTask(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/RestoreTask?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRestoreTask(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRestoreTask(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRestoreTask(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
     }
 }
 
@@ -18401,6 +18515,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
     statusId!: number;
     balance!: number;
     lock!: boolean;
+    isDeleted!: boolean;
 
     constructor(data?: IChartsofAccoutsForViewDto) {
         if (data) {
@@ -18431,6 +18546,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
             this.statusId = data["statusId"];
             this.balance = data["balance"];
             this.lock = data["lock"];
+            this.isDeleted = data["isDeleted"];
         }
     }
 
@@ -18461,6 +18577,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
         data["statusId"] = this.statusId;
         data["balance"] = this.balance;
         data["lock"] = this.lock;
+        data["isDeleted"] = this.isDeleted;
         return data; 
     }
 }
@@ -18480,6 +18597,7 @@ export interface IChartsofAccoutsForViewDto {
     statusId: number;
     balance: number;
     lock: boolean;
+    isDeleted: boolean;
 }
 
 export class PagedResultDtoOfChartsofAccoutsForViewDto implements IPagedResultDtoOfChartsofAccoutsForViewDto {
@@ -19048,6 +19166,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
     assigneeId!: number;
     dueDate!: moment.Moment;
     profilePicture!: string | undefined;
+    isDeleted!: boolean;
 
     constructor(data?: IClosingCheckListForViewDto) {
         if (data) {
@@ -19069,6 +19188,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
             this.assigneeId = data["assigneeId"];
             this.dueDate = data["dueDate"] ? moment(data["dueDate"].toString()) : <any>undefined;
             this.profilePicture = data["profilePicture"];
+            this.isDeleted = data["isDeleted"];
         }
     }
 
@@ -19090,6 +19210,7 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
         data["assigneeId"] = this.assigneeId;
         data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
         data["profilePicture"] = this.profilePicture;
+        data["isDeleted"] = this.isDeleted;
         return data; 
     }
 }
@@ -19104,6 +19225,7 @@ export interface IClosingCheckListForViewDto {
     assigneeId: number;
     dueDate: moment.Moment;
     profilePicture: string | undefined;
+    isDeleted: boolean;
 }
 
 export class TasksGroup implements ITasksGroup {
@@ -19525,6 +19647,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     dueDate!: moment.Moment;
     comments!: CommentDto[] | undefined;
     attachments!: GetAttachmentsDto[] | undefined;
+    isDeleted!: boolean;
     taskName!: string | undefined;
     assigneeId!: number;
     closingMonth!: moment.Moment;
@@ -19569,6 +19692,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
                 for (let item of data["attachments"])
                     this.attachments!.push(GetAttachmentsDto.fromJS(item));
             }
+            this.isDeleted = data["isDeleted"];
             this.taskName = data["taskName"];
             this.assigneeId = data["assigneeId"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
@@ -19617,6 +19741,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             for (let item of this.attachments)
                 data["attachments"].push(item.toJSON());
         }
+        data["isDeleted"] = this.isDeleted;
         data["taskName"] = this.taskName;
         data["assigneeId"] = this.assigneeId;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
@@ -19650,6 +19775,7 @@ export interface IDetailsClosingCheckListDto {
     dueDate: moment.Moment;
     comments: CommentDto[] | undefined;
     attachments: GetAttachmentsDto[] | undefined;
+    isDeleted: boolean;
     taskName: string | undefined;
     assigneeId: number;
     closingMonth: moment.Moment;

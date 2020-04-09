@@ -245,6 +245,16 @@
                                             <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
                                         </button>
                                     </div>
+                                    <div>
+                                       
+                                            
+                                            <label class="switch">
+                                                <input type="checkbox" [(checked)]="AllOrActive"  (change)="changeToggleValue()">
+                                                <span class="slider round"></span>
+                                            </label>
+                                      
+                                       
+                                    </div>
                                     <div class="users-box-parent">
                                         <div class="users-box">
                                             <div *ngIf="plusUserBadgeForHeader"
@@ -341,7 +351,7 @@
                             <!--<Primeng-TurboTable-End> {{i.creationTime | date:'d MMM EEE'}} -->
                             <table class="table record-table">
                                 <tbody *ngFor="let item of chartsOfAccountList">
-                                    <tr class="task-table-inner table-repeater">
+                                    <tr class="task-table-inner table-repeater" class="{{item.isDeleted == true ? 'warnning' : '' }}">
 
                                         <td class="accountNo-cell">
                                             <span class="">{{item.accountNumber}}</span>
@@ -451,6 +461,9 @@
                                                             <a class="btn" href="javascript:;"
                                                                 (click)="deleteAccount(item.id)">
                                                                 <img src="../../../../assets/img/del.svg"></a>
+                                                                <a *ngIf="item.isDeleted == true" class="btn" href="javascript:;"
+                                                                (click)="restoreAccount(item.id)">
+                                                                <i class="fas fa-trash-restore"></i></a>
                                                         </div>
                                                     </div>
                                                 </li>

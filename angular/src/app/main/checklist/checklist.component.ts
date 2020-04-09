@@ -18,6 +18,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   filterStatus: number = 0;
+  AllOrActive = false;
   advancedFiltersAreShown = false;
   filterText = '';
   titleFilter = '';
@@ -114,6 +115,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.statusFilter,
       moment(this.dateFilter),
       this.getTaskWithAssigneeId,
+      this.AllOrActive,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -246,5 +248,21 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.updateAssigneeOnHeader = true;
     this.getClosingCheckListAllTasks();
   }
+
+  changeToggleValue():void{
+    if(this.AllOrActive)
+    {
+      this.AllOrActive = false;
+    }
+    else{
+         this.AllOrActive = true;
+    }
+    this.getClosingCheckListAllTasks();
+    console.log(this.AllOrActive);
+
+  }
+
+
+
 
 }

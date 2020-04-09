@@ -11,5 +11,6 @@ namespace Zinlo.ChartsofAccount.Dtos
         public int AccountType { get; set; }
 
         public long AssigneeId { get; set; }
+        public bool? AllOrActive { get; set; }
     }
 }

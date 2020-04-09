@@ -28,6 +28,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   assigneeId: any = 0;
   UserProfilePicture: any;
   monthStatus : boolean;
+  isDeleted:boolean;
   historyOfTask: any = [];
   assigniHistory : any = [];
   statusHistory: any = [];
@@ -230,11 +231,12 @@ setTaskNameHistoryParam(item){
   getTaskDetails(id): void {
     this._closingChecklistService.getDetails(id).subscribe(result => {
       this.taskDetailObject = result;
+      console.log(this.taskDetailObject);
       this.commentsData = this.taskDetailObject.comments;
       this.assigneeId = this.taskDetailObject.assigneeId;
       this.taskStatus = this.taskDetailObject.taskStatus;
       this.monthStatus = this.taskDetailObject.monthStatus;
-
+      this.isDeleted = this.taskDetailObject.isDeleted;
       this.initilizeStatus();
       this.attachments = result.attachments;
       this.attachments.forEach(element => {
@@ -331,6 +333,11 @@ setTaskNameHistoryParam(item){
       }
     );
   }
-
+  restoreTask():void{
+    this._closingChecklistService.restoreTask(this.recordId).subscribe(result=>{
+     this.notify.success(this.l('TaskRestoredSuccessfully'));
+     this._router.navigate(['/app/main/checklist']);
+    })
+}
 
 }

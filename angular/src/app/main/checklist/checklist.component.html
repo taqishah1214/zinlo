@@ -44,6 +44,16 @@
                                                 [placeholder]="l('SearchWithThreeDot')" class="border-grey">
                                         </div>
                                     </form>
+                                    <div>
+                                       
+                                            
+                                        <label class="switch">
+                                            <input type="checkbox" [(checked)]="AllOrActive"  (change)="changeToggleValue()">
+                                            <span class="slider round"></span>
+                                        </label>
+                                  
+                                   
+                                </div>
                                     <div class="users-box-parent">
                                         <div class="users-box">
                                             <div *ngIf="plusUserBadgeForHeader"
@@ -179,7 +189,7 @@
                                 <tbody *ngFor="let i of ClosingCheckList">
 
                                     <tr *ngFor="let j of i.group ; let value = index"
-                                        class="task-table-inner table-repeater">
+                                        class="task-table-inner table-repeater" class="{{j.isDeleted == true ? 'warnning' : '' }}">
 
                                         <td class="date-cell" (click)="redirectToDetail(j.id)" *ngIf="value === 0">
                                             <span class=""><b>{{i.dueDate | date:'d'}}</b>

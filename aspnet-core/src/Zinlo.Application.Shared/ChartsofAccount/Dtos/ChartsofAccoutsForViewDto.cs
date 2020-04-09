@@ -21,6 +21,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         public int StatusId { get; set; }
         public double Balance { get; set; } 
         public bool Lock { get; set; }
+        public bool IsDeleted { get; set; }
 
     }
 }

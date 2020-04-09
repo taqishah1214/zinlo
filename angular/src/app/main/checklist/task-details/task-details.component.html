@@ -7,6 +7,9 @@
                         <h3 class="text-navyblue kt-portlet__head-title">
                             {{"TaskDetails" | localize}}
                         </h3>
+                        <a *ngIf="isDeleted == true" class="btn" href="javascript:;"
+                        (click)="restoreTask()">
+                        <i class="fas fa-trash-restore"></i></a>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <a href="javascript: void(0);" (click)="BackToTaskList()">
@@ -234,6 +237,7 @@
                                             src="../../../../assets/img/del.svg"></a>
                                     <a class="action-btn btn-pointer" (click)="duplicateTask()"><img
                                             src="../../../../assets/img/dup.svg"></a>
+                                          
                                 </div>
                             </div>
                             <div class="row">

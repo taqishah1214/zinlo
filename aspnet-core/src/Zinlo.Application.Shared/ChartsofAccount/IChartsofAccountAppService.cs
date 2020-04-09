@@ -26,5 +26,6 @@ namespace Zinlo.ChartsofAccount
         Task<FileDto> LoadChartsofAccountTrialBalanceToExcel();
         Task ShiftChartsOfAccountToSpecficMonth(DateTime closingMonth);
         bool CheckAccounts();
+        Task RestoreAccount(long id);
     }
 }

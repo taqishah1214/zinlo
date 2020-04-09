@@ -18,7 +18,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public long AssigneeId { get; set; }
         public DateTime DueDate { get; set; }
         public string ProfilePicture { get; set; }
-       
+       public bool IsDeleted { get; set; }
 
 
     }

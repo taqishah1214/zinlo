@@ -25,6 +25,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
+  AllOrActive = false;
   advancedFiltersAreShown = false;
   account:boolean=false;
   balance:boolean=true;
@@ -130,6 +131,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
       this.filterText,
       this.accountTypeFilter,
       this.getAccountWithAssigneeId,
+      this.AllOrActive,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event),
@@ -140,6 +142,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
+      console.log(this.list);
       this.chartsOfAccountList = result.items
       this.chartsOfAccountList.forEach(i => {
         i["accountType"] = this.getNameofAccountTypeAndReconcillation(i.accountTypeId, "accountType")
@@ -356,5 +359,24 @@ RedirectToCreateAccount(): void {
       .subscribe(result => {
         this._fileDownloadService.downloadTempFile(result);
       });
+  }
+  changeToggleValue():void{
+    if(this.AllOrActive)
+    {
+      this.AllOrActive = false;
+    }
+    else{
+         this.AllOrActive = true;
+    }
+    this.getAllAccounts();
+    console.log(this.AllOrActive);
+
+  }
+  restoreAccount(id):void{
+   this._chartOfAccountService.restoreAccount(id).subscribe(result=>{
+    this.notify.success(this.l('AccountRestoredSuccessfully'));
+    this.getAllAccounts();
+   })
+  
   }
 }
