@@ -2,7 +2,7 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import * as _ from 'lodash';
-import {  ItemizationServiceProxy,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto } from '@shared/service-proxies/service-proxies';
+import {  ItemizationServiceProxy,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto ,AuditLogServiceProxy} from '@shared/service-proxies/service-proxies';
 import { UserInformation } from '../../CommonFunctions/UserInformation';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
@@ -10,6 +10,8 @@ import { Table } from 'primeng/table';
 import { AppConsts } from '@shared/AppConsts';
 import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
+import { UserDateService } from "../../../services/user-date.service";
+
 
 @Component({
   selector: 'app-itemized',
@@ -44,7 +46,14 @@ export class ItemizedComponent extends AppComponentBase {
   CreateTimeManagementDto : CreateOrEditTimeManagementDto = new CreateOrEditTimeManagementDto()
   comment : any = ""
   postedCommentList : any =[]
-  
+  historyOfTask: any = [];
+  assigniHistory : any = [];
+  statusHistory: any = [];
+  users : any = [];
+  commentShow = true;
+  historyList : any =[];
+  AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
+  userSignInName: string;
 
 
   constructor(
@@ -53,17 +62,23 @@ export class ItemizedComponent extends AppComponentBase {
     private userInfo: UserInformation,
     private _itemizedService:ItemizationServiceProxy,
     private _timeManagementsServiceProxy :TimeManagementsServiceProxy,
+    private _auditLogService : AuditLogServiceProxy,
+    private userDate: UserDateService,
+    
 
   ) {
     super(injector);
   }
   ngOnInit() {
+    this.userSignInName = this.appSession.user.name.toString().toUpperCase();
+    this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
     this.commantBox = true;
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
+    this.getAuditLogOfAccount();
 
 
   }
@@ -211,5 +226,192 @@ BackToReconcileList() {
     }
 
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  onChangeCommentOrHistory(value){
+    console.log(this.historyOfTask)
+    debugger;
+    if (value == 1)
+   {
+    this.commentShow = true
+   }else {
+    this.commentShow = false
+   }
+  }
+
+  getAuditLogOfAccount() {
+    this._auditLogService.getEntityHistory("1".toString(), "Zinlo.ClosingChecklist.ClosingChecklist").subscribe(resp => {
+      this.historyOfTask = resp
+      this.historyOfTask.forEach((element,index) => {
+        switch (element.propertyName) {
+          case "AssigneeId":         
+            element["result"] =  this.setAssigniHistoryParam(element,index)
+            break;
+            case "Status":          
+            element["result"] = this.setStatusHistoryParam(element)
+            break;
+            case "TaskName":          
+            element["result"] = this.setTaskNameHistoryParam(element)
+            break;
+            case "DueDate":          
+            element["result"] = this.setDueDateHistoryParam(element)
+            break;
+            case "DayBeforeAfter":          
+            element["result"] = this.setDaysBeforeAfterHistoryParam(element)
+            break;
+            case "CategoryId":          
+            element["result"] = this.setDaysCategoryIdHistoryParam(element)
+            debugger;
+            break;
+            
+          default:
+            console.log("not found");
+            break;
+        }
+        ;
+      });
+    })
+  }
+
+
+  
+
+
+
+
+  findTheUserFromList(id) : number{
+  return this.users.findIndex(x => x.id === id);
+  }
+
+  setDaysCategoryIdHistoryParam(item){
+  let array : any = []
+   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+   array["NewValue"] = this.getCategoryTitleWithName(parseInt(item.newValue)); 
+   array["PreviousValue"] = this.getCategoryTitleWithName(parseInt(item.originalValue)); 
+   debugger;
+   return array
+  }
+
+  getRandomNo() {
+    let a =  Math.random() * (6 - 0) + 0;
+    return ;
+  }
+  
+ async getCategoryTitleWithName(id) {
+   return ""
+  }
+
+  getDaysBeforeAfterNameWith(id) {
+    switch (id) {
+      case 1:
+        return "None"
+      case 2:
+        return "DaysBefore"
+      case 3:
+        return "DaysAfter"
+      default:
+        return ""
+    }
+  }
+
+  setDaysBeforeAfterHistoryParam(item){
+    let array : any = []
+   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+   array["NewValue"] = this.getDaysBeforeAfterNameWith(parseInt(item.newValue)); 
+   array["PreviousValue"] = this.getDaysBeforeAfterNameWith(parseInt(item.originalValue)); 
+   return array
+  }
+  
+  setDueDateHistoryParam(item){
+    let array : any = []
+   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+   array["NewValue"] = item.newValue; 
+   array["PreviousValue"] = item.originalValue; 
+   return array
+  }
+
+ setAssigniHistoryParam(item,index){
+   let array : any = []
+  array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] = this.users[this.findTheUserFromList(parseInt(item.newValue))];
+  array["colorNewValue"] = "bg-magenta"
+  array["PreviousValue"] = this.users[this.findTheUserFromList(parseInt(item.originalValue))]; 
+  array["colorPreviousValue"] = "bg-purple"
+  return array
+ }
+
+ setStatusHistoryParam(item){
+  let array : any = []
+  array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] = this.findStatusName(parseInt(item.newValue)); 
+  array["PreviousValue"] = this.findStatusName(parseInt(item.originalValue)); 
+  return array
+}
+
+setTaskNameHistoryParam(item){
+  let array : any = []
+  array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] = item.newValue; 
+  array["PreviousValue"] = item.originalValue; 
+  return array
+}
+
+  findStatusName(value): string {
+
+    switch (value) {
+      case 1:
+        return "Not Started"
+      case 2:
+        return "In Process"
+      case 3:
+        return "On Hold"
+      case 4:
+        return "Completed"
+      default:
+        return ""
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
