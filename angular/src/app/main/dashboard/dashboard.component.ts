@@ -1,8 +1,8 @@
 import { Component, Injector, ViewEncapsulation, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { DashboardCustomizationConst } from '@app/shared/common/customizable-dashboard/DashboardCustomizationConsts';
-import { UserDateService } from "../../services/user-date.service";
-import { UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { StoreDateService } from "../../services/storedate.service";
+import { UserServiceProxy,AccountSubTypeServiceProxy ,CategoriesServiceProxy} from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -11,17 +11,29 @@ import { UserServiceProxy } from '@shared/service-proxies/service-proxies';
     encapsulation: ViewEncapsulation.None
 })
 
+
 export class DashboardComponent  extends AppComponentBase implements OnInit {
     dashboardName = DashboardCustomizationConst.dashboardNames.defaultTenantDashboard;
     userList :any = []
+    categoriesList :any = []
+    accountSubTypeList :any = []
     constructor(
-        injector: Injector , private userDate: UserDateService , private _userService: UserServiceProxy,) {
+        injector: Injector , private storeData: StoreDateService , private _userService: UserServiceProxy,private _categoryService: CategoriesServiceProxy, private _accountSubtypeService :AccountSubTypeServiceProxy)
+       {
         super(injector);
-    }
+        }
     ngOnInit(): void {
         this._userService.getAllUsers().subscribe(result => { 
             this.userList = result
-            this.userDate.setUserList(this.userList)
+            this.storeData.setUserList(this.userList)
+        })  
+        this._categoryService.categoryDropDown().subscribe(result => { 
+            this.categoriesList = result
+            this.storeData.setCategoriesList(this.categoriesList)
+        })  
+        this._accountSubtypeService.accountSubTypeDropDown().subscribe(result => { 
+            this.accountSubTypeList = result
+            this.storeData.setAccountSubTypeList(this.accountSubTypeList)
         })       
     }
 }

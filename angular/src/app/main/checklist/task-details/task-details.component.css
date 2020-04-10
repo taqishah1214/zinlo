@@ -180,6 +180,7 @@
 			margin-right: 10px;
             border-radius: 50%;
             color: white;
+            font-weight: 600;
 		}
 
 		/*Pre used classes*/
@@ -221,8 +222,19 @@
 		.align-items-center{
 			align-items: center;
 		}
+        .statusWidth1{
+            width: 100px;
+            align-items: center;
+            justify-content: center;
+            height: 25px;
+            border-radius: 5px;
+            text-align: center;
+            padding: 3px;
+        }
 
-
+        .arrowimage{
+            height: 15px;
+        }
 
         .border-grey{
             border:1px solid #EBEDF2;
