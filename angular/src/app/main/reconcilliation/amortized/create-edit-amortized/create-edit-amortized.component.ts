@@ -133,7 +133,6 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     this.amortizationDto.criteria = 1;
     this.title = "Create a Item"
     this.buttonTitle =  "Create"
-
   }
 
 

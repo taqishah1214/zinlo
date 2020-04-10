@@ -1,10 +1,12 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { UppyConfig } from 'uppy-angular';
-import {  AttachmentsServiceProxy, PostAttachmentsPathDto, CreateOrEditCommentDto, DetailsClosingCheckListDto, ItemizationServiceProxy, CreateOrEditAmortizationDto, CreateOrEditItemizationDto } from '@shared/service-proxies/service-proxies';
+import {  AttachmentsServiceProxy, PostAttachmentsPathDto, CreateOrEditCommentDto, DetailsClosingCheckListDto, ItemizationServiceProxy, CreateOrEditAmortizationDto, CreateOrEditItemizationDto, AuditLogServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 import { AppConsts } from '@shared/AppConsts';
+import { StoreDateService } from "../../../../services/storedate.service";
+
 @Component({
   selector: 'app-itemized-details',
   templateUrl: './itemized-details.component.html',
@@ -32,25 +34,34 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   netAmount : any;
   accuredAmount : any;
   postedCommentList : any = [];
+  historyOfTask: any = [];
+  users : any = [];
+  historyList : any =[];
+  AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
 
   constructor(
     injector: Injector,
     private _router: Router,
     private _itemizationService :ItemizationServiceProxy ,
     private _attachmentService: AttachmentsServiceProxy,
-    private userInfo: UserInformation
+    private userInfo: UserInformation,
+    private storeData: StoreDateService,
+    private _auditLogService : AuditLogServiceProxy
   ) {
     super(injector);
   }
 
   ngOnInit() {
     this.userSignInName = this.appSession.user.name.toString().toUpperCase();
+    this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList);
     this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
     this.itemizedItemId = history.state.data.ItemizedItemId
+    debugger;
     this.getTaskDetails();
     this.getProfilePicture();
+    this.getAuditLogOfAccount(this.itemizedItemId);
   }
 
   getProfilePicture() {
@@ -168,6 +179,80 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
       }
     );
   }
+  restoreItemizedItem():void{
+    this._itemizationService.restoreItemizedItem(this.itemizedItemId).subscribe(result=>{
+     this.notify.success(this.l('ItemizedRestoredSuccessfully'));
+     this.BackToList()
+    })
+}
+
+
+  
+  getAuditLogOfAccount(id) {
+    this._auditLogService.getEntityHistory(id.toString(), "Zinlo.Reconciliation.Itemization").subscribe(resp => {
+      this.historyOfTask = resp
+      debugger;
+      this.historyOfTask.forEach((element,index) => {
+        switch (element.propertyName) {
+            case "Amount":          
+            element["result"] = this.setHistoryParam(element)
+            break;
+            case "CreationTime":          
+            element["result"] = this.setDateValue(element)
+            break;
+            case "Description":          
+            element["result"] = this.setHistoryParam(element)
+            break;
+            case "InoviceNo":          
+            element["result"] = this.setHistoryParam(element)
+            break;
+            case "JournalEntryNo":          
+            element["result"] = this.setHistoryParam(element)
+            break;         
+            case "Date":          
+            element["result"] = this.setHistoryParam(element)
+            break;
+            default:
+              console.log("not found");
+              break;        
+        }
+        debugger
+        ;
+      });
+    })
+  }
+
+  setHistoryParam(item){
+    let array : any = []
+    array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+    array["NewValue"] = item.newValue; 
+    array["PreviousValue"] = item.originalValue; 
+    return array
+  }
+  setDateValue (item) {
+    let array : any = []
+    array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+    array["NewValue"] = item.newValue; 
+    array["PreviousValue"] =item.originalValue; 
+    return array
+  }
+
+
+  findTheUserFromList(id) : number{
+  return this.users.findIndex(x => x.id === id);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

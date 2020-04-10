@@ -15,5 +15,6 @@ namespace Zinlo.Reconciliation
         Task<CreateOrEditItemizationDto> GetEdit(long Id);
         Task PostComment(string comment, long TypeId, CommentTypeDto CommentType);
         Task Delete(long Id);
+        Task RestoreItemizedItem(long id);
     }
 }
