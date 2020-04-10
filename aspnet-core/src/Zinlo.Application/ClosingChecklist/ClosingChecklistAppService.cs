@@ -20,6 +20,8 @@ using NUglify.Helpers;
 using Zinlo.TimeManagements;
 using Zinlo.TimeManagements.Dto;
 using Abp.Domain.Uow;
+using Zinlo.InstructionVersions;
+using Zinlo.InstructionVersions.Dto;
 
 namespace Zinlo.ClosingChecklist
 {
@@ -33,14 +35,17 @@ namespace Zinlo.ClosingChecklist
         private readonly IProfileAppService _profileAppService;
         private readonly ITimeManagementsAppService _managementsAppService;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IInstructionAppService _instructionVersionsAppService;
         #endregion
         #region|#Constructor Dependencies|
         public ClosingChecklistAppService(IProfileAppService profileAppService,
                                           IRepository<ClosingChecklist, long> closingChecklistRepository,
                                           UserManager userManager, ICommentAppService commentAppService,
                                           IRepository<User, long> userRepository,
-                                          IAttachmentAppService attachmentAppService, ITimeManagementsAppService managementsAppService,
-                                          IUnitOfWorkManager unitOfWorkManager)
+                                          IAttachmentAppService attachmentAppService,
+                                          ITimeManagementsAppService managementsAppService,
+                                          IUnitOfWorkManager unitOfWorkManager,
+                                          IInstructionAppService instructionVersionsAppService)
         {
             _closingChecklistRepository = closingChecklistRepository;
             _commentAppService = commentAppService;
@@ -49,6 +54,7 @@ namespace Zinlo.ClosingChecklist
             _managementsAppService = managementsAppService;
             _profileAppService = profileAppService;
             _unitOfWorkManager = unitOfWorkManager;
+            _instructionVersionsAppService = instructionVersionsAppService;
         }
         #endregion
         #region|Get All|
@@ -62,7 +68,7 @@ namespace Zinlo.ClosingChecklist
                                     .WhereIf(input.StatusFilter != 0, e => false || e.Status == (Zinlo.ClosingChecklist.Status)input.StatusFilter)
                                     .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
                                     .WhereIf(input.AssigneeId != 0, e => false || e.AssigneeId == input.AssigneeId)
-                                    .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive)); 
+                                    .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
                 var status = await GetMonthStatus((DateTime)input.DateFilter);
                 var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "DueDate asc").PageBy(input);
                 var totalCount = query.Count();
@@ -89,7 +95,7 @@ namespace Zinlo.ClosingChecklist
                                            Status = o.Status.ToString(),
                                            Category = o.Category.Title,
                                            DueDate = o.DueDate,
-                                            IsDeleted = o.IsDeleted,
+                                           IsDeleted = o.IsDeleted,
                                            ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
                                        };
 
@@ -110,7 +116,7 @@ namespace Zinlo.ClosingChecklist
                         Status = y.Status,
                         TaskName = y.TaskName,
                         ProfilePicture = y.ProfilePicture,
-                         IsDeleted = y.IsDeleted
+                        IsDeleted = y.IsDeleted
                     }
                     )
                 });
@@ -141,6 +147,28 @@ namespace Zinlo.ClosingChecklist
                     {
                         input.DueDate = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
                     }
+
+                    if (!String.IsNullOrWhiteSpace(input.Instruction))
+                    {
+                        bool comparisonOfInstruction =false;
+                        if (currentTaskDetail.VersionId !=null)
+                        {
+                             comparisonOfInstruction = await _instructionVersionsAppService.Comparison((long)currentTaskDetail.VersionId, input.Instruction);
+                        }
+                        
+                        if (comparisonOfInstruction==false)
+                        {
+                            currentTaskDetail.VersionId = await CreateInstructions(input.Instruction);
+                        }
+                    }
+                    else
+                    {
+                        if (currentTaskDetail.VersionId !=null)
+                        {
+                            currentTaskDetail.VersionId = null;
+                        }
+                    }
+                   
                     ObjectMapper.Map(input, currentTaskDetail);
                     await CreateComment(input.CommentBody, input.Id);
                 }
@@ -299,12 +327,20 @@ namespace Zinlo.ClosingChecklist
         }
         protected virtual async Task Create(CreateOrEditClosingChecklistDto input)
         {
-
+            long? instructionId = null;
             var task = ObjectMapper.Map<ClosingChecklist>(input);
             if (AbpSession.TenantId != null)
             {
                 task.TenantId = (int)AbpSession.TenantId;
             }
+
+            if (!String.IsNullOrWhiteSpace(input.Instruction))
+            {
+                
+                instructionId = await CreateInstructions(input.Instruction);
+            }
+
+            task.VersionId = instructionId;
             var checklistId = await _closingChecklistRepository.InsertAndGetIdAsync(task);
 
             await CreateComment(input.CommentBody, checklistId);
@@ -320,6 +356,30 @@ namespace Zinlo.ClosingChecklist
                 await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
             }
         }
+
+        protected virtual async Task<long> CreateInstructions(string input)
+        {
+            var instruction = new CreateOrEditInstructionVersion
+            {
+                Body = input
+            };
+            return await _instructionVersionsAppService.CreateOrEdit(instruction);
+        }
+        protected virtual async Task Update(CreateOrEditClosingChecklistDto input)
+        {
+            var currentTaskDetail = await _closingChecklistRepository.FirstOrDefaultAsync(p => p.Id == input.Id);
+            if (currentTaskDetail.Frequency == (Frequency)input.Frequency && currentTaskDetail.EndsOn.GetValueOrDefault().Year == input.EndsOn.Year && currentTaskDetail.EndsOn.GetValueOrDefault().Month == input.EndsOn.Month)
+            {
+                if (!(currentTaskDetail.EndOfMonth == input.EndOfMonth && currentTaskDetail.DueOn == input.DueOn &&
+                      currentTaskDetail.DayBeforeAfter == (DaysBeforeAfter)input.DayBeforeAfter))
+                {
+                    input.DueDate = GetNextIterationDateAfterDueDate(input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+                }
+                ObjectMapper.Map(input, currentTaskDetail);
+                await CreateComment(input.CommentBody, input.Id);
+            }
+        }
+
         private async Task CreateComment(string commentBody, long taskId)
         {
             if (!String.IsNullOrWhiteSpace(commentBody))
@@ -348,29 +408,29 @@ namespace Zinlo.ClosingChecklist
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
 
-            
-                var task = _closingChecklistRepository.GetAll().Include(u => u.Assignee).Include(c => c.Category).FirstOrDefault(x => x.Id == id);
-            var output = ObjectMapper.Map<DetailsClosingCheckListDto>(task);
-            if (task != null)
-            {
-                output.Id = task.Id;
-                output.AssigneeName = task.Assignee.Name;
-                output.TaskStatus = task.Status.ToString();
-                output.Status = (StatusDto)task.Status;
-                output.CategoryName = task.Category.Title;
-                output.CategoryId = task.CategoryId;
-                output.Comments = await _commentAppService.GetComments((int)CommentTypeDto.ClosingChecklist, task.Id);
-                output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
-                output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue
-                    ? "data:image/jpeg;base64," + _profileAppService
-                          .GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture
-                    : "";
-                output.MonthStatus = await GetMonthStatus(task.ClosingMonth);
-                output.DueDate = task.DueDate;
-                output.IsDeleted = task.IsDeleted;
-            }
 
-            return output;
+                var task = _closingChecklistRepository.GetAll().Include(u => u.Assignee).Include(c => c.Category).FirstOrDefault(x => x.Id == id);
+                var output = ObjectMapper.Map<DetailsClosingCheckListDto>(task);
+                if (task != null)
+                {
+                    output.Id = task.Id;
+                    output.AssigneeName = task.Assignee.Name;
+                    output.TaskStatus = task.Status.ToString();
+                    output.Status = (StatusDto)task.Status;
+                    output.CategoryName = task.Category.Title;
+                    output.CategoryId = task.CategoryId;
+                    output.Comments = await _commentAppService.GetComments((int)CommentTypeDto.ClosingChecklist, task.Id);
+                    output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
+                    output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue
+                        ? "data:image/jpeg;base64," + _profileAppService
+                              .GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture
+                        : "";
+                    output.MonthStatus = await GetMonthStatus(task.ClosingMonth);
+                    output.DueDate = task.DueDate;
+                    output.IsDeleted = task.IsDeleted;
+                }
+
+                return output;
             }
         }
         public async Task Delete(long id)

@@ -1625,9 +1625,6 @@ namespace Zinlo.Migrations
                     b.Property<Guid>("GroupId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Instruction")
-                        .HasColumnType("text");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -1649,11 +1646,16 @@ namespace Zinlo.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
 
+                    b.Property<long?>("VersionId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AssigneeId");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("VersionId");
 
                     b.ToTable("ClosingChecklists");
                 });
@@ -1779,6 +1781,21 @@ namespace Zinlo.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ImportsPaths");
+                });
+
+            modelBuilder.Entity("Zinlo.InstructionVersions.InstructionVersion", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Body")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Versions");
                 });
 
             modelBuilder.Entity("Zinlo.MultiTenancy.Accounting.Invoice", b =>
@@ -2149,39 +2166,6 @@ namespace Zinlo.Migrations
                     b.ToTable("TimeManagements");
                 });
 
-            modelBuilder.Entity("Zinlo.Versions.Version", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Body")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("TenantId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Versions");
-                });
-
             modelBuilder.Entity("Zinlo.Editions.SubscribableEdition", b =>
                 {
                     b.HasBaseType("Abp.Application.Editions.Edition");
@@ -2409,6 +2393,10 @@ namespace Zinlo.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Zinlo.InstructionVersions.InstructionVersion", "Version")
+                        .WithMany()
+                        .HasForeignKey("VersionId");
                 });
 
             modelBuilder.Entity("Zinlo.ImportsPaths.ImportsPath", b =>

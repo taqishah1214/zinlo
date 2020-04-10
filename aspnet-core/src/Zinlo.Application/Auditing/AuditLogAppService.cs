@@ -244,7 +244,7 @@ namespace Zinlo.Auditing
                             entityPropertyChange.EntityChangeId
                         join user in _userRepository.GetAll() on entityChangeSet.UserId equals user.Id
                         where entityChange.EntityId == entityId && entityPropertyChange.OriginalValue != null
-                                                                    && entityChange.EntityTypeFullName == entityFullName
+                                                                && entityChange.EntityTypeFullName == entityFullName
                         select new EntityPropertyHistory()
                         {
                             UserId = (long)entityChangeSet.UserId,

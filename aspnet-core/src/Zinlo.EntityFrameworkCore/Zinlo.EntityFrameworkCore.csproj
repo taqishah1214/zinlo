@@ -28,6 +28,14 @@
     <Compile Remove="Migrations\20200326120336_Reconciliation_Changes.Designer.cs" />
     <Compile Remove="Migrations\20200407085230_Versioning.cs" />
     <Compile Remove="Migrations\20200407085230_Versioning.Designer.cs" />
+    <Compile Remove="Migrations\20200407085622_Versioning.cs" />
+    <Compile Remove="Migrations\20200407085622_Versioning.Designer.cs" />
+    <Compile Remove="Migrations\20200410162956_InstructionVersion.cs" />
+    <Compile Remove="Migrations\20200410162956_InstructionVersion.Designer.cs" />
+    <Compile Remove="Migrations\20200410163456_InstructionVersion.cs" />
+    <Compile Remove="Migrations\20200410163456_InstructionVersion.Designer.cs" />
+    <Compile Remove="Migrations\20200410164138_Initial.cs" />
+    <Compile Remove="Migrations\20200410164138_Initial.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="28.4.4" />
