@@ -65,8 +65,8 @@
                                             </div>
                                             <div class="activity-inner-b mb-3">
                                                 <div class="mb-2 notification-line1">
-                                                    <a (click)="onChangeCommentOrHistory(1)" class="small-btn bg-lightgrey mr-2">Comments</a>
-                                                    <a (click)="onChangeCommentOrHistory(2)" class="small-btn bg-grey">History</a>
+                                                    <a (click)="onChangeCommentOrHistory(1)" class="small-btn {{buttonColorForComment}} mr-2">Comments</a>
+                                                    <a (click)="onChangeCommentOrHistory(2)" class="small-btn {{buttonColorForHistory}}">History</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -74,7 +74,7 @@
                                     <div *ngIf="!commentShow" >
                                     <div  *ngFor="let i of historyOfTask"  class="activity-box">
 
-                                        <div *ngIf="i.propertyName == 'Status'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                        <div *ngIf="i.propertyName == 'Status' || i.propertyName == 'CategoryId'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
                                             <div class="activity-inner-a mb-3">
                                                 <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
                                             </div>
@@ -83,10 +83,9 @@
                                                     <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>{{i.propertyName}}</span> {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
                                                 </div>
                                                 <div>
-                                                    <span class="kt-badge kt-badge--brand kt-badge--inline">{{i.result.PreviousValue}}</span>
-                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2">
-                                                    <span class="kt-badge kt-badge--success kt-badge--inline">{{i.result.NewValue}}</span>
-
+                                                    <span class="border-0 {{i.result.PreviousValueColor}} text-white statusWidth1">{{i.result.PreviousValue}}</span>
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2 arrowimage">
+                                                    <span class="border-0 {{i.result.NewValueColor}} text-white statusWidth1">{{i.result.NewValue}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -102,7 +101,7 @@
                                                 </div>
                                                 <div *ngIf="i.propertyName == 'DueDate'">
                                                     <span class="text-lightgrey">{{i.result.PreviousValue  | momentFormat:' MMMM YYYY'}}</span>
-                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2">
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2 arrowimage">
                                                     <span>{{i.result.NewValue | momentFormat:' MMMM YYYY'}}</span>
                                                 </div>
 
@@ -127,7 +126,7 @@
                                                 <div>
                                                     <div class="badge2 {{i.result.colorPreviousValue}} d-inline-flex align-items-center justify-content-center">{{i.result.PreviousValue.name | firstLetterOfWords}}</div>
                                                     <span>{{i.result.PreviousValue.name}}</span>
-                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2">
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2 arrowimage">
                                                     <div class="badge2 {{i.result.colorNewValue}} d-inline-flex align-items-center justify-content-center">{{i.result.NewValue.name | firstLetterOfWords}}</div>
                                                     <span>{{i.result.NewValue.name}}</span>
                                                 </div>

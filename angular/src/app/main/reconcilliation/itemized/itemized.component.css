@@ -1290,6 +1290,8 @@
     .small-btn{
         border-radius: 4px;
         padding: 2px 10px;
+        cursor: pointer;
+       
     }
     .activity-inner-a{
         min-width: 50px;
@@ -1312,11 +1314,13 @@
     overflow: scroll;
     }
 .statusWidth{
-    width: 100px;
+    padding: 3px;
     align-items: center;
     height: 25px;
     border-radius: 5px;
     text-align: center;
+    justify-content: center;
+
 }
     /*Pre used classes*/
     .bg-lightgrey{
@@ -1357,7 +1361,9 @@
     .align-items-center{
         align-items: center;
     }
-
+    .arrowimage{
+        height: 15px;
+    }
 
 
     .border-grey{
