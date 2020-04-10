@@ -272,12 +272,12 @@
         <div [class]="containerClass">
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">
-                    <span>{{"Administration" | localize}}</span>
+                    <span>{{"Users" | localize}}</span>
                 </h3>
                 <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-                <span class="kt-subheader__desc">
+                <!-- <span class="kt-subheader__desc">
                     {{"Users" | localize}}
-                </span>
+                </span> -->
             </div>
             <div class="kt-subheader__toolbar">
                 <div class="kt-subheader__wrapper">
@@ -291,8 +291,8 @@
             <div class="kt-portlet__body">
                 <form class="kt-form" autocomplete="new-password">
                     <div>
-                        <div class="row align-items-center mb-4">
-                            <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
+                        <div class="row d-flex justify-content-end mb-3">
+                            <div class=" kt-margin-b-20-tablet-and-mobile">
                                 <div class="kt-input-icon kt-input-icon--left">
                                     <input [(ngModel)]="filterText"  name="filterText"  autoFocus
                                         class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
@@ -334,7 +334,7 @@
                                 </h3>
                             </div>
                             <div class="kt-portlet__head-toolbar">
-                                <a class="btn btn-icon" data-toggle="dropdown">
+                                <a class="btn btn-icon" data-toggle="tooltip" title="Actions" data-toggle="dropdown" style="cursor: pointer;">
                                     <i class="flaticon-more-1 kt-font-brand"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
@@ -376,19 +376,19 @@
                                 <div class="kt-widget__body">
                                     <div class="kt-widget__item">
                                         <div class="kt-widget__contact">
-                                            <span class="kt-widget__label">User Name:</span>
+                                            <span class="kt-widget__label">User Name</span>
                                             <span class="kt-widget__data">{{item.userName}}</span>
                                         </div>
                                         <div class="kt-widget__contact">
-                                            <span class="kt-widget__label">Email:</span>
+                                            <span class="kt-widget__label">Email</span>
                                             <a class="kt-widget__data">{{item.email}}</a>
                                         </div>
                                         <div class="kt-widget__contact">
-                                            <span class="kt-widget__label">Creation Date:</span>
+                                            <span class="kt-widget__label">Creation Date</span>
                                             <a  class="kt-widget__data">{{item.creationTime | momentFormat:'DD MMMM YYYY'}}</a>
                                         </div>
                                         <div class="kt-widget__contact">
-                                            <span class="kt-widget__label">Status:</span>
+                                            <span class="kt-widget__label">Status</span>
                                             <span class="kt-widget__data">
                                                 <div class="col-3">
                                                     <span
