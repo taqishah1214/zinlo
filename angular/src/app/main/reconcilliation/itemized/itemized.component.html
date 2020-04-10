@@ -224,94 +224,10 @@
                         <div class="col-md-6">
                             <div class="activity-box">
                                 <h5>Activity</h5>
-                                <div class="activity-inner d-flex flex-wrap">
-                                    <div class="activity-inner-a mb-3">
-                                        <span>Show:</span>
-                                    </div>
-                                    <div class="activity-inner-b mb-3">
-                                        <div class="mb-2 notification-line1">
-                                            <a (click)="onChangeCommentOrHistory(1)" class="small-btn {{buttonColorForComment}} mr-2">Comments</a>
-                                            <a (click)="onChangeCommentOrHistory(2)" class="small-btn {{buttonColorForHistory}}">History</a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-
-
-                            <div *ngIf="!commentShow">
-                                <div  *ngFor="let i of historyOfTask"  class="activity-box">
-                                    <div *ngIf="i.propertyName == 'Status' " class="activity-inner d-flex flex-wrap align-items-center mb-4">
-                                        <div class="activity-inner-a mb-3">
-                                            <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
-                                        </div>
-                                        <div class="activity-inner-b mb-3">
-                                            <div class="mb-2 notification-line1">
-                                                <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>{{i.propertyName}}</span> {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
-                                            </div>
-                                            <div> 
-                                                <span class="statusWidth border-0 {{i.result.PreviousColor}} text-white">{{i.result.PreviousValue}}</span>
-                                                <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2 arrowimage">
-                                                <span class="statusWidth border-0 {{i.result.NewValueColor}} text-white">{{i.result.NewValue}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- <div *ngIf="i.propertyName == 'AccountSubTypeId' " class="activity-inner d-flex flex-wrap align-items-center mb-4">
-                                        <div class="activity-inner-a mb-3">
-                                            <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
-                                        </div>
-                                        <div class="activity-inner-b mb-3">
-                                            <div class="mb-2 notification-line1">
-                                                <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>Account Subtype</span> {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
-                                            </div>
-                                            <div> 
-                                                <span class="statusWidth border-0 bg-gray text-white">{{i.result.PreviousValue.name}}</span>
-                                                <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2 arrowimage">
-                                                <span class="statusWidth border-0 bg-gray text-white">{{i.result.NewValue.name}}</span>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                                            
-                                    <div *ngIf="i.propertyName == 'AccountName'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
-                                        <div class="activity-inner-a mb-3">
-                                            <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
-                                        </div>
-                                        <div class="activity-inner-b mb-3">
-                                            <div class="mb-2 notification-line1">
-                                                <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>{{i.propertyName}}</span> {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
-                                            </div>
-                                            <div>
-                                                <span class="text-lightgrey">{{i.result.PreviousValue}}</span>
-                                                <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2 arrowimage">
-                                                <span>{{i.result.NewValue}}</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                            
-                                    <div *ngIf="i.propertyName == 'AssigneeId'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
-                                        <div class="activity-inner-a mb-3">
-                                            <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
-                                        </div>
-
-                                        <div class="activity-inner-b mb-3">
-                                            <div class="mb-2 notification-line1">
-                                                <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>Assignee</span>{{i.changeTime | momentFormat:'Do MMM YY LTS'}}
-                                            </div>
-                                            <div>
-                                                <div class="badge2 {{i.result.colorPreviousValue}} d-inline-flex align-items-center justify-content-center">{{i.result.PreviousValue.name | firstLetterOfWords}}</div>
-                                                <span>{{i.result.PreviousValue.name}}</span>
-                                                <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2 arrowimage">
-                                                <div class="badge2 {{i.result.colorNewValue}} d-inline-flex align-items-center justify-content-center">{{i.result.NewValue.name | firstLetterOfWords}}</div>
-                                                <span>{{i.result.NewValue.name}}</span>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                </div> 
-                            </div>
-
-
-                            <div *ngIf="commentShow" class="commentmainView show-comments">
+                            <tabset class="tab-container tabbable-line">
+                                <tab heading="{{'Comment' | localize}}">
+                            <div class="commentmainView show-comments">
                                 <div class="kt-widget3 ">
                                     <div *ngFor="let i of postedCommentList" class="kt-widget3__item ">
                                         <div class="comments-header kt-widget3__header">
@@ -337,6 +253,82 @@
                                     </div>
                                 </div>
                             </div>
+                                </tab>
+
+
+
+                                <tab heading="{{'History' | localize}}">
+                                    <div  *ngFor="let i of historyOfTask"  class="activity-box">
+                                        <div *ngIf="i.propertyName == 'Status' " class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                            <div class="activity-inner-a mb-3">
+                                                <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
+                                            </div>
+                                            <div class="activity-inner-b mb-3">
+                                                <div class="mb-2 notification-line1">
+                                                    <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>{{i.propertyName}}</span> {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
+                                                </div>
+                                                <div> 
+                                                    <span class="statusWidth border-0 {{i.result.PreviousColor}} text-white">{{i.result.PreviousValue}}</span>
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2 arrowimage">
+                                                    <span class="statusWidth border-0 {{i.result.NewValueColor}} text-white">{{i.result.NewValue}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <!-- <div *ngIf="i.propertyName == 'AccountSubTypeId' " class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                            <div class="activity-inner-a mb-3">
+                                                <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
+                                            </div>
+                                            <div class="activity-inner-b mb-3">
+                                                <div class="mb-2 notification-line1">
+                                                    <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>Account Subtype</span> {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
+                                                </div>
+                                                <div> 
+                                                    <span class="statusWidth border-0 bg-gray text-white">{{i.result.PreviousValue.name}}</span>
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2 arrowimage">
+                                                    <span class="statusWidth border-0 bg-gray text-white">{{i.result.NewValue.name}}</span>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                                                
+                                        <div *ngIf="i.propertyName == 'AccountName'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                            <div class="activity-inner-a mb-3">
+                                                <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
+                                            </div>
+                                            <div class="activity-inner-b mb-3">
+                                                <div class="mb-2 notification-line1">
+                                                    <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>{{i.propertyName}}</span> {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
+                                                </div>
+                                                <div>
+                                                    <span class="text-lightgrey">{{i.result.PreviousValue}}</span>
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2 arrowimage">
+                                                    <span>{{i.result.NewValue}}</span>
+                                                </div>
+    
+                                            </div>
+                                        </div>
+                                
+                                        <div *ngIf="i.propertyName == 'AssigneeId'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                            <div class="activity-inner-a mb-3">
+                                                <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
+                                            </div>
+    
+                                            <div class="activity-inner-b mb-3">
+                                                <div class="mb-2 notification-line1">
+                                                    <span>{{i.result.ChangeOccurUser.name}}</span> Changed the <span>Assignee</span>{{i.changeTime | momentFormat:'Do MMM YY LTS'}}
+                                                </div>
+                                                <div>
+                                                    <div class="badge2 {{i.result.colorPreviousValue}} d-inline-flex align-items-center justify-content-center">{{i.result.PreviousValue.name | firstLetterOfWords}}</div>
+                                                    <span>{{i.result.PreviousValue.name}}</span>
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png" class="mr-2 ml-2 arrowimage">
+                                                    <div class="badge2 {{i.result.colorNewValue}} d-inline-flex align-items-center justify-content-center">{{i.result.NewValue.name | firstLetterOfWords}}</div>
+                                                    <span>{{i.result.NewValue.name}}</span>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </tab>
+                            </tabset>
 
                             <div class="form-group giveCommentView" *ngIf="commantBox">
                                 <label>{{"Comments" | localize}}</label>

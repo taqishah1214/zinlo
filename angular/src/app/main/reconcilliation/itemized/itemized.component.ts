@@ -246,22 +246,6 @@ BackToReconcileList() {
 
 
 
-
-
-  onChangeCommentOrHistory(value){
-
-    if (value == 1)
-   {
-    this.buttonColorForHistory = "bg-lightgrey"
-    this.buttonColorForComment = "bg-grey"
-    this.commentShow = true
-   }else {
-    this.buttonColorForHistory = "bg-grey"
-    this.buttonColorForComment = "bg-lightgrey"
-    this.commentShow = false
-   }
-  }
-
   getAuditLogOfAccount() {
     this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts").subscribe(resp => {
       this.historyOfTask = resp
