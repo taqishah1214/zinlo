@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <localizationDictionary culture="en">
   <texts>
+
+    <text name="ItemizedRestoredSuccessfully">Itemized Item Restored Successfully!</text>
+    <text name="AmortizedRestoredSuccessfully">Amortized Item Restored Successfully!</text>
     
     <text name="AccountRestoredSuccessfully">Account Restored Successfully!</text>
     <text name="TaskRestoredSuccessfully">Task Restored Successfully!</text>

@@ -23,6 +23,7 @@ namespace Zinlo.Reconciliation.Dtos
         public DateTime ClosingMonth { get; set; }
         public string CommentBody { get; set; }
         public List<CommentDto> Comments { get; set; }
+        public bool IsDeleted { get; set; }
 
 
 

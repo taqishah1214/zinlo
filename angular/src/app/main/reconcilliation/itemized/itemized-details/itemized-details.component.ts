@@ -179,7 +179,12 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
       }
     );
   }
-
+  restoreItemizedItem():void{
+    this._itemizationService.restoreItemizedItem(this.itemizedItemId).subscribe(result=>{
+     this.notify.success(this.l('ItemizedRestoredSuccessfully'));
+     this.BackToList()
+    })
+}
 
 
   

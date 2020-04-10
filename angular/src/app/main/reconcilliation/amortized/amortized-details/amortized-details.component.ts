@@ -194,7 +194,12 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
       }
     );
   }
-
+  restoreAmortizedItem():void{
+    this._amortizationService.restoreAmortizedItem(this.amortrizedItemId).subscribe(result=>{
+     this.notify.success(this.l('AmortizedRestoredSuccessfully'));
+     this.BackToList()
+    })
+}
 
 
 

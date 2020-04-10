@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Zinlo.Reconciliation
 {
+    public class Amortization : FullAuditedEntity<long>, IMustHaveTenant
     [Audited]
     public class Amortization : CreationAuditedEntity<long>, IMustHaveTenant
     {

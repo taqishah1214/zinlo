@@ -15,13 +15,15 @@
                         </a>
                         <div class="btn-group">
 
-                            <a  class="btn" href="javascript:;"
+                            <a  *ngIf="!amortizationDto.isDeleted == true" class="btn" href="javascript:;"
                                 (click)="editAmortizedItem()">
                                 <img src="../../../../assets/img/edit.svg"></a>
-                            <a class="btn" href="javascript:;"
+                            <a *ngIf="!amortizationDto.isDeleted == true" class="btn" href="javascript:;"
                                 (click)="deleteItem()">
                                 <img src="../../../../assets/img/del.svg"></a>
-
+                                <a *ngIf="amortizationDto.isDeleted == true" class="btn" href="javascript:;"
+                                (click)="restoreAmortizedItem()">
+                                <i class="fas fa-trash-restore"></i></a> 
 
                         </div>
                     </div>
