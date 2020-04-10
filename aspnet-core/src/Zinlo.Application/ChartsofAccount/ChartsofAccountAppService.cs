@@ -116,7 +116,7 @@ namespace Zinlo.ChartsofAccount
 
             if ((int)account.ReconciliationType != (int)input.ReconciliationType)
             {
-                DateTime ClosingMonth = account.ClosingMonth;
+                DateTime closingMonth = account.ClosingMonth;
                 await _chartsofAccountRepository.DeleteAsync(account);
                 var previousAccountId = input.Id;
                 if ((int)account.ReconciliationType == 1)
@@ -138,7 +138,7 @@ namespace Zinlo.ChartsofAccount
                 }
 
                 input.Id = 0;
-                input.ClosingMonth = ClosingMonth;
+                input.ClosingMonth = closingMonth;
                 return await Create(input);
             }
 

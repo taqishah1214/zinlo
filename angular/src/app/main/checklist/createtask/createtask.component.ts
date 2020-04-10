@@ -61,7 +61,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   ngOnInit() {
     this.getProfilePicture(); 
     this.initializePageParameters();
-    this.loadDaysDropdown();
+
   }
 
   getProfilePicture() {
@@ -141,7 +141,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.checklist.dayBeforeAfter = this.daysBeforeAfter;
       this.checklist.endOfMonth = false;
     }
-    this.checklist.endsOn =add(this.checklist.endsOn, 2, "day")
     this.checklist.dueOn = Number(this.checklist.dueOn);
     this.checklist.frequency = Number(this.checklist.frequency);
     this.checklist.status = 1
