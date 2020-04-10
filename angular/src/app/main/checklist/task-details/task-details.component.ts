@@ -5,7 +5,7 @@ import { ClosingChecklistServiceProxy,CategoriesServiceProxy, AuditLogServicePro
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 import { AppConsts } from '@shared/AppConsts';
-import { UserDateService } from "../../../services/user-date.service";
+import { StoreDateService } from "../../../services/storedate.service";
 
 
 @Component({
@@ -36,6 +36,10 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   commentShow = true;
   historyList : any =[];
   AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
+  StatusColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"]
+  buttonColorForComment : any = "bg-grey"
+  buttonColorForHistory : any = "bg-lightgrey"
+  categoriesList : any = []
 
 
   constructor(
@@ -46,7 +50,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     private _attachmentService: AttachmentsServiceProxy,
     private userInfo: UserInformation,
     private _auditLogService : AuditLogServiceProxy,
-    private userDate: UserDateService,
+    private storeData: StoreDateService,
     private _categoriesService: CategoriesServiceProxy,
     
   ) {
@@ -54,7 +58,9 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit() {
-    this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
+    this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
+    this.storeData.allCategories.subscribe(categoriesList => this.categoriesList = categoriesList)
+
     this.userSignInName = this.appSession.user.name.toString().toUpperCase();
     this.commantBox = true;
     this.recordId = history.state.data.id;
@@ -111,9 +117,10 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   setDaysCategoryIdHistoryParam(item){
   let array : any = []
    array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
-   array["NewValue"] = this.getCategoryTitleWithName(parseInt(item.newValue)); 
-   array["PreviousValue"] = this.getCategoryTitleWithName(parseInt(item.originalValue)); 
-   debugger;
+   array["NewValue"] = this.categoriesList[this.getCategoryTitleWithName(parseInt(item.newValue))]; 
+   array["PreviousValue"] = this.categoriesList[this.getCategoryTitleWithName(parseInt(item.originalValue))]; 
+   array["NewValueColor"] = "bg-lightgrey"; 
+   array["PreviousValueColor"] = "bg-lightgrey"; 
    return array
   }
 
@@ -122,11 +129,8 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     return ;
   }
   
- async getCategoryTitleWithName(id) {
-    await this._categoriesService.getCategoryForEdit(id).subscribe(resp => {
-      debugger;
-      return resp.category.title;
-    })
+  getCategoryTitleWithName(id) : number {
+  return this.categoriesList.findIndex(x => x.value === id);
   }
 
   getDaysBeforeAfterNameWith(id) {
@@ -172,7 +176,9 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   let array : any = []
   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
   array["NewValue"] = this.findStatusName(parseInt(item.newValue)); 
+  array["NewValueColor"] = this.getStatusColor(parseInt(item.newValue)); 
   array["PreviousValue"] = this.findStatusName(parseInt(item.originalValue)); 
+  array["PreviousValueColor"] = this.getStatusColor(parseInt(item.originalValue)); 
   return array
 }
 
@@ -197,6 +203,22 @@ setTaskNameHistoryParam(item){
         return "Completed"
       default:
         return ""
+    }
+
+  }
+
+  getStatusColor (value) {
+    if (value === 1) {
+       return this.StatusColorBox[3]
+    }
+    else if (value === 2) {
+      return this.StatusColorBox[0]
+    }
+    else if (value === 3) {
+      return this.StatusColorBox[1]
+    }
+    else if (value === 4) {
+      return  this.StatusColorBox[2]
     }
 
   }
@@ -279,13 +301,18 @@ setTaskNameHistoryParam(item){
 
   }
 
+  
+
   onChangeCommentOrHistory(value){
-    console.log(this.historyOfTask)
-    debugger;
+
     if (value == 1)
    {
+    this.buttonColorForHistory = "bg-lightgrey"
+    this.buttonColorForComment = "bg-grey"
     this.commentShow = true
    }else {
+    this.buttonColorForHistory = "bg-grey"
+    this.buttonColorForComment = "bg-lightgrey"
     this.commentShow = false
    }
   }

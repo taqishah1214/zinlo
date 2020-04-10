@@ -43,7 +43,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
   public userId: number;
   categoryId: any;
   statusValue: any;
-  categoryName: any;
+  categoryName: "";
   categoriesList: any;
   attachments: any;
   userName: string[];
@@ -274,7 +274,6 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.commantBox = false;
   }
   saveTaskChanges() {
-    debugger
     this.checklist.frequency = this.getTaskForEdit.frequencyId;
     this.checklist.dueDate = this.getTaskForEdit.dueDate;
     this.checklist.closingMonth = moment(this.closingMonthValue);

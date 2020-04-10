@@ -10,7 +10,7 @@ import { Table } from 'primeng/table';
 import { AppConsts } from '@shared/AppConsts';
 import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
-import { UserDateService } from "../../../services/user-date.service";
+import { StoreDateService } from "../../../services/storedate.service";
 
 
 @Component({
@@ -56,7 +56,9 @@ export class ItemizedComponent extends AppComponentBase {
   AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
   userSignInName: string;
   StatusColorBox: any = ["bg-blue", "bg-sea-green", "bg-gray"]
-
+  buttonColorForComment : any = "bg-grey"
+  buttonColorForHistory : any = "bg-lightgrey"
+  accountSubypeList : any  = []
 
   constructor(
     injector: Injector,
@@ -65,7 +67,7 @@ export class ItemizedComponent extends AppComponentBase {
     private _itemizedService:ItemizationServiceProxy,
     private _timeManagementsServiceProxy :TimeManagementsServiceProxy,
     private _auditLogService : AuditLogServiceProxy,
-    private userDate: UserDateService,
+    private storeData: StoreDateService,
     
 
   ) {
@@ -73,7 +75,9 @@ export class ItemizedComponent extends AppComponentBase {
   }
   ngOnInit() {
     this.userSignInName = this.appSession.user.name.toString().toUpperCase();
-    this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
+    this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
+    this.storeData.allAccountSubTypes.subscribe(accountSubypeList => this.accountSubypeList = accountSubypeList)
+    console.log("this.accountSubypeList",this.accountSubypeList)
     this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
@@ -247,10 +251,15 @@ BackToReconcileList() {
 
 
   onChangeCommentOrHistory(value){
+
     if (value == 1)
    {
+    this.buttonColorForHistory = "bg-lightgrey"
+    this.buttonColorForComment = "bg-grey"
     this.commentShow = true
    }else {
+    this.buttonColorForHistory = "bg-grey"
+    this.buttonColorForComment = "bg-lightgrey"
     this.commentShow = false
    }
   }
@@ -258,7 +267,6 @@ BackToReconcileList() {
   getAuditLogOfAccount() {
     this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts").subscribe(resp => {
       this.historyOfTask = resp
-      debugger
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
           case "AssigneeId":         
@@ -273,6 +281,9 @@ BackToReconcileList() {
             case "AccountType":          
             element["result"] = this.setAccountTypeHistoryParam(element)
             break;
+            case "AccountSubTypeId":          
+            element["result"] = this.setAccountSubTypeHistoryParam(element)
+            break;
             default:
             console.log("not found");
             break;
@@ -284,13 +295,24 @@ BackToReconcileList() {
 
 
   
+getAccountSubType(id) {
+  return this.accountSubypeList.findIndex(x => x.value == id);
+}
 
+setAccountSubTypeHistoryParam(item){
+  let array : any = []
+  array["ChangeOccurUser"] =  this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] =  this.accountSubypeList[this.getAccountSubType(parseInt(item.newValue))]; 
+  array["PreviousValue"] = this.accountSubypeList[this.getAccountSubType(parseInt(item.originalValue))]; 
+  debugger
+  return array
 
-
+}
 
   findTheUserFromList(id) : number{
   return this.users.findIndex(x => x.id === id);
   }
+
 
   
   
@@ -316,9 +338,10 @@ BackToReconcileList() {
   let array : any = []
   array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
   array["NewValue"] = this.findStatusName(parseInt(item.newValue)); 
-  array["NewValueColor"] = this.findStatusColor(parseInt(item.newValue)); 
   array["PreviousValue"] = this.findStatusName(parseInt(item.originalValue)); 
   array["PreviousColor"] = this.findStatusColor(parseInt(item.originalValue)); 
+  array["NewValueColor"] = this.findStatusColor(parseInt(item.newValue)); 
+
   return array
 }
 
