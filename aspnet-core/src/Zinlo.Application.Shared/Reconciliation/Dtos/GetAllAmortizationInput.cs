@@ -14,6 +14,7 @@ namespace Zinlo.Reconciliation.Dtos
         public DateTime MonthFilter { get; set; }
 
         public string AccountNumer {get;set;}
+        public bool? AllOrActive { get; set; }
 
     }
 }

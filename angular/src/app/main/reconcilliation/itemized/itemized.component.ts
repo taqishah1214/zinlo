@@ -19,6 +19,7 @@ import { UserDateService } from "../../../services/user-date.service";
   styleUrls: ['./itemized.component.css']
 })
 export class ItemizedComponent extends AppComponentBase {
+  AllOrActive : boolean = false;
   UserProfilePicture: any;
   monthValue: Date = new Date();
   commantBox: boolean;
@@ -102,6 +103,7 @@ export class ItemizedComponent extends AppComponentBase {
     this.AccountNumber == "" ? this.accountId : 0,
     moment(this.monthFilter),
     this.AccountNumber,
+    this.AllOrActive,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
     this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -371,30 +373,16 @@ setAccountNameHistoryParam(item){
     }
 
   }
+  changeToggleValue():void{
+    if(this.AllOrActive)
+    {
+      this.AllOrActive = false;
+    }
+    else{
+         this.AllOrActive = true;
+    }
+    this.getAllItemizedList();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  }
 
 }

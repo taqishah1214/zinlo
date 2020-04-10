@@ -15,6 +15,7 @@ using Zinlo.Attachments;
 using Zinlo.ChartsofAccount;
 using Zinlo.Comment;
 using Zinlo.Comment.Dtos;
+using Abp.Domain.Uow;
 
 namespace Zinlo.Reconciliation
 {
@@ -24,16 +25,18 @@ namespace Zinlo.Reconciliation
         private readonly IAttachmentAppService _attachmentAppService;
         private readonly IChartsofAccountAppService _chartsofAccountAppService;
         private readonly ICommentAppService _commentAppService;
-
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         #region|#Constructor|
-        public AmortizationAppService(ICommentAppService commentAppService,IChartsofAccountAppService chartsofAccountAppService, IRepository<Amortization, long> amortizationRepository,IAttachmentAppService attachmentAppService)
+        public AmortizationAppService(ICommentAppService commentAppService,IChartsofAccountAppService chartsofAccountAppService, IRepository<Amortization, long> amortizationRepository,
+            IAttachmentAppService attachmentAppService,
+            IUnitOfWorkManager unitOfWorkManager)
         {
             _attachmentAppService = attachmentAppService;
             _amortizationRepository = amortizationRepository;
             _chartsofAccountAppService = chartsofAccountAppService;
             _commentAppService = commentAppService;
-
+            _unitOfWorkManager = unitOfWorkManager;
         }
         #endregion
         #region|Create Edit|
@@ -56,76 +59,81 @@ namespace Zinlo.Reconciliation
 
         public async Task<PagedResultDto<AmortizedListDto>> GetAll(GetAllAmortizationInput input)
         {
-            var query = _amortizationRepository.GetAll().Where(e => e.ClosingMonth.Month == input.MonthFilter.Month && e.ClosingMonth.Year == input.MonthFilter.Year)
+            using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
+            {
+                var query = _amortizationRepository.GetAll().Where(e => e.ClosingMonth.Month == input.MonthFilter.Month && e.ClosingMonth.Year == input.MonthFilter.Year)
                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
                .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId)
-               .WhereIf(!string.IsNullOrWhiteSpace(input.AccountNumer), e => false || e.ChartsofAccount.AccountNumber == input.AccountNumer);
+               .WhereIf(!string.IsNullOrWhiteSpace(input.AccountNumer), e => false || e.ChartsofAccount.AccountNumber == input.AccountNumer)
+               .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
 
 
-            var pagedAndFilteredItems = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
-            var totalCount = query.Count();
-           var amortizedList = (from o in pagedAndFilteredItems.ToList()
+                var pagedAndFilteredItems = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+                var totalCount = query.Count();
+                var amortizedList = (from o in pagedAndFilteredItems.ToList()
 
-                                select new AmortizedListForViewDto()
-                                {
-                                    Id = o.Id,
-                                    StartDate = o.StartDate,
-                                    EndDate = o.EndDate,
-                                    Description = o.Description,
-                                    AccuredAmortization = CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount,o.EndDate, input.MonthFilter,o.StartDate),
-                                    BeginningAmount = o.Amount,
-                                    NetAmount = CalculateNetAmount((int)(o.Criteria) == 2 || (int)(o.Criteria) == 3 ? CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate): o.AccomulateAmount, o.Amount) ,
-                                    Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 2).Result        
-                               }).ToList();
-
-
-            List<AmortizedListDto> result = new List <AmortizedListDto>();
-
-            AmortizedListDto amortizedListDto = new AmortizedListDto
-            {
-                amortizedListForViewDtos = amortizedList,
-                TotalBeginningAmount = amortizedList.Sum(item => item.BeginningAmount),
-                TotalAccuredAmortization = amortizedList.Sum(item => item.AccuredAmortization),
-                TotalNetAmount = amortizedList.Sum(item => item.NetAmount)
-            };
-
-            amortizedListDto.TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId);
-            amortizedListDto.Comments = await _commentAppService.GetComments((int)CommentType.AmortizedList, input.ChartofAccountId);
+                                     select new AmortizedListForViewDto()
+                                     {
+                                         Id = o.Id,
+                                         StartDate = o.StartDate,
+                                         EndDate = o.EndDate,
+                                         Description = o.Description,
+                                         AccuredAmortization = CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate),
+                                         BeginningAmount = o.Amount,
+                                         IsDeleted = o.IsDeleted,
+                                         NetAmount = CalculateNetAmount((int)(o.Criteria) == 2 || (int)(o.Criteria) == 3 ? CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate) : o.AccomulateAmount, o.Amount),
+                                         Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 2).Result
+                                     }).ToList();
 
 
-            if (input.ChartofAccountId != 0 )
-            {
-                var reconcilledResult = await _chartsofAccountAppService.CheckReconcilled(input.ChartofAccountId);
-                amortizedListDto.ReconciliedBase = reconcilledResult;
-                switch (reconcilledResult)
+                List<AmortizedListDto> result = new List<AmortizedListDto>();
+
+                AmortizedListDto amortizedListDto = new AmortizedListDto
                 {
-                    case 1:
-                        await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalNetAmount, input.ChartofAccountId);
-                        amortizedListDto.VarianceNetAmount = amortizedListDto.TotalNetAmount - amortizedListDto.TotalTrialBalance;
-                        amortizedListDto.VarianceBeginningAmount = 0;
-                        amortizedListDto.VarianceAccuredAmount = 0;
-                        break;
-                    case 2:
-                        await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalBeginningAmount, input.ChartofAccountId);
-                        amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalance;
-                        amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalance;
-                        break;
-                    case 3:
-                        await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalAccuredAmortization, input.ChartofAccountId);
-                        amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalance;
-                        amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalance;
-                        break;
+                    amortizedListForViewDtos = amortizedList,
+                    TotalBeginningAmount = amortizedList.Sum(item => item.BeginningAmount),
+                    TotalAccuredAmortization = amortizedList.Sum(item => item.AccuredAmortization),
+                    TotalNetAmount = amortizedList.Sum(item => item.NetAmount)
+                };
 
-                    default:
-                        break;
-                }      
+                amortizedListDto.TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId);
+                amortizedListDto.Comments = await _commentAppService.GetComments((int)CommentType.AmortizedList, input.ChartofAccountId);
+
+
+                if (input.ChartofAccountId != 0)
+                {
+                    var reconcilledResult = await _chartsofAccountAppService.CheckReconcilled(input.ChartofAccountId);
+                    amortizedListDto.ReconciliedBase = reconcilledResult;
+                    switch (reconcilledResult)
+                    {
+                        case 1:
+                            await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalNetAmount, input.ChartofAccountId);
+                            amortizedListDto.VarianceNetAmount = amortizedListDto.TotalNetAmount - amortizedListDto.TotalTrialBalance;
+                            amortizedListDto.VarianceBeginningAmount = 0;
+                            amortizedListDto.VarianceAccuredAmount = 0;
+                            break;
+                        case 2:
+                            await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalBeginningAmount, input.ChartofAccountId);
+                            amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalance;
+                            amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalance;
+                            break;
+                        case 3:
+                            await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalAccuredAmortization, input.ChartofAccountId);
+                            amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalance;
+                            amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalance;
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
+                result.Add(amortizedListDto);
+                return new PagedResultDto<AmortizedListDto>(
+                   totalCount,
+                   result
+               );
             }
-
-        result.Add(amortizedListDto);
-            return new PagedResultDto<AmortizedListDto>(
-               totalCount,
-               result
-           );
         }
 
         protected virtual double CalculateNetAmount(double AccomulateAmount, double BeginningAmount)
@@ -255,12 +263,15 @@ namespace Zinlo.Reconciliation
 
         public async Task<CreateOrEditAmortizationDto> GetAmortizedItemDetails(long Id)
         {
-            CreateOrEditAmortizationDto ItemData = new CreateOrEditAmortizationDto();
-            var item = await _amortizationRepository.FirstOrDefaultAsync(x => x.Id == Id);
-            ItemData.Attachments = await _attachmentAppService.GetAttachmentsPath(Id, 2);
-            ItemData.Comments = await _commentAppService.GetComments((int)CommentType.AmortizedItem, Id);
-            var data = ObjectMapper.Map(item, ItemData);
-            return data;
+            using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
+            {
+                CreateOrEditAmortizationDto ItemData = new CreateOrEditAmortizationDto();
+                var item = await _amortizationRepository.FirstOrDefaultAsync(x => x.Id == Id);
+                ItemData.Attachments = await _attachmentAppService.GetAttachmentsPath(Id, 2);
+                ItemData.Comments = await _commentAppService.GetComments((int)CommentType.AmortizedItem, Id);
+                var data = ObjectMapper.Map(item, ItemData);
+                return data;
+            }
         }
 
         public async Task PostComment(string comment, long TypeId, CommentTypeDto CommentType)
@@ -278,7 +289,16 @@ namespace Zinlo.Reconciliation
 
 
         }
+        public async Task RestoreAmortizedItem(long id)
+        {
+            using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
+            {
+                var item = await _amortizationRepository.FirstOrDefaultAsync(id);
+                item.IsDeleted = false;
+                await _amortizationRepository.UpdateAsync(item);
+            }
 
+        }
 
 
         #endregion

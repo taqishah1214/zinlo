@@ -1069,12 +1069,13 @@ export class AmortizationServiceProxy {
      * @param chartofAccountId (optional) 
      * @param monthFilter (optional) 
      * @param accountNumer (optional) 
+     * @param allOrActive (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, chartofAccountId: number | undefined, monthFilter: moment.Moment | undefined, accountNumer: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfAmortizedListDto> {
+    getAll(filter: string | undefined, chartofAccountId: number | undefined, monthFilter: moment.Moment | undefined, accountNumer: string | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfAmortizedListDto> {
         let url_ = this.baseUrl + "/api/services/app/Amortization/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -1092,6 +1093,10 @@ export class AmortizationServiceProxy {
             throw new Error("The parameter 'accountNumer' cannot be null.");
         else if (accountNumer !== undefined)
             url_ += "AccountNumer=" + encodeURIComponent("" + accountNumer) + "&"; 
+        if (allOrActive === null)
+            throw new Error("The parameter 'allOrActive' cannot be null.");
+        else if (allOrActive !== undefined)
+            url_ += "AllOrActive=" + encodeURIComponent("" + allOrActive) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -1367,6 +1372,58 @@ export class AmortizationServiceProxy {
     }
 
     protected processPostComment(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    restoreAmortizedItem(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Amortization/RestoreAmortizedItem?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRestoreAmortizedItem(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRestoreAmortizedItem(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRestoreAmortizedItem(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -8123,12 +8180,13 @@ export class ItemizationServiceProxy {
      * @param chartofAccountId (optional) 
      * @param monthFilter (optional) 
      * @param accountNumer (optional) 
+     * @param allOrActive (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, chartofAccountId: number | undefined, monthFilter: moment.Moment | undefined, accountNumer: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfItemizedListDto> {
+    getAll(filter: string | undefined, chartofAccountId: number | undefined, monthFilter: moment.Moment | undefined, accountNumer: string | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfItemizedListDto> {
         let url_ = this.baseUrl + "/api/services/app/Itemization/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -8146,6 +8204,10 @@ export class ItemizationServiceProxy {
             throw new Error("The parameter 'accountNumer' cannot be null.");
         else if (accountNumer !== undefined)
             url_ += "AccountNumer=" + encodeURIComponent("" + accountNumer) + "&"; 
+        if (allOrActive === null)
+            throw new Error("The parameter 'allOrActive' cannot be null.");
+        else if (allOrActive !== undefined)
+            url_ += "AllOrActive=" + encodeURIComponent("" + allOrActive) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -8470,6 +8532,58 @@ export class ItemizationServiceProxy {
     }
 
     protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    restoreItemizedItem(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Itemization/RestoreItemizedItem?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRestoreItemizedItem(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRestoreItemizedItem(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRestoreItemizedItem(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -17317,6 +17431,7 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
     closingMonth!: moment.Moment;
     commentBody!: string | undefined;
     comments!: CommentDto[] | undefined;
+    isDeleted!: boolean;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -17358,6 +17473,7 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
                 for (let item of data["comments"])
                     this.comments!.push(CommentDto.fromJS(item));
             }
+            this.isDeleted = data["isDeleted"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -17399,6 +17515,7 @@ export class CreateOrEditAmortizationDto implements ICreateOrEditAmortizationDto
             for (let item of this.comments)
                 data["comments"].push(item.toJSON());
         }
+        data["isDeleted"] = this.isDeleted;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -17421,6 +17538,7 @@ export interface ICreateOrEditAmortizationDto {
     closingMonth: moment.Moment;
     commentBody: string | undefined;
     comments: CommentDto[] | undefined;
+    isDeleted: boolean;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
@@ -17435,6 +17553,7 @@ export class AmortizedListForViewDto implements IAmortizedListForViewDto {
     accuredAmortization!: number;
     netAmount!: number;
     attachments!: GetAttachmentsDto[] | undefined;
+    isDeleted!: boolean;
 
     constructor(data?: IAmortizedListForViewDto) {
         if (data) {
@@ -17459,6 +17578,7 @@ export class AmortizedListForViewDto implements IAmortizedListForViewDto {
                 for (let item of data["attachments"])
                     this.attachments!.push(GetAttachmentsDto.fromJS(item));
             }
+            this.isDeleted = data["isDeleted"];
         }
     }
 
@@ -17483,6 +17603,7 @@ export class AmortizedListForViewDto implements IAmortizedListForViewDto {
             for (let item of this.attachments)
                 data["attachments"].push(item.toJSON());
         }
+        data["isDeleted"] = this.isDeleted;
         return data; 
     }
 }
@@ -17496,6 +17617,7 @@ export interface IAmortizedListForViewDto {
     accuredAmortization: number;
     netAmount: number;
     attachments: GetAttachmentsDto[] | undefined;
+    isDeleted: boolean;
 }
 
 export class AmortizedListDto implements IAmortizedListDto {
@@ -23290,6 +23412,7 @@ export class ItemizedListForViewDto implements IItemizedListForViewDto {
     amount!: number;
     description!: string | undefined;
     attachments!: GetAttachmentsDto[] | undefined;
+    isDeleted!: boolean;
 
     constructor(data?: IItemizedListForViewDto) {
         if (data) {
@@ -23311,6 +23434,7 @@ export class ItemizedListForViewDto implements IItemizedListForViewDto {
                 for (let item of data["attachments"])
                     this.attachments!.push(GetAttachmentsDto.fromJS(item));
             }
+            this.isDeleted = data["isDeleted"];
         }
     }
 
@@ -23332,6 +23456,7 @@ export class ItemizedListForViewDto implements IItemizedListForViewDto {
             for (let item of this.attachments)
                 data["attachments"].push(item.toJSON());
         }
+        data["isDeleted"] = this.isDeleted;
         return data; 
     }
 }
@@ -23342,6 +23467,7 @@ export interface IItemizedListForViewDto {
     amount: number;
     description: string | undefined;
     attachments: GetAttachmentsDto[] | undefined;
+    isDeleted: boolean;
 }
 
 export class ItemizedListDto implements IItemizedListDto {
@@ -23472,6 +23598,7 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
     closingMonth!: moment.Moment;
     commentBody!: string | undefined;
     comments!: CommentDto[] | undefined;
+    isDeleted!: boolean;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -23510,6 +23637,7 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
                 for (let item of data["comments"])
                     this.comments!.push(CommentDto.fromJS(item));
             }
+            this.isDeleted = data["isDeleted"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -23548,6 +23676,7 @@ export class CreateOrEditItemizationDto implements ICreateOrEditItemizationDto {
             for (let item of this.comments)
                 data["comments"].push(item.toJSON());
         }
+        data["isDeleted"] = this.isDeleted;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -23567,6 +23696,7 @@ export interface ICreateOrEditItemizationDto {
     closingMonth: moment.Moment;
     commentBody: string | undefined;
     comments: CommentDto[] | undefined;
+    isDeleted: boolean;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;

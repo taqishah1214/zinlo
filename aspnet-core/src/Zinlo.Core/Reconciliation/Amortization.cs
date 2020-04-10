@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Zinlo.Reconciliation
 {
-    public class Amortization : CreationAuditedEntity<long>, IMustHaveTenant
+    public class Amortization : FullAuditedEntity<long>, IMustHaveTenant
     {
         public int TenantId { get; set; }
         public string InoviceNo { get; set; }

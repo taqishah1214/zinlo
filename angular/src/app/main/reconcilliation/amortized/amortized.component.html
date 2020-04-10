@@ -27,6 +27,9 @@
                                     </h6>
 
                                 </div>
+                                <div>
+                                    <label class="switch"><input type="checkbox" [(checked)]="AllOrActive"  (change)="changeToggleValue()" ><div class="slider round"><!--ADDED HTML --><span class="on">All</span><span class="off">Active</span><!--END--></div></label>
+                                </div>
                                 <div class="kt-subheader__toolbar">
                                     <div class="kt-subheader__wrapper">
                                         <a class="mr-3" href="javascript: void(0);" (click)="BackToReconcileList()">
@@ -106,7 +109,7 @@
                         <!--<Primeng-TurboTable-End> {{i.creationTime | date:'d MMM EEE'}} -->
                         <table class="table record-table">
                             <tbody *ngFor="let item of itemList">
-                                <tr  class="task-table-inner table-repeater">
+                                <tr  class="task-table-inner table-repeater" class="{{item.isDeleted == true ? 'warnning' : '' }}">
                                     <td class="accountNo-cell">
                                         <span class="">{{item.startDate | date}}</span>
                                     </td>

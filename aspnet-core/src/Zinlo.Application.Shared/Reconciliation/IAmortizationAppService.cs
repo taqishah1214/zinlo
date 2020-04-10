@@ -15,5 +15,6 @@ namespace Zinlo.Reconciliation
         Task<PagedResultDto<AmortizedListDto>> GetAll(GetAllAmortizationInput input);
         Task <CreateOrEditAmortizationDto> GetAmortizedItemDetails (long Id);
         Task PostComment(string comment, long TypeId, CommentTypeDto CommentType);
+        Task RestoreAmortizedItem(long id);
     }
 }

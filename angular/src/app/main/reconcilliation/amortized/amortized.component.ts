@@ -17,6 +17,7 @@ import { add, subtract } from 'add-subtract-date';
   styleUrls: ['./amortized.component.css']
 })
 export class AmortizedComponent extends AppComponentBase {
+  AllOrActive :boolean = false;
   UserProfilePicture: any;
   monthValue: Date = new Date();
   commantBox: boolean;
@@ -88,6 +89,7 @@ export class AmortizedComponent extends AppComponentBase {
     this.AccountNumber == "" ? this.accountId : 0,
     moment(this.monthFilter),
     this.AccountNumber,
+    this.AllOrActive,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
     this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -243,7 +245,17 @@ BackToReconcileList() {
     }
 
   }
+  changeToggleValue():void{
+    if(this.AllOrActive)
+    {
+      this.AllOrActive = false;
+    }
+    else{
+         this.AllOrActive = true;
+    }
+    this.getAllAmortizedList();
 
+  }
 
 
 }
