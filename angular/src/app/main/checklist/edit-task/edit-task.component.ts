@@ -283,7 +283,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this.checklist.endOfMonth = this.getTaskForEdit.endOfMonth;
     this.checklist.noOfMonths = this.getTaskForEdit.noOfMonths;
     this.checklist.taskName = this.getTaskForEdit.taskName;
-    this.checklist.instruction = this.getTaskForEdit.instruction;
+    this.checklist.instruction = this.getTaskForEdit.instructionBody;
     if (this.getTaskForEdit.endOfMonth) 
     {
       this.checklist.dayBeforeAfter = 1;
@@ -311,7 +311,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.checklist.endsOn = null;
     }
     else{
-      this.checklist.endsOn = add(this.checklist.endsOn, 2, "day")
+     // this.checklist.endsOn = add(this.checklist.endsOn, 2, "day")
     }
     this.checklist.id = this.taskId;
     if (this.attachmentPaths != null) {

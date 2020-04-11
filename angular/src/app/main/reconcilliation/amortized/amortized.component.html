@@ -258,6 +258,42 @@
                 </div>      
                     <div class="row">
                         <div class="col-md-6">
+
+
+                            <div class="form-group giveCommentView" *ngIf="commantBox">
+                                <label>{{"Comments" | localize}}</label>
+                                <div (click)="commentClick()">
+                                    <div class="kt-user-card-v2">
+                                        <div class="kt-user-card-v2__pic">
+
+                                            <div class="kt-user-card-v2__pic">
+                                                <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
+                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                        alt="Pic" [src]="UserProfilePicture">
+                                                </div>
+
+                                                <div *ngIf="!UserProfilePicture"
+                                                    class="kt-badge kt-badge--xl kt-badge--primary">
+                                                    {{userName | firstLetterOfWords}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group " *ngIf="!commantBox">
+                                <label>{{"Comments" | localize}}</label>
+                                <p-editor [(ngModel)]="comment" (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
+                                    [style]="{'height':'150px'}">
+                                </p-editor>
+                                <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
+                            </div>
+
+
+
                             <div class="activity-box">
                                 <h5>Activity</h5>
                             </div>
@@ -364,45 +400,7 @@
                                         </div> 
                                     </div> 
                                 </tab>
-                            </tabset>
-
-
-
-
-
-
-
-                            <div class="form-group giveCommentView" *ngIf="commantBox">
-                                <label>{{"Comments" | localize}}</label>
-                                <div (click)="commentClick()">
-                                    <div class="kt-user-card-v2">
-                                        <div class="kt-user-card-v2__pic">
-
-                                            <div class="kt-user-card-v2__pic">
-                                                <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
-                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                        alt="Pic" [src]="UserProfilePicture">
-                                                </div>
-
-                                                <div *ngIf="!UserProfilePicture"
-                                                    class="kt-badge kt-badge--xl kt-badge--primary">
-                                                    {{userName | firstLetterOfWords}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <input class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group " *ngIf="!commantBox">
-                                <label>{{"Comments" | localize}}</label>
-                                <p-editor [(ngModel)]="comment" (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
-                                    [style]="{'height':'150px'}">
-                                </p-editor>
-                                <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
-                                <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
-                            </div>
+                            </tabset>             
                         </div>
                         <div class="col-md-6">
                             <div class="report-container">

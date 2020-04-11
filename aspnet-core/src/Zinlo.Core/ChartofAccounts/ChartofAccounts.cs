@@ -25,7 +25,6 @@ namespace Zinlo.ChartofAccounts
         public long AssigneeId { get; set; }
         public virtual User Assignee { get; set; }
         public long AccountSubTypeId { get; set; }
-        //
         public Status Status { get; set; }
         public virtual AccountSubType.AccountSubType AccountSubType { get; set; }
         public Reconciled Reconciled { get; set; }

@@ -35,6 +35,12 @@ namespace Zinlo.InstructionVersions
 
         }
 
+        public async Task<GetInstruction> GetInstruction(long id)
+        {
+            var instruction= await _versionRepository.FirstOrDefaultAsync(p => p.Id == id);
+            return ObjectMapper.Map<GetInstruction>(instruction);
+        }
+
         protected virtual async Task<long> Create(CreateOrEditInstructionVersion input)
         {
             var version = ObjectMapper.Map<InstructionVersion>(input);

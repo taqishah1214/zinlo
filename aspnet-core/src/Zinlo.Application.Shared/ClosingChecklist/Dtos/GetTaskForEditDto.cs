@@ -18,7 +18,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public string Status { get; set; }
         public int StatusId { get; set; }
         public List<GetAttachmentsDto> Attachments { get; set; }
-        public string Instruction { get; set; }
+        public string InstructionBody { get; set; }
         public int NoOfMonths { get; set; }
         public int DueOn { get; set; }
         public DateTime EndsOn { get; set; }

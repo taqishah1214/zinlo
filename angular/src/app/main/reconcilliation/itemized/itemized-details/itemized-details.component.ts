@@ -189,7 +189,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
 
   
   getAuditLogOfAccount(id) {
-    this._auditLogService.getEntityHistory(id.toString(), "Zinlo.Reconciliation.Itemization").subscribe(resp => {
+    this._auditLogService.getEntityHistory(id.toString(), "Zinlo.Reconciliation.Itemization","").subscribe(resp => {
       this.historyOfTask = resp
       debugger;
       this.historyOfTask.forEach((element,index) => {

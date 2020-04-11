@@ -225,6 +225,62 @@
                 </div>      
                     <div class="row">
                         <div class="col-md-6">
+
+                            <div class="form-group giveCommentView" *ngIf="commantBox">
+                                <label>{{"Comments" | localize}}</label>
+                                <div (click)="commentClick()">
+                                    <div class="kt-user-card-v2">
+                                        <div class="kt-user-card-v2__pic">
+
+                                            <div class="kt-user-card-v2__pic">
+                                                <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
+                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                        alt="Pic" [src]="UserProfilePicture">
+                                                </div>
+
+                                                <div *ngIf="!UserProfilePicture"
+                                                    class="kt-badge kt-badge--xl kt-badge--primary">
+                                                    {{userName | firstLetterOfWords}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group " *ngIf="!commantBox">
+                                <label>{{"Comments" | localize}}</label>
+                                <p-editor [(ngModel)]="comment"
+                                            (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
+                                            [style]="{'height':'150px'}">
+                                </p-editor>
+                                <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="report-container">
+                                <div class="report-box d-flex flex-wrap">
+                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Total" | localize}}:</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{TotalAmount | formater }}</div>
+                                </div>
+                                <div class="report-box d-flex flex-wrap">
+                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Trial Balance" | localize}}:</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{trialBalance | formater}}</div>
+                                </div>
+                                <div class="report-box d-flex flex-wrap">
+                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Variance" | localize}}:</div>
+                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{variance | formater}}</div>
+                                </div>
+                            </div>
+                            <div class="Check-reconcile-btn ">
+                                <button (click)="reconciledClick()" class="btn btn-brand" >{{"Check as Reconciled" | localize}}</button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
                             <div class="activity-box">
                                 <h5>Activity</h5>
                             </div>
@@ -332,59 +388,9 @@
                                     </div> 
                                 </tab>
                             </tabset>
-
-                            <div class="form-group giveCommentView" *ngIf="commantBox">
-                                <label>{{"Comments" | localize}}</label>
-                                <div (click)="commentClick()">
-                                    <div class="kt-user-card-v2">
-                                        <div class="kt-user-card-v2__pic">
-
-                                            <div class="kt-user-card-v2__pic">
-                                                <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
-                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                        alt="Pic" [src]="UserProfilePicture">
-                                                </div>
-
-                                                <div *ngIf="!UserProfilePicture"
-                                                    class="kt-badge kt-badge--xl kt-badge--primary">
-                                                    {{userName | firstLetterOfWords}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <input class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group " *ngIf="!commantBox">
-                                <label>{{"Comments" | localize}}</label>
-                                <p-editor [(ngModel)]="comment"
-                                            (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
-                                            [style]="{'height':'150px'}">
-                                </p-editor>
-                                <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
-                                <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
-                            </div>
                         </div>
-                       <div class="col-md-6">
-                            <div class="report-container">
-                                <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Total" | localize}}:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{TotalAmount | formater }}</div>
-                                </div>
-                                <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Trial Balance" | localize}}:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{trialBalance | formater}}</div>
-                                </div>
-                                <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Variance" | localize}}:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{variance | formater}}</div>
-                                </div>
-                            </div>
-                            <div class="Check-reconcile-btn ">
-                                <button (click)="reconciledClick()" class="btn btn-brand" >{{"Check as Reconciled" | localize}}</button>
-                            </div>
-                        </div>
+                          
+                   
                     </div>
                 </div>
             </div>
