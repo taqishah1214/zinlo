@@ -2278,18 +2278,23 @@ export class AuditLogServiceProxy {
     /**
      * @param entityId (optional) 
      * @param entityFullName (optional) 
+     * @param propertyName (optional) 
      * @return Success
      */
-    getEntityHistory(entityId: string | undefined, entityFullName: string | undefined): Observable<EntityPropertyHistory[]> {
+    getEntityHistory(entityId: string | undefined, entityFullName: string | undefined, propertyName: string | undefined): Observable<EntityPropertyHistory[]> {
         let url_ = this.baseUrl + "/api/services/app/AuditLog/GetEntityHistory?";
         if (entityId === null)
             throw new Error("The parameter 'entityId' cannot be null.");
         else if (entityId !== undefined)
-            url_ += "entityId=" + encodeURIComponent("" + entityId) + "&"; 
+            url_ += "EntityId=" + encodeURIComponent("" + entityId) + "&"; 
         if (entityFullName === null)
             throw new Error("The parameter 'entityFullName' cannot be null.");
         else if (entityFullName !== undefined)
-            url_ += "entityFullName=" + encodeURIComponent("" + entityFullName) + "&"; 
+            url_ += "EntityFullName=" + encodeURIComponent("" + entityFullName) + "&"; 
+        if (propertyName === null)
+            throw new Error("The parameter 'propertyName' cannot be null.");
+        else if (propertyName !== undefined)
+            url_ += "PropertyName=" + encodeURIComponent("" + propertyName) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -5097,6 +5102,63 @@ export class ClosingChecklistServiceProxy {
     }
 
     protected processRestoreTask(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @param instructionId (optional) 
+     * @return Success
+     */
+    revertInstruction(id: number | undefined, instructionId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/RevertInstruction?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        if (instructionId === null)
+            throw new Error("The parameter 'instructionId' cannot be null.");
+        else if (instructionId !== undefined)
+            url_ += "instructionId=" + encodeURIComponent("" + instructionId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRevertInstruction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRevertInstruction(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRevertInstruction(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -8170,6 +8232,62 @@ export class InstructionServiceProxy {
             }));
         }
         return _observableOf<boolean>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getInstruction(id: number | undefined): Observable<GetInstruction> {
+        let url_ = this.baseUrl + "/api/services/app/Instruction/GetInstruction?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetInstruction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInstruction(<any>response_);
+                } catch (e) {
+                    return <Observable<GetInstruction>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetInstruction>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetInstruction(response: HttpResponseBase): Observable<GetInstruction> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetInstruction.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetInstruction>(<any>null);
     }
 }
 
@@ -23274,6 +23392,46 @@ export class CreateOrEditInstructionVersion implements ICreateOrEditInstructionV
 }
 
 export interface ICreateOrEditInstructionVersion {
+    body: string | undefined;
+    id: number;
+}
+
+export class GetInstruction implements IGetInstruction {
+    body!: string | undefined;
+    id!: number;
+
+    constructor(data?: IGetInstruction) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.body = data["body"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): GetInstruction {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetInstruction();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["body"] = this.body;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IGetInstruction {
     body: string | undefined;
     id: number;
 }

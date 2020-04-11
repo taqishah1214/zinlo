@@ -134,12 +134,11 @@
                                 </tab>
                                 <tab heading="{{'History' | localize}}">
                                     <div *ngFor="let i of historyOfTask" class="activity-box">
-
+                            
                                         <div *ngIf="i.propertyName == 'Status' || i.propertyName == 'CategoryId'"
                                             class="activity-inner d-flex flex-wrap align-items-center mb-4">
                                             <div class="activity-inner-a mb-3">
-                                                <div
-                                                    class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
+                                                <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
                                                     {{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
                                             </div>
                                             <div class="activity-inner-b mb-3">
@@ -158,13 +157,12 @@
                                                 </div>
                                             </div>
                                         </div>
-    
-    
+                            
+                            
                                         <div *ngIf="i.propertyName == 'EndOfMonth' || i.propertyName == 'EndsOn' || i.propertyName == 'TaskName' || i.propertyName == 'DayBeforeAfter' || i.propertyName == 'DueDate'"
                                             class="activity-inner d-flex flex-wrap align-items-center mb-4">
                                             <div class="activity-inner-a mb-3">
-                                                <div
-                                                    class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
+                                                <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
                                                     {{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
                                             </div>
                                             <div class="activity-inner-b mb-3">
@@ -179,25 +177,23 @@
                                                         class="mr-2 ml-2 arrowimage">
                                                     <span>{{i.result.NewValue }}</span>
                                                 </div>
-    
+                            
                                                 <div>
-                                                    <span >{{i.result.PreviousValue}}</span>
+                                                    <span>{{i.result.PreviousValue}}</span>
                                                     <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
                                                         class="mr-2 ml-2 arrowimage">
                                                     <span>{{i.result.NewValue}}</span>
                                                 </div>
-    
+                            
                                             </div>
                                         </div>
-    
-                                        <div *ngIf="i.propertyName == 'AssigneeId'"
-                                            class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                            
+                                        <div *ngIf="i.propertyName == 'AssigneeId'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
                                             <div class="activity-inner-a mb-3">
-                                                <div
-                                                    class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
+                                                <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
                                                     {{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
                                             </div>
-    
+                            
                                             <div class="activity-inner-b mb-3">
                                                 <div class="mb-2 notification-line1">
                                                     <span>{{i.result.ChangeOccurUser.name}}</span> Changed the
@@ -218,16 +214,41 @@
                                             </div>
                                         </div>
                                     </div>
-                                </tab>
-                            </tabset>
-                           
-                      
-
-
-
-
+                                </tab>    
+                                
+                                <tab heading="{{'Instruction History' | localize}}">
+                                    <div *ngFor="let i of instructionVersions" class="activity-box">
+            
+                                        <div
+                                            class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                            <div class="activity-inner-a mb-3">
+                                                <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
+                                                    {{i.result.ChangeOccurUser.name   | firstLetterOfWords}}
+                                                </div>
+                                            </div>
+                                            <div class="activity-inner-b mb-3">
+                                                <div class="mb-2 notification-line1">
+                                                    <span>{{i.result.ChangeOccurUser.name}}</span> Changed the
+                                                    <span>Version</span>
+                                                    {{i.changeTime | momentFormat:'Do MMM YY LT'}}
+                                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" (click)="rollBackInstruction(i.id)"><img
+                                                        src="../../../../assets/img/dup.svg"></a>
+                                                </div>
+                                                <div>
+                                                    <span innerHTML="{{i.result.PreviousValue}}" ></span>
+                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
+                                                        class="mr-2 ml-2 arrowimage">
+                                                    <span innerHTML="{{i.result.NewValue}}" ></span>
+                                                </div>
                             
-                        </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </tab> 
+
+                            </tabset>
+                            </div>
                         <div class="col-md-5">
                             <div class="row">
                                 <div [ngClass]="{'disabled':!monthStatus}" class="col-md-4">

@@ -282,7 +282,7 @@ BackToReconcileList() {
 
 
   getAuditLogOfAccount() {
-    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts").subscribe(resp => {
+    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","").subscribe(resp => {
       this.historyOfTask = resp
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
