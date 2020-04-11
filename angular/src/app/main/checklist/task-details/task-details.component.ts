@@ -73,6 +73,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   getAuditLogOfTask() {
     this._auditLogService.getEntityHistory(this.recordId.toString(), "Zinlo.ClosingChecklist.ClosingChecklist").subscribe(resp => {
       this.historyOfTask = resp
+      debugger
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
           case "AssigneeId":         
@@ -92,9 +93,13 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
             break;
             case "CategoryId":          
             element["result"] = this.setDaysCategoryIdHistoryParam(element)
-            debugger;
             break;
-            
+            case "EndOfMonth":          
+            element["result"] = this.setTaskNameHistoryParam(element)
+            break;
+            case "EndsOn":          
+            element["result"] = this.setTaskNameHistoryParam(element)
+            break;
           default:
             console.log("not found");
             break;
@@ -103,6 +108,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
       });
     })
   }
+
 
 
   
