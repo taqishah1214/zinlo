@@ -38,13 +38,13 @@
                                 </div>
 
                             </div>
-                            <div class="row" *ngIf="taskDetailObject.instruction == null">
+                            <div class="row" *ngIf="taskDetailObject.instructionBody == null">
                             </div>
 
-                            <div class="row" *ngIf="taskDetailObject.instruction != null">
+                            <div class="row" *ngIf="taskDetailObject.instructionBody != null">
                                 <div class="col-md-12">
 
-                                    <div class="custom-text-area" innerHTML="{{taskDetailObject.instruction}} "></div>
+                                    <div class="custom-text-area" innerHTML="{{taskDetailObject.instructionBody}} "></div>
                                 </div>
                             </div>
                             <div class="row">

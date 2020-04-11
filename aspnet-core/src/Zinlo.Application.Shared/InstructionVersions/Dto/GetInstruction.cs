@@ -2,7 +2,7 @@
 
 namespace Zinlo.InstructionVersions.Dto
 {
-    public class GetVersion : EntityDto<long>
+    public class GetInstruction : EntityDto<long>
     {
         public string Body { get; set; }
     }
