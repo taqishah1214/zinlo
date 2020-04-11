@@ -23,7 +23,7 @@
                 <div class="kt-portlet__body">
                     <form class="kt-form" autocomplete="new-password">
                         <div>
-                            <div class="row align-items-center mb-4">
+                            <div class="row d-flex justify-content-end mb-4">
                                 <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
                                     <div class="kt-input-icon kt-input-icon--left">
                                         <input (input)="getCategories()" [(ngModel)]="filterText" name="filterText"
@@ -116,10 +116,10 @@
                                             <div class="btn-group">
 
                                                 <a *ngIf="'Pages.Categories.Edit' | permission" class="btn"
-                                                    href="javascript:;" (click)="editCategory(record.id)">
+                                                data-toggle="tooltip" title="Edit"href="javascript:;" (click)="editCategory(record.id)">
                                                     <img src="../../../../assets/img/edit.svg"></a>
                                                 <a *ngIf="'Pages.Categories.Delete' | permission" class="btn"
-                                                    href="javascript:;" (click)="deleteCategory(record.id)">
+                                                data-toggle="tooltip" title="Delete"href="javascript:;" (click)="deleteCategory(record.id)">
                                                     <img src="../../../../assets/img/del.svg"></a>
 
 

@@ -1131,7 +1131,7 @@
     <text name="Account Type">Account Type</text>
     <text name="Account Sub-Type">Account Sub-Type</text>
     <text name="Reconciliation Type">Reconciliation Type</text>
-    <text name="Charts of Account">Charts of Account</text>
+    <text name="Charts of Account">Chart of Accounts</text>
     <text name="Download Trial Balance">Download Trial Balance</text>
     <text name="Download Chart of Accounts">Download Chart of Accounts</text>
     <text name="Upload Trial Balance">Upload Trial Balance</text>
@@ -1140,7 +1140,7 @@
     <text name="Trial Balance Format">Trial Balance Format</text>
     <text name="Account Code">Account Code</text>
     <text name="Account Balance">Account Balance</text>
-    <text name="Charts Of Account Format">Charts Of Account Format</text>
+    <text name="Charts Of Account Format">Chart Of Accounts Format</text>
     <text name="Account Sub type">Account Sub Type</text>
     <text name="Save changes">Save changes</text>
     <text name="Create Account Sub Type">Create Account Sub Type</text>
