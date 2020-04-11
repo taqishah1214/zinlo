@@ -3,11 +3,9 @@
 	<div class="kt-portlet__body kt-portlet__body--fit">
 		<div class="kt-grid  kt-wizard-v1 kt-wizard-v1--white" id="kt_wizard_v1" data-ktwizard-state="step-first">
 			<div class="kt-grid__item">
-				<!--begin: Form Wizard Nav -->
 				<div class="kt-wizard-v1__nav">
 					<div class="kt-wizard-v1__nav-items">
-						<!--doc: Replace A tag with SPAN tag to disable the step link click -->
-						<a class="kt-wizard-v1__nav-item" href="#" data-ktwizard-type="step" data-ktwizard-state="current">
+						<a class="kt-wizard-v1__nav-item location"  href="javascript:;" (click)="tabpClick(0)"  data-ktwizard-type="step" data-ktwizard-state="current">
 							<div class="kt-wizard-v1__nav-body">
 								<div class="kt-wizard-v1__nav-icon">
 									<i class="flaticon-bus-stop"></i>
@@ -17,7 +15,7 @@
 								</div>
 							</div>
 						</a>
-						<a class="kt-wizard-v1__nav-item" href="#" data-ktwizard-type="step" data-ktwizard-state="current">
+						<a class="kt-wizard-v1__nav-item detail"  href="javascript:;" (click)="tabpClick(1)"  data-ktwizard-type="step" data-ktwizard-state="detail">
 							<div class="kt-wizard-v1__nav-body">
 								<div class="kt-wizard-v1__nav-icon">
 									<i class="flaticon-list"></i>
@@ -27,7 +25,7 @@
 								</div>
 							</div>
 						</a>
-						<a class="kt-wizard-v1__nav-item" href="#" data-ktwizard-type="step">
+						<a class="kt-wizard-v1__nav-item service" href="javascript:;" (click)="tabpClick(2)" data-ktwizard-type="step" data-ktwizard-state="service" >
 							<div class="kt-wizard-v1__nav-body">
 								<div class="kt-wizard-v1__nav-icon">
 									<i class="flaticon-responsive"></i>
@@ -37,7 +35,7 @@
 								</div>
 							</div>
 						</a>
-						<a class="kt-wizard-v1__nav-item" href="#" data-ktwizard-type="step">
+						<a class="kt-wizard-v1__nav-item delivery" href="javascript:;" (click)="tabpClick(3)" data-ktwizard-type="step" data-ktwizard-state="delivery">
 							<div class="kt-wizard-v1__nav-body">
 								<div class="kt-wizard-v1__nav-icon">
 									<i class="flaticon-truck"></i>
@@ -47,7 +45,7 @@
 								</div>
 							</div>
 						</a>
-						<a class="kt-wizard-v1__nav-item" href="#" data-ktwizard-type="step">
+						<a class="kt-wizard-v1__nav-item review" href="javascript:;" (click)="tabpClick(4)"   data-ktwizard-type="step" data-ktwizard-state="review">
 							<div class="kt-wizard-v1__nav-body">
 								<div class="kt-wizard-v1__nav-icon">
 									<i class="flaticon-globe"></i>
@@ -59,14 +57,12 @@
 						</a>
 					</div>
 				</div>
-				<!--end: Form Wizard Nav -->
-
 			</div>
 			<div class="kt-grid__item kt-grid__item--fluid kt-wizard-v1__wrapper">
 				<!--begin: Form Wizard Form-->
 				<form class="kt-form" id="kt_form">
 					<!--begin: Form Wizard Step 1-->
-					<div class="kt-wizard-v1__content" data-ktwizard-type="step-content" data-ktwizard-state="current" >
+					<div class="kt-wizard-v1__content locationbody" data-ktwizard-type="step-content" data-ktwizard-state="current" >
 						<div class="kt-heading kt-heading--md">Setup Your Current Location</div>
 						<div class="kt-form__section kt-form__section--first">
 							<div class="kt-wizard-v1__form">
@@ -368,7 +364,7 @@
 					<!--end: Form Wizard Step 1-->
 
 					<!--begin: Form Wizard Step 2-->
-					<div class="kt-wizard-v1__content" data-ktwizard-type="step-content" data-ktwizard-state="current">
+					<div class="kt-wizard-v1__content detailbody" data-ktwizard-type="step-content" data-ktwizard-state="">
 						<div class="kt-heading kt-heading--md">Enter the Details of your Delivery</div>
 						<div class="kt-form__section kt-form__section--first">
 							<div class="kt-wizard-v1__form">
@@ -412,7 +408,7 @@
 					<!--end: Form Wizard Step 2-->
 
 					<!--begin: Form Wizard Step 3-->
-					<div class="kt-wizard-v1__content" data-ktwizard-type="step-content">
+					<div class="kt-wizard-v1__content servicebody" data-ktwizard-type="step-content"data-ktwizard-state="" >
 						<div class="kt-heading kt-heading--md">Select your Services</div>
 						<div class="kt-form__section kt-form__section--first">
 							<div class="kt-wizard-v1__form">
@@ -450,7 +446,7 @@
 					<!--end: Form Wizard Step 3-->
 
 					<!--begin: Form Wizard Step 4-->
-					<div class="kt-wizard-v1__content" data-ktwizard-type="step-content">
+					<div class="kt-wizard-v1__content deliverybody" data-ktwizard-type="step-content" data-ktwizard-state="">
 						<div class="kt-heading kt-heading--md">Setup Your Delivery Location</div>
 						<div class="kt-form__section kt-form__section--first">
 							<div class="kt-wizard-v1__form">
@@ -752,7 +748,7 @@
 					<!--end: Form Wizard Step 4-->
 
 					<!--begin: Form Wizard Step 5-->
-					<div class="kt-wizard-v1__content" data-ktwizard-type="step-content">
+					<div class="kt-wizard-v1__content reviewbody" data-ktwizard-type="step-content" data-ktwizard-state="">
 						<div class="kt-heading kt-heading--md">Review your Details and Submit</div>
 						<div class="kt-form__section kt-form__section--first">
 							<div class="kt-wizard-v1__review">
@@ -802,13 +798,13 @@
 
 					<!--begin: Form Actions -->
 					<div class="kt-form__actions">
-						<button class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u" data-ktwizard-type="action-prev">
+						<button class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previebtn" (click)="movetab(-1)" data-ktwizard-type="action-prev">
 							Previous
 						</button>
 						<button class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u" data-ktwizard-type="action-submit">
 							Submit
 						</button>
-						<button class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next">
+						<button class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u nxtbtn" (click)="movetab(1)" data-ktwizard-type="action-next">
 							Next Step
 						</button>
 					</div>

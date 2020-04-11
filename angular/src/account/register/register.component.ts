@@ -9,73 +9,94 @@ import { RegisterModel } from './register.model';
 import { finalize, catchError } from 'rxjs/operators';
 import { RecaptchaComponent } from 'ng-recaptcha';
 
+declare var $: any;
 @Component({
     templateUrl: './register.component.html',
     animations: [accountModuleAnimation()]
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
-    @ViewChild('recaptchaRef', {static: false}) recaptchaRef: RecaptchaComponent;
-
-    model: RegisterModel = new RegisterModel();
-    passwordComplexitySetting: PasswordComplexitySetting = new PasswordComplexitySetting();
-    recaptchaSiteKey: string = AppConsts.recaptchaSiteKey;
-
-    saving = false;
 
     constructor(
         injector: Injector,
-        private _accountService: AccountServiceProxy,
-        private _router: Router,
-        private readonly _loginService: LoginService,
-        private _profileService: ProfileServiceProxy
     ) {
         super(injector);
     }
 
     ngOnInit() {
-        //Prevent to register new users in the host context
-        if (this.appSession.tenant == null) {
-            this._router.navigate(['account/login']);
-            return;
+    }
+
+    current: number = 0;
+    movetab(item: number) {
+
+        this.current = this.current + item;
+        if (this.current > 0) {
+            $(".previebtn").show();
+        } else {
+            $(".previebtn").hide();
+
+        }
+        
+        if (this.current === 4) {
+            $(".nxtbtn").hide();
+        } else {
+            $(".nxtbtn").show();
         }
 
-        this._profileService.getPasswordComplexitySetting().subscribe(result => {
-            this.passwordComplexitySetting = result.setting;
-        });
+        this.switchTab(this.current);
     }
 
-    get useCaptcha(): boolean {
-        return this.setting.getBoolean('App.UserManagement.UseCaptchaOnRegistration');
-    }
+    switchTab(item: number) {
+        switch (item) {
+            case 0:
+                $(".location").attr("data-ktwizard-state", "current")
+                $(".detailbody").attr("data-ktwizard-state", "")
+                $(".servicebody").attr("data-ktwizard-state", "")
+                $(".deliverybody").attr("data-ktwizard-state", "")
+                $(".reviewbody").attr("data-ktwizard-state", "")
+                $(".locationbody").attr("data-ktwizard-state", "current")
+                break;
+            case 1:
+                $(".detail").attr("data-ktwizard-state", "current")
+                $(".detailbody").attr("data-ktwizard-state", "current")
+                $(".servicebody").attr("data-ktwizard-state", "")
+                $(".deliverybody").attr("data-ktwizard-state", "")
+                $(".reviewbody").attr("data-ktwizard-state", "")
+                $(".locationbody").attr("data-ktwizard-state", "")
 
-    save(): void {
-        if (this.useCaptcha && !this.model.captchaResponse) {
-            this.message.warn(this.l('CaptchaCanNotBeEmpty'));
-            return;
+                break;
+            case 2:
+                $(".service").attr("data-ktwizard-state", "current")
+                $(".detailbody").attr("data-ktwizard-state", "")
+                $(".servicebody").attr("data-ktwizard-state", "current")
+                $(".deliverybody").attr("data-ktwizard-state", "")
+                $(".reviewbody").attr("data-ktwizard-state", "")
+                $(".locationbody").attr("data-ktwizard-state", "")
+                break;
+            case 3:
+                $(".delivery").attr("data-ktwizard-state", "current")
+                $(".detailbody").attr("data-ktwizard-state", "")
+                $(".servicebody").attr("data-ktwizard-state", "")
+                $(".deliverybody").attr("data-ktwizard-state", "current")
+                $(".reviewbody").attr("data-ktwizard-state", "")
+                $(".locationbody").attr("data-ktwizard-state", "")
+
+                break;
+            case 4:
+                $(".review").attr("data-ktwizard-state", "current")
+                $(".detailbody").attr("data-ktwizard-state", "")
+                $(".servicebody").attr("data-ktwizard-state", "")
+                $(".deliverybody").attr("data-ktwizard-state", "")
+                $(".reviewbody").attr("data-ktwizard-state", "current")
+                $(".locationbody").attr("data-ktwizard-state", "")
+
+                break;
+            default: break;
         }
-
-        this.saving = true;
-        this._accountService.register(this.model)
-            .pipe(finalize(() => { this.saving = false; }))
-            .pipe(catchError((err, caught): any => {
-                this.recaptchaRef.reset();
-            }))
-            .subscribe((result: RegisterOutput) => {
-                if (!result.canLogin) {
-                    this.notify.success(this.l('SuccessfullyRegistered'));
-                    this._router.navigate(['account/login']);
-                    return;
-                }
-
-                //Autheticate
-                this.saving = true;
-                this._loginService.authenticateModel.userNameOrEmailAddress = this.model.userName;
-                this._loginService.authenticateModel.password = this.model.password;
-                this._loginService.authenticate(() => { this.saving = false; });
-            });
+    }
+    tabpClick(item: number) {
+        this.switchTab(item);
     }
 
-    captchaResolved(captchaResponse: string): void {
-        this.model.captchaResponse = captchaResponse;
-    }
+
+
 }
