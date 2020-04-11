@@ -7,11 +7,10 @@ using System.Text;
 
 namespace Zinlo.Reconciliation
 {
-    public class Itemization : FullAuditedEntity<long>, IMustHaveTenant
     [Audited]
-    public class Itemization : CreationAuditedEntity<long>, IMustHaveTenant
+    public class Itemization : FullAuditedEntity<long>, IMustHaveTenant
     {
-     
+
         [DisableAuditing]
         public int TenantId { get; set; }
         public string InoviceNo { get; set; }
