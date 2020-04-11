@@ -150,25 +150,25 @@ namespace Zinlo.ClosingChecklist
 
                     if (!String.IsNullOrWhiteSpace(input.Instruction))
                     {
-                        bool comparisonOfInstruction =false;
-                        if (currentTaskDetail.VersionId !=null)
+                        bool comparisonOfInstruction = false;
+                        if (currentTaskDetail.VersionId != null)
                         {
-                             comparisonOfInstruction = await _instructionVersionsAppService.Comparison((long)currentTaskDetail.VersionId, input.Instruction);
+                            comparisonOfInstruction = await _instructionVersionsAppService.Comparison((long)currentTaskDetail.VersionId, input.Instruction);
                         }
-                        
-                        if (comparisonOfInstruction==false)
+
+                        if (comparisonOfInstruction == false)
                         {
                             currentTaskDetail.VersionId = await CreateInstructions(input.Instruction);
                         }
                     }
                     else
                     {
-                        if (currentTaskDetail.VersionId !=null)
+                        if (currentTaskDetail.VersionId != null)
                         {
                             currentTaskDetail.VersionId = null;
                         }
                     }
-                   
+
                     ObjectMapper.Map(input, currentTaskDetail);
                     await CreateComment(input.CommentBody, input.Id);
                 }
@@ -336,7 +336,7 @@ namespace Zinlo.ClosingChecklist
 
             if (!String.IsNullOrWhiteSpace(input.Instruction))
             {
-                
+
                 instructionId = await CreateInstructions(input.Instruction);
             }
 
@@ -395,7 +395,7 @@ namespace Zinlo.ClosingChecklist
         }
         public async Task<GetTaskForEditDto> GetTaskForEdit(long id)
         {
-            var task = await _closingChecklistRepository.GetAll().Include(p=>p.Version).Include(a => a.Assignee).Include(a => a.Category).FirstOrDefaultAsync(x => x.Id == id);
+            var task = await _closingChecklistRepository.GetAll().Include(p => p.Version).Include(a => a.Assignee).Include(a => a.Category).FirstOrDefaultAsync(x => x.Id == id);
             var output = ObjectMapper.Map<GetTaskForEditDto>(task);
             output.MonthStatus = await GetMonthStatus(task.ClosingMonth);
             output.InstructionBody = task.Version?.Body ?? string.Empty;
@@ -410,7 +410,7 @@ namespace Zinlo.ClosingChecklist
             {
 
 
-                var task = _closingChecklistRepository.GetAll().Include(p=>p.Version).Include(u => u.Assignee).Include(c => c.Category).FirstOrDefault(x => x.Id == id);
+                var task = _closingChecklistRepository.GetAll().Include(p => p.Version).Include(u => u.Assignee).Include(c => c.Category).FirstOrDefault(x => x.Id == id);
                 var output = ObjectMapper.Map<DetailsClosingCheckListDto>(task);
                 if (task != null)
                 {
@@ -420,7 +420,7 @@ namespace Zinlo.ClosingChecklist
                     output.Status = (StatusDto)task.Status;
                     output.CategoryName = task.Category.Title;
                     output.CategoryId = task.CategoryId;
-                    output.InstructionBody = task.Version?.Body??string.Empty;
+                    output.InstructionBody = task.Version?.Body ?? string.Empty;
                     output.Comments = await _commentAppService.GetComments((int)CommentTypeDto.ClosingChecklist, task.Id);
                     output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
                     output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue
@@ -569,6 +569,13 @@ namespace Zinlo.ClosingChecklist
                 await _closingChecklistRepository.UpdateAsync(task);
             }
 
+        }
+
+        public async Task RevertInstruction(long id, long instructionId)
+        {
+            var task = await _closingChecklistRepository.FirstOrDefaultAsync(id);
+            task.VersionId = instructionId;
+            await _closingChecklistRepository.UpdateAsync(task);
         }
     }
 }
