@@ -19,7 +19,7 @@
 
                             <input #userNameOrEmailAddressInput="ngModel"
                                 [(ngModel)]="loginService.authenticateModel.userNameOrEmailAddress" autoFocus
-                                class="form-control" type="text" autocomplete="new-password"
+                                class="form-control" type="text" autocomplete="off"
                                 placeholder="{{'UserNameOrEmail' | localize}} *" name="userNameOrEmailAddress"
                                 required />
                             <validation-messages [formCtrl]="userNameOrEmailAddressInput"
@@ -29,7 +29,7 @@
 
                         <div class="input-group">
                             <input #passwordInput="ngModel" [(ngModel)]="loginService.authenticateModel.password"
-                                class="form-control" type="password" autocomplete="new-password"
+                                class="form-control" type="password" autocomplete="off"
                                 placeholder="{{'Password' | localize}} *" name="password" required maxlength="32" />
                             <validation-messages [formCtrl]="passwordInput" *ngIf="!passwordInput.touched">
                             </validation-messages>
