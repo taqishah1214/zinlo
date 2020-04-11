@@ -395,9 +395,10 @@ namespace Zinlo.ClosingChecklist
         }
         public async Task<GetTaskForEditDto> GetTaskForEdit(long id)
         {
-            var task = await _closingChecklistRepository.GetAll().Include(a => a.Assignee).Include(a => a.Category).FirstOrDefaultAsync(x => x.Id == id);
+            var task = await _closingChecklistRepository.GetAll().Include(p=>p.Version).Include(a => a.Assignee).Include(a => a.Category).FirstOrDefaultAsync(x => x.Id == id);
             var output = ObjectMapper.Map<GetTaskForEditDto>(task);
             output.MonthStatus = await GetMonthStatus(task.ClosingMonth);
+            output.InstructionBody = task.Version?.Body ?? string.Empty;
             output.Comments = await _commentAppService.GetComments((int)CommentTypeDto.ClosingChecklist, id);
             output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
             output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture : "";
@@ -409,7 +410,7 @@ namespace Zinlo.ClosingChecklist
             {
 
 
-                var task = _closingChecklistRepository.GetAll().Include(u => u.Assignee).Include(c => c.Category).FirstOrDefault(x => x.Id == id);
+                var task = _closingChecklistRepository.GetAll().Include(p=>p.Version).Include(u => u.Assignee).Include(c => c.Category).FirstOrDefault(x => x.Id == id);
                 var output = ObjectMapper.Map<DetailsClosingCheckListDto>(task);
                 if (task != null)
                 {
@@ -419,6 +420,7 @@ namespace Zinlo.ClosingChecklist
                     output.Status = (StatusDto)task.Status;
                     output.CategoryName = task.Category.Title;
                     output.CategoryId = task.CategoryId;
+                    output.InstructionBody = task.Version?.Body??string.Empty;
                     output.Comments = await _commentAppService.GetComments((int)CommentTypeDto.ClosingChecklist, task.Id);
                     output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
                     output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue

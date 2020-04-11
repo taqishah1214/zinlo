@@ -270,7 +270,7 @@ setTaskNameHistoryParam(item){
   getTaskDetails(id): void {
     this._closingChecklistService.getDetails(id).subscribe(result => {
       this.taskDetailObject = result;
-      console.log(this.taskDetailObject);
+      debugger
       this.commentsData = this.taskDetailObject.comments;
       this.assigneeId = this.taskDetailObject.assigneeId;
       this.taskStatus = this.taskDetailObject.taskStatus;

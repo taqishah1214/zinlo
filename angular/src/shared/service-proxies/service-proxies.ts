@@ -8045,6 +8045,135 @@ export class InstallServiceProxy {
 }
 
 @Injectable()
+export class InstructionServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditInstructionVersion | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/Instruction/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @param instruction (optional) 
+     * @return Success
+     */
+    comparison(id: number | undefined, instruction: string | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/Instruction/Comparison?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        if (instruction === null)
+            throw new Error("The parameter 'instruction' cannot be null.");
+        else if (instruction !== undefined)
+            url_ += "instruction=" + encodeURIComponent("" + instruction) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processComparison(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processComparison(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processComparison(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
+}
+
+@Injectable()
 export class InvoiceServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -16234,187 +16363,6 @@ export class UserLoginServiceProxy {
 }
 
 @Injectable()
-export class VersionServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "";
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    createOrEdit(body: CreateOrEditVersion | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Version/CreateOrEdit";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateOrEdit(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreateOrEdit(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
-
-    /**
-     * @param type (optional) 
-     * @param typeId (optional) 
-     * @return Success
-     */
-    getActiveVersion(type: number | undefined, typeId: number | undefined): Observable<GetVersion> {
-        let url_ = this.baseUrl + "/api/services/app/Version/GetActiveVersion?";
-        if (type === null)
-            throw new Error("The parameter 'type' cannot be null.");
-        else if (type !== undefined)
-            url_ += "type=" + encodeURIComponent("" + type) + "&"; 
-        if (typeId === null)
-            throw new Error("The parameter 'typeId' cannot be null.");
-        else if (typeId !== undefined)
-            url_ += "typeId=" + encodeURIComponent("" + typeId) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetActiveVersion(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetActiveVersion(<any>response_);
-                } catch (e) {
-                    return <Observable<GetVersion>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<GetVersion>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetActiveVersion(response: HttpResponseBase): Observable<GetVersion> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetVersion.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<GetVersion>(<any>null);
-    }
-
-    /**
-     * @param id (optional) 
-     * @return Success
-     */
-    activeVersion(id: number | undefined): Observable<boolean> {
-        let url_ = this.baseUrl + "/api/services/app/Version/ActiveVersion?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processActiveVersion(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processActiveVersion(<any>response_);
-                } catch (e) {
-                    return <Observable<boolean>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<boolean>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processActiveVersion(response: HttpResponseBase): Observable<boolean> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<boolean>(<any>null);
-    }
-}
-
-@Injectable()
 export class WebLogServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -19641,7 +19589,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
     status!: string | undefined;
     statusId!: number;
     attachments!: GetAttachmentsDto[] | undefined;
-    instruction!: string | undefined;
+    instructionBody!: string | undefined;
     noOfMonths!: number;
     dueOn!: number;
     endsOn!: moment.Moment;
@@ -19680,7 +19628,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
                 for (let item of data["attachments"])
                     this.attachments!.push(GetAttachmentsDto.fromJS(item));
             }
-            this.instruction = data["instruction"];
+            this.instructionBody = data["instructionBody"];
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
             this.endsOn = data["endsOn"] ? moment(data["endsOn"].toString()) : <any>undefined;
@@ -19723,7 +19671,7 @@ export class GetTaskForEditDto implements IGetTaskForEditDto {
             for (let item of this.attachments)
                 data["attachments"].push(item.toJSON());
         }
-        data["instruction"] = this.instruction;
+        data["instructionBody"] = this.instructionBody;
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
         data["endsOn"] = this.endsOn ? this.endsOn.toISOString() : <any>undefined;
@@ -19755,7 +19703,7 @@ export interface IGetTaskForEditDto {
     status: string | undefined;
     statusId: number;
     attachments: GetAttachmentsDto[] | undefined;
-    instruction: string | undefined;
+    instructionBody: string | undefined;
     noOfMonths: number;
     dueOn: number;
     endsOn: moment.Moment;
@@ -19779,6 +19727,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     profilePicture!: string | undefined;
     monthStatus!: boolean;
     dueDate!: moment.Moment;
+    instructionBody!: string | undefined;
     comments!: CommentDto[] | undefined;
     attachments!: GetAttachmentsDto[] | undefined;
     isDeleted!: boolean;
@@ -19816,6 +19765,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             this.profilePicture = data["profilePicture"];
             this.monthStatus = data["monthStatus"];
             this.dueDate = data["dueDate"] ? moment(data["dueDate"].toString()) : <any>undefined;
+            this.instructionBody = data["instructionBody"];
             if (Array.isArray(data["comments"])) {
                 this.comments = [] as any;
                 for (let item of data["comments"])
@@ -19865,6 +19815,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data["profilePicture"] = this.profilePicture;
         data["monthStatus"] = this.monthStatus;
         data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
+        data["instructionBody"] = this.instructionBody;
         if (Array.isArray(this.comments)) {
             data["comments"] = [];
             for (let item of this.comments)
@@ -19907,6 +19858,7 @@ export interface IDetailsClosingCheckListDto {
     profilePicture: string | undefined;
     monthStatus: boolean;
     dueDate: moment.Moment;
+    instructionBody: string | undefined;
     comments: CommentDto[] | undefined;
     attachments: GetAttachmentsDto[] | undefined;
     isDeleted: boolean;
@@ -23284,6 +23236,46 @@ export class CheckDatabaseOutput implements ICheckDatabaseOutput {
 
 export interface ICheckDatabaseOutput {
     isDatabaseExist: boolean;
+}
+
+export class CreateOrEditInstructionVersion implements ICreateOrEditInstructionVersion {
+    body!: string | undefined;
+    id!: number;
+
+    constructor(data?: ICreateOrEditInstructionVersion) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.body = data["body"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditInstructionVersion {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditInstructionVersion();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["body"] = this.body;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditInstructionVersion {
+    body: string | undefined;
+    id: number;
 }
 
 export class InvoiceDto implements IInvoiceDto {
@@ -30930,98 +30922,6 @@ export class ListResultDtoOfUserLoginAttemptDto implements IListResultDtoOfUserL
 
 export interface IListResultDtoOfUserLoginAttemptDto {
     items: UserLoginAttemptDto[] | undefined;
-}
-
-export class CreateOrEditVersion implements ICreateOrEditVersion {
-    body!: string | undefined;
-    active!: boolean;
-    type!: string | undefined;
-    typeId!: number;
-    id!: number;
-
-    constructor(data?: ICreateOrEditVersion) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.body = data["body"];
-            this.active = data["active"];
-            this.type = data["type"];
-            this.typeId = data["typeId"];
-            this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): CreateOrEditVersion {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateOrEditVersion();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["body"] = this.body;
-        data["active"] = this.active;
-        data["type"] = this.type;
-        data["typeId"] = this.typeId;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface ICreateOrEditVersion {
-    body: string | undefined;
-    active: boolean;
-    type: string | undefined;
-    typeId: number;
-    id: number;
-}
-
-export class GetVersion implements IGetVersion {
-    body!: string | undefined;
-    id!: number;
-
-    constructor(data?: IGetVersion) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.body = data["body"];
-            this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): GetVersion {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetVersion();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["body"] = this.body;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface IGetVersion {
-    body: string | undefined;
-    id: number;
 }
 
 export class GetLatestWebLogsOutput implements IGetLatestWebLogsOutput {

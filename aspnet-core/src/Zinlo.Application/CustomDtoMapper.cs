@@ -172,7 +172,7 @@ namespace Zinlo
             //Category
             configuration.CreateMap<CategoryDto, Category>().ReverseMap();
             configuration.CreateMap<CreateOrEditInstructionVersion, InstructionVersion>().ReverseMap();
-            configuration.CreateMap<GetVersion, InstructionVersion>().ReverseMap();
+            configuration.CreateMap<GetInstruction, InstructionVersion>().ReverseMap();
             configuration.CreateMap<CreateOrEditCategoryDto, Category>().ReverseMap();
             configuration.CreateMap<GetCategoryForViewDto, Category>().ReverseMap()
                 .ForMember(dto=>dto.UserId, entity=> entity.MapFrom(p=>p.CreatorUserId))

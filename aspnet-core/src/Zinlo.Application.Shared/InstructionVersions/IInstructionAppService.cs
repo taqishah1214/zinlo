@@ -8,5 +8,6 @@ namespace Zinlo.InstructionVersions
     {
         Task<long> CreateOrEdit(CreateOrEditInstructionVersion input);
         Task<bool> Comparison(long? id,string instruction);
+        Task<GetInstruction> GetInstruction(long id);
     }
 }

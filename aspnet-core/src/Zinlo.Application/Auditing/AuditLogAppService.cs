@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ using Zinlo.Authorization;
 using Zinlo.Authorization.Users;
 using Zinlo.Dto;
 using Zinlo.EntityHistory;
+using Zinlo.InstructionVersions;
 using EntityHistoryHelper = Zinlo.EntityHistory.EntityHistoryHelper;
 
 namespace Zinlo.Auditing
@@ -33,6 +35,7 @@ namespace Zinlo.Auditing
         private readonly IAuditLogListExcelExporter _auditLogListExcelExporter;
         private readonly INamespaceStripper _namespaceStripper;
         private readonly IAbpStartupConfiguration _abpStartupConfiguration;
+        private readonly IInstructionAppService _instructionAppService;
 
         public AuditLogAppService(
             IRepository<AuditLog, long> auditLogRepository,
@@ -42,7 +45,8 @@ namespace Zinlo.Auditing
             IRepository<EntityChange, long> entityChangeRepository,
             IRepository<EntityChangeSet, long> entityChangeSetRepository,
             IRepository<EntityPropertyChange, long> entityPropertyChangeRepository,
-            IAbpStartupConfiguration abpStartupConfiguration)
+            IAbpStartupConfiguration abpStartupConfiguration,
+            IInstructionAppService instructionAppService)
         {
             _auditLogRepository = auditLogRepository;
             _userRepository = userRepository;
@@ -52,6 +56,7 @@ namespace Zinlo.Auditing
             _entityChangeSetRepository = entityChangeSetRepository;
             _entityPropertyChangeRepository = entityPropertyChangeRepository;
             _abpStartupConfiguration = abpStartupConfiguration;
+            _instructionAppService = instructionAppService;
         }
 
         #region audit logs
@@ -235,16 +240,19 @@ namespace Zinlo.Auditing
 
             return query;
         }
-        public Task<List<EntityPropertyHistory>> GetEntityHistory(string entityId, string entityFullName)
+        public async Task<List<EntityPropertyHistory>> GetEntityHistory(GetEntityHistoryInput input)
         {
             var query = from entityChangeSet in _entityChangeSetRepository.GetAll()
                         join entityChange in _entityChangeRepository.GetAll() on entityChangeSet.Id equals entityChange
                             .EntityChangeSetId
-                        join entityPropertyChange in _entityPropertyChangeRepository.GetAll() on entityChange.Id equals
-                            entityPropertyChange.EntityChangeId
+                        join entityPropertyChange in _entityPropertyChangeRepository.GetAll()
+                                .WhereIf(!String.IsNullOrWhiteSpace(input.PropertyName), p => p.PropertyName == input.PropertyName)
+                                .WhereIf(input.EntityFullName.Equals("Zinlo.ClosingChecklist.ClosingChecklist") && String.IsNullOrWhiteSpace(input.PropertyName),p=>p.PropertyName != "VersionId")
+                            on entityChange.Id equals entityPropertyChange.EntityChangeId
                         join user in _userRepository.GetAll() on entityChangeSet.UserId equals user.Id
-                        where entityChange.EntityId == entityId && entityPropertyChange.OriginalValue != null
-                                                                && entityChange.EntityTypeFullName == entityFullName
+                        where entityChange.EntityId == input.EntityId && entityPropertyChange.OriginalValue != null
+                                                                && entityChange.EntityTypeFullName == input.EntityFullName
+
                         select new EntityPropertyHistory()
                         {
                             UserId = (long)entityChangeSet.UserId,
@@ -253,7 +261,16 @@ namespace Zinlo.Auditing
                             PropertyName = entityPropertyChange.PropertyName,
                             ChangeTime = entityChange.ChangeTime
                         };
-            return query.ToListAsync();
+            var result = await query.ToListAsync();
+            if (!input.EntityFullName.Equals("Zinlo.ClosingChecklist.ClosingChecklist") ||
+                input.PropertyName.IsNullOrEmpty() || !input.PropertyName.Equals("VersionId")) return result;
+            foreach (var item in result)
+            {
+                item.Id = item.OriginalValue.IsNullOrEmpty() ? 0 : Convert.ToInt64(item.OriginalValue);
+                item.OriginalValue = item.OriginalValue.IsNullOrEmpty() ? "None" : _instructionAppService.GetInstruction(Convert.ToInt64(item.OriginalValue)).Result.Body;
+                item.NewValue = item.NewValue.IsNullOrEmpty() ? "None" :  _instructionAppService.GetInstruction(Convert.ToInt64(item.NewValue)).Result.Body;
+            }
+            return  result;
         }
         #endregion
     }
