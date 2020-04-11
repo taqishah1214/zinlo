@@ -113,7 +113,7 @@
                                     <div class="form-group" *ngIf="commantModal">
                                         <label>{{"Comments" | localize}}</label>
                                         <p-editor [(ngModel)]="itemizedDto.commentBody"
-                                            (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
+                                            name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
                                         </p-editor>
                                         <div class="btnMargin" >

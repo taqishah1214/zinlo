@@ -1,7 +1,7 @@
 /* / You can add global styles to this file, and also import other style files / */
 body,html{
     overflow: auto !important;
-    color: #B5B7C7 !important;
+    color: #172B4D !important;
     word-wrap: break-word;
 }
 .margin-left-5 {
@@ -266,7 +266,7 @@ h3,
 h4,
 h5,
 h6{
-    color: #0F2757 !important;;
+    color: #172B4D !important;;
 }
 .bg-grey{
    background-color: #606060;

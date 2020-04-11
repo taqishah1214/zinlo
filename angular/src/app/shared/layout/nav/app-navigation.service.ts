@@ -30,8 +30,8 @@ export class AppNavigationService {
                 new AppMenuItem('Task Categories', 'Pages.Categories', 'flaticon-more', '/app/main/categories'),
             ]),
             
-            new AppMenuItem('Charts of Accounts', '', 'flaticon-interface-8', '', [
-                new AppMenuItem('Charts of Accounts', 'Pages.ChartsofAccounts','flaticon-more','/app/main/account/accounts'),
+            new AppMenuItem('Chart of Accounts', '', 'flaticon-interface-8', '', [
+                new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','flaticon-more','/app/main/account/accounts'),
                 new AppMenuItem('Account Sub Type', 'Pages.Categories', 'flaticon-more', '/app/main/account/accountsubtype'),
                 
             ]),
