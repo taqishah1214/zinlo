@@ -311,7 +311,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
       this.checklist.endsOn = null;
     }
     else{
-      this.checklist.endsOn = add(this.checklist.endsOn, 2, "day")
+     // this.checklist.endsOn = add(this.checklist.endsOn, 2, "day")
     }
     this.checklist.id = this.taskId;
     if (this.attachmentPaths != null) {

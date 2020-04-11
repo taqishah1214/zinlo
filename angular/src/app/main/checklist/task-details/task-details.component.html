@@ -160,7 +160,7 @@
                                         </div>
     
     
-                                        <div *ngIf="i.propertyName == 'TaskName' || i.propertyName == 'DayBeforeAfter' || i.propertyName == 'DueDate'"
+                                        <div *ngIf="i.propertyName == 'EndOfMonth' || i.propertyName == 'EndsOn' || i.propertyName == 'TaskName' || i.propertyName == 'DayBeforeAfter' || i.propertyName == 'DueDate'"
                                             class="activity-inner d-flex flex-wrap align-items-center mb-4">
                                             <div class="activity-inner-a mb-3">
                                                 <div
@@ -174,17 +174,16 @@
                                                     {{i.changeTime | momentFormat:'Do MMM YY LTS'}}
                                                 </div>
                                                 <div *ngIf="i.propertyName == 'DueDate'">
-                                                    <span
-                                                        class="text-lightgrey">{{i.result.PreviousValue  | momentFormat:' MMMM YYYY'}}</span>
+                                                    <span>{{i.result.PreviousValue}}</span>
                                                     <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
                                                         class="mr-2 ml-2 arrowimage">
-                                                    <span>{{i.result.NewValue | momentFormat:' MMMM YYYY'}}</span>
+                                                    <span>{{i.result.NewValue }}</span>
                                                 </div>
     
                                                 <div>
-                                                    <span class="text-lightgrey">{{i.result.PreviousValue}}</span>
+                                                    <span >{{i.result.PreviousValue}}</span>
                                                     <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
-                                                        class="mr-2 ml-2">
+                                                        class="mr-2 ml-2 arrowimage">
                                                     <span>{{i.result.NewValue}}</span>
                                                 </div>
     
