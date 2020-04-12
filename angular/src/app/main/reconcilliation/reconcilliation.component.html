@@ -86,14 +86,14 @@
                                 <div *ngIf="FilterBoxOpen" class="lower-content">
                                     <form>
                                         <div class="form-group category-selector">
-                                            <button type="button" class="btn btn-secondary dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">{{accountType}}</button>
-                                            <div class="dropdown-menu" >
-                                                <a class="dropdown-item" *ngFor="let item of accountTypeList"
-                                                    (click)="accountTypeClick(item.id,item.name)">
-                                                    {{item.name}}</a>
-                                            </div>
+                                            <select class="form-control border-grey" name="categoryFilter"
+                                            [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
+                                            id="exampleFormControlSelect2">
+                                                <option value="0">All</option>
+                                                <option *ngFor="let item of accountTypeList;" [value]="item.id">
+                                                    {{item.name}}
+                                                </option>
+                                            </select>
                                         </div>
                                         <div class="block-btn">
                                             <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()">

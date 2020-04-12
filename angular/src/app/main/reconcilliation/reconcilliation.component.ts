@@ -61,11 +61,18 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this.loadAccountSubType();
   }
 
-  accountTypeClick(id,name) : void {
-    this.accountType = name
-    this.accountTypeFilter = id
-    this.updateAssigneeOnHeader = false
-    this.getAllAccounts()
+  // accountTypeClick(id,name) : void {
+  //   this.accountType = name
+  //   this.accountTypeFilter = id
+  //   this.updateAssigneeOnHeader = false
+  //   this.getAllAccounts()
+  // }
+  accountTypeClick(event): void {
+    
+      this.accountTypeFilter = parseInt(event.target.value)
+      this.updateAssigneeOnHeader = false;
+      this.getAllAccounts()
+    
   }
 
   openFieldUpdateAssignee(record) {
