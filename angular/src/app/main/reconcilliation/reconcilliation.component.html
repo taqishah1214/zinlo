@@ -27,15 +27,7 @@
                             <div class="record-card-header-bottom-inner2">
                               
                                 <div class="upper-content">
-                                    <form class="search-form">
-                                        <div class="form-group">
-                                            <input type="text" autoFocus (input)="getAllAccounts()"
-                                                [(ngModel)]="filterText" name="filterText"
-                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
-                                        </div>
-                                    </form>
-
-                                    <div class="users-box-parent">
+                                    <div class="users-box-parent pr-3">
                                         <div class="users-box">
                                             <div *ngIf="plusUserBadgeForHeader"
                                                 class="member-count bg-lightgrey text-blue">
@@ -78,6 +70,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <form class="search-form">
+                                        <div class="form-group">
+                                            <input type="text" autoFocus (input)="getAllAccounts()"
+                                                [(ngModel)]="filterText" name="filterText"
+                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
+                                        </div>
+                                    </form>
                                     <div class="dropdown-btn-box">
                                         <button (click)="openFilterClick()" class="btn btn-square"><img
                                                 src="./assets/media/ClosingCheckList/filter.png" alt="filter"></button>
