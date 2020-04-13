@@ -86,7 +86,34 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
       this.UserProfilePicture = "";
     }
   }
-
+  validationCheck() {
+    if(this.itemizedDto.inoviceNo == null)
+     {
+      this.notify.error("Select the Invoice Number")
+      return false;
+     }
+     else if(this.itemizedDto.journalEntryNo == null)
+     {
+      this.notify.error("Select the Journal Entry Number")
+      return false;
+     }
+     else if(this.itemizedDto.date == null)
+     {
+      this.notify.error("Select Date")
+      return false;
+     }
+     else if(this.itemizedDto.description == null)
+     {
+      this.notify.error("Select the Description")
+      return false;
+     }
+     else if(this.itemizedDto.amount == null)
+     {
+      this.notify.error("Select the Amount")
+      return false;
+     }
+     return true;
+    }
   redirectToItemsList () : void {
     this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
   }
@@ -113,6 +140,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     container.setViewMode('month');
   }
   SaveItem(){
+    if(this.validationCheck() ){
     this.saving = true;  
     if (this.attachmentPaths != null) {
       this.newAttachementPath = [];
@@ -127,7 +155,9 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
       this.notify.success(this.l('Item Successfully Created.'));
       this.redirectToItemsList();
     })
+  
   }
+}
   getExtensionImagePath(str) {
 
     var extension = str.split('.')[1];
