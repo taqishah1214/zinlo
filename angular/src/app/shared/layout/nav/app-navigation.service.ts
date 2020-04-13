@@ -25,22 +25,22 @@ export class AppNavigationService {
            
             
             
-            new AppMenuItem('Closing Checklist', '', 'flaticon-interface-8', '', [
-                new AppMenuItem('Checklist', 'Pages.ClosingChecklist','flaticon-more','/app/main/checklist'),
-                new AppMenuItem('Task Categories', 'Pages.Categories', 'flaticon-more', '/app/main/categories'),
+            new AppMenuItem('Closing Checklist', '', 'flaticon-clipboard', '', [
+                new AppMenuItem('Checklist', 'Pages.ClosingChecklist','flaticon-clipboard','/app/main/checklist'),
+                new AppMenuItem('Task Categories', 'Pages.Categories', 'fas fa-tasks', '/app/main/categories'),
             ]),
             
-            new AppMenuItem('Chart of Accounts', '', 'flaticon-interface-8', '', [
-                new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','flaticon-more','/app/main/account/accounts'),
-                new AppMenuItem('Account Sub Type', 'Pages.Categories', 'flaticon-more', '/app/main/account/accountsubtype'),
+            new AppMenuItem('Chart of Accounts', '', 'far fa-chart-bar', '', [
+                new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','far fa-chart-bar','/app/main/account/accounts'),
+                new AppMenuItem('Account Sub Type', 'Pages.Categories', 'far fa-address-card', '/app/main/account/accountsubtype'),
                 
             ]),
 
-            new AppMenuItem('Reconciliation', 'Pages.Reconciliation', 'flaticon-interface-8', '/app/main/reconcilliation', [ 
+            new AppMenuItem('Reconciliation', 'Pages.Reconciliation', 'fas fa-people-carry', '/app/main/reconcilliation', [ 
             ]),
 
            // new AppMenuItem('Tests', 'Pages.Tests', 'flaticon-more', '/app/main/tests/tests'),
-             new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
+             new AppMenuItem('Administration', '', 'flaticon-user', '', [
                 //new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
                 new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
                 new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),
