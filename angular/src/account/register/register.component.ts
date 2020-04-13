@@ -1,13 +1,13 @@
+import { AbpSessionService } from '@abp/session/abp-session.service';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppConsts } from '@shared/AppConsts';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { AccountServiceProxy, PasswordComplexitySetting, ProfileServiceProxy, RegisterOutput } from '@shared/service-proxies/service-proxies';
-import { LoginService } from '../login/login.service';
-import { RegisterModel } from './register.model';
-import { finalize, catchError } from 'rxjs/operators';
+import { SessionServiceProxy, UpdateUserSignInTokenOutput } from '@shared/service-proxies/service-proxies';
+import { UrlHelper } from 'shared/helpers/UrlHelper';
 import { RecaptchaComponent } from 'ng-recaptcha';
+import { AppConsts } from '@shared/AppConsts';
+
 
 declare var $: any;
 @Component({
@@ -15,7 +15,24 @@ declare var $: any;
     animations: [accountModuleAnimation()]
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
-
+    firstName:string;
+    lastName:string;
+    email:string;
+    title:string;
+    password:string;
+    repeatPassword:string;
+    businessName:string;
+    website:string;
+    phoneNumber:string;
+    addressLineOne:string;
+    addressLineTwo:string;
+    city:string;
+    state:string;
+    cardNumber:string;
+    zipCode:string;
+    CVVCode:string;
+    expiryDate:string;
+    commitment:string;
     constructor(
         injector: Injector,
     ) {

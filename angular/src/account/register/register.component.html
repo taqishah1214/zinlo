@@ -2,14 +2,14 @@
     <div class="kt-container kt-grid__item kt-grid__item--fluid">
         <div class="kt-portlet">
         <div class="kt-portlet__body kt-portlet__body--fit">
-            <div class="kt-grid  kt-wizard-v1 kt-wizard-v1--white" id="kt_wizard_v1" data-ktwizard-state="step-first">
-                <div class="kt-grid__item py-0">
-                    <div class="kt-wizard-v1__nav">
+            <div class="kt-grid kt-wizard-v1 kt-wizard-v1--white" id="kt_wizard_v1" data-ktwizard-state="step-first">
+                <div class="kt-grid__item py-0" style="padding:0% 10%">
+                    <div class="kt-wizard-v1__nav px-5">
                         <div class="kt-wizard-v1__nav-items">
                             <a class="kt-wizard-v1__nav-item location"  href="javascript:;" (click)="tabpClick(0)"  data-ktwizard-type="step" data-ktwizard-state="current">
                                 <div class="kt-wizard-v1__nav-body">
                                     <div class="kt-wizard-v1__nav-icon">
-                                        <i class="far fa-user"></i>
+                                        <img src="./assets/media/ClosingCheckList/Personal_Info.ico" alt="block-btn">
                                     </div>
                                     <div class="kt-wizard-v1__nav-label">
                                         1. Profile Information
@@ -19,7 +19,7 @@
                             <a class="kt-wizard-v1__nav-item detail"  href="javascript:;" (click)="tabpClick(1)"  data-ktwizard-type="step" data-ktwizard-state="detail">
                                 <div class="kt-wizard-v1__nav-body">
                                     <div class="kt-wizard-v1__nav-icon">
-                                        <i class="flaticon-list"></i>
+                                        <img src="./assets/media/ClosingCheckList/Business_Info.ico" alt="block-btn">
                                     </div>
                                     <div class="kt-wizard-v1__nav-label">
                                         2. Business Information
@@ -29,30 +29,20 @@
                             <a class="kt-wizard-v1__nav-item service" href="javascript:;" (click)="tabpClick(2)" data-ktwizard-type="step" data-ktwizard-state="service" >
                                 <div class="kt-wizard-v1__nav-body">
                                     <div class="kt-wizard-v1__nav-icon">
-                                        <i class="flaticon-responsive"></i>
+                                        <img src="./assets/media/ClosingCheckList/Subscription_plans.ico" alt="block-btn">
                                     </div>
                                     <div class="kt-wizard-v1__nav-label">
                                         3. Subscription Plans
                                     </div>
                                 </div>
                             </a>
-                            <a class="kt-wizard-v1__nav-item delivery" href="javascript:;" (click)="tabpClick(3)" data-ktwizard-type="step" data-ktwizard-state="delivery">
-                                <div class="kt-wizard-v1__nav-body">
-                                    <div class="kt-wizard-v1__nav-icon">
-                                        <i class="flaticon-truck"></i>
-                                    </div>
-                                    <div class="kt-wizard-v1__nav-label">
-                                        4. Summary & Submit
-                                    </div>
-                                </div>
-                            </a>
                             <a class="kt-wizard-v1__nav-item review" href="javascript:;" (click)="tabpClick(4)"   data-ktwizard-type="step" data-ktwizard-state="review">
                                 <div class="kt-wizard-v1__nav-body">
                                     <div class="kt-wizard-v1__nav-icon">
-                                        <i class="flaticon-globe"></i>
+                                        <img src="./assets/media/ClosingCheckList/Summary.ico" alt="block-btn">
                                     </div>
                                     <div class="kt-wizard-v1__nav-label">
-                                        5. Review and Submit
+                                        4. Summary & Submit
                                     </div>
                                 </div>
                             </a>
@@ -61,7 +51,7 @@
                 </div>
                 <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v1__wrapper kt-container">
                     <!--begin: Form Wizard Form-->
-                    <form class="kt-form" id="kt_form">
+                    <form class="kt-form" #userForm="ngForm" novalidate id="kt_form">
                         <!--begin: Form Wizard Step 1-->
                         <div class="kt-wizard-v1__content locationbody" data-ktwizard-type="step-content" data-ktwizard-state="current" >
                             <div class="kt-heading py-0">Profile Details</div>
@@ -71,13 +61,15 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>First Name</label>
-                                                <input type="text" class="form-control" name="firstName" placeholder="Enter Name" value="" autocomplete="off">
+                                                <input #firstNameOfUser="ngModel" [(ngModel)]="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
+                                                <validation-messages [formCtrl]="firstNameOfUser"></validation-messages>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Last Name</label>
-                                                <input type="text" class="form-control" name="lastName" placeholder="Enter Name" value="" autocomplete="off">
+                                                <input #lastNameOfUser="ngModel" [(ngModel)]="larstName"type="text" class="form-control" name="lastNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
+                                                <validation-messages [formCtrl]="lastNameOfUser"></validation-messages>
                                             </div>
                                         </div>
                                     </div>
@@ -86,13 +78,15 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Title (Optional)</label>
-                                                <input type="text" class="form-control" name="title" placeholder="Enter Title" value="">
+                                                <input #titleOfUser="ngModel" [(ngModel)]="title"type="text" class="form-control" name="titleOfUser" placeholder="Enter Title" value="" autocomplete="off" required maxlength="64">
+                                                <validation-messages [formCtrl]="titleOfUser"></validation-messages>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Email</label>
-                                                <input type="text" class="form-control" name="email" placeholder="Enter Email" value="">
+                                                <input #emailOfUser="ngModel" [(ngModel)]="email"type="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required maxlength="256" email>
+                                                <validation-messages [formCtrl]="emailOfUser"></validation-messages>
                                             </div>
                                         </div>
                                     </div>
@@ -100,14 +94,15 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Password</label>
-                                                <input type="text" class="form-control" name="password" placeholder="Enter Password" value="">
+                                                <input #passwordOfUser="ngModel" [(ngModel)]="password" type="password" class="form-control" name="passwordOfUser" placeholder="Enter Password" value="">
+                                                <validation-messages [formCtrl]="passwordOfUser"></validation-messages>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Confirm Password</label>
-                                                <input type="text" class="form-control" name="confirmPassword" placeholder="Enter Confirm Password" value="">
-                                                
+                                                <input #repeatPasswordOfUser="ngModel" [(ngModel)]="repeatPassword"type="password" class="form-control" name="passwordOfUser" placeholder="Enter Confirm Password" value="">
+                                                <validation-messages [formCtrl]="repeatPasswordOfUser"></validation-messages>
                                             </div>
                                         </div>
                                     </div>
@@ -123,16 +118,18 @@
                                 <div class="kt-wizard-v1__form">
                                     <div class="form-group">
                                         <label>Business Name</label>
-                                        <input type="text" class="form-control" autocomplete="off" name="package" placeholder="Enter Business Name" value="">
+                                        <input #businessNameOfUser="ngModel" [(ngModel)]="businessName" type="text" class="form-control" autocomplete="off" name="businessNameOfUser" placeholder="Enter Business Name" value="" required maxlength="64">
+                                        <validation-messages [formCtrl]="businessNameOfUser"></validation-messages>
                                     </div>
                                     <div class="row pb-4">
                                         <div class="col-xl-6">
                                             <label><span class="text-dark">Website</span> (Optional)</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control"autocomplete="off" name="weight" placeholder="Enter Website" value="">
+                                                <input type="text" #websiteOfUser="ngModel" [(ngModel)]="website" class="form-control"autocomplete="off" name="websiteOfUser" placeholder="Enter Website" value="" required required maxlength="64">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">.com</span>
                                                 </div>   
+                                                <validation-messages [formCtrl]="websiteOfUser"></validation-messages>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
@@ -141,7 +138,8 @@
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-phone-volume"></i></span>
                                                   </div>
-                                                <input type="text" class="form-control" autocomplete="off" placeholder="Enter Phone Number" id="mail" name="email">
+                                                <input type="text" #phoneNumberOfUser="ngModel" [(ngModel)]="phoneNumber" class="form-control" autocomplete="off" placeholder="Enter Phone Number" name="phoneNumberOfUser" required required maxlength="64">
+                                                <validation-messages [formCtrl]="phoneNumberOfUser"></validation-messages>
                                             </div>
                                         </div>
                                     </div>  
@@ -149,13 +147,15 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Address Line 1</label>
-                                                <input type="text" class="form-control" name="weight" autocomplete="off" placeholder="Enter Address" value="">
+                                                <input type="text" #addressLineOneOfUser="ngModel" [(ngModel)]="addressLineOne"class="form-control" name="addressLineOneOfUser" autocomplete="off" placeholder="Enter Address" value="" required required maxlength="256">
+                                                <validation-messages [formCtrl]="addressLineOneOfUser"></validation-messages>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Address Line 2</label>
-                                                <input type="text" class="form-control" autocomplete="off" name="weight" placeholder="Enter Address" value="">
+                                                <input type="text" #addressLineTwoOfUser="ngModel" [(ngModel)]="addressLineTwo"class="form-control" autocomplete="off" name="addressLineTwoOfUser" placeholder="Enter Address" value="" required required maxlength="256">
+                                                <validation-messages [formCtrl]="addressLineTwoOfUser"></validation-messages>
                                             </div>
                                         </div>
                                     </div>   
@@ -163,7 +163,7 @@
                                         <div class="col-xl-4">
                                             <div class="form-group">
                                                 <label>City</label>
-                                                <select name="city" class="form-control bg-white border">
+                                                <select name="city" [(ngModel)]="city" class="form-control bg-white border">
                                                     <option value="">New Yark</option>
                                                     <option value="AF">Afghanistan</option>
                                                 </select>
@@ -173,7 +173,7 @@
                                         <div class="col-xl-4">
                                             <div class="form-group">
                                                 <label>State</label>
-                                                <select name="state" class="form-control bg-white border">
+                                                <select name="state" [(ngModel)]="State" class="form-control bg-white border">
                                                     <option value="">New Yark</option>
                                                     <option value="AF">Afghanistan</option>
                                                 </select>    
@@ -182,7 +182,8 @@
                                         <div class="col-xl-4">
                                             <div class="form-group">
                                                 <label>ZipCode</label>
-                                                <input type="text" class="form-control" autocomplete="off" name="weight" placeholder="Enter ZipCode" value="">                                                
+                                                <input type="text" #zipCodeOfUser="ngModel" [(ngModel)]="zipCode" class="form-control" autocomplete="off" name="zipCodeOfUser" placeholder="Enter ZipCode" value="" required required maxlength="64">                                                
+                                                <validation-messages [formCtrl]="zipCodeOfUser"></validation-messages>
                                             </div>
                                         </div>
                                     </div> 
@@ -540,38 +541,27 @@
                                             Personal Information
                                         </div>
                                         <div class="kt-wizard-v1__review-content">
-                                            John Vick<br/>
-                                            Address Line 2<br/>
-                                            Melbourne 3000, VIC, Australia
+                                            {{firstName}} {{larstName}}<br/>
+                                            Title: {{title}}<br/>
+                                            Email: {{email}}
                                         </div>
-                                    </div>
-                                    <div class="kt-wizard-v1__review-item">
-                                        <div class="kt-wizard-v1__review-title">
-                                            Delivery Details
+                                        <div class="kt-heading kt-wizard-v1__review-title">
+                                            Business Information
                                         </div>
                                         <div class="kt-wizard-v1__review-content">
-                                            Package: Complete Workstation (Monitor, Computer, Keyboard & Mouse)<br/>
-                                            Weight: 25kg<br/>
-                                            Dimensions: 110cm (w) x 90cm (h) x 150cm (L)
+                                            {{businessName}}<br/>
+                                            Address: {{addressLineOne}} {{addressLineOne}}<br/>
+                                            Phone: {{phoneNumber}}<br/>
+                                            Website: {{website}}
                                         </div>
-                                    </div>
-                                    <div class="kt-wizard-v1__review-item">
-                                        <div class="kt-wizard-v1__review-title">
-                                            Delivery Service Type
-                                        </div>
-                                        <div class="kt-wizard-v1__review-content">
-                                            Overnight Delivery with Regular Packaging<br/>
-                                            Preferred Morning (8:00AM - 11:00AM) Delivery
-                                        </div>
-                                    </div>
-                                    <div class="kt-wizard-v1__review-item">
-                                        <div class="kt-wizard-v1__review-title">
-                                            Delivery Address
+                                        <div class="kt-heading kt-wizard-v1__review-title">
+                                            Subscription Plans
                                         </div>
                                         <div class="kt-wizard-v1__review-content">
-                                            Address Line 1<br/>
-                                            Address Line 2<br/>
-                                            Preston 3072, VIC, Australia
+                                            {{businessName}}<br/>
+                                            Address: {{addressLineOne}} {{addressLineOne}}<br/>
+                                            Phone: {{phoneNumber}}
+                                            Website: {{website}}
                                         </div>
                                     </div>
                                 </div>
@@ -582,19 +572,22 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Card Number</label>
-                                            <input type="text" class="form-control" name="cardNumber" placeholder="xxxx-xxxx-xxxxxx" value="" autocomplete="off">
+                                            <input type="text" #cardNumberOfUser="ngModel" [(ngModel)]="cardNumber" class="form-control" name="cardNumberOfUser" placeholder="xxxx-xxxx-xxxxxx" value="" autocomplete="off" required required maxlength="64">
+                                            <validation-messages [formCtrl]="cardNumberOfUser"></validation-messages>
                                         </div>
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>CVV Code</label>
-                                                    <input type="text" class="form-control" name="CVVCode" placeholder="Enter CVV Code" value="" autocomplete="off">
+                                                    <input type="text" #CVVCodeOfUser="ngModel" [(ngModel)]="CVVCode"  class="form-control" name="CVVCodeOfUser" placeholder="Enter CVV Code" value="" autocomplete="off" required required maxlength="64">
+                                                    <validation-messages [formCtrl]="CVVCodeOfUser"></validation-messages>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Expiry Date</label>
-                                                    <input type="text" class="form-control" name="expiryDate" placeholder="Enter Date" value="" autocomplete="off">
+                                                    <input type="text" #expiryDateOfUser="ngModel" [(ngModel)]="expiryDate" class="form-control" name="expiryDateOfUser" placeholder="Enter Date" value="" autocomplete="off" required required maxlength="64">
+                                                    <validation-messages [formCtrl]="expiryDateOfUser"></validation-messages>
                                                 </div>
                                             </div>
                                         </div>
@@ -602,13 +595,14 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Email</label>
-                                                    <input type="text" class="form-control" name="email" placeholder="Enter Email" value="" autocomplete="off">
+                                                    <input type="email" #emailOfUser="ngModel" [(ngModel)]="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required required maxlength="64">
+                                                    <validation-messages [formCtrl]="emailOfUser"></validation-messages>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Commitment</label>
-                                                    <select name="Commitment" class="form-control bg-white border">
+                                                    <select name="Commitment" #commitmentOfUser="ngModel" [(ngModel)]="commitment"class="form-control bg-white border">
                                                         <option value="">Monthly Plan</option>
                                                         <option value="AF">Afghanistan</option>
                                                     </select>
