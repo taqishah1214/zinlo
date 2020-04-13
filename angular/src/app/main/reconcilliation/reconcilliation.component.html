@@ -173,7 +173,7 @@
                                             <span class=""> {{item.balance  | formater}}</span>
                                         </td>
                                        
-                                        <td [ngClass]="{'disabled':item.lock}"  class="assignee-cell">
+                                        <td [ngClass]="{'disabled':!monthStatus}"  class="assignee-cell">
                                             <div *ngIf="item.id != rowid" class="kt-user-card-v2"
                                                 (click)="openFieldUpdateAssignee(item.id)">
                                                 <div class="kt-user-card-v2__pic">
@@ -196,7 +196,7 @@
                                                 <app-user-list-component  (callBack)="refreshGrid()"  taskId = {{item.id}} comingChangeReguest="accounts" userId = {{item.assigneeId}} ></app-user-list-component>
                                             </div>
                                         </td>
-                                        <td class="action-cell">
+                                        <td [ngClass]="{'disabled':!monthStatus}" class="action-cell">
                                             <form class="task-report-form">
                                                 <select [disabled]="item.lock" onclick="console.log('test')"
                                                     (change)="ChangeStatus($event.target.value,item.id)"
@@ -230,7 +230,7 @@
                                                         <span class="">{{item.balance  | formater}}</span>
                                                     </div>
                                                 </li>
-                                                <li class="assignee-cell collapsable-cell kt-user-card-v2">
+                                                <li [ngClass]="{'disabled':!monthStatus}" class="assignee-cell collapsable-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
                                                     <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
@@ -250,7 +250,7 @@
                                                         <app-user-list-component  (callBack)="refreshGrid()"  taskId = {{item.id}} comingChangeReguest="accounts" userId = {{item.assigneeId}} ></app-user-list-component>
                                                     </div>
                                                 </li>
-                                                <li class="action-cell-item collapsable-cell">
+                                                <li [ngClass]="{'disabled':!monthStatus}" class="action-cell-item collapsable-cell">
                                                     <div class="thead-box"><b>{{"Action" | localize}} : </b></div>
                                                     <form class="task-report-form">
                                                         <form class="task-report-form">

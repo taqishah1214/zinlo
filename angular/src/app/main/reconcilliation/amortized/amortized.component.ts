@@ -249,21 +249,28 @@ BackToReconcileList() {
       }
     );
   }
-
-
   reconciledClick() {
-    if (this.varianceBeginning == 0 && this.varianceAccured == 0){
-     this.reconciliedAccount()
+    if (this.reconciliedBase == 1) {
+      if (this.netAmount - this.trialBalanceNet == 0) {
+        this.reconciliedAccount()
+      }
+      else {
+        this.notify.error(this.l('Variance is not equal to 0, hence the account is not reconciled'));
+      }
     }
-    else if (this.varianceNet ==0 && this.reconciliedBase== 1)
-    {
-      this.reconciliedAccount()
+    if (this.reconciliedBase == 2 || this.reconciliedBase == 3 ){
+      
+      if ((this.accuredAmount -this.trialBalanceBeginning == 0) && (this.begininngAmount -this.trialBalanceBeginning == 0))
+      {
+        this.reconciliedAccount()
+      }
+      else {
+        this.notify.error(this.l('Variance is not equal to 0, hence the account is not reconciled'));  
+      }
     }
     else {
       this.notify.error(this.l('Variance is not equal to 0, hence the account is not reconciled'));
-
     }
-
   }
   changeToggleValue():void{
     if(this.AllOrActive)

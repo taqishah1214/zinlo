@@ -18704,6 +18704,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
     balance!: number;
     lock!: boolean;
     isDeleted!: boolean;
+    monthStatus!: boolean;
 
     constructor(data?: IChartsofAccoutsForViewDto) {
         if (data) {
@@ -18735,6 +18736,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
             this.balance = data["balance"];
             this.lock = data["lock"];
             this.isDeleted = data["isDeleted"];
+            this.monthStatus = data["monthStatus"];
         }
     }
 
@@ -18766,6 +18768,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
         data["balance"] = this.balance;
         data["lock"] = this.lock;
         data["isDeleted"] = this.isDeleted;
+        data["monthStatus"] = this.monthStatus;
         return data; 
     }
 }
@@ -18786,6 +18789,7 @@ export interface IChartsofAccoutsForViewDto {
     balance: number;
     lock: boolean;
     isDeleted: boolean;
+    monthStatus: boolean;
 }
 
 export class PagedResultDtoOfChartsofAccoutsForViewDto implements IPagedResultDtoOfChartsofAccoutsForViewDto {

@@ -18,6 +18,8 @@ using Zinlo.Reconciliation.Dtos;
 using AccountType = Zinlo.ChartofAccounts.AccountType;
 using ReconciliationType = Zinlo.ChartofAccounts.ReconciliationType;
 using Abp.Domain.Uow;
+using Zinlo.TimeManagements;
+using Zinlo.TimeManagements.Dto;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -30,13 +32,16 @@ namespace Zinlo.ChartsofAccount
         private readonly IRepository<Itemization, long> _itemizationRepository;
         private readonly IChartsOfAccountsTrialBalanceExcelExporter _chartsOfAccountsTrialBalanceExcelExporter;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IRepository<TimeManagement, long> _timeManagementRepository;
+
         public ChartsofAccountAppService(IRepository<Itemization, long> itemizationRepository,
                                          IRepository<Amortization, long> amortizationRepository,
                                          IRepository<ChartofAccounts.ChartofAccounts, long> chartsofAccountRepository,
                                          IProfileAppService profileAppService,
                                          IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter,
                                          IChartsOfAccountsTrialBalanceExcelExporter chartsOfAccountsTrialBalanceExcelExporter,
-                                         IUnitOfWorkManager unitOfWorkManager)
+                                         IUnitOfWorkManager unitOfWorkManager,
+                                         IRepository<TimeManagement, long> timeManagementRepository)
         {
             _amortizationRepository = amortizationRepository;
             _itemizationRepository = itemizationRepository;
@@ -45,6 +50,7 @@ namespace Zinlo.ChartsofAccount
             _chartsOfAccountsListExcelExporter = chartsOfAccountsListExcelExporter;
             _chartsOfAccountsTrialBalanceExcelExporter = chartsOfAccountsTrialBalanceExcelExporter;
             _unitOfWorkManager = unitOfWorkManager;
+            _timeManagementRepository = timeManagementRepository; 
         }
 
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
@@ -57,6 +63,8 @@ namespace Zinlo.ChartsofAccount
                 .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
                 .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
              .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
+                var MonthStatus = await GetMonthStatus(DateTime.Now);
+
 
                 var getUserWithPictures = (from o in query.ToList()
                                            select new GetUserWithPicture()
@@ -88,8 +96,8 @@ namespace Zinlo.ChartsofAccount
                                        Balance = o.Balance,
                                        OverallMonthlyAssignee = getUserWithPictures,
                                        Lock = o.Lock,
-                                       IsDeleted = o.IsDeleted
-
+                                       IsDeleted = o.IsDeleted,
+                                       MonthStatus = MonthStatus,
                                    };
 
                 return new PagedResultDto<ChartsofAccoutsForViewDto>(
@@ -98,6 +106,43 @@ namespace Zinlo.ChartsofAccount
                );
 
             }
+
+        }
+
+        protected virtual async Task CreateManagment(CreateOrEditTimeManagementDto input)
+        {
+            var timeManagement = ObjectMapper.Map<TimeManagement>(input);
+
+
+            if (AbpSession.TenantId != null)
+            {
+                timeManagement.TenantId = (int)AbpSession.TenantId;
+            }
+
+
+            await _timeManagementRepository.InsertAsync(timeManagement);
+            await ShiftChartsOfAccountToSpecficMonth(input.Month);
+        }
+
+        protected virtual async Task<bool> GetMonthStatus(DateTime dateTime)
+        {
+            var management = await _timeManagementRepository.FirstOrDefaultAsync(p =>
+              p.Month.Month.Equals(dateTime.Month) && p.Month.Year.Equals(dateTime.Year));
+            if (management == null)
+            {
+                if (dateTime.Year.Equals(DateTime.Now.Year) && dateTime.Month.Equals(DateTime.Now.Month))
+                {
+                    var createManagement = new CreateOrEditTimeManagementDto()
+                    {
+                        Month = dateTime,
+                        Status = false,
+                    };
+                    await CreateManagment(createManagement);
+                }
+
+                return false;
+            }
+            return management.Status;
 
         }
         public async Task<long> CreateOrEdit(CreateOrEditChartsofAccountDto input)

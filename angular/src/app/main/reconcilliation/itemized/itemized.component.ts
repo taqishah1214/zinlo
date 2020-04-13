@@ -211,7 +211,7 @@ BackToReconcileList() {
   }
 
   reconciledClick() {
-    if ( this.variance == 0) {
+    if (this.TotalAmount - this.trialBalance == 0) {
 
       this.message.confirm(
         'The variance is equal to 0. Do you want to reconciled this account',
