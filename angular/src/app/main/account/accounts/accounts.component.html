@@ -400,11 +400,11 @@
                                         <td class="action-cell">
                                             <div class="btn-group">
                                                 <a *ngIf="'Pages.Categories.Edit' | permission" class="btn"
-                                                    href="javascript:;"
+                                                    href="javascript:;" data-toggle="tooltip" title="Edit"
                                                     (click)="editAccount(item.id)">
                                                     <img src="../../../../assets/img/edit.svg"></a>
                                                 <a *ngIf="'Pages.Categories.Delete' | permission" class="btn"
-                                                    href="javascript:;" (click)="deleteAccount(item.id)">
+                                                data-toggle="tooltip" title="Delete" href="javascript:;" (click)="deleteAccount(item.id)">
                                                     <img src="../../../../assets/img/del.svg"></a>
                                             </div>
                                         </td>
@@ -458,10 +458,10 @@
                                                     <div class="tdata-box">
                                                         <div class="btn-group">
                                                             <a *ngIf="!item.isDeleted == true" class="btn"
-                                                                href="javascript:;" (click)="editAccount(item.id)">                                                           
+                                                                href="javascript:;" (click)="editAccount(item.id)" data-toggle="tooltip" title="Edit">                                                           
                                                                 <img src="../../../../assets/img/edit.svg"></a>
                                                             <a *ngIf="!item.isDeleted == true" class="btn" href="javascript:;"
-                                                                (click)="deleteAccount(item.id)">
+                                                                (click)="deleteAccount(item.id)"data-toggle="tooltip" title="Delete">
                                                                 <img src="../../../../assets/img/del.svg"></a>
                                                                 <a *ngIf="item.isDeleted == true" class="btn" href="javascript:;"
                                                                 (click)="restoreAccount(item.id)">

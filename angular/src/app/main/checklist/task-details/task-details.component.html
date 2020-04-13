@@ -265,11 +265,11 @@
                                 </div>
                                 <div class="col-md-4">
 
-                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer"><img src="../../../../assets/img/edit.svg"
+                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer"data-toggle="tooltip" title="Edit"><img src="../../../../assets/img/edit.svg"
                                             (click)="RedirectToEditTaskPage()"></a>
-                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" (click)="deleteTask()"><img
+                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" (click)="deleteTask()"data-toggle="tooltip" title="Delete"><img
                                             src="../../../../assets/img/del.svg"></a>
-                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" (click)="duplicateTask()"><img
+                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" data-toggle="tooltip" title="Duplicate"(click)="duplicateTask()"><img
                                             src="../../../../assets/img/dup.svg"></a>
                                             <a *ngIf="isDeleted == true" class="btn" href="javascript:;"
                                             (click)="restoreTask()">
