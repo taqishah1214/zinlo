@@ -21,31 +21,31 @@
                                 <div class="col-sm-9">
                                     <div class="form-group">
                                         <label for="Name">{{"Name" | localize}} *</label>
-                                        <input id="Name" #nameInput="ngModel" class="form-control" type="text" name="Name" [(ngModel)]="user.name" required maxlength="64">
+                                        <input id="Name" #nameInput="ngModel" class="form-control" type="text" autocomplete="off" name="Name" [(ngModel)]="user.name" required maxlength="64">
                                         <validation-messages [formCtrl]="nameInput"></validation-messages>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="Surname">{{"Surname" | localize}} *</label>
-                                        <input id="Surname" #surnameInput="ngModel" type="text" name="Surname" class="form-control" [(ngModel)]="user.surname" required maxlength="64">
+                                        <input id="Surname" #surnameInput="ngModel" type="text" name="Surname" class="form-control" [(ngModel)]="user.surname" autocomplete="off" required maxlength="64">
                                         <validation-messages [formCtrl]="surnameInput"></validation-messages>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="EmailAddress">{{"EmailAddress" | localize}} *</label>
-                                <input id="EmailAddress" #emailAddressInput="ngModel" type="email" name="EmailAddress" class="form-control" [(ngModel)]="user.emailAddress" required maxlength="256" email />
+                                <input id="EmailAddress" #emailAddressInput="ngModel" type="email" name="EmailAddress" class="form-control" [(ngModel)]="user.emailAddress" autocomplete="off" required maxlength="256" email />
                                 <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
                             </div>
 
                             <div class="form-group">
                                 <label for="PhoneNumber">{{"PhoneNumber" | localize}}</label>
-                                <input id="PhoneNumber" type="text" name="PhoneNumber" class="form-control" [(ngModel)]="user.phoneNumber" maxlength="32">
+                                <input id="PhoneNumber" type="text" name="PhoneNumber" class="form-control" autocomplete="off" [(ngModel)]="user.phoneNumber" maxlength="32">
                             </div>
 
                             <div class="form-group">
                                 <label for="UserName">{{"UserName" | localize}} *</label>
-                                <input id="UserName" #userNameInput="ngModel" type="text" [disabled]="!canChangeUserName" name="UserName" class="form-control" [(ngModel)]="user.userName" required maxlength="256">
+                                <input id="UserName" #userNameInput="ngModel" type="text" [disabled]="!canChangeUserName" name="UserName" class="form-control" autocomplete="off" [(ngModel)]="user.userName" required maxlength="256">
                                 <span class="help-block" *ngIf="!canChangeUserName">{{"CanNotChangeAdminUserName" | localize}}</span>
                                 <validation-messages [formCtrl]="userNameInput"></validation-messages>
                             </div>
@@ -60,7 +60,7 @@
                             <div class="form-group" *ngIf="!setRandomPassword">
                                 <div class="right">
                                     <label for="Password">{{"Password" | localize}}</label>
-                                    <input id="Password" type="password" name="Password" #Password="ngModel" id="Password" class="form-control" [(ngModel)]="user.password" [required]="!user.id && !setRandomPassword" maxlength="32"
+                                    <input id="Password" type="password" name="Password" autocomplete="off" #Password="ngModel" id="Password" class="form-control" [(ngModel)]="user.password" [required]="!user.id && !setRandomPassword" maxlength="32"
                                            [requireDigit]="passwordComplexitySetting.requireDigit" [requireLowercase]="passwordComplexitySetting.requireLowercase"
                                            [requireUppercase]="passwordComplexitySetting.requireUppercase" [requireNonAlphanumeric]="passwordComplexitySetting.requireNonAlphanumeric" [requiredLength]="passwordComplexitySetting.requiredLength"
                                            validateEqual="PasswordRepeat" reverse="true"

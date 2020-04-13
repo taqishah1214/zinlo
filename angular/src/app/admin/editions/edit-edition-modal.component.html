@@ -16,7 +16,7 @@
                         <tab heading="{{l('EditionProperties')}}">
                             <div class="form-group">
                                 <label for="EditionDisplayName">{{l("EditionName")}} *</label>
-                                <input id="EditionDisplayName" #editionNameInput="ngModel" class="form-control" type="text" name="EditionDisplayName" [ngClass]="edition.edition.displayName" [(ngModel)]="edition.edition.displayName" required maxlength="64">
+                                <input id="EditionDisplayName" #editionNameInput="ngModel" class="form-control" type="text" name="EditionDisplayName" [ngClass]="edition.edition.displayName" [(ngModel)]="edition.edition.displayName"autocomplete="off" required maxlength="64">
                                 <validation-messages [formCtrl]="editionNameInput"></validation-messages>
                             </div>
                         </tab>

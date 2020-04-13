@@ -22,9 +22,9 @@
                                     </h5>
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="text" class="form-control" placeholder="Connection String"
+                                    <input type="text" autocomplete="off" class="form-control" placeholder="Connection String"
                                         [(ngModel)]="setupSettings.connectionString" name="connectionString"
-                                        value="{{setupSettings.connectionString}}" autocomplete="new-password">
+                                        value="{{setupSettings.connectionString}}">
                                 </div>
                                 <div class="kt-form__seperator kt-form__seperator--dashed"></div>
                                 <div class="kt-form__heading">
@@ -33,9 +33,9 @@
                                     </h5>
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="password" class="form-control" placeholder="Admin Password"
+                                    <input type="password" autocomplete="off"class="form-control" placeholder="Admin Password"
                                         [(ngModel)]="setupSettings.adminPassword" name="adminPassword"
-                                        autocomplete="new-password">
+                                        >
                                 </div>
                                 <div class="kt-form__seperator kt-form__seperator--dashed"></div>
                                 <div class="kt-form__heading">
@@ -44,7 +44,7 @@
                                     </h5>
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="text" class="form-control" placeholder="Client Side URL"
+                                    <input type="text" autocomplete="off"class="form-control" placeholder="Client Side URL"
                                         [(ngModel)]="setupSettings.webSiteUrl" name="webSiteUrl"
                                         value="{{setupSettings.webSiteUrl}}">
                                 </div>
@@ -54,7 +54,7 @@
                                     </h5>
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="text" class="form-control" placeholder="Server Side URL"
+                                    <input type="text" autocomplete="off"class="form-control" placeholder="Server Side URL"
                                         [(ngModel)]="setupSettings.serverUrl" name="serverUrl"
                                         value="{{setupSettings.serverUrl}}">
                                 </div>
@@ -79,21 +79,21 @@
                                     </h5>
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="email" placeholder="Default from address" class="form-control"
+                                    <input type="email" autocomplete="off"placeholder="Default from address" class="form-control"
                                         [(ngModel)]="setupSettings.smtpSettings.defaultFromAddress"
                                         name="defaultFromAddress">
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="text" placeholder="Default from displayName" class="form-control"
+                                    <input type="text" autocomplete="off"placeholder="Default from displayName" class="form-control"
                                         [(ngModel)]="setupSettings.smtpSettings.defaultFromDisplayName"
                                         name="defaultFromDisplayName">
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="text" placeholder="SMTP host" class="form-control"
+                                    <input type="text" autocomplete="off"placeholder="SMTP host" class="form-control"
                                         [(ngModel)]="setupSettings.smtpSettings.smtpHost" name="smtpHost">
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="number" placeholder="SMTP port" class="form-control"
+                                    <input type="number" autocomplete="off"placeholder="SMTP port" class="form-control"
                                         [(ngModel)]="setupSettings.smtpSettings.smtpPort" name="smtpPort">
                                 </div>
                                 <div class="form-group kt-form__group">
@@ -116,15 +116,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="text" placeholder="Domain name" class="form-control"
+                                    <input type="text" autocomplete="off"placeholder="Domain name" class="form-control"
                                         [(ngModel)]="setupSettings.smtpSettings.smtpDomain" name="smtpDomain">
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="text" placeholder="User name" class="form-control"
+                                    <input type="text" autocomplete="off"placeholder="User name" class="form-control"
                                         [(ngModel)]="setupSettings.smtpSettings.smtpUserName" name="smtpUserName">
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="password" placeholder="Password" class="form-control"
+                                    <input type="password" autocomplete="off"placeholder="Password" class="form-control"
                                         [(ngModel)]="setupSettings.smtpSettings.smtpPassword" name="smtpPassword"
                                         id="SmtpPassword">
                                 </div>
@@ -135,7 +135,7 @@
                                     </h5>
                                 </div>
                                 <div class="form-group kt-form__group">
-                                    <input type="text" class="form-control" name="legalName"
+                                    <input type="text" autocomplete="off"class="form-control" name="legalName"
                                         [(ngModel)]="setupSettings.billInfo.legalName" placeholder="Legal name">
                                 </div>
                                 <div class="form-group kt-form__group">

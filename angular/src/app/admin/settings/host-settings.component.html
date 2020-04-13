@@ -123,7 +123,7 @@
                                         *ngIf="hostSettings.userManagement.sessionTimeOutSettings.isEnabled">
                                         <label
                                             for="Setting_SessionTimeOutSecond">{{"SessionTimeOutSecond" | localize}}</label>
-                                        <input id="Setting_SessionTimeOutSecond" type="number" name="TimeOutSecond"
+                                        <input id="Setting_SessionTimeOutSecond" autocomplete="off"type="number" name="TimeOutSecond"
                                             class="form-control" min="1"
                                             [ngClass]="{'edited':hostSettings.userManagement.sessionTimeOutSettings.timeOutSecond}"
                                             [(ngModel)]="hostSettings.userManagement.sessionTimeOutSettings.timeOutSecond">
@@ -132,7 +132,7 @@
                                         *ngIf="hostSettings.userManagement.sessionTimeOutSettings.isEnabled">
                                         <label
                                             for="Setting_ShowTimeOutNotificationSecond">{{"ShowTimeOutNotificationSecond" | localize}}</label>
-                                        <input id="Setting_ShowTimeOutNotificationSecond" type="number" name="TimeOutSecond"
+                                        <input id="Setting_ShowTimeOutNotificationSecond"autocomplete="off" type="number" name="TimeOutSecond"
                                             class="form-control" min="1"
                                             [ngClass]="{'edited':hostSettings.userManagement.sessionTimeOutSettings.showTimeOutNotificationSecond}"
                                             [(ngModel)]="hostSettings.userManagement.sessionTimeOutSettings.showTimeOutNotificationSecond">
@@ -201,11 +201,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label>{{"PasswordComplexity_RequiredLength" | localize}}</label>
-                                        <input type="number" name="RequiredLength" class="form-control"
+                                        <input type="number" autocomplete="off" name="RequiredLength" class="form-control"
                                             [ngClass]="{'edited':hostSettings.security.passwordComplexity.requiredLength}"
                                             [(ngModel)]="hostSettings.security.passwordComplexity.requiredLength"
                                             *ngIf="!hostSettings.security.useDefaultPasswordComplexitySettings">
-                                        <input type="number" name="RequiredLength" class="form-control"
+                                        <input type="number" autocomplete="off" name="RequiredLength" class="form-control"
                                             [ngClass]="{'edited':hostSettings.security.defaultPasswordComplexity.requiredLength}"
                                             [(ngModel)]="hostSettings.security.defaultPasswordComplexity.requiredLength"
                                             *ngIf="hostSettings.security.useDefaultPasswordComplexitySettings" disabled>
@@ -225,7 +225,7 @@
                                     <div class="form-group" *ngIf="hostSettings.security.userLockOut.isEnabled">
                                         <label
                                             for="MaxFailedAccessAttemptsBeforeLockout">{{"MaxFailedAccessAttemptsBeforeLockout" | localize}}</label>
-                                        <input id="MaxFailedAccessAttemptsBeforeLockout" type="number"
+                                        <input id="MaxFailedAccessAttemptsBeforeLockout" autocomplete="off" type="number"
                                             name="MaxFailedAccessAttemptsBeforeLockout" class="form-control"
                                             [ngClass]="{'edited':hostSettings.security.userLockOut.maxFailedAccessAttemptsBeforeLockout}"
                                             [(ngModel)]="hostSettings.security.userLockOut.maxFailedAccessAttemptsBeforeLockout">
@@ -233,7 +233,7 @@
                                     <div class="form-group" *ngIf="hostSettings.security.userLockOut.isEnabled">
                                         <label
                                             for="DefaultAccountLockoutDurationAsSeconds">{{"DefaultAccountLockoutDurationAsSeconds" | localize}}</label>
-                                        <input id="DefaultAccountLockoutDurationAsSeconds" type="number"
+                                        <input id="DefaultAccountLockoutDurationAsSeconds" autocomplete="off" type="number"
                                             name="DefaultAccountLockoutSeconds" class="form-control"
                                             [ngClass]="{'edited':hostSettings.security.userLockOut.defaultAccountLockoutSeconds}"
                                             [(ngModel)]="hostSettings.security.userLockOut.defaultAccountLockoutSeconds">
@@ -299,26 +299,26 @@
                             <tab heading="{{'EmailSmtp' | localize}}" *ngIf="hostSettings.email">
                                 <div class="form-group">
                                     <label for="DefaultFromAddress">{{"DefaultFromAddress" | localize}}</label>
-                                    <input id="DefaultFromAddress" type="email" name="DefaultFromAddress"
+                                    <input id="DefaultFromAddress" type="email" autocomplete="off"name="DefaultFromAddress"
                                         class="form-control" [ngClass]="{'edited':hostSettings.email.defaultFromAddress}"
                                         [(ngModel)]="hostSettings.email.defaultFromAddress" maxlength="256">
                                 </div>
                                 <div class="form-group">
                                     <label for="DefaultFromDisplayName">{{"DefaultFromDisplayName" | localize}}</label>
-                                    <input id="DefaultFromDisplayName" type="text" name="DefaultFromDisplayName"
+                                    <input id="DefaultFromDisplayName" type="text" autocomplete="off"name="DefaultFromDisplayName"
                                         class="form-control"
                                         [ngClass]="{'edited':hostSettings.email.defaultFromDisplayName}"
                                         [(ngModel)]="hostSettings.email.defaultFromDisplayName" maxlength="128">
                                 </div>
                                 <div class="form-group">
                                     <label for="SmtpHost">{{"SmtpHost" | localize}}</label>
-                                    <input id="SmtpHost" type="text" name="SmtpHost" class="form-control"
+                                    <input id="SmtpHost" type="text" autocomplete="off"name="SmtpHost" class="form-control"
                                         [ngClass]="{'edited':hostSettings.email.smtpHost}"
                                         [(ngModel)]="hostSettings.email.smtpHost" maxlength="64">
                                 </div>
                                 <div class="form-group">
                                     <label for="SmtpPort">{{"SmtpPort" | localize}}</label>
-                                    <input id="SmtpPort" type="number" name="SmtpPort" class="form-control"
+                                    <input id="SmtpPort" type="number" autocomplete="off"name="SmtpPort" class="form-control"
                                         [ngClass]="{'edited':hostSettings.email.smtpPort}"
                                         [(ngModel)]="hostSettings.email.smtpPort" maxlength="5">
                                 </div>
@@ -338,19 +338,19 @@
                                 </div>
                                 <div class="form-group" [hidden]="hostSettings.email.smtpUseDefaultCredentials">
                                     <label for="SmtpDomainName">{{"DomainName" | localize}}</label>
-                                    <input id="SmtpDomainName" type="text" name="SmtpDomainName" class="form-control"
+                                    <input id="SmtpDomainName" type="text" autocomplete="off"name="SmtpDomainName" class="form-control"
                                         [ngClass]="{'edited':hostSettings.email.smtpDomain}"
                                         [(ngModel)]="hostSettings.email.smtpDomain" maxlength="128">
                                 </div>
                                 <div class="form-group" [hidden]="hostSettings.email.smtpUseDefaultCredentials">
                                     <label for="SmtpUserName">{{"UserName" | localize}}</label>
-                                    <input id="SmtpUserName" type="text" name="SmtpUserName" class="form-control"
+                                    <input id="SmtpUserName" type="text" autocomplete="off"name="SmtpUserName" class="form-control"
                                         [ngClass]="{'edited':hostSettings.email.smtpUserName}"
                                         [(ngModel)]="hostSettings.email.smtpUserName" maxlength="128">
                                 </div>
                                 <div class="form-group" [hidden]="hostSettings.email.smtpUseDefaultCredentials">
                                     <label for="SmtpPassword">{{"Password" | localize}}</label>
-                                    <input id="SmtpPassword" type="password" name="SmtpPassword" class="form-control"
+                                    <input id="SmtpPassword" type="password" autocomplete="off"name="SmtpPassword" class="form-control"
                                         [ngClass]="{'edited':hostSettings.email.smtpPassword}"
                                         [(ngModel)]="hostSettings.email.smtpPassword" maxlength="128">
                                 </div>
@@ -358,7 +358,7 @@
                                 <h5>{{"TestEmailSettingsHeader" | localize}}</h5>
                                 <div class="row">
                                     <div class="form-group col-md-4">
-                                        <input type="text" class="form-control input-mini" [(ngModel)]="testEmailAddress">
+                                        <input type="text" autocomplete="off"class="form-control input-mini" [(ngModel)]="testEmailAddress">
                                     </div>
                                     <div class="form-group col-md-2">
                                         <button class="btn btn-primary" type="button"
@@ -371,7 +371,7 @@
                                 <h5>{{"InvoiceInformation" | localize}}</h5>
                                 <div class="form-group">
                                     <label for="LegalName">{{"LegalName" | localize}}</label>
-                                    <input id="LegalName" type="text" name="legalName" class="form-control"
+                                    <input id="LegalName" autocomplete="off"type="text" name="legalName" class="form-control"
                                         [ngClass]="{'edited':hostSettings.billing.legalName}"
                                         [(ngModel)]="hostSettings.billing.legalName" maxlength="64">
                                 </div>

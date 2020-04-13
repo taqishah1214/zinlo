@@ -38,7 +38,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="UsernameAuditLog">{{"UserName" | localize}}</label>
-                                                <input id="UsernameAuditLog" type="text" name="UsernameAuditLog"
+                                                <input id="UsernameAuditLog" type="text" name="UsernameAuditLog"autocomplete="off"
                                                     class="form-control" [(ngModel)]="usernameAuditLog">
                                             </div>
                                         </div>
@@ -48,19 +48,19 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="ServiceName">{{"Service" | localize}}</label>
-                                                <input id="ServiceName" name="ServiceName" type="text"
+                                                <input id="ServiceName" name="ServiceName" type="text"autocomplete="off"
                                                     class="form-control" [(ngModel)]="serviceName">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label style="display: block">{{"Duration" | localize}}</label>
                                             <div class="input-group" style="width: 250px !important;">
-                                                <input type="text" name="MinExecutionDuration" only-number=""
+                                                <input type="text" autocomplete="off"name="MinExecutionDuration" only-number=""
                                                     class="form-control" min="0" max="86400000" ng-minlength="0"
                                                     ng-maxlength="8" [(ngModel)]="minExecutionDuration">
                                                 <div class="input-group-append"><span
                                                         class="input-group-text">---</span></div>
-                                                <input type="text" name="MaxExecutionDuration" only-number=""
+                                                <input type="text"autocomplete="off" name="MaxExecutionDuration" only-number=""
                                                     class="form-control" min="0" max="86400000" ng-minlength="0"
                                                     ng-maxlength="8" [(ngModel)]="maxExecutionDuration">
                                             </div>
@@ -68,7 +68,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="MethodName">{{"Action" | localize}}</label>
-                                                <input id="MethodName" type="text" name="MethodName"
+                                                <input id="MethodName" type="text" autocomplete="off"name="MethodName"
                                                     class="form-control" [(ngModel)]="methodName">
                                             </div>
                                         </div>
@@ -87,7 +87,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="BrowserInfo">{{"Browser" | localize}}</label>
-                                                <input id="BrowserInfo" type="text" name="BrowserInfo"
+                                                <input id="BrowserInfo" type="text" autocomplete="off"name="BrowserInfo"
                                                     class="form-control" [(ngModel)]="browserInfo">
                                             </div>
                                         </div>
@@ -250,7 +250,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="UserNameEntityChange">{{"UserName" | localize}}</label>
-                                                <input id="UserNameEntityChange" type="text" name="UserNameEntityChange"
+                                                <input id="UserNameEntityChange" type="text"autocomplete="off" name="UserNameEntityChange"
                                                     class="form-control" [(ngModel)]="usernameEntityChange">
                                             </div>
                                         </div>

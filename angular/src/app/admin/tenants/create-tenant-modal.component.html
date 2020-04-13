@@ -22,7 +22,7 @@
                         <label for="TenancyName">{{"TenancyName" | localize}} *</label>
                         <input id="TenancyName" #tenancyNameInput="ngModel" class="form-control" type="text"
                             [ngClass]="{'edited':tenant.tenancyName}" name="tenancyName"
-                            [(ngModel)]="tenant.tenancyName" #tenancyName="ngModel" required maxlength="64"
+                            [(ngModel)]="tenant.tenancyName" #tenancyName="ngModel"autocomplete="off" required maxlength="64"
                             pattern="^[a-zA-Z][a-zA-Z0-9_-]{1,}$">
                         <validation-messages [formCtrl]="tenancyNameInput"></validation-messages>
                     </div>
@@ -33,7 +33,7 @@
 
                     <div class="form-group">
                         <label for="Name">{{"TenantName" | localize}} *</label>
-                        <input id="Name" #nameInput="ngModel" type="text" name="Name" class="form-control"
+                        <input id="Name" #nameInput="ngModel" type="text" name="Name" autocomplete="off"class="form-control"
                             [ngClass]="{'edited':tenant.name}" [(ngModel)]="tenant.name" required maxlength="128">
                         <validation-messages [formCtrl]="nameInput"></validation-messages>
                     </div>
@@ -48,7 +48,7 @@
 
                     <div class="form-group" *ngIf="!useHostDb">
                         <label for="DatabaseConnectionString">{{"DatabaseConnectionString" | localize}} *</label>
-                        <input id="DatabaseConnectionString" #connectionStringInput="ngModel" type="text"
+                        <input id="DatabaseConnectionString" #connectionStringInput="ngModel" autocomplete="off" type="text"
                             name="ConnectionString" class="form-control" [(ngModel)]="tenant.connectionString"
                             [ngClass]="{'edited':tenant.connectionString}" required maxlength="1024">
                         <validation-messages [formCtrl]="connectionStringInput"></validation-messages>
@@ -56,7 +56,7 @@
 
                     <div class="form-group">
                         <label for="AdminEmailAddress">{{"AdminEmailAddress" | localize}} *</label>
-                        <input id="AdminEmailAddress" #adminEmailAddressInput="ngModel" type="email"
+                        <input id="AdminEmailAddress" #adminEmailAddressInput="ngModel" autocomplete="off" type="email"
                             name="AdminEmailAddress" class="form-control" [(ngModel)]="tenant.adminEmailAddress"
                             [ngClass]="{'edited':tenant.adminEmailAddress}" required
                             pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" maxlength="256">
@@ -74,7 +74,7 @@
 
                     <div class="form-group" *ngIf="!setRandomPassword">
                         <label for="AdminPassword">{{"AdminPassword" | localize}}</label>
-                        <input id="AdminPassword" type="password" name="adminPassword" class="form-control"
+                        <input id="AdminPassword" type="password"autocomplete="off" name="adminPassword" class="form-control"
                             id="adminPassword" [(ngModel)]="tenant.adminPassword"
                             [ngClass]="{'edited':tenant.adminPassword}" [required]="!setRandomPassword"
                             #adminPassword="ngModel" validateEqual="adminPasswordRepeat" reverse="true" maxlength="32"
@@ -104,7 +104,7 @@
 
                     <div class="form-group" *ngIf="!setRandomPassword">
                         <label for="AdminPasswordRepeat">{{"AdminPasswordRepeat" | localize}}</label>
-                        <input id="AdminPasswordRepeat" type="password" name="adminPasswordRepeat" class="form-control"
+                        <input id="AdminPasswordRepeat" type="password" autocomplete="off" name="adminPasswordRepeat" class="form-control"
                             [(ngModel)]="tenantAdminPasswordRepeat" [ngClass]="{'edited':adminPasswordRepeat}"
                             [required]="!setRandomPassword" #adminPasswordRepeat="ngModel"
                             [requireDigit]="passwordComplexitySetting.requireDigit"
@@ -156,7 +156,7 @@
                     <div [hidden]="isUnlimited || !isSubscriptionFieldsVisible" class="form-group"
                         [ngClass]="{'has-error': !subscriptionEndDateIsValid()}">
                         <label for="SubscriptionEndDate">{{"SubscriptionEndDate" | localize}}</label>
-                        <input id="SubscriptionEndDate" type="text" #SubscriptionEndDateUtc
+                        <input id="SubscriptionEndDate" type="text" autocomplete="off"#SubscriptionEndDateUtc
                             name="SubscriptionEndDateUtc" class="form-control" 
                             bsDatepicker 
                             datePickerMomentModifier
