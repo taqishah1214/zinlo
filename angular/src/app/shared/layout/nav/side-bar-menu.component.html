@@ -92,3 +92,38 @@
     <i *ngIf="item.items.length" class="kt-menu__ver-arrow la la-angle-right"></i>
 </ng-template>
 <!-- END: Left Aside -->
+
+<span Style="position:absolute;bottom:0px;">
+    <div class="kt-footer kt-grid__item" id="kt_footer">
+        <div [class]="containerClass" *ngIf="useBottomDiv">
+            <div class="kt-footer__bottom">
+                <div class="kt-footer__copyright">
+                    
+                    <span style="font-size: 12px;">
+                    {{"Zinlo" | localize}} <span
+                        *ngIf="appSession.tenant && appSession.tenant.edition && appSession.tenant.edition.displayName">
+                        {{appSession.tenant.edition.displayName}}</span> | v{{appSession.application.version}}
+                    [{{releaseDate}}]
+                    </span>
+                </div>
+                <div class="kt-footer__menu">
+                </div>
+            </div>
+        </div>
+        <div [class]="containerClass" *ngIf="!useBottomDiv">
+            <div class="kt-footer__wrapper">
+                <div class="kt-footer__copyright">
+                    
+                    <span style="font-size: 12px;">
+                    {{"Zinlo" | localize}} <span
+                        *ngIf="appSession.tenant && appSession.tenant.edition && appSession.tenant.edition.displayName">
+                        {{appSession.tenant.edition.displayName}}</span> | v{{appSession.application.version}}
+                    [{{releaseDate}}]
+                    </span>
+                </div>
+                <div class="kt-footer__menu">
+                </div>
+            </div>
+        </div>
+    </div>         
+</span>

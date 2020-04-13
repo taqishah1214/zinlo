@@ -14,7 +14,7 @@ import { MenuOptions } from '@metronic/app/core/_base/layout/directives/menu.dir
     encapsulation: ViewEncapsulation.None
 })
 export class SideBarMenuComponent extends AppComponentBase implements OnInit, AfterViewInit {
-
+    releaseDate: string;
     menu: AppMenu = null;
 
     currentRouteUrl = '';
@@ -56,6 +56,8 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
     }
 
     ngOnInit() {
+        
+        this.releaseDate = this.appSession.application.releaseDate.format('YYYYMMDD');
         this.menu = this._appNavigationService.getMenu();
 
         this.currentRouteUrl = this.router.url.split(/[?#]/)[0];
