@@ -8,6 +8,8 @@ import { Table } from 'primeng/table';
 import { UserListComponentComponent } from './user-list-component/user-list-component.component';
 import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
+import { StoreDateService } from "../../services/storedate.service";
+
 @Component({
   selector: 'app-tasks',
   templateUrl: './checklist.component.html',
@@ -58,11 +60,12 @@ export class Checklist extends AppComponentBase implements OnInit {
   selectedDate = new Date();
   constructor(private _router: Router,
     private _categoryService: CategoriesServiceProxy,
-    private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector) {
+    private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector, private userDate: StoreDateService) {
     super(injector)
     this.FilterBoxOpen = false;
   }
   ngOnInit() {
+    this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     console.log("selected date",this.selectedDate);
     this.initializePageParameters();
     this.loadCategories();
@@ -142,7 +145,8 @@ export class Checklist extends AppComponentBase implements OnInit {
           else if (i.status === "Completed") {
             i["StatusColor"] = this.StatusColorBox[2]
           }
-
+          i["assigniName"] =  this.users[this.getUserIndex(i.assigneeId)].name;
+          i["profilePicture"] =  this.users[this.getUserIndex(i.assigneeId)].profilePicture;
           if (i.statusId == 1) {
             i.status = "Not Started";
           }
@@ -181,6 +185,10 @@ export class Checklist extends AppComponentBase implements OnInit {
 
 
     });
+  }
+
+  getUserIndex(id) {
+    return this.users.findIndex(x => x.id === id);
   }
 
   GetUserTasks(id) {
