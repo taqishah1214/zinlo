@@ -97,11 +97,15 @@
                                                     (uploadResult)="fileUploadOption($event)">
                                                 </ng-uppy>
                                             </div>
-                                            <div *ngIf="account">
+                                            <div *ngIf="account"style="padding-bottom:4px;">
                                                 
                                                 <div class="row modal-bottom-record">
                                                    <div class="col-md-12">
-                                                       <p>{{"Charts Of Account Format" | localize}} <a href="../../../../assets/ChartOfAccountsList.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;" download="ChartOfAccountsList.xlsx"><u>{{"Download Sample File" | localize}}</u></a></p>
+                                                    <div class="row pb-5">
+                                                        <div class="col-md-12">
+                                                            {{"Charts Of Account Format" | localize}} <a href="../../../../assets/ChartOfAccountsList.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;" download="ChartOfAccountsList.xlsx"><u>{{"Download Sample File" | localize}}</u></a>
+                                                        </div>
+                                                    </div> 
                                                        <div class="inner-col-record border border-default">
    
                                                            <div class="row">
@@ -134,7 +138,23 @@
                                         <div *ngIf="balance">
                                             <div class="row modal-bottom-record">
                                                 <div class="col-md-12">
-                                                    <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a></p>
+                                                    <!-- <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a></p> -->
+                                                    <div class="row py-0">
+                                                        <div class="col-xl-5">{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a>
+                                                        </div>    
+                                                         <div class="form-group col-xl-3">
+                                                             <div class="month-calender">
+                                                                 <form class="input-arrow">
+                                                                     <input required="required"
+                                                                         autocomplete="off" class="form-control" name="date" bsDatepicker 
+                                                                         placeholder="Select Month" class="form-control" name="date"
+                                                                         bsDatepicker
+                                                                         [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                                         (onShown)="onOpenCalendar($event)">
+                                                                 </form>
+                                                             </div>
+                                                         </div>
+                                                    </div>
                                                     <div class="inner-col-record border border-default">
 
                                                         <div class="row">
