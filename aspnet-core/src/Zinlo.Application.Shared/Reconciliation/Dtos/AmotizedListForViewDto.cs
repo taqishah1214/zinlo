@@ -15,6 +15,7 @@ namespace Zinlo.Reconciliation.Dtos
         public double AccuredAmortization { get; set; }
         public double  NetAmount { get; set; }
         public List<GetAttachmentsDto> Attachments { get; set; }
+        public bool IsDeleted { get; set; }
 
 
 

@@ -68,7 +68,7 @@
                                 <div class="col-sm-12">
                                     <div class="input-group">
                                         <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control"
-                                            placeholder="{{'SearchWithThreeDot' | localize}}" type="text">
+                                            placeholder="{{'SearchWithThreeDot' | localize}}" type="text" autocomplete="off">
                                         <span class="input-group-btn">
                                             <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i
                                                     class="icon-refresh"></i> {{"Refresh" | localize}}</button>

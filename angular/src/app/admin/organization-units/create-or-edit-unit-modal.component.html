@@ -20,7 +20,7 @@
 
                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
                         <label for="OrganizationUnitDisplayName">{{"Name" | localize}} *</label>
-                        <input id="OrganizationUnitDisplayName" #organizationUnitDisplayName="ngModel" class="form-control" type="text" name="displayName" [ngClass]="{'edited': organizationUnit.displayName}" [(ngModel)]="organizationUnit.displayName" required maxlength="128">
+                        <input id="OrganizationUnitDisplayName" #organizationUnitDisplayName="ngModel" autocomplete="off"class="form-control" type="text" name="displayName" [ngClass]="{'edited': organizationUnit.displayName}" [(ngModel)]="organizationUnit.displayName" required maxlength="128">
                         <validation-messages [formCtrl]="organizationUnitDisplayName"></validation-messages>
                     </div>
 

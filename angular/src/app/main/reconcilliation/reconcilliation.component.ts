@@ -46,6 +46,9 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   updateAssigneeOnHeader: boolean = true;
   currentDate :any 
   getAccountWithAssigneeId : number = 0;
+  monthStatus : boolean = false
+
+
   constructor(private _router: Router,
     private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector,
     private _chartOfAccountService: ChartsofAccountServiceProxy) {
@@ -61,11 +64,18 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this.loadAccountSubType();
   }
 
-  accountTypeClick(id,name) : void {
-    this.accountType = name
-    this.accountTypeFilter = id
-    this.updateAssigneeOnHeader = false
-    this.getAllAccounts()
+  // accountTypeClick(id,name) : void {
+  //   this.accountType = name
+  //   this.accountTypeFilter = id
+  //   this.updateAssigneeOnHeader = false
+  //   this.getAllAccounts()
+  // }
+  accountTypeClick(event): void {
+    
+      this.accountTypeFilter = parseInt(event.target.value)
+      this.updateAssigneeOnHeader = false;
+      this.getAllAccounts()
+    
   }
 
   openFieldUpdateAssignee(record) {
@@ -97,6 +107,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
       this.chartsOfAccountList = result.items
+      this.monthStatus = this.chartsOfAccountList[0].monthStatus;
       this.chartsOfAccountList.forEach(i => {
         i["accountType"] =  this.getNameofAccountTypeAndReconcillation(i.accountTypeId,"accountType")
         i["reconciliationType"] =   this.getNameofAccountTypeAndReconcillation(i.reconciliationTypeId,"reconcillation")           
@@ -162,14 +173,24 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   }
 
   reDirectToItemizedAmotized (reconciliationTypeId,accountId,accountNo,accountName){
-  if (reconciliationTypeId == 1)
-  {
-    this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : accountId, accountName :accountName ,accountNo: accountNo  }} });
+    
+    if (this.monthStatus)
+    {
+      if (reconciliationTypeId == 1)
+      {
+        this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : accountId, accountName :accountName ,accountNo: accountNo  }} });
+    
+      }
+      else if (reconciliationTypeId == 2) {
+        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo}} });
+      }
 
-  }
-  else if (reconciliationTypeId == 2) {
-    this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo}} });
-  }
+    }
+    else {
+      this.notify.error(this.l("This month is not active yet. Contact to admin to activate the month."));
+    }
+
+ 
   }
 
   getNameofAccountTypeAndReconcillation(id , key ) : string {  
@@ -236,7 +257,8 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this.updateAssigneeOnHeader = true
     this.getAccountWithAssigneeId = 0;
     this.getAllAccounts()
-    this.notify.success(this.l('Assigni Successfully Updated.'));
+    this.notify.success(this.l('Assignee Successfully Updated.'));
   }
 
 }
+

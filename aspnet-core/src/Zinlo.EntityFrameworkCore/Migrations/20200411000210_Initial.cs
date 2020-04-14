@@ -580,6 +580,19 @@ namespace Zinlo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Versions",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Body = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Versions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AbpFeatures",
                 columns: table => new
                 {
@@ -922,7 +935,8 @@ namespace Zinlo.Migrations
                     FailedRecordsCount = table.Column<int>(nullable: false),
                     SuccessRecordsCount = table.Column<int>(nullable: false),
                     UserId = table.Column<long>(nullable: false),
-                    IsRollBacked = table.Column<bool>(nullable: false)
+                    IsRollBacked = table.Column<bool>(nullable: false),
+                    SuccessFilePath = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -943,11 +957,11 @@ namespace Zinlo.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreationTime = table.Column<DateTime>(nullable: false),
                     CreatorUserId = table.Column<long>(nullable: true),
-                    LastModificationTime = table.Column<DateTime>(nullable: true),
-                    LastModifierUserId = table.Column<long>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeleterUserId = table.Column<long>(nullable: true),
                     DeletionTime = table.Column<DateTime>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
                     TenantId = table.Column<int>(nullable: false),
                     AccountNumber = table.Column<string>(nullable: true),
                     AccountName = table.Column<string>(nullable: true),
@@ -988,18 +1002,18 @@ namespace Zinlo.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreationTime = table.Column<DateTime>(nullable: false),
                     CreatorUserId = table.Column<long>(nullable: true),
-                    LastModificationTime = table.Column<DateTime>(nullable: true),
-                    LastModifierUserId = table.Column<long>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeleterUserId = table.Column<long>(nullable: true),
                     DeletionTime = table.Column<DateTime>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
                     TaskName = table.Column<string>(nullable: true),
                     CategoryId = table.Column<long>(nullable: false),
                     AssigneeId = table.Column<long>(nullable: false),
                     ClosingMonth = table.Column<DateTime>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     TenantId = table.Column<int>(nullable: false),
-                    Instruction = table.Column<string>(nullable: true),
+                    VersionId = table.Column<long>(nullable: true),
                     NoOfMonths = table.Column<int>(nullable: false),
                     DueOn = table.Column<int>(nullable: false),
                     DueDate = table.Column<DateTime>(nullable: false),
@@ -1024,6 +1038,12 @@ namespace Zinlo.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClosingChecklists_Versions_VersionId",
+                        column: x => x.VersionId,
+                        principalTable: "Versions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1114,6 +1134,11 @@ namespace Zinlo.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreationTime = table.Column<DateTime>(nullable: false),
                     CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
                     TenantId = table.Column<int>(nullable: false),
                     InoviceNo = table.Column<string>(nullable: true),
                     JournalEntryNo = table.Column<string>(nullable: true),
@@ -1145,6 +1170,11 @@ namespace Zinlo.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreationTime = table.Column<DateTime>(nullable: false),
                     CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
                     TenantId = table.Column<int>(nullable: false),
                     InoviceNo = table.Column<string>(nullable: true),
                     JournalEntryNo = table.Column<string>(nullable: true),
@@ -1583,6 +1613,11 @@ namespace Zinlo.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ClosingChecklists_VersionId",
+                table: "ClosingChecklists",
+                column: "VersionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ImportsPaths_UserId",
                 table: "ImportsPaths",
                 column: "UserId");
@@ -1722,6 +1757,9 @@ namespace Zinlo.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Versions");
 
             migrationBuilder.DropTable(
                 name: "ChartofAccounts");

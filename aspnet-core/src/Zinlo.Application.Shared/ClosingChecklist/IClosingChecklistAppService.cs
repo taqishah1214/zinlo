@@ -20,6 +20,7 @@ namespace Zinlo.ClosingChecklist
         Task Delete(long id);
         Task<List<GetUserWithPicture>> GetUserWithPicture(string searchTerm,long? id);
         Task RestoreTask(long id);
+        Task RevertInstruction(long id, long instructionId);
 
     }
 }

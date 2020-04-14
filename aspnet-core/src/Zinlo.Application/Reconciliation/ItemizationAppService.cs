@@ -14,6 +14,7 @@ using Zinlo.Attachments;
 using Zinlo.ChartsofAccount;
 using Zinlo.Comment.Dtos;
 using Zinlo.Comment;
+using Abp.Domain.Uow;
 
 namespace Zinlo.Reconciliation
 {
@@ -23,59 +24,65 @@ namespace Zinlo.Reconciliation
         private readonly IAttachmentAppService _attachmentAppService;
         private readonly IChartsofAccountAppService _chartsofAccountAppService;
         private readonly ICommentAppService _commentAppService;
-
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
 
 
         #region|#Constructor|
-        public ItemizationAppService(ICommentAppService commentAppService, IChartsofAccountAppService chartsofAccountAppService,IRepository<Itemization,long> itemizationRepository, IAttachmentAppService attachmentAppService)
+        public ItemizationAppService(ICommentAppService commentAppService, IChartsofAccountAppService chartsofAccountAppService,IRepository<Itemization,long> itemizationRepository, 
+            IAttachmentAppService attachmentAppService,
+            IUnitOfWorkManager unitOfWorkManager)
         {
             _itemizationRepository = itemizationRepository;
             _attachmentAppService = attachmentAppService;
             _chartsofAccountAppService = chartsofAccountAppService;
             _commentAppService = commentAppService;
-
-    }
+            _unitOfWorkManager = unitOfWorkManager;
+        }
         #endregion
         #region|Get All|
         public async Task<PagedResultDto<ItemizedListDto>> GetAll(GetAllItemizationInput input)
         {
-            var query = _itemizationRepository.GetAll().Where(e => e.ClosingMonth.Month == input.MonthFilter.Month && e.ClosingMonth.Year == input.MonthFilter.Year)
+            using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
+            {
+                var query = _itemizationRepository.GetAll().Where(e => e.ClosingMonth.Month == input.MonthFilter.Month && e.ClosingMonth.Year == input.MonthFilter.Year)
               .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
               .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId)
-              .WhereIf(!string.IsNullOrWhiteSpace(input.AccountNumer), e => false || e.ChartsofAccount.AccountNumber == input.AccountNumer);
+              .WhereIf(!string.IsNullOrWhiteSpace(input.AccountNumer), e => false || e.ChartsofAccount.AccountNumber == input.AccountNumer)
+              .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
 
-            var pagedAndFilteredItems = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
-            var totalCount = query.Count();
-            var ItemizedList = (from o in pagedAndFilteredItems.ToList()
+                var pagedAndFilteredItems = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+                var totalCount = query.Count();
+                var ItemizedList = (from o in pagedAndFilteredItems.ToList()
 
-                               select new ItemizedListForViewDto()
-                               {
-                                   Id = o.Id,
-                                   Amount = o.Amount,
-                                   Date = o.Date,
-                                   Description = o.Description,
-                                   Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 3).Result
-                               }).ToList();
+                                    select new ItemizedListForViewDto()
+                                    {
+                                        Id = o.Id,
+                                        Amount = o.Amount,
+                                        Date = o.Date,
+                                        Description = o.Description,
+                                        IsDeleted = o.IsDeleted,
+                                        Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 3).Result
+                                    }).ToList();
 
-            List<ItemizedListDto> result = new List<ItemizedListDto>();
-            ItemizedListDto itemizedListDto = new ItemizedListDto
-            {
-                itemizedListForViewDto = ItemizedList,
-                TotalAmount = ItemizedList.Sum(item => item.Amount),
-                TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId),
-            };
-            itemizedListDto.Variance = itemizedListDto.TotalAmount - itemizedListDto.TotalTrialBalance;
-            itemizedListDto.Comments = await _commentAppService.GetComments((int)CommentType.ItemizedList, input.ChartofAccountId);
-            if (input.ChartofAccountId != 0)
-            {
-                await _chartsofAccountAppService.AddandUpdateBalance(itemizedListDto.TotalAmount, input.ChartofAccountId);
+                List<ItemizedListDto> result = new List<ItemizedListDto>();
+                ItemizedListDto itemizedListDto = new ItemizedListDto
+                {
+                    itemizedListForViewDto = ItemizedList,
+                    TotalAmount = ItemizedList.Sum(item => item.Amount),
+                    TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId),
+                };
+                itemizedListDto.Variance = itemizedListDto.TotalAmount - itemizedListDto.TotalTrialBalance;
+                itemizedListDto.Comments = await _commentAppService.GetComments((int)CommentType.ItemizedList, input.ChartofAccountId);
+                if (input.ChartofAccountId != 0)
+                {
+                    await _chartsofAccountAppService.AddandUpdateBalance(itemizedListDto.TotalAmount, input.ChartofAccountId);
+                }
+                result.Add(itemizedListDto);
+                return new PagedResultDto<ItemizedListDto>(
+                   totalCount,
+                   result
+               );
             }
-            result.Add(itemizedListDto);
-            return new PagedResultDto<ItemizedListDto>(
-               totalCount,
-               result
-           );
-
         }
         #endregion
         #region|Create Edit|
@@ -158,22 +165,30 @@ namespace Zinlo.Reconciliation
 
         public async Task<CreateOrEditItemizationDto> GetEdit(long Id)
         {
-            var item = await _itemizationRepository.FirstOrDefaultAsync(x => x.Id == Id);
-            var output = ObjectMapper.Map<CreateOrEditItemizationDto>(item);
-            output.Attachments = await _attachmentAppService.GetAttachmentsPath(Id, 3);
-            output.Comments = await _commentAppService.GetComments((int)CommentType.ItemizedItem, Id);
-            return output;
+            using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
+            {
+                var item = await _itemizationRepository.FirstOrDefaultAsync(x => x.Id == Id);
+                var output = ObjectMapper.Map<CreateOrEditItemizationDto>(item);
+                output.Attachments = await _attachmentAppService.GetAttachmentsPath(Id, 3);
+                output.Comments = await _commentAppService.GetComments((int)CommentType.ItemizedItem, Id);
+                return output;
+            }
         }
 
         public async Task Delete(long Id)
         {
             await _itemizationRepository.DeleteAsync(Id);
         }
+        public async Task RestoreItemizedItem(long id)
+        {
+            using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
+            {
+                var item = await _itemizationRepository.FirstOrDefaultAsync(id);
+                item.IsDeleted = false;
+                await _itemizationRepository.UpdateAsync(item);
+            }
 
-        
-
-
-
+        }
         #endregion
     }
 }

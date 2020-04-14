@@ -27,15 +27,7 @@
                             <div class="record-card-header-bottom-inner2">
                               
                                 <div class="upper-content">
-                                    <form class="search-form">
-                                        <div class="form-group">
-                                            <input type="text" autoFocus (input)="getAllAccounts()"
-                                                [(ngModel)]="filterText" name="filterText"
-                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
-                                        </div>
-                                    </form>
-
-                                    <div class="users-box-parent">
+                                    <div class="users-box-parent pr-3">
                                         <div class="users-box">
                                             <div *ngIf="plusUserBadgeForHeader"
                                                 class="member-count bg-lightgrey text-blue">
@@ -78,6 +70,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <form class="search-form">
+                                        <div class="form-group">
+                                            <input type="text" autoFocus (input)="getAllAccounts()"
+                                                [(ngModel)]="filterText" name="filterText"
+                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
+                                        </div>
+                                    </form>
                                     <div class="dropdown-btn-box">
                                         <button (click)="openFilterClick()" class="btn btn-square"><img
                                                 src="./assets/media/ClosingCheckList/filter.png" alt="filter"></button>
@@ -86,14 +85,14 @@
                                 <div *ngIf="FilterBoxOpen" class="lower-content">
                                     <form>
                                         <div class="form-group category-selector">
-                                            <button type="button" class="btn btn-secondary dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">{{accountType}}</button>
-                                            <div class="dropdown-menu" >
-                                                <a class="dropdown-item" *ngFor="let item of accountTypeList"
-                                                    (click)="accountTypeClick(item.id,item.name)">
-                                                    {{item.name}}</a>
-                                            </div>
+                                            <select class="form-control border-grey" name="categoryFilter"
+                                            [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
+                                            id="exampleFormControlSelect2">
+                                                <option value="0">All</option>
+                                                <option *ngFor="let item of accountTypeList;" [value]="item.id">
+                                                    {{item.name}}
+                                                </option>
+                                            </select>
                                         </div>
                                         <div class="block-btn">
                                             <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()">
@@ -174,7 +173,7 @@
                                             <span class=""> {{item.balance  | formater}}</span>
                                         </td>
                                        
-                                        <td [ngClass]="{'disabled':item.lock}"  class="assignee-cell">
+                                        <td [ngClass]="{'disabled':!monthStatus}"  class="assignee-cell">
                                             <div *ngIf="item.id != rowid" class="kt-user-card-v2"
                                                 (click)="openFieldUpdateAssignee(item.id)">
                                                 <div class="kt-user-card-v2__pic">
@@ -197,7 +196,7 @@
                                                 <app-user-list-component  (callBack)="refreshGrid()"  taskId = {{item.id}} comingChangeReguest="accounts" userId = {{item.assigneeId}} ></app-user-list-component>
                                             </div>
                                         </td>
-                                        <td class="action-cell">
+                                        <td [ngClass]="{'disabled':!monthStatus}" class="action-cell">
                                             <form class="task-report-form">
                                                 <select [disabled]="item.lock" onclick="console.log('test')"
                                                     (change)="ChangeStatus($event.target.value,item.id)"
@@ -231,7 +230,7 @@
                                                         <span class="">{{item.balance  | formater}}</span>
                                                     </div>
                                                 </li>
-                                                <li class="assignee-cell collapsable-cell kt-user-card-v2">
+                                                <li [ngClass]="{'disabled':!monthStatus}" class="assignee-cell collapsable-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
                                                     <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
@@ -251,7 +250,7 @@
                                                         <app-user-list-component  (callBack)="refreshGrid()"  taskId = {{item.id}} comingChangeReguest="accounts" userId = {{item.assigneeId}} ></app-user-list-component>
                                                     </div>
                                                 </li>
-                                                <li class="action-cell-item collapsable-cell">
+                                                <li [ngClass]="{'disabled':!monthStatus}" class="action-cell-item collapsable-cell">
                                                     <div class="thead-box"><b>{{"Action" | localize}} : </b></div>
                                                     <form class="task-report-form">
                                                         <form class="task-report-form">

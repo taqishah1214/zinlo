@@ -19,6 +19,7 @@ import { StoreDateService } from "../../../services/storedate.service";
   styleUrls: ['./itemized.component.css']
 })
 export class ItemizedComponent extends AppComponentBase {
+  AllOrActive : boolean = false;
   UserProfilePicture: any;
   monthValue: Date = new Date();
   commantBox: boolean;
@@ -106,6 +107,7 @@ export class ItemizedComponent extends AppComponentBase {
     this.AccountNumber == "" ? this.accountId : 0,
     moment(this.monthFilter),
     this.AccountNumber,
+    this.AllOrActive,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
     this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -209,7 +211,7 @@ BackToReconcileList() {
   }
 
   reconciledClick() {
-    if ( this.variance == 0) {
+    if (this.TotalAmount - this.trialBalance == 0) {
 
       this.message.confirm(
         'The variance is equal to 0. Do you want to reconciled this account',
@@ -246,24 +248,8 @@ BackToReconcileList() {
 
 
 
-
-
-  onChangeCommentOrHistory(value){
-
-    if (value == 1)
-   {
-    this.buttonColorForHistory = "bg-lightgrey"
-    this.buttonColorForComment = "bg-grey"
-    this.commentShow = true
-   }else {
-    this.buttonColorForHistory = "bg-grey"
-    this.buttonColorForComment = "bg-lightgrey"
-    this.commentShow = false
-   }
-  }
-
   getAuditLogOfAccount() {
-    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts").subscribe(resp => {
+    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","").subscribe(resp => {
       this.historyOfTask = resp
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
@@ -394,30 +380,16 @@ setAccountNameHistoryParam(item){
     }
 
   }
+  changeToggleValue():void{
+    if(this.AllOrActive)
+    {
+      this.AllOrActive = false;
+    }
+    else{
+         this.AllOrActive = true;
+    }
+    this.getAllItemizedList();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  }
 
 }

@@ -18,7 +18,7 @@
                             <div class="form-group">
                                 <label for="EditionDisplayName">{{"EditionName" | localize}} *</label>
                                 <input id="EditionDisplayName" #editionNameInput="ngModel" class="form-control"
-                                    type="text" name="EditionDisplayName" [(ngModel)]="edition.edition.displayName"
+                                    type="text"autocomplete="off" name="EditionDisplayName" [(ngModel)]="edition.edition.displayName"
                                     required maxlength="64">
                                 <validation-messages [formCtrl]="editionNameInput"></validation-messages>
                             </div>
@@ -47,7 +47,7 @@
                                                     class="input-group-text">{{appSession.application.currencySign}}</span>
                                             </div>
                                             <input #dailyPriceInput="ngModel" type="text" name="DailyPrice"
-                                                id="DailyPrice" class="form-control" autocomplete="new-password"
+                                                id="DailyPrice" class="form-control" autocomplete="off"
                                                 [ngClass]="{'edited':edition.edition.dailyPrice}" [required]="!isFree"
                                                 [(ngModel)]="edition.edition.dailyPrice"
                                                 [textMask]="{mask: currencyMask}" />
@@ -63,7 +63,7 @@
                                                         class="input-group-text">{{appSession.application.currencySign}}</span>
                                                 </div>
                                                 <input #weeklyPriceInput="ngModel" type="text" name="WeeklyPrice"
-                                                    id="WeeklyPrice" class="form-control" autocomplete="new-password"
+                                                    id="WeeklyPrice" class="form-control" autocomplete="off"
                                                     [ngClass]="{'edited':edition.edition.weeklyPrice}" [required]="!isFree"
                                                     [(ngModel)]="edition.edition.weeklyPrice"
                                                     [textMask]="{mask: currencyMask}" />
@@ -80,7 +80,7 @@
                                                     class="input-group-text">{{appSession.application.currencySign}}</span>
                                             </div>
                                             <input #monthlyPriceInput="ngModel" type="text" name="MonthlyPrice"
-                                                id="MonthlyPrice" class="form-control" autocomplete="new-password"
+                                                id="MonthlyPrice" class="form-control" autocomplete="off"
                                                 [ngClass]="{'edited':edition.edition.monthlyPrice}" [required]="!isFree"
                                                 [(ngModel)]="edition.edition.monthlyPrice"
                                                 [textMask]="{mask: currencyMask}" />
@@ -96,7 +96,7 @@
                                                     class="input-group-text">{{appSession.application.currencySign}}</span>
                                             </div>
                                             <input #annualPriceInput="ngModel" type="text" name="AnnualPrice"
-                                                id="AnnualPrice" class="form-control" autocomplete="new-password"
+                                                id="AnnualPrice" class="form-control" autocomplete="off"
                                                 [ngClass]="{'edited':edition.edition.annualPrice}" [required]="!isFree"
                                                 [(ngModel)]="edition.edition.annualPrice"
                                                 [textMask]="{mask: currencyMask}" />
@@ -116,7 +116,7 @@
                                 </div>
                                 <div class="form-group trial-day-count" *ngIf="isTrialActive">
                                     <label for="TrialDayCount">{{"TrialDayCount" | localize}}</label>
-                                    <input #trialDayCountInput="ngModel" class="form-control" type="number"
+                                    <input #trialDayCountInput="ngModel" class="form-control" type="number"autocomplete="off"
                                         name="TrialDayCount" id="TrialDayCount" [required]="isTrialActive"
                                         [(ngModel)]="edition.edition.trialDayCount"
                                         [ngClass]="{'edited':edition.edition.trialDayCount}">
@@ -132,7 +132,7 @@
                                 </div>
                                 <div class="form-group waiting-day-after-expire" *ngIf="isWaitingDayActive">
                                     <label for="WaitingDayAfterExpire">{{"WaitingDayAfterExpire" | localize}}</label>
-                                    <input #waitingDayAfterExpireInput="ngModel" class="form-control" type="number"
+                                    <input #waitingDayAfterExpireInput="ngModel" class="form-control" type="number"autocomplete="off"
                                         name="WaitingDayAfterExpire" id="WaitingDayAfterExpire"
                                         [required]="isWaitingDayActive"
                                         [(ngModel)]="edition.edition.waitingDayAfterExpire"

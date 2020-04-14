@@ -19,13 +19,13 @@
 
                     <div class="form-group">
                         <label for="Name">{{"TenantName" | localize}} *</label>
-                        <input id="Name" #nameInput="ngModel" type="text" name="Name" class="form-control" [ngClass]="{'edited':tenant.name}" [(ngModel)]="tenant.name" required maxlength="128">
+                        <input id="Name" #nameInput="ngModel" autocomplete="off" type="text" name="Name" class="form-control" [ngClass]="{'edited':tenant.name}" [(ngModel)]="tenant.name" required maxlength="128">
                         <validation-messages [formCtrl]="nameInput"></validation-messages>
                     </div>
 
                     <div class="form-group" *ngIf="currentConnectionString">
                         <label for="DatabaseConnectionString">{{"DatabaseConnectionString" | localize}} *</label>
-                        <input id="DatabaseConnectionString" #connectionStringInput="ngModel" type="text" name="ConnectionString" class="form-control" [(ngModel)]="tenant.connectionString" required maxlength="1024">
+                        <input id="DatabaseConnectionString" #connectionStringInput="ngModel" autocomplete="off" type="text" name="ConnectionString" class="form-control" [(ngModel)]="tenant.connectionString" required maxlength="1024">
                         <validation-messages [formCtrl]="connectionStringInput"></validation-messages>
                     </div>
 

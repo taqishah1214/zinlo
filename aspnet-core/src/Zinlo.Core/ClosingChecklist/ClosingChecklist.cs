@@ -4,6 +4,7 @@ using System;
 using Abp.Auditing;
 using Zinlo.Authorization.Users;
 using Zinlo.Categories;
+using Zinlo.InstructionVersions;
 
 namespace Zinlo.ClosingChecklist
 { 
@@ -23,7 +24,8 @@ namespace Zinlo.ClosingChecklist
         public Status Status { get; set; }
         [DisableAuditing]
         public int TenantId { get; set; }
-        public string Instruction { get; set; }
+        public InstructionVersion Version { get; set; }
+        public long? VersionId { get; set; }
         public int NoOfMonths { get; set; }
         public int DueOn { get; set; }
         [DisableAuditing]

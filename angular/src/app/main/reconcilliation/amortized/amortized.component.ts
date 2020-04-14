@@ -2,7 +2,7 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import * as _ from 'lodash';
-import { AmortizationServiceProxy ,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto } from '@shared/service-proxies/service-proxies';
+import { AmortizationServiceProxy ,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto, AuditLogServiceProxy } from '@shared/service-proxies/service-proxies';
 import { UserInformation } from '../../CommonFunctions/UserInformation';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
@@ -10,6 +10,8 @@ import { Table } from 'primeng/table';
 import { AppConsts } from '@shared/AppConsts';
 import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
+import { StoreDateService } from "../../../services/storedate.service";
+
 
 @Component({
   selector: 'app-amortized',
@@ -17,6 +19,7 @@ import { add, subtract } from 'add-subtract-date';
   styleUrls: ['./amortized.component.css']
 })
 export class AmortizedComponent extends AppComponentBase {
+  AllOrActive :boolean = false;
   UserProfilePicture: any;
   monthValue: Date = new Date();
   commantBox: boolean;
@@ -48,6 +51,18 @@ export class AmortizedComponent extends AppComponentBase {
   postedCommentList : any =[]
   comment : any = ""
   reconciliedBase : any
+  historyOfTask: any = [];
+  assigniHistory : any = [];
+  statusHistory: any = [];
+  users : any = [];
+  commentShow = true;
+  historyList : any =[];
+  AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
+  userSignInName: string;
+  StatusColorBox: any = ["bg-blue", "bg-sea-green", "bg-gray"]
+  buttonColorForComment : any = "bg-grey"
+  buttonColorForHistory : any = "bg-lightgrey"
+  accountSubypeList : any  = []
 
   constructor(
     injector: Injector,
@@ -55,16 +70,22 @@ export class AmortizedComponent extends AppComponentBase {
     private userInfo: UserInformation,
     private _amortizationService:AmortizationServiceProxy,
     private _timeManagementsServiceProxy :TimeManagementsServiceProxy,
+    private _auditLogService : AuditLogServiceProxy,
+    private storeData: StoreDateService,
+
 
   ) {
     super(injector);
   }
   ngOnInit() {
+    this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
+    this.storeData.allAccountSubTypes.subscribe(accountSubypeList => this.accountSubypeList = accountSubypeList)
     this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
     this.commantBox = true;
     this.getProfilePicture();
+    this.getAuditLogOfAccount();
     this.userName = this.appSession.user.name.toString();
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {
@@ -88,6 +109,7 @@ export class AmortizedComponent extends AppComponentBase {
     this.AccountNumber == "" ? this.accountId : 0,
     moment(this.monthFilter),
     this.AccountNumber,
+    this.AllOrActive,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
     this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -227,22 +249,187 @@ BackToReconcileList() {
       }
     );
   }
-
-
   reconciledClick() {
-    if (this.varianceBeginning == 0 && this.varianceAccured == 0){
-     this.reconciliedAccount()
+    if (this.reconciliedBase == 1) {
+      if (this.netAmount - this.trialBalanceNet == 0) {
+        this.reconciliedAccount()
+      }
+      else {
+        this.notify.error(this.l('Variance is not equal to 0, hence the account is not reconciled'));
+      }
     }
-    else if (this.varianceNet ==0 && this.reconciliedBase== 1)
-    {
-      this.reconciliedAccount()
+    if (this.reconciliedBase == 2 || this.reconciliedBase == 3 ){
+      
+      if ((this.accuredAmount -this.trialBalanceBeginning == 0) && (this.begininngAmount -this.trialBalanceBeginning == 0))
+      {
+        this.reconciliedAccount()
+      }
+      else {
+        this.notify.error(this.l('Variance is not equal to 0, hence the account is not reconciled'));  
+      }
     }
     else {
       this.notify.error(this.l('Variance is not equal to 0, hence the account is not reconciled'));
+    }
+  }
+  changeToggleValue():void{
+    if(this.AllOrActive)
+    {
+      this.AllOrActive = false;
+    }
+    else{
+         this.AllOrActive = true;
+    }
+    this.getAllAmortizedList();
 
+  }
+
+
+
+
+
+  getAuditLogOfAccount() {
+    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","").subscribe(resp => {
+      this.historyOfTask = resp
+      this.historyOfTask.forEach((element,index) => {
+        switch (element.propertyName) {
+          case "AssigneeId":         
+            element["result"] =  this.setAssigniHistoryParam(element,index)
+            break;
+            case "Status":          
+            element["result"] = this.setStatusHistoryParam(element)
+            break;
+            case "AccountName":          
+            element["result"] = this.setAccountNameHistoryParam(element)
+            break;
+            case "AccountType":          
+            element["result"] = this.setAccountTypeHistoryParam(element)
+            break;
+            case "AccountSubTypeId":          
+            element["result"] = this.setAccountSubTypeHistoryParam(element)
+            break;
+            default:
+            console.log("not found");
+            break;
+        }
+        ;
+      });
+    })
+  }
+
+
+  
+getAccountSubType(id) {
+  return this.accountSubypeList.findIndex(x => x.value == id);
+}
+
+setAccountSubTypeHistoryParam(item){
+  let array : any = []
+  array["ChangeOccurUser"] =  this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] =  this.accountSubypeList[this.getAccountSubType(parseInt(item.newValue))]; 
+  array["PreviousValue"] = this.accountSubypeList[this.getAccountSubType(parseInt(item.originalValue))]; 
+  debugger
+  return array
+
+}
+
+  findTheUserFromList(id) : number{
+  return this.users.findIndex(x => x.id === id);
+  }
+
+
+  
+  
+  setAccountTypeHistoryParam(item){
+    let array : any = []
+    array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+    array["NewValue"] = this.findAccountTypeName(parseInt(item.newValue)); 
+    array["PreviousValue"] = this.findAccountTypeName(parseInt(item.originalValue)); 
+    return array
+  }
+
+ setAssigniHistoryParam(item,index){
+   let array : any = []
+  array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] = this.users[this.findTheUserFromList(parseInt(item.newValue))];
+  array["colorNewValue"] = "bg-magenta"
+  array["PreviousValue"] = this.users[this.findTheUserFromList(parseInt(item.originalValue))]; 
+  array["colorPreviousValue"] = "bg-purple"
+  return array
+ }
+
+ setStatusHistoryParam(item){
+  let array : any = []
+  array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] = this.findStatusName(parseInt(item.newValue)); 
+  array["PreviousValue"] = this.findStatusName(parseInt(item.originalValue)); 
+  array["PreviousColor"] = this.findStatusColor(parseInt(item.originalValue)); 
+  array["NewValueColor"] = this.findStatusColor(parseInt(item.newValue)); 
+
+  return array
+}
+
+setAccountNameHistoryParam(item){
+  let array : any = []
+  array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] = item.newValue; 
+  array["PreviousValue"] = item.originalValue; 
+  return array
+}
+
+  findStatusName(value): string {
+
+    switch (value) {
+      case 1:
+        return "In Process"
+      case 2:
+        return "Open"
+      case 3:
+        return "Complete"
+      default:
+        return ""
     }
 
   }
+
+  findStatusColor(id) :string {
+    if (id == 1) {
+      return this.StatusColorBox[0]
+    }
+    else if (id == 2) {
+      return this.StatusColorBox[2]
+    }
+    else if (id == 3) {
+      return this.StatusColorBox[1]
+    }
+  }
+
+  findAccountTypeName(value) :string
+  {
+
+
+    switch (value) {
+      case 1:
+        return "Equity"
+      case 2:
+        return "Assets"
+      case 3:
+        return "Liability"
+      default:
+        return ""
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
 
 
 

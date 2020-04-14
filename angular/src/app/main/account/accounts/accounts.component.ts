@@ -58,6 +58,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   attachmentPathsChartsofAccounts: any = [];
   chartsOfAccountsfileUrl : string = "";
   chartsOfAccountsfileUrlTrialBalance : string = "";
+  monthStatus : boolean = false
 
   uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
   uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsTrialBalanceFromExcel';
@@ -142,8 +143,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
-      console.log(this.list);
       this.chartsOfAccountList = result.items
+      this.monthStatus = this.chartsOfAccountList[0].monthStatus;
       this.chartsOfAccountList.forEach(i => {
         i["accountType"] = this.getNameofAccountTypeAndReconcillation(i.accountTypeId, "accountType")
         i["reconciliationType"] = this.getNameofAccountTypeAndReconcillation(i.reconciliationTypeId, "reconcillation")

@@ -45,9 +45,7 @@
                                             <input [(ngModel)]="itemizedDto.date" required="required"
                                             class="form-control" name="date" bsDatepicker
                                             placeholder="Select Date" autocomplete="off" class="form-control" name="date"
-                                            bsDatepicker 
-                                           
-                                           >
+                                            bsDatepicker>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -113,7 +111,7 @@
                                     <div class="form-group" *ngIf="commantModal">
                                         <label>{{"Comments" | localize}}</label>
                                         <p-editor [(ngModel)]="itemizedDto.commentBody"
-                                            (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
+                                            name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
                                         </p-editor>
                                         <div class="btnMargin" >

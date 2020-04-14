@@ -40,7 +40,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   buttonColorForComment : any = "bg-grey"
   buttonColorForHistory : any = "bg-lightgrey"
   categoriesList : any = []
-
+  instructionVersions : any = []
 
   constructor(
     injector: Injector,
@@ -67,12 +67,50 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     this.getTaskDetails(this.recordId);
     this.getProfilePicture();
     this.getAuditLogOfTask();
+    this.getVersionsofInstrutions();
   }
 
 
+  getVersionsofInstrutions () { 
+  
+    this._auditLogService.getEntityHistory(this.recordId.toString(), "Zinlo.ClosingChecklist.ClosingChecklist","VersionId").subscribe(resp => {
+      this.instructionVersions = resp
+      this.instructionVersions.forEach((element,index) => {
+        switch (element.propertyName) {
+            case "VersionId":          
+            element["result"] = this.setVerionIdHistoryParam(element)
+            break;
+          default:
+            console.log("not found");
+            break;
+        }
+        ;
+      });
+    })
+
+  }
+
+  rollBackInstruction(id) {
+    this.recordId;
+    debugger;
+    this._closingChecklistService.revertInstruction(this.recordId,id).subscribe(resp => {
+      debugger;
+    })
+  }
+
+setVerionIdHistoryParam (item) {
+  let array : any = []
+  array["ChangeOccurUser"] = this.users[this.findTheUserFromList(item.userId)]; 
+  array["NewValue"] = item.newValue; 
+  array["PreviousValue"] = item.originalValue; 
+  return array
+}
+
+
   getAuditLogOfTask() {
-    this._auditLogService.getEntityHistory(this.recordId.toString(), "Zinlo.ClosingChecklist.ClosingChecklist").subscribe(resp => {
+    this._auditLogService.getEntityHistory(this.recordId.toString(), "Zinlo.ClosingChecklist.ClosingChecklist","").subscribe(resp => {
       this.historyOfTask = resp
+      debugger;
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
           case "AssigneeId":         
@@ -92,17 +130,25 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
             break;
             case "CategoryId":          
             element["result"] = this.setDaysCategoryIdHistoryParam(element)
-            debugger;
             break;
-            
+            case "EndOfMonth":          
+            element["result"] = this.setTaskNameHistoryParam(element)
+            break;
+            case "EndsOn":          
+            element["result"] = this.setTaskNameHistoryParam(element)
+            break;
+            case "DueOn":          
+            element["result"] = this.setTaskNameHistoryParam(element)
+            break;
           default:
             console.log("not found");
             break;
-        }
-        ;
+        };
+        debugger
       });
     })
   }
+
 
 
   
@@ -270,7 +316,7 @@ setTaskNameHistoryParam(item){
   getTaskDetails(id): void {
     this._closingChecklistService.getDetails(id).subscribe(result => {
       this.taskDetailObject = result;
-      console.log(this.taskDetailObject);
+      debugger
       this.commentsData = this.taskDetailObject.comments;
       this.assigneeId = this.taskDetailObject.assigneeId;
       this.taskStatus = this.taskDetailObject.taskStatus;

@@ -3,7 +3,7 @@
         <div class="kt-subheader__main">
             <h3 class="kt-subheader__title">
                 <img src="./assets/media/ClosingCheckList/chartofaccount.svg" alt="clipboard">
-                <span class="headSpace" > {{"Charts of Account" | localize}}</span>
+                <span class="headSpace" > {{"Chart of Accounts" | localize}}</span>
             </h3>
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
             <span class="kt-subheader__desc">
@@ -234,24 +234,26 @@
                                         <select class="form-control border-grey" name="categoryFilter"
                                             [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
                                             id="exampleFormControlSelect2">
-                                            <option value="0">{{accountType}}</option>
+                                            <option value="0">All</option>
                                             <option *ngFor="let item of accountTypeList;" [value]="item.id">
                                                 {{item.name}}
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="block-btn">
+                                    <!-- <div class="block-btn">
                                         <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()">
                                             <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
                                         </button>
-                                    </div>
+                                    </div> -->
                                     <div>
                                        
                                             
-                                            <label class="switch">
+                                            <!-- <label class="switch">
                                                 <input type="checkbox" [(checked)]="AllOrActive"  (change)="changeToggleValue()">
                                                 <span class="slider round"></span>
-                                            </label>
+                                            </label> -->
+
+                                            <label class="switch"><input type="checkbox" id="togBtn" [(checked)]="AllOrActive"  (change)="changeToggleValue()" ><div class="slider round"><!--ADDED HTML --><span class="on">All</span><span class="off">Active</span><!--END--></div></label>
                                       
                                        
                                     </div>
@@ -370,9 +372,9 @@
                                             <span class="">{{item.reconciliationType}}</span>
                                         </td>
 
-                                        <td  class="assignee-cell">
+                                        <td [ngClass]="{'disabled':!monthStatus}" class="assignee-cell">
                                             <div *ngIf="item.id != rowid" class="kt-user-card-v2"
-                                                (click)="openFieldUpdateAssignee(item.id)">
+                                                (click)="monthStatus &&  openFieldUpdateAssignee(item.id)">
                                                 <div class="kt-user-card-v2__pic">
                                                     <div *ngIf="item.profilePicture" class="kt-badge kt-badge--xl">
                                                         <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
@@ -397,12 +399,12 @@
                                         </td>
                                         <td class="action-cell">
                                             <div class="btn-group">
-                                                <a *ngIf="'Pages.Categories.Edit' | permission" class="btn"
-                                                    href="javascript:;"
+                                                <a [ngClass]="{'disabled':!monthStatus}" *ngIf="'Pages.Categories.Edit' | permission" class="btn"
+                                                    href="javascript:;" data-toggle="tooltip" title="Edit"
                                                     (click)="editAccount(item.id)">
                                                     <img src="../../../../assets/img/edit.svg"></a>
-                                                <a *ngIf="'Pages.Categories.Delete' | permission" class="btn"
-                                                    href="javascript:;" (click)="deleteAccount(item.id)">
+                                                <a [ngClass]="{'disabled':!monthStatus}" *ngIf="'Pages.Categories.Delete' | permission" class="btn"
+                                                data-toggle="tooltip" title="Delete" href="javascript:;" (click)="deleteAccount(item.id)">
                                                     <img src="../../../../assets/img/del.svg"></a>
                                             </div>
                                         </td>
@@ -428,10 +430,10 @@
                                                         <span class="">{{item.reconciliationType}}</span>
                                                     </div>
                                                 </li>
-                                                <li  class="assignee-cell collapsable-cell kt-user-card-v2">
+                                                <li [ngClass]="{'disabled':!monthStatus}" class="assignee-cell collapsable-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
                                                     <div *ngIf="item.id != rowid"
-                                                        (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
+                                                        (click)="monthStatus &&  openFieldUpdateAssignee(item.id)" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div *ngIf="item.profilePicture"
                                                                 class="kt-badge kt-badge--xl">
@@ -455,13 +457,13 @@
                                                     <div class="thead-box"><b>{{"Action" | localize}} : </b></div>
                                                     <div class="tdata-box">
                                                         <div class="btn-group">
-                                                            <a class="btn"
-                                                                href="javascript:;" (click)="editAccount(item.id)">                                                           
+                                                            <a [ngClass]="{'disabled':!monthStatus}" *ngIf="!item.isDeleted == true" class="btn"
+                                                                href="javascript:;" (click)="editAccount(item.id)" data-toggle="tooltip" title="Edit">                                                           
                                                                 <img src="../../../../assets/img/edit.svg"></a>
-                                                            <a class="btn" href="javascript:;"
-                                                                (click)="deleteAccount(item.id)">
+                                                             <a [ngClass]="{'disabled':!monthStatus}" *ngIf="!item.isDeleted == true" class="btn" href="javascript:;"
+                                                                (click)="deleteAccount(item.id)"data-toggle="tooltip" title="Delete">
                                                                 <img src="../../../../assets/img/del.svg"></a>
-                                                                <a *ngIf="item.isDeleted == true" class="btn" href="javascript:;"
+                                                                <a [ngClass]="{'disabled':!monthStatus}" *ngIf="item.isDeleted == true" class="btn" href="javascript:;"
                                                                 (click)="restoreAccount(item.id)">
                                                                 <i class="fas fa-trash-restore"></i></a>
                                                         </div>

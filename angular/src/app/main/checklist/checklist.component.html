@@ -47,10 +47,12 @@
                                     <div>
                                        
                                             
-                                        <label class="switch">
+                                        <!-- <label class="switch">
                                             <input type="checkbox" [(checked)]="AllOrActive"  (change)="changeToggleValue()">
                                             <span class="slider round"></span>
-                                        </label>
+                                        </label> -->
+
+                                        <label class="switch"><input type="checkbox" id="togBtn" [(checked)]="AllOrActive"  (change)="changeToggleValue()" ><div class="slider round"><!--ADDED HTML --><span class="on">All</span><span class="off">Active</span><!--END--></div></label>
                                   
                                    
                                 </div>
@@ -220,7 +222,6 @@
                                             </form>
                                         </td>
                                         <td [ngClass]="{'disabled':!monthStatus}" class="assignee-cell">
-
                                             <div *ngIf="j.id != rowid" class="kt-user-card-v2"
                                                 (click)="monthStatus && openFieldUpdateAssignee(j.id)">
                                                 <div class="kt-user-card-v2__pic">
