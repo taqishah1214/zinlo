@@ -1,10 +1,21 @@
-export interface BusinessInfo{
+export class BusinessInfo{
     businessName:string
     website:string
-    phoneNumber:number
+    phoneNumber:string
     addressLineOne:string
     addressLineTwo:string
     city:string
     state:string
-    zipCode:number
+    zipCode:string
+    constructor()
+    {
+        this.businessName = '';
+        this.website = "";
+        this.phoneNumber="";
+        this.addressLineOne="";
+        this.addressLineTwo="";
+        this.city="";
+        this.state="";
+        this.zipCode="";
+    }
 }
