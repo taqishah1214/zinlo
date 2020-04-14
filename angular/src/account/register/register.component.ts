@@ -8,7 +8,10 @@ import { UrlHelper } from 'shared/helpers/UrlHelper';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { AppConsts } from '@shared/AppConsts';
 import { ViewEncapsulation } from '@angular/core';
-
+import {PersonalInfo} from '../Models/PersonalInfo'
+import {BusinessInfo} from '../Models/BusinessInfo'
+import {SubscriptionPlans} from '../Models/SubscriptionPlans'
+import {PaymentDetails} from '../Models/PaymentDetails'
 import {
     EditionSelectDto,
     EditionWithFeaturesDto,
