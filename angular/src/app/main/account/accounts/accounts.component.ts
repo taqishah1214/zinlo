@@ -96,6 +96,12 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     this.loadAccountSubType();
     
   }
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
+  }
   accountTypeClick(event): void {
     if (parseInt(event.target.value) == 0) {
       this.accountTypeFilter = parseInt(event.target.value)
