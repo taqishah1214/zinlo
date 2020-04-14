@@ -1,4 +1,4 @@
-export class BusinessInfo{
+export interface BusinessInfo{
     businessName:string
     website:string
     phoneNumber:number

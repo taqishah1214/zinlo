@@ -32,6 +32,9 @@ declare var $: any;
     animations: [accountModuleAnimation()]
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
+    personalInfoDto:PersonalInfo;
+    businessInfoDto:BusinessInfo;
+    subscriptionPlansDto:SubscriptionPlans;
     editionsSelectOutput: EditionsSelectOutput = new EditionsSelectOutput();
     isUserLoggedIn = false;
     isSetted = false;
@@ -67,7 +70,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         super(injector);
     }
 
-    ngOnInit() {this.isUserLoggedIn = abp.session.userId > 0;
+    ngOnInit() {
+        this.isUserLoggedIn = abp.session.userId > 0;
 
         this._tenantRegistrationService.getEditionsForSelect()
             .subscribe((result) => {
@@ -148,7 +152,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".deliverybody").attr("data-ktwizard-state", "")
                 $(".reviewbody").attr("data-ktwizard-state", "")
                 $(".locationbody").attr("data-ktwizard-state", "")
-
                 break;
             case 2:
                 $(".service").attr("data-ktwizard-state", "current")
@@ -157,6 +160,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".deliverybody").attr("data-ktwizard-state", "")
                 $(".reviewbody").attr("data-ktwizard-state", "")
                 $(".locationbody").attr("data-ktwizard-state", "")
+                console.log(this.businessInfoDto.businessName=this.businessName)
                 break;
             case 3:
                 $(".delivery").attr("data-ktwizard-state", "current")

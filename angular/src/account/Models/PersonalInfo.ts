@@ -1,4 +1,4 @@
-export class PersonalInfo{
+export interface PersonalInfo{
     firstName:string
     lastName:string
     title:string
