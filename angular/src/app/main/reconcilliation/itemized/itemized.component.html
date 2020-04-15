@@ -252,7 +252,7 @@
                             <div class="form-group " *ngIf="!commantBox">
                                 <label>{{"Comments" | localize}}</label>
                                 <p-editor [(ngModel)]="comment"
-                                            (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput"
+                                            name="HtmlEditorInput"
                                             [style]="{'height':'150px'}">
                                 </p-editor>
                                 <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
