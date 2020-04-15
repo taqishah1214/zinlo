@@ -105,7 +105,7 @@
                                             (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
                                     </div>
                                     <div class="dropdown-btn-box">
-                                        <button (click)="openFilterClick()" class="btn btn-square"><img
+                                        <button (click)="openFilterClick()" data-toggle="tooltip" title="More Filters"class="btn btn-square"><img
                                                 src="./assets/media/ClosingCheckList/filter.png" alt="filter"></button>
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@
                                                 class="form-control" />
                                         </div>
                                         <div class="block-btn">
-                                            <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()">
+                                            <button class="btn btn-square bg-lightgrey" data-toggle="tooltip" title="Reset Filters" (click)="ResetGrid()">
                                                 <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
                                             </button>
                                         </div>
