@@ -3,7 +3,8 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { UserRegisterServiceServiceProxy, RegisterUserInput, PersonalInfoDto, BusinessInfo, PaymentDetails, SubscriptionPlansDto } from '@shared/service-proxies/service-proxies';
+import { finalize, catchError } from 'rxjs/operators';
+import { UserRegisterServiceServiceProxy, RegisterUserInput, PersonalInfoDto, BusinessInfo, PaymentDetails, SubscriptionPlansDto, RegisterTenantOutput } from '@shared/service-proxies/service-proxies';
 import { ViewEncapsulation } from '@angular/core';
 import {
     EditionSelectDto,
@@ -16,6 +17,7 @@ import {
     SubscriptionStartType
 } from '@shared/service-proxies/service-proxies';
 import * as _ from 'lodash';
+import { TenantRegistrationHelperService } from './tenant-registration-helper.service';
 
 
 declare var $: any;
@@ -33,6 +35,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     editionsSelectOutput: EditionsSelectOutput = new EditionsSelectOutput();
     isUserLoggedIn = false;
     isSetted = false;
+    saving = false;
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
@@ -43,6 +46,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         private _tenantRegistrationService: TenantRegistrationServiceProxy,
         private _subscriptionService: SubscriptionServiceProxy,
         private _userRegistrationServiceProxy: UserRegisterServiceServiceProxy,
+        private _tenantRegistrationHelper: TenantRegistrationHelperService,
         private _router: Router
     ) {
         super(injector);
@@ -137,9 +141,29 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         userResgister.subscriptionPlans = this.subscriptionPlansDto;
         console.log(userResgister);
         debugger;
-        this._userRegistrationServiceProxy.registerUserWithTenant(userResgister);
+       this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
+       .pipe(finalize(() => { this.saving = false; }))
+            .pipe(catchError((err, caught): any => {
+                
+            }))
+            .subscribe((result: RegisterTenantOutput) => {
+                this.notify.success(this.l('SuccessfullyRegistered'));
+                this._tenantRegistrationHelper.registrationResult = result;
 
-        //call the service method to save the result
+                if (parseInt(userResgister.subscriptionPlans.subscriptionStartType.toString()) === SubscriptionStartType.Paid) {
+                    this._router.navigate(['account/buy'],
+                        {
+                            queryParams: {
+                                tenantId: result.tenantId,
+                                editionId: userResgister.subscriptionPlans.editionId,
+                                subscriptionStartType: userResgister.subscriptionPlans.subscriptionStartType,
+                                editionPaymentType: this.editionPaymentType
+                            }
+                        });
+                } else {
+                    this._router.navigate(['account/register-tenant-result']);
+                }
+            });
     }
     switchTab(item: number) {
         switch (item) {
