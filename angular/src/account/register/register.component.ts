@@ -23,6 +23,7 @@ import {
     SubscriptionStartType
 } from '@shared/service-proxies/service-proxies';
 import * as _ from 'lodash';
+import { RegisterUserInput } from '@account/Models/registerUserInput';
 
 declare var $: any;
 @Component({
@@ -138,6 +139,14 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.switchTab(this.current);
     }
 
+    save()
+    {
+        var userResgister=new RegisterUserInput();
+        userResgister.businessInfo=this.businessInfoDto;
+        userResgister.paymentDetails=this.paymentDetailsDto;
+        userResgister.personalInfo=this.personalInfoDto;
+        userResgister.subscriptionPlans =this.subscriptionPlansDto;
+    }
     switchTab(item: number) {
         switch (item) {
             case 0:
