@@ -25,7 +25,6 @@ export class PaymentHelperService {
         } else if (parseInt(editionPaymentType) === EditionPaymentType.NewRegistration) {
             return 'NewRegistration';
         }
-
         return 'Upgrade';
     }
 

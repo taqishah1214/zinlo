@@ -129,8 +129,10 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         
         if (this.current === 4) {
             $(".nxtbtn").hide();
+            $(".submit").show();
         } else {
             $(".nxtbtn").show();
+            $(".submit").hide();
         }
 
         this.switchTab(this.current);
