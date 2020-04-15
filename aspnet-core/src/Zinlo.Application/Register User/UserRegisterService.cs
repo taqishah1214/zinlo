@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Zinlo.Authorization.Users;
 using Zinlo.MultiTenancy;
@@ -39,10 +40,11 @@ namespace Zinlo.Register_User
                 Name = registerUser.PersonalInfo.UserName,
                 AdminPassword = registerUser.PersonalInfo.Password,
                 EditionId = registerUser.SubscriptionPlans.EditionId,
-                TenancyName = registerUser.BusinessInfo.BusinessName,
+                TenancyName = Regex.Replace(registerUser.BusinessInfo.BusinessName, @"\s", ""),
                 SubscriptionStartType = (SubscriptionStartType)registerUser.SubscriptionPlans.SubscriptionStartType,
                 CaptchaResponse = ""
-            }); 
+            });
+
            await  _userBusinessInfoRepository.InsertAsync(new UserBusinessInfo
             {
                 BusinessName = registerUser.BusinessInfo.BusinessName,

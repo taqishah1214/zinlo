@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Zinlo.Register_User.Dto
 {
-   public class RegisterUserDto
+   public class RegisterUserInput
     {
         public BusinessInfo BusinessInfo { get; set; }
         public PaymentDetails PaymentDetails { get; set; }
