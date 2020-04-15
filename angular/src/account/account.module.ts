@@ -7,6 +7,7 @@ import { CommonModule } from '@shared/common/common.module';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
 import { UtilsModule } from '@shared/utils/utils.module';
 import { RecaptchaModule, RECAPTCHA_LANGUAGE } from 'ng-recaptcha';
+import { BsDatepickerModule, BsDatepickerConfig, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccountRoutingModule } from './account-routing.module';
 import { AccountComponent } from './account.component';
@@ -40,6 +41,7 @@ import { StripePaymentResultComponent } from './payment/stripe/stripe-payment-re
 import { StripeCancelPaymentComponent } from './payment/stripe/stripe-cancel-payment.component';
 import { PaymentCompletedComponent } from './payment/payment-completed.component';
 import { SubDomainLoginComponent } from './sub-domain-login/sub-domain-login.component';
+import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
 
 export function getRecaptchaLanguage(): string {
     return new LocaleMappingService().map('recaptcha', abp.localization.currentLanguage.name);
@@ -52,6 +54,7 @@ export function getRecaptchaLanguage(): string {
         HttpClientModule,
         HttpClientJsonpModule,
         RecaptchaModule.forRoot(),
+        BsDatepickerModule.forRoot(),
         ModalModule.forRoot(),
         AbpModule,
         CommonModule,
@@ -88,6 +91,9 @@ export function getRecaptchaLanguage(): string {
         SubDomainLoginComponent
     ],
     providers: [
+        { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
+        { provide: BsDaterangepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDaterangepickerConfig },
+        
         LoginService,
         TenantRegistrationHelperService,
         PaymentHelperService,

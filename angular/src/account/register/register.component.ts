@@ -50,11 +50,20 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         private _router: Router
     ) {
         super(injector);
+        this.personalInfoDto=new PersonalInfoDto();
+        this.businessInfoDto= new BusinessInfo();
+        this.paymentDetailsDto= new PaymentDetails();
+        this.subscriptionPlansDto= new SubscriptionPlansDto
     }
-
+    onOpenCalendar(container) {
+        container.monthSelectHandler = (event: any): void => {
+          container._store.dispatch(container._actions.select(event.date));
+        };
+        container.setViewMode('month');
+      }
     ngOnInit() {
         this.isUserLoggedIn = abp.session.userId > 0;
-
+        
         this._tenantRegistrationService.getEditionsForSelect()
             .subscribe((result) => {
                 this.editionsSelectOutput = result;
@@ -134,6 +143,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     }
 
     save() {
+        this.personalInfoDto.userName =  this.personalInfoDto.firstName +" " + this.personalInfoDto.lastName;
         var userResgister = new RegisterUserInput();
         userResgister.businessInfo = this.businessInfoDto;
         userResgister.paymentDetails = this.paymentDetailsDto;
@@ -182,6 +192,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".deliverybody").attr("data-ktwizard-state", "")
                 $(".reviewbody").attr("data-ktwizard-state", "")
                 $(".locationbody").attr("data-ktwizard-state", "")
+                console.log(this.personalInfoDto);
                 break;
             case 2:
                 $(".service").attr("data-ktwizard-state", "current")
@@ -190,15 +201,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".deliverybody").attr("data-ktwizard-state", "")
                 $(".reviewbody").attr("data-ktwizard-state", "")
                 $(".locationbody").attr("data-ktwizard-state", "")
-                break;
-            case 3:
-                $(".delivery").attr("data-ktwizard-state", "current")
-                $(".detailbody").attr("data-ktwizard-state", "")
-                $(".servicebody").attr("data-ktwizard-state", "")
-                $(".deliverybody").attr("data-ktwizard-state", "current")
-                $(".reviewbody").attr("data-ktwizard-state", "")
-                $(".locationbody").attr("data-ktwizard-state", "")
-
+                console.log(this.businessInfoDto);
                 break;
             case 4:
                 $(".review").attr("data-ktwizard-state", "current")
@@ -207,6 +210,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".deliverybody").attr("data-ktwizard-state", "")
                 $(".reviewbody").attr("data-ktwizard-state", "current")
                 $(".locationbody").attr("data-ktwizard-state", "")
+
+                console.log(this.subscriptionPlansDto);
 
                 break;
             default: break;
