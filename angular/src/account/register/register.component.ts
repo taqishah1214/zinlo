@@ -53,7 +53,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.personalInfoDto=new PersonalInfoDto();
         this.businessInfoDto= new BusinessInfo();
         this.paymentDetailsDto= new PaymentDetails();
-        this.subscriptionPlansDto= new SubscriptionPlansDto
+        this.subscriptionPlansDto= new SubscriptionPlansDto();
     }
     onOpenCalendar(container) {
         container.monthSelectHandler = (event: any): void => {
@@ -62,6 +62,9 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         container.setViewMode('month');
       }
     ngOnInit() {
+        this.businessInfoDto.state="NewYark"
+        this.businessInfoDto.city="NewYark"
+        this.paymentDetailsDto.commitment=0
         this.isUserLoggedIn = abp.session.userId > 0;
         
         this._tenantRegistrationService.getEditionsForSelect()
@@ -192,7 +195,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".deliverybody").attr("data-ktwizard-state", "")
                 $(".reviewbody").attr("data-ktwizard-state", "")
                 $(".locationbody").attr("data-ktwizard-state", "")
-                console.log(this.personalInfoDto);
                 break;
             case 2:
                 $(".service").attr("data-ktwizard-state", "current")
@@ -201,7 +203,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".deliverybody").attr("data-ktwizard-state", "")
                 $(".reviewbody").attr("data-ktwizard-state", "")
                 $(".locationbody").attr("data-ktwizard-state", "")
-                console.log(this.businessInfoDto);
                 break;
             case 4:
                 $(".review").attr("data-ktwizard-state", "current")
@@ -210,9 +211,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".deliverybody").attr("data-ktwizard-state", "")
                 $(".reviewbody").attr("data-ktwizard-state", "current")
                 $(".locationbody").attr("data-ktwizard-state", "")
-
-                console.log(this.subscriptionPlansDto);
-
                 break;
             default: break;
         }

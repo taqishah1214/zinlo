@@ -85,7 +85,7 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Email</label>
-                                                <input #emailOfUser="ngModel" [(ngModel)]="personalInfoDto.email" type="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required maxlength="256" email>
+                                                <input #emailOfUser="ngModel" [(ngModel)]="personalInfoDto.emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required maxlength="256" email>
                                                 <validation-messages [formCtrl]="emailOfUser"></validation-messages>
                                             </div>
                                         </div>
@@ -173,7 +173,7 @@
                                         <div class="col-xl-4">
                                             <div class="form-group">
                                                 <label>State</label>
-                                                <select name="state" [(ngModel)]="businessInfoDto.State" class="form-control bg-white border">
+                                                <select name="state" [(ngModel)]="businessInfoDto.state" class="form-control bg-white border">
                                                     <option value="NewYark">New Yark</option>
                                                     <option value="Afghanistan">Afghanistan</option>
                                                 </select>    
@@ -617,15 +617,7 @@
                                             Phone: {{businessInfoDto.phoneNumber}}<br/>
                                             Website: {{businessInfoDto.website}}
                                         </div>
-                                        <div class="kt-heading kt-wizard-v1__review-title">
-                                            Subscription Plans
-                                        </div>
-                                        <div class="kt-wizard-v1__review-content">
-                                            {{businessInfoDto.businessName}}<br/>
-                                            Address: {{businessInfoDto.addressLineOne}} {{businessInfoDto.addressLineOne}}<br/>
-                                            Phone: {{businessInfoDto.phoneNumber}}
-                                            Website: {{businessInfoDto.website}}
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-xl-6 kt-wizard-v1__review">
@@ -642,7 +634,7 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>CVV Code</label>
-                                                    <input type="text" #CVVCodeOfUser="ngModel" [(ngModel)]="paymentDetailsDto.CVVCode"  class="form-control" name="CVVCodeOfUser" placeholder="Enter CVV Code" value="" autocomplete="off" required maxlength="64">
+                                                    <input type="text" #CVVCodeOfUser="ngModel" [(ngModel)]="paymentDetailsDto.cvvCode"  class="form-control" name="CVVCodeOfUser" placeholder="Enter CVV Code" value="" autocomplete="off" required maxlength="64">
                                                     <validation-messages [formCtrl]="CVVCodeOfUser"></validation-messages>
                                                 </div>
                                             </div>
