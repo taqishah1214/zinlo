@@ -3,15 +3,8 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { SessionServiceProxy, UpdateUserSignInTokenOutput } from '@shared/service-proxies/service-proxies';
-import { UrlHelper } from 'shared/helpers/UrlHelper';
-import { RecaptchaComponent } from 'ng-recaptcha';
-import { AppConsts } from '@shared/AppConsts';
+import { UserRegisterServiceServiceProxy, RegisterUserInput, PersonalInfoDto, BusinessInfo, PaymentDetails, SubscriptionPlansDto } from '@shared/service-proxies/service-proxies';
 import { ViewEncapsulation } from '@angular/core';
-import {PersonalInfo} from '../Models/PersonalInfo'
-import {BusinessInfo} from '../Models/BusinessInfo'
-import {SubscriptionPlans} from '../Models/SubscriptionPlans'
-import {PaymentDetails} from '../Models/PaymentDetails'
 import {
     EditionSelectDto,
     EditionWithFeaturesDto,
@@ -23,7 +16,7 @@ import {
     SubscriptionStartType
 } from '@shared/service-proxies/service-proxies';
 import * as _ from 'lodash';
-import { RegisterUserInput } from '@account/Models/registerUserInput';
+
 
 declare var $: any;
 @Component({
@@ -33,10 +26,10 @@ declare var $: any;
     animations: [accountModuleAnimation()]
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
-    personalInfoDto:PersonalInfo;
-    businessInfoDto:BusinessInfo;
-    paymentDetailsDto:PaymentDetails;
-    subscriptionPlansDto:SubscriptionPlans;
+    personalInfoDto: PersonalInfoDto;
+    businessInfoDto: BusinessInfo;
+    paymentDetailsDto: PaymentDetails;
+    subscriptionPlansDto: SubscriptionPlansDto;
     editionsSelectOutput: EditionsSelectOutput = new EditionsSelectOutput();
     isUserLoggedIn = false;
     isSetted = false;
@@ -45,17 +38,14 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     /*you can change your edition icons order within editionIcons variable */
     editionIcons: string[] = ['flaticon-open-box', 'flaticon-rocket', 'flaticon-gift', 'flaticon-confetti', 'flaticon-cogwheel-2', 'flaticon-app', 'flaticon-coins', 'flaticon-piggy-bank', 'flaticon-bag', 'flaticon-lifebuoy', 'flaticon-technology-1', 'flaticon-cogwheel-1', 'flaticon-infinity', 'flaticon-interface-5', 'flaticon-squares-3', 'flaticon-interface-6', 'flaticon-mark', 'flaticon-business', 'flaticon-interface-7', 'flaticon-list-2', 'flaticon-bell', 'flaticon-technology', 'flaticon-squares-2', 'flaticon-notes', 'flaticon-profile', 'flaticon-layers', 'flaticon-interface-4', 'flaticon-signs', 'flaticon-menu-1', 'flaticon-symbol'];
     constructor(
-        
+
         injector: Injector,
         private _tenantRegistrationService: TenantRegistrationServiceProxy,
         private _subscriptionService: SubscriptionServiceProxy,
+        private _userRegistrationServiceProxy: UserRegisterServiceServiceProxy,
         private _router: Router
     ) {
         super(injector);
-        this.personalInfoDto = new PersonalInfo();
-        this.businessInfoDto = new BusinessInfo();
-        this.paymentDetailsDto = new PaymentDetails(); 
-        this.subscriptionPlansDto= new SubscriptionPlans();
     }
 
     ngOnInit() {
@@ -70,7 +60,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 }
             });
     }
-    
+
     isFree(edition: EditionSelectDto): boolean {
         return !edition.monthlyPrice && !edition.annualPrice;
     }
@@ -102,20 +92,20 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     upgrade(upgradeEdition: EditionSelectDto, editionPaymentType: EditionPaymentType): void {
         this._router.navigate(['/account/upgrade'], { queryParams: { upgradeEditionId: upgradeEdition.id, editionPaymentType: editionPaymentType } });
     }
-    startSubscription(id:any,type:any,payment:any){
-        this.subscriptionPlansDto.editionId=id
-        this.subscriptionPlansDto.subscriptionStartType=type
-        this.subscriptionPlansDto.editionPaymentType=payment
+    startSubscription(id: any, type: any, payment: any) {
+        this.subscriptionPlansDto.editionId = id
+        this.subscriptionPlansDto.subscriptionStartType = type
+        this.subscriptionPlansDto.editionPaymentType = payment
     }
-    trailSubscription(id:any,type:any,payment:any){
-        this.subscriptionPlansDto.editionId=id
-        this.subscriptionPlansDto.subscriptionStartType=type
-        this.subscriptionPlansDto.editionPaymentType=payment
+    trailSubscription(id: any, type: any, payment: any) {
+        this.subscriptionPlansDto.editionId = id
+        this.subscriptionPlansDto.subscriptionStartType = type
+        this.subscriptionPlansDto.editionPaymentType = payment
     }
-    buySubscription(id:any,type:any,payment:any){
-        this.subscriptionPlansDto.editionId=id
-        this.subscriptionPlansDto.subscriptionStartType=type
-        this.subscriptionPlansDto.editionPaymentType=payment
+    buySubscription(id: any, type: any, payment: any) {
+        this.subscriptionPlansDto.editionId = id
+        this.subscriptionPlansDto.subscriptionStartType = type
+        this.subscriptionPlansDto.editionPaymentType = payment
     }
     current: number = 0;
     movetab(item: number) {
@@ -127,7 +117,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
             $(".previebtn").hide();
 
         }
-        
+
         if (this.current === 4) {
             $(".nxtbtn").hide();
             $(".submit").show();
@@ -139,13 +129,17 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.switchTab(this.current);
     }
 
-    save()
-    {
-        var userResgister=new RegisterUserInput();
-        userResgister.businessInfo=this.businessInfoDto;
-        userResgister.paymentDetails=this.paymentDetailsDto;
-        userResgister.personalInfo=this.personalInfoDto;
-        userResgister.subscriptionPlans =this.subscriptionPlansDto;
+    save() {
+        var userResgister = new RegisterUserInput();
+        userResgister.businessInfo = this.businessInfoDto;
+        userResgister.paymentDetails = this.paymentDetailsDto;
+        userResgister.personalInfo = this.personalInfoDto;
+        userResgister.subscriptionPlans = this.subscriptionPlansDto;
+        console.log(userResgister);
+        debugger;
+        this._userRegistrationServiceProxy.registerUserWithTenant(userResgister);
+
+        //call the service method to save the result
     }
     switchTab(item: number) {
         switch (item) {
