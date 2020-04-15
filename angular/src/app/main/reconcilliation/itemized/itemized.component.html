@@ -259,38 +259,7 @@
                                 <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="report-container">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th class="text-navyblue">{{"Beginning Amount" | localize}}</th>
-                                            <th class="text-navyblue">{{"Accrued Amortization" | localize}}</th>
-                                            <th class="text-navyblue">{{"Net Amount" | localize}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-navyblue">{{"Total" | localize}}:</td>
-                                            <td class="text-blue"> {{TotalAmount | formater }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-navyblue">{{"Trial Balance" | localize}}:</td>
-                                            <td class="text-blue"  >{{trialBalance | formater}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-navyblue">{{"Variance" | localize}}:</td>
-                                            <td class="text-blue" > {{variance | formater}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="Check-reconcile-btn">
-                                <button (click)="reconciledClick()" class="btn btn-brand" >{{"Check as Reconciled" | localize}}</button>
-                            </div>
-                        </div>
-                        <!-- <div class="col-md-6">
+                         <div class="col-md-6">
                             <div class="report-container">
                                 <div class="report-box d-flex flex-wrap">
                                     <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Total" | localize}}:</div>
@@ -308,7 +277,7 @@
                             <div class="Check-reconcile-btn ">
                                 <button (click)="reconciledClick()" class="btn btn-brand" >{{"Check as Reconciled" | localize}}</button>
                             </div>
-                        </div> -->
+                        </div> 
 
                         <div class="col-md-6">
                             <div class="activity-box">

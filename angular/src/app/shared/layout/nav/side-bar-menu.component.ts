@@ -1,5 +1,5 @@
 import { PermissionCheckerService } from '@abp/auth/permission-checker.service';
-import { Injector, ElementRef, Component, OnInit, ViewEncapsulation, Inject, Renderer2, AfterViewInit } from '@angular/core';
+import { Injector, ElementRef, Component, OnInit, ViewEncapsulation, Inject, Renderer2, AfterViewInit, Input } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppMenu } from './app-menu';
 import { AppNavigationService } from './app-navigation.service';
@@ -16,6 +16,7 @@ import { MenuOptions } from '@metronic/app/core/_base/layout/directives/menu.dir
 export class SideBarMenuComponent extends AppComponentBase implements OnInit, AfterViewInit {
     releaseDate: string;
     menu: AppMenu = null;
+    @Input() useBottomDiv = true;
 
     currentRouteUrl = '';
     insideTm: any;
