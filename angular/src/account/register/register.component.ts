@@ -34,6 +34,7 @@ declare var $: any;
 export class RegisterComponent extends AppComponentBase implements OnInit {
     personalInfoDto:PersonalInfo;
     businessInfoDto:BusinessInfo;
+    paymentDetailsDto:PaymentDetails;
     subscriptionPlansDto:SubscriptionPlans;
     editionsSelectOutput: EditionsSelectOutput = new EditionsSelectOutput();
     isUserLoggedIn = false;
@@ -42,32 +43,18 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
     editionIcons: string[] = ['flaticon-open-box', 'flaticon-rocket', 'flaticon-gift', 'flaticon-confetti', 'flaticon-cogwheel-2', 'flaticon-app', 'flaticon-coins', 'flaticon-piggy-bank', 'flaticon-bag', 'flaticon-lifebuoy', 'flaticon-technology-1', 'flaticon-cogwheel-1', 'flaticon-infinity', 'flaticon-interface-5', 'flaticon-squares-3', 'flaticon-interface-6', 'flaticon-mark', 'flaticon-business', 'flaticon-interface-7', 'flaticon-list-2', 'flaticon-bell', 'flaticon-technology', 'flaticon-squares-2', 'flaticon-notes', 'flaticon-profile', 'flaticon-layers', 'flaticon-interface-4', 'flaticon-signs', 'flaticon-menu-1', 'flaticon-symbol'];
-
-    firstName:string;
-    lastName:string;
-    email:string;
-    title:string;
-    password:string;
-    repeatPassword:string;
-    businessName:string;
-    website:string;
-    phoneNumber:string;
-    addressLineOne:string;
-    addressLineTwo:string;
-    city:string;
-    state:string;
-    cardNumber:string;
-    zipCode:string;
-    CVVCode:string;
-    expiryDate:string;
-    commitment:string;
     constructor(
+        
         injector: Injector,
         private _tenantRegistrationService: TenantRegistrationServiceProxy,
         private _subscriptionService: SubscriptionServiceProxy,
         private _router: Router
     ) {
         super(injector);
+        this.personalInfoDto = new PersonalInfo();
+        this.businessInfoDto = new BusinessInfo();
+        this.paymentDetailsDto = new PaymentDetails(); 
+        this.subscriptionPlansDto= new SubscriptionPlans();
     }
 
     ngOnInit() {
@@ -114,7 +101,21 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     upgrade(upgradeEdition: EditionSelectDto, editionPaymentType: EditionPaymentType): void {
         this._router.navigate(['/account/upgrade'], { queryParams: { upgradeEditionId: upgradeEdition.id, editionPaymentType: editionPaymentType } });
     }
-
+    startSubscription(id:any,type:any,payment:any){
+        this.subscriptionPlansDto.editionId=id
+        this.subscriptionPlansDto.subscriptionStartType=type
+        this.subscriptionPlansDto.editionPaymentType=payment
+    }
+    trailSubscription(id:any,type:any,payment:any){
+        this.subscriptionPlansDto.editionId=id
+        this.subscriptionPlansDto.subscriptionStartType=type
+        this.subscriptionPlansDto.editionPaymentType=payment
+    }
+    buySubscription(id:any,type:any,payment:any){
+        this.subscriptionPlansDto.editionId=id
+        this.subscriptionPlansDto.subscriptionStartType=type
+        this.subscriptionPlansDto.editionPaymentType=payment
+    }
     current: number = 0;
     movetab(item: number) {
 
@@ -160,7 +161,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".deliverybody").attr("data-ktwizard-state", "")
                 $(".reviewbody").attr("data-ktwizard-state", "")
                 $(".locationbody").attr("data-ktwizard-state", "")
-                console.log(this.businessInfoDto.businessName=this.businessName)
                 break;
             case 3:
                 $(".delivery").attr("data-ktwizard-state", "current")

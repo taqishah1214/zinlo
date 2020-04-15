@@ -1,5 +1,11 @@
 export class SubscriptionPlans{
-    editionId: number
+    editionId: string
     subscriptionStartType: string
     editionPaymentType:string
+
+    constructor(){
+        this.editionId="";
+        this.subscriptionStartType= ""
+        this.editionPaymentType= ""
+    }
 }
