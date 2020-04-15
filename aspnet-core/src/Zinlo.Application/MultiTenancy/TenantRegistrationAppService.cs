@@ -73,7 +73,7 @@ namespace Zinlo.MultiTenancy
             {
                 CheckTenantRegistrationIsEnabled();
 
-                if (UseCaptchaOnRegistration())
+                if (input.CaptchaResponse.Length>0&&UseCaptchaOnRegistration())
                 {
                     await _recaptchaValidator.ValidateAsync(input.CaptchaResponse);
                 }
@@ -114,8 +114,9 @@ namespace Zinlo.MultiTenancy
                 );
 
                 var tenant = await TenantManager.GetByIdAsync(tenantId);
+                
                 await _appNotifier.NewTenantRegisteredAsync(tenant);
-
+                
                 return new RegisterTenantOutput
                 {
                     TenantId = tenant.Id,
@@ -248,11 +249,11 @@ namespace Zinlo.MultiTenancy
 
         private bool UseCaptchaOnRegistration()
         {
+            
             if (DebugHelper.IsDebug)
             {
                 return false;
             }
-
             return SettingManager.GetSettingValueForApplication<bool>(AppSettings.TenantManagement.UseCaptchaOnRegistration);
         }
 

@@ -11,7 +11,7 @@
                 </div>
                 <div class="kt-login__signin">
                     <div class="kt-login__head">
-                        <h3 class="kt-login__title">Sign In To your account</h3>
+                        <h3 class="kt-login__title text-white">Sign In To your account</h3>
                     </div>
 
                     <form #loginForm="ngForm" class="kt-form" method="post" novalidate (ngSubmit)="login()">
@@ -47,6 +47,7 @@
                             <div class="col kt-align-right">
                                 <a routerLink="/account/forgot-password" id="forget-password"
                                     class="kt-link kt-login__link">Forget Password ?</a>
+                                    
                             </div>
                         </div>
                         <div class="kt-login__actions">
@@ -60,7 +61,7 @@
                     <span class="kt-login__account-msg">
                         Don't have an account yet ?
                     </span>&nbsp;&nbsp;
-                    <a href="javascript:;" id="kt_login_signup"
+                    <a routerLink="/account/register" id="kt_login_signup"
                         class="kt-link kt-link--light kt-login__account-link">Request Access</a>
                 </div>
             </div>

@@ -35,6 +35,8 @@ namespace Zinlo.EntityFrameworkCore
         public virtual DbSet<Amortization> Amortizations { get; set; }
         public virtual DbSet<ImportsPath> ImportsPaths { get; set; }
 
+        public virtual DbSet<UserPaymentDetails>  UserPaymentDetails { get; set; }
+        public virtual DbSet<UserBusinessInfo>  UserBusinessInfos { get; set; }
 
         /* Define an IDbSet for each entity of the application */
 
