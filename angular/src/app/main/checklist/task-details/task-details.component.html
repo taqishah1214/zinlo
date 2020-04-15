@@ -136,7 +136,7 @@
                                     <div *ngFor="let i of historyOfTask" class="activity-box">
                             
                                         <div *ngIf="i.propertyName == 'Status' || i.propertyName == 'CategoryId'"
-                                            class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                            class="activity-inner d-flex flex-wrap align-items-start  mb-4">
                                             <div class="activity-inner-a mb-3">
                                                 <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
                                                     {{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
@@ -160,7 +160,7 @@
                             
                             
                                         <div *ngIf="i.propertyName == 'EndOfMonth' || i.propertyName == 'EndsOn' || i.propertyName == 'TaskName' || i.propertyName == 'DayBeforeAfter' || i.propertyName == 'DueDate'"
-                                            class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                            class="activity-inner d-flex flex-wrap align-items-start  mb-4">
                                             <div class="activity-inner-a mb-3">
                                                 <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
                                                     {{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
@@ -220,7 +220,7 @@
                                     <div *ngFor="let i of instructionVersions" class="activity-box">
             
                                         <div
-                                            class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                            class="activity-inner d-flex flex-wrap align-items-start mb-4">
                                             <div class="activity-inner-a mb-3">
                                                 <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
                                                     {{i.result.ChangeOccurUser.name   | firstLetterOfWords}}

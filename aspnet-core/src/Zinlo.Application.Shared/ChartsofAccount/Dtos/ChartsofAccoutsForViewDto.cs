@@ -14,8 +14,6 @@ namespace Zinlo.ChartsofAccount.Dtos
         public long AccountSubTypeId { get; set; }
         public string AccountSubType { get; set; }
         public int ReconciliationTypeId { get; set; }
-        public string AssigneeName { get; set; }
-        public string  ProfilePicture { get; set; }
         public long AssigneeId { get; set; }
         public List<GetUserWithPicture> OverallMonthlyAssignee { get; set; }
         public int StatusId { get; set; }

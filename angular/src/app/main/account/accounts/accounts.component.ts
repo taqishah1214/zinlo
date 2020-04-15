@@ -14,6 +14,7 @@ import { finalize } from 'rxjs/operators';
 import { FileUpload } from 'primeng/fileupload';
 import { Observable } from 'rxjs';
 import { SignalRService } from '@app/services/signalRService';
+import { StoreDateService } from "../../../services/storedate.service";
 
 @Component({
   selector: 'app-accounts',
@@ -59,6 +60,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   chartsOfAccountsfileUrl : string = "";
   chartsOfAccountsfileUrlTrialBalance : string = "";
   monthStatus : boolean = false
+  users: any;
 
   uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
   uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsTrialBalanceFromExcel';
@@ -68,7 +70,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   constructor(private _router: Router,
     private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector, private _httpClient: HttpClient,
     private _chartOfAccountService: ChartsofAccountServiceProxy, private _fileDownloadService: FileDownloadService,
-    private _signalRService: SignalRService) {
+    private _signalRService: SignalRService,private userDate: StoreDateService) {
     super(injector)
     this.FilterBoxOpen = false;
   }
@@ -89,12 +91,19 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     }
  }
   ngOnInit() {
+    this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
     this.collapsibleRow = false;
     this.accountType = "Account Type"
     this.loadAccountSubType();
     
+  }
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
   }
   accountTypeClick(event): void {
     if (parseInt(event.target.value) == 0) {
@@ -146,6 +155,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
       this.chartsOfAccountList = result.items
       this.monthStatus = this.chartsOfAccountList[0].monthStatus;
       this.chartsOfAccountList.forEach(i => {
+        i["assigneeName"] =  this.users[this.getUserIndex(i.assigneeId)].name;
+        i["profilePicture"] =  this.users[this.getUserIndex(i.assigneeId)].profilePicture;
         i["accountType"] = this.getNameofAccountTypeAndReconcillation(i.accountTypeId, "accountType")
         i["reconciliationType"] = this.getNameofAccountTypeAndReconcillation(i.reconciliationTypeId, "reconcillation")
         if (this.updateAssigneeOnHeader === true) {
@@ -178,7 +189,9 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
 editAccount(id) : void { 
     this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: id,newSubTypeId : 0} } });
 }
-
+getUserIndex(id) {
+  return this.users.findIndex(x => x.id === id);
+}
 
   deleteAccount(id): void {
     this.message.confirm(

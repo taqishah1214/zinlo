@@ -6,8 +6,8 @@ import { Table } from 'primeng/components/table/table';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import * as _ from 'lodash';
-
 import {AccountSubTypeServiceProxy } from '@shared/service-proxies/service-proxies';
+import { StoreDateService } from "../../../services/storedate.service";
 
 
 @Component({
@@ -30,17 +30,20 @@ export class AccountsubtypeComponent extends AppComponentBase {
     titleFilter = '';
     descriptionFilter = '';
     categoriesList: any;
+    users: any;
     public EditRecordId: number = 0;
     constructor(
         injector: Injector,
         private accountSubTypeServiceProxy: AccountSubTypeServiceProxy,
-        private _router: Router
+        private _router: Router,
+        private userDate: StoreDateService
     ) {
         super(injector);
 
     }
     ngOnInit() {
-        
+        this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
+
     }
 
     getCategories(event?: LazyLoadEvent) {
@@ -64,11 +67,18 @@ export class AccountsubtypeComponent extends AppComponentBase {
             this.primengTableHelper.records = result.items;
             this.primengTableHelper.hideLoadingIndicator();
             this.categoriesList = result.items;
+            this.categoriesList.forEach(i => {
+                i["createdBy"] =  this.users[this.getUserIndex(i.userId)].name;
+                i["profilePicture"] =  this.users[this.getUserIndex(i.userId)].profilePicture;
+         });
         });
     }
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
     }
+    getUserIndex(id) {
+        return this.users.findIndex(x => x.id === id);
+      }
 
     createCategory(): void {
         this.EditRecordId = 0;

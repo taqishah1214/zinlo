@@ -89,8 +89,6 @@ namespace Zinlo.ChartsofAccount
                                        AccountSubTypeId = o.AccountSubType.Id,
                                        AccountSubType = o.AccountSubType != null ? o.AccountSubType.Title : "",
                                        ReconciliationTypeId = o.ReconciliationType != 0 ? (int)o.ReconciliationType : 0,
-                                       AssigneeName = o.Assignee != null ? o.Assignee.FullName : "",
-                                       ProfilePicture = o.Assignee != null && o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : "",
                                        AssigneeId = o.Assignee.Id,
                                        StatusId = (int)o.Status,
                                        Balance = o.Balance,

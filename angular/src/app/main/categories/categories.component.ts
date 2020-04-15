@@ -7,6 +7,8 @@ import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import * as _ from 'lodash';
 import { CategoriesServiceProxy } from '@shared/service-proxies/service-proxies';
+import { StoreDateService } from "../../services/storedate.service";
+
 @Component({
     templateUrl: './categories.component.html',
     styleUrls: ['./categories.component.css'],
@@ -23,15 +25,19 @@ export class CategoriesComponent extends AppComponentBase {
     titleFilter = '';
     descriptionFilter = '';
     categoriesList: any;
+    users: any;
+
     public EditRecordId: number = 0;
     constructor(
         injector: Injector,
         private _categoriesServiceProxy: CategoriesServiceProxy,
-        private _router: Router
+        private _router: Router,
+        private userDate: StoreDateService
     ) {
         super(injector);
     }
     ngOnInit() {
+        this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     }
 
     getCategories(event?: LazyLoadEvent) {
@@ -52,6 +58,10 @@ export class CategoriesComponent extends AppComponentBase {
             this.primengTableHelper.records = result.items;
             this.primengTableHelper.hideLoadingIndicator();
             this.categoriesList = result.items;
+            this.categoriesList.forEach(i => {
+                   i["createdBy"] =  this.users[this.getUserIndex(i.userId)].name;
+                   i["profilePicture"] =  this.users[this.getUserIndex(i.userId)].profilePicture;
+            });
         });
     }
     reloadPage(): void {
@@ -61,6 +71,9 @@ export class CategoriesComponent extends AppComponentBase {
         this.EditRecordId = 0;
         this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: 0 } } });
     }
+    getUserIndex(id) {
+        return this.users.findIndex(x => x.id === id);
+      }
     editCategory(id: any): void {
         this.recordid = id;
         this._router.navigate(['/app/main/categories/create-or-edit-category'], { state: { data: { id: this.recordid } } });

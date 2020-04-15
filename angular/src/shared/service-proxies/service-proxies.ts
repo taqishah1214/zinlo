@@ -18528,9 +18528,7 @@ export class GetCategoryForViewDto implements IGetCategoryForViewDto {
     title!: string | undefined;
     description!: string | undefined;
     creationDate!: moment.Moment;
-    createdBy!: string | undefined;
     userId!: number | undefined;
-    profilePicture!: string | undefined;
     id!: number;
 
     constructor(data?: IGetCategoryForViewDto) {
@@ -18547,9 +18545,7 @@ export class GetCategoryForViewDto implements IGetCategoryForViewDto {
             this.title = data["title"];
             this.description = data["description"];
             this.creationDate = data["creationDate"] ? moment(data["creationDate"].toString()) : <any>undefined;
-            this.createdBy = data["createdBy"];
             this.userId = data["userId"];
-            this.profilePicture = data["profilePicture"];
             this.id = data["id"];
         }
     }
@@ -18566,9 +18562,7 @@ export class GetCategoryForViewDto implements IGetCategoryForViewDto {
         data["title"] = this.title;
         data["description"] = this.description;
         data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
-        data["createdBy"] = this.createdBy;
         data["userId"] = this.userId;
-        data["profilePicture"] = this.profilePicture;
         data["id"] = this.id;
         return data; 
     }
@@ -18578,9 +18572,7 @@ export interface IGetCategoryForViewDto {
     title: string | undefined;
     description: string | undefined;
     creationDate: moment.Moment;
-    createdBy: string | undefined;
     userId: number | undefined;
-    profilePicture: string | undefined;
     id: number;
 }
 
@@ -18764,8 +18756,6 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
     accountSubTypeId!: number;
     accountSubType!: string | undefined;
     reconciliationTypeId!: number;
-    assigneeName!: string | undefined;
-    profilePicture!: string | undefined;
     assigneeId!: number;
     overallMonthlyAssignee!: GetUserWithPicture[] | undefined;
     statusId!: number;
@@ -18792,8 +18782,6 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
             this.accountSubTypeId = data["accountSubTypeId"];
             this.accountSubType = data["accountSubType"];
             this.reconciliationTypeId = data["reconciliationTypeId"];
-            this.assigneeName = data["assigneeName"];
-            this.profilePicture = data["profilePicture"];
             this.assigneeId = data["assigneeId"];
             if (Array.isArray(data["overallMonthlyAssignee"])) {
                 this.overallMonthlyAssignee = [] as any;
@@ -18824,8 +18812,6 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
         data["accountSubTypeId"] = this.accountSubTypeId;
         data["accountSubType"] = this.accountSubType;
         data["reconciliationTypeId"] = this.reconciliationTypeId;
-        data["assigneeName"] = this.assigneeName;
-        data["profilePicture"] = this.profilePicture;
         data["assigneeId"] = this.assigneeId;
         if (Array.isArray(this.overallMonthlyAssignee)) {
             data["overallMonthlyAssignee"] = [];
@@ -18849,8 +18835,6 @@ export interface IChartsofAccoutsForViewDto {
     accountSubTypeId: number;
     accountSubType: string | undefined;
     reconciliationTypeId: number;
-    assigneeName: string | undefined;
-    profilePicture: string | undefined;
     assigneeId: number;
     overallMonthlyAssignee: GetUserWithPicture[] | undefined;
     statusId: number;
@@ -19432,12 +19416,10 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
     taskName!: string | undefined;
     category!: string | undefined;
     status!: string | undefined;
-    assigniName!: string | undefined;
     id!: number;
     statusId!: number;
     assigneeId!: number;
     dueDate!: moment.Moment;
-    profilePicture!: string | undefined;
     isDeleted!: boolean;
 
     constructor(data?: IClosingCheckListForViewDto) {
@@ -19454,12 +19436,10 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
             this.taskName = data["taskName"];
             this.category = data["category"];
             this.status = data["status"];
-            this.assigniName = data["assigniName"];
             this.id = data["id"];
             this.statusId = data["statusId"];
             this.assigneeId = data["assigneeId"];
             this.dueDate = data["dueDate"] ? moment(data["dueDate"].toString()) : <any>undefined;
-            this.profilePicture = data["profilePicture"];
             this.isDeleted = data["isDeleted"];
         }
     }
@@ -19476,12 +19456,10 @@ export class ClosingCheckListForViewDto implements IClosingCheckListForViewDto {
         data["taskName"] = this.taskName;
         data["category"] = this.category;
         data["status"] = this.status;
-        data["assigniName"] = this.assigniName;
         data["id"] = this.id;
         data["statusId"] = this.statusId;
         data["assigneeId"] = this.assigneeId;
         data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
-        data["profilePicture"] = this.profilePicture;
         data["isDeleted"] = this.isDeleted;
         return data; 
     }
@@ -19491,12 +19469,10 @@ export interface IClosingCheckListForViewDto {
     taskName: string | undefined;
     category: string | undefined;
     status: string | undefined;
-    assigniName: string | undefined;
     id: number;
     statusId: number;
     assigneeId: number;
     dueDate: moment.Moment;
-    profilePicture: string | undefined;
     isDeleted: boolean;
 }
 

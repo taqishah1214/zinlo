@@ -7,6 +7,8 @@ import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { UserListComponentComponent } from '../checklist/user-list-component/user-list-component.component';
 import { UppyConfig } from 'uppy-angular';
+import { StoreDateService } from "../../services/storedate.service";
+
 
 @Component({
   selector: 'app-reconcilliation',
@@ -46,16 +48,18 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   updateAssigneeOnHeader: boolean = true;
   currentDate :any 
   getAccountWithAssigneeId : number = 0;
-  monthStatus : boolean = false
+  monthStatus : boolean = false;
+  users : any;
 
 
   constructor(private _router: Router,
     private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector,
-    private _chartOfAccountService: ChartsofAccountServiceProxy) {
+    private _chartOfAccountService: ChartsofAccountServiceProxy,private userDate: StoreDateService) {
     super(injector)
     this.FilterBoxOpen = false;
   }
   ngOnInit() {
+    this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
     this.collapsibleRow = false;
@@ -109,6 +113,8 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       this.chartsOfAccountList = result.items
       this.monthStatus = this.chartsOfAccountList[0].monthStatus;
       this.chartsOfAccountList.forEach(i => {
+        i["assigneeName"] =  this.users[this.getUserIndex(i.assigneeId)].name;
+        i["profilePicture"] =  this.users[this.getUserIndex(i.assigneeId)].profilePicture;
         i["accountType"] =  this.getNameofAccountTypeAndReconcillation(i.accountTypeId,"accountType")
         i["reconciliationType"] =   this.getNameofAccountTypeAndReconcillation(i.reconciliationTypeId,"reconcillation")           
         i["statusName"] = this.getStatusNameWithId(i.statusId)  
@@ -145,6 +151,9 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       this.notify.success(this.l('Status Successfully Updated.'));
 
     })
+  }
+  getUserIndex(id) {
+    return this.users.findIndex(x => x.id === id);
   }
 
 

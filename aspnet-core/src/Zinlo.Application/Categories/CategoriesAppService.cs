@@ -42,8 +42,6 @@ namespace Zinlo.Categories
                 if (data.UserId != null)
                 {
                     var userDetail = UserManager.GetUserById((long)data.UserId);
-                    data.CreatedBy = userDetail.FullName;
-                    data.ProfilePicture = userDetail.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)userDetail.ProfilePictureId).Result.ProfilePicture : "";
                 }
             }
             return new PagedResultDto<GetCategoryForViewDto>(

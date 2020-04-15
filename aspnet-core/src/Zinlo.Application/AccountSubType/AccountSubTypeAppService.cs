@@ -114,8 +114,6 @@ namespace Zinlo.AccountSubType
             foreach (var data in mappedData)
             {
                 var userDetail = UserManager.GetUserById((long)data.UserId);
-                data.CreatedBy = userDetail.FullName;
-                data.ProfilePicture = userDetail.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)userDetail.ProfilePictureId).Result.ProfilePicture : "";
             }
             return new PagedResultDto<GetAccountSubTypeForViewDto>(
                 totalCount,

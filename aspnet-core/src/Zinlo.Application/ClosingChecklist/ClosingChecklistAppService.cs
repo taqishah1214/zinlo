@@ -90,13 +90,11 @@ namespace Zinlo.ClosingChecklist
                                            Id = o.Id,
                                            AssigneeId = o.AssigneeId,
                                            StatusId = (int)o.Status,
-                                           AssigniName = o.Assignee.FullName,
                                            TaskName = o.TaskName,
                                            Status = o.Status.ToString(),
                                            Category = o.Category.Title,
                                            DueDate = o.DueDate,
                                            IsDeleted = o.IsDeleted,
-                                           ProfilePicture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
                                        };
 
                 var result = closingCheckList.ToList();
@@ -112,10 +110,8 @@ namespace Zinlo.ClosingChecklist
                         Category = y.Category,
                         StatusId = y.StatusId,
                         Id = y.Id,
-                        AssigniName = y.AssigniName,
                         Status = y.Status,
                         TaskName = y.TaskName,
-                        ProfilePicture = y.ProfilePicture,
                         IsDeleted = y.IsDeleted
                     }
                     )
