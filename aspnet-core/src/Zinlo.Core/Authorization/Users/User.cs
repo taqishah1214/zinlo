@@ -24,6 +24,8 @@ namespace Zinlo.Authorization.Users
 
         public List<UserOrganizationUnit> OrganizationUnits { get; set; }
 
+        public string Title { get; set; }
+
         //Can add application specific user properties here
 
         public User()

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Abp.Authorization;
 using Abp.Configuration;
+using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Runtime.Security;
 using Abp.Runtime.Session;
@@ -15,6 +16,9 @@ using Zinlo.Authorization.Users;
 using Zinlo.Configuration;
 using Zinlo.Debugging;
 using Zinlo.MultiTenancy;
+using Zinlo.MultiTenancy.Dto;
+using Zinlo.MultiTenancy.Payments;
+using Zinlo.Register_User.Dto;
 using Zinlo.Security.Recaptcha;
 using Zinlo.Url;
 
@@ -87,6 +91,9 @@ namespace Zinlo.Authorization.Accounts
             return Task.FromResult(tenantId);
         }
 
+        //using for signup it's multi purpose method 
+       
+        //old method
         public async Task<RegisterOutput> Register(RegisterInput input)
         {
             if (UseCaptchaOnRegistration())
@@ -103,6 +110,7 @@ namespace Zinlo.Authorization.Accounts
                 false,
                 AppUrlService.CreateEmailActivationUrlFormat(AbpSession.TenantId)
             );
+          
 
             var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);
 
