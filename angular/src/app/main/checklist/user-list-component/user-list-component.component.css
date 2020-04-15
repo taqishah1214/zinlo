@@ -13,6 +13,17 @@
 body {
     position: relative;
 }
+
+.ng-select.auto-grow {
+    display: flex;
+}
+.ng-select.auto-grow  .ng-select-container {
+    max-width: 100px;
+}
+.ng-select.auto-grow .ng-dropdown-panel {
+    width: auto;
+}
+  
 ::ng-deep ng-dropdown-panel {
     transition: opacity 0.1s linear;
 }
