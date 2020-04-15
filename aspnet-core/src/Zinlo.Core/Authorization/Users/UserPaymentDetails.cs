@@ -13,8 +13,6 @@ namespace Zinlo.Authorization.Users
         public DateTime ExpiryDate { get; set; }
         public string Email { get; set; }
         public int Commitment { get; set; }
-        public virtual User User { get; set; }
-        public long? UserId { get; set; }
         public int TenantId { get; set; }
     }
 }
