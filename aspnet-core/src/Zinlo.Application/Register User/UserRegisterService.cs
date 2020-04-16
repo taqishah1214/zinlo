@@ -14,13 +14,13 @@ namespace Zinlo.Register_User
 {
     public class UserRegisterService : ZinloAppServiceBase, IUserRegisterService
     {
-        
+
         private readonly IRepository<UserBusinessInfo, long> _userBusinessInfoRepository;
         private readonly IRepository<UserPaymentDetails, long> _userUserPaymentDetailsRepository;
         private readonly ITenantRegistrationAppService _tenantRegistrationAppService;
 
         public UserRegisterService(
-          
+
             IRepository<UserBusinessInfo, long> userBusinessInfoRepository,
             IRepository<UserPaymentDetails, long> userUserPaymentDetailsRepository,
             ITenantRegistrationAppService tenantRegistrationAppService
@@ -31,7 +31,7 @@ namespace Zinlo.Register_User
             _userBusinessInfoRepository = userBusinessInfoRepository;
 
         }
-       
+
         public async Task<RegisterTenantOutput> RegisterUserWithTenant(RegisterUserInput registerUser)
         {
             var registerTenant = await _tenantRegistrationAppService.RegisterTenant(new RegisterTenantInput
@@ -44,29 +44,33 @@ namespace Zinlo.Register_User
                 SubscriptionStartType = (SubscriptionStartType)registerUser.SubscriptionPlans.SubscriptionStartType,
                 CaptchaResponse = ""
             });
-
-           await  _userBusinessInfoRepository.InsertAsync(new UserBusinessInfo
+            if (registerUser.BusinessInfo != null)
             {
-                BusinessName = registerUser.BusinessInfo.BusinessName,
-                Website = registerUser.BusinessInfo.Website,
-                PhoneNumber = registerUser.BusinessInfo.PhoneNumber,
-                AddressLineOne = registerUser.BusinessInfo.AddressLineOne,
-                AddressLineTwo = registerUser.BusinessInfo.AddressLineTwo,
-                City = registerUser.BusinessInfo.City,
-                State = registerUser.BusinessInfo.State,
-                ZipCode = registerUser.BusinessInfo.ZipCode,
-                TenantId = registerTenant.TenantId
-            });
-
-           await _userUserPaymentDetailsRepository.InsertAsync(new UserPaymentDetails
+                await _userBusinessInfoRepository.InsertAsync(new UserBusinessInfo
+                {
+                    BusinessName = registerUser.BusinessInfo.BusinessName,
+                    Website = registerUser.BusinessInfo.Website,
+                    PhoneNumber = registerUser.BusinessInfo.PhoneNumber,
+                    AddressLineOne = registerUser.BusinessInfo.AddressLineOne,
+                    AddressLineTwo = registerUser.BusinessInfo.AddressLineTwo,
+                    City = registerUser.BusinessInfo.City,
+                    State = registerUser.BusinessInfo.State,
+                    ZipCode = registerUser.BusinessInfo.ZipCode,
+                    TenantId = registerTenant.TenantId
+                });
+            }
+            if (registerUser.PaymentDetails != null)
             {
-                CardNumber = registerUser.PaymentDetails.CardNumber,
-                Commitment = registerUser.PaymentDetails.Commitment,
-                CVVCode = registerUser.PaymentDetails.CVVCode,
-                Email = registerUser.PaymentDetails.Email,
-                ExpiryDate = registerUser.PaymentDetails.ExpiryDate,
-                TenantId = registerTenant.TenantId
-            });
+                await _userUserPaymentDetailsRepository.InsertAsync(new UserPaymentDetails
+                {
+                    CardNumber = registerUser.PaymentDetails.CardNumber,
+                    Commitment = registerUser.PaymentDetails.Commitment,
+                    CVVCode = registerUser.PaymentDetails.CVVCode,
+                    Email = registerUser.PaymentDetails.Email,
+                    ExpiryDate = registerUser.PaymentDetails.ExpiryDate,
+                    TenantId = registerTenant.TenantId
+                });
+            }
             return registerTenant;
         }
     }

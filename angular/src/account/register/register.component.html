@@ -212,7 +212,7 @@
                                                         </span>
                         
                                                         <h2 class="kt-pricing-1__subtitle" *ngIf="isFree(editionWithFeatures.edition)">
-                                                            {{"Free" | localize}}
+                                                            Custom
                                                         </h2>
                         
                                                         <h2 class="kt-pricing-1__subtitle" *ngIf="!isFree(editionWithFeatures.edition)">
@@ -265,7 +265,7 @@
                                                                 class="btn btn-success btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
                                                                 (click)="startSubscription(editionWithFeatures.edition.id,subscriptionStartType.Free,editionPaymentType.Free)"
                                                                 href="#" *ngIf="!isUserLoggedIn && isFree(editionWithFeatures.edition)">
-                                                                {{"Start" | localize}}
+                                                                Contact Us
                                                             </button>
                         
                                                             <button
