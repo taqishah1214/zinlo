@@ -56,6 +56,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.businessInfoDto= new BusinessInfo();
         this.paymentDetailsDto= new PaymentDetails();
         this.subscriptionPlansDto= new SubscriptionPlansDto();
+        this.contactUs=new ContactUsDto();
     }
     onOpenCalendar(container) {
         container.monthSelectHandler = (event: any): void => {
