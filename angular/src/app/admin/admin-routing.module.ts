@@ -20,6 +20,7 @@ import { UiCustomizationComponent } from './ui-customization/ui-customization.co
 import { UsersComponent } from './users/users.component';
 import { ManagementComponent } from './management/management.component';
 import { ImportLogComponent } from '../admin/importlog/importlog.component';
+import { CustomizedPlanRequestComponent } from './tenants/customized-plan-request.component';
 @NgModule({
     imports: [
         RouterModule.forChild([
@@ -45,6 +46,7 @@ import { ImportLogComponent } from '../admin/importlog/importlog.component';
                     { path: 'demo-ui-components', component: DemoUiComponentsComponent, data: { permission: 'Pages.DemoUiComponents' } },
                     { path: 'install', component: InstallComponent },
                     { path: 'ui-customization', component: UiCustomizationComponent },
+                    { path: 'customized-plan-request', component: CustomizedPlanRequestComponent },
                     { path: 'importlog', component: ImportLogComponent, data: { }  },
                     { path: '', redirectTo: 'hostDashboard', pathMatch: 'full' }
                 ]
