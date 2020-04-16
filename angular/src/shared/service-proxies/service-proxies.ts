@@ -31240,6 +31240,9 @@ export interface IPaymentDetails {
 
 export class PersonalInfoDto implements IPersonalInfoDto {
     userName!: string | undefined;
+    firstName!: string | undefined;
+    lastName!: string | undefined;
+
     title!: string | undefined;
     emailAddress!: string | undefined;
     password!: string | undefined;
