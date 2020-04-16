@@ -42,7 +42,9 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   AssigniInputBox: boolean;
   AssigniBoxView: boolean;
   FilterBoxOpen: boolean;
-  public rowId: number = 0;
+  rowId: number = 0;
+  rowIdForBulkDelete: number = 0;
+
   assigniNameForHeader: any = [];
   plusUserBadgeForHeader: boolean;
   rowid: number;
@@ -61,6 +63,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   chartsOfAccountsfileUrlTrialBalance : string = "";
   monthStatus : boolean = false
   users: any;
+  delectedBulkAccounts : any [];
 
   uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
   uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsTrialBalanceFromExcel';
@@ -76,7 +79,6 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   }
   onClose(){
     console.log(this.chartsOfAccountsfileUrl)
-    console.log("moeen")
   }
   onBreadChange(value){
     if(value=="Upload Trial Balance")
@@ -130,6 +132,15 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     this.updateAssigneeOnHeader = false
     this.getAllAccounts();
   }
+  checkValue(id){
+   this.chartsOfAccountList[this.getAccountIndex(id)].isSelected = !this.chartsOfAccountList[this.getAccountIndex(id)].isSelected;
+ }
+
+ selectAllAccounts() {
+this.chartsOfAccountList.forEach(element => {
+  element.isSelected = true
+  });
+ }
 
   getAllAccounts(event?: LazyLoadEvent) {
     if (this.primengTableHelper.shouldResetPaging(event)) {
@@ -159,6 +170,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
         i["profilePicture"] =  this.users[this.getUserIndex(i.assigneeId)].profilePicture;
         i["accountType"] = this.getNameofAccountTypeAndReconcillation(i.accountTypeId, "accountType")
         i["reconciliationType"] = this.getNameofAccountTypeAndReconcillation(i.reconciliationTypeId, "reconcillation")
+        i["isSelected"] =  false;
         if (this.updateAssigneeOnHeader === true) {
           this.assigniNameForHeader = [];
           this.plusUserBadgeForHeader = false
@@ -186,6 +198,12 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
 
     });
   }
+
+  getAccountIndex(id) {
+    return this.chartsOfAccountList.findIndex(x => x.id === id);
+  }
+  
+
 editAccount(id) : void { 
     this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: id,newSubTypeId : 0} } });
 }

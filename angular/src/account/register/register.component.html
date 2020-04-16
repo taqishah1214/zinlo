@@ -101,8 +101,8 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Confirm Password</label>
-                                                <input #repeatPasswordOfUser="ngModel" [(ngModel)]="personalInfoDto.repeatPassword"type="password" class="form-control" name="passwordOfUser" placeholder="Enter Confirm Password" value="">
-                                                <validation-messages [formCtrl]="repeatPasswordOfUser"></validation-messages>
+                                                <input  type="password" class="form-control" name="passwordOfUser" placeholder="Enter Confirm Password" value="">
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -604,9 +604,9 @@
                                             Personal Information
                                         </div>
                                         <div class="kt-wizard-v1__review-content">
-                                            {{personalInfoDto.firstName}} {{personalInfoDto.larstName}}<br/>
+                                            {{personalInfoDto.firstName}} {{personalInfoDto.lastName}}<br/>
                                             Title: {{personalInfoDto.title}}<br/>
-                                            Email: {{personalInfoDto.email}}
+                                            Email: {{personalInfoDto.emailAddress}}
                                         </div>
                                         <div class="kt-heading kt-wizard-v1__review-title">
                                             Business Information
