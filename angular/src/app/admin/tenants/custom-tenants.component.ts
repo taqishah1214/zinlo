@@ -17,11 +17,11 @@ import * as _ from 'lodash';
 import { finalize } from 'rxjs/operators';
 
 @Component({
-    templateUrl: './tenants.component.html',
+    templateUrl: './custom-tenants.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()]
 })
-export class TenantsComponent extends AppComponentBase implements OnInit {
+export class CustomTenantsComponent extends AppComponentBase implements OnInit {
 
     @ViewChild('impersonateUserLookupModal', {static: true}) impersonateUserLookupModal: CommonLookupModalComponent;
     @ViewChild('createTenantModal', {static: true}) createTenantModal: CreateTenantModalComponent;
@@ -134,7 +134,7 @@ export class TenantsComponent extends AppComponentBase implements OnInit {
             this.primengTableHelper.getSkipCount(this.paginator, event)
         ).pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator())).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
-            this.primengTableHelper.records = result.items.filter(x=>x.editionDisplayName!=="Custom");
+            this.primengTableHelper.records = result.items.filter(x=>x.editionDisplayName=="Custom");
             this.primengTableHelper.hideLoadingIndicator();
         });
     }

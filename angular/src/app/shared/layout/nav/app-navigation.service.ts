@@ -20,7 +20,12 @@ export class AppNavigationService {
             
           //  new AppMenuItem('Dashboard', 'Pages.Administration.Host.Dashboard', 'flaticon-line-graph', '/app/admin/hostDashboard'),
            // new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
-            new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
+            //new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
+            new AppMenuItem('Tenants', '', 'flaticon-list-3', '',
+            [
+                new AppMenuItem('Payed Plan', 'Pages.Tenants', 'flaticon-suitcase', '/app/admin/tenants'),
+                new AppMenuItem('Custom Plan', 'Pages.Tenants', 'flaticon-users', '/app/admin/custom-tenants'),
+            ]),
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
            
             
