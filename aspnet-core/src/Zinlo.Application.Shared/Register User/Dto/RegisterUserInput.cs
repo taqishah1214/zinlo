@@ -10,6 +10,7 @@ namespace Zinlo.Register_User.Dto
         public PaymentDetails PaymentDetails { get; set; }
         public PersonalInfoDto PersonalInfo { get; set; }
         public SubscriptionPlansDto SubscriptionPlans { get; set; }
+        public ContactUsDto  ContactUs { get; set; }
 
     }
 }

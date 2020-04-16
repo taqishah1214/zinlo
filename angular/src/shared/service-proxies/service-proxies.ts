@@ -17336,9 +17336,7 @@ export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto
     title!: string | undefined;
     description!: string | undefined;
     creationDate!: moment.Moment;
-    createdBy!: string | undefined;
     userId!: number | undefined;
-    profilePicture!: string | undefined;
     id!: number;
 
     constructor(data?: IGetAccountSubTypeForViewDto) {
@@ -17355,9 +17353,7 @@ export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto
             this.title = data["title"];
             this.description = data["description"];
             this.creationDate = data["creationDate"] ? moment(data["creationDate"].toString()) : <any>undefined;
-            this.createdBy = data["createdBy"];
             this.userId = data["userId"];
-            this.profilePicture = data["profilePicture"];
             this.id = data["id"];
         }
     }
@@ -17374,9 +17370,7 @@ export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto
         data["title"] = this.title;
         data["description"] = this.description;
         data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
-        data["createdBy"] = this.createdBy;
         data["userId"] = this.userId;
-        data["profilePicture"] = this.profilePicture;
         data["id"] = this.id;
         return data; 
     }
@@ -17386,9 +17380,7 @@ export interface IGetAccountSubTypeForViewDto {
     title: string | undefined;
     description: string | undefined;
     creationDate: moment.Moment;
-    createdBy: string | undefined;
     userId: number | undefined;
-    profilePicture: string | undefined;
     id: number;
 }
 
@@ -31247,8 +31239,6 @@ export interface IPaymentDetails {
 }
 
 export class PersonalInfoDto implements IPersonalInfoDto {
-    firstName!:string| undefined;
-    lastName!: string | undefined;
     userName!: string | undefined;
     title!: string | undefined;
     emailAddress!: string | undefined;
@@ -31340,11 +31330,64 @@ export interface ISubscriptionPlansDto {
     editionPaymentType: number;
 }
 
+export class ContactUsDto implements IContactUsDto {
+    fullName!: string | undefined;
+    email!: string | undefined;
+    companyName!: string | undefined;
+    numberOfUsers!: number;
+    description!: string | undefined;
+
+    constructor(data?: IContactUsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.fullName = data["fullName"];
+            this.email = data["email"];
+            this.companyName = data["companyName"];
+            this.numberOfUsers = data["numberOfUsers"];
+            this.description = data["description"];
+        }
+    }
+
+    static fromJS(data: any): ContactUsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContactUsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fullName"] = this.fullName;
+        data["email"] = this.email;
+        data["companyName"] = this.companyName;
+        data["numberOfUsers"] = this.numberOfUsers;
+        data["description"] = this.description;
+        return data; 
+    }
+}
+
+export interface IContactUsDto {
+    fullName: string | undefined;
+    email: string | undefined;
+    companyName: string | undefined;
+    numberOfUsers: number;
+    description: string | undefined;
+}
+
 export class RegisterUserInput implements IRegisterUserInput {
     businessInfo!: BusinessInfo;
     paymentDetails!: PaymentDetails;
     personalInfo!: PersonalInfoDto;
     subscriptionPlans!: SubscriptionPlansDto;
+    contactUs!: ContactUsDto;
 
     constructor(data?: IRegisterUserInput) {
         if (data) {
@@ -31361,6 +31404,7 @@ export class RegisterUserInput implements IRegisterUserInput {
             this.paymentDetails = data["paymentDetails"] ? PaymentDetails.fromJS(data["paymentDetails"]) : <any>undefined;
             this.personalInfo = data["personalInfo"] ? PersonalInfoDto.fromJS(data["personalInfo"]) : <any>undefined;
             this.subscriptionPlans = data["subscriptionPlans"] ? SubscriptionPlansDto.fromJS(data["subscriptionPlans"]) : <any>undefined;
+            this.contactUs = data["contactUs"] ? ContactUsDto.fromJS(data["contactUs"]) : <any>undefined;
         }
     }
 
@@ -31377,6 +31421,7 @@ export class RegisterUserInput implements IRegisterUserInput {
         data["paymentDetails"] = this.paymentDetails ? this.paymentDetails.toJSON() : <any>undefined;
         data["personalInfo"] = this.personalInfo ? this.personalInfo.toJSON() : <any>undefined;
         data["subscriptionPlans"] = this.subscriptionPlans ? this.subscriptionPlans.toJSON() : <any>undefined;
+        data["contactUs"] = this.contactUs ? this.contactUs.toJSON() : <any>undefined;
         return data; 
     }
 }
@@ -31386,6 +31431,7 @@ export interface IRegisterUserInput {
     paymentDetails: PaymentDetails;
     personalInfo: PersonalInfoDto;
     subscriptionPlans: SubscriptionPlansDto;
+    contactUs: ContactUsDto;
 }
 
 export class GetLatestWebLogsOutput implements IGetLatestWebLogsOutput {

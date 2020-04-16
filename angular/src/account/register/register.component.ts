@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { finalize, catchError } from 'rxjs/operators';
-import { UserRegisterServiceServiceProxy, RegisterUserInput, PersonalInfoDto, BusinessInfo, PaymentDetails, SubscriptionPlansDto, RegisterTenantOutput } from '@shared/service-proxies/service-proxies';
+import { UserRegisterServiceServiceProxy, RegisterUserInput, PersonalInfoDto, BusinessInfo, PaymentDetails, SubscriptionPlansDto, RegisterTenantOutput, ContactUsDto } from '@shared/service-proxies/service-proxies';
 import { ViewEncapsulation } from '@angular/core';
 import {
     EditionSelectDto,
@@ -31,11 +31,13 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     personalInfoDto: PersonalInfoDto;
     businessInfoDto: BusinessInfo;
     paymentDetailsDto: PaymentDetails;
+    contactUs:ContactUsDto;
     subscriptionPlansDto: SubscriptionPlansDto;
     editionsSelectOutput: EditionsSelectOutput = new EditionsSelectOutput();
     isUserLoggedIn = false;
     isSetted = false;
     saving = false;
+    custom=false;
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
@@ -112,16 +114,19 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.subscriptionPlansDto.editionId = id
         this.subscriptionPlansDto.subscriptionStartType = type
         this.subscriptionPlansDto.editionPaymentType = payment
+        this.custom=true;
     }
     trailSubscription(id: any, type: any, payment: any) {
         this.subscriptionPlansDto.editionId = id
         this.subscriptionPlansDto.subscriptionStartType = type
         this.subscriptionPlansDto.editionPaymentType = payment
+        this.custom=false;
     }
     buySubscription(id: any, type: any, payment: any) {
         this.subscriptionPlansDto.editionId = id
         this.subscriptionPlansDto.subscriptionStartType = type
         this.subscriptionPlansDto.editionPaymentType = payment
+        this.custom=false;
     }
     current: number = 0;
     movetab(item: number) {
