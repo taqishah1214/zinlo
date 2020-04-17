@@ -4,7 +4,7 @@ import { ImpersonationService } from '@app/admin/users/impersonation.service';
 import { CommonLookupModalComponent } from '@app/shared/common/lookup/common-lookup-modal.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { CommonLookupServiceProxy, EntityDtoOfInt64, FindUsersInput, NameValueDto, TenantListDto, TenantServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CommonLookupServiceProxy,TenantRegistrationServiceProxy,EntityDtoOfInt64, FindUsersInput, NameValueDto, TenantListDto, TenantServiceProxy, EditionsSelectOutput, ContactusServiceServiceProxy } from '@shared/service-proxies/service-proxies';
 import * as moment from 'moment';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
@@ -17,11 +17,11 @@ import * as _ from 'lodash';
 import { finalize } from 'rxjs/operators';
 
 @Component({
-    templateUrl: './tenants.component.html',
+    templateUrl: './custom-tenants.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()]
 })
-export class TenantsComponent extends AppComponentBase implements OnInit {
+export class CustomTenantsComponent extends AppComponentBase implements OnInit {
 
     @ViewChild('impersonateUserLookupModal', {static: true}) impersonateUserLookupModal: CommonLookupModalComponent;
     @ViewChild('createTenantModal', {static: true}) createTenantModal: CreateTenantModalComponent;
@@ -33,7 +33,6 @@ export class TenantsComponent extends AppComponentBase implements OnInit {
 
     subscriptionDateRange: Date[] = [moment().startOf('day').toDate(), moment().add(30, 'days').endOf('day').toDate()];
     creationDateRange: Date[] = [moment().startOf('day').toDate(), moment().endOf('day').toDate()];
-
     _entityTypeFullName = 'Zinlo.MultiTenancy.Tenant';
     entityHistoryEnabled = false;
 
@@ -49,6 +48,7 @@ export class TenantsComponent extends AppComponentBase implements OnInit {
         private _tenantService: TenantServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _commonLookupService: CommonLookupServiceProxy,
+        private _contectusService:ContactusServiceServiceProxy,
         private _impersonationService: ImpersonationService
     ) {
         super(injector);
@@ -88,8 +88,9 @@ export class TenantsComponent extends AppComponentBase implements OnInit {
             this.filters.selectedEditionId = parseInt(this._activatedRoute.snapshot.queryParams['editionId']);
         }
     }
-
+   
     ngOnInit(): void {
+       
         this.filters.filterText = this._activatedRoute.snapshot.queryParams['filterText'] || '';
 
         this.setIsEntityHistoryEnabled();
@@ -120,8 +121,7 @@ export class TenantsComponent extends AppComponentBase implements OnInit {
         }
 
         this.primengTableHelper.showLoadingIndicator();
-
-        this._tenantService.getTenants(
+        this._contectusService.getContectus(
             this.filters.filterText,
             this.filters.subscriptionEndDateRangeActive ? moment(this.subscriptionDateRange[0]) : undefined,
             this.filters.subscriptionEndDateRangeActive ? moment(this.subscriptionDateRange[1]).endOf('day') : undefined,
@@ -134,9 +134,13 @@ export class TenantsComponent extends AppComponentBase implements OnInit {
             this.primengTableHelper.getSkipCount(this.paginator, event)
         ).pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator())).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
-            this.primengTableHelper.records = result.items.filter(x=>x.editionDisplayName!=="Custom").filter(x=>x.editionDisplayName!=="Standard");
+            this.primengTableHelper.records = result.items;
+            console.log(result.items)
             this.primengTableHelper.hideLoadingIndicator();
         });
+
+            
+        
     }
 
     showUserImpersonateLookUpModal(record: any): void {

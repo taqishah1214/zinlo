@@ -42,7 +42,6 @@ namespace Zinlo.MultiTenancy
                 .WhereIf(input.SubscriptionEndDateStart.HasValue, t => t.SubscriptionEndDateUtc >= input.SubscriptionEndDateStart.Value.ToUniversalTime())
                 .WhereIf(input.SubscriptionEndDateEnd.HasValue, t => t.SubscriptionEndDateUtc <= input.SubscriptionEndDateEnd.Value.ToUniversalTime())
                 .WhereIf(input.EditionIdSpecified, t => t.EditionId == input.EditionId);
-
             var tenantCount = await query.CountAsync();
             var tenants = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
 

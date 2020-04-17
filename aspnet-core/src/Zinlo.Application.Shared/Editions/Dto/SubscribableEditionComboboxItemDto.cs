@@ -9,6 +9,7 @@ namespace Zinlo.Editions.Dto
         public SubscribableEditionComboboxItemDto(string value, string displayText, bool? isFree) : base(value, displayText)
         {
             IsFree = isFree;
+            
         }
     }
 }

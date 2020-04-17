@@ -61,6 +61,8 @@ import { CreateTenantModalComponent } from './tenants/create-tenant-modal.compon
 import { EditTenantModalComponent } from './tenants/edit-tenant-modal.component';
 import { TenantFeaturesModalComponent } from './tenants/tenant-features-modal.component';
 import { TenantsComponent } from './tenants/tenants.component';
+import { CustomTenantsComponent } from './tenants/custom-tenants.component';
+
 import { UiCustomizationComponent } from './ui-customization/ui-customization.component';
 import { DefaultThemeUiSettingsComponent } from './ui-customization/default-theme-ui-settings.component';
 import { Theme2ThemeUiSettingsComponent } from './ui-customization/theme2-theme-ui-settings.component';
@@ -85,7 +87,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
 import { DropdownModule } from 'primeng/dropdown';
 import { ImportLogComponent } from '../admin/importlog/importlog.component';
-
+import {CustomizedPlanRequestComponent} from '../admin/tenants/customized-plan-request.component'
 // Metronic
 import { PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { PermissionTreeModalComponent } from './shared/permission-tree-modal.component';
@@ -155,6 +157,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         LanguageTextsComponent,
         CreateOrEditLanguageModalComponent,
         TenantsComponent,
+        CustomTenantsComponent,
         CreateTenantModalComponent,
         EditTenantModalComponent,
         TenantFeaturesModalComponent,
@@ -163,6 +166,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         OrganizationUnitsComponent,
         OrganizationTreeComponent,
         OrganizationUnitMembersComponent,
+        CustomizedPlanRequestComponent,
         OrganizationUnitRolesComponent,
         CreateOrEditUnitModalComponent,
         TenantSettingsComponent,
