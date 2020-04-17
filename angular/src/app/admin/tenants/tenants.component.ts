@@ -134,7 +134,7 @@ export class TenantsComponent extends AppComponentBase implements OnInit {
             this.primengTableHelper.getSkipCount(this.paginator, event)
         ).pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator())).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
-            this.primengTableHelper.records = result.items.filter(x=>x.editionDisplayName!=="Custom");
+            this.primengTableHelper.records = result.items.filter(x=>x.editionDisplayName!=="Custom").filter(x=>x.editionDisplayName!=="Standard");
             this.primengTableHelper.hideLoadingIndicator();
         });
     }

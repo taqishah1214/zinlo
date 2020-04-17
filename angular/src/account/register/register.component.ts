@@ -28,6 +28,7 @@ declare var $: any;
     animations: [accountModuleAnimation()]
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
+    
     personalInfoDto: PersonalInfoDto;
     businessInfoDto: BusinessInfo;
     paymentDetailsDto: PaymentDetails;
@@ -38,6 +39,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     isSetted = false;
     saving = false;
     custom=false;
+    repeatPassword:string;
     firstName="";
     lastName="";
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
@@ -118,6 +120,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.subscriptionPlansDto.subscriptionStartType = type
         this.subscriptionPlansDto.editionPaymentType = payment
         this.custom=true;
+        this.movetab(1);
     }
     trailSubscription(id: any, type: any, payment: any) {
         this.subscriptionPlansDto.editionId = id
@@ -130,30 +133,39 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.subscriptionPlansDto.subscriptionStartType = type
         this.subscriptionPlansDto.editionPaymentType = payment
         this.custom=false;
+        this.movetab(1);
     }
     current: number = 0;
     movetab(item: number) {
+        if(this.repeatPassword==this.personalInfoDto.password)
+        {
+            
+            this.current = this.current + item;
+            if (this.current > 0) {
+                $(".previebtn").show();
+            } else {
+                $(".previebtn").hide();
 
-        this.current = this.current + item;
-        if (this.current > 0) {
-            $(".previebtn").show();
-        } else {
-            $(".previebtn").hide();
+            }
 
+            if (this.current === 3) {
+                $(".nxtbtn").hide();
+                $(".submit").show();
+            } else {
+                $(".nxtbtn").show();
+                $(".submit").hide();
+            }
+            
+        console.log(this.current);
+            this.switchTab(this.current);
         }
-
-        if (this.current === 3) {
-            $(".nxtbtn").hide();
-            $(".submit").show();
-        } else {
-            $(".nxtbtn").show();
-            $(".submit").hide();
+        else{
+            this.notify.error("Password and Confirm Password are not same")
         }
-
-        this.switchTab(this.current);
     }
 
     save() {
+        this.saving = true;
         this.personalInfoDto.userName =  this.firstName +" " + this.lastName;
         var userResgister = new RegisterUserInput();
         userResgister.businessInfo = this.businessInfoDto;
@@ -195,6 +207,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
             });
     }
     switchTab(item: number) {
+        
         switch (item) {
             case 0:
                 $(".location").attr("data-ktwizard-state", "current")
