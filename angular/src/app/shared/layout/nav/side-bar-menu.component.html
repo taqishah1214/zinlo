@@ -64,7 +64,7 @@
     <span class="kt-menu__item-here"></span>
     <!-- if menu item has icon -->
     <span class="kt-menu__link-icon" *ngIf="item.icon">
-        <i class="kt-menu__link-icon" [ngClass]="item.icon"></i>
+        <img src="{{item.icon}}" alt="clipboard">
     </span>
 
     <ng-container *ngIf="!item.badge; else mMenuLinkBadge">

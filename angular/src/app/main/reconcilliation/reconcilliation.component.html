@@ -70,6 +70,16 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-group category-selector">
+                                        <select class="form-control border-grey" name="categoryFilter"
+                                        [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
+                                        id="exampleFormControlSelect2">
+                                            <option value="0">All</option>
+                                            <option *ngFor="let item of accountTypeList;" [value]="item.id">
+                                                {{item.name}}
+                                            </option>
+                                        </select>
+                                    </div>
                                     <form class="search-form">
                                         <div class="form-group">
                                             <input type="text" autoFocus (input)="getAllAccounts()"
@@ -77,30 +87,8 @@
                                                 [placeholder]="l('SearchWithThreeDot')" class="border-grey">
                                         </div>
                                     </form>
-                                    <div class="dropdown-btn-box">
-                                        <button (click)="openFilterClick()" data-toggle="tooltip" title="More Filters" class="btn btn-square"><img
-                                                src="./assets/media/ClosingCheckList/filter.png" alt="filter"></button>
-                                    </div>
                                 </div>
-                                <div *ngIf="FilterBoxOpen" class="lower-content">
-                                    <form>
-                                        <div class="form-group category-selector">
-                                            <select class="form-control border-grey" name="categoryFilter"
-                                            [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
-                                            id="exampleFormControlSelect2">
-                                                <option value="0">All</option>
-                                                <option *ngFor="let item of accountTypeList;" [value]="item.id">
-                                                    {{item.name}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="block-btn">
-                                            <button class="btn btn-square bg-lightgrey" data-toggle="tooltip" title="Reset Filters" (click)="ResetGrid()">
-                                                <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

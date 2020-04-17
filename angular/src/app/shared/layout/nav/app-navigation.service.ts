@@ -27,37 +27,38 @@ export class AppNavigationService {
                 new AppMenuItem('Custom Plan', 'Pages.Tenants', 'flaticon-users', '/app/admin/custom-tenants'),
             ]),
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
-           
+
+
             
             
-            new AppMenuItem('Closing Checklist', '', 'flaticon-clipboard', '', [
-                new AppMenuItem('Checklist', 'Pages.ClosingChecklist','flaticon-clipboard','/app/main/checklist'),
-                new AppMenuItem('Task Categories', 'Pages.Categories', 'fas fa-tasks', '/app/main/categories'),
+            new AppMenuItem('Closing Checklist', '', './assets/media/ClosingCheckList/clipboard.svg', '', [
+                new AppMenuItem('Checklist', 'Pages.ClosingChecklist','','/app/main/checklist'),
+                new AppMenuItem('Task Categories', 'Pages.Categories', '', '/app/main/categories'),
             ]),
             
-            new AppMenuItem('Chart of Accounts', '', 'far fa-chart-bar', '', [
-                new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','far fa-chart-bar','/app/main/account/accounts'),
-                new AppMenuItem('Account Sub Type', 'Pages.Categories', 'far fa-address-card', '/app/main/account/accountsubtype'),
+            new AppMenuItem('Chart of Accounts', '', './assets/media/ClosingCheckList/chartofaccount.svg', '', [
+                new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','','/app/main/account/accounts'),
+                new AppMenuItem('Account Sub Type', 'Pages.Categories', '', '/app/main/account/accountsubtype'),
                 
             ]),
 
-            new AppMenuItem('Reconciliation', 'Pages.Reconciliation', 'fas fa-people-carry', '/app/main/reconcilliation', [ 
+            new AppMenuItem('Reconciliation', 'Pages.Reconciliation', './assets/media/ClosingCheckList/reconcilliation.svg', '/app/main/reconcilliation', [ 
             ]),
 
            // new AppMenuItem('Tests', 'Pages.Tests', 'flaticon-more', '/app/main/tests/tests'),
-             new AppMenuItem('Administration', '', 'flaticon-user', '', [
+             new AppMenuItem('Administration', '', './assets/media/ClosingCheckList/clipboard.svg', '', [
                 //new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
-                new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
-                new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),
-            new AppMenuItem('Management', 'Pages.Administration.TimeManagements', 'flaticon-business', '/app/admin/management'),
-            new AppMenuItem('ImportLog', '', 'flaticon-interface-8', '/app/admin/importlog', [ ]),
+                new AppMenuItem('Roles', 'Pages.Administration.Roles', '', '/app/admin/roles'),
+                new AppMenuItem('Users', 'Pages.Administration.Users', '', '/app/admin/users'),
+            new AppMenuItem('Management', 'Pages.Administration.TimeManagements', '', '/app/admin/management'),
+            new AppMenuItem('ImportLog', '', '', '/app/admin/importlog', [ ]),
                 //new AppMenuItem('Languages', 'Pages.Administration.Languages', 'flaticon-tabs', '/app/admin/languages'),
-                new AppMenuItem('AuditLogs', 'Pages.Administration.AuditLogs', 'flaticon-folder-1', '/app/admin/auditLogs'),
+                new AppMenuItem('AuditLogs', 'Pages.Administration.AuditLogs', '', '/app/admin/auditLogs'),
                 //new AppMenuItem('Maintenance', 'Pages.Administration.Host.Maintenance', 'flaticon-lock', '/app/admin/maintenance'),
-                new AppMenuItem('Subscription', 'Pages.Administration.Tenant.SubscriptionManagement', 'flaticon-refresh', '/app/admin/subscription-management'),
+                new AppMenuItem('Subscription', 'Pages.Administration.Tenant.SubscriptionManagement', '', '/app/admin/subscription-management'),
                 //new AppMenuItem('VisualSettings', 'Pages.Administration.UiCustomization', 'flaticon-medical', '/app/admin/ui-customization'),
-                new AppMenuItem('Settings', 'Pages.Administration.Host.Settings', 'flaticon-settings', '/app/admin/hostSettings'),
-                new AppMenuItem('Settings', 'Pages.Administration.Tenant.Settings', 'flaticon-settings', '/app/admin/tenantSettings'),
+                new AppMenuItem('Settings', 'Pages.Administration.Host.Settings', '', '/app/admin/hostSettings'),
+                new AppMenuItem('Settings', 'Pages.Administration.Tenant.Settings', '', '/app/admin/tenantSettings'),
                ///new AppMenuItem('Users', 'Pages.Administration.Tenant.Settings', 'flaticon-settings', '/app/main/users')
 
             ]),
