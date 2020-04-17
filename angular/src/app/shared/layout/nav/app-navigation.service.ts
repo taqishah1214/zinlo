@@ -21,24 +21,24 @@ export class AppNavigationService {
           //  new AppMenuItem('Dashboard', 'Pages.Administration.Host.Dashboard', 'flaticon-line-graph', '/app/admin/hostDashboard'),
            // new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
             //new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
-            new AppMenuItem('Tenants', '', 'flaticon-list-3', '',
+            new AppMenuItem('Tenants', '', './assets/media/ClosingCheckList/clipboard.svg', '',
             [
-                new AppMenuItem('Payed Plan', 'Pages.Tenants', 'flaticon-suitcase', '/app/admin/tenants'),
-                new AppMenuItem('Custom Plan', 'Pages.Tenants', 'flaticon-users', '/app/admin/custom-tenants'),
+                new AppMenuItem('Payed Plan', 'Pages.Tenants', './assets/media/ClosingCheckList/clipboard.svg', '/app/admin/tenants'),
+                new AppMenuItem('Custom Plan', 'Pages.Tenants', './assets/media/ClosingCheckList/administration.svg', '/app/admin/custom-tenants'),
             ]),
-            new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
+            new AppMenuItem('Editions', 'Pages.Editions', './assets/media/ClosingCheckList/clipboard.svg', '/app/admin/editions'),
 
 
             
             
             new AppMenuItem('Closing Checklist', '', './assets/media/ClosingCheckList/clipboard.svg', '', [
-                new AppMenuItem('Checklist', 'Pages.ClosingChecklist','','/app/main/checklist'),
-                new AppMenuItem('Task Categories', 'Pages.Categories', '', '/app/main/categories'),
+                new AppMenuItem('Checklist', 'Pages.ClosingChecklist','./assets/media/ClosingCheckList/dot.png','/app/main/checklist'),
+                new AppMenuItem('Task Categories', 'Pages.Categories', './assets/media/ClosingCheckList/dot.png', '/app/main/categories'),
             ]),
             
             new AppMenuItem('Chart of Accounts', '', './assets/media/ClosingCheckList/chartofaccount.svg', '', [
-                new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','','/app/main/account/accounts'),
-                new AppMenuItem('Account Sub Type', 'Pages.Categories', '', '/app/main/account/accountsubtype'),
+                new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','./assets/media/ClosingCheckList/dot.png','/app/main/account/accounts'),
+                new AppMenuItem('Account Sub Type', 'Pages.Categories', './assets/media/ClosingCheckList/dot.png', '/app/main/account/accountsubtype'),
                 
             ]),
 
@@ -46,19 +46,19 @@ export class AppNavigationService {
             ]),
 
            // new AppMenuItem('Tests', 'Pages.Tests', 'flaticon-more', '/app/main/tests/tests'),
-             new AppMenuItem('Administration', '', './assets/media/ClosingCheckList/clipboard.svg', '', [
+             new AppMenuItem('Administration', '', './assets/media/ClosingCheckList/administration.svg', '', [
                 //new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
-                new AppMenuItem('Roles', 'Pages.Administration.Roles', '', '/app/admin/roles'),
-                new AppMenuItem('Users', 'Pages.Administration.Users', '', '/app/admin/users'),
-            new AppMenuItem('Management', 'Pages.Administration.TimeManagements', '', '/app/admin/management'),
+                new AppMenuItem('Roles', 'Pages.Administration.Roles', './assets/media/ClosingCheckList/dot.png', '/app/admin/roles'),
+                new AppMenuItem('Users', 'Pages.Administration.Users', './assets/media/ClosingCheckList/dot.png', '/app/admin/users'),
+            new AppMenuItem('Management', 'Pages.Administration.TimeManagements', './assets/media/ClosingCheckList/dot.png', '/app/admin/management'),
             new AppMenuItem('ImportLog', '', '', '/app/admin/importlog', [ ]),
                 //new AppMenuItem('Languages', 'Pages.Administration.Languages', 'flaticon-tabs', '/app/admin/languages'),
-                new AppMenuItem('AuditLogs', 'Pages.Administration.AuditLogs', '', '/app/admin/auditLogs'),
+                new AppMenuItem('AuditLogs', 'Pages.Administration.AuditLogs', './assets/media/ClosingCheckList/dot.png', '/app/admin/auditLogs'),
                 //new AppMenuItem('Maintenance', 'Pages.Administration.Host.Maintenance', 'flaticon-lock', '/app/admin/maintenance'),
-                new AppMenuItem('Subscription', 'Pages.Administration.Tenant.SubscriptionManagement', '', '/app/admin/subscription-management'),
+                new AppMenuItem('Subscription', 'Pages.Administration.Tenant.SubscriptionManagement', './assets/media/ClosingCheckList/dot.png', '/app/admin/subscription-management'),
                 //new AppMenuItem('VisualSettings', 'Pages.Administration.UiCustomization', 'flaticon-medical', '/app/admin/ui-customization'),
-                new AppMenuItem('Settings', 'Pages.Administration.Host.Settings', '', '/app/admin/hostSettings'),
-                new AppMenuItem('Settings', 'Pages.Administration.Tenant.Settings', '', '/app/admin/tenantSettings'),
+                new AppMenuItem('Settings', 'Pages.Administration.Host.Settings', './assets/media/ClosingCheckList/dot.png', '/app/admin/hostSettings'),
+                new AppMenuItem('Settings', 'Pages.Administration.Tenant.Settings', './assets/media/ClosingCheckList/dot.png', '/app/admin/tenantSettings'),
                ///new AppMenuItem('Users', 'Pages.Administration.Tenant.Settings', 'flaticon-settings', '/app/main/users')
 
             ]),
