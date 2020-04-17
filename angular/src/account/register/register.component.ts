@@ -28,6 +28,7 @@ declare var $: any;
     animations: [accountModuleAnimation()]
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
+    
     personalInfoDto: PersonalInfoDto;
     businessInfoDto: BusinessInfo;
     paymentDetailsDto: PaymentDetails;
@@ -119,7 +120,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.subscriptionPlansDto.subscriptionStartType = type
         this.subscriptionPlansDto.editionPaymentType = payment
         this.custom=true;
-        this.switchTab(this.current+1);
+        this.movetab(1);
     }
     trailSubscription(id: any, type: any, payment: any) {
         this.subscriptionPlansDto.editionId = id
@@ -132,7 +133,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.subscriptionPlansDto.subscriptionStartType = type
         this.subscriptionPlansDto.editionPaymentType = payment
         this.custom=false;
-        this.switchTab(this.current+1);
+        this.movetab(1);
     }
     current: number = 0;
     movetab(item: number) {
@@ -154,7 +155,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".nxtbtn").show();
                 $(".submit").hide();
             }
-
+            
+        console.log(this.current);
             this.switchTab(this.current);
         }
         else{
@@ -163,6 +165,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     }
 
     save() {
+        this.saving = true;
         this.personalInfoDto.userName =  this.firstName +" " + this.lastName;
         var userResgister = new RegisterUserInput();
         userResgister.businessInfo = this.businessInfoDto;

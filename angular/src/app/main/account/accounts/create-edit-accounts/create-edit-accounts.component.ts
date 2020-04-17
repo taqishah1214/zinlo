@@ -14,7 +14,6 @@ import * as moment from 'moment';
 })
 export class CreateEditAccountsComponent extends AppComponentBase implements OnInit  {
   check:boolean=false;
-  name:string="Moeen"
   saving = false;
   accountSubTypeName: any =  "Select Account Sub Type";
   accountSubTypeList: any;
