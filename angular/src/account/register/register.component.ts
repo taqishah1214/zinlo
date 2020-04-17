@@ -45,7 +45,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
-    editionIcons: string[] = ['flaticon-open-box', 'flaticon-rocket', 'flaticon-gift', 'flaticon-confetti', 'flaticon-cogwheel-2', 'flaticon-app', 'flaticon-coins', 'flaticon-piggy-bank', 'flaticon-bag', 'flaticon-lifebuoy', 'flaticon-technology-1', 'flaticon-cogwheel-1', 'flaticon-infinity', 'flaticon-interface-5', 'flaticon-squares-3', 'flaticon-interface-6', 'flaticon-mark', 'flaticon-business', 'flaticon-interface-7', 'flaticon-list-2', 'flaticon-bell', 'flaticon-technology', 'flaticon-squares-2', 'flaticon-notes', 'flaticon-profile', 'flaticon-layers', 'flaticon-interface-4', 'flaticon-signs', 'flaticon-menu-1', 'flaticon-symbol'];
+    editionIcons: string[] = ['./assets/media/ClosingCheckList/startup.svg','./assets/media/ClosingCheckList/premium.svg','./assets/media/ClosingCheckList/Business_info.ico'];
     constructor(
 
         injector: Injector,
