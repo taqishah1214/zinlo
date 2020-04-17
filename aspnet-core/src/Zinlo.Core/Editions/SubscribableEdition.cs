@@ -23,6 +23,7 @@ namespace Zinlo.Editions
 
         public decimal? AnnualPrice { get; set; }
 
+        public bool IsCustom { get; set; }
         public int? TrialDayCount { get; set; }
 
         /// <summary>

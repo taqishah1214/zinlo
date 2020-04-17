@@ -21,5 +21,6 @@ namespace Zinlo.Editions.Dto
         public int? TrialDayCount { get; set; }
 
         public string ExpiringEditionDisplayName { get; set; }
+        public bool IsCustom { get; set; }
     }
 }
