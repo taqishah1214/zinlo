@@ -48,7 +48,7 @@
                         <div class="col-xl-6">
                             <div class="form-group">
                                 <label>Commitment</label>
-                                <select name="Commitment" [(ngModel)]="commitment" class="form-control bg-white border">
+                                <select name="Commitment" [(ngModel)]="contactus.commitment" class="form-control bg-white border">
                                     <option value="0">Monthly Plan</option>
                                     <option value="1">Annullly Plan</option>
                                 </select>
@@ -83,7 +83,7 @@
                 </div>
                 <hr>
                 <div class="form-group margin-top-5 px-5">
-                    <button class="btn btn-brand" type="submit" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                    <button class="btn btn-brand" type="submit">
                         <span>Send Email</span>
                     </button>
                 </div>
