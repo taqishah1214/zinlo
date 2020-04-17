@@ -16630,7 +16630,7 @@ export class UserRegisterServiceServiceProxy {
                 "Accept": "text/plain"
             })
         };
-
+debugger;
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processRegisterUserWithTenant(response_);
         })).pipe(_observableCatch((response_: any) => {
@@ -31476,8 +31476,8 @@ export interface IPaymentDetails {
 
 export class PersonalInfoDto implements IPersonalInfoDto {
     userName!: string | undefined;
-    firstName!: string | undefined;
-    lastName!: string | undefined;
+     firstName!: string | undefined;
+      lastName!: string | undefined;
     title!: string | undefined;
     emailAddress!: string | undefined;
     password!: string | undefined;

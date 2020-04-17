@@ -56,7 +56,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.businessInfoDto= new BusinessInfo();
         this.paymentDetailsDto= new PaymentDetails();
         this.subscriptionPlansDto= new SubscriptionPlansDto();
-        this.contactUs=new ContactUsDto();
+        this.contactUs=new CreateOrUpdateContactusInput();
     }
     onOpenCalendar(container) {
         container.monthSelectHandler = (event: any): void => {
@@ -155,10 +155,17 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.personalInfoDto.userName =  this.personalInfoDto.firstName +" " + this.personalInfoDto.lastName;
         var userResgister = new RegisterUserInput();
         userResgister.businessInfo = this.businessInfoDto;
-        userResgister.paymentDetails = this.paymentDetailsDto;
+      
         userResgister.personalInfo = this.personalInfoDto;
         userResgister.subscriptionPlans = this.subscriptionPlansDto;
+        if(this.custom)
+        {
         userResgister.contactUs = this.contactUs;
+        userResgister.paymentDetails=null;
+        }else{
+            userResgister.paymentDetails = this.paymentDetailsDto;
+            userResgister.contactUs=null;
+        }
         console.log(userResgister);
         debugger;
        this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)

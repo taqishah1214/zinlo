@@ -7,9 +7,9 @@ using Zinlo.Contactus.Dto;
 
 namespace Zinlo.Contactus
 {
-    public interface IContactusService
+    public interface IContactusService:IApplicationService
     {
         Task<ContactusDto> GetContactusByTenantId(GetContactusInput contactusInput);
-        Task Create(CreateOrUpdateContactusInput creat);
+        Task Create(CreateOrUpdateContactusInput create,int tenantId);
     }
 }

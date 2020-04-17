@@ -51,7 +51,7 @@ namespace Zinlo.Register_User
             });
             if (registerUser.BusinessInfo != null)
             {
-                _userBusinessInfoRepository.InsertAsync(new UserBusinessInfo
+                await _userBusinessInfoRepository.InsertAsync(new UserBusinessInfo
                 {
                     BusinessName = registerUser.BusinessInfo.BusinessName,
                     Website = registerUser.BusinessInfo.Website,
@@ -66,7 +66,7 @@ namespace Zinlo.Register_User
             }
             if (registerUser.PaymentDetails != null)
             {
-                _userPaymentDetailsRepository.InsertAsync(new UserPaymentDetails
+               await  _userPaymentDetailsRepository.InsertAsync(new UserPaymentDetails
                 {
                     CardNumber = registerUser.PaymentDetails.CardNumber,
                     Commitment = registerUser.PaymentDetails.Commitment,
@@ -78,7 +78,7 @@ namespace Zinlo.Register_User
             }
             if (registerUser.ContactUs != null)
             {
-                _contactusService.Create(registerUser.ContactUs).ConfigureAwait(false);
+                await _contactusService.Create(registerUser.ContactUs,registerTenant.TenantId).ConfigureAwait(false);
             }
 
             return registerTenant;
