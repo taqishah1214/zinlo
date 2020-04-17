@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Zinlo.Register_User.Dto
+namespace Zinlo.Contactus.Dto
 {
-    public class ContactUsDto
+    public class CreateOrUpdateContactusInput
     {
         public string FullName { get; set; }
         public string Email { get; set; }

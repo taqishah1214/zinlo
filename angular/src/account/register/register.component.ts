@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { finalize, catchError } from 'rxjs/operators';
-import { UserRegisterServiceServiceProxy, RegisterUserInput, PersonalInfoDto, BusinessInfo, PaymentDetails, SubscriptionPlansDto, RegisterTenantOutput, ContactUsDto } from '@shared/service-proxies/service-proxies';
+import { UserRegisterServiceServiceProxy, RegisterUserInput, PersonalInfoDto, BusinessInfo, PaymentDetails, SubscriptionPlansDto, RegisterTenantOutput, CreateOrUpdateContactusInput } from '@shared/service-proxies/service-proxies';
 import { ViewEncapsulation } from '@angular/core';
 import {
     EditionSelectDto,
@@ -31,7 +31,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     personalInfoDto: PersonalInfoDto;
     businessInfoDto: BusinessInfo;
     paymentDetailsDto: PaymentDetails;
-    contactUs:ContactUsDto;
+    contactUs:CreateOrUpdateContactusInput;
     subscriptionPlansDto: SubscriptionPlansDto;
     editionsSelectOutput: EditionsSelectOutput = new EditionsSelectOutput();
     isUserLoggedIn = false;
@@ -157,6 +157,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         userResgister.paymentDetails = this.paymentDetailsDto;
         userResgister.personalInfo = this.personalInfoDto;
         userResgister.subscriptionPlans = this.subscriptionPlansDto;
+        userResgister.contactUs = this.contactUs;
         console.log(userResgister);
         debugger;
        this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)

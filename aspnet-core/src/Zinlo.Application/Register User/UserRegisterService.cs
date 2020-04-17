@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Zinlo.Authorization.Users;
+using Zinlo.Contactus;
 using Zinlo.MultiTenancy;
 using Zinlo.MultiTenancy.Dto;
 using Zinlo.MultiTenancy.Payments;
@@ -16,19 +17,23 @@ namespace Zinlo.Register_User
     {
 
         private readonly IRepository<UserBusinessInfo, long> _userBusinessInfoRepository;
-        private readonly IRepository<UserPaymentDetails, long> _userUserPaymentDetailsRepository;
+        private readonly IRepository<UserPaymentDetails, long> _userPaymentDetailsRepository;
+        private readonly IContactusService _contactusService;
         private readonly ITenantRegistrationAppService _tenantRegistrationAppService;
+
 
         public UserRegisterService(
 
             IRepository<UserBusinessInfo, long> userBusinessInfoRepository,
-            IRepository<UserPaymentDetails, long> userUserPaymentDetailsRepository,
+            IRepository<UserPaymentDetails, long> userPaymentDetailsRepository,
+            IContactusService contactusService,
             ITenantRegistrationAppService tenantRegistrationAppService
             )
         {
             _tenantRegistrationAppService = tenantRegistrationAppService;
-            _userUserPaymentDetailsRepository = userUserPaymentDetailsRepository;
+            _userPaymentDetailsRepository = userPaymentDetailsRepository;
             _userBusinessInfoRepository = userBusinessInfoRepository;
+            _contactusService = contactusService;
 
         }
 
@@ -46,7 +51,7 @@ namespace Zinlo.Register_User
             });
             if (registerUser.BusinessInfo != null)
             {
-                await _userBusinessInfoRepository.InsertAsync(new UserBusinessInfo
+                _userBusinessInfoRepository.InsertAsync(new UserBusinessInfo
                 {
                     BusinessName = registerUser.BusinessInfo.BusinessName,
                     Website = registerUser.BusinessInfo.Website,
@@ -57,11 +62,11 @@ namespace Zinlo.Register_User
                     State = registerUser.BusinessInfo.State,
                     ZipCode = registerUser.BusinessInfo.ZipCode,
                     TenantId = registerTenant.TenantId
-                });
+                }).ConfigureAwait(false);
             }
             if (registerUser.PaymentDetails != null)
             {
-                await _userUserPaymentDetailsRepository.InsertAsync(new UserPaymentDetails
+                _userPaymentDetailsRepository.InsertAsync(new UserPaymentDetails
                 {
                     CardNumber = registerUser.PaymentDetails.CardNumber,
                     Commitment = registerUser.PaymentDetails.Commitment,
@@ -69,8 +74,13 @@ namespace Zinlo.Register_User
                     Email = registerUser.PaymentDetails.Email,
                     ExpiryDate = registerUser.PaymentDetails.ExpiryDate,
                     TenantId = registerTenant.TenantId
-                });
+                }).ConfigureAwait(false);
             }
+            if (registerUser.ContactUs != null)
+            {
+                _contactusService.Create(registerUser.ContactUs).ConfigureAwait(false);
+            }
+
             return registerTenant;
         }
     }
