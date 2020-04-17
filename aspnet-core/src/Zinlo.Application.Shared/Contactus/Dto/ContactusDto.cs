@@ -14,5 +14,8 @@ namespace Zinlo.Contactus.Dto
         public string Description { get; set; }
         public int Commitment { get; set; }
         public decimal Pricing { get; set; }
+        public int TenantId { get; set; }
+        public bool IsAccepted { get; set; }
+        public DateTime CreationTime { get; set; }
     }
 }

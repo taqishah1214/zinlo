@@ -60,15 +60,15 @@
                                     <tr>
                                         <td>
                                             <span class="ui-column-title">{{'Name' | localize}}</span>
-                                            {{record.name}}
+                                            {{record.fullName}}
                                         </td>
                                         <td>
                                             <span class="ui-column-title"></span>
-                                            -
+                                            {{record.description}}
                                         </td>
                                         <td>
                                             <span class="ui-column-title"></span>
-                                            -
+                                            {{record.email}}
                                         </td>
                                         <td>
                                             <span class="ui-column-title">{{'CreationTime' | localize}}</span>
@@ -76,10 +76,10 @@
                                         </td>
                                         <td>
                                             <span class="ui-column-title">{{'Active' | localize}}</span>
-                                            <span *ngIf="record.isActive"
+                                            <span *ngIf="record.isAccepted"
                                                 class="kt-badge kt-badge--success kt-badge--inline">
                                                 Request Send</span>
-                                            <span *ngIf="!record.isActive"
+                                            <span *ngIf="!record.isAccepted"
                                                 class="kt-badge kt-badge--dark kt-badge--inline">Pending</span>
                                         </td>
 
@@ -90,34 +90,13 @@
                                                     <i class="fa fa-cog settings_icon"></i>
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li [class.disabled]="!record.isActive">
-                                                        <a href="javascript:;"
-                                                            *ngIf="'Pages.Tenants.Impersonation' | permission"
-                                                            [class.disabled]="!record.isActive"
-                                                            (click)="record.isActive && showUserImpersonateLookUpModal(record)">{{'LoginAsThisTenant' | localize}}</a>
-                                                    </li>
                                                     <li>
                                                         <a href="javascript:;" *ngIf="'Pages.Tenants.Edit' | permission"
-                                                            (click)="editTenantModal.show(record.id)">{{'Edit' | localize}}</a>
+                                                        [routerLink]="['/app/admin/customized-plan-request']"
+                                                        [queryParams]="{tenantId: record.tenantId}"
+                                                        >Review Request</a>
                                                     </li>
-                                                    <li>
-                                                        <a href="javascript:;"
-                                                            *ngIf="'Pages.Tenants.ChangeFeatures' | permission"
-                                                            (click)="tenantFeaturesModal.show(record.id, record.name)">{{'Features' | localize}}</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;"
-                                                            *ngIf="'Pages.Tenants.Delete' | permission"
-                                                            (click)="deleteTenant(record)">{{'Delete' | localize}}</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;"
-                                                            (click)="unlockUser(record)">{{'Unlock' | localize}}</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;" *ngIf="entityHistoryEnabled"
-                                                            (click)="showHistory(record)">{{'History' | localize}}</a>
-                                                    </li>
+                                                   
                                                 </ul>
                                             </div>
                                         </td>

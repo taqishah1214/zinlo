@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using Abp.Application.Services.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,9 @@ namespace Zinlo.Contactus
 {
     public interface IContactusService:IApplicationService
     {
-        Task<ContactusDto> GetContactusByTenantId(GetContactusInput contactusInput);
+
+        Task<PagedResultDto<ContactusDto>> GetContectus(GetContactusListInput input);
+        Task<ContactusDto> GetContactusByTenantId(GetContactusInput nput);
         Task Create(CreateOrUpdateContactusInput create,int tenantId);
     }
 }

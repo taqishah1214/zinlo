@@ -5602,11 +5602,16 @@ export class ContactusServiceServiceProxy {
     }
 
     /**
+     * @param tenantId (optional) 
      * @param body (optional) 
      * @return Success
      */
-    create(body: CreateOrUpdateContactusInput | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/ContactusService/Create";
+    create(tenantId: number | undefined, body: CreateOrUpdateContactusInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ContactusService/Create?";
+        if (tenantId === null)
+            throw new Error("The parameter 'tenantId' cannot be null.");
+        else if (tenantId !== undefined)
+            url_ += "tenantId=" + encodeURIComponent("" + tenantId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -5707,6 +5712,107 @@ export class ContactusServiceServiceProxy {
             }));
         }
         return _observableOf<ContactusDto>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param subscriptionEndDateStart (optional) 
+     * @param subscriptionEndDateEnd (optional) 
+     * @param creationDateStart (optional) 
+     * @param creationDateEnd (optional) 
+     * @param editionId (optional) 
+     * @param editionIdSpecified (optional) 
+     * @param sorting (optional) 
+     * @param maxResultCount (optional) 
+     * @param skipCount (optional) 
+     * @return Success
+     */
+    getContectus(filter: string | undefined, subscriptionEndDateStart: moment.Moment | undefined, subscriptionEndDateEnd: moment.Moment | undefined, creationDateStart: moment.Moment | undefined, creationDateEnd: moment.Moment | undefined, editionId: number | undefined, editionIdSpecified: boolean | undefined, sorting: string | undefined, maxResultCount: number | undefined, skipCount: number | undefined): Observable<PagedResultDtoOfContactusDto> {
+        let url_ = this.baseUrl + "/api/services/app/ContactusService/GetContectus?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (subscriptionEndDateStart === null)
+            throw new Error("The parameter 'subscriptionEndDateStart' cannot be null.");
+        else if (subscriptionEndDateStart !== undefined)
+            url_ += "SubscriptionEndDateStart=" + encodeURIComponent(subscriptionEndDateStart ? "" + subscriptionEndDateStart.toJSON() : "") + "&"; 
+        if (subscriptionEndDateEnd === null)
+            throw new Error("The parameter 'subscriptionEndDateEnd' cannot be null.");
+        else if (subscriptionEndDateEnd !== undefined)
+            url_ += "SubscriptionEndDateEnd=" + encodeURIComponent(subscriptionEndDateEnd ? "" + subscriptionEndDateEnd.toJSON() : "") + "&"; 
+        if (creationDateStart === null)
+            throw new Error("The parameter 'creationDateStart' cannot be null.");
+        else if (creationDateStart !== undefined)
+            url_ += "CreationDateStart=" + encodeURIComponent(creationDateStart ? "" + creationDateStart.toJSON() : "") + "&"; 
+        if (creationDateEnd === null)
+            throw new Error("The parameter 'creationDateEnd' cannot be null.");
+        else if (creationDateEnd !== undefined)
+            url_ += "CreationDateEnd=" + encodeURIComponent(creationDateEnd ? "" + creationDateEnd.toJSON() : "") + "&"; 
+        if (editionId === null)
+            throw new Error("The parameter 'editionId' cannot be null.");
+        else if (editionId !== undefined)
+            url_ += "EditionId=" + encodeURIComponent("" + editionId) + "&"; 
+        if (editionIdSpecified === null)
+            throw new Error("The parameter 'editionIdSpecified' cannot be null.");
+        else if (editionIdSpecified !== undefined)
+            url_ += "EditionIdSpecified=" + encodeURIComponent("" + editionIdSpecified) + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetContectus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetContectus(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfContactusDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfContactusDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetContectus(response: HttpResponseBase): Observable<PagedResultDtoOfContactusDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfContactusDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfContactusDto>(<any>null);
     }
 }
 
@@ -16630,7 +16736,7 @@ export class UserRegisterServiceServiceProxy {
                 "Accept": "text/plain"
             })
         };
-debugger;
+
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processRegisterUserWithTenant(response_);
         })).pipe(_observableCatch((response_: any) => {
@@ -20618,6 +20724,9 @@ export class ContactusDto implements IContactusDto {
     description!: string | undefined;
     commitment!: number;
     pricing!: number;
+    tenantId!: number;
+    isAccepted!: boolean;
+    creationTime!: moment.Moment;
 
     constructor(data?: IContactusDto) {
         if (data) {
@@ -20638,6 +20747,9 @@ export class ContactusDto implements IContactusDto {
             this.description = data["description"];
             this.commitment = data["commitment"];
             this.pricing = data["pricing"];
+            this.tenantId = data["tenantId"];
+            this.isAccepted = data["isAccepted"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
         }
     }
 
@@ -20658,6 +20770,9 @@ export class ContactusDto implements IContactusDto {
         data["description"] = this.description;
         data["commitment"] = this.commitment;
         data["pricing"] = this.pricing;
+        data["tenantId"] = this.tenantId;
+        data["isAccepted"] = this.isAccepted;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         return data; 
     }
 }
@@ -20671,6 +20786,57 @@ export interface IContactusDto {
     description: string | undefined;
     commitment: number;
     pricing: number;
+    tenantId: number;
+    isAccepted: boolean;
+    creationTime: moment.Moment;
+}
+
+export class PagedResultDtoOfContactusDto implements IPagedResultDtoOfContactusDto {
+    totalCount!: number;
+    items!: ContactusDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfContactusDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items!.push(ContactusDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfContactusDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfContactusDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfContactusDto {
+    totalCount: number;
+    items: ContactusDto[] | undefined;
 }
 
 export class Widget implements IWidget {
@@ -31476,8 +31642,6 @@ export interface IPaymentDetails {
 
 export class PersonalInfoDto implements IPersonalInfoDto {
     userName!: string | undefined;
-     firstName!: string | undefined;
-      lastName!: string | undefined;
     title!: string | undefined;
     emailAddress!: string | undefined;
     password!: string | undefined;

@@ -16,5 +16,6 @@ namespace Zinlo.Authorization.Users
         public int TenantId { get; set; }
         public int Commitment { get; set; }
         public decimal Pricing { get; set; }
+        public bool IsAccepted { get; set; }
     }
 }

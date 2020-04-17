@@ -38,6 +38,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     isSetted = false;
     saving = false;
     custom=false;
+    firstName="";
+    lastName="";
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
@@ -75,7 +77,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 this.editionsSelectOutput = result;
 
                 if (!this.editionsSelectOutput.editionsWithFeatures || this.editionsSelectOutput.editionsWithFeatures.length <= 0) {
-                    this._router.navigate(['/account/register-tenant']);
+                   // this._router.navigate(['/account/register-tenant']);
                 }
             });
     }
@@ -152,7 +154,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     }
 
     save() {
-        this.personalInfoDto.userName =  this.personalInfoDto.firstName +" " + this.personalInfoDto.lastName;
+        this.personalInfoDto.userName =  this.firstName +" " + this.lastName;
         var userResgister = new RegisterUserInput();
         userResgister.businessInfo = this.businessInfoDto;
       

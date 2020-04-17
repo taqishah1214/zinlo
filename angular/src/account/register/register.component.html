@@ -61,14 +61,14 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>First Name</label>
-                                                <input #firstNameOfUser="ngModel" [(ngModel)]="personalInfoDto.firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
+                                                <input #firstNameOfUser="ngModel" [(ngModel)]="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
                                                 <validation-messages [formCtrl]="firstNameOfUser"></validation-messages>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Last Name</label>
-                                                <input #lastNameOfUser="ngModel" [(ngModel)]="personalInfoDto.lastName"type="text" class="form-control" name="lastNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
+                                                <input #lastNameOfUser="ngModel" [(ngModel)]="lastName"type="text" class="form-control" name="lastNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
                                                 <validation-messages [formCtrl]="lastNameOfUser"></validation-messages>
                                             </div>
                                         </div>
@@ -606,7 +606,7 @@
                                             Personal Information
                                         </div>
                                         <div class="kt-wizard-v1__review-content">
-                                            {{personalInfoDto.firstName}} {{personalInfoDto.lastName}}<br/>
+                                            {{firstName}} {{lastName}}<br/>
                                             Title: {{personalInfoDto.title}}<br/>
                                             Email: {{personalInfoDto.emailAddress}}
                                         </div>

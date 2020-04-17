@@ -1,11 +1,13 @@
-﻿using Abp.Domain.Repositories;
-using System;
-using System.Collections.Generic;
+﻿using Abp.Application.Services.Dto;
+using Abp.Collections.Extensions;
+using Abp.Domain.Repositories;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Zinlo.Authorization.Users;
 using Zinlo.Contactus.Dto;
+using System.Linq.Dynamic.Core;
+using Abp.Linq.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Zinlo.Contactus
 {
@@ -40,7 +42,46 @@ namespace Zinlo.Contactus
 
         public async Task<ContactusDto> GetContactusByTenantId(GetContactusInput contactusInput)
         {
-            return ObjectMapper.Map<ContactusDto>(_contactusRepository.GetAll().FirstOrDefault(x => x.TenantId == contactusInput.TenantId));
+           var response=  _contactusRepository.GetAll().FirstOrDefault(x => x.TenantId == contactusInput.TenantId);
+            if (response == null) return null;
+
+           return new ContactusDto
+            {
+                Commitment = response.Commitment,
+                 CompanyName= response.CompanyName,
+                  Description = response.Description ,
+                   Email = response.Email,
+                    FullName = response.FullName,
+                     NumberOfUsers = response.NumberOfUsers,
+                      Id = response.Id,
+                       TenantId = response.TenantId,
+                       IsAccepted = response.IsAccepted,
+                       Pricing = response.Pricing,
+                       CreationTime = response.CreationTime
+           };
+        }
+
+        public async Task<PagedResultDto<ContactusDto>> GetContectus(GetContactusListInput input)
+        {
+            var query = _contactusRepository.GetAll();
+            var contectsCount = await query.CountAsync();
+            var contectusList = await query.OrderBy("id").PageBy(input).ToListAsync();
+            return new PagedResultDto<ContactusDto>(
+                contectsCount,
+                contectusList.Select(response => new ContactusDto {
+                    Commitment = response.Commitment,
+                    CompanyName = response.CompanyName,
+                    Description = response.Description,
+                    Email = response.Email,
+                    FullName = response.FullName,
+                    NumberOfUsers = response.NumberOfUsers,
+                    Id = response.Id,
+                    TenantId =response.TenantId,
+                     IsAccepted = response.IsAccepted,
+                     Pricing = response.Pricing,
+                     CreationTime =response.CreationTime
+                }).ToList()
+                );
         }
     }
 }
