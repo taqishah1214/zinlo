@@ -140,7 +140,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
 
         }
 
-        if (this.current === 4) {
+        if (this.current === 3) {
             $(".nxtbtn").hide();
             $(".submit").show();
         } else {
@@ -210,7 +210,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".reviewbody").attr("data-ktwizard-state", "")
                 $(".locationbody").attr("data-ktwizard-state", "")
                 break;
-            case 4:
+            case 3:
                 $(".review").attr("data-ktwizard-state", "current")
                 $(".detailbody").attr("data-ktwizard-state", "")
                 $(".servicebody").attr("data-ktwizard-state", "")
