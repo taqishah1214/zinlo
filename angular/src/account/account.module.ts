@@ -42,7 +42,8 @@ import { StripeCancelPaymentComponent } from './payment/stripe/stripe-cancel-pay
 import { PaymentCompletedComponent } from './payment/payment-completed.component';
 import { SubDomainLoginComponent } from './sub-domain-login/sub-domain-login.component';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
-
+import {TenantUserRegisterComponent} from './register/tenant-user-register.component';
+import { ReactiveFormsModule } from '@angular/forms';
 export function getRecaptchaLanguage(): string {
     return new LocaleMappingService().map('recaptcha', abp.localization.currentLanguage.name);
 }
@@ -51,6 +52,7 @@ export function getRecaptchaLanguage(): string {
     imports: [
         ngCommon.CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         HttpClientModule,
         HttpClientJsonpModule,
         RecaptchaModule.forRoot(),
@@ -88,7 +90,8 @@ export function getRecaptchaLanguage(): string {
         StripePaymentResultComponent,
         StripeCancelPaymentComponent,
         PaymentCompletedComponent,
-        SubDomainLoginComponent
+        SubDomainLoginComponent,
+        TenantUserRegisterComponent
     ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

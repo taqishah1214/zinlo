@@ -51,7 +51,7 @@ export class AppNavigationService {
                 new AppMenuItem('Roles', 'Pages.Administration.Roles', './assets/media/ClosingCheckList/dot.png', '/app/admin/roles'),
                 new AppMenuItem('Users', 'Pages.Administration.Users', './assets/media/ClosingCheckList/dot.png', '/app/admin/users'),
             new AppMenuItem('Management', 'Pages.Administration.TimeManagements', './assets/media/ClosingCheckList/dot.png', '/app/admin/management'),
-            new AppMenuItem('ImportLog', '', '', '/app/admin/importlog', [ ]),
+            new AppMenuItem('ImportLog', '', './assets/media/ClosingCheckList/dot.png', '/app/admin/importlog', [ ]),
                 //new AppMenuItem('Languages', 'Pages.Administration.Languages', 'flaticon-tabs', '/app/admin/languages'),
                 new AppMenuItem('AuditLogs', 'Pages.Administration.AuditLogs', './assets/media/ClosingCheckList/dot.png', '/app/admin/auditLogs'),
                 //new AppMenuItem('Maintenance', 'Pages.Administration.Host.Maintenance', 'flaticon-lock', '/app/admin/maintenance'),

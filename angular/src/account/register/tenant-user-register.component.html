@@ -1,0 +1,72 @@
+
+<div class="" style="padding:0% 10%;">
+    <div class="kt-container kt-grid__item kt-grid__item--fluid">
+        <div class="kt-portlet pb-4">
+            <div class="kt-wizard-v1__content locationbody" data-ktwizard-type="step-content" data-ktwizard-state="current" >
+                <div class="kt-heading d-flex justify-content-center">Personal Information</div>
+                <div class="kt-form__section kt-form__section--first">
+                    <form class="kt-wizard-v1__form" [formGroup]="personalInfoForm">
+                        <div class="row my-0 px-5">
+                            <div class="col-xl-9">
+                                <div class="form-group">
+                                    <input  formControlName="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="First Name" value="" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div class="col-xl-3" *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+                                class="alert alert-danger">
+
+                                <div *ngIf="firstName.errors.required">
+                                    First Name is required.
+                                </div>
+                            </div>
+                            <div class="col-xl-9">
+                                <div class="form-group">
+                                    <input formControlName="lastName" type="text" class="form-control" name="lastNameOfUser" placeholder="Last Name" value="" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div class="col-xl-9">
+                                <div class="form-group">
+                                    <input formControlName="emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Email" value="" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div class="col-xl-9">
+                                <div class="form-group">
+                                    <input formControlName="title" type="text" class="form-control" name="titleOfUser" placeholder="Title" value="" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div class="col-xl-9">
+                                <div class="form-group">
+                                    <input type="text" formControlName="phone" class="form-control" name="passwordOfUser" placeholder="Phone Number (Optional)" value="">
+                                </div>
+                            </div>
+                            <div class="col-xl-9">
+                                <div class="form-group">
+                                    <input type="text" formControlName="address" class="form-control" name="passwordOfUser" placeholder="Address" value="">
+                                </div>
+                            </div>
+                            <div class="col-xl-9">
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <input type="text" formControlName="city" class="form-control" name="passwordOfUser" placeholder="City (Optional)" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <input type="text" formControlName="state" class="form-control" name="passwordOfUser" placeholder="State (Optional)" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mr-5">
+                            <button class="btn btn-success" (click)="register()">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
