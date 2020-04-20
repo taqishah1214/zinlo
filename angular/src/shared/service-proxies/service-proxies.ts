@@ -31576,7 +31576,54 @@ export class BusinessInfo implements IBusinessInfo {
         return data; 
     }
 }
-
+export class TenantUserInfo implements ITenantUserInfo {
+    firstName!: string | undefined;
+    lastName!: string | undefined;
+    phone!: string | undefined;
+    address!: string | undefined;
+    emailAddress!: string | undefined;
+    city!: string | undefined;
+    state!: string | undefined;
+    title!: string | undefined;
+    constructor(data?: ITenantUserInfo) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+    init(data?: any) {
+        if (data) {
+            this.firstName = data["firstName"];
+            this.lastName = data["lastName"];
+            this.phone = data["phone"];
+            this.address = data["address"];
+            this.emailAddress = data["emailAddress"];
+            this.city = data["city"];
+            this.state = data["state"];
+            this.title = data["title"];
+        }
+    }
+    static fromJS(data: any): TenantUserInfo {
+        data = typeof data === 'object' ? data : {};
+        let result = new TenantUserInfo();
+        result.init(data);
+        return result;
+    }
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["phone"] = this.phone;
+        data["address"] = this.address;
+        data["emailAddress"] = this.emailAddress;
+        data["city"] = this.city;
+        data["state"] = this.state;
+        data["title"] = this.title;
+        return data; 
+    }
+}
 export interface IBusinessInfo {
     businessName: string | undefined;
     website: string | undefined;
@@ -31586,6 +31633,17 @@ export interface IBusinessInfo {
     city: string | undefined;
     state: string | undefined;
     zipCode: string | undefined;
+}
+
+export interface ITenantUserInfo {
+    firstName: string | undefined;
+    lastName: string | undefined;
+    phone: string | undefined;
+    address: string | undefined;
+    emailAddress: string | undefined;
+    city: string | undefined;
+    state: string | undefined;
+    title: string | undefined;
 }
 
 export class PaymentDetails implements IPaymentDetails {

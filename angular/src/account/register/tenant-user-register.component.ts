@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule,FormGroup, FormControl} from '@angular/forms';
 import { Validators } from '@angular/forms';
+import { TenantUserInfo } from '@shared/service-proxies/service-proxies';
+
 @Component({
   selector: 'tenantUserRegister',
   templateUrl: './tenant-user-register.component.html',
@@ -10,6 +12,11 @@ export class TenantUserRegisterComponent implements OnInit {
   
   
   personalInfoForm:FormGroup;
+  tenantUserInfoDto:TenantUserInfo;
+  constructor(){
+      
+    this.tenantUserInfoDto= new TenantUserInfo();
+  }
   ngOnInit()
   {
    this.personalInfoForm = new FormGroup({
@@ -27,7 +34,15 @@ export class TenantUserRegisterComponent implements OnInit {
     throw new Error("Method not implemented.");
   }
   register(){
-      console.log(this.personalInfoForm);
+      this.tenantUserInfoDto.firstName=this.personalInfoForm.value.firstName;
+      this.tenantUserInfoDto.lastName=this.personalInfoForm.value.lastName;
+      this.tenantUserInfoDto.emailAddress=this.personalInfoForm.value.emailAddress;
+      this.tenantUserInfoDto.title=this.personalInfoForm.value.title;
+      this.tenantUserInfoDto.phone=this.personalInfoForm.value.phone;
+      this.tenantUserInfoDto.address=this.personalInfoForm.value.address;
+      this.tenantUserInfoDto.city=this.personalInfoForm.value.city;
+      this.tenantUserInfoDto.state=this.personalInfoForm.value.state;
+      console.log(this.tenantUserInfoDto);
   }
   get firstName() { return this.personalInfoForm.get('firstName'); }
   get lastName() { return this.personalInfoForm.get('lastName'); }
