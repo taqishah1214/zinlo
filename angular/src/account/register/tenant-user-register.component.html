@@ -11,11 +11,12 @@
                                 <div class="form-group">
                                     <input  formControlName="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="First Name" value="" autocomplete="off" required>
                                 </div>
+                                
                             </div>
                             <div class="col-xl-3" *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
-                                class="alert alert-danger">
+                                class="">
 
-                                <div *ngIf="firstName.errors.required">
+                                <div class="text-danger" *ngIf="firstName.errors.required">
                                     First Name is required.
                                 </div>
                             </div>
@@ -24,14 +25,38 @@
                                     <input formControlName="lastName" type="text" class="form-control" name="lastNameOfUser" placeholder="Last Name" value="" autocomplete="off" required>
                                 </div>
                             </div>
+                            <div class="col-xl-3" *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+                                class="">
+
+                                <div class="text-danger" *ngIf="lastName.errors.required">
+                                    Last Name is required.
+                                </div>
+                            </div>
                             <div class="col-xl-9">
                                 <div class="form-group">
                                     <input formControlName="emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Email" value="" autocomplete="off" required>
                                 </div>
                             </div>
+                            <div *ngIf="emailAddress.invalid && (emailAddress.dirty || emailAddress.touched)"
+                                class="col-xl-3">
+
+                                <div class="text-danger" *ngIf="emailAddress.errors.required">
+                                    Email is required.
+                                </div>
+                                <div class="text-danger" *ngIf="emailAddress.errors.pattern">
+                                    Email Formate Is Wrong.
+                                </div>
+                            </div>
                             <div class="col-xl-9">
                                 <div class="form-group">
                                     <input formControlName="title" type="text" class="form-control" name="titleOfUser" placeholder="Title" value="" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div class="col-xl-3" *ngIf="title.invalid && (title.dirty || title.touched)"
+                                class="">
+
+                                <div class="text-danger" *ngIf="title.errors.required">
+                                    Title is required.
                                 </div>
                             </div>
                             <div class="col-xl-9">
@@ -42,6 +67,13 @@
                             <div class="col-xl-9">
                                 <div class="form-group">
                                     <input type="text" formControlName="address" class="form-control" name="passwordOfUser" placeholder="Address" value="">
+                                </div>
+                            </div>
+                            <div class="col-xl-3" *ngIf="address.invalid && (address.dirty || address.touched)"
+                                class="">
+
+                                <div class="text-danger" *ngIf="address.errors.required">
+                                    Address is required.
                                 </div>
                             </div>
                             <div class="col-xl-9">

@@ -30,9 +30,9 @@ export class TenantUserRegisterComponent implements OnInit {
       console.log(this.personalInfoForm);
   }
   get firstName() { return this.personalInfoForm.get('firstName'); }
-//   get lastName() { return this.personalInfoForm.get('lastName'); }
-//   get email() { return this.personalInfoForm.get('email'); }
-//   get phone() { return this.personalInfoForm.get('phone'); }
-//   get password() { return this.personalInfoForm.get('password'); }
+  get lastName() { return this.personalInfoForm.get('lastName'); }
+  get emailAddress() { return this.personalInfoForm.get('emailAddress'); }
+  get address() { return this.personalInfoForm.get('address'); }
+  get title() { return this.personalInfoForm.get('title'); }
   
 }
