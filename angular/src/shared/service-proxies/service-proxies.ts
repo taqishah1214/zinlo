@@ -17336,9 +17336,7 @@ export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto
     title!: string | undefined;
     description!: string | undefined;
     creationDate!: moment.Moment;
-    createdBy!: string | undefined;
     userId!: number | undefined;
-    profilePicture!: string | undefined;
     id!: number;
 
     constructor(data?: IGetAccountSubTypeForViewDto) {
@@ -17355,9 +17353,7 @@ export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto
             this.title = data["title"];
             this.description = data["description"];
             this.creationDate = data["creationDate"] ? moment(data["creationDate"].toString()) : <any>undefined;
-            this.createdBy = data["createdBy"];
             this.userId = data["userId"];
-            this.profilePicture = data["profilePicture"];
             this.id = data["id"];
         }
     }
@@ -17374,9 +17370,7 @@ export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto
         data["title"] = this.title;
         data["description"] = this.description;
         data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
-        data["createdBy"] = this.createdBy;
         data["userId"] = this.userId;
-        data["profilePicture"] = this.profilePicture;
         data["id"] = this.id;
         return data; 
     }
@@ -17386,9 +17380,7 @@ export interface IGetAccountSubTypeForViewDto {
     title: string | undefined;
     description: string | undefined;
     creationDate: moment.Moment;
-    createdBy: string | undefined;
     userId: number | undefined;
-    profilePicture: string | undefined;
     id: number;
 }
 
@@ -19634,7 +19626,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
     instruction!: string | undefined;
     noOfMonths!: number;
     dueOn!: number;
-    endsOn!: moment.Moment;
     dueDate!: moment.Moment;
     dayBeforeAfter!: DaysBeforeAfterDto;
     endOfMonth!: boolean;
@@ -19664,7 +19655,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
-            this.endsOn = data["endsOn"] ? moment(data["endsOn"].toString()) : <any>undefined;
             this.dueDate = data["dueDate"] ? moment(data["dueDate"].toString()) : <any>undefined;
             this.dayBeforeAfter = data["dayBeforeAfter"];
             this.endOfMonth = data["endOfMonth"];
@@ -19702,7 +19692,6 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
-        data["endsOn"] = this.endsOn ? this.endsOn.toISOString() : <any>undefined;
         data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
         data["dayBeforeAfter"] = this.dayBeforeAfter;
         data["endOfMonth"] = this.endOfMonth;
@@ -19733,7 +19722,6 @@ export interface ICreateOrEditClosingChecklistDto {
     instruction: string | undefined;
     noOfMonths: number;
     dueOn: number;
-    endsOn: moment.Moment;
     dueDate: moment.Moment;
     dayBeforeAfter: DaysBeforeAfterDto;
     endOfMonth: boolean;
@@ -19904,7 +19892,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     instruction!: string | undefined;
     noOfMonths!: number;
     dueOn!: number;
-    endsOn!: moment.Moment;
     dayBeforeAfter!: DaysBeforeAfterDto;
     endOfMonth!: boolean;
     frequency!: FrequencyDto;
@@ -19950,7 +19937,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
             this.dueOn = data["dueOn"];
-            this.endsOn = data["endsOn"] ? moment(data["endsOn"].toString()) : <any>undefined;
             this.dayBeforeAfter = data["dayBeforeAfter"];
             this.endOfMonth = data["endOfMonth"];
             this.frequency = data["frequency"];
@@ -20000,7 +19986,6 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
         data["dueOn"] = this.dueOn;
-        data["endsOn"] = this.endsOn ? this.endsOn.toISOString() : <any>undefined;
         data["dayBeforeAfter"] = this.dayBeforeAfter;
         data["endOfMonth"] = this.endOfMonth;
         data["frequency"] = this.frequency;
@@ -20035,7 +20020,6 @@ export interface IDetailsClosingCheckListDto {
     instruction: string | undefined;
     noOfMonths: number;
     dueOn: number;
-    endsOn: moment.Moment;
     dayBeforeAfter: DaysBeforeAfterDto;
     endOfMonth: boolean;
     frequency: FrequencyDto;
@@ -31247,8 +31231,6 @@ export interface IPaymentDetails {
 }
 
 export class PersonalInfoDto implements IPersonalInfoDto {
-    firstName!:string| undefined;
-    lastName!: string | undefined;
     userName!: string | undefined;
     title!: string | undefined;
     emailAddress!: string | undefined;

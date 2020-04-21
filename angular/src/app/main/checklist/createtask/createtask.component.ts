@@ -30,7 +30,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   closingMonthModalBox: boolean;
   UserProfilePicture: any;
   enableValue: boolean = false;
-  endOnIsEnabled: boolean = true;
   SelectionMsg: string = "\xa0";
   userName : string;
   attachmentPaths: any = [];
@@ -127,12 +126,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
 
 
   onCreateTask(): void {
-    if(this.checklist.frequency == 5){
-      this.checklist.endsOn = null;
-    }
-    else{
-      this.checklist.endsOn = add(this.checklist.endsOn, 2, "day")
-    }
+  
      if (this.checklist.endOfMonth) {
       this.checklist.dayBeforeAfter = 1;
       this.checklist.dueOn = 0;
@@ -203,22 +197,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       this.attachmentPaths.push(i.response.body.result);
     });
     this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
-  }
-
-  onChange(val) {
-    if (val == 5) {
-      this.endOnIsEnabled = false;
-      this.checklist.endsOn=this.checklist.closingMonth
-    }
-    else {
-      this.endOnIsEnabled = true;
-    }
-    if (val == 4) {
-      this.enableValue = true;
-    }
-    else {
-      this.enableValue = false;
-    }
   }
   onDayChange() {
     this.checklist.endOfMonth = false;

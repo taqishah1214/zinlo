@@ -15,7 +15,6 @@ namespace Zinlo.ClosingChecklist.Dtos
         public string Instruction { get; set; }
         public int NoOfMonths { get; set; }
         public int DueOn { get; set; }
-        public DateTime EndsOn { get; set; }
         public DateTime DueDate { get; set; }
         public DaysBeforeAfterDto DayBeforeAfter { get; set; }
         public bool EndOfMonth { get; set; }
