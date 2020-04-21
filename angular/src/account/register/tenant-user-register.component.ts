@@ -16,6 +16,8 @@ export class TenantUserRegisterComponent extends AppComponentBase implements OnI
   
   personalInfoForm:FormGroup;
   tenantUserInfoDto:RegisterTenantUserInput;
+  saving = false;
+  
   constructor(
     injector: Injector,
     private _accountServiceProxy:AccountServiceProxy,
@@ -45,6 +47,7 @@ export class TenantUserRegisterComponent extends AppComponentBase implements OnI
     throw new Error("Method not implemented.");
   }
   register(){
+      this.saving=true;
       this.tenantUserInfoDto.name=this.personalInfoForm.value.firstName;
       this.tenantUserInfoDto.surname=this.personalInfoForm.value.lastName;
       this.tenantUserInfoDto.emailAddress=this.personalInfoForm.value.emailAddress;
@@ -63,11 +66,14 @@ export class TenantUserRegisterComponent extends AppComponentBase implements OnI
               this._router.navigate(['account/tenentRegisterUserResult']);
         });
       
+        this.saving=false;
   }
   get firstName() { return this.personalInfoForm.get('firstName'); }
   get lastName() { return this.personalInfoForm.get('lastName'); }
   get emailAddress() { return this.personalInfoForm.get('emailAddress'); }
   get address() { return this.personalInfoForm.get('address'); }
   get title() { return this.personalInfoForm.get('title'); }
+  get userName() { return this.personalInfoForm.get('userName'); }
+  get password() { return this.personalInfoForm.get('password'); }
   
 }

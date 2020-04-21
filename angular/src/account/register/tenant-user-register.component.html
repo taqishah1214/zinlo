@@ -7,91 +7,95 @@
                 <div class="kt-form__section kt-form__section--first">
                     <form class="kt-wizard-v1__form" [formGroup]="personalInfoForm">
                         <div class="row my-0 px-5">
-                            <div class="col-xl-9">
+                            <div class="col-xl-6">
                                 <div class="form-group">
                                     <input  formControlName="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="First Name" value="" autocomplete="off" required>
+                                    <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+                                        <div class="text-danger" *ngIf="firstName.errors.required">
+                                            First Name is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <input formControlName="lastName" type="text" class="form-control" name="lastNameOfUser" placeholder="Last Name" value="" autocomplete="off" required>
+                                    <div  *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+                                        <div class="text-danger" *ngIf="lastName.errors.required">
+                                            Last Name is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <input formControlName="userName" type="text" class="form-control" name="userName" placeholder="UserName" value="" autocomplete="off" required>
+                                    <div  *ngIf="userName.invalid && (userName.dirty || userName.touched)">
+                                        <div class="text-danger" *ngIf="userName.errors.required">
+                                            User Name is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <input formControlName="emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Email" value="" autocomplete="off" required>
+                                    <div *ngIf="emailAddress.invalid && (emailAddress.dirty || emailAddress.touched)">
+                                        <div class="text-danger" *ngIf="emailAddress.errors.required">
+                                            Email is required.
+                                        </div>
+                                        <div class="text-danger" *ngIf="emailAddress.errors.pattern">
+                                            Email Formate Is Wrong.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <input formControlName="password" type="password" class="form-control" name="password" placeholder="Password" value="" autocomplete="off" required>
+                                    <div  *ngIf="password.invalid && (password.dirty || password.touched)"
+                                        class="">
+
+                                        <div class="text-danger" *ngIf="password.errors.required">
+                                            Password is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <input formControlName="title" type="text" class="form-control" name="titleOfUser" placeholder="Title" value="" autocomplete="off" required>
+                                    <div *ngIf="title.invalid && (title.dirty || title.touched)"
+                                        class="">
+
+                                        <div class="text-danger" *ngIf="title.errors.required">
+                                            Title is required.
+                                        </div>
+                                    </div>
                                 </div>
                                 
                             </div>
-                            <div class="col-xl-3" *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
-                                class="">
-
-                                <div class="text-danger" *ngIf="firstName.errors.required">
-                                    First Name is required.
-                                </div>
-                            </div>
-                            <div class="col-xl-9">
-                                <div class="form-group">
-                                    <input formControlName="lastName" type="text" class="form-control" name="lastNameOfUser" placeholder="Last Name" value="" autocomplete="off" required>
-                                </div>
-                            </div>
-                            <div class="col-xl-3" *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
-                                class="">
-
-                                <div class="text-danger" *ngIf="lastName.errors.required">
-                                    Last Name is required.
-                                </div>
-                            </div>
-                            <div class="col-xl-9">
-                                <div class="form-group">
-                                    <input formControlName="emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Email" value="" autocomplete="off" required>
-                                </div>
-                            </div>
-
-
-                            <div class="col-xl-9">
-                                <div class="form-group">
-                                    <input formControlName="userName" type="text" class="form-control" name="userName" placeholder="userName" value="" autocomplete="off" required>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-9">
-                                <div class="form-group">
-                                    <input formControlName="password" type="password" class="form-control" name="password" placeholder="Password" value="" autocomplete="off" required>
-                                </div>
-                            </div>
-
-                            <div *ngIf="emailAddress.invalid && (emailAddress.dirty || emailAddress.touched)"
-                                class="col-xl-3">
-
-                                <div class="text-danger" *ngIf="emailAddress.errors.required">
-                                    Email is required.
-                                </div>
-                                <div class="text-danger" *ngIf="emailAddress.errors.pattern">
-                                    Email Formate Is Wrong.
-                                </div>
-                            </div>
-
-                            <div class="col-xl-9">
-                                <div class="form-group">
-                                    <input formControlName="title" type="text" class="form-control" name="titleOfUser" placeholder="Title" value="" autocomplete="off" required>
-                                </div>
-                            </div>
-                            <div class="col-xl-3" *ngIf="title.invalid && (title.dirty || title.touched)"
-                                class="">
-
-                                <div class="text-danger" *ngIf="title.errors.required">
-                                    Title is required.
-                                </div>
-                            </div>
-                            <div class="col-xl-9">
+                            
+                            <div class="col-xl-6">
                                 <div class="form-group">
                                     <input type="text" formControlName="phone" class="form-control" name="passwordOfUser" placeholder="Phone Number (Optional)" value="">
                                 </div>
                             </div>
-                            <div class="col-xl-9">
+                            <div class="col-xl-6">
                                 <div class="form-group">
                                     <input type="text" formControlName="address" class="form-control" name="passwordOfUser" placeholder="Address" value="">
+                                    <div *ngIf="address.invalid && (address.dirty || address.touched)"
+                                        class="">
+                                        <div class="text-danger" *ngIf="address.errors.required">
+                                            Address is required.
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3" *ngIf="address.invalid && (address.dirty || address.touched)"
-                                class="">
-
-                                <div class="text-danger" *ngIf="address.errors.required">
-                                    Address is required.
-                                </div>
-                            </div>
-                            <div class="col-xl-9">
+                            
+                            <div class="col-xl-12">
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="form-group">
@@ -107,7 +111,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end mr-5">
-                            <button class="btn btn-success" (click)="register()">
+                            <button class="btn btn-success" (click)="register()" (click)="save()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                                 Save
                             </button>
                         </div>
