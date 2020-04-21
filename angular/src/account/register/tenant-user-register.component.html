@@ -37,6 +37,20 @@
                                     <input formControlName="emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Email" value="" autocomplete="off" required>
                                 </div>
                             </div>
+
+
+                            <div class="col-xl-9">
+                                <div class="form-group">
+                                    <input formControlName="userName" type="text" class="form-control" name="userName" placeholder="userName" value="" autocomplete="off" required>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-9">
+                                <div class="form-group">
+                                    <input formControlName="password" type="password" class="form-control" name="password" placeholder="Password" value="" autocomplete="off" required>
+                                </div>
+                            </div>
+
                             <div *ngIf="emailAddress.invalid && (emailAddress.dirty || emailAddress.touched)"
                                 class="col-xl-3">
 
@@ -47,6 +61,7 @@
                                     Email Formate Is Wrong.
                                 </div>
                             </div>
+
                             <div class="col-xl-9">
                                 <div class="form-group">
                                     <input formControlName="title" type="text" class="form-control" name="titleOfUser" placeholder="Title" value="" autocomplete="off" required>

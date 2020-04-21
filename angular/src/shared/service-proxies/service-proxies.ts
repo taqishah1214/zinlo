@@ -199,6 +199,62 @@ export class AccountServiceProxy {
      * @param body (optional) 
      * @return Success
      */
+    registerTenantUser(body: RegisterTenantUserInput | undefined): Observable<RegisterOutput> {
+        let url_ = this.baseUrl + "/api/services/app/Account/RegisterTenantUser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegisterTenantUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegisterTenantUser(<any>response_);
+                } catch (e) {
+                    return <Observable<RegisterOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<RegisterOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRegisterTenantUser(response: HttpResponseBase): Observable<RegisterOutput> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RegisterOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<RegisterOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     sendPasswordResetCode(body: SendPasswordResetCodeInput | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Account/SendPasswordResetCode";
         url_ = url_.replace(/[?&]$/, "");
@@ -7160,6 +7216,62 @@ export class EditionServiceProxy {
             }));
         }
         return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param editionId (optional) 
+     * @return Success
+     */
+    isCustomEdition(editionId: number | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/Edition/IsCustomEdition?";
+        if (editionId === null)
+            throw new Error("The parameter 'editionId' cannot be null.");
+        else if (editionId !== undefined)
+            url_ += "editionId=" + encodeURIComponent("" + editionId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processIsCustomEdition(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processIsCustomEdition(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processIsCustomEdition(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
     }
 }
 
@@ -17100,6 +17212,82 @@ export class RegisterOutput implements IRegisterOutput {
 
 export interface IRegisterOutput {
     canLogin: boolean;
+}
+
+export class RegisterTenantUserInput implements IRegisterTenantUserInput {
+    name!: string | undefined;
+    userName!: string | undefined;
+    surname!: string | undefined;
+    title!: string | undefined;
+    phoneNumber!: string | undefined;
+    address!: string | undefined;
+    city!: string | undefined;
+    state!: string | undefined;
+    tenantId!: number;
+    emailAddress!: string | undefined;
+    password!: string | undefined;
+
+    constructor(data?: IRegisterTenantUserInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.userName = data["userName"];
+            this.surname = data["surname"];
+            this.title = data["title"];
+            this.phoneNumber = data["phoneNumber"];
+            this.address = data["address"];
+            this.city = data["city"];
+            this.state = data["state"];
+            this.tenantId = data["tenantId"];
+            this.emailAddress = data["emailAddress"];
+            this.password = data["password"];
+        }
+    }
+
+    static fromJS(data: any): RegisterTenantUserInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterTenantUserInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["userName"] = this.userName;
+        data["surname"] = this.surname;
+        data["title"] = this.title;
+        data["phoneNumber"] = this.phoneNumber;
+        data["address"] = this.address;
+        data["city"] = this.city;
+        data["state"] = this.state;
+        data["tenantId"] = this.tenantId;
+        data["emailAddress"] = this.emailAddress;
+        data["password"] = this.password;
+        return data; 
+    }
+}
+
+export interface IRegisterTenantUserInput {
+    name: string | undefined;
+    userName: string | undefined;
+    surname: string | undefined;
+    title: string | undefined;
+    phoneNumber: string | undefined;
+    address: string | undefined;
+    city: string | undefined;
+    state: string | undefined;
+    tenantId: number;
+    emailAddress: string | undefined;
+    password: string | undefined;
 }
 
 export class SendPasswordResetCodeInput implements ISendPasswordResetCodeInput {
@@ -31592,54 +31780,7 @@ export class BusinessInfo implements IBusinessInfo {
         return data; 
     }
 }
-export class TenantUserInfo implements ITenantUserInfo {
-    firstName!: string | undefined;
-    lastName!: string | undefined;
-    phone!: string | undefined;
-    address!: string | undefined;
-    emailAddress!: string | undefined;
-    city!: string | undefined;
-    state!: string | undefined;
-    title!: string | undefined;
-    constructor(data?: ITenantUserInfo) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-    init(data?: any) {
-        if (data) {
-            this.firstName = data["firstName"];
-            this.lastName = data["lastName"];
-            this.phone = data["phone"];
-            this.address = data["address"];
-            this.emailAddress = data["emailAddress"];
-            this.city = data["city"];
-            this.state = data["state"];
-            this.title = data["title"];
-        }
-    }
-    static fromJS(data: any): TenantUserInfo {
-        data = typeof data === 'object' ? data : {};
-        let result = new TenantUserInfo();
-        result.init(data);
-        return result;
-    }
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
-        data["phone"] = this.phone;
-        data["address"] = this.address;
-        data["emailAddress"] = this.emailAddress;
-        data["city"] = this.city;
-        data["state"] = this.state;
-        data["title"] = this.title;
-        return data; 
-    }
-}
+
 export interface IBusinessInfo {
     businessName: string | undefined;
     website: string | undefined;
@@ -31649,17 +31790,6 @@ export interface IBusinessInfo {
     city: string | undefined;
     state: string | undefined;
     zipCode: string | undefined;
-}
-
-export interface ITenantUserInfo {
-    firstName: string | undefined;
-    lastName: string | undefined;
-    phone: string | undefined;
-    address: string | undefined;
-    emailAddress: string | undefined;
-    city: string | undefined;
-    state: string | undefined;
-    title: string | undefined;
 }
 
 export class PaymentDetails implements IPaymentDetails {
