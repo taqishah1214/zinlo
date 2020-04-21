@@ -218,18 +218,6 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>{{"Endson" | localize}}</label>
-                                        <div class="form-group">
-                                            <form class="input-arrow">
-                                                <input [disabled]="endOnIsEnabled == false" [(ngModel)]="endsOnDateValue" required="required"
-                                                    autocomplete="off" class="form-control" name="date" bsDatepicker
-                                                    placeholder="Month" [minDate]="minDate"
-                                                    [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                                    (onShown)="onOpenCalendar($event)">
-                                            </form>
-                                        </div>
-                                    </div>
                                     <div class="kt-radio-list eom-radio">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">

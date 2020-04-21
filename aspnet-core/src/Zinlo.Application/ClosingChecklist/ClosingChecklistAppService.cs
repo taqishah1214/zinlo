@@ -128,7 +128,6 @@ namespace Zinlo.ClosingChecklist
         #region|Create Eidt Details Delete|
         public async Task CreateOrEdit(CreateOrEditClosingChecklistDto input)
         {
-            if (input.Frequency != FrequencyDto.None) throw new UserFriendlyException(L("ClosingMonthGreaterException"));
             if (input.Id == 0)
             {
                 await TaskIteration(input);
@@ -375,8 +374,6 @@ namespace Zinlo.ClosingChecklist
         {
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
-
-
                 var task = _closingChecklistRepository.GetAll().Include(p => p.Version).Include(u => u.Assignee).Include(c => c.Category).FirstOrDefault(x => x.Id == id);
                 var output = ObjectMapper.Map<DetailsClosingCheckListDto>(task);
                 if (task != null)

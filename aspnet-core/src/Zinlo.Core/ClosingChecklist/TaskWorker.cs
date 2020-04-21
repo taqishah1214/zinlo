@@ -5,6 +5,7 @@ using System.Text;
 using System.Timers;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
 using Abp.Threading.BackgroundWorkers;
 using Abp.Threading.Timers;
 
@@ -45,64 +46,67 @@ namespace Zinlo.ClosingChecklist
 
             return false;
         }
+        [UnitOfWork]
         protected override void DoWork()
-        {
-            if (!CheckLastHourOfMonth()) return;
-            var allTasks = _closingChecklistRepository.GetAll().ToList();
-            foreach (var task in allTasks)
+        { /*if (!CheckLastHourOfMonth()) return;*/
+            using (CurrentUnitOfWork.DisableFilter(AbpDataFilters.MayHaveTenant))
             {
-                switch (task.Frequency)
+                var allTasks = _closingChecklistRepository.GetAll();
+                foreach (var task in allTasks.ToList())
                 {
-                    case Frequency.Annually:
-                        
-                        if (task.ClosingMonth.Year.Equals(DateTime.Now.Year - 1) &&
-                            task.ClosingMonth.Month.Equals(DateTime.Now.Month + 1))
-                        {
-                            task.ClosingMonth = task.ClosingMonth.AddYears(1);
-                            task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
-                                task.DueOn, task.EndOfMonth);
-                            task.Id = 0;
-                            var taskExist = TaskExist(task.ClosingMonth, task.GroupId);
-                            if (!taskExist)
+                    switch (task.Frequency)
+                    {
+                        case Frequency.Annually:
+
+                            if (task.ClosingMonth.Year.Equals(DateTime.Now.Year - 1) &&
+                                task.ClosingMonth.Month.Equals(DateTime.Now.Month + 1))
                             {
-                                _closingChecklistRepository.Insert(task);
+                                task.ClosingMonth = task.ClosingMonth.AddYears(1);
+                                task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
+                                    task.DueOn, task.EndOfMonth);
+                                task.Id = 0;
+                                var taskExist = TaskExist(task.ClosingMonth, task.GroupId);
+                                if (!taskExist)
+                                {
+                                    _closingChecklistRepository.Insert(task);
+                                }
                             }
-                        }
 
-                        break;
-                    case Frequency.Monthly:
-                        if (task.ClosingMonth.Year.Equals(DateTime.Now.Year) &&
-                            task.ClosingMonth.Month.Equals(DateTime.Now.Month))
-                        {
-                            task.ClosingMonth = task.ClosingMonth.AddMonths(1);
-                            task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
-                                task.DueOn, task.EndOfMonth);
-                            task.Id = 0;
-                            var taskExist = TaskExist(task.ClosingMonth, task.GroupId);
-                            if (!taskExist)
+                            break;
+                        case Frequency.Monthly:
+                            if (task.ClosingMonth.Year.Equals(DateTime.Now.Year) &&
+                                task.ClosingMonth.Month.Equals(DateTime.Now.Month))
                             {
-                                _closingChecklistRepository.Insert(task);
+                                task.ClosingMonth = task.ClosingMonth.AddMonths(1);
+                                task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
+                                    task.DueOn, task.EndOfMonth);
+                                task.Id = 0;
+                                var taskExist = TaskExist(task.ClosingMonth, task.GroupId);
+                                if (!taskExist)
+                                {
+                                    _closingChecklistRepository.Insert(task);
+                                }
                             }
-                        }
 
-                        break;
-                    case Frequency.Quarterly:
+                            break;
+                        case Frequency.Quarterly:
 
-                        if (task.ClosingMonth.AddMonths(3).Year.Equals(DateTime.Now.Year) &&
-                            task.ClosingMonth.Month.Equals(DateTime.Now.Month + 1))
-                        {
-                            task.ClosingMonth = task.ClosingMonth.AddMonths(3);
-                            task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
-                                task.DueOn, task.EndOfMonth);
-                            task.Id = 0;
-                            var taskExist = TaskExist(task.ClosingMonth, task.GroupId);
-                            if (!taskExist)
+                            if (task.ClosingMonth.AddMonths(3).Year.Equals(DateTime.Now.Year) &&
+                                task.ClosingMonth.Month.Equals(DateTime.Now.Month + 1))
                             {
-                                _closingChecklistRepository.Insert(task);
+                                task.ClosingMonth = task.ClosingMonth.AddMonths(3);
+                                task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
+                                    task.DueOn, task.EndOfMonth);
+                                task.Id = 0;
+                                var taskExist = TaskExist(task.ClosingMonth, task.GroupId);
+                                if (!taskExist)
+                                {
+                                    _closingChecklistRepository.Insert(task);
+                                }
                             }
-                        }
 
-                        break;
+                            break;
+                    }
                 }
             }
         }
