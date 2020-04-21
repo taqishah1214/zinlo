@@ -97,6 +97,16 @@
         public const string Pages_Tenants_Delete = "Pages.Tenants.Delete";
         public const string Pages_Tenants_Impersonation = "Pages.Tenants.Impersonation";
 
+        public const string Pages_Custom_Tenants = "Pages.Tenants.Custom";
+        public const string Pages_Custom_Tenants_Create = "Pages.Tenants.Custom.Create";
+        public const string Pages_Custom_Tenants_Edit = "Pages.Tenants.Custom.Edit";
+        public const string Pages_Custom_Tenants_ChangeFeatures = "Pages.Tenants.Custom.ChangeFeatures";
+        public const string Pages_Custom_Tenants_Delete = "Pages.Tenants.Custom.Delete";
+        public const string Pages_Custom_Tenants_Impersonation = "Pages.Tenants.Custom.Impersonation";
+
+
+
+
         public const string Pages_Administration_Host_Maintenance = "Pages.Administration.Host.Maintenance";
         public const string Pages_Administration_Host_Settings = "Pages.Administration.Host.Settings";
         public const string Pages_Administration_Host_Dashboard = "Pages.Administration.Host.Dashboard";

@@ -26,6 +26,7 @@ namespace Zinlo.Editions.Dto
         public int? WaitingDayAfterExpire { get; set; }
 
         public bool IsFree { get; set; }
+        public bool IsCustom { get; set; }
 
         public Dictionary<SubscriptionPaymentGatewayType, Dictionary<string, string>> AdditionalData { get; set; }
 

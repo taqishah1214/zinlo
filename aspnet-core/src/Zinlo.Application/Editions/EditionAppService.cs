@@ -208,5 +208,10 @@ namespace Zinlo.Editions
             return _editionManager.SetFeatureValuesAsync(edition.Id,
                 featureValues.Select(fv => new NameValue(fv.Name, fv.Value)).ToArray());
         }
+
+        public bool IsCustomEdition(int editionId)
+        {
+            return  _editionRepository.FirstOrDefault(x => x.Id == editionId).IsCustom;
+        }
     }
 }

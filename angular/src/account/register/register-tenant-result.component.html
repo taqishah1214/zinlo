@@ -1,25 +1,16 @@
-<div class="kt-login__form" [@routerTransition]>
-    <h4>{{"SuccessfullyRegistered" | localize}}</h4>
 
-    <ul>
-        <li><span class="text-muted">{{"TenancyName" | localize}}:</span> {{model.tenancyName}}</li>
-        <li><span class="text-muted">{{"TenantName" | localize}}:</span> {{model.name}}</li>
-        <li><span class="text-muted">{{"UserName" | localize}}:</span> {{model.userName}}</li>
-        <li><span class="text-muted">{{"EmailAddress" | localize}}:</span> {{model.emailAddress}}</li>
-    </ul>
-
-    <div>
-        <div *ngIf="model.isEmailConfirmationRequired" class="alert alert-warning" role="alert">
-            {{"ConfirmationMailSentPleaseClickLinkInTheEmail" | localize:model.emailAddress}}
-        </div>
-
-        <div *ngIf="!model.isActive" class="alert alert-primary" role="alert">
-            {{"YourAccountIsWaitingToBeActivatedByAdmin" | localize}}
-        </div>
-
-        <div *ngIf="tenantUrl" class="alert alert-secondary" role="alert">
-            {{"TenantRegistrationLoginInfo" | localize}}<br />
-            <a href="{{tenantUrl}}">{{tenantUrl}}</a>
+<div class=""style="padding:10% 30%">
+    <div class="kt-container kt-grid__item kt-grid__item--fluid py-5">
+        <div class="kt-portlet py-5">
+            <div class="d-flex justify-content-center"> 
+                <h2>Thanks for Requesting</h2>
+            </div>
+            <div class="d-flex justify-content-center">
+                <img src="./assets/media/ClosingCheckList/success.png" alt="block-btn">                  
+            </div>
+            <div class="d-flex justify-content-center"> 
+                <h5>Our agent will contact you soon</h5>
+            </div>
         </div>
     </div>
 </div>

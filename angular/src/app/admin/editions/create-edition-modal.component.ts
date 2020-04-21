@@ -62,6 +62,7 @@ export class CreateEditionModalComponent extends AppComponentBase {
     }
 
     resetPrices(isFree) {
+       
         this.edition.edition.annualPrice = undefined;
         this.edition.edition.monthlyPrice = undefined;
     }
@@ -77,9 +78,10 @@ export class CreateEditionModalComponent extends AppComponentBase {
         }
 
         const input = new CreateEditionDto();
+        this.edition.edition.isCustom = this.isFree;
         input.edition = this.edition.edition;
         input.featureValues = this.featureTree.getGrantedFeatures();
-
+        
         this.saving = true;
         this._editionService.createEdition(input)
             .pipe(finalize(() => this.saving = false))

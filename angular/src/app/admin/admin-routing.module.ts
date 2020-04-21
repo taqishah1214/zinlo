@@ -15,10 +15,12 @@ import { TenantSettingsComponent } from './settings/tenant-settings.component';
 import { InvoiceComponent } from './subscription-management/invoice/invoice.component';
 import { SubscriptionManagementComponent } from './subscription-management/subscription-management.component';
 import { TenantsComponent } from './tenants/tenants.component';
+import {  CustomTenantsComponent } from './tenants/custom-tenants.component';
 import { UiCustomizationComponent } from './ui-customization/ui-customization.component';
 import { UsersComponent } from './users/users.component';
 import { ManagementComponent } from './management/management.component';
 import { ImportLogComponent } from '../admin/importlog/importlog.component';
+import { CustomizedPlanRequestComponent } from './tenants/customized-plan-request.component';
 @NgModule({
     imports: [
         RouterModule.forChild([
@@ -35,6 +37,7 @@ import { ImportLogComponent } from '../admin/importlog/importlog.component';
                     { path: 'languages', component: LanguagesComponent, data: { permission: 'Pages.Administration.Languages' } },
                     { path: 'languages/:name/texts', component: LanguageTextsComponent, data: { permission: 'Pages.Administration.Languages.ChangeTexts' } },
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' } },
+                    { path: 'custom-tenants', component: CustomTenantsComponent, data: { permission: 'Pages.Tenants' } },
                     { path: 'organization-units', component: OrganizationUnitsComponent, data: { permission: 'Pages.Administration.OrganizationUnits' } },
                     { path: 'subscription-management', component: SubscriptionManagementComponent, data: { permission: 'Pages.Administration.Tenant.SubscriptionManagement' } },
                     { path: 'invoice/:paymentId', component: InvoiceComponent, data: { permission: 'Pages.Administration.Tenant.SubscriptionManagement' } },
@@ -43,6 +46,7 @@ import { ImportLogComponent } from '../admin/importlog/importlog.component';
                     { path: 'demo-ui-components', component: DemoUiComponentsComponent, data: { permission: 'Pages.DemoUiComponents' } },
                     { path: 'install', component: InstallComponent },
                     { path: 'ui-customization', component: UiCustomizationComponent },
+                    { path: 'customized-plan-request', component: CustomizedPlanRequestComponent },
                     { path: 'importlog', component: ImportLogComponent, data: { }  },
                     { path: '', redirectTo: 'hostDashboard', pathMatch: 'full' }
                 ]

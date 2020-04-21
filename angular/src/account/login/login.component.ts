@@ -61,7 +61,6 @@ export class LoginComponent extends AppComponentBase implements OnInit {
                     location.href = returnUrl;
                 });
         }
-
         let state = UrlHelper.getQueryParametersUsingHash().state;
         if (state && state.indexOf('openIdConnect') >= 0) {
             this.loginService.openIdConnectLoginCallback({});

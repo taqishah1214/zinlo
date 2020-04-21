@@ -22,5 +22,6 @@ namespace Zinlo.Editions.Dto
         public int? WaitingDayAfterExpire { get; set; }
 
         public int? ExpiringEditionId { get; set; }
+        public bool IsCustom { get; set; }
     }
 }

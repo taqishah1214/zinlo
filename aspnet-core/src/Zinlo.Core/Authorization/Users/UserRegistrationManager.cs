@@ -101,6 +101,62 @@ namespace Zinlo.Authorization.Users
             return user;
         }
 
+
+        public async Task<User> RegisterTenantUSerAsync(string name,string surname, string title,string phonenumber,string address,string city,string state, string emailAddress, string userName, string plainPassword, bool isEmailConfirmed, string emailActivationLink,int tenantId)
+        {
+            CheckForTenant();
+            CheckSelfRegistrationIsEnabled();
+
+            var tenant = await GetActiveTenantAsync();
+            var isNewRegisteredUserActiveByDefault = await SettingManager.GetSettingValueAsync<bool>(AppSettings.UserManagement.IsNewRegisteredUserActiveByDefault);
+
+            await _userPolicy.CheckMaxUserCountAsync(tenant.Id);
+
+            var user = new User
+            {
+                TenantId = tenant.Id,
+                Name = name,
+                Surname = surname,
+                Title = title,
+                PhoneNumber = phonenumber,
+                Address = address,
+                City=city,
+                 State =state,
+                EmailAddress = emailAddress,
+                IsActive = isNewRegisteredUserActiveByDefault,
+                UserName = userName,
+                IsEmailConfirmed = isEmailConfirmed,
+                Roles = new List<UserRole>()
+            };
+
+            user.SetNormalizedNames();
+
+            var defaultRoles = await AsyncQueryableExecuter.ToListAsync(_roleManager.Roles.Where(r => r.IsDefault));
+            foreach (var defaultRole in defaultRoles)
+            {
+                user.Roles.Add(new UserRole(tenant.Id, user.Id, defaultRole.Id));
+            }
+
+            await _userManager.InitializeOptionsAsync(AbpSession.TenantId);
+            CheckErrors(await _userManager.CreateAsync(user, plainPassword));
+            await CurrentUnitOfWork.SaveChangesAsync();
+
+            if (!user.IsEmailConfirmed)
+            {
+                user.SetNewEmailConfirmationCode();
+                await _userEmailer.SendEmailActivationLinkAsync(user, emailActivationLink);
+            }
+
+            //Notifications
+            await _notificationSubscriptionManager.SubscribeToAllAvailableNotificationsAsync(user.ToUserIdentifier());
+            await _appNotifier.WelcomeToTheApplicationAsync(user);
+            await _appNotifier.NewUserRegisteredAsync(user);
+
+            return user;
+        }
+
+
+
         private void CheckForTenant()
         {
             if (!AbpSession.TenantId.HasValue)

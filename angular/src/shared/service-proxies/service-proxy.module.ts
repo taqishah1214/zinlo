@@ -20,6 +20,7 @@ import { ZeroRefreshTokenService } from '@account/auth/zero-refresh-token.servic
         ApiServiceProxies.OrganizationUnitServiceProxy,
         ApiServiceProxies.PermissionServiceProxy,
         ApiServiceProxies.UserRegisterServiceServiceProxy,
+        ApiServiceProxies.ContactusServiceServiceProxy,
         ApiServiceProxies.ProfileServiceProxy,
         ApiServiceProxies.RoleServiceProxy,
         ApiServiceProxies.SessionServiceProxy,

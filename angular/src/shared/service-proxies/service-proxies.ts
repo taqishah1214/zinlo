@@ -199,6 +199,62 @@ export class AccountServiceProxy {
      * @param body (optional) 
      * @return Success
      */
+    registerTenantUser(body: RegisterTenantUserInput | undefined): Observable<RegisterOutput> {
+        let url_ = this.baseUrl + "/api/services/app/Account/RegisterTenantUser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegisterTenantUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegisterTenantUser(<any>response_);
+                } catch (e) {
+                    return <Observable<RegisterOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<RegisterOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRegisterTenantUser(response: HttpResponseBase): Observable<RegisterOutput> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RegisterOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<RegisterOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     sendPasswordResetCode(body: SendPasswordResetCodeInput | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Account/SendPasswordResetCode";
         url_ = url_.replace(/[?&]$/, "");
@@ -5591,6 +5647,232 @@ export class CommonLookupServiceProxy {
 }
 
 @Injectable()
+export class ContactusServiceServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param tenantId (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    create(tenantId: number | undefined, body: CreateOrUpdateContactusInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ContactusService/Create?";
+        if (tenantId === null)
+            throw new Error("The parameter 'tenantId' cannot be null.");
+        else if (tenantId !== undefined)
+            url_ += "tenantId=" + encodeURIComponent("" + tenantId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param tenantId (optional) 
+     * @return Success
+     */
+    getContactusByTenantId(tenantId: number | undefined): Observable<ContactusDto> {
+        let url_ = this.baseUrl + "/api/services/app/ContactusService/GetContactusByTenantId?";
+        if (tenantId === null)
+            throw new Error("The parameter 'tenantId' cannot be null.");
+        else if (tenantId !== undefined)
+            url_ += "TenantId=" + encodeURIComponent("" + tenantId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetContactusByTenantId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetContactusByTenantId(<any>response_);
+                } catch (e) {
+                    return <Observable<ContactusDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ContactusDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetContactusByTenantId(response: HttpResponseBase): Observable<ContactusDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ContactusDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ContactusDto>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param subscriptionEndDateStart (optional) 
+     * @param subscriptionEndDateEnd (optional) 
+     * @param creationDateStart (optional) 
+     * @param creationDateEnd (optional) 
+     * @param editionId (optional) 
+     * @param editionIdSpecified (optional) 
+     * @param sorting (optional) 
+     * @param maxResultCount (optional) 
+     * @param skipCount (optional) 
+     * @return Success
+     */
+    getContectus(filter: string | undefined, subscriptionEndDateStart: moment.Moment | undefined, subscriptionEndDateEnd: moment.Moment | undefined, creationDateStart: moment.Moment | undefined, creationDateEnd: moment.Moment | undefined, editionId: number | undefined, editionIdSpecified: boolean | undefined, sorting: string | undefined, maxResultCount: number | undefined, skipCount: number | undefined): Observable<PagedResultDtoOfContactusDto> {
+        let url_ = this.baseUrl + "/api/services/app/ContactusService/GetContectus?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (subscriptionEndDateStart === null)
+            throw new Error("The parameter 'subscriptionEndDateStart' cannot be null.");
+        else if (subscriptionEndDateStart !== undefined)
+            url_ += "SubscriptionEndDateStart=" + encodeURIComponent(subscriptionEndDateStart ? "" + subscriptionEndDateStart.toJSON() : "") + "&"; 
+        if (subscriptionEndDateEnd === null)
+            throw new Error("The parameter 'subscriptionEndDateEnd' cannot be null.");
+        else if (subscriptionEndDateEnd !== undefined)
+            url_ += "SubscriptionEndDateEnd=" + encodeURIComponent(subscriptionEndDateEnd ? "" + subscriptionEndDateEnd.toJSON() : "") + "&"; 
+        if (creationDateStart === null)
+            throw new Error("The parameter 'creationDateStart' cannot be null.");
+        else if (creationDateStart !== undefined)
+            url_ += "CreationDateStart=" + encodeURIComponent(creationDateStart ? "" + creationDateStart.toJSON() : "") + "&"; 
+        if (creationDateEnd === null)
+            throw new Error("The parameter 'creationDateEnd' cannot be null.");
+        else if (creationDateEnd !== undefined)
+            url_ += "CreationDateEnd=" + encodeURIComponent(creationDateEnd ? "" + creationDateEnd.toJSON() : "") + "&"; 
+        if (editionId === null)
+            throw new Error("The parameter 'editionId' cannot be null.");
+        else if (editionId !== undefined)
+            url_ += "EditionId=" + encodeURIComponent("" + editionId) + "&"; 
+        if (editionIdSpecified === null)
+            throw new Error("The parameter 'editionIdSpecified' cannot be null.");
+        else if (editionIdSpecified !== undefined)
+            url_ += "EditionIdSpecified=" + encodeURIComponent("" + editionIdSpecified) + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetContectus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetContectus(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfContactusDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfContactusDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetContectus(response: HttpResponseBase): Observable<PagedResultDtoOfContactusDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfContactusDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfContactusDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class DashboardCustomizationServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -6934,6 +7216,62 @@ export class EditionServiceProxy {
             }));
         }
         return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param editionId (optional) 
+     * @return Success
+     */
+    isCustomEdition(editionId: number | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/Edition/IsCustomEdition?";
+        if (editionId === null)
+            throw new Error("The parameter 'editionId' cannot be null.");
+        else if (editionId !== undefined)
+            url_ += "editionId=" + encodeURIComponent("" + editionId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processIsCustomEdition(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processIsCustomEdition(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processIsCustomEdition(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
     }
 }
 
@@ -16876,6 +17214,82 @@ export interface IRegisterOutput {
     canLogin: boolean;
 }
 
+export class RegisterTenantUserInput implements IRegisterTenantUserInput {
+    name!: string | undefined;
+    userName!: string | undefined;
+    surname!: string | undefined;
+    title!: string | undefined;
+    phoneNumber!: string | undefined;
+    address!: string | undefined;
+    city!: string | undefined;
+    state!: string | undefined;
+    tenantId!: number;
+    emailAddress!: string | undefined;
+    password!: string | undefined;
+
+    constructor(data?: IRegisterTenantUserInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.userName = data["userName"];
+            this.surname = data["surname"];
+            this.title = data["title"];
+            this.phoneNumber = data["phoneNumber"];
+            this.address = data["address"];
+            this.city = data["city"];
+            this.state = data["state"];
+            this.tenantId = data["tenantId"];
+            this.emailAddress = data["emailAddress"];
+            this.password = data["password"];
+        }
+    }
+
+    static fromJS(data: any): RegisterTenantUserInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterTenantUserInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["userName"] = this.userName;
+        data["surname"] = this.surname;
+        data["title"] = this.title;
+        data["phoneNumber"] = this.phoneNumber;
+        data["address"] = this.address;
+        data["city"] = this.city;
+        data["state"] = this.state;
+        data["tenantId"] = this.tenantId;
+        data["emailAddress"] = this.emailAddress;
+        data["password"] = this.password;
+        return data; 
+    }
+}
+
+export interface IRegisterTenantUserInput {
+    name: string | undefined;
+    userName: string | undefined;
+    surname: string | undefined;
+    title: string | undefined;
+    phoneNumber: string | undefined;
+    address: string | undefined;
+    city: string | undefined;
+    state: string | undefined;
+    tenantId: number;
+    emailAddress: string | undefined;
+    password: string | undefined;
+}
+
 export class SendPasswordResetCodeInput implements ISendPasswordResetCodeInput {
     emailAddress!: string | undefined;
 
@@ -20429,6 +20843,182 @@ export interface IGetDefaultEditionNameOutput {
     name: string | undefined;
 }
 
+export class CreateOrUpdateContactusInput implements ICreateOrUpdateContactusInput {
+    fullName!: string | undefined;
+    email!: string | undefined;
+    companyName!: string | undefined;
+    numberOfUsers!: number;
+    description!: string | undefined;
+
+    constructor(data?: ICreateOrUpdateContactusInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.fullName = data["fullName"];
+            this.email = data["email"];
+            this.companyName = data["companyName"];
+            this.numberOfUsers = data["numberOfUsers"];
+            this.description = data["description"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrUpdateContactusInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrUpdateContactusInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fullName"] = this.fullName;
+        data["email"] = this.email;
+        data["companyName"] = this.companyName;
+        data["numberOfUsers"] = this.numberOfUsers;
+        data["description"] = this.description;
+        return data; 
+    }
+}
+
+export interface ICreateOrUpdateContactusInput {
+    fullName: string | undefined;
+    email: string | undefined;
+    companyName: string | undefined;
+    numberOfUsers: number;
+    description: string | undefined;
+}
+
+export class ContactusDto implements IContactusDto {
+    id!: number;
+    fullName!: string | undefined;
+    email!: string | undefined;
+    companyName!: string | undefined;
+    numberOfUsers!: number;
+    description!: string | undefined;
+    commitment!: number;
+    pricing!: number;
+    tenantId!: number;
+    isAccepted!: boolean;
+    creationTime!: moment.Moment;
+
+    constructor(data?: IContactusDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.fullName = data["fullName"];
+            this.email = data["email"];
+            this.companyName = data["companyName"];
+            this.numberOfUsers = data["numberOfUsers"];
+            this.description = data["description"];
+            this.commitment = data["commitment"];
+            this.pricing = data["pricing"];
+            this.tenantId = data["tenantId"];
+            this.isAccepted = data["isAccepted"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ContactusDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContactusDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["fullName"] = this.fullName;
+        data["email"] = this.email;
+        data["companyName"] = this.companyName;
+        data["numberOfUsers"] = this.numberOfUsers;
+        data["description"] = this.description;
+        data["commitment"] = this.commitment;
+        data["pricing"] = this.pricing;
+        data["tenantId"] = this.tenantId;
+        data["isAccepted"] = this.isAccepted;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IContactusDto {
+    id: number;
+    fullName: string | undefined;
+    email: string | undefined;
+    companyName: string | undefined;
+    numberOfUsers: number;
+    description: string | undefined;
+    commitment: number;
+    pricing: number;
+    tenantId: number;
+    isAccepted: boolean;
+    creationTime: moment.Moment;
+}
+
+export class PagedResultDtoOfContactusDto implements IPagedResultDtoOfContactusDto {
+    totalCount!: number;
+    items!: ContactusDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfContactusDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items!.push(ContactusDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfContactusDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfContactusDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfContactusDto {
+    totalCount: number;
+    items: ContactusDto[] | undefined;
+}
+
 export class Widget implements IWidget {
     widgetId!: string | undefined;
     height!: number;
@@ -21083,6 +21673,7 @@ export class EditionListDto implements IEditionListDto {
     waitingDayAfterExpire!: number | undefined;
     trialDayCount!: number | undefined;
     expiringEditionDisplayName!: string | undefined;
+    isCustom!: boolean;
     id!: number;
 
     constructor(data?: IEditionListDto) {
@@ -21105,6 +21696,7 @@ export class EditionListDto implements IEditionListDto {
             this.waitingDayAfterExpire = data["waitingDayAfterExpire"];
             this.trialDayCount = data["trialDayCount"];
             this.expiringEditionDisplayName = data["expiringEditionDisplayName"];
+            this.isCustom = data["isCustom"];
             this.id = data["id"];
         }
     }
@@ -21127,6 +21719,7 @@ export class EditionListDto implements IEditionListDto {
         data["waitingDayAfterExpire"] = this.waitingDayAfterExpire;
         data["trialDayCount"] = this.trialDayCount;
         data["expiringEditionDisplayName"] = this.expiringEditionDisplayName;
+        data["isCustom"] = this.isCustom;
         data["id"] = this.id;
         return data; 
     }
@@ -21142,6 +21735,7 @@ export interface IEditionListDto {
     waitingDayAfterExpire: number | undefined;
     trialDayCount: number | undefined;
     expiringEditionDisplayName: string | undefined;
+    isCustom: boolean;
     id: number;
 }
 
@@ -21192,6 +21786,7 @@ export interface IListResultDtoOfEditionListDto {
 export class EditionEditDto implements IEditionEditDto {
     id!: number | undefined;
     displayName!: string | undefined;
+    isCustom!: boolean;
     expiringEditionId!: number | undefined;
 
     constructor(data?: IEditionEditDto) {
@@ -21207,6 +21802,7 @@ export class EditionEditDto implements IEditionEditDto {
         if (data) {
             this.id = data["id"];
             this.displayName = data["displayName"];
+            this.isCustom = data["isCustom"];
             this.expiringEditionId = data["expiringEditionId"];
         }
     }
@@ -21222,6 +21818,7 @@ export class EditionEditDto implements IEditionEditDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["displayName"] = this.displayName;
+        data["isCustom"] = this.isCustom;
         data["expiringEditionId"] = this.expiringEditionId;
         return data; 
     }
@@ -21230,6 +21827,7 @@ export class EditionEditDto implements IEditionEditDto {
 export interface IEditionEditDto {
     id: number | undefined;
     displayName: string | undefined;
+    isCustom: boolean;
     expiringEditionId: number | undefined;
 }
 
@@ -21555,6 +22153,7 @@ export class EditionCreateDto implements IEditionCreateDto {
     trialDayCount!: number | undefined;
     waitingDayAfterExpire!: number | undefined;
     expiringEditionId!: number | undefined;
+    isCustom!: boolean;
 
     constructor(data?: IEditionCreateDto) {
         if (data) {
@@ -21576,6 +22175,7 @@ export class EditionCreateDto implements IEditionCreateDto {
             this.trialDayCount = data["trialDayCount"];
             this.waitingDayAfterExpire = data["waitingDayAfterExpire"];
             this.expiringEditionId = data["expiringEditionId"];
+            this.isCustom = data["isCustom"];
         }
     }
 
@@ -21597,6 +22197,7 @@ export class EditionCreateDto implements IEditionCreateDto {
         data["trialDayCount"] = this.trialDayCount;
         data["waitingDayAfterExpire"] = this.waitingDayAfterExpire;
         data["expiringEditionId"] = this.expiringEditionId;
+        data["isCustom"] = this.isCustom;
         return data; 
     }
 }
@@ -21611,6 +22212,7 @@ export interface IEditionCreateDto {
     trialDayCount: number | undefined;
     waitingDayAfterExpire: number | undefined;
     expiringEditionId: number | undefined;
+    isCustom: boolean;
 }
 
 export class CreateEditionDto implements ICreateEditionDto {
@@ -25484,6 +26086,7 @@ export class EditionSelectDto implements IEditionSelectDto {
     trialDayCount!: number | undefined;
     waitingDayAfterExpire!: number | undefined;
     isFree!: boolean;
+    isCustom!: boolean;
     additionalData!: AdditionalData | undefined;
 
     constructor(data?: IEditionSelectDto) {
@@ -25508,6 +26111,7 @@ export class EditionSelectDto implements IEditionSelectDto {
             this.trialDayCount = data["trialDayCount"];
             this.waitingDayAfterExpire = data["waitingDayAfterExpire"];
             this.isFree = data["isFree"];
+            this.isCustom = data["isCustom"];
             this.additionalData = data["additionalData"] ? AdditionalData.fromJS(data["additionalData"]) : <any>undefined;
         }
     }
@@ -25532,6 +26136,7 @@ export class EditionSelectDto implements IEditionSelectDto {
         data["trialDayCount"] = this.trialDayCount;
         data["waitingDayAfterExpire"] = this.waitingDayAfterExpire;
         data["isFree"] = this.isFree;
+        data["isCustom"] = this.isCustom;
         data["additionalData"] = this.additionalData ? this.additionalData.toJSON() : <any>undefined;
         return data; 
     }
@@ -25549,6 +26154,7 @@ export interface IEditionSelectDto {
     trialDayCount: number | undefined;
     waitingDayAfterExpire: number | undefined;
     isFree: boolean;
+    isCustom: boolean;
     additionalData: AdditionalData | undefined;
 }
 
@@ -31327,6 +31933,7 @@ export class RegisterUserInput implements IRegisterUserInput {
     paymentDetails!: PaymentDetails;
     personalInfo!: PersonalInfoDto;
     subscriptionPlans!: SubscriptionPlansDto;
+    contactUs!: CreateOrUpdateContactusInput;
 
     constructor(data?: IRegisterUserInput) {
         if (data) {
@@ -31343,6 +31950,7 @@ export class RegisterUserInput implements IRegisterUserInput {
             this.paymentDetails = data["paymentDetails"] ? PaymentDetails.fromJS(data["paymentDetails"]) : <any>undefined;
             this.personalInfo = data["personalInfo"] ? PersonalInfoDto.fromJS(data["personalInfo"]) : <any>undefined;
             this.subscriptionPlans = data["subscriptionPlans"] ? SubscriptionPlansDto.fromJS(data["subscriptionPlans"]) : <any>undefined;
+            this.contactUs = data["contactUs"] ? CreateOrUpdateContactusInput.fromJS(data["contactUs"]) : <any>undefined;
         }
     }
 
@@ -31359,6 +31967,7 @@ export class RegisterUserInput implements IRegisterUserInput {
         data["paymentDetails"] = this.paymentDetails ? this.paymentDetails.toJSON() : <any>undefined;
         data["personalInfo"] = this.personalInfo ? this.personalInfo.toJSON() : <any>undefined;
         data["subscriptionPlans"] = this.subscriptionPlans ? this.subscriptionPlans.toJSON() : <any>undefined;
+        data["contactUs"] = this.contactUs ? this.contactUs.toJSON() : <any>undefined;
         return data; 
     }
 }
@@ -31368,6 +31977,7 @@ export interface IRegisterUserInput {
     paymentDetails: PaymentDetails;
     personalInfo: PersonalInfoDto;
     subscriptionPlans: SubscriptionPlansDto;
+    contactUs: CreateOrUpdateContactusInput;
 }
 
 export class GetLatestWebLogsOutput implements IGetLatestWebLogsOutput {
