@@ -95,7 +95,6 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   editAccount() : void {
     this.editAccountCheck = true;
     this._chartOfAccountService.getAccountForEdit( this.accountId).subscribe(result => {
-      this.accountDto.closingMonth = result.closingMonth;
       this.accountDto.creatorUserId = result.creatorUserId; 
       if(history.state.data.userId){
         this.accountDto.assigneeId=history.state.data.userId
@@ -293,7 +292,6 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
 
   createAccount():void {
     this.saving = true;
-    this.accountDto.closingMonth = moment(this.date)
     if(history.state.data.userId){
       this.accountDto.assigneeId=history.state.data.userId
     }

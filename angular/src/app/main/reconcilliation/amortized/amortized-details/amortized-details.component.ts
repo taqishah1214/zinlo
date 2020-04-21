@@ -40,7 +40,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   users : any = [];
   historyList : any =[];
   AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
-
+  monthStatus : boolean;
 
 
 
@@ -67,6 +67,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     this.amortrizedItemId = history.state.data.amortrizedItemId;
     this.netAmount = history.state.data.netAmount;
     this.accuredAmount = history.state.data.accuredAmount
+    this.monthStatus = history.state.data.monthStatus
     this.getTaskDetails();
     this.getProfilePicture();
     this.getAuditLogOfAccount();

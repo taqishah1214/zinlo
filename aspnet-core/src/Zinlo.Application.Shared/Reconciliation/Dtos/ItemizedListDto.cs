@@ -12,7 +12,7 @@ namespace Zinlo.Reconciliation.Dtos
         public double TotalTrialBalance { get; set; }
         public double Variance { get; set; }
         public List<CommentDto> Comments { get; set; }
-
+        public bool MonthStatus { get; set; }
 
 
     }

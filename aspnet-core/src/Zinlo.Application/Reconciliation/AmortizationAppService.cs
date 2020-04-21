@@ -16,6 +16,7 @@ using Zinlo.ChartsofAccount;
 using Zinlo.Comment;
 using Zinlo.Comment.Dtos;
 using Abp.Domain.Uow;
+using Zinlo.TimeManagements;
 
 namespace Zinlo.Reconciliation
 {
@@ -26,17 +27,22 @@ namespace Zinlo.Reconciliation
         private readonly IChartsofAccountAppService _chartsofAccountAppService;
         private readonly ICommentAppService _commentAppService;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly ITimeManagementsAppService _timeManagementsAppService;
+
 
         #region|#Constructor|
         public AmortizationAppService(ICommentAppService commentAppService,IChartsofAccountAppService chartsofAccountAppService, IRepository<Amortization, long> amortizationRepository,
             IAttachmentAppService attachmentAppService,
-            IUnitOfWorkManager unitOfWorkManager)
+            IUnitOfWorkManager unitOfWorkManager,
+            ITimeManagementsAppService timeManagementsAppService)
         {
             _attachmentAppService = attachmentAppService;
             _amortizationRepository = amortizationRepository;
             _chartsofAccountAppService = chartsofAccountAppService;
             _commentAppService = commentAppService;
             _unitOfWorkManager = unitOfWorkManager;
+            _timeManagementsAppService = timeManagementsAppService;
+
         }
         #endregion
         #region|Create Edit|
@@ -61,14 +67,28 @@ namespace Zinlo.Reconciliation
         {
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
-                var query = _amortizationRepository.GetAll().Where(e => e.ClosingMonth.Month == input.MonthFilter.Month && e.ClosingMonth.Year == input.MonthFilter.Year)
+                var query = _amortizationRepository.GetAll()
                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
-               .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId)
-               .WhereIf(!string.IsNullOrWhiteSpace(input.AccountNumer), e => false || e.ChartsofAccount.AccountNumber == input.AccountNumer)
-               .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
+               .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId);
+               //.WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
+
+                query = query.Where((e => (e.CreationTime.Year < input.SelectedMonth.Year) || (e.CreationTime.Year == input.SelectedMonth.Year && e.CreationTime.Month <= input.SelectedMonth.Month)));
 
 
-                var pagedAndFilteredItems = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+                var monthStatus = await _timeManagementsAppService.GetMonthStatus(input.SelectedMonth);
+                var isDeletedAccountExist = query.Where((e => e.IsDeleted)).ToList();
+                var AllItems = query.Where((e => !e.IsDeleted)).ToList();
+                if (isDeletedAccountExist.Count > 0)
+                {
+                    var deletedAccount = query.Where((e => (e.IsDeleted && ((e.DeletionTime.Value.Year > input.SelectedMonth.Year) || (e.DeletionTime.Value.Year == input.SelectedMonth.Year && e.DeletionTime.Value.Month > input.SelectedMonth.Month))))).ToList();
+                    AllItems.AddRange(deletedAccount);
+                }
+
+
+
+
+
+                var pagedAndFilteredItems = AllItems/*.OrderBy(input.Sorting ?? "id asc").PageBy(input)*/;
                 var totalCount = query.Count();
                 var amortizedList = (from o in pagedAndFilteredItems.ToList()
 
@@ -78,10 +98,10 @@ namespace Zinlo.Reconciliation
                                          StartDate = o.StartDate,
                                          EndDate = o.EndDate,
                                          Description = o.Description,
-                                         AccuredAmortization = CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate),
+                                         AccuredAmortization = CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.SelectedMonth, o.StartDate),
                                          BeginningAmount = o.Amount,
                                          IsDeleted = o.IsDeleted,
-                                         NetAmount = CalculateNetAmount((int)(o.Criteria) == 2 || (int)(o.Criteria) == 3 ? CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.MonthFilter, o.StartDate) : o.AccomulateAmount, o.Amount),
+                                         NetAmount = CalculateNetAmount((int)(o.Criteria) == 2 || (int)(o.Criteria) == 3 ? CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.SelectedMonth, o.StartDate) : o.AccomulateAmount, o.Amount),
                                          Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 2).Result
                                      }).ToList();
 
@@ -96,8 +116,9 @@ namespace Zinlo.Reconciliation
                     TotalNetAmount = amortizedList.Sum(item => item.NetAmount)
                 };
 
-                amortizedListDto.TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId);
+                amortizedListDto.TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId,input.SelectedMonth);
                 amortizedListDto.Comments = await _commentAppService.GetComments((int)CommentType.AmortizedList, input.ChartofAccountId);
+                amortizedListDto.MonthStatus = monthStatus;
 
 
                 if (input.ChartofAccountId != 0)
@@ -107,18 +128,18 @@ namespace Zinlo.Reconciliation
                     switch (reconcilledResult)
                     {
                         case 1:
-                            await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalNetAmount, input.ChartofAccountId);
+                            await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalNetAmount, input.ChartofAccountId,input.SelectedMonth);
                             amortizedListDto.VarianceNetAmount = amortizedListDto.TotalNetAmount - amortizedListDto.TotalTrialBalance;
                             amortizedListDto.VarianceBeginningAmount = 0;
                             amortizedListDto.VarianceAccuredAmount = 0;
                             break;
                         case 2:
-                            await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalBeginningAmount, input.ChartofAccountId);
+                            await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalBeginningAmount, input.ChartofAccountId,input.SelectedMonth);
                             amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalance;
                             amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalance;
                             break;
                         case 3:
-                            await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalAccuredAmortization, input.ChartofAccountId);
+                            await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalAccuredAmortization, input.ChartofAccountId,input.SelectedMonth);
                             amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalance;
                             amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalance;
                             break;

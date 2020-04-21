@@ -25,8 +25,7 @@ namespace Zinlo.Reconciliation
         [DisableAuditing]
         public long ChartsofAccountId { get; set; }
         public Criteria Criteria { get; set; }
-        [DisableAuditing]
-        public DateTime ClosingMonth { get; set; }
+       
 
 
     }

@@ -59,6 +59,7 @@ export class ItemizedComponent extends AppComponentBase {
   buttonColorForComment : any = "bg-grey"
   buttonColorForHistory : any = "bg-lightgrey"
   accountSubypeList : any  = []
+  monthStatus : boolean;
 
   constructor(
     injector: Injector,
@@ -77,7 +78,6 @@ export class ItemizedComponent extends AppComponentBase {
     this.userSignInName = this.appSession.user.name.toString().toUpperCase();
     this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.storeData.allAccountSubTypes.subscribe(accountSubypeList => this.accountSubypeList = accountSubypeList)
-    console.log("this.accountSubypeList",this.accountSubypeList)
     this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
@@ -85,6 +85,7 @@ export class ItemizedComponent extends AppComponentBase {
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
     this.getAuditLogOfAccount();
+    this.getAllItemizedList(this.primeNgEvent);
 
 
   }
@@ -92,7 +93,7 @@ export class ItemizedComponent extends AppComponentBase {
     this._router.navigate(['/app/main/reconcilliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : 0 }} });
   }
   RedirectToDetail(ItemizedItemId) : void {   
-      this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId }} });
+      this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId }} });
   }
   getAllItemizedList(event?: LazyLoadEvent){
     this.primeNgEvent = event;
@@ -102,11 +103,11 @@ export class ItemizedComponent extends AppComponentBase {
     }
 
   this.primengTableHelper.showLoadingIndicator();
+  debugger
   this._itemizedService.getAll(
     this.filterText,
-    this.AccountNumber == "" ? this.accountId : 0,
-    moment(this.monthFilter),
-    this.AccountNumber,
+    this.accountId,
+    moment(this.monthValue),
     this.AllOrActive,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
@@ -120,6 +121,7 @@ export class ItemizedComponent extends AppComponentBase {
       this.trialBalance = this.ItemizedList[0].totalTrialBalance;
       this.variance = this.ItemizedList[0].variance;
       this.itemList = this.ItemizedList[0].itemizedListForViewDto;
+      this.monthStatus = this.ItemizedList[0].monthStatus;
       this.postedCommentList = this.ItemizedList[0].comments;
       this.itemList.forEach(i => {
         i.attachments.forEach((element,index) => {
@@ -134,31 +136,32 @@ export class ItemizedComponent extends AppComponentBase {
 }
 
 filterByMonth(event): void {
-  this.monthFilter = new Date(add(event, 2, "day"));;
-  this._timeManagementsServiceProxy.checkManagementExist(moment(this.monthFilter)).subscribe(result => { 
-    if (result)
-    {
-      this.AccountNumber = this.accountNo;
-      this.getAllItemizedList(this.primeNgEvent);
-    }
-    else
-    {
-      this.CreateTimeManagementDto.month =  moment(this.monthFilter)
-      this.CreateTimeManagementDto.status =  false
-      this.message.confirm(
-        'Are you want to define this month as closing month.',
-        this.l(' Selected Month Does not Exist'),
-        (isConfirmed) => {
-          if (isConfirmed) {
-            this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
-              this.AccountNumber = this.accountNo;
-              this.getAllItemizedList(this.primeNgEvent);
-             })      
-          }
-        }
-      );
-    }  
-  })
+  this.monthValue = new Date(add(event, 2, "day"));
+  this.getAllItemizedList(this.primeNgEvent)
+  // this._timeManagementsServiceProxy.checkManagementExist(moment(this.monthFilter)).subscribe(result => { 
+  //   if (result)
+  //   {
+  //     this.AccountNumber = this.accountNo;
+  //     this.getAllItemizedList(this.primeNgEvent);
+  //   }
+  //   else
+  //   {
+  //     this.CreateTimeManagementDto.month =  moment(this.monthFilter)
+  //     this.CreateTimeManagementDto.status =  false
+  //     this.message.confirm(
+  //       'Are you want to define this month as closing month.',
+  //       this.l(' Selected Month Does not Exist'),
+  //       (isConfirmed) => {
+  //         if (isConfirmed) {
+  //           this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
+  //             this.AccountNumber = this.accountNo;
+  //             this.getAllItemizedList(this.primeNgEvent);
+  //            })      
+  //         }
+  //       }
+  //     );
+  //   }  
+  // })
 }
 getExtensionImagePath(str) {
 

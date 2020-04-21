@@ -22,8 +22,6 @@ namespace Zinlo.Reconciliation
         public virtual ChartofAccounts.ChartofAccounts ChartsofAccount { get; set; }
         [DisableAuditing]
         public long ChartsofAccountId { get; set; }
-        [DisableAuditing]
-        public DateTime ClosingMonth { get; set; }
 
     }
 }

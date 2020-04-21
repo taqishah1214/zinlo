@@ -66,8 +66,8 @@ namespace Zinlo.Web.Startup
                 var workManager = IocManager.Resolve<IBackgroundWorkerManager>();
                 workManager.Add(IocManager.Resolve<SubscriptionExpirationCheckWorker>());
                 workManager.Add(IocManager.Resolve<SubscriptionExpireEmailNotifierWorker>());
-                workManager.Add(IocManager.Resolve<ChartsOfAccountMonthly>());
-
+/*                workManager.Add(IocManager.Resolve<ChartsOfAccountMonthly>());
+*/
             }
 
             ConfigureExternalAuthProviders();

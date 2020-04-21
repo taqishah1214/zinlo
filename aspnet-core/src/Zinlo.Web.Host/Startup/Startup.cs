@@ -77,7 +77,8 @@ namespace Zinlo.Web.Startup
             services.AddTransient<IChartsOfAccontTrialBalanceListExcelDataReader, ChartsOfAccountTrialBalanceListDataReader>();
             services.AddTransient<IAccountSubTypeAppService, AccountSubTypeAppService>();
             services.AddScoped<IChartsofAccountAppService, ChartsofAccountAppService>();
-            services.AddTransient<IImportPathsAppService, ImportPathsAppService>();            
+            services.AddTransient<IImportPathsAppService, ImportPathsAppService>();
+
             //Configure CORS for angular2 UI
             services.AddCors(options =>
             {

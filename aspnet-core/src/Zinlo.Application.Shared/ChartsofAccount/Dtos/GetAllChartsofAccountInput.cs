@@ -9,7 +9,7 @@ namespace Zinlo.ChartsofAccount.Dtos
     {
         public string Filter { get; set; }
         public int AccountType { get; set; }
-
+        public DateTime SelectedMonth { get; set; }
         public long AssigneeId { get; set; }
         public bool? AllOrActive { get; set; }
     }

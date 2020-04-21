@@ -14,5 +14,6 @@ namespace Zinlo.Reconciliation.Dtos
         public List<GetAttachmentsDto> Attachments { get; set; }
         public bool IsDeleted { get; set; }
 
+
     }
 }

@@ -36,6 +36,12 @@
     <Compile Remove="Migrations\20200410163456_InstructionVersion.Designer.cs" />
     <Compile Remove="Migrations\20200410164138_Initial.cs" />
     <Compile Remove="Migrations\20200410164138_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200416115323_add_accountBalanceTable.cs" />
+    <Compile Remove="Migrations\20200416115323_add_accountBalanceTable.Designer.cs" />
+    <Compile Remove="Migrations\20200416133524_add_table_accountBalance.cs" />
+    <Compile Remove="Migrations\20200416133524_add_table_accountBalance.Designer.cs" />
+    <Compile Remove="Migrations\20200420083858_add_column_chartsofaccounts.cs" />
+    <Compile Remove="Migrations\20200420083858_add_column_chartsofaccounts.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="28.4.4" />

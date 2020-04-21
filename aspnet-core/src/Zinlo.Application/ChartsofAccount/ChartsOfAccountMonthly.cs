@@ -1,4 +1,4 @@
-﻿using Abp.Dependency;
+﻿/*using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Threading.BackgroundWorkers;
@@ -197,3 +197,4 @@ namespace Zinlo.ChartsofAccount
 
 
 
+*/

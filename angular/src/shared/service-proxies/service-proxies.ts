@@ -1067,15 +1067,14 @@ export class AmortizationServiceProxy {
     /**
      * @param filter (optional) 
      * @param chartofAccountId (optional) 
-     * @param monthFilter (optional) 
-     * @param accountNumer (optional) 
+     * @param selectedMonth (optional) 
      * @param allOrActive (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, chartofAccountId: number | undefined, monthFilter: moment.Moment | undefined, accountNumer: string | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfAmortizedListDto> {
+    getAll(filter: string | undefined, chartofAccountId: number | undefined, selectedMonth: moment.Moment | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfAmortizedListDto> {
         let url_ = this.baseUrl + "/api/services/app/Amortization/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -1085,14 +1084,10 @@ export class AmortizationServiceProxy {
             throw new Error("The parameter 'chartofAccountId' cannot be null.");
         else if (chartofAccountId !== undefined)
             url_ += "ChartofAccountId=" + encodeURIComponent("" + chartofAccountId) + "&"; 
-        if (monthFilter === null)
-            throw new Error("The parameter 'monthFilter' cannot be null.");
-        else if (monthFilter !== undefined)
-            url_ += "MonthFilter=" + encodeURIComponent(monthFilter ? "" + monthFilter.toJSON() : "") + "&"; 
-        if (accountNumer === null)
-            throw new Error("The parameter 'accountNumer' cannot be null.");
-        else if (accountNumer !== undefined)
-            url_ += "AccountNumer=" + encodeURIComponent("" + accountNumer) + "&"; 
+        if (selectedMonth === null)
+            throw new Error("The parameter 'selectedMonth' cannot be null.");
+        else if (selectedMonth !== undefined)
+            url_ += "SelectedMonth=" + encodeURIComponent(selectedMonth ? "" + selectedMonth.toJSON() : "") + "&"; 
         if (allOrActive === null)
             throw new Error("The parameter 'allOrActive' cannot be null.");
         else if (allOrActive !== undefined)
@@ -2946,6 +2941,7 @@ export class ChartsofAccountServiceProxy {
     /**
      * @param filter (optional) 
      * @param accountType (optional) 
+     * @param selectedMonth (optional) 
      * @param assigneeId (optional) 
      * @param allOrActive (optional) 
      * @param sorting (optional) 
@@ -2953,7 +2949,7 @@ export class ChartsofAccountServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, accountType: number | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
+    getAll(filter: string | undefined, accountType: number | undefined, selectedMonth: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
         let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -2963,6 +2959,10 @@ export class ChartsofAccountServiceProxy {
             throw new Error("The parameter 'accountType' cannot be null.");
         else if (accountType !== undefined)
             url_ += "AccountType=" + encodeURIComponent("" + accountType) + "&"; 
+        if (selectedMonth === null)
+            throw new Error("The parameter 'selectedMonth' cannot be null.");
+        else if (selectedMonth !== undefined)
+            url_ += "SelectedMonth=" + encodeURIComponent(selectedMonth ? "" + selectedMonth.toJSON() : "") + "&"; 
         if (assigneeId === null)
             throw new Error("The parameter 'assigneeId' cannot be null.");
         else if (assigneeId !== undefined)
@@ -3310,9 +3310,10 @@ export class ChartsofAccountServiceProxy {
     /**
      * @param balance (optional) 
      * @param id (optional) 
+     * @param month (optional) 
      * @return Success
      */
-    addandUpdateBalance(balance: number | undefined, id: number | undefined): Observable<void> {
+    addandUpdateBalance(balance: number | undefined, id: number | undefined, month: moment.Moment | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/AddandUpdateBalance?";
         if (balance === null)
             throw new Error("The parameter 'balance' cannot be null.");
@@ -3322,6 +3323,10 @@ export class ChartsofAccountServiceProxy {
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
             url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        if (month === null)
+            throw new Error("The parameter 'month' cannot be null.");
+        else if (month !== undefined)
+            url_ += "month=" + encodeURIComponent(month ? "" + month.toJSON() : "") + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3587,8 +3592,8 @@ export class ChartsofAccountServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    checkAccountForTrialBalance(body: ChartsOfAccountsTrialBalanceExcellImportDto | undefined): Observable<boolean> {
-        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/CheckAccountForTrialBalance";
+    addTrialBalanceInAccount(body: ChartsOfAccountsTrialBalanceExcellImportDto | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/AddTrialBalanceInAccount";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -3604,11 +3609,11 @@ export class ChartsofAccountServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCheckAccountForTrialBalance(response_);
+            return this.processAddTrialBalanceInAccount(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCheckAccountForTrialBalance(<any>response_);
+                    return this.processAddTrialBalanceInAccount(<any>response_);
                 } catch (e) {
                     return <Observable<boolean>><any>_observableThrow(e);
                 }
@@ -3617,7 +3622,7 @@ export class ChartsofAccountServiceProxy {
         }));
     }
 
-    protected processCheckAccountForTrialBalance(response: HttpResponseBase): Observable<boolean> {
+    protected processAddTrialBalanceInAccount(response: HttpResponseBase): Observable<boolean> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -3641,14 +3646,19 @@ export class ChartsofAccountServiceProxy {
 
     /**
      * @param id (optional) 
+     * @param month (optional) 
      * @return Success
      */
-    getTrialBalanceofAccount(id: number | undefined): Observable<number> {
+    getTrialBalanceofAccount(id: number | undefined, month: moment.Moment | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetTrialBalanceofAccount?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
             url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        if (month === null)
+            throw new Error("The parameter 'month' cannot be null.");
+        else if (month !== undefined)
+            url_ += "month=" + encodeURIComponent(month ? "" + month.toJSON() : "") + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3902,120 +3912,6 @@ export class ChartsofAccountServiceProxy {
     }
 
     protected processShiftAmortizedItems(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
-
-    /**
-     * @param previousAccountId (optional) 
-     * @param newAccountId (optional) 
-     * @param closingMonth (optional) 
-     * @return Success
-     */
-    shiftItemizedItem(previousAccountId: number | undefined, newAccountId: number | undefined, closingMonth: moment.Moment | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/ShiftItemizedItem?";
-        if (previousAccountId === null)
-            throw new Error("The parameter 'previousAccountId' cannot be null.");
-        else if (previousAccountId !== undefined)
-            url_ += "previousAccountId=" + encodeURIComponent("" + previousAccountId) + "&"; 
-        if (newAccountId === null)
-            throw new Error("The parameter 'newAccountId' cannot be null.");
-        else if (newAccountId !== undefined)
-            url_ += "newAccountId=" + encodeURIComponent("" + newAccountId) + "&"; 
-        if (closingMonth === null)
-            throw new Error("The parameter 'closingMonth' cannot be null.");
-        else if (closingMonth !== undefined)
-            url_ += "closingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processShiftItemizedItem(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processShiftItemizedItem(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processShiftItemizedItem(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
-
-    /**
-     * @param closingMonth (optional) 
-     * @return Success
-     */
-    shiftChartsOfAccountToSpecficMonth(closingMonth: moment.Moment | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/ShiftChartsOfAccountToSpecficMonth?";
-        if (closingMonth === null)
-            throw new Error("The parameter 'closingMonth' cannot be null.");
-        else if (closingMonth !== undefined)
-            url_ += "closingMonth=" + encodeURIComponent(closingMonth ? "" + closingMonth.toJSON() : "") + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processShiftChartsOfAccountToSpecficMonth(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processShiftChartsOfAccountToSpecficMonth(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processShiftChartsOfAccountToSpecficMonth(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -8425,15 +8321,14 @@ export class ItemizationServiceProxy {
     /**
      * @param filter (optional) 
      * @param chartofAccountId (optional) 
-     * @param monthFilter (optional) 
-     * @param accountNumer (optional) 
+     * @param selectedMonth (optional) 
      * @param allOrActive (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, chartofAccountId: number | undefined, monthFilter: moment.Moment | undefined, accountNumer: string | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfItemizedListDto> {
+    getAll(filter: string | undefined, chartofAccountId: number | undefined, selectedMonth: moment.Moment | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfItemizedListDto> {
         let url_ = this.baseUrl + "/api/services/app/Itemization/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -8443,14 +8338,10 @@ export class ItemizationServiceProxy {
             throw new Error("The parameter 'chartofAccountId' cannot be null.");
         else if (chartofAccountId !== undefined)
             url_ += "ChartofAccountId=" + encodeURIComponent("" + chartofAccountId) + "&"; 
-        if (monthFilter === null)
-            throw new Error("The parameter 'monthFilter' cannot be null.");
-        else if (monthFilter !== undefined)
-            url_ += "MonthFilter=" + encodeURIComponent(monthFilter ? "" + monthFilter.toJSON() : "") + "&"; 
-        if (accountNumer === null)
-            throw new Error("The parameter 'accountNumer' cannot be null.");
-        else if (accountNumer !== undefined)
-            url_ += "AccountNumer=" + encodeURIComponent("" + accountNumer) + "&"; 
+        if (selectedMonth === null)
+            throw new Error("The parameter 'selectedMonth' cannot be null.");
+        else if (selectedMonth !== undefined)
+            url_ += "SelectedMonth=" + encodeURIComponent(selectedMonth ? "" + selectedMonth.toJSON() : "") + "&"; 
         if (allOrActive === null)
             throw new Error("The parameter 'allOrActive' cannot be null.");
         else if (allOrActive !== undefined)
@@ -17336,9 +17227,7 @@ export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto
     title!: string | undefined;
     description!: string | undefined;
     creationDate!: moment.Moment;
-    createdBy!: string | undefined;
     userId!: number | undefined;
-    profilePicture!: string | undefined;
     id!: number;
 
     constructor(data?: IGetAccountSubTypeForViewDto) {
@@ -17355,9 +17244,7 @@ export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto
             this.title = data["title"];
             this.description = data["description"];
             this.creationDate = data["creationDate"] ? moment(data["creationDate"].toString()) : <any>undefined;
-            this.createdBy = data["createdBy"];
             this.userId = data["userId"];
-            this.profilePicture = data["profilePicture"];
             this.id = data["id"];
         }
     }
@@ -17374,9 +17261,7 @@ export class GetAccountSubTypeForViewDto implements IGetAccountSubTypeForViewDto
         data["title"] = this.title;
         data["description"] = this.description;
         data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
-        data["createdBy"] = this.createdBy;
         data["userId"] = this.userId;
-        data["profilePicture"] = this.profilePicture;
         data["id"] = this.id;
         return data; 
     }
@@ -17386,9 +17271,7 @@ export interface IGetAccountSubTypeForViewDto {
     title: string | undefined;
     description: string | undefined;
     creationDate: moment.Moment;
-    createdBy: string | undefined;
     userId: number | undefined;
-    profilePicture: string | undefined;
     id: number;
 }
 
@@ -17765,6 +17648,7 @@ export class AmortizedListDto implements IAmortizedListDto {
     varianceAccuredAmount!: number;
     comments!: CommentDto[] | undefined;
     reconciliedBase!: number;
+    monthStatus!: boolean;
 
     constructor(data?: IAmortizedListDto) {
         if (data) {
@@ -17795,6 +17679,7 @@ export class AmortizedListDto implements IAmortizedListDto {
                     this.comments!.push(CommentDto.fromJS(item));
             }
             this.reconciliedBase = data["reconciliedBase"];
+            this.monthStatus = data["monthStatus"];
         }
     }
 
@@ -17825,6 +17710,7 @@ export class AmortizedListDto implements IAmortizedListDto {
                 data["comments"].push(item.toJSON());
         }
         data["reconciliedBase"] = this.reconciliedBase;
+        data["monthStatus"] = this.monthStatus;
         return data; 
     }
 }
@@ -17840,6 +17726,7 @@ export interface IAmortizedListDto {
     varianceAccuredAmount: number;
     comments: CommentDto[] | undefined;
     reconciliedBase: number;
+    monthStatus: boolean;
 }
 
 export class PagedResultDtoOfAmortizedListDto implements IPagedResultDtoOfAmortizedListDto {
@@ -18760,7 +18647,6 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
     overallMonthlyAssignee!: GetUserWithPicture[] | undefined;
     statusId!: number;
     balance!: number;
-    lock!: boolean;
     isDeleted!: boolean;
     monthStatus!: boolean;
 
@@ -18790,7 +18676,6 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
             }
             this.statusId = data["statusId"];
             this.balance = data["balance"];
-            this.lock = data["lock"];
             this.isDeleted = data["isDeleted"];
             this.monthStatus = data["monthStatus"];
         }
@@ -18820,7 +18705,6 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
         }
         data["statusId"] = this.statusId;
         data["balance"] = this.balance;
-        data["lock"] = this.lock;
         data["isDeleted"] = this.isDeleted;
         data["monthStatus"] = this.monthStatus;
         return data; 
@@ -18839,7 +18723,6 @@ export interface IChartsofAccoutsForViewDto {
     overallMonthlyAssignee: GetUserWithPicture[] | undefined;
     statusId: number;
     balance: number;
-    lock: boolean;
     isDeleted: boolean;
     monthStatus: boolean;
 }
@@ -18918,7 +18801,8 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
     assigneeId!: number;
     reconciled!: Reconciled;
     balance!: number;
-    closingMonth!: moment.Moment;
+    changeTime!: moment.Moment;
+    isChange!: boolean;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -18942,7 +18826,8 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
             this.assigneeId = data["assigneeId"];
             this.reconciled = data["reconciled"];
             this.balance = data["balance"];
-            this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
+            this.changeTime = data["changeTime"] ? moment(data["changeTime"].toString()) : <any>undefined;
+            this.isChange = data["isChange"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -18966,7 +18851,8 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
         data["assigneeId"] = this.assigneeId;
         data["reconciled"] = this.reconciled;
         data["balance"] = this.balance;
-        data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
+        data["changeTime"] = this.changeTime ? this.changeTime.toISOString() : <any>undefined;
+        data["isChange"] = this.isChange;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -18983,7 +18869,8 @@ export interface ICreateOrEditChartsofAccountDto {
     assigneeId: number;
     reconciled: Reconciled;
     balance: number;
-    closingMonth: moment.Moment;
+    changeTime: moment.Moment;
+    isChange: boolean;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
@@ -18998,7 +18885,6 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
     reconcillationType!: number;
     accountType!: number;
     accountSubTypeId!: number;
-    closingMonth!: moment.Moment;
     reconciledId!: number;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
@@ -19023,7 +18909,6 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
             this.reconcillationType = data["reconcillationType"];
             this.accountType = data["accountType"];
             this.accountSubTypeId = data["accountSubTypeId"];
-            this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.reconciledId = data["reconciledId"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
@@ -19048,7 +18933,6 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
         data["reconcillationType"] = this.reconcillationType;
         data["accountType"] = this.accountType;
         data["accountSubTypeId"] = this.accountSubTypeId;
-        data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["reconciledId"] = this.reconciledId;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
@@ -19066,7 +18950,6 @@ export interface IGetAccountForEditDto {
     reconcillationType: number;
     accountType: number;
     accountSubTypeId: number;
-    closingMonth: moment.Moment;
     reconciledId: number;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
@@ -19078,7 +18961,7 @@ export class ChartsOfAccountsTrialBalanceExcellImportDto implements IChartsOfAcc
     accountNumber!: string | undefined;
     balance!: string | undefined;
     exception!: string | undefined;
-    versionId!: number;
+    selectedMonth!: moment.Moment;
 
     constructor(data?: IChartsOfAccountsTrialBalanceExcellImportDto) {
         if (data) {
@@ -19095,7 +18978,7 @@ export class ChartsOfAccountsTrialBalanceExcellImportDto implements IChartsOfAcc
             this.accountNumber = data["accountNumber"];
             this.balance = data["balance"];
             this.exception = data["exception"];
-            this.versionId = data["versionId"];
+            this.selectedMonth = data["selectedMonth"] ? moment(data["selectedMonth"].toString()) : <any>undefined;
         }
     }
 
@@ -19112,7 +18995,7 @@ export class ChartsOfAccountsTrialBalanceExcellImportDto implements IChartsOfAcc
         data["accountNumber"] = this.accountNumber;
         data["balance"] = this.balance;
         data["exception"] = this.exception;
-        data["versionId"] = this.versionId;
+        data["selectedMonth"] = this.selectedMonth ? this.selectedMonth.toISOString() : <any>undefined;
         return data; 
     }
 }
@@ -19122,7 +19005,7 @@ export interface IChartsOfAccountsTrialBalanceExcellImportDto {
     accountNumber: string | undefined;
     balance: string | undefined;
     exception: string | undefined;
-    versionId: number;
+    selectedMonth: moment.Moment;
 }
 
 export enum FriendshipState {
@@ -23674,6 +23557,7 @@ export class ItemizedListDto implements IItemizedListDto {
     totalTrialBalance!: number;
     variance!: number;
     comments!: CommentDto[] | undefined;
+    monthStatus!: boolean;
 
     constructor(data?: IItemizedListDto) {
         if (data) {
@@ -23699,6 +23583,7 @@ export class ItemizedListDto implements IItemizedListDto {
                 for (let item of data["comments"])
                     this.comments!.push(CommentDto.fromJS(item));
             }
+            this.monthStatus = data["monthStatus"];
         }
     }
 
@@ -23724,6 +23609,7 @@ export class ItemizedListDto implements IItemizedListDto {
             for (let item of this.comments)
                 data["comments"].push(item.toJSON());
         }
+        data["monthStatus"] = this.monthStatus;
         return data; 
     }
 }
@@ -23734,6 +23620,7 @@ export interface IItemizedListDto {
     totalTrialBalance: number;
     variance: number;
     comments: CommentDto[] | undefined;
+    monthStatus: boolean;
 }
 
 export class PagedResultDtoOfItemizedListDto implements IPagedResultDtoOfItemizedListDto {
@@ -31247,8 +31134,6 @@ export interface IPaymentDetails {
 }
 
 export class PersonalInfoDto implements IPersonalInfoDto {
-    firstName!:string| undefined;
-    lastName!: string | undefined;
     userName!: string | undefined;
     title!: string | undefined;
     emailAddress!: string | undefined;

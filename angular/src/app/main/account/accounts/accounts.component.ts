@@ -15,6 +15,8 @@ import { FileUpload } from 'primeng/fileupload';
 import { Observable } from 'rxjs';
 import { SignalRService } from '@app/services/signalRService';
 import { StoreDateService } from "../../../services/storedate.service";
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-accounts',
@@ -64,6 +66,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   monthStatus : boolean = false
   users: any;
   delectedBulkAccounts : any [];
+  selectedDate : any = new Date();
+
 
   uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
   uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsTrialBalanceFromExcel';
@@ -143,6 +147,8 @@ this.chartsOfAccountList.forEach(element => {
   });
  }
 
+
+
   getAllAccounts(event?: LazyLoadEvent) {
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
@@ -152,6 +158,7 @@ this.chartsOfAccountList.forEach(element => {
     this._chartOfAccountService.getAll(
       this.filterText,
       this.accountTypeFilter,
+      moment(this.selectedDate),
       this.getAccountWithAssigneeId,
       this.AllOrActive,
       this.primengTableHelper.getSorting(this.dataTable),
@@ -347,7 +354,7 @@ RedirectToCreateAccount(): void {
   }
   uploadAccountsTrialBalanceExcel(url: string): void {
     this._httpClient
-      .get<any>(this.uploadBalanceUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url)
+      .get<any>(this.uploadBalanceUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url + "&" +"monthSelected="+ this.selectedDate)
       .subscribe(response => {
         if (response.success) {
           this.notify.success(this.l('ImportAccountsTrialBalanceProcessStart'));

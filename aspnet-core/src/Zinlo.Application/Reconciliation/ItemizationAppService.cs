@@ -15,6 +15,7 @@ using Zinlo.ChartsofAccount;
 using Zinlo.Comment.Dtos;
 using Zinlo.Comment;
 using Abp.Domain.Uow;
+using Zinlo.TimeManagements;
 
 namespace Zinlo.Reconciliation
 {
@@ -25,18 +26,22 @@ namespace Zinlo.Reconciliation
         private readonly IChartsofAccountAppService _chartsofAccountAppService;
         private readonly ICommentAppService _commentAppService;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly ITimeManagementsAppService _timeManagementsAppService;
+
+
 
 
         #region|#Constructor|
         public ItemizationAppService(ICommentAppService commentAppService, IChartsofAccountAppService chartsofAccountAppService,IRepository<Itemization,long> itemizationRepository, 
             IAttachmentAppService attachmentAppService,
-            IUnitOfWorkManager unitOfWorkManager)
+            IUnitOfWorkManager unitOfWorkManager, ITimeManagementsAppService timeManagementsAppService)
         {
             _itemizationRepository = itemizationRepository;
             _attachmentAppService = attachmentAppService;
             _chartsofAccountAppService = chartsofAccountAppService;
             _commentAppService = commentAppService;
             _unitOfWorkManager = unitOfWorkManager;
+            _timeManagementsAppService = timeManagementsAppService;
         }
         #endregion
         #region|Get All|
@@ -44,15 +49,24 @@ namespace Zinlo.Reconciliation
         {
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
-                var query = _itemizationRepository.GetAll().Where(e => e.ClosingMonth.Month == input.MonthFilter.Month && e.ClosingMonth.Year == input.MonthFilter.Year)
-              .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
-              .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId)
-              .WhereIf(!string.IsNullOrWhiteSpace(input.AccountNumer), e => false || e.ChartsofAccount.AccountNumber == input.AccountNumer)
-              .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
 
-                var pagedAndFilteredItems = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
-                var totalCount = query.Count();
-                var ItemizedList = (from o in pagedAndFilteredItems.ToList()
+                var query = _itemizationRepository.GetAll()
+              .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
+              .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId);
+
+
+               query = query.Where((e => (e.CreationTime.Year < input.SelectedMonth.Year) || (e.CreationTime.Year == input.SelectedMonth.Year && e.CreationTime.Month <= input.SelectedMonth.Month)));
+                var monthStatus = await _timeManagementsAppService.GetMonthStatus(input.SelectedMonth);
+                var isDeletedAccountExist = query.Where((e => e.IsDeleted)).ToList();
+                var allItems = query.Where((e => !e.IsDeleted)).ToList();
+                if (isDeletedAccountExist.Count > 0)
+                {
+                    var deletedAccount = query.Where((e => (e.IsDeleted && ((e.DeletionTime.Value.Year > input.SelectedMonth.Year) || (e.DeletionTime.Value.Year == input.SelectedMonth.Year && e.DeletionTime.Value.Month > input.SelectedMonth.Month))))).ToList();
+                    allItems.AddRange(deletedAccount);
+                }
+               // var pagedAndFilteredItems = allItems.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+                var totalCount = allItems.Count();
+                var ItemizedList = (from o in allItems
 
                                     select new ItemizedListForViewDto()
                                     {
@@ -61,7 +75,7 @@ namespace Zinlo.Reconciliation
                                         Date = o.Date,
                                         Description = o.Description,
                                         IsDeleted = o.IsDeleted,
-                                        Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 3).Result
+                                        Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 3).Result,
                                     }).ToList();
 
                 List<ItemizedListDto> result = new List<ItemizedListDto>();
@@ -69,13 +83,15 @@ namespace Zinlo.Reconciliation
                 {
                     itemizedListForViewDto = ItemizedList,
                     TotalAmount = ItemizedList.Sum(item => item.Amount),
-                    TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId),
+                    TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId,input.SelectedMonth),
                 };
                 itemizedListDto.Variance = itemizedListDto.TotalAmount - itemizedListDto.TotalTrialBalance;
                 itemizedListDto.Comments = await _commentAppService.GetComments((int)CommentType.ItemizedList, input.ChartofAccountId);
+                itemizedListDto.MonthStatus = monthStatus;
+
                 if (input.ChartofAccountId != 0)
                 {
-                    await _chartsofAccountAppService.AddandUpdateBalance(itemizedListDto.TotalAmount, input.ChartofAccountId);
+                    await _chartsofAccountAppService.AddandUpdateBalance(itemizedListDto.TotalAmount, input.ChartofAccountId,input.SelectedMonth);
                 }
                 result.Add(itemizedListDto);
                 return new PagedResultDto<ItemizedListDto>(
@@ -123,10 +139,7 @@ namespace Zinlo.Reconciliation
            
 
         }
-
-        
-
-
+    
         protected virtual async Task Create(CreateOrEditItemizationDto input)
         {
             var item = ObjectMapper.Map<Itemization>(input);

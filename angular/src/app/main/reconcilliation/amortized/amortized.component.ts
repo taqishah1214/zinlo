@@ -63,6 +63,7 @@ export class AmortizedComponent extends AppComponentBase {
   buttonColorForComment : any = "bg-grey"
   buttonColorForHistory : any = "bg-lightgrey"
   accountSubypeList : any  = []
+  monthStatus : boolean;
 
   constructor(
     injector: Injector,
@@ -87,9 +88,10 @@ export class AmortizedComponent extends AppComponentBase {
     this.getProfilePicture();
     this.getAuditLogOfAccount();
     this.userName = this.appSession.user.name.toString();
+    this.getAllAmortizedList();
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net }} });
+    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net }} });
   }
   RedirectToAddNewItem()
   {
@@ -106,9 +108,8 @@ export class AmortizedComponent extends AppComponentBase {
   this.primengTableHelper.showLoadingIndicator();
   this._amortizationService.getAll(
     this.filterText,
-    this.AccountNumber == "" ? this.accountId : 0,
+    this.accountId,
     moment(this.monthFilter),
-    this.AccountNumber,
     this.AllOrActive,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
@@ -124,6 +125,7 @@ export class AmortizedComponent extends AppComponentBase {
     this.accuredAmount= j.totalAccuredAmortization;
     this.netAmount = j.totalNetAmount;
     this.reconciliedBase = j.reconciliedBase
+    this.monthStatus = j.monthStatus;
     switch (j.reconciliedBase) {
       case 1:
         this.trialBalanceNet = j.totalTrialBalance
@@ -160,30 +162,31 @@ export class AmortizedComponent extends AppComponentBase {
 
 filterByMonth(event): void {
   this.monthFilter = new Date(add(event, 2, "day"));;
-  this._timeManagementsServiceProxy.checkManagementExist(moment(this.monthFilter)).subscribe(result => { 
-    if (result)
-    {
-      this.AccountNumber = this.accountNo;
-      this.getAllAmortizedList(this.primeNgEvent);
-    }
-    else
-    {
-      this.CreateTimeManagementDto.month =  moment(this.monthFilter)
-      this.CreateTimeManagementDto.status =  false
-      this.message.confirm(
-        'You want to define this month.',
-        this.l(' Selected month does not Exist'),
-        (isConfirmed) => {
-          if (isConfirmed) {
-            this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
-              this.AccountNumber = this.accountNo;
-              this.getAllAmortizedList(this.primeNgEvent);
-             })      
-          }
-        }
-      );
-    }  
-  })
+  this.getAllAmortizedList(this.primeNgEvent)
+  // this._timeManagementsServiceProxy.checkManagementExist(moment(this.monthFilter)).subscribe(result => { 
+  //   if (result)
+  //   {
+  //     this.AccountNumber = this.accountNo;
+  //     this.getAllAmortizedList(this.primeNgEvent);
+  //   }
+  //   else
+  //   {
+  //     this.CreateTimeManagementDto.month =  moment(this.monthFilter)
+  //     this.CreateTimeManagementDto.status =  false
+  //     this.message.confirm(
+  //       'You want to define this month.',
+  //       this.l(' Selected month does not Exist'),
+  //       (isConfirmed) => {
+  //         if (isConfirmed) {
+  //           this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
+  //             this.AccountNumber = this.accountNo;
+  //             this.getAllAmortizedList(this.primeNgEvent);
+  //            })      
+  //         }
+  //       }
+  //     );
+  //   }  
+  // })
 }
 
 getExtensionImagePath(str) {

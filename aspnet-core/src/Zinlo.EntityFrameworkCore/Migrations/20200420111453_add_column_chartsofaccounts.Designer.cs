@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Zinlo.EntityFrameworkCore;
@@ -9,9 +10,10 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    partial class ZinloDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200420111453_add_column_chartsofaccounts")]
+    partial class add_column_chartsofaccounts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2172,6 +2174,9 @@ namespace Zinlo.Migrations
                     b.Property<long>("ChartsofAccountId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime>("ClosingMonth")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
 
@@ -2233,6 +2238,9 @@ namespace Zinlo.Migrations
 
                     b.Property<long>("ChartsofAccountId")
                         .HasColumnType("bigint");
+
+                    b.Property<DateTime>("ClosingMonth")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");

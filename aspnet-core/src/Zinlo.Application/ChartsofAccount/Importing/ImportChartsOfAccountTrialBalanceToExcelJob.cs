@@ -48,7 +48,6 @@ namespace Zinlo.ChartsofAccount.Importing
             ILocalizationManager localizationManager,
             IObjectMapper objectMapper,
             IImportPathsAppService importPathsAppService
-
             )
         {
             _chartsOfAccontTrialBalanceListExcelDataReader = chartsOfAccontTrialBalanceListExcelDataReader;
@@ -63,43 +62,35 @@ namespace Zinlo.ChartsofAccount.Importing
 
         [UnitOfWork]
         public override void Execute(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args)
-        {
-            //#region|mgs to  be deleted|
-            // _appNotifier.SendMessageAsync(
-            //       args.User,
-            //       "Execution started",
-            //       Abp.Notifications.NotificationSeverity.Success);
-            //#endregion
-
+        { 
             TenantId = (int)args.TenantId;
             UserId = args.User.UserId;
             using (CurrentUnitOfWork.SetTenantId(args.TenantId))
             {
-                var chartsofaccount = GetAccountsTrialBalanceListFromExcelOrNull(args);
-                if (chartsofaccount == null || !chartsofaccount.Any())
+                var accountsTrialBalance = GetAccountsTrialBalanceListFromExcelOrNull(args);
+               
+                //var sumOfAllBalance =  accountsTrialBalance.Sum(p => long.Parse(p.Balance));
+
+                //if (sumOfAllBalance != 0)
+                //{
+                //    throw new UserFriendlyException(L("Sum of All Account Balances is not equal to zero"));
+                //}
+
+                if (accountsTrialBalance == null || !accountsTrialBalance.Any())
                 {
                     SendInvalidExcelNotification(args);
                     return;
                 }
-
-               CreateChartsOfAccountsTrialBalance(args, chartsofaccount);              
+                AddTrialBalanceInAccounts(args, accountsTrialBalance);              
             }
 
         }
 
         private List<ChartsOfAccountsTrialBalanceExcellImportDto> GetAccountsTrialBalanceListFromExcelOrNull(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args)
         {
-            //#region|mgs to  be deleted|
-            //_appNotifier.SendMessageAsync(
-            //      args.User,
-            //      "Balance SUM checking",
-            //      Abp.Notifications.NotificationSeverity.Success);
-            //#endregion
             try
             {
-                  var file =  AsyncHelper.RunSync(() => _binaryObjectManager.GetOrNullAsync(args.BinaryObjectId));
-
-
+                var file =  AsyncHelper.RunSync(() => _binaryObjectManager.GetOrNullAsync(args.BinaryObjectId));
                 var isTrue = _chartsofAccountAppService.CheckAccounts();
                 if (isTrue == false)
                 {
@@ -110,16 +101,6 @@ namespace Zinlo.ChartsofAccount.Importing
 
                 var result = _chartsOfAccontTrialBalanceListExcelDataReader.GetAccountsTrialBalanceFromExcel(file.Bytes);
                 return result;
-                if (result.Count > 0)
-                {
-
-                    long sum = result.Sum(x => Convert.ToInt64(x.Balance));
-                    if (sum == 0)
-                    {
-                        return result;
-                    }
-                }
-                return new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
             }
             catch (Exception ex)
             {
@@ -127,10 +108,8 @@ namespace Zinlo.ChartsofAccount.Importing
             }
         }
 
-        private void  CreateChartsOfAccountsTrialBalance(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args, List<ChartsOfAccountsTrialBalanceExcellImportDto> accounts)
+        private void AddTrialBalanceInAccounts(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args, List<ChartsOfAccountsTrialBalanceExcellImportDto> accounts)
         {
-
-
             var invalidAccounts = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
             var list = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
             var fileUrl = _invalidAccountsTrialBalanceExporter.ExportToFile(accounts);
@@ -160,15 +139,12 @@ namespace Zinlo.ChartsofAccount.Importing
                         var result =  CheckNullValues(account);
                         if (result.isTrue)
                         {
-
                             account.Exception = result.Exception;
                             invalidAccounts.Add(account);
                         }
                         else
                         {
-
                             list.Add(account);
-                            // AsyncHelper.RunSync(() => CreateChartsOfAccountTrialBalanceAsync(account));
                         }
 
                     }
@@ -178,11 +154,7 @@ namespace Zinlo.ChartsofAccount.Importing
                         account.Exception = exception.Message;
                         invalidAccounts.Add(account);
                     }
-                    //catch (Exception exception)
-                    //{
-                    //    account.Exception = exception.ToString();
-                    //    invalidAccounts.Add(account);
-                    //}
+                  
                 }
                 else
                 {
@@ -202,7 +174,7 @@ namespace Zinlo.ChartsofAccount.Importing
             pathDtoUpdate.SuccessRecordsCount = 0;
             _importPathsAppService.UpdateFilePath(pathDtoUpdate);
             #endregion
-            list = list.Select(x => { x.VersionId = loggedFileId; return x; }).ToList();
+            //list = list.Select(x => { x.VersionId = loggedFileId; return x; }).ToList();
             #region|mgs to  be deleted|
             _appNotifier.SendMessageAsync(
                   args.User,
@@ -212,31 +184,26 @@ namespace Zinlo.ChartsofAccount.Importing
             foreach (var item in list)
             {
 
-                AsyncHelper.RunSync(() => CreateChartsOfAccountTrialBalanceAsync(item));
-             // await  CreateChartsOfAccountTrialBalanceAsync(item);
+                AsyncHelper.RunSync(() => CreateChartsOfAccountTrialBalanceAsync(item,args.selectedMonth));
             }
             AsyncHelper.RunSync(() => ProcessImportAccountsTrialBalanceResultAsync(args, invalidAccounts));
         }
 
-        private  async Task CreateChartsOfAccountTrialBalanceAsync(ChartsOfAccountsTrialBalanceExcellImportDto input)
+        private  async Task CreateChartsOfAccountTrialBalanceAsync(ChartsOfAccountsTrialBalanceExcellImportDto input,DateTime selectedMonth)
         {
             var tenantId = CurrentUnitOfWork.GetTenantId();
-           /// ChartsofAccount account = new ChartsofAccount();
-
             var output = new ChartsOfAccountsTrialBalanceExcellImportDto();
             output.AccountName = input.AccountName;
             output.AccountNumber = input.AccountNumber;
             output.Balance = input.Balance;
-            output.VersionId = input.VersionId;
-           await _chartsofAccountAppService.CheckAccountForTrialBalance(output);
+            output.selectedMonth = selectedMonth;
+           await _chartsofAccountAppService.AddTrialBalanceInAccount(output);
         }
+
+
 
         private async Task ProcessImportAccountsTrialBalanceResultAsync(ImportChartsOfAccountTrialBalanceFromExcelJobArgs args, List<ChartsOfAccountsTrialBalanceExcellImportDto> invalidAccounts)
         {
-            ////await _appNotifier.SendMessageAsync(
-            ////       args.User,
-            ////       _localizationSource.GetString("AllAccountsTrialBalanceSuccessfullyImportedFromExcel"),
-            ////       Abp.Notifications.NotificationSeverity.Success);
             if (invalidAccounts.Any())
             {
                 #region|Update log|
@@ -263,7 +230,6 @@ namespace Zinlo.ChartsofAccount.Importing
                 pathDto.SuccessRecordsCount = SuccessRecordsCount;
                 await _importPathsAppService.UpdateFilePath(pathDto);
                 #endregion
-
                 await _appNotifier.SendMessageAsync(
                     args.User,
                     _localizationSource.GetString("AllAccountsTrialBalanceSuccessfullyImportedFromExcel"),
@@ -293,10 +259,6 @@ namespace Zinlo.ChartsofAccount.Importing
                    Abp.Notifications.NotificationSeverity.Success);
                 #endregion
 
-                // AsyncHelper.RunSync(() => _appNotifier.SendMessageAsync(
-                //args.User,
-                //_localizationSource.GetString("FileCantBeConvertedToAccountsTrialBalanceList"),
-                //Abp.Notifications.NotificationSeverity.Warn));
             }
 
 

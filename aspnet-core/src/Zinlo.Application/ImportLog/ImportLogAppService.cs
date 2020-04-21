@@ -52,16 +52,16 @@ namespace Zinlo.ImportLog
 
         public async Task RollBackTrialBalance(long id)
         {
-            var result = _chartOfAccountRepository.GetAll().Where(x => x.VersionId == id).ToList();
-            foreach (var item in result)
-            {
-                item.TrialBalance = 0;
-                item.VersionId = 0;
-                await _chartOfAccountRepository.UpdateAsync(item);
-            }
-            var versionFile = _importsPathRepository.FirstOrDefault(id);
-            versionFile.IsRollBacked = true;
-            _importsPathRepository.Update(versionFile);
+            //var result = _chartOfAccountRepository.GetAll().Where(x => x.VersionId == id).ToList();
+            //foreach (var item in result)
+            //{
+            //    //item.TrialBalance = 0;
+            //    //item.VersionId = 0;
+            //    await _chartOfAccountRepository.UpdateAsync(item);
+            //}
+            //var versionFile = _importsPathRepository.FirstOrDefault(id);
+            //versionFile.IsRollBacked = true;
+            //_importsPathRepository.Update(versionFile);
         }
     }
 }

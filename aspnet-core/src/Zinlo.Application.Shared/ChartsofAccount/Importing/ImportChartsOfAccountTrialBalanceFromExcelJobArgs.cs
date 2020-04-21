@@ -10,5 +10,7 @@ namespace Zinlo.ChartsofAccount.Importing
         public int? TenantId { get; set; }
         public Guid BinaryObjectId { get; set; }
         public UserIdentifier User { get; set; }
+        public DateTime selectedMonth { get; set; }
+
     }
 }

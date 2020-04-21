@@ -17,6 +17,8 @@ using System.Net;
 using Zinlo.ChartsofAccount.Dtos;
 using Abp.AspNetCore.Mvc.Controllers;
 using Abp.Auditing;
+using System;
+using System.Globalization;
 
 namespace Zinlo.Web.Controllers
 {
@@ -65,10 +67,13 @@ namespace Zinlo.Web.Controllers
             }
         }
         [HttpGet]
-        public async Task<JsonResult> ImportAccountsTrialBalanceFromExcel(string url)
+        public async Task<JsonResult> ImportAccountsTrialBalanceFromExcel(string url, string monthSelected)
         {
             try
-            {
+            {           
+                string date = monthSelected.Substring(4, 11);
+                string s = DateTime.ParseExact(date, "MMM dd yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
+                DateTime selectedMonth = Convert.ToDateTime(s);
                 WebRequest request = WebRequest.Create(url);
                 byte[] fileBytes;
                 using (var response = request.GetResponse())
@@ -86,8 +91,9 @@ namespace Zinlo.Web.Controllers
                 {
                     TenantId = tenantId,
                     BinaryObjectId = fileObject.Id,
-                    User = AbpSession.ToUserIdentifier()
-                });
+                    User = AbpSession.ToUserIdentifier(),
+                    selectedMonth = selectedMonth
+                 });
 
                 return Json(new AjaxResponse(new { }));
             }

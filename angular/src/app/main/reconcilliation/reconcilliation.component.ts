@@ -8,6 +8,8 @@ import { Table } from 'primeng/table';
 import { UserListComponentComponent } from '../checklist/user-list-component/user-list-component.component';
 import { UppyConfig } from 'uppy-angular';
 import { StoreDateService } from "../../services/storedate.service";
+import { add, subtract } from 'add-subtract-date';
+import * as moment from 'moment';
 
 
 @Component({
@@ -50,6 +52,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   getAccountWithAssigneeId : number = 0;
   monthStatus : boolean = false;
   users : any;
+  selectedDate = new Date();
 
 
   constructor(private _router: Router,
@@ -88,7 +91,21 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   collapsibleRowClick(id) {
     this.collapsibleRowId = id;
     this.collapsibleRow = !this.collapsibleRow;
-  } 
+  }
+  
+  filterByMonth(event) {
+    if(event===1){
+      this.selectedDate =new Date(add(this.selectedDate, 1, "month"));
+   }
+   else if(event === -1) {
+     this.selectedDate = new Date( subtract(this.selectedDate, 1, "month"));
+   }
+   else {
+     this.selectedDate = new Date(add(event, 2, "day"));
+   }
+   this.getAllAccounts();
+  }
+  
   getAllAccounts(event?: LazyLoadEvent) {
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
@@ -99,6 +116,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this._chartOfAccountService.getAll(
       this.filterText,
       this.accountTypeFilter,
+      moment(this.selectedDate),
       this.getAccountWithAssigneeId,
       false,
       this.primengTableHelper.getSorting(this.dataTable),
@@ -182,9 +200,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   }
 
   reDirectToItemizedAmotized (reconciliationTypeId,accountId,accountNo,accountName){
-    
-    if (this.monthStatus)
-    {
+     
       if (reconciliationTypeId == 1)
       {
         this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : accountId, accountName :accountName ,accountNo: accountNo  }} });
@@ -193,12 +209,6 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       else if (reconciliationTypeId == 2) {
         this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo}} });
       }
-
-    }
-    else {
-      this.notify.error(this.l("This month is not active yet. Contact to admin to activate the month."));
-    }
-
  
   }
 

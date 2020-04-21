@@ -18,6 +18,7 @@ namespace Zinlo.Reconciliation.Dtos
         public double VarianceAccuredAmount { get; set; }
         public List<CommentDto> Comments { get; set; }
         public int ReconciliedBase { get; set; }
+        public bool MonthStatus { get; set; }
 
 
     }

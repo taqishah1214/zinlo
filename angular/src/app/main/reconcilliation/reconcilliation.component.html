@@ -21,9 +21,22 @@
                 <div class="card">
                     <div class="record-card-header">
                         <div class="record-card-header-bottom">
+
+                            
                             <div class="record-card-header-bottom-inner1">
-                                <h5>{{currentDate | momentFormat:'MMMM YYYY'}}</h5>
+                                <button class="btn arrow-btn left-arrow-btn btn-square"  (click)="filterByMonth(-1)">
+                                    <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
+                                </button>
+                                <h5  style="cursor: default;">{{selectedDate | momentFormat:'MMMM YYYY'}}</h5>
+                                <button class="btn arrow-btn right-arrow-btn btn-square" (click)="filterByMonth(1)">
+                                    <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
+                                </button>
                             </div>
+
+
+                            <!-- <div class="record-card-header-bottom-inner1">
+                                <h5>{{currentDate | momentFormat:'MMMM YYYY'}}</h5>
+                            </div> -->
                             <div class="record-card-header-bottom-inner2">
                               
                                 <div class="upper-content">
@@ -227,7 +240,9 @@
 
                                                     <div class="thead-box"><b> {{"Balanace" | localize}} </b></div>
                                                     <div class="tdata-box">
-                                                        <span class="">{{item.balance  | formater}}</span>
+                                                        <span *ngIf="item.balance" class="">{{item.balance  | formater}}</span>
+                                                        <span *ngIf="!item.balance" class="">zero</span>
+
                                                     </div>
                                                 </li>
                                                 <li [ngClass]="{'disabled':!monthStatus}" class="assignee-cell collapsable-cell kt-user-card-v2">

@@ -86,14 +86,13 @@ namespace Zinlo.ChartsofAccount
 
             using (CurrentUnitOfWork.SetTenantId(args.TenantId))
             {
-                var chartsofaccount = GetAccountsListFromExcelOrNull(args);
-                if (chartsofaccount == null || !chartsofaccount.Any())
+                var accountsList = GetAccountsListFromExcelOrNull(args);
+                if (accountsList == null || !accountsList.Any())
                 {
                     SendInvalidExcelNotification(args);
                     return;
                 }
-
-                CreateChartsOfAccounts(args, chartsofaccount);
+                CreateChartsOfAccounts(args, accountsList);
             }
         }
 
@@ -112,7 +111,7 @@ namespace Zinlo.ChartsofAccount
 
         private void CreateChartsOfAccounts(ImportChartsOfAccountFromExcelJobArgs args, List<ChartsOfAccountsExcellImportDto> accounts)
         {
-            var invalidAccounts = new List<ChartsOfAccountsExcellImportDto>();
+            var invalidRecords = new List<ChartsOfAccountsExcellImportDto>();
             var validRecords = new List<ChartsOfAccountsExcellImportDto>();
             var fileUrl = _invalidAccountsExporter.ExportToFile(accounts);
             #region|Log intial info|
@@ -131,10 +130,7 @@ namespace Zinlo.ChartsofAccount
             {
                 if (account.CanBeImported())
                 {
-
                     account.isValid = true;
-
-
                     try
                     {
                         var result = CheckErrors(account);
@@ -148,14 +144,12 @@ namespace Zinlo.ChartsofAccount
                             }
                             else
                             {
-                                invalidAccounts.Add(data);
-                            }
-
-                          
+                                invalidRecords.Add(data);
+                            }          
                         }
                         else
                         {
-                            invalidAccounts.Add(result);
+                            invalidRecords.Add(result);
                         }
 
                     }
@@ -166,7 +160,7 @@ namespace Zinlo.ChartsofAccount
                    
                 }              
             }
-            List<ChartsOfAccountsExcellImportDto> ValidRows = accounts.Except(invalidAccounts).ToList();
+            List<ChartsOfAccountsExcellImportDto> ValidRows = accounts.Except(invalidRecords).ToList();
             SuccessRecordsCount = validRecords.Count;
 
             #region|Log intial info|
@@ -183,12 +177,12 @@ namespace Zinlo.ChartsofAccount
 
             foreach (var item in validRecords)
             {
-                AsyncHelper.RunSync(() => CreateChartsOfAccountAsync(item));
+                AsyncHelper.RunSync(() => CreateOrUpdateAccounts(item));
             }
-            AsyncHelper.RunSync(() => ProcessImportAccountsResultAsync(args, invalidAccounts));
+            AsyncHelper.RunSync(() => ProcessImportAccountsResultAsync(args, invalidRecords));
         }
 
-        private async Task CreateChartsOfAccountAsync(ChartsOfAccountsExcellImportDto input)
+        private async Task CreateOrUpdateAccounts(ChartsOfAccountsExcellImportDto input)
         {
             var tenantId = CurrentUnitOfWork.GetTenantId();
             var result = await _chartsOfAccountsrepository.FirstOrDefaultAsync(a => a.AccountNumber.ToLower() == input.AccountNumber.ToLower());
@@ -200,12 +194,10 @@ namespace Zinlo.ChartsofAccount
                 result.Status = (Status)2;
                 result.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
                 result.CreatorUserId = UserId;
-
                 result.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);
                 result.AccountSubTypeId = await _accountSubTypeAppService.GetAccountSubTypeIdByTitle(input.AccountSubType, UserId, TenantId);
                 result.Reconciled = (Reconciled)GetReconciledValue(input.ReconciliationAs);
-                result.ReconciliationType = (ReconciliationType)GetReconcilationTypeValue(input.ReconciliationType);
-
+                result.ReconciliationType = (ReconciliationType)GetReconcilationTypeValue(input.ReconciliationType);        
                 await _chartsOfAccountsrepository.UpdateAsync(result);
             }
             else
@@ -218,26 +210,17 @@ namespace Zinlo.ChartsofAccount
                 account.Status = (Status)2;
                 account.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
                 account.CreatorUserId = UserId;
-                account.ClosingMonth = DateTime.Now;
                 account.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);
                 account.AccountSubTypeId = await _accountSubTypeAppService.GetAccountSubTypeIdByTitle(input.AccountSubType, UserId, TenantId);
                 account.ReconciliationType = (ReconciliationType)GetReconcilationTypeValue(input.ReconciliationType);
                 int type = GetReconcilationTypeValue(input.ReconciliationType);
                 account.Reconciled = (Reconciled)GetReconciledValue(input.ReconciliationAs);
-
                 await _chartsOfAccountsrepository.InsertAsync(account);
-
             }
         }
 
         private async Task ProcessImportAccountsResultAsync(ImportChartsOfAccountFromExcelJobArgs args, List<ChartsOfAccountsExcellImportDto> invalidAccounts)
         {
-            //////await _appNotifier.SendMessageAsync(
-            //////       args.User,
-            //////       _localizationSource.GetString("AllAccountsSuccessfullyImportedFromExcel"),
-            //////       Abp.Notifications.NotificationSeverity.Success);
-
-
             if (invalidAccounts.Any())
             {
 
@@ -289,17 +272,6 @@ namespace Zinlo.ChartsofAccount
             return user.Id;
         }
 
-        public int GetReconciliationTypeValue(string name)
-        {
-            if (name.Trim().ToLower() == "itemized")
-            {
-                return 1;
-            }
-            else
-            {
-                return 2;
-            }
-        }
         public int GetAccountTypeValue(string name)
         {     
             if (name.Trim().ToLower() == "equity")

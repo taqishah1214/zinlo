@@ -33,6 +33,8 @@ namespace Zinlo.ChartsofAccount
         private readonly IChartsOfAccountsTrialBalanceExcelExporter _chartsOfAccountsTrialBalanceExcelExporter;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IRepository<TimeManagement, long> _timeManagementRepository;
+        private readonly IRepository<AccountBalance, long> _accountBalanceRepository;
+
 
         public ChartsofAccountAppService(IRepository<Itemization, long> itemizationRepository,
                                          IRepository<Amortization, long> amortizationRepository,
@@ -41,7 +43,8 @@ namespace Zinlo.ChartsofAccount
                                          IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter,
                                          IChartsOfAccountsTrialBalanceExcelExporter chartsOfAccountsTrialBalanceExcelExporter,
                                          IUnitOfWorkManager unitOfWorkManager,
-                                         IRepository<TimeManagement, long> timeManagementRepository)
+                                         IRepository<TimeManagement, long> timeManagementRepository,
+                                         IRepository<AccountBalance, long> accountBalanceRepository)
         {
             _amortizationRepository = amortizationRepository;
             _itemizationRepository = itemizationRepository;
@@ -50,21 +53,21 @@ namespace Zinlo.ChartsofAccount
             _chartsOfAccountsListExcelExporter = chartsOfAccountsListExcelExporter;
             _chartsOfAccountsTrialBalanceExcelExporter = chartsOfAccountsTrialBalanceExcelExporter;
             _unitOfWorkManager = unitOfWorkManager;
-            _timeManagementRepository = timeManagementRepository; 
+            _timeManagementRepository = timeManagementRepository;
+            _accountBalanceRepository = accountBalanceRepository;
         }
 
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
         {
-           
+            
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
-                var query = _chartsofAccountRepository.GetAll().Where(e => e.ClosingMonth.Month == DateTime.Now.Month && e.ClosingMonth.Year == DateTime.Now.Year).Include(p => p.AccountSubType).Include(p => p.Assignee)
+                var query = _chartsofAccountRepository.GetAll().Include(p => p.AccountSubType).Include(p => p.Assignee)
                 .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
                 .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
                 .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
-             .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
-                var MonthStatus = await GetMonthStatus(DateTime.Now);
-
+                .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
+                var MonthStatus = await GetMonthStatus(input.SelectedMonth);
 
                 var getUserWithPictures = (from o in query.ToList()
                                            select new GetUserWithPicture()
@@ -74,9 +77,59 @@ namespace Zinlo.ChartsofAccount
                                                Picture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
                                            }).ToList();
 
+                var changeItems = query.Where(e => e.IsChange == true);
+                List<ChartofAccounts.ChartofAccounts> chartsofAccounts = new List<ChartofAccounts.ChartofAccounts>();
+                var query1 =  query.Where(e => !e.IsChange);
+                var result = query1.ToList();
+
+                var distinctAccounts = changeItems.DistinctBy(p => new {p.AccountNumber }).ToList();
+
+
+                // selcted month =dec 2018
+                //Creation time feb2019 changetime dec2019
+                //Creation time jan2020 changetime march2020
+                //Creation time april2020 changetime null
+                var changeItemGorup = changeItems.ToList().GroupBy(p => p.AccountNumber);
+                foreach (var item in changeItems)
+                {
+                    if (item.ChangeTime != null)
+                    {
+                        if ((item.ChangeTime.Value.Month >= input.SelectedMonth.Month && item.ChangeTime.Value.Year >= input.SelectedMonth.Year) &&
+                            (item.CreationTime.Month <= input.SelectedMonth.Month && item.CreationTime.Year <= input.SelectedMonth.Year))
+                        {
+                            chartsofAccounts.Add(item);
+                        }
+
+                    }
+                    else if (item.CreationTime.Month <= input.SelectedMonth.Month && item.CreationTime.Year <= input.SelectedMonth.Year)
+                    {
+                        chartsofAccounts.Add(item);
+                    }
+                }
+
+                var chartOfAccountList = chartsofAccounts.Select(x => x.AccountNumber).ToList();
+                var accountInBothList = distinctAccounts.Where(y => !chartOfAccountList.Contains(y.AccountNumber)).ToList();
+
+                if (accountInBothList.Count >0)
+                {
+                    foreach (var item in accountInBothList)
+                    {
+                        var missingAccount = query.Where(y => y.AccountNumber == item.AccountNumber).ToList();
+                        var account = missingAccount.OrderBy(a => a.CreationTime).FirstOrDefault();
+                        chartsofAccounts.Add(account);
+
+                    }
+                }
+            
+
+                result.AddRange(chartsofAccounts);
+
+
                 getUserWithPictures = getUserWithPictures.DistinctBy(p => new { p.Id, p.Name }).ToList();
-                var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "id asc").PageBy(input);
-                var totalCount = query.Count();
+                var pagedAndFilteredAccounts = result;
+
+
+                var totalCount = result.Count();
 
                 var accountsList = from o in pagedAndFilteredAccounts.ToList()
 
@@ -91,9 +144,8 @@ namespace Zinlo.ChartsofAccount
                                        ReconciliationTypeId = o.ReconciliationType != 0 ? (int)o.ReconciliationType : 0,
                                        AssigneeId = o.Assignee.Id,
                                        StatusId = (int)o.Status,
-                                       Balance = o.Balance,
+                                       Balance = GetTheAccountBalanceofSelectedMonth(o.Id, input.SelectedMonth),
                                        OverallMonthlyAssignee = getUserWithPictures,
-                                       Lock = o.Lock,
                                        IsDeleted = o.IsDeleted,
                                        MonthStatus = MonthStatus,
                                    };
@@ -105,6 +157,14 @@ namespace Zinlo.ChartsofAccount
 
             }
 
+        }
+
+        protected virtual double GetTheAccountBalanceofSelectedMonth (long accountId,DateTime SelectedMonth)
+        {
+            double result = 0;
+            var accountInformation =   _accountBalanceRepository.FirstOrDefault(p =>p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
+            result = accountInformation != null ? accountInformation.Balance :  0;
+            return result;
         }
 
         protected virtual async Task CreateManagment(CreateOrEditTimeManagementDto input)
@@ -119,8 +179,8 @@ namespace Zinlo.ChartsofAccount
 
 
             await _timeManagementRepository.InsertAsync(timeManagement);
-            await ShiftChartsOfAccountToSpecficMonth(input.Month);
-        }
+/*            await ShiftChartsOfAccountToSpecficMonth(input.Month);
+*/        }
 
         protected virtual async Task<bool> GetMonthStatus(DateTime dateTime)
         {
@@ -155,41 +215,25 @@ namespace Zinlo.ChartsofAccount
         protected virtual async Task<long> Update(CreateOrEditChartsofAccountDto input)
         {
             var account = await _chartsofAccountRepository.FirstOrDefaultAsync(input.Id);
-            input.CreationTime = account.CreationTime;
-
             if ((int)account.ReconciliationType != (int)input.ReconciliationType)
             {
-                DateTime closingMonth = account.ClosingMonth;
-                await _chartsofAccountRepository.DeleteAsync(account);
-                var previousAccountId = input.Id;
-                if ((int)account.ReconciliationType == 1)
-                {
-                    var query = await _itemizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == previousAccountId && x.ClosingMonth.Month == DateTime.Now.Month);
-                    if (query != null)
-                    {
-                        _itemizationRepository.Delete(query);
-                    }
+                account.IsChange = true;
+                account.ChangeTime = DateTime.Today.AddMonths(-1);
+                await _chartsofAccountRepository.InsertOrUpdateAndGetIdAsync(account);
 
-                }
-                else
-                {
-                    var query = await _amortizationRepository.FirstOrDefaultAsync(x => x.ChartsofAccountId == previousAccountId && x.ClosingMonth.Month == DateTime.Now.Month);
-                    if (query != null)
-                    {
-                        _amortizationRepository.Delete(query);
-                    }
-                }
-
+                input.IsChange = true;
                 input.Id = 0;
-                input.ClosingMonth = closingMonth;
-                return await Create(input);
+                return await Create(input);          
             }
-
-            var updatedAccount = ObjectMapper.Map(input, account);
-            updatedAccount.ReconciliationType = (ReconciliationType)input.ReconciliationType;
-            updatedAccount.AccountType = (AccountType)input.AccountType;
-            var accountId = await _chartsofAccountRepository.InsertOrUpdateAndGetIdAsync(updatedAccount);
-            return accountId;
+            else
+            {
+                var updatedAccount = ObjectMapper.Map(input, account);
+                updatedAccount.ReconciliationType = (ReconciliationType)input.ReconciliationType;
+                updatedAccount.AccountType = (AccountType)input.AccountType;
+                var accountId = await _chartsofAccountRepository.InsertOrUpdateAndGetIdAsync(updatedAccount);
+                return accountId;
+            }
+           
 
 
         }
@@ -197,6 +241,7 @@ namespace Zinlo.ChartsofAccount
         protected virtual async Task<long> Create(CreateOrEditChartsofAccountDto input)
         {
             var account = ObjectMapper.Map<ChartofAccounts.ChartofAccounts>(input);
+            account.ChangeTime = null;
             account.Status = (Status)2;
             if (AbpSession.TenantId != null)
             {
@@ -222,7 +267,6 @@ namespace Zinlo.ChartsofAccount
             mappedAccount.AccountName = account.AccountName;
             mappedAccount.AccountNumber = account.AccountNumber;
             mappedAccount.ReconciledId = (int)account.Reconciled;
-            mappedAccount.ClosingMonth = account.ClosingMonth;
             mappedAccount.CreatorUserId = account.CreatorUserId;
             mappedAccount.CreationTime = account.CreationTime;
             return mappedAccount;
@@ -248,13 +292,22 @@ namespace Zinlo.ChartsofAccount
             }
         }
 
-        public async Task AddandUpdateBalance(double balance, long id)
+        public async Task AddandUpdateBalance(double balance, long id,DateTime month)
         {
-            var account = await _chartsofAccountRepository.FirstOrDefaultAsync(id);
+            var account = await _accountBalanceRepository.FirstOrDefaultAsync(p=> p.AccountId == id && month.Month == p.Month.Month && month.Year == p.Month.Year );
             if (account != null)
             {
+                account.Month = month;
                 account.Balance = balance;
-                await _chartsofAccountRepository.UpdateAsync(account);
+                await _accountBalanceRepository.UpdateAsync(account);
+            }
+            else
+            {
+                AccountBalance accountBalance = new AccountBalance();
+                accountBalance.Month = month;
+                accountBalance.AccountId = id;
+                accountBalance.Balance = balance;
+              await _accountBalanceRepository.InsertAsync(accountBalance);
             }
         }
 
@@ -299,7 +352,7 @@ namespace Zinlo.ChartsofAccount
             {
                 AccountName = item.AccountName,
                 AccountNumber = item.AccountNumber,
-                Balance = item.TrialBalance.ToString()
+                //Balance = item.TrialBalance.ToString()
             }).ToList();
             return _chartsOfAccountsTrialBalanceExcelExporter.ExportToExcell(listToExport);
         }
@@ -325,31 +378,41 @@ namespace Zinlo.ChartsofAccount
             return type;
         }
 
-        public async Task<bool> CheckAccountForTrialBalance(ChartsOfAccountsTrialBalanceExcellImportDto input)
+        public async Task<bool> AddTrialBalanceInAccount(ChartsOfAccountsTrialBalanceExcellImportDto input)
         {
 
-            var result = await _chartsofAccountRepository.FirstOrDefaultAsync(x => x.AccountName.ToLower() == input.AccountName.Trim().ToLower()
-                                                                      && x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower()
-                                                                      && x.IsDeleted == false);
-
-            if (result != null)
+            var accountInformation = await _chartsofAccountRepository.FirstOrDefaultAsync(x => x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower()&& x.IsDeleted == false);
+            if (accountInformation != null)
             {
-                result.TrialBalance = Convert.ToDecimal(input.Balance);
-                result.VersionId = input.VersionId;
-                await _chartsofAccountRepository.UpdateAsync(result);
+               var TrialBalanceIsExistOrNot = await _accountBalanceRepository.FirstOrDefaultAsync(x => x.AccountId == accountInformation.Id);
+                if (TrialBalanceIsExistOrNot == null)
+                {
+                    AccountBalance accountBalance = new AccountBalance();
+                    accountBalance.AccountId = accountInformation.Id;
+                    accountBalance.TrialBalance = Convert.ToDouble(input.Balance);
+                    accountBalance.Month = input.selectedMonth;
+                    await _accountBalanceRepository.InsertAsync(accountBalance);
+                }
+                else
+                {
+                    TrialBalanceIsExistOrNot.TrialBalance = Convert.ToDouble(input.Balance);
+                    await _accountBalanceRepository.UpdateAsync(TrialBalanceIsExistOrNot);
+                }
+
+              
 
                 return true;
             }
 
             return false;
         }
-        public async Task<double> GetTrialBalanceofAccount(long id)
+        public async Task<double> GetTrialBalanceofAccount(long id,DateTime month)
         {
             double result = 0;
-            var account = await _chartsofAccountRepository.FirstOrDefaultAsync(id);
-            if (account != null)
+            var accountBalances = await _accountBalanceRepository.FirstOrDefaultAsync(p => p.AccountId == id && month.Month == p.Month.Month && month.Year == p.Month.Year);
+            if (accountBalances != null)
             {
-                result = (double)account.TrialBalance;
+                result = accountBalances.TrialBalance;
             }
             return result;
         }
@@ -373,101 +436,10 @@ namespace Zinlo.ChartsofAccount
         {
             return value == 1 ? "Itemized" : "Amortization";
         }
-        public async Task ShiftAmortizedItems(double previousAccountId, double newAccountId, DateTime closingMonth)
-        {
-            var amortizedItemList = _amortizationRepository.GetAll().Where(e => e.ChartsofAccount.Id == previousAccountId && e.ClosingMonth.Month == DateTime.Now.Month).Include(e => e.ChartsofAccount);
-            var itemList = (from o in amortizedItemList.ToList()
-
-                            select new CreateOrEditAmortizationDto()
-                            {
-                                Id = 0,
-                                InoviceNo = o.InoviceNo,
-                                JournalEntryNo = o.JournalEntryNo,
-                                StartDate = o.StartDate,
-                                EndDate = o.EndDate,
-                                AccomulateAmount = o.AccomulateAmount,
-                                Amount = o.Amount,
-                                Description = o.Description,
-                                ChartsofAccountId = (long)newAccountId,
-                                ClosingMonth = closingMonth,
-                                Criteria = (Reconciliation.Dtos.Criteria)o.Criteria,
-                                CreatorUserId = o.CreatorUserId,
-                            }).ToList();
-
-            foreach (var item in itemList)
-            {
-                var newItem = ObjectMapper.Map<Amortization>(item);
-                await _amortizationRepository.InsertAsync(newItem);
-            }
-
-        }
+      
 
 
-
-        public async Task ShiftItemizedItem(long previousAccountId, long newAccountId, DateTime closingMonth)
-        {
-            var itemizedItemList = _itemizationRepository.GetAll().Where(e => e.ChartsofAccount.Id == previousAccountId && e.ClosingMonth.Month == DateTime.Now.Month).Include(e => e.ChartsofAccount);
-            var itemList = (from o in itemizedItemList.ToList()
-
-                            select new CreateOrEditItemizationDto()
-                            {
-                                Id = 0,
-                                InoviceNo = o.InoviceNo,
-                                JournalEntryNo = o.JournalEntryNo,
-                                Date = o.Date,
-                                Amount = o.Amount,
-                                Description = o.Description,
-                                ChartsofAccountId = newAccountId,
-                                ClosingMonth = closingMonth,
-                                CreatorUserId = o.CreatorUserId,
-                            }).ToList();
-
-            foreach (var newitem in itemList.Select(item => ObjectMapper.Map<Itemization>(item)))
-            {
-                await _itemizationRepository.InsertAsync(newitem);
-            }
-
-        }
-
-        public async Task ShiftChartsOfAccountToSpecficMonth(DateTime closingMonth)
-        {
-            var accountsExistCheck = await _chartsofAccountRepository.FirstOrDefaultAsync(e => e.ClosingMonth.Month == closingMonth.Month);
-            if (accountsExistCheck == null)
-            {
-                var currentMonthAccounts = _chartsofAccountRepository.GetAll().Where(e => e.ClosingMonth.Month == DateTime.Now.Month).Include(a => a.Assignee).Include(a => a.AccountSubType);
-                var itemList = (from o in currentMonthAccounts.ToList()
-
-                                select new CreateOrEditChartsofAccountDto()
-                                {
-                                    Id = (int)o.Id,
-                                    CreatorUserId = o.CreatorUserId,
-                                    AccountName = o.AccountName,
-                                    AccountNumber = o.AccountNumber,
-                                    AccountType = (Dtos.AccountType)o.AccountType,
-                                    ReconciliationType = (Dtos.ReconciliationType)o.ReconciliationType,
-                                    AccountSubTypeId = o.AccountSubType.Id,
-                                    Reconciled = (Dtos.Reconciled)o.Reconciled,
-                                    Balance = 0,
-                                    ClosingMonth = closingMonth,
-                                    AssigneeId = o.Assignee.Id
-                                }).ToList();
-
-                foreach (var item in itemList)
-                {
-                    var previousAccountId = item.Id;
-                    item.Id = 0;
-                    var newAccountId = await CreateOrEdit(item);
-                    if ((int)item.ReconciliationType == 1)
-                    {
-                        await ShiftItemizedItem(previousAccountId, newAccountId, closingMonth);
-                    }
-                    else
-                    {
-                        await ShiftAmortizedItems(previousAccountId, newAccountId, closingMonth);
-                    }
-                }
-            }
-        }
+   
         public string GetReconcilationAsValue(int value)
         {
             switch (value)

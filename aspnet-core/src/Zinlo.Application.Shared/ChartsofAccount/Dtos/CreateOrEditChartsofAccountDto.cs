@@ -13,7 +13,8 @@ namespace Zinlo.ChartsofAccount.Dtos
         public virtual long AssigneeId { get; set; }
         public Reconciled Reconciled { get; set; }
         public double Balance { get; set; }
-        public DateTime ClosingMonth { get; set; }
+        public DateTime ChangeTime { get; set; }
+        public bool IsChange  { get; set; }
 
     }
     public enum ReconciliationType
@@ -33,4 +34,5 @@ namespace Zinlo.ChartsofAccount.Dtos
         BeginningAmount = 2,
         AccruedAmount = 3,
     }
+   
 }

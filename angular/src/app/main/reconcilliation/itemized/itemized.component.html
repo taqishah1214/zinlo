@@ -37,7 +37,7 @@
                                             {{"Back" | localize}}
                                         </a>
 
-                                        <button class="btn btn-brand" (click)="RedirectToAddNew()"><i
+                                        <button [ngClass]="{'disabled':!monthStatus}" class="btn btn-brand" (click)="RedirectToAddNew()"><i
                                             class="fa fa-plus"></i>
                                         {{"AddNew" | localize}}</button>
                                     </div>
@@ -96,10 +96,12 @@
                             </p-table>
 
                         </div>
-                        <!--<Primeng-TurboTable-End> {{i.creationTime | date:'d MMM EEE'}} -->
+                        <!--<Primeng-TurboTable-End> {{i.creationTime | date:'d MMM EEE'}}  
+                         class="{{item.isDeleted == true ? 'warnning' : '' }}"    
+                        -->
                         <table class="table record-table">
                             <tbody *ngFor="let item of itemList">
-                                <tr  class="task-table-inner table-repeater" class="{{item.isDeleted == true ? 'warnning' : '' }}">
+                                <tr  class="task-table-inner table-repeater">
                                     <td class="accountNo-cell">
                                         <span class="">{{item.date | date}}</span>
                                     </td>
@@ -226,7 +228,7 @@
                     <div class="row">
                         <div class="col-md-6">
 
-                            <div class="form-group giveCommentView" *ngIf="commantBox">
+                            <div [ngClass]="{'disabled':!monthStatus}" class="form-group giveCommentView" *ngIf="commantBox">
                                 <label>{{"Comments" | localize}}</label>
                                 <div (click)="commentClick()">
                                     <div class="kt-user-card-v2">
@@ -286,7 +288,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="Check-reconcile-btn">
+                            <div [ngClass]="{'disabled':!monthStatus}" class="Check-reconcile-btn">
                                 <button (click)="reconciledClick()" class="btn btn-brand" >{{"Check as Reconciled" | localize}}</button>
                             </div>
                         </div>
@@ -316,7 +318,7 @@
                             </div>
                             <tabset class="tab-container tabbable-line">
                                 <tab heading="{{'Comment' | localize}}">
-                            <div class="commentmainView show-comments">
+                            <div  class="commentmainView show-comments">
                                 <div class="kt-widget3 ">
                                     <div *ngFor="let i of postedCommentList" class="kt-widget3__item ">
                                         <div class="comments-header kt-widget3__header">

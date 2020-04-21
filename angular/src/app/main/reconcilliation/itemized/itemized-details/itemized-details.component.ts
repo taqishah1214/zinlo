@@ -38,6 +38,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   users : any = [];
   historyList : any =[];
   AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
+  monthStatus : boolean;
 
   constructor(
     injector: Injector,
@@ -57,8 +58,8 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
     this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
-    this.itemizedItemId = history.state.data.ItemizedItemId
-    debugger;
+    this.itemizedItemId = history.state.data.ItemizedItemId    
+    this.monthStatus = history.state.data.monthStatus
     this.getTaskDetails();
     this.getProfilePicture();
     this.getAuditLogOfAccount(this.itemizedItemId);

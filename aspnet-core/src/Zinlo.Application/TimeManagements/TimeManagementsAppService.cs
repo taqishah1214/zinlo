@@ -109,7 +109,7 @@ namespace Zinlo.TimeManagements
 
 
             await _timeManagementRepository.InsertAsync(timeManagement);
-            await _chartsofAccountAppService.ShiftChartsOfAccountToSpecficMonth(input.Month);
+            //await _chartsofAccountAppService.ShiftChartsOfAccountToSpecficMonth(input.Month);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements_Edit)]

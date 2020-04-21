@@ -15,15 +15,15 @@
                         </a>
                         <div class="btn-group">
 
-                            <a  *ngIf="!amortizationDto.isDeleted == true" class="btn" href="javascript:;"
+                            <a  [ngClass]="{'disabled':!monthStatus}" class="btn" href="javascript:;"
                                 (click)="editAmortizedItem()">
                                 <img src="../../../../assets/img/edit.svg"></a>
-                            <a *ngIf="!amortizationDto.isDeleted == true" class="btn" href="javascript:;"
+                            <a [ngClass]="{'disabled':!monthStatus}" class="btn" href="javascript:;"
                                 (click)="deleteItem()">
                                 <img src="../../../../assets/img/del.svg"></a>
-                                <a *ngIf="amortizationDto.isDeleted == true" class="btn" href="javascript:;"
+                             <!-- <a *ngIf="amortizationDto.isDeleted == true" class="btn" href="javascript:;"
                                 (click)="restoreAmortizedItem()">
-                                <i class="fas fa-trash-restore"></i></a> 
+                                <i class="fas fa-trash-restore"></i></a>  -->
 
                         </div>
                     </div>
@@ -190,7 +190,7 @@
 
 
                              
-                                <div class="form-group giveCommentView" *ngIf="commantBox">
+                                <div [ngClass]="{'disabled':!monthStatus}" class="form-group giveCommentView" *ngIf="commantBox">
                                     <label>{{"Comments" | localize}}</label>
                                     <div (click)="commentClick()">
                                         <div class="kt-user-card-v2">
@@ -222,7 +222,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6">
+                            <div [ngClass]="{'disabled':!monthStatus}" class="col-sm-6">
                                 <div class="drag_drop_box">
                                     <label>{{"Attachments" | localize}}</label>
                                     <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">

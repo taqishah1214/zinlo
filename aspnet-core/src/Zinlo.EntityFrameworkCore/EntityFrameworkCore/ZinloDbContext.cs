@@ -18,6 +18,7 @@ using Abp.Localization;
 using Zinlo.Reconciliation;
 using Zinlo.ImportsPaths;
 using Zinlo.InstructionVersions;
+using Zinlo.ChartofAccounts;
 
 namespace Zinlo.EntityFrameworkCore
 {
@@ -26,6 +27,8 @@ namespace Zinlo.EntityFrameworkCore
         public virtual DbSet<TimeManagement> TimeManagements { get; set; }
 
         public virtual DbSet<Attachment.Attachment> Attachments { get; set; }
+        public virtual DbSet<AccountBalance> AccountBalance { get; set; }
+
         public virtual DbSet<ClosingChecklist.ClosingChecklist> ClosingChecklists { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Comment.Comment> Comments { get; set; }

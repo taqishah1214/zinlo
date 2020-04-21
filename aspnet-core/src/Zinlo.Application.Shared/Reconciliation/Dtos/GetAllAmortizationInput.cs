@@ -11,9 +11,8 @@ namespace Zinlo.Reconciliation.Dtos
 
         public long ChartofAccountId { get; set; }
 
-        public DateTime MonthFilter { get; set; }
+        public DateTime SelectedMonth { get; set; }
 
-        public string AccountNumer {get;set;}
         public bool? AllOrActive { get; set; }
 
     }

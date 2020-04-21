@@ -15,7 +15,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         public int ReconcillationType { get; set; }
         public int AccountType { get; set; }
         public long AccountSubTypeId { get; set; }
-        public DateTime ClosingMonth { get; set; }
+        //public DateTime ClosingMonth { get; set; }
         public int ReconciledId  { get; set; }
     }
 }

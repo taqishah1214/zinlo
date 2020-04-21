@@ -17,15 +17,17 @@ namespace Zinlo.ChartsofAccount
         Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input);
         Task ChangeAccountsAssignee(long accountId, long assigneeId);
         Task ChangeStatus(long accountId, long selectedStatusId);
-        Task AddandUpdateBalance(double balance, long id);
+        Task AddandUpdateBalance(double balance, long id, DateTime month);
         Task<int> CheckReconcilled(long id);
         Task<FileDto> GetChartsofAccountToExcel(long id);
-        Task<bool> CheckAccountForTrialBalance(ChartsOfAccountsTrialBalanceExcellImportDto input);
-        Task<double> GetTrialBalanceofAccount(long id);
+        Task<bool> AddTrialBalanceInAccount(ChartsOfAccountsTrialBalanceExcellImportDto input);
+        Task<double> GetTrialBalanceofAccount(long id, DateTime month);
         Task<bool> CheckAccountNumber(string accountNumber);
         Task<FileDto> LoadChartsofAccountTrialBalanceToExcel();
-        Task ShiftChartsOfAccountToSpecficMonth(DateTime closingMonth);
+        //Task ShiftChartsOfAccountToSpecficMonth(DateTime closingMonth);
         bool CheckAccounts();
         Task RestoreAccount(long id);
+
+
     }
 }

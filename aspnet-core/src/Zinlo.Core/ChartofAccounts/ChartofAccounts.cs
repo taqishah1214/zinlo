@@ -28,16 +28,8 @@ namespace Zinlo.ChartofAccounts
         public Status Status { get; set; }
         public virtual AccountSubType.AccountSubType AccountSubType { get; set; }
         public Reconciled Reconciled { get; set; }
-        [DisableAuditing]
-        public double Balance { get; set; }
-        [DisableAuditing]
-        public bool Lock { get; set; }
-        [DisableAuditing]
-        public Decimal TrialBalance { get; set; }
-        [DisableAuditing]
-        public long VersionId { get; set; }
-        [DisableAuditing]
-        public DateTime ClosingMonth { get; set; }
+        public bool IsChange { get; set; }
+        public DateTime? ChangeTime { get; set; }
     }
     public enum ReconciliationType
     {
@@ -60,8 +52,22 @@ namespace Zinlo.ChartofAccounts
 
     public enum Reconciled
     {
+        None = 0,
         NetAmount = 1,
         BeginningAmount = 2,
         AccruedAmount = 3,
     }
+
+
+    [Table("AccountBalance")]
+    public class AccountBalance : CreationAuditedEntity<long>
+    {
+        public long AccountId { get; set; }
+        public virtual ChartofAccounts Account { get; set; }
+        public double Balance { get; set; }
+        public double TrialBalance { get; set; }
+        public DateTime Month { get; set; }
+
+    }
+
 }

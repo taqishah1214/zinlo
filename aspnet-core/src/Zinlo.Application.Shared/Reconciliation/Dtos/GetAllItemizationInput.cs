@@ -8,12 +8,8 @@ namespace Zinlo.Reconciliation.Dtos
   public   class GetAllItemizationInput : PagedAndSortedResultRequestDto
     {
         public string Filter { get; set; }
-
         public long ChartofAccountId { get; set; }
-
-        public DateTime MonthFilter { get; set; }
-
-        public string AccountNumer { get; set; }
+        public DateTime SelectedMonth { get; set; }
         public bool? AllOrActive { get; set; }
 
     }
