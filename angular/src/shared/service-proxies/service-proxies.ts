@@ -21493,6 +21493,7 @@ export class EditionListDto implements IEditionListDto {
     waitingDayAfterExpire!: number | undefined;
     trialDayCount!: number | undefined;
     expiringEditionDisplayName!: string | undefined;
+    isCustom!: boolean;
     id!: number;
 
     constructor(data?: IEditionListDto) {
@@ -21515,6 +21516,7 @@ export class EditionListDto implements IEditionListDto {
             this.waitingDayAfterExpire = data["waitingDayAfterExpire"];
             this.trialDayCount = data["trialDayCount"];
             this.expiringEditionDisplayName = data["expiringEditionDisplayName"];
+            this.isCustom = data["isCustom"];
             this.id = data["id"];
         }
     }
@@ -21537,6 +21539,7 @@ export class EditionListDto implements IEditionListDto {
         data["waitingDayAfterExpire"] = this.waitingDayAfterExpire;
         data["trialDayCount"] = this.trialDayCount;
         data["expiringEditionDisplayName"] = this.expiringEditionDisplayName;
+        data["isCustom"] = this.isCustom;
         data["id"] = this.id;
         return data; 
     }
@@ -21552,6 +21555,7 @@ export interface IEditionListDto {
     waitingDayAfterExpire: number | undefined;
     trialDayCount: number | undefined;
     expiringEditionDisplayName: string | undefined;
+    isCustom: boolean;
     id: number;
 }
 
@@ -21602,6 +21606,7 @@ export interface IListResultDtoOfEditionListDto {
 export class EditionEditDto implements IEditionEditDto {
     id!: number | undefined;
     displayName!: string | undefined;
+    isCustom!: boolean;
     expiringEditionId!: number | undefined;
 
     constructor(data?: IEditionEditDto) {
@@ -21617,6 +21622,7 @@ export class EditionEditDto implements IEditionEditDto {
         if (data) {
             this.id = data["id"];
             this.displayName = data["displayName"];
+            this.isCustom = data["isCustom"];
             this.expiringEditionId = data["expiringEditionId"];
         }
     }
@@ -21632,6 +21638,7 @@ export class EditionEditDto implements IEditionEditDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["displayName"] = this.displayName;
+        data["isCustom"] = this.isCustom;
         data["expiringEditionId"] = this.expiringEditionId;
         return data; 
     }
@@ -21640,6 +21647,7 @@ export class EditionEditDto implements IEditionEditDto {
 export interface IEditionEditDto {
     id: number | undefined;
     displayName: string | undefined;
+    isCustom: boolean;
     expiringEditionId: number | undefined;
 }
 
@@ -21965,6 +21973,7 @@ export class EditionCreateDto implements IEditionCreateDto {
     trialDayCount!: number | undefined;
     waitingDayAfterExpire!: number | undefined;
     expiringEditionId!: number | undefined;
+    isCustom!: boolean;
 
     constructor(data?: IEditionCreateDto) {
         if (data) {
@@ -21986,6 +21995,7 @@ export class EditionCreateDto implements IEditionCreateDto {
             this.trialDayCount = data["trialDayCount"];
             this.waitingDayAfterExpire = data["waitingDayAfterExpire"];
             this.expiringEditionId = data["expiringEditionId"];
+            this.isCustom = data["isCustom"];
         }
     }
 
@@ -22007,6 +22017,7 @@ export class EditionCreateDto implements IEditionCreateDto {
         data["trialDayCount"] = this.trialDayCount;
         data["waitingDayAfterExpire"] = this.waitingDayAfterExpire;
         data["expiringEditionId"] = this.expiringEditionId;
+        data["isCustom"] = this.isCustom;
         return data; 
     }
 }
@@ -22021,6 +22032,7 @@ export interface IEditionCreateDto {
     trialDayCount: number | undefined;
     waitingDayAfterExpire: number | undefined;
     expiringEditionId: number | undefined;
+    isCustom: boolean;
 }
 
 export class CreateEditionDto implements ICreateEditionDto {
@@ -25894,6 +25906,7 @@ export class EditionSelectDto implements IEditionSelectDto {
     trialDayCount!: number | undefined;
     waitingDayAfterExpire!: number | undefined;
     isFree!: boolean;
+    isCustom!: boolean;
     additionalData!: AdditionalData | undefined;
 
     constructor(data?: IEditionSelectDto) {
@@ -25918,6 +25931,7 @@ export class EditionSelectDto implements IEditionSelectDto {
             this.trialDayCount = data["trialDayCount"];
             this.waitingDayAfterExpire = data["waitingDayAfterExpire"];
             this.isFree = data["isFree"];
+            this.isCustom = data["isCustom"];
             this.additionalData = data["additionalData"] ? AdditionalData.fromJS(data["additionalData"]) : <any>undefined;
         }
     }
@@ -25942,6 +25956,7 @@ export class EditionSelectDto implements IEditionSelectDto {
         data["trialDayCount"] = this.trialDayCount;
         data["waitingDayAfterExpire"] = this.waitingDayAfterExpire;
         data["isFree"] = this.isFree;
+        data["isCustom"] = this.isCustom;
         data["additionalData"] = this.additionalData ? this.additionalData.toJSON() : <any>undefined;
         return data; 
     }
@@ -25959,6 +25974,7 @@ export interface IEditionSelectDto {
     trialDayCount: number | undefined;
     waitingDayAfterExpire: number | undefined;
     isFree: boolean;
+    isCustom: boolean;
     additionalData: AdditionalData | undefined;
 }
 

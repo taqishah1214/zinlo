@@ -9,6 +9,7 @@ namespace Zinlo.Editions
     public interface IEditionAppService : IApplicationService
     {
         Task<ListResultDto<EditionListDto>> GetEditions();
+        bool IsCustomEdition(int editionId);
 
         Task<GetEditionEditOutput> GetEditionForEdit(NullableIdDto input);
 

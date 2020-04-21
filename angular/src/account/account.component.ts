@@ -56,7 +56,7 @@ export class AccountComponent extends AppComponentBase implements OnInit {
         if (_.filter(this.tenantChangeDisabledRoutes, route => this._router.url.indexOf('/account/' + route) >= 0).length) {
             return false;
         }
-
+        
         return abp.multiTenancy.isEnabled && !this.supportsTenancyNameInUrl();
     }
 

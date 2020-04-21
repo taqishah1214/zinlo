@@ -212,11 +212,11 @@
                                                             {{editionWithFeatures.edition.displayName}}
                                                         </span>
                         
-                                                        <h2 class="kt-pricing-1__subtitle" *ngIf="isFree(editionWithFeatures.edition)">
+                                                        <h2 class="kt-pricing-1__subtitle" *ngIf="editionWithFeatures.edition.isCustom">
                                                             Custom
                                                         </h2>
                         
-                                                        <h2 class="kt-pricing-1__subtitle" *ngIf="!isFree(editionWithFeatures.edition)">
+                                                        <h2 class="kt-pricing-1__subtitle" *ngIf="!editionWithFeatures.edition.isCustom">
                                                             <span *ngIf="editionWithFeatures.edition.dailyPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.dailyPrice}}
                                                             {{"PerDay" | localize}}<br /></span>
                                                             <span *ngIf="editionWithFeatures.edition.weeklyPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.weeklyPrice}}
@@ -265,7 +265,7 @@
                                                             <button
                                                                 class="btn btn-success btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
                                                                 (click)="startSubscription(editionWithFeatures.edition.id,subscriptionStartType.Free,editionPaymentType.Free)"
-                                                                href="#" *ngIf="!isUserLoggedIn && isFree(editionWithFeatures.edition)">
+                                                                href="#" *ngIf="!isUserLoggedIn && editionWithFeatures.edition.isCustom">
                                                                 Contact Us
                                                             </button>
                         
@@ -273,14 +273,14 @@
                                                                 class="btn btn-warning btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
                                                                 (click)="trailSubscription(editionWithFeatures.edition.id,subscriptionStartType.Trail,editionPaymentType.Trail)"
                                                                 href="#"
-                                                                *ngIf="!isUserLoggedIn && !isFree(editionWithFeatures.edition) && editionWithFeatures.edition.trialDayCount">
+                                                                *ngIf="!isUserLoggedIn && !editionWithFeatures.edition.isCustom && editionWithFeatures.edition.trialDayCount">
                                                                 {{"FreeTrial" | localize}}
                                                             </button>
                         
                                                             <button
                                                                 class="btn btn-primary btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
                                                                 (click)="buySubscription(editionWithFeatures.edition.id,subscriptionStartType.Paid,editionPaymentType.NewRegistration)"
-                                                                href="#" *ngIf="!isUserLoggedIn && !isFree(editionWithFeatures.edition)">
+                                                                href="#" *ngIf="!isUserLoggedIn && !editionWithFeatures.edition.isCustom">
                                                                 {{"BuyNow" | localize}}
                                                             </button>
                         
