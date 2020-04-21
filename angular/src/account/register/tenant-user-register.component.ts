@@ -61,7 +61,6 @@ export class TenantUserRegisterComponent extends AppComponentBase implements OnI
       this.tenantUserInfoDto.password=this.personalInfoForm.value.password;
       this._accountServiceProxy.registerTenantUser(this.tenantUserInfoDto).subscribe(result=>
         {
-          debugger;
           this.notify.success(this.l('SuccessfullyRegistered'));
               this._router.navigate(['account/tenentRegisterUserResult']);
         });
