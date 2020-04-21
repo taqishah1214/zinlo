@@ -28,9 +28,10 @@
                                 <label for="EditEdition_IsFree" class="kt-radio">
                                     <input id="EditEdition_IsFree" name="SubscriptionPrice" [(ngModel)]="isFree"
                                         (ngModelChange)="resetPrices($event)" [value]="true" type="radio">
-                                    {{"Free" | localize}}
+                                        Custom 
                                     <span></span>
                                 </label>
+
                                 <label for="EditEdition_IsPaid" class="kt-radio">
                                     <input id="EditEdition_IsPaid" name="SubscriptionPrice" [(ngModel)]="isFree"
                                         [value]="false" type="radio">

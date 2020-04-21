@@ -292,25 +292,8 @@
                                 <button (click)="reconciledClick()" class="btn btn-brand" >{{"Check as Reconciled" | localize}}</button>
                             </div>
                         </div>
-                        <!-- <div class="col-md-6">
-                            <div class="report-container">
-                                <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Total" | localize}}:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{TotalAmount | formater }}</div>
-                                </div>
-                                <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Trial Balance" | localize}}:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{trialBalance | formater}}</div>
-                                </div>
-                                <div class="report-box d-flex flex-wrap">
-                                    <div class="report-box-inner1 w-50 px-2 text-navyblue">{{"Variance" | localize}}:</div>
-                                    <div class="report-box-inner2 w-50 px-2 text-right text-sky">{{variance | formater}}</div>
-                                </div>
-                            </div>
-                            <div class="Check-reconcile-btn ">
-                                <button (click)="reconciledClick()" class="btn btn-brand" >{{"Check as Reconciled" | localize}}</button>
-                            </div>
-                        </div> -->
+                     
+                          
 
                         <div class="col-md-6">
                             <div class="activity-box">
@@ -366,7 +349,7 @@
                                             </div>
                                         </div>
     
-                                        <!-- <div *ngIf="i.propertyName == 'AccountSubTypeId' " class="activity-inner d-flex flex-wrap align-items-center mb-4">
+                                         <div *ngIf="i.propertyName == 'AccountSubTypeId' " class="activity-inner d-flex flex-wrap align-items-center mb-4">
                                             <div class="activity-inner-a mb-3">
                                                 <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">{{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
                                             </div>

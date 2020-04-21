@@ -83,7 +83,6 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   }
   onClose(){
     console.log(this.chartsOfAccountsfileUrl)
-    console.log("moeen")
   }
   onBreadChange(value){
     if(value=="Upload Trial Balance")

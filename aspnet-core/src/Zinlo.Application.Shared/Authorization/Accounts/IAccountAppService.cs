@@ -11,6 +11,7 @@ namespace Zinlo.Authorization.Accounts
         Task<int?> ResolveTenantId(ResolveTenantIdInput input);
 
         Task<RegisterOutput> Register(RegisterInput input);
+        Task<RegisterOutput> RegisterTenantUser(RegisterTenantUserInput input);
 
         Task SendPasswordResetCode(SendPasswordResetCodeInput input);
 

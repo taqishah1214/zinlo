@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Zinlo.Contactus.Dto;
 
 namespace Zinlo.Register_User.Dto
 {
@@ -10,6 +11,7 @@ namespace Zinlo.Register_User.Dto
         public PaymentDetails PaymentDetails { get; set; }
         public PersonalInfoDto PersonalInfo { get; set; }
         public SubscriptionPlansDto SubscriptionPlans { get; set; }
+        public CreateOrUpdateContactusInput ContactUs { get; set; }
 
     }
 }

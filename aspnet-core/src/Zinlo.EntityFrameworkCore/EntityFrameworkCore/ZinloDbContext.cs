@@ -40,6 +40,7 @@ namespace Zinlo.EntityFrameworkCore
 
         public virtual DbSet<UserPaymentDetails>  UserPaymentDetails { get; set; }
         public virtual DbSet<UserBusinessInfo>  UserBusinessInfos { get; set; }
+        public virtual DbSet<ContactUs>  ContactUs { get; set; }
 
         /* Define an IDbSet for each entity of the application */
 

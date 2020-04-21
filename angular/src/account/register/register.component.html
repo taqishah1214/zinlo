@@ -36,7 +36,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a class="kt-wizard-v1__nav-item review" href="javascript:;" (click)="tabpClick(4)"   data-ktwizard-type="step" data-ktwizard-state="review">
+                            <a class="kt-wizard-v1__nav-item review" href="javascript:;" (click)="tabpClick(3)"   data-ktwizard-type="step" data-ktwizard-state="review">
                                 <div class="kt-wizard-v1__nav-body">
                                     <div class="kt-wizard-v1__nav-icon">
                                         <img src="./assets/media/ClosingCheckList/Summary.ico" alt="block-btn">
@@ -61,14 +61,14 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>First Name</label>
-                                                <input #firstNameOfUser="ngModel" [(ngModel)]="personalInfoDto.firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
+                                                <input #firstNameOfUser="ngModel" [(ngModel)]="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
                                                 <validation-messages [formCtrl]="firstNameOfUser"></validation-messages>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Last Name</label>
-                                                <input #lastNameOfUser="ngModel" [(ngModel)]="personalInfoDto.lastName"type="text" class="form-control" name="lastNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
+                                                <input #lastNameOfUser="ngModel" [(ngModel)]="lastName"type="text" class="form-control" name="lastNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
                                                 <validation-messages [formCtrl]="lastNameOfUser"></validation-messages>
                                             </div>
                                         </div>
@@ -101,8 +101,8 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Confirm Password</label>
-                                                <input #repeatPasswordOfUser="ngModel" [(ngModel)]="personalInfoDto.repeatPassword"type="password" class="form-control" name="passwordOfUser" placeholder="Enter Confirm Password" value="">
-                                                <validation-messages [formCtrl]="repeatPasswordOfUser"></validation-messages>
+                                                <input  type="password" class="form-control" [(ngModel)]="repeatPassword" name="passwordOfUser" placeholder="Enter Confirm Password" value="">
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -203,7 +203,8 @@
                                                             <div class="kt-pricing-1__hexagon1"></div>
                                                             <div class="kt-pricing-1__hexagon2"></div>
                                                             <span class="kt-pricing-1__icon kt-font-brand">
-                                                                <i class="fa {{editionIcons[i]}}"></i>
+                                                                
+                                                         <img src="{{editionIcons[i]}}" alt="block-btn">
                                                             </span>
                                                         </div>
                         
@@ -211,11 +212,11 @@
                                                             {{editionWithFeatures.edition.displayName}}
                                                         </span>
                         
-                                                        <h2 class="kt-pricing-1__subtitle" *ngIf="isFree(editionWithFeatures.edition)">
-                                                            {{"Free" | localize}}
+                                                        <h2 class="kt-pricing-1__subtitle" *ngIf="editionWithFeatures.edition.isCustom">
+                                                            Custom
                                                         </h2>
                         
-                                                        <h2 class="kt-pricing-1__subtitle" *ngIf="!isFree(editionWithFeatures.edition)">
+                                                        <h2 class="kt-pricing-1__subtitle" *ngIf="!editionWithFeatures.edition.isCustom">
                                                             <span *ngIf="editionWithFeatures.edition.dailyPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.dailyPrice}}
                                                             {{"PerDay" | localize}}<br /></span>
                                                             <span *ngIf="editionWithFeatures.edition.weeklyPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.weeklyPrice}}
@@ -264,22 +265,22 @@
                                                             <button
                                                                 class="btn btn-success btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
                                                                 (click)="startSubscription(editionWithFeatures.edition.id,subscriptionStartType.Free,editionPaymentType.Free)"
-                                                                href="#" *ngIf="!isUserLoggedIn && isFree(editionWithFeatures.edition)">
-                                                                {{"Start" | localize}}
+                                                                href="#" *ngIf="!isUserLoggedIn && editionWithFeatures.edition.isCustom">
+                                                                Contact Us
                                                             </button>
                         
                                                             <button
                                                                 class="btn btn-warning btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
                                                                 (click)="trailSubscription(editionWithFeatures.edition.id,subscriptionStartType.Trail,editionPaymentType.Trail)"
                                                                 href="#"
-                                                                *ngIf="!isUserLoggedIn && !isFree(editionWithFeatures.edition) && editionWithFeatures.edition.trialDayCount">
+                                                                *ngIf="!isUserLoggedIn && !editionWithFeatures.edition.isCustom && editionWithFeatures.edition.trialDayCount">
                                                                 {{"FreeTrial" | localize}}
                                                             </button>
                         
                                                             <button
                                                                 class="btn btn-primary btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
                                                                 (click)="buySubscription(editionWithFeatures.edition.id,subscriptionStartType.Paid,editionPaymentType.NewRegistration)"
-                                                                href="#" *ngIf="!isUserLoggedIn && !isFree(editionWithFeatures.edition)">
+                                                                href="#" *ngIf="!isUserLoggedIn && !editionWithFeatures.edition.isCustom">
                                                                 {{"BuyNow" | localize}}
                                                             </button>
                         
@@ -326,6 +327,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xl-6">
+                                      
                                             <div class="form-group">
                                                 <label>State</label>
                                                 <input type="text" class="form-control" name="locstate" placeholder="State" value="VIC">
@@ -598,15 +600,16 @@
                         <!--begin: Form Wizard Step 5-->
                         <div class="kt-wizard-v1__content reviewbody" data-ktwizard-type="step-content" data-ktwizard-state="">
                             <div class="row kt-form__section kt-form__section--first">
-                                <div class="col-xl-6 kt-wizard-v1__review">
+
+                                <div *ngIf="!custom" class="col-xl-6 kt-wizard-v1__review">
                                     <div class="kt-wizard-v1__review-item">
                                         <div class="kt-heading kt-wizard-v1__review-title">
                                             Personal Information
                                         </div>
                                         <div class="kt-wizard-v1__review-content">
-                                            {{personalInfoDto.firstName}} {{personalInfoDto.larstName}}<br/>
+                                            {{firstName}} {{lastName}}<br/>
                                             Title: {{personalInfoDto.title}}<br/>
-                                            Email: {{personalInfoDto.email}}
+                                            Email: {{personalInfoDto.emailAddress}}
                                         </div>
                                         <div class="kt-heading kt-wizard-v1__review-title">
                                             Business Information
@@ -620,7 +623,7 @@
                                         
                                     </div>
                                 </div>
-                                <div class="col-xl-6 kt-wizard-v1__review">
+                                <div *ngIf="!custom" class="col-xl-6 kt-wizard-v1__review">
                                     <div class="kt-wizard-v1__review-item">
                                         <div class="kt-heading kt-wizard-v1__review-title">
                                             Payment Details:
@@ -665,7 +668,84 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>                                                             
+                                </div>       
+                                                <div class="col-lg-6 px-5" *ngIf="custom">
+                                                            <h5 class="kt-portlet__head-title">
+                                                                 <span>Contact Us</span>
+                                                            </h5>
+                                                            <span>Lorem Ipsum is simply dummy text of the print.</span>
+                                                    <div class="row py-4">
+                                                        <div class="col-xl-6">
+                                                            <div class="form-group">
+                                                                <label>First Name</label>
+                                                                <input  type="text" class="form-control" [(ngModel)]="contactUs.fullName" name="firstName" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
+                                                        
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-6">
+                                                            <div class="form-group">
+                                                                <label>Email</label>
+                                                                <input  type="text" class="form-control" [(ngModel)]="contactUs.email" name="emailAddress" placeholder="Enter Email" value="" autocomplete="off" required maxlength="64">
+                                                        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xl-6">
+                                                            <div class="form-group">
+                                                                <label>Company Name</label>
+                                                                <input  type="text" class="form-control"[(ngModel)]="contactUs.companyName" name="companyName" placeholder="Enter Company Name" value="" autocomplete="off" required maxlength="64">
+                                                        
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-6">
+                                                            <div class="form-group">
+                                                                <label>No. of Users</label>
+                                                                <input  type="text" class="form-control" [(ngModel)]="contactUs.numberOfUsers" name="noOfUsers" placeholder="Enter No Of Users" value="" autocomplete="off" required maxlength="64">
+                                                        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="description">{{"Description" | localize}}</label>
+                                                            <textarea class="form-control"   id="description" [(ngModel)]="contactUs.description" name="description" placeholder="Enter Description"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 pt-4" *ngIf="custom">
+                                                    <div class="row py-3 px-4">
+                                                        <div class="col-md-8">
+                                                            <div class="item-card-box shadow "style="height: 70px;">
+                                                                <div class="item-card rounded ">
+                                                                    <img src="../../../../assets/img/placeholder.svg" class="py-3 px-3" alt="bill" style="float: left;">
+                                                                    <span class="py-5 pt-3"><b>Location :</b> 15,A Johar Town , Lahore Punjab</span>
+                                                                </div>
+                                                            
+                                                            </div>
+                                                        </div>
+                                                    </div>   
+                                                    <div class="row py-3 px-4">
+                                                        <div class="col-md-8">
+                                                            <div class="item-card-box shadow "style="height: 70px;">
+                                                                <div class="item-card rounded">
+                                                                    <img src="../../../../assets/img/message.svg" class="py-3 px-3" alt="bill" style="float: left;">
+                                                                    <span class="py-5 pt-3"><b>Email :</b> {{contactUs.email}}</span>
+                                                                </div>
+                                                            
+                                                            </div>
+                                                        </div>
+                                                    </div>   
+                                                    <div class="row py-3 px-4">
+                                                        <div class="col-md-8">
+                                                            <div class="item-card-box shadow "style="height: 70px;">
+                                                                <div class="item-card rounded">
+                                                                    <img src="../../../../assets/img/phone-call.svg" class="py-3 px-3" alt="bill" style="float: left;">
+                                                                    <span class="py-5 pt-3"><b>Phoene :</b> +92 345 0987654</span>
+                                                                </div>
+                                                            
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                             </div>
                         </div>
                         <!--end: Form Wizard Step 5-->
@@ -675,7 +755,7 @@
                             <button class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previebtn" (click)="movetab(-1)" data-ktwizard-type="action-prev">
                                 Previous
                             </button>
-                            <button class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u submit" (click)="save()" data-ktwizard-type="action-submit">
+                            <button class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u submit" (click)="save()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" data-ktwizard-type="action-submit">
                                 Submit
                             </button>
                             <button class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u nxtbtn" (click)="movetab(1)" data-ktwizard-type="action-next">
@@ -691,3 +771,6 @@
     </div>
     </div>
 </div>
+
+
+

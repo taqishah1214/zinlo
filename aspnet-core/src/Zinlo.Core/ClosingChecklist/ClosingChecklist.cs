@@ -30,7 +30,6 @@ namespace Zinlo.ClosingChecklist
         public int DueOn { get; set; }
         [DisableAuditing]
         public DateTime DueDate { get; set; }
-        public DateTime? EndsOn { get; set; }
         public DaysBeforeAfter DayBeforeAfter { get; set; }
         public bool EndOfMonth { get; set; }
         public Frequency Frequency { get; set; }

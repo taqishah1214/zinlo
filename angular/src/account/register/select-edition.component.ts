@@ -53,6 +53,7 @@ export class SelectEditionComponent extends AppComponentBase implements OnInit {
     }
 
     isFree(edition: EditionSelectDto): boolean {
+       console.log(edition.isCustom);
         return !edition.monthlyPrice && !edition.annualPrice;
     }
 

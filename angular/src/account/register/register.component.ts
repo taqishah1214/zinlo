@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { finalize, catchError } from 'rxjs/operators';
-import { UserRegisterServiceServiceProxy, RegisterUserInput, PersonalInfoDto, BusinessInfo, PaymentDetails, SubscriptionPlansDto, RegisterTenantOutput } from '@shared/service-proxies/service-proxies';
+import { UserRegisterServiceServiceProxy, RegisterUserInput, PersonalInfoDto, BusinessInfo, PaymentDetails, SubscriptionPlansDto, RegisterTenantOutput, CreateOrUpdateContactusInput } from '@shared/service-proxies/service-proxies';
 import { ViewEncapsulation } from '@angular/core';
 import {
     EditionSelectDto,
@@ -28,18 +28,24 @@ declare var $: any;
     animations: [accountModuleAnimation()]
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
+    
     personalInfoDto: PersonalInfoDto;
     businessInfoDto: BusinessInfo;
     paymentDetailsDto: PaymentDetails;
+    contactUs:CreateOrUpdateContactusInput;
     subscriptionPlansDto: SubscriptionPlansDto;
     editionsSelectOutput: EditionsSelectOutput = new EditionsSelectOutput();
     isUserLoggedIn = false;
     isSetted = false;
     saving = false;
+    custom=false;
+    repeatPassword:string;
+    firstName="";
+    lastName="";
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
-    editionIcons: string[] = ['flaticon-open-box', 'flaticon-rocket', 'flaticon-gift', 'flaticon-confetti', 'flaticon-cogwheel-2', 'flaticon-app', 'flaticon-coins', 'flaticon-piggy-bank', 'flaticon-bag', 'flaticon-lifebuoy', 'flaticon-technology-1', 'flaticon-cogwheel-1', 'flaticon-infinity', 'flaticon-interface-5', 'flaticon-squares-3', 'flaticon-interface-6', 'flaticon-mark', 'flaticon-business', 'flaticon-interface-7', 'flaticon-list-2', 'flaticon-bell', 'flaticon-technology', 'flaticon-squares-2', 'flaticon-notes', 'flaticon-profile', 'flaticon-layers', 'flaticon-interface-4', 'flaticon-signs', 'flaticon-menu-1', 'flaticon-symbol'];
+    editionIcons: string[] = ['./assets/media/ClosingCheckList/startup.svg','./assets/media/ClosingCheckList/premium.svg','./assets/media/ClosingCheckList/Business_info.ico'];
     constructor(
 
         injector: Injector,
@@ -54,6 +60,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.businessInfoDto= new BusinessInfo();
         this.paymentDetailsDto= new PaymentDetails();
         this.subscriptionPlansDto= new SubscriptionPlansDto();
+        this.contactUs=new CreateOrUpdateContactusInput();
     }
     onOpenCalendar(container) {
         container.monthSelectHandler = (event: any): void => {
@@ -72,7 +79,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 this.editionsSelectOutput = result;
 
                 if (!this.editionsSelectOutput.editionsWithFeatures || this.editionsSelectOutput.editionsWithFeatures.length <= 0) {
-                    this._router.navigate(['/account/register-tenant']);
+                   // this._router.navigate(['/account/register-tenant']);
                 }
             });
     }
@@ -112,46 +119,67 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.subscriptionPlansDto.editionId = id
         this.subscriptionPlansDto.subscriptionStartType = type
         this.subscriptionPlansDto.editionPaymentType = payment
+        this.custom=true;
+        this.movetab(1);
     }
     trailSubscription(id: any, type: any, payment: any) {
         this.subscriptionPlansDto.editionId = id
         this.subscriptionPlansDto.subscriptionStartType = type
         this.subscriptionPlansDto.editionPaymentType = payment
+        this.custom=false;
     }
     buySubscription(id: any, type: any, payment: any) {
         this.subscriptionPlansDto.editionId = id
         this.subscriptionPlansDto.subscriptionStartType = type
         this.subscriptionPlansDto.editionPaymentType = payment
+        this.custom=false;
+        this.movetab(1);
     }
     current: number = 0;
     movetab(item: number) {
+        if(this.repeatPassword==this.personalInfoDto.password)
+        {
+            
+            this.current = this.current + item;
+            if (this.current > 0) {
+                $(".previebtn").show();
+            } else {
+                $(".previebtn").hide();
 
-        this.current = this.current + item;
-        if (this.current > 0) {
-            $(".previebtn").show();
-        } else {
-            $(".previebtn").hide();
+            }
 
+            if (this.current === 3) {
+                $(".nxtbtn").hide();
+                $(".submit").show();
+            } else {
+                $(".nxtbtn").show();
+                $(".submit").hide();
+            }
+            
+        console.log(this.current);
+            this.switchTab(this.current);
         }
-
-        if (this.current === 4) {
-            $(".nxtbtn").hide();
-            $(".submit").show();
-        } else {
-            $(".nxtbtn").show();
-            $(".submit").hide();
+        else{
+            this.notify.error("Password and Confirm Password are not same")
         }
-
-        this.switchTab(this.current);
     }
 
     save() {
-        this.personalInfoDto.userName =  this.personalInfoDto.firstName +" " + this.personalInfoDto.lastName;
+        this.saving = true;
+        this.personalInfoDto.userName =  this.firstName +" " + this.lastName;
         var userResgister = new RegisterUserInput();
         userResgister.businessInfo = this.businessInfoDto;
-        userResgister.paymentDetails = this.paymentDetailsDto;
+      
         userResgister.personalInfo = this.personalInfoDto;
         userResgister.subscriptionPlans = this.subscriptionPlansDto;
+        if(this.custom)
+        {
+        userResgister.contactUs = this.contactUs;
+        userResgister.paymentDetails=null;
+        }else{
+            userResgister.paymentDetails = this.paymentDetailsDto;
+            userResgister.contactUs=null;
+        }
         console.log(userResgister);
         debugger;
        this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
@@ -179,6 +207,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
             });
     }
     switchTab(item: number) {
+        
         switch (item) {
             case 0:
                 $(".location").attr("data-ktwizard-state", "current")
@@ -204,7 +233,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".reviewbody").attr("data-ktwizard-state", "")
                 $(".locationbody").attr("data-ktwizard-state", "")
                 break;
-            case 4:
+            case 3:
                 $(".review").attr("data-ktwizard-state", "current")
                 $(".detailbody").attr("data-ktwizard-state", "")
                 $(".servicebody").attr("data-ktwizard-state", "")
