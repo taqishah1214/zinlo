@@ -190,6 +190,26 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <!-- <div class="form-group">
+                                        <label>{{"Endson" | localize}}</label>
+                                        <form class="input-arrow">
+                                            <input [disabled]="checklist.frequency==5" [(ngModel)]="checklist.endsOn" required="required"
+                                                autocomplete="off" class="form-control" name="date" bsDatepicker
+                                                placeholder="Month"
+                                                [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                (onShown)="onOpenCalendar($event)">
+                                        </form>
+                                    </div> -->
+                                    <div class="kt-radio-list eom-radio">
+                                        <span></span>
+                                        <label class="kt-radio kt-radio--brand" name="radio5">
+                                            <input type="radio" [(checked)]="checklist.endOfMonth" name="endOfMonth"
+                                                (click)="handleRadioChange()">{{"Endofmonth" | localize}}
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="drag_drop_box">
                                 <label class="bg-color">{{"Attachments" | localize}}</label>
