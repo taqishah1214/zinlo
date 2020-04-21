@@ -23,6 +23,7 @@ import { StripeCancelPaymentComponent } from './payment/stripe/stripe-cancel-pay
 import { StripePaymentResultComponent } from './payment/stripe/stripe-payment-result.component';
 import { PaymentCompletedComponent } from './payment/payment-completed.component';
 import { TenantUserRegisterComponent } from './register/tenant-user-register.component';
+import { TenentRegisterUserComponent } from './register/tenant-register-user-result.component';
 
 @NgModule({
     imports: [
@@ -43,7 +44,7 @@ import { TenantUserRegisterComponent } from './register/tenant-user-register.com
                     { path: 'send-code', component: SendTwoFactorCodeComponent, canActivate: [AccountRouteGuard] },
                     { path: 'verify-code', component: ValidateTwoFactorCodeComponent, canActivate: [AccountRouteGuard] },
                     { path: 'tenant-user-register', component: TenantUserRegisterComponent},
-
+                    { path: 'tenentRegisterUserResult', component: TenentRegisterUserComponent},
                     { path: 'buy', component: BuyEditionComponent },
                     { path: 'extend', component: ExtendEditionComponent },
                     { path: 'upgrade', component: UpgradeEditionComponent },

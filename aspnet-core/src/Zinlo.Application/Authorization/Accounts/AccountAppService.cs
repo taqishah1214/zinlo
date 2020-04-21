@@ -120,6 +120,30 @@ namespace Zinlo.Authorization.Accounts
             };
         }
 
+        public async Task<RegisterOutput> RegisterTenantUser(RegisterTenantUserInput input)
+        {
+            var user = await _userRegistrationManager.RegisterTenantUSerAsync(
+                input.Name,
+                input.Surname,
+                input.Title,
+                input.PhoneNumber,
+                input.Address,
+                input.City,
+                input.State,
+                input.EmailAddress,
+                input.UserName,
+                input.Password,
+                false,
+                AppUrlService.CreateEmailActivationUrlFormat(AbpSession.TenantId),
+                input.TenantId
+            );
+            var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);
+            return new RegisterOutput
+            {
+                CanLogin = user.IsActive && (user.IsEmailConfirmed || !isEmailConfirmationRequiredForLogin)
+            };
+        }
+
         public async Task SendPasswordResetCode(SendPasswordResetCodeInput input)
         {
             var user = await GetUserByChecking(input.EmailAddress);
@@ -256,5 +280,7 @@ namespace Zinlo.Authorization.Accounts
 
             return user;
         }
+
+       
     }
 }

@@ -26,6 +26,10 @@ namespace Zinlo.Authorization.Users
 
         public string Title { get; set; }
 
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+
         //Can add application specific user properties here
 
         public User()

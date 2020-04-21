@@ -44,6 +44,8 @@ import { SubDomainLoginComponent } from './sub-domain-login/sub-domain-login.com
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
 import {TenantUserRegisterComponent} from './register/tenant-user-register.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TenentRegisterUserComponent } from './register/tenant-register-user-result.component';
+
 export function getRecaptchaLanguage(): string {
     return new LocaleMappingService().map('recaptcha', abp.localization.currentLanguage.name);
 }
@@ -73,6 +75,7 @@ export function getRecaptchaLanguage(): string {
         LoginComponent,
         RegisterComponent,
         RegisterTenantComponent,
+        TenentRegisterUserComponent,
         RegisterTenantResultComponent,
         SelectEditionComponent,
         ForgotPasswordComponent,

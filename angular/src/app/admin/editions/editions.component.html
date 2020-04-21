@@ -40,6 +40,7 @@
                                         <th>
                                             {{'EditionName' | localize}}
                                         </th>
+                                        <th>Edition Type</th>
                                         <th>
                                             {{'Price' | localize}}
                                         </th>
@@ -92,6 +93,12 @@
                                         <td>
                                             <span class="ui-column-title">{{'EditionName' | localize}}</span>
                                             {{record.displayName}}
+                                        </td>
+
+                                        <td>
+                                            <span *ngIf="record.isCustom" >Custom</span>
+                                            <span *ngIf="!record.isCustom">Paid</span>
+                                            
                                         </td>
                                         <td>
                                             <span class="ui-column-title">{{'Price' | localize}}</span>

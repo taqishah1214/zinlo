@@ -61,8 +61,12 @@
                     <span class="kt-login__account-msg">
                         Don't have an account yet ?
                     </span>&nbsp;&nbsp;
-                    <a routerLink="/account/register" id="kt_login_signup"
+                    <a *ngIf="!multiTenancySideIsTeanant" routerLink="/account/register"  id="kt_login_signup"
                         class="kt-link kt-link--light kt-login__account-link">Request Access</a>
+                        <a *ngIf="multiTenancySideIsTeanant" routerLink="/account/tenant-user-register"  id="kt_login_signup"
+                        class="kt-link kt-link--light kt-login__account-link">Request Access</a>
+
+                        
                 </div>
             </div>
         </div>
