@@ -189,24 +189,24 @@
                                         </div>
                             
                                         <div *ngIf="i.propertyName == 'AssigneeId'" class="activity-inner d-flex flex-wrap align-items-center mb-4">
-                                            <div class="activity-inner-a mb-3">
+                                            <div class="activity-inner-a mb-4">
                                                 <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
                                                     {{i.result.ChangeOccurUser.name   | firstLetterOfWords}}</div>
                                             </div>
                             
                                             <div class="activity-inner-b mb-3">
-                                                <div class="mb-2 notification-line1">
+                                                <div class="notification-line1">
                                                     <span>{{i.result.ChangeOccurUser.name}}</span> Changed the
                                                     <span>Assignee</span>{{i.changeTime | momentFormat:'Do MMM YY LTS'}}
                                                 </div>
                                                 <div>
-                                                    <div
+                                                    <div style="height: 25px !important;width: 25px !important;"
                                                         class="badge2 {{i.result.colorPreviousValue}} d-inline-flex align-items-center justify-content-center">
                                                         {{i.result.PreviousValue.name | firstLetterOfWords}}</div>
                                                     <span>{{i.result.PreviousValue.name}}</span>
                                                     <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
                                                         class="mr-2 ml-2 arrowimage">
-                                                    <div
+                                                    <div style="height: 25px !important;width: 25px !important;"
                                                         class="badge2 {{i.result.colorNewValue}} d-inline-flex align-items-center justify-content-center">
                                                         {{i.result.NewValue.name | firstLetterOfWords}}</div>
                                                     <span>{{i.result.NewValue.name}}</span>

@@ -37,8 +37,8 @@ export class AppNavigationService {
             ]),
             
             new AppMenuItem('Chart of Accounts', '', './assets/media/ClosingCheckList/chartofaccount.svg', '', [
-                new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','./assets/media/ClosingCheckList/dot.png','/app/main/account/accounts'),
-                new AppMenuItem('Account Sub Type', 'Pages.Categories', './assets/media/ClosingCheckList/dot.png', '/app/main/account/accountsubtype'),
+                new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','./assets/media/ClosingCheckList/dot.png','/app/main/account'),
+                new AppMenuItem('Account Sub Type', 'Pages.Categories', './assets/media/ClosingCheckList/dot.png', '/app/main/sub'),
                 
             ]),
 
