@@ -51,63 +51,104 @@ namespace Zinlo.ClosingChecklist
         { /*if (!CheckLastHourOfMonth()) return;*/
             using (CurrentUnitOfWork.DisableFilter(AbpDataFilters.MayHaveTenant))
             {
-                var allTasks = _closingChecklistRepository.GetAll();
-                foreach (var task in allTasks.ToList())
+                var allTasks = _closingChecklistRepository.GetAll().ToList();
+                foreach (var task in allTasks)
                 {
+                    bool taskExist;
                     switch (task.Frequency)
                     {
                         case Frequency.Annually:
-
-                            if (task.ClosingMonth.Year.Equals(DateTime.Now.Year - 1) &&
-                                task.ClosingMonth.Month.Equals(DateTime.Now.Month + 1))
+                            task.ClosingMonth = task.ClosingMonth.AddYears(1);
+                            task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
+                                task.DueOn, task.EndOfMonth);
+                            taskExist = TaskExist(task.ClosingMonth, task.GroupId);
+                            if (!taskExist)
                             {
-                                task.ClosingMonth = task.ClosingMonth.AddYears(1);
-                                task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
-                                    task.DueOn, task.EndOfMonth);
-                                task.Id = 0;
-                                var taskExist = TaskExist(task.ClosingMonth, task.GroupId);
-                                if (!taskExist)
+                                var newTask = new ClosingChecklist()
                                 {
-                                    _closingChecklistRepository.Insert(task);
-                                }
+                                    ClosingMonth = task.ClosingMonth,
+                                    DueDate = task.DueDate,
+                                    AssigneeId = task.AssigneeId,
+                                    Frequency = task.Frequency,
+                                    Status = task.Status,
+                                    VersionId = task.VersionId,
+                                    CategoryId = task.CategoryId,
+                                    CreatorUserId = task.CreatorUserId,
+                                    DayBeforeAfter = task.DayBeforeAfter,
+                                    DueOn = task.DueOn,
+                                    EndOfMonth = task.EndOfMonth,
+                                    TaskName = task.TaskName,
+                                    TenantId = task.TenantId,
+                                    GroupId = task.GroupId,
+                                    NoOfMonths = task.NoOfMonths,
+                                };
+                                _closingChecklistRepository.Insert(newTask);
                             }
 
                             break;
                         case Frequency.Monthly:
-                            if (task.ClosingMonth.Year.Equals(DateTime.Now.Year) &&
-                                task.ClosingMonth.Month.Equals(DateTime.Now.Month))
+
+                            task.ClosingMonth = task.ClosingMonth.AddMonths(1);
+                            task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
+                                task.DueOn, task.EndOfMonth);
+                            taskExist = TaskExist(task.ClosingMonth, task.GroupId);
+                            if (!taskExist)
                             {
-                                task.ClosingMonth = task.ClosingMonth.AddMonths(1);
-                                task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
-                                    task.DueOn, task.EndOfMonth);
-                                task.Id = 0;
-                                var taskExist = TaskExist(task.ClosingMonth, task.GroupId);
-                                if (!taskExist)
+                                var newTask = new ClosingChecklist()
                                 {
-                                    _closingChecklistRepository.Insert(task);
-                                }
+                                    ClosingMonth = task.ClosingMonth,
+                                    DueDate = task.DueDate,
+                                    AssigneeId = task.AssigneeId,
+                                    Frequency = task.Frequency,
+                                    Status = task.Status,
+                                    VersionId = task.VersionId,
+                                    CategoryId = task.CategoryId,
+                                    CreatorUserId = task.CreatorUserId,
+                                    DayBeforeAfter = task.DayBeforeAfter,
+                                    DueOn = task.DueOn,
+                                    EndOfMonth = task.EndOfMonth,
+                                    TaskName = task.TaskName,
+                                    TenantId = task.TenantId,
+                                    GroupId = task.GroupId,
+                                    NoOfMonths = task.NoOfMonths,
+                                };
+                                _closingChecklistRepository.Insert(newTask);
                             }
 
                             break;
                         case Frequency.Quarterly:
 
-                            if (task.ClosingMonth.AddMonths(3).Year.Equals(DateTime.Now.Year) &&
-                                task.ClosingMonth.Month.Equals(DateTime.Now.Month + 1))
+                            task.ClosingMonth = task.ClosingMonth.AddMonths(3);
+                            task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
+                                task.DueOn, task.EndOfMonth);
+                            taskExist = TaskExist(task.ClosingMonth, task.GroupId);
+                            if (!taskExist)
                             {
-                                task.ClosingMonth = task.ClosingMonth.AddMonths(3);
-                                task.DueDate = GetDueDate(task.DayBeforeAfter, task.ClosingMonth,
-                                    task.DueOn, task.EndOfMonth);
-                                task.Id = 0;
-                                var taskExist = TaskExist(task.ClosingMonth, task.GroupId);
-                                if (!taskExist)
+                                var newTask = new ClosingChecklist()
                                 {
-                                    _closingChecklistRepository.Insert(task);
-                                }
+                                    ClosingMonth = task.ClosingMonth,
+                                    DueDate = task.DueDate,
+                                    AssigneeId = task.AssigneeId,
+                                    Frequency = task.Frequency,
+                                    Status = task.Status,
+                                    VersionId = task.VersionId,
+                                    CategoryId = task.CategoryId,
+                                    CreatorUserId = task.CreatorUserId,
+                                    DayBeforeAfter = task.DayBeforeAfter,
+                                    DueOn = task.DueOn,
+                                    EndOfMonth = task.EndOfMonth,
+                                    TaskName = task.TaskName,
+                                    TenantId = task.TenantId,
+                                    GroupId = task.GroupId,
+                                    NoOfMonths = task.NoOfMonths,
+                                };
+                                _closingChecklistRepository.Insert(newTask);
                             }
 
                             break;
                     }
                 }
+                CurrentUnitOfWork.SaveChanges();
             }
         }
         protected DateTime GetDueDate(DaysBeforeAfter daysBeforeAfter, DateTime closingMonth, int numberOfDays, bool endsOfMonth)
