@@ -9,7 +9,6 @@ on:
 jobs:
  build:
     runs-on: ubuntu-18.04
-
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js 12.8
@@ -20,6 +19,5 @@ jobs:
       working-directory: ./angular
       run: yarn install
     - name: Build angular app
-      working-directory: ./angular
-      run: ng build  
+      run: npm run publish  
     
