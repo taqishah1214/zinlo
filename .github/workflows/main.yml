@@ -16,10 +16,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.8
-    - name: Install dependencies
+    - name: Install yarn
       working-directory: ./angular
-      run: npm install
-    - name: Build
+      run: yarn install
+    - name: Build angular app
       working-directory: ./angular
-      run: ng build --aot --prod 
+      run: ng build  
     
