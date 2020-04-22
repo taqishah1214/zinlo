@@ -157,6 +157,7 @@ this.chartsOfAccountList.forEach(element => {
       return;
     }
     this.primengTableHelper.showLoadingIndicator();
+    debugger;
     this._chartOfAccountService.getAll(
       this.filterText,
       this.accountTypeFilter,

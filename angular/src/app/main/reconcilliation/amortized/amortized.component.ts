@@ -113,7 +113,8 @@ export class AmortizedComponent extends AppComponentBase {
     this.AllOrActive,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
-    this.primengTableHelper.getMaxResultCount(this.paginator, event)
+    10
+    // this.primengTableHelper.getMaxResultCount(this.paginator, event)
   ).subscribe(result => {
     this.primengTableHelper.totalRecordsCount = result.totalCount;
     this.primengTableHelper.records = result.items;

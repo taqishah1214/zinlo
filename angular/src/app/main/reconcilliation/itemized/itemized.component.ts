@@ -85,7 +85,7 @@ export class ItemizedComponent extends AppComponentBase {
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
     this.getAuditLogOfAccount();
-    this.getAllItemizedList(this.primeNgEvent);
+    this.getAllItemizedList();
 
 
   }
@@ -111,7 +111,7 @@ export class ItemizedComponent extends AppComponentBase {
     this.AllOrActive,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
-    this.primengTableHelper.getMaxResultCount(this.paginator, event)
+    10
   ).subscribe(result => {
     this.primengTableHelper.totalRecordsCount = result.totalCount;
     this.primengTableHelper.records = result.items[0].itemizedListForViewDto;
