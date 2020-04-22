@@ -8,6 +8,7 @@ import { ContactusServiceServiceProxy, ContactusDto } from '@shared/service-prox
 })
 export class CustomizedPlanRequestComponent extends AppComponentBase implements OnInit, AfterViewInit {
     
+    saving = false;
     contactus:ContactusDto;
     constructor(
         injector: Injector,
