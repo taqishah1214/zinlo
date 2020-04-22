@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
 import { SignalRService } from '@app/services/signalRService';
 import { StoreDateService } from "../../../services/storedate.service";
 import * as moment from 'moment';
+import { add, subtract } from 'add-subtract-date';
 
 
 @Component({
@@ -123,7 +124,9 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
       this.getAllAccounts()
     } 
   }
-
+  filterByMonth(event): void {
+    this.selectedDate = new Date(add(event, 2, "day"));
+  }
   openFieldUpdateAssignee(record) {
     this.rowid = record;
   }

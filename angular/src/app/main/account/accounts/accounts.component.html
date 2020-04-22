@@ -146,12 +146,10 @@
                                                          <div class="form-group col-xl-3">
                                                              <div class="month-calender">
                                                                  <form class="input-arrow">
-                                                                     <input required="required"
-                                                                         autocomplete="off" class="form-control" name="date" bsDatepicker 
-                                                                         placeholder="Select Month" class="form-control" name="date"
-                                                                         bsDatepicker
-                                                                         [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                                                         (onShown)="onOpenCalendar($event)">
+                                                                    <input id="selectedDate" 
+                                                                    value="january 2020" (ngModelChange)="filterByMonth($event)" class="date-field"  name="monthValue"
+                                                                    [(ngModel)]="selectedDate" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                                    (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
                                                                  </form>
                                                              </div>
                                                          </div>
