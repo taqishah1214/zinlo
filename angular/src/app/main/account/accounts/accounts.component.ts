@@ -16,7 +16,6 @@ import { Observable } from 'rxjs';
 import { SignalRService } from '@app/services/signalRService';
 import { StoreDateService } from "../../../services/storedate.service";
 import * as moment from 'moment';
-import { add, subtract } from 'add-subtract-date';
 
 
 @Component({
@@ -124,9 +123,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
       this.getAllAccounts()
     } 
   }
-  filterByMonth(event): void {
-    this.selectedDate = new Date(add(event, 2, "day"));
-  }
+
   openFieldUpdateAssignee(record) {
     this.rowid = record;
   }
@@ -215,7 +212,7 @@ this.chartsOfAccountList.forEach(element => {
   
 
 editAccount(id) : void { 
-    this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: id,newSubTypeId : 0} } });
+    this._router.navigate(['/app/main/account/create-edit-accounts'], { state: { data: { id: id,newSubTypeId : 0} } });
 }
 getUserIndex(id) {
   return this.users.findIndex(x => x.id === id);
@@ -238,7 +235,7 @@ getUserIndex(id) {
   }
 
 RedirectToCreateAccount(): void {
-  this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id: 0 , newSubTypeId : 0} } });
+  this._router.navigate(['/app/main/account/create-edit-accounts'], { state: { data: { id: 0 , newSubTypeId : 0} } });
 }
 
 
