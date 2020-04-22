@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       
       with:
-        dotnet-version: 2.2
+        dotnet-version: 3.1.100
     - name: Install dependencies
       working-directory: ./aspnet-core/src/Zinlo.Web.Host
       run: dotnet restore ./aspnet-core/Zinlo.Web.sln --configuration Release
