@@ -11,13 +11,16 @@ import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
-
+import { BehaviorSubject } from "rxjs";
 import * as moment from 'moment';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
 export class AccountServiceProxy {
+    private message= new BehaviorSubject <boolean>(false);
+    count = this.message.asObservable();
+    itemCount:boolean=false;
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -31,6 +34,10 @@ export class AccountServiceProxy {
      * @param body (optional) 
      * @return Success
      */
+    updatedItemCount(data: boolean){
+        this.itemCount=data;
+        this.message.next(this.itemCount);
+      }
     isTenantAvailable(body: IsTenantAvailableInput | undefined): Observable<IsTenantAvailableOutput> {
         let url_ = this.baseUrl + "/api/services/app/Account/IsTenantAvailable";
         url_ = url_.replace(/[?&]$/, "");

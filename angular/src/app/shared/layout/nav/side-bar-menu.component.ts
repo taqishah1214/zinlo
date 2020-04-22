@@ -7,6 +7,7 @@ import { DOCUMENT } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MenuOptions } from '@metronic/app/core/_base/layout/directives/menu.directive';
+import { AccountServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
     templateUrl: './side-bar-menu.component.html',
@@ -16,8 +17,8 @@ import { MenuOptions } from '@metronic/app/core/_base/layout/directives/menu.dir
 export class SideBarMenuComponent extends AppComponentBase implements OnInit, AfterViewInit {
     releaseDate: string;
     menu: AppMenu = null;
-    @Input() useBottomDiv = true;
-
+    @Input() useBottomDiv =false;
+    copyright:boolean=true;
     currentRouteUrl = '';
     insideTm: any;
     outsideTm: any;
@@ -49,6 +50,7 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
         injector: Injector,
         private el: ElementRef,
         private router: Router,
+        private proxy:AccountServiceProxy,
         public permission: PermissionCheckerService,
         private _appNavigationService: AppNavigationService,
         @Inject(DOCUMENT) private document: Document,
@@ -58,6 +60,7 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
 
     ngOnInit() {
         
+        this.proxy.count.subscribe(data=>this.copyright=data);
         this.releaseDate = this.appSession.application.releaseDate.format('YYYYMMDD');
         this.menu = this._appNavigationService.getMenu();
 
