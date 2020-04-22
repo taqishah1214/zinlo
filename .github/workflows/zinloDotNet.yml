@@ -19,9 +19,9 @@ jobs:
         dotnet-version: 3.1.101
     - name: Install dependencies
       working-directory: ./aspnet-core/
-      run: dotnet restore ./aspnet-core/Zinlo.Web.sln --configuration Release
+      run: dotnet restore ./aspnet-core/Zinlo.Web.sln 
     - name: Build Zinlo
       working-directory: ./aspnet-core/
-      run: dotnet build./aspnet-core/Zinlo.Web.sln --configuration Release --no-restore
+      run: dotnet build ./aspnet-core/Zinlo.Web.sln 
       
   
