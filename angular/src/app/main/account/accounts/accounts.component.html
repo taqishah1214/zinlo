@@ -241,40 +241,17 @@
                             <div class="record-card-header-bottom-inner2">
 
                                 <div class="upper-content">
-                                    <form class="search-form">
-                                        <div class="form-group">
-                                            <input type="text" autoFocus (input)="searchWithName()"
-                                                [(ngModel)]="filterText" name="filterText"
-                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
-                                               
-                                        </div>
-                                    </form>
-                                    <div class="block-btn">
-                                        <select class="form-control border-grey" name="categoryFilter"
-                                            [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
-                                            id="exampleFormControlSelect2">
-                                            <option value="0">All</option>
-                                            <option *ngFor="let item of accountTypeList;" [value]="item.id">
-                                                {{item.name}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <!-- <div class="block-btn">
-                                        <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()">
-                                            <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
-                                        </button>
-                                    </div> -->
                                     <div>
                                        
-                                            
+                                                
                                             <!-- <label class="switch">
                                                 <input type="checkbox" [(checked)]="AllOrActive"  (change)="changeToggleValue()">
                                                 <span class="slider round"></span>
                                             </label> -->
 
                                             <label class="switch"><input type="checkbox" id="togBtn" [(checked)]="AllOrActive"  (change)="changeToggleValue()" ><div class="slider round"><!--ADDED HTML --><span class="on">All</span><span class="off">Active</span><!--END--></div></label>
-                                      
-                                       
+                                    
+                                    
                                     </div>
                                     <div class="users-box-parent">
                                         <div class="users-box">
@@ -319,6 +296,29 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="block-btn">
+                                        <select class="form-control border-grey" name="categoryFilter"
+                                            [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
+                                            id="exampleFormControlSelect2">
+                                            <option value="0">All</option>
+                                            <option *ngFor="let item of accountTypeList;" [value]="item.id">
+                                                {{item.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <!-- <div class="block-btn">
+                                        <button class="btn btn-square bg-lightgrey" (click)="ResetGrid()">
+                                            <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
+                                        </button>
+                                    </div> -->
+                                    <form class="search-form pl-2">
+                                        <div class="form-group">
+                                            <input type="text" autoFocus (input)="searchWithName()"
+                                                [(ngModel)]="filterText" name="filterText"
+                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
+                                               
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

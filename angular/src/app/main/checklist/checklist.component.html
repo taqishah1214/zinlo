@@ -37,13 +37,7 @@
                             </div>
                             <div class="record-card-header-bottom-inner2">
                                 <div class="upper-content">
-                                    <form class="search-form">
-                                        <div class="form-group">
-                                            <input type="text" autoFocus (input)="getClosingCheckListAllTasks()"
-                                                [(ngModel)]="filterText" name="filterText"
-                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
-                                        </div>
-                                    </form>
+                                    
                                     <div>
                                        
                                             
@@ -55,7 +49,7 @@
                                         <label class="switch"><input type="checkbox" id="togBtn" [(checked)]="AllOrActive"  (change)="changeToggleValue()" ><div class="slider round"><!--ADDED HTML --><span class="on">All</span><span class="off">Active</span><!--END--></div></label>
                                   
                                    
-                                </div>
+                                    </div>
                                     <div class="users-box-parent">
                                         <div class="users-box">
                                             <div *ngIf="plusUserBadgeForHeader"
@@ -108,6 +102,13 @@
                                         <button (click)="openFilterClick()" data-toggle="tooltip" title="More Filters"class="btn btn-square"><img
                                                 src="./assets/media/ClosingCheckList/filter.png" alt="filter"></button>
                                     </div>
+                                    <form class="search-form pl-3">
+                                        <div class="form-group">
+                                            <input type="text" autoFocus (input)="getClosingCheckListAllTasks()"
+                                                [(ngModel)]="filterText" name="filterText"
+                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
+                                        </div>
+                                    </form>
                                 </div>
                                 <div *ngIf="FilterBoxOpen" class="lower-content">
                                     <form>
