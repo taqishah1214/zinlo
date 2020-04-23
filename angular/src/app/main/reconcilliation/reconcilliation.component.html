@@ -93,13 +93,15 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <form class="search-form">
-                                        <div class="form-group">
-                                            <input type="text" autoFocus (input)="getAllAccounts()"
-                                                [(ngModel)]="filterText" name="filterText"
-                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
-                                        </div>
-                                    </form>
+                                    <div class="upper-content">
+                                        <form class="search-form">
+                                            <div class="form-group">
+                                                <input type="text" autoFocus (input)="getAllAccounts()"
+                                                    [(ngModel)]="filterText" name="filterText"
+                                                    [placeholder]="l('SearchWithThreeDot')" class="border-grey">
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                                 
                             </div>
