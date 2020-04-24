@@ -133,7 +133,8 @@
                                     <div class="form-group">
                                         <label>{{"Frequency" | localize}}</label>
                                         <select class="bg-white border form-control input-medium" required id="frequency" name="frequency"
-                                            [(ngModel)]="checklist.frequency">
+                                            [(ngModel)]="checklist.frequency"
+                                            (change)="onChange($event.target.value)">
                                             <option [ngValue]="undefined" hidden>{{"Criteria" | localize}}</option>
                                             <option value="5">{{"None" | localize}}</option>
                                             <option value="1">{{"Monthly" | localize}}</option>

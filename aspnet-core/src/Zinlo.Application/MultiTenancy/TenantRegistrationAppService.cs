@@ -286,6 +286,12 @@ namespace Zinlo.MultiTenancy
                         throw new Exception("This is a free edition and cannot be subscribed as paid !");
                     }
                     break;
+                //case SubscriptionStartType.Custom:
+                //    if(edition.IsCustom)
+                //    {
+                //        throw new Exception("This is a free edition and cannot be subscribed as Custom !");
+                //    }
+                //    break;
             }
         }
     }

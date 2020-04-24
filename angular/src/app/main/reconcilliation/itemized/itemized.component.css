@@ -100,6 +100,10 @@
     .report-container .report-box {
     margin-bottom: 10px;
     }
+    .big
+    {
+        font-size: 14px !important;
+    }
     .report-container .report-box:last-child{
     margin-bottom: 0;
     }

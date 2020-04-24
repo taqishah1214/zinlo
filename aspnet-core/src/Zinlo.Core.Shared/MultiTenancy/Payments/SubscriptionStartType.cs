@@ -4,6 +4,7 @@
     {
         Free = 1,
         Trial = 2,
-        Paid = 3
+        Paid = 3,
+        Custom=4,
     }
 }

@@ -21,6 +21,9 @@ namespace Zinlo.ClosingChecklist
         Task<List<GetUserWithPicture>> GetUserWithPicture(string searchTerm,long? id);
         Task RestoreTask(long id);
         Task RevertInstruction(long id, long instructionId);
+        List<NameValueDto<string>> GetCurrentMonthDays(DateTime dateTime);
+        Task TaskIteration(CreateOrEditClosingChecklistDto input, DateTime openingMonth, bool singleIteration);
+        Task<List<CreateOrEditClosingChecklistDto>> GetTaskTimeDuration(DateTime input);
 
     }
 }

@@ -13,27 +13,28 @@ using Abp.Timing;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
 using Zinlo.ChartsofAccount;
+using Zinlo.ClosingChecklist;
+using NUglify.Helpers;
 
 namespace Zinlo.TimeManagements
 {
     [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements)]
     public class TimeManagementsAppService : ZinloAppServiceBase, ITimeManagementsAppService
     {
-        private readonly IRepository<TimeManagement, long> _timeManagementRepository;
-        private readonly IChartsofAccountAppService _chartsofAccountAppService;
+        private readonly TimeManagementManager _timeManagementManager;
+        private readonly IClosingChecklistAppService _checklistService;
 
 
-
-        public TimeManagementsAppService(IRepository<TimeManagement, long> timeManagementRepository, IChartsofAccountAppService chartsofAccountAppService)
+        public TimeManagementsAppService(TimeManagementManager timeManagementManager, IClosingChecklistAppService checklistAppService, IClosingChecklistAppService checklistService)
         {
-            _timeManagementRepository = timeManagementRepository;
-            _chartsofAccountAppService = chartsofAccountAppService;
+            _timeManagementManager = timeManagementManager;
+            _checklistService = checklistService;
         }
 
         public async Task<PagedResultDto<GetTimeManagementForViewDto>> GetAll(GetAllTimeManagementsInput input)
         {
 
-            var filteredTimeManagements = _timeManagementRepository.GetAll()
+            var filteredTimeManagements = _timeManagementManager.GetAll()
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false);
 
             var pagedAndFilteredTimeManagements = filteredTimeManagements
@@ -63,7 +64,7 @@ namespace Zinlo.TimeManagements
         [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements_Edit)]
         public async Task<GetTimeManagementForEditOutput> GetTimeManagementForEdit(EntityDto<long> input)
         {
-            var timeManagement = await _timeManagementRepository.FirstOrDefaultAsync(input.Id);
+            var timeManagement = await _timeManagementManager.GetById(input.Id);
 
             var output = new GetTimeManagementForEditOutput { TimeManagement = ObjectMapper.Map<CreateOrEditTimeManagementDto>(timeManagement) };
 
@@ -72,7 +73,7 @@ namespace Zinlo.TimeManagements
 
         public async Task CreateOrEdit(CreateOrEditTimeManagementDto input)
         {
-            input.Month=input.Month.AddDays(1);
+            input.Month = input.Month.AddDays(1);
             var checkMonth = await CheckMonth(input.Month);
             if (checkMonth) throw new UserFriendlyException(L("ThisMonthIsAlreadyDefine"));
             if (input.Id == null)
@@ -87,13 +88,8 @@ namespace Zinlo.TimeManagements
 
         protected virtual async Task<bool> CheckMonth(DateTime month)
         {
-            var geTimeManagement = await _timeManagementRepository.FirstOrDefaultAsync(p => p.Month.Month == month.Month && p.Month.Year == month.Year);
-            if (geTimeManagement!=null)
-            {
-                return true;
-            }
+            return await _timeManagementManager.CheckMonth(month);
 
-            return false;
         }
 
         [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements_Create)]
@@ -101,46 +97,51 @@ namespace Zinlo.TimeManagements
         {
             var timeManagement = ObjectMapper.Map<TimeManagement>(input);
 
-
             if (AbpSession.TenantId != null)
             {
                 timeManagement.TenantId = (int)AbpSession.TenantId;
             }
-
-
-            await _timeManagementRepository.InsertAsync(timeManagement);
-            //await _chartsofAccountAppService.ShiftChartsOfAccountToSpecficMonth(input.Month);
+            await _timeManagementManager.CreateAsync(timeManagement);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements_Edit)]
         protected virtual async Task Update(CreateOrEditTimeManagementDto input)
         {
             var timeManagement = await GetManagement((long)input.Id);
-            ObjectMapper.Map(input, timeManagement);
+            await _timeManagementManager.UpdateAsync(ObjectMapper.Map<TimeManagement>(input));
         }
 
         [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements_Delete)]
         public async Task Delete(EntityDto<long> input)
         {
-            await _timeManagementRepository.DeleteAsync(input.Id);
+            await _timeManagementManager.DeleteAsync(input.Id);
         }
         [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements_Status)]
         public async Task ChangeStatus(long id)
         {
-            var timeManagement = await GetManagement(id);
+            var timeManagement = await _timeManagementManager.GetManagement(id);
+            if (!timeManagement.IsClosed && !timeManagement.Status)
+            {
+                var last13MonthTaskByManagement = await _checklistService.GetTaskTimeDuration(timeManagement.Month);
+                foreach (var task in last13MonthTaskByManagement)
+                {
+                    task.ClosingMonth = task.ClosingMonth.AddDays(-1);
+                    await _checklistService.TaskIteration(task, timeManagement.Month, false);
+                }
+
+            }
             if (timeManagement.Status)
             {
                 timeManagement.IsClosed = true;
             }
             timeManagement.Status = !timeManagement.Status;
-            await _timeManagementRepository.UpdateAsync(timeManagement);
+            await _timeManagementManager.UpdateAsync(timeManagement);
         }
 
         public async Task<bool> GetMonthStatus(DateTime dateTime)
         {
-            var management = await _timeManagementRepository.FirstOrDefaultAsync(p =>
-                p.Month.Month.Equals(dateTime.Month) && p.Month.Year.Equals(dateTime.Year));
-            if (management==null)
+            var management = await _timeManagementManager.GetByDate(dateTime);
+            if (management == null)
             {
                 if (dateTime.Year.Equals(DateTime.Now.Year) && dateTime.Month.Equals(DateTime.Now.Month))
                 {
@@ -151,7 +152,7 @@ namespace Zinlo.TimeManagements
                     };
                     await Create(createManagement);
                 }
-               
+
                 return false;
             }
             return management.Status;
@@ -159,22 +160,19 @@ namespace Zinlo.TimeManagements
 
         public List<TimeManagementDto> GetOpenManagement()
         {
-            var query =  _timeManagementRepository.GetAllList().Where(p => !p.IsClosed);
+            var query = _timeManagementManager.GetOpenManagement();
             return ObjectMapper.Map<List<TimeManagementDto>>(query);
 
         }
 
         public async Task<bool> CheckManagementExist(DateTime dateTime)
         {
-            var checkManagement = await _timeManagementRepository.FirstOrDefaultAsync(p =>
-                p.Month.Month == dateTime.Month && p.Month.Year == dateTime.Year);
-            var result = checkManagement != null ? true : false;
-            return result;
+            return await CheckMonth(dateTime);
         }
 
         protected virtual async Task<TimeManagement> GetManagement(long id)
         {
-            return await _timeManagementRepository.FirstOrDefaultAsync(id);
+            return await _timeManagementManager.GetById(id);
 
         }
 

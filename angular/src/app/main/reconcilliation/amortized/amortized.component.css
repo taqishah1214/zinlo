@@ -13,6 +13,9 @@
     left: 13px;
     background-image: url("/assets/media/ClosingCheckList/calendar.svg");
     }
+    .big{
+    font-size: 14px !important;
+    }
     .date-picker input.date-field {
     border: 0;
     border-radius: 3px;
