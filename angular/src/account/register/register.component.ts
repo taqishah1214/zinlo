@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { finalize, catchError } from 'rxjs/operators';
-import { UserRegisterServiceServiceProxy, RegisterUserInput, PersonalInfoDto, BusinessInfo, PaymentDetails, SubscriptionPlansDto, RegisterTenantOutput, CreateOrUpdateContactusInput } from '@shared/service-proxies/service-proxies';
+import { UserRegisterServiceServiceProxy, RegisterUserInput, PersonalInfoDto, BusinessInfo, PaymentDetails, SubscriptionPlansDto, RegisterTenantOutput, CreateOrUpdateContactusInput, AccountServiceProxy, IsTenantAvailableInput } from '@shared/service-proxies/service-proxies';
 import { ViewEncapsulation } from '@angular/core';
 import {
     EditionSelectDto,
@@ -42,6 +42,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     isUserLoggedIn = false;
     isSetted = false;
     saving = false;
+    isTenantExist : boolean = false;
     custom=true;
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
@@ -54,6 +55,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         private _subscriptionService: SubscriptionServiceProxy,
         private _userRegistrationServiceProxy: UserRegisterServiceServiceProxy,
         private _tenantRegistrationHelper: TenantRegistrationHelperService,
+        private _tenantNameService:AccountServiceProxy,
         private _router: Router
     ) {
         super(injector);
@@ -63,6 +65,21 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.subscriptionPlansDto= new SubscriptionPlansDto();
         this.contactUs=new CreateOrUpdateContactusInput();
     }
+    checkTenant() : void {
+        let account=new IsTenantAvailableInput()
+        account.tenancyName=this.businessInfoForm.value.tenantName;
+        if(this.businessInfoForm.value.tenantName!=""){
+            this._tenantNameService.isTenantAvailable(account).subscribe(response => {
+            console.log(response.tenantId);
+                if(response.tenantId){
+                    this.isTenantExist=true;
+                }
+                else{
+                    this.isTenantExist=false;
+                }
+            })
+        }
+      }
     onOpenCalendar(container) {
         container.monthSelectHandler = (event: any): void => {
           container._store.dispatch(container._actions.select(event.date));

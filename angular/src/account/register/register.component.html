@@ -150,14 +150,21 @@
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
-                                            <div class="form-group">
-                                                <label>Tenant Name</label>
-                                                <input  formControlName="tenantName" type="text" class="form-control" autocomplete="off" name="TenantOfUser" placeholder="Enter Tenant Name" value="" required maxlength="64">
-                                                <div *ngIf="tenantName.invalid && (tenantName.dirty || tenantName.touched)">
-                                                    <div class="text-danger" *ngIf="tenantName.errors.required">
-                                                        Tenant Name is required.
-                                                    </div>
+                                            <label><span class="text-dark">Tenant Name</span></label>
+                                            
+                                            <div class="input-group">
+                                                <input  formControlName="tenantName" type="text" class="form-control" (focusout)="checkTenant()"autocomplete="off" name="TenantOfUser" placeholder="Enter Tenant Name" value="" required maxlength="64">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">.Zinlo.com</span>
+                                                </div> 
+                                            </div>
+                                            <div *ngIf="tenantName.invalid && (tenantName.dirty || tenantName.touched)">
+                                                <div class="text-danger" *ngIf="tenantName.errors.required">
+                                                    Tenant Name is required.
                                                 </div>
+                                            </div>
+                                            <div class="text-danger" *ngIf="isTenantExist">
+                                                Tenant Name already Exist.
                                             </div>
                                         </div>
                                     </div>
@@ -178,10 +185,10 @@
                                                     <span class="input-group-text"><i class="fas fa-phone-volume"></i></span>
                                                   </div>
                                                 <input type="text" formControlName="phone" class="form-control" autocomplete="off" placeholder="Enter Phone Number" name="phoneNumberOfUser"maxlength="64">
-                                                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)">
-                                                    <div class="text-danger" *ngIf="phone.errors.pattern">
-                                                        Incorrect format for Phone Number.
-                                                    </div>
+                                            </div>
+                                            <div *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                                                <div class="text-danger" *ngIf="phone.errors.pattern">
+                                                    Incorrect format for Phone Number.
                                                 </div>
                                             </div>
                                         </div>
