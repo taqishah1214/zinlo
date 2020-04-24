@@ -222,10 +222,10 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     }
     if (this.accountId != 0)
     {
-      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: this.accountId , previousRoute : "account", name: this.accountDto.accountName, number:this.accountDto.accountNumber, type:this.accountDto.accountType,reconciliation:this.accountDto.reconciliationType,typeName:this.accountType,reconcillationName:this.reconcillationType, userId:Number(this.selectedUserId.selectedUserId),reconciledID:this.accountDto.reconciled,reconciledName:this.recociled} } });
+      this._router.navigate(['/app/main/sub/create-or-edit-accountsubtype'],{ state: { data: { accountId: this.accountId , previousRoute : "account", name: this.accountDto.accountName, number:this.accountDto.accountNumber, type:this.accountDto.accountType,reconciliation:this.accountDto.reconciliationType,typeName:this.accountType,reconcillationName:this.reconcillationType, userId:Number(this.selectedUserId.selectedUserId),reconciledID:this.accountDto.reconciled,reconciledName:this.recociled} } });
     }
     else {
-      this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'],{ state: { data: { accountId: 0, previousRoute : "account", name: this.accountDto.accountName, number:this.accountDto.accountNumber, type:this.accountDto.accountType ,reconciliation:this.accountDto.reconciliationType, typeName:this.accountType,reconcillationName:this.reconcillationType, userId:Number(this.selectedUserId.selectedUserId),reconciledID:this.accountDto.reconciled,reconciledName:this.recociled} } });
+      this._router.navigate(['/app/main/sub/create-or-edit-accountsubtype'],{ state: { data: { accountId: 0, previousRoute : "account", name: this.accountDto.accountName, number:this.accountDto.accountNumber, type:this.accountDto.accountType ,reconciliation:this.accountDto.reconciliationType, typeName:this.accountType,reconcillationName:this.reconcillationType, userId:Number(this.selectedUserId.selectedUserId),reconciledID:this.accountDto.reconciled,reconciledName:this.recociled} } });
 
     }
   }
@@ -314,7 +314,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   redirectToAccountsList () : void {
-    this._router.navigate(['/app/main/account/accounts']);
+    this._router.navigate(['/app/main/account']);
   }
 
 

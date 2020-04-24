@@ -2,6 +2,7 @@ import { Injector, Component, ViewEncapsulation, Inject } from '@angular/core';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { DOCUMENT } from '@angular/common';
+import { AccountServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
     templateUrl: './default-brand.component.html',
@@ -15,6 +16,7 @@ export class DefaultBrandComponent extends AppComponentBase {
 
     constructor(
         injector: Injector,
+        private proxy:AccountServiceProxy,
         @Inject(DOCUMENT) private document: Document
     ) {
         super(injector);
@@ -22,5 +24,7 @@ export class DefaultBrandComponent extends AppComponentBase {
 
     toggleLeftAside(): void {
         this.document.body.classList.toggle('kt-aside--minimize');
+        this.proxy.updatedItemCount(!this.proxy.itemCount);
+        console.log(this.proxy.itemCount);
     }
 }

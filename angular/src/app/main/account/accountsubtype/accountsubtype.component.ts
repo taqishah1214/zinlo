@@ -82,12 +82,12 @@ export class AccountsubtypeComponent extends AppComponentBase {
 
     createCategory(): void {
         this.EditRecordId = 0;
-        this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'], { state: { data: { id: 0 } } });
+        this._router.navigate(['/app/main/sub/create-or-edit-accountsubtype'], { state: { data: { id: 0 } } });
     }
 
     editCategory(id: any): void {
         this.recordid = id;
-        this._router.navigate(['/app/main/account/accountsubtype/create-or-edit-accountsubtype'], { state: { data: { id: this.recordid } } });
+        this._router.navigate(['/app/main/sub/create-or-edit-accountsubtype'], { state: { data: { id: this.recordid } } });
     }
 
     deleteCategory(id: number): void {

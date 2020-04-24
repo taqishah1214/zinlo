@@ -36,7 +36,7 @@ export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implem
    })
   }
   redirectToSubAccountsList () : void {
-    this._router.navigate(['/app/main/account/accountsubtype']);
+    this._router.navigate(['/app/main/sub']);
   }
   redirect(title,selectedId) : void {
     
@@ -44,14 +44,14 @@ export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implem
     let previousRoute = history.state.data.previousRoute;
     if (accountId != 0 && previousRoute == "account")
     {
-      this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id : accountId, newSubTypeId : selectedId,newSubTypeTitle : title ,name:history.state.data.name,number:history.state.data.number, type:history.state.data.type, reconciliation:history.state.data.reconciliation, typeName:history.state.data.typeName,reconcillationName:history.state.data.reconcillationName,userId:history.state.data.userId,reconciledID:history.state.data.reconciledID,reconciledName:history.state.data.reconciledName} } });
+      this._router.navigate(['/app/main/account/create-edit-accounts'], { state: { data: { id : accountId, newSubTypeId : selectedId,newSubTypeTitle : title ,name:history.state.data.name,number:history.state.data.number, type:history.state.data.type, reconciliation:history.state.data.reconciliation, typeName:history.state.data.typeName,reconcillationName:history.state.data.reconcillationName,userId:history.state.data.userId,reconciledID:history.state.data.reconciledID,reconciledName:history.state.data.reconciledName} } });
     }
     else if (previousRoute == "account") {
-      this._router.navigate(['/app/main/account/accounts/create-edit-accounts'], { state: { data: { id : 0, newSubTypeId : selectedId,newSubTypeTitle : title,name:history.state.data.name,number:history.state.data.number, type:history.state.data.type, reconciliation:history.state.data.reconciliation, typeName:history.state.data.typeName,reconcillationName:history.state.data.reconcillationName,userId:history.state.data.userId,reconciledID:history.state.data.reconciledID,reconciledName:history.state.data.reconciledName} } });
+      this._router.navigate(['/app/main/account/create-edit-accounts'], { state: { data: { id : 0, newSubTypeId : selectedId,newSubTypeTitle : title,name:history.state.data.name,number:history.state.data.number, type:history.state.data.type, reconciliation:history.state.data.reconciliation, typeName:history.state.data.typeName,reconcillationName:history.state.data.reconcillationName,userId:history.state.data.userId,reconciledID:history.state.data.reconciledID,reconciledName:history.state.data.reconciledName} } });
     }
     else
     {
-    this._router.navigate(['/app/main/account/accountsubtype']);  
+    this._router.navigate(['/app/main/sub']);  
     }
   }
 

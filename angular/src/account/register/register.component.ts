@@ -39,9 +39,10 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     isSetted = false;
     saving = false;
     custom=false;
+    tenantName:string
     repeatPassword:string;
-    firstName="";
-    lastName="";
+    firstName:string
+    lastName:string
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
@@ -141,12 +142,15 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         {
             
             this.current = this.current + item;
+            
+            this.switchTab(this.current);
             if (this.current > 0) {
                 $(".previebtn").show();
             } else {
                 $(".previebtn").hide();
 
             }
+            
 
             if (this.current === 3) {
                 $(".nxtbtn").hide();
@@ -155,56 +159,128 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".nxtbtn").show();
                 $(".submit").hide();
             }
-            
-        console.log(this.current);
-            this.switchTab(this.current);
         }
         else{
             this.notify.error("Password and Confirm Password are not same")
         }
     }
-
-    save() {
-        this.saving = true;
-        this.personalInfoDto.userName =  this.firstName +" " + this.lastName;
-        var userResgister = new RegisterUserInput();
-        userResgister.businessInfo = this.businessInfoDto;
-      
-        userResgister.personalInfo = this.personalInfoDto;
-        userResgister.subscriptionPlans = this.subscriptionPlansDto;
-        if(this.custom)
+    personalInfoValidations(){
+        if(this.firstName == null)
         {
-        userResgister.contactUs = this.contactUs;
-        userResgister.paymentDetails=null;
-        }else{
-            userResgister.paymentDetails = this.paymentDetailsDto;
-            userResgister.contactUs=null;
+            this.notify.error("First Name is Required")
+            return false;
         }
-        console.log(userResgister);
-        debugger;
-       this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
-       .pipe(finalize(() => { this.saving = false; }))
-            .pipe(catchError((err, caught): any => {
-                
-            }))
-            .subscribe((result: RegisterTenantOutput) => {
-                this.notify.success(this.l('SuccessfullyRegistered'));
-                this._tenantRegistrationHelper.registrationResult = result;
+        else if(this.lastName == null)
+        {
+            this.notify.error("Last Name is Required")
+            return false;
+        }
+        else if(this.personalInfoDto.emailAddress == null)
+        {
+            this.notify.error("Email is Required")
+            return false;
+        }
+        else if(this.personalInfoDto.password == null)
+        {
+            this.notify.error("Password is Required")
+            return false;
+        }
+        return true;
+    }
+    businessInfoValidations(){
+        if(this.businessInfoDto.businessName == null)
+        {
+            this.notify.error("Business Name is Required")
+            return false;
+        }
+        else if(this.tenantName == null)
+        {
+            this.notify.error("Tenant Name is Required")
+            return false;
+        }
+        else if(this.businessInfoDto.addressLineOne == null)
+        {
+            this.notify.error("Address is Required")
+            return false;
+        }
+        else if(this.businessInfoDto.zipCode == null)
+        {
+            this.notify.error("ZipCode is Required")
+            return false;
+        }
+        return true;
+    }
+    paymentInfoValidations(){
+        if(this.paymentDetailsDto.cardNumber == null)
+        {
+            this.notify.error("Card Number is Required")
+            return false;
+        }
+        else if(this.paymentDetailsDto.cvvCode == null)
+        {
+            this.notify.error("CVV Code is Required")
+            return false;
+        }
+        else if(this.paymentDetailsDto.expiryDate == null)
+        {
+            this.notify.error("Select Expiry Date")
+            return false;
+        }
+        else if(this.paymentDetailsDto.email == null)
+        {
+            this.notify.error("Email is Required")
+            return false;
+        }
+        else if(this.paymentDetailsDto.commitment == null)
+        {
+            this.notify.error("Select a Commitment")
+            return false;
+        }
+        return true;
+    }
+    save() {
+        if(this.paymentInfoValidations()){
+            this.saving = true;
+            this.personalInfoDto.userName =  this.firstName +" " + this.lastName;
+            var userResgister = new RegisterUserInput();
+            userResgister.businessInfo = this.businessInfoDto;
+        
+            userResgister.personalInfo = this.personalInfoDto;
+            userResgister.subscriptionPlans = this.subscriptionPlansDto;
+            if(this.custom)
+            {
+            userResgister.contactUs = this.contactUs;
+            userResgister.paymentDetails=null;
+            }else{
+                userResgister.paymentDetails = this.paymentDetailsDto;
+                userResgister.contactUs=null;
+            }
+            console.log(userResgister);
+            debugger;
+        this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
+        .pipe(finalize(() => { this.saving = false; }))
+                .pipe(catchError((err, caught): any => {
+                    
+                }))
+                .subscribe((result: RegisterTenantOutput) => {
+                    this.notify.success(this.l('SuccessfullyRegistered'));
+                    this._tenantRegistrationHelper.registrationResult = result;
 
-                if (parseInt(userResgister.subscriptionPlans.subscriptionStartType.toString()) === SubscriptionStartType.Paid) {
-                    this._router.navigate(['account/buy'],
-                        {
-                            queryParams: {
-                                tenantId: result.tenantId,
-                                editionId: userResgister.subscriptionPlans.editionId,
-                                subscriptionStartType: userResgister.subscriptionPlans.subscriptionStartType,
-                                editionPaymentType: this.editionPaymentType
-                            }
-                        });
-                } else {
-                    this._router.navigate(['account/register-tenant-result']);
-                }
-            });
+                    if (parseInt(userResgister.subscriptionPlans.subscriptionStartType.toString()) === SubscriptionStartType.Paid) {
+                        this._router.navigate(['account/buy'],
+                            {
+                                queryParams: {
+                                    tenantId: result.tenantId,
+                                    editionId: userResgister.subscriptionPlans.editionId,
+                                    subscriptionStartType: userResgister.subscriptionPlans.subscriptionStartType,
+                                    editionPaymentType: this.editionPaymentType
+                                }
+                            });
+                    } else {
+                        this._router.navigate(['account/register-tenant-result']);
+                    }
+                });
+        }
     }
     switchTab(item: number) {
         
@@ -218,20 +294,32 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".locationbody").attr("data-ktwizard-state", "current")
                 break;
             case 1:
-                $(".detail").attr("data-ktwizard-state", "current")
-                $(".detailbody").attr("data-ktwizard-state", "current")
-                $(".servicebody").attr("data-ktwizard-state", "")
-                $(".deliverybody").attr("data-ktwizard-state", "")
-                $(".reviewbody").attr("data-ktwizard-state", "")
-                $(".locationbody").attr("data-ktwizard-state", "")
+
+                if(this.personalInfoValidations()){
+                    $(".detail").attr("data-ktwizard-state", "current")
+                    $(".detailbody").attr("data-ktwizard-state", "current")
+                    $(".servicebody").attr("data-ktwizard-state", "")
+                    $(".deliverybody").attr("data-ktwizard-state", "")
+                    $(".reviewbody").attr("data-ktwizard-state", "")
+                    $(".locationbody").attr("data-ktwizard-state", "")
+                }
+                else{
+                    this.current--;
+                }
                 break;
             case 2:
-                $(".service").attr("data-ktwizard-state", "current")
-                $(".detailbody").attr("data-ktwizard-state", "")
-                $(".servicebody").attr("data-ktwizard-state", "current")
-                $(".deliverybody").attr("data-ktwizard-state", "")
-                $(".reviewbody").attr("data-ktwizard-state", "")
-                $(".locationbody").attr("data-ktwizard-state", "")
+                
+                if(this.businessInfoValidations()){
+                    $(".service").attr("data-ktwizard-state", "current")
+                    $(".detailbody").attr("data-ktwizard-state", "")
+                    $(".servicebody").attr("data-ktwizard-state", "current")
+                    $(".deliverybody").attr("data-ktwizard-state", "")
+                    $(".reviewbody").attr("data-ktwizard-state", "")
+                    $(".locationbody").attr("data-ktwizard-state", "")
+                }
+                else{
+                    this.current--;
+                }
                 break;
             case 3:
                 $(".review").attr("data-ktwizard-state", "current")

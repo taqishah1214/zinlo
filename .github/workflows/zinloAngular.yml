@@ -1,0 +1,24 @@
+# This is a basic workflow to help you get started with Actions
+
+name: ZinloAngular
+on:
+  push:
+    branches: [ development ]
+  pull_request:
+    branches: [ development ]
+jobs:
+ build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js 12.12.0
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.12.0
+    - name: Install yarn
+      working-directory: ./angular
+      run: yarn install
+    - name: Build angular app
+      working-directory: ./angular
+      run: npm run publish  
+    

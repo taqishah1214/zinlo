@@ -6,7 +6,7 @@
                 <div class="kt-grid__item py-0" style="padding:0% 10%">
                     <div class="kt-wizard-v1__nav px-5">
                         <div class="kt-wizard-v1__nav-items">
-                            <a class="kt-wizard-v1__nav-item location"  href="javascript:;" (click)="tabpClick(0)"  data-ktwizard-type="step" data-ktwizard-state="current">
+                            <a class="kt-wizard-v1__nav-item location"  href="javascript:;"   data-ktwizard-type="step" data-ktwizard-state="current">
                                 <div class="kt-wizard-v1__nav-body">
                                     <div class="kt-wizard-v1__nav-icon">
                                         <img src="./assets/media/ClosingCheckList/Personal_Info.ico" alt="block-btn">
@@ -16,7 +16,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a class="kt-wizard-v1__nav-item detail"  href="javascript:;" (click)="tabpClick(1)"  data-ktwizard-type="step" data-ktwizard-state="detail">
+                            <a class="kt-wizard-v1__nav-item detail"  href="javascript:;"   data-ktwizard-type="step" data-ktwizard-state="detail">
                                 <div class="kt-wizard-v1__nav-body">
                                     <div class="kt-wizard-v1__nav-icon">
                                         <img src="./assets/media/ClosingCheckList/Business_Info.ico" alt="block-btn">
@@ -26,7 +26,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a class="kt-wizard-v1__nav-item service" href="javascript:;" (click)="tabpClick(2)" data-ktwizard-type="step" data-ktwizard-state="service" >
+                            <a class="kt-wizard-v1__nav-item service" href="javascript:;"  data-ktwizard-type="step" data-ktwizard-state="service" >
                                 <div class="kt-wizard-v1__nav-body">
                                     <div class="kt-wizard-v1__nav-icon">
                                         <img src="./assets/media/ClosingCheckList/Subscription_plans.ico" alt="block-btn">
@@ -36,7 +36,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a class="kt-wizard-v1__nav-item review" href="javascript:;" (click)="tabpClick(3)"   data-ktwizard-type="step" data-ktwizard-state="review">
+                            <a class="kt-wizard-v1__nav-item review" href="javascript:;"   data-ktwizard-type="step" data-ktwizard-state="review">
                                 <div class="kt-wizard-v1__nav-body">
                                     <div class="kt-wizard-v1__nav-icon">
                                         <img src="./assets/media/ClosingCheckList/Summary.ico" alt="block-btn">
@@ -78,8 +78,7 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Title (Optional)</label>
-                                                <input #titleOfUser="ngModel" [(ngModel)]="personalInfoDto.title"type="text" class="form-control" name="titleOfUser" placeholder="Enter Title" value="" autocomplete="off" required maxlength="64">
-                                                <validation-messages [formCtrl]="titleOfUser"></validation-messages>
+                                                <input #titleOfUser="ngModel" [(ngModel)]="personalInfoDto.title"type="text" class="form-control" name="titleOfUser" placeholder="Enter Title" value="" autocomplete="off" maxlength="64">
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
@@ -116,20 +115,32 @@
                             <div class="kt-heading kt-heading--md">Enter Organization Information</div>
                             <div class="kt-form__section kt-form__section--first">
                                 <div class="kt-wizard-v1__form">
-                                    <div class="form-group">
-                                        <label>Business Name</label>
-                                        <input #businessNameOfUser="ngModel" [(ngModel)]="businessInfoDto.businessName" type="text" class="form-control" autocomplete="off" name="businessNameOfUser" placeholder="Enter Business Name" value="" required maxlength="64">
-                                        <validation-messages [formCtrl]="businessNameOfUser"></validation-messages>
+                                    
+                                    <div class="row pb-1">
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label>Business Name</label>
+                                                <input #businessNameOfUser="ngModel" [(ngModel)]="businessInfoDto.businessName" type="text" class="form-control" autocomplete="off" name="businessNameOfUser" placeholder="Enter Business Name" value="" required maxlength="64">
+                                                <validation-messages [formCtrl]="businessNameOfUser"></validation-messages>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label>Tenant Name</label>
+                                                <input  #tenantNameOfUser="ngModel" [(ngModel)]="tenantName" type="text" class="form-control" autocomplete="off" name="TenantOfUser" placeholder="Enter Tenant Name" value="" required maxlength="64">
+                                                <validation-messages [formCtrl]="tenantNameOfUser"></validation-messages>
+                                            
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row pb-4">
                                         <div class="col-xl-6">
                                             <label><span class="text-dark">Website</span> (Optional)</label>
                                             <div class="input-group">
-                                                <input type="text" #websiteOfUser="ngModel" [(ngModel)]="businessInfoDto.website" class="form-control"autocomplete="off" name="websiteOfUser" placeholder="Enter Website" value="" required required maxlength="64">
+                                                <input type="text" #websiteOfUser="ngModel" [(ngModel)]="businessInfoDto.website" class="form-control"autocomplete="off" name="websiteOfUser" placeholder="Enter Website" value=""maxlength="64">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">.com</span>
                                                 </div>   
-                                                <validation-messages [formCtrl]="websiteOfUser"></validation-messages>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
@@ -138,8 +149,7 @@
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-phone-volume"></i></span>
                                                   </div>
-                                                <input type="text" #phoneNumberOfUser="ngModel" [(ngModel)]="businessInfoDto.phoneNumber" class="form-control" autocomplete="off" placeholder="Enter Phone Number" name="phoneNumberOfUser" required required maxlength="64">
-                                                <validation-messages [formCtrl]="phoneNumberOfUser"></validation-messages>
+                                                <input type="text" #phoneNumberOfUser="ngModel" [(ngModel)]="businessInfoDto.phoneNumber" class="form-control" autocomplete="off" placeholder="Enter Phone Number" name="phoneNumberOfUser"maxlength="64">
                                             </div>
                                         </div>
                                     </div>  
@@ -147,15 +157,14 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Address Line 1</label>
-                                                <input type="text" #addressLineOneOfUser="ngModel" [(ngModel)]="businessInfoDto.addressLineOne"class="form-control" name="addressLineOneOfUser" autocomplete="off" placeholder="Enter Address" value="" required required maxlength="256">
+                                                <input type="text" #addressLineOneOfUser="ngModel" [(ngModel)]="businessInfoDto.addressLineOne"class="form-control" name="addressLineOneOfUser" autocomplete="off" placeholder="Enter Address" value="" required maxlength="256">
                                                 <validation-messages [formCtrl]="addressLineOneOfUser"></validation-messages>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Address Line 2</label>
-                                                <input type="text" #addressLineTwoOfUser="ngModel" [(ngModel)]="businessInfoDto.addressLineTwo"class="form-control" autocomplete="off" name="addressLineTwoOfUser" placeholder="Enter Address" value="" required required maxlength="256">
-                                                <validation-messages [formCtrl]="addressLineTwoOfUser"></validation-messages>
+                                                <input type="text" #addressLineTwoOfUser="ngModel" [(ngModel)]="businessInfoDto.addressLineTwo"class="form-control" autocomplete="off" name="addressLineTwoOfUser" placeholder="Enter Address" value="" maxlength="256">
                                             </div>
                                         </div>
                                     </div>   

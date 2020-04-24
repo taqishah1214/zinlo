@@ -92,9 +92,8 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
 
   rollBackInstruction(id) {
     this.recordId;
-    debugger;
     this._closingChecklistService.revertInstruction(this.recordId,id).subscribe(resp => {
-      debugger;
+      this.notify.success(this.l('Instruction rolled back successfully'));
     })
   }
 
