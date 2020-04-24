@@ -24,7 +24,5 @@ export class DefaultBrandComponent extends AppComponentBase {
 
     toggleLeftAside(): void {
         this.document.body.classList.toggle('kt-aside--minimize');
-        this.proxy.updatedItemCount(!this.proxy.itemCount);
-        console.log(this.proxy.itemCount);
     }
 }
