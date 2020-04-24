@@ -236,6 +236,7 @@ namespace Zinlo.ClosingChecklist
                 };
                 await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
             }
+            CurrentUnitOfWork.SaveChanges();
         }
 
         protected virtual async Task<long> CreateInstructions(string input)
@@ -497,7 +498,8 @@ namespace Zinlo.ClosingChecklist
         {
             var lastYear = input.AddYears(-1).AddMonths(-1);
             var query = await _closingChecklistManager.GetAll()
-                .Where(p => p.ClosingMonth >= lastYear && p.ClosingMonth <= input).ToListAsync();
+                .Where(p => p.ClosingMonth >= lastYear && p.ClosingMonth <= input).DistinctBy(p => new {p.GroupId})
+                .OrderBy(p => p.ClosingMonth).ToDynamicListAsync();
             return ObjectMapper.Map<List<CreateOrEditClosingChecklistDto>>(query);
         }
     }
