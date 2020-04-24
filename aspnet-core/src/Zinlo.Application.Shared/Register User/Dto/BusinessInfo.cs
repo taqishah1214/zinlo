@@ -7,6 +7,7 @@ namespace Zinlo.Register_User.Dto
     public class BusinessInfo
     {
         public string BusinessName { get; set; }
+        public string TenantName { get; set; }
         public string Website { get; set; }
         public string PhoneNumber { get; set; }
         public string AddressLineOne { get; set; }

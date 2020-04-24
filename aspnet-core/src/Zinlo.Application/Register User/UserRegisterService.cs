@@ -45,7 +45,7 @@ namespace Zinlo.Register_User
                 Name = registerUser.PersonalInfo.UserName,
                 AdminPassword = registerUser.PersonalInfo.Password,
                 EditionId = registerUser.SubscriptionPlans.EditionId,
-                TenancyName = Regex.Replace(registerUser.BusinessInfo.BusinessName, @"\s", ""),
+                TenancyName = registerUser.BusinessInfo.TenantName,
                 SubscriptionStartType = (SubscriptionStartType)registerUser.SubscriptionPlans.SubscriptionStartType,
                 CaptchaResponse = ""
             });
