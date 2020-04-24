@@ -60,7 +60,6 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
 
     ngOnInit() {
         
-        this.proxy.count.subscribe(data=>this.copyright=data);
         this.releaseDate = this.appSession.application.releaseDate.format('YYYYMMDD');
         this.menu = this._appNavigationService.getMenu();
 
