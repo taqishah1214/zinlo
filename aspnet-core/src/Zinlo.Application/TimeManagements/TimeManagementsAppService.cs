@@ -13,6 +13,7 @@ using Abp.Timing;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
 using Zinlo.ChartsofAccount;
+using Zinlo.ClosingChecklist;
 
 namespace Zinlo.TimeManagements
 {
@@ -20,21 +21,19 @@ namespace Zinlo.TimeManagements
     public class TimeManagementsAppService : ZinloAppServiceBase, ITimeManagementsAppService
     {
         private readonly TimeManagementManager _timeManagementManager;
-        private readonly IChartsofAccountAppService _chartsofAccountAppService;
+        private readonly IClosingChecklistAppService _checklistService;
 
 
-
-        public TimeManagementsAppService(IChartsofAccountAppService chartsofAccountAppService, TimeManagementManager timeManagementManager)
+        public TimeManagementsAppService(TimeManagementManager timeManagementManager, IClosingChecklistAppService checklistAppService, IClosingChecklistAppService checklistService)
         {
-            
-            _chartsofAccountAppService = chartsofAccountAppService;
             _timeManagementManager = timeManagementManager;
+            _checklistService = checklistService;
         }
 
         public async Task<PagedResultDto<GetTimeManagementForViewDto>> GetAll(GetAllTimeManagementsInput input)
         {
 
-            var filteredTimeManagements =  _timeManagementManager.GetAll()
+            var filteredTimeManagements = _timeManagementManager.GetAll()
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false);
 
             var pagedAndFilteredTimeManagements = filteredTimeManagements
@@ -73,7 +72,7 @@ namespace Zinlo.TimeManagements
 
         public async Task CreateOrEdit(CreateOrEditTimeManagementDto input)
         {
-            input.Month=input.Month.AddDays(1);
+            input.Month = input.Month.AddDays(1);
             var checkMonth = await CheckMonth(input.Month);
             if (checkMonth) throw new UserFriendlyException(L("ThisMonthIsAlreadyDefine"));
             if (input.Id == null)
@@ -88,8 +87,8 @@ namespace Zinlo.TimeManagements
 
         protected virtual async Task<bool> CheckMonth(DateTime month)
         {
-            return  await _timeManagementManager.CheckMonth(month);
-           
+            return await _timeManagementManager.CheckMonth(month);
+
         }
 
         [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements_Create)]
@@ -97,15 +96,11 @@ namespace Zinlo.TimeManagements
         {
             var timeManagement = ObjectMapper.Map<TimeManagement>(input);
 
-
             if (AbpSession.TenantId != null)
             {
                 timeManagement.TenantId = (int)AbpSession.TenantId;
             }
-
-
             await _timeManagementManager.CreateAsync(timeManagement);
-            //await _chartsofAccountAppService.ShiftChartsOfAccountToSpecficMonth(input.Month);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements_Edit)]
@@ -123,7 +118,17 @@ namespace Zinlo.TimeManagements
         [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements_Status)]
         public async Task ChangeStatus(long id)
         {
-            var timeManagement = await GetManagement(id);
+            var timeManagement = await _timeManagementManager.GetManagement(id);
+            if (!timeManagement.IsClosed && !timeManagement.Status)
+            {
+                var last13MonthTaskByManagement = await _checklistService.GetTaskTimeDuration(timeManagement.Month);
+                foreach (var task in last13MonthTaskByManagement)
+                {
+                    task.ClosingMonth = task.ClosingMonth.AddDays(-1);
+                    await _checklistService.TaskIteration(task, timeManagement.Month, false);
+                }
+
+            }
             if (timeManagement.Status)
             {
                 timeManagement.IsClosed = true;
@@ -135,7 +140,7 @@ namespace Zinlo.TimeManagements
         public async Task<bool> GetMonthStatus(DateTime dateTime)
         {
             var management = await _timeManagementManager.GetByDate(dateTime);
-            if (management==null)
+            if (management == null)
             {
                 if (dateTime.Year.Equals(DateTime.Now.Year) && dateTime.Month.Equals(DateTime.Now.Month))
                 {
@@ -146,7 +151,7 @@ namespace Zinlo.TimeManagements
                     };
                     await Create(createManagement);
                 }
-               
+
                 return false;
             }
             return management.Status;
@@ -154,7 +159,7 @@ namespace Zinlo.TimeManagements
 
         public List<TimeManagementDto> GetOpenManagement()
         {
-            var query =  _timeManagementManager.GetOpenManagement();
+            var query = _timeManagementManager.GetOpenManagement();
             return ObjectMapper.Map<List<TimeManagementDto>>(query);
 
         }

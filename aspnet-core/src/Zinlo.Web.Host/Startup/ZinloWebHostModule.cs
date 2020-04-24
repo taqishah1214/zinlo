@@ -68,7 +68,6 @@ namespace Zinlo.Web.Startup
                 workManager.Add(IocManager.Resolve<SubscriptionExpirationCheckWorker>());
                 workManager.Add(IocManager.Resolve<SubscriptionExpireEmailNotifierWorker>());
                 //workManager.Add(IocManager.Resolve<ChartsOfAccountMonthly>());
-                workManager.Add(IocManager.Resolve<TaskWorker>());
 
             }
 

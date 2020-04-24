@@ -33,6 +33,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   SelectionMsg: string = "\xa0";
   userName : string;
   attachmentPaths: any = [];
+  endOnIsEnabled: boolean = true; 
   newAttachementPath: string[] = [];
   public isChecked: boolean = false;
   days: any;
@@ -224,6 +225,20 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this._closingChecklistService.getCurrentMonthDays(month).subscribe(result => {
       this.days = result;
     });
+  }
+  onChange(val) {
+    if (val == 5) {
+      this.endOnIsEnabled = false;
+    }
+    else {
+      this.endOnIsEnabled = true;
+    }
+    if (val == 4) {
+      this.enableValue = true;
+    }
+    else {
+      this.enableValue = false;
+    }
   }
   loadDaysByMonth(event):void{
     var month = moment(new Date(add(this.checklist.closingMonth, 2, "day")));

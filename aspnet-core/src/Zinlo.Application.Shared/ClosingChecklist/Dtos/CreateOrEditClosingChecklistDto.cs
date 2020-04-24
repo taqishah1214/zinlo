@@ -11,6 +11,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public virtual long CategoryId { get; set; }
         public virtual long AssigneeId { get; set; }
         public virtual DateTime ClosingMonth { get; set; }
+        public virtual long? VersionId { get; set; }
         public StatusDto Status { get; set; }
         public string Instruction { get; set; }
         public int NoOfMonths { get; set; }
@@ -20,7 +21,6 @@ namespace Zinlo.ClosingChecklist.Dtos
         public bool EndOfMonth { get; set; }
         public FrequencyDto Frequency { get; set; }
         public string CommentBody { get; set; }
-        public List<CommentDto> Comments { get; set; }
         public List<string> AttachmentsPath { get; set; }
         public Guid? GroupId { get; set; }
     }

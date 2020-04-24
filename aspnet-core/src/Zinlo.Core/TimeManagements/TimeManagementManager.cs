@@ -13,6 +13,7 @@ using Abp.UI;
 using AutoMapper;
 using Stripe;
 using Zinlo.Authorization;
+using Zinlo.ClosingChecklist;
 
 namespace Zinlo.TimeManagements
 {
@@ -20,11 +21,11 @@ namespace Zinlo.TimeManagements
     {
         public IAbpSession AbpSession { get; set; }
         private readonly IRepository<TimeManagement, long> _timeManagementRepository;
+
         public TimeManagementManager(IRepository<TimeManagement, long> timeManagementRepository)
         {
             AbpSession = NullAbpSession.Instance;
             _timeManagementRepository = timeManagementRepository;
-
         }
 
         public IQueryable<TimeManagement> GetAll()
@@ -57,10 +58,8 @@ namespace Zinlo.TimeManagements
 
 
         public virtual async Task CreateAsync(TimeManagement input)
-        {
-
+        { 
             await _timeManagementRepository.InsertAsync(input);
-
         }
 
 
@@ -76,17 +75,6 @@ namespace Zinlo.TimeManagements
             await _timeManagementRepository.DeleteAsync(id);
         }
         
-        public async Task ChangeStatus(long id)
-        {
-            var timeManagement = await GetManagement(id);
-            if (timeManagement.Status)
-            {
-                timeManagement.IsClosed = true;
-            }
-            timeManagement.Status = !timeManagement.Status;
-            await _timeManagementRepository.UpdateAsync(timeManagement);
-        }
-
         public async Task<bool> GetMonthStatus(DateTime dateTime)
         {
             var management = await _timeManagementRepository.FirstOrDefaultAsync(p =>
@@ -123,10 +111,17 @@ namespace Zinlo.TimeManagements
             return result;
         }
 
-        protected virtual async Task<TimeManagement> GetManagement(long id)
+        public virtual async Task<TimeManagement> GetManagement(long id)
         {
             return await _timeManagementRepository.FirstOrDefaultAsync(id);
 
+        }
+
+        public virtual async Task<bool> IsClosed(DateTime input)
+        {
+            var month= await _timeManagementRepository.FirstOrDefaultAsync(p =>
+                p.Month.Year.Equals(input.Year) && p.Month.Month.Equals(input.Month));
+            return month.IsClosed;
         }
     }
 }
