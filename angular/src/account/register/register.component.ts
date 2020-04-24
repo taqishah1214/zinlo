@@ -1,5 +1,6 @@
 import { AbpSessionService } from '@abp/session/abp-session.service';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { ReactiveFormsModule,FormGroup, FormControl, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -28,7 +29,10 @@ declare var $: any;
     animations: [accountModuleAnimation()]
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
-    
+    personalInfoForm:FormGroup;
+    businessInfoForm:FormGroup;
+    paymentDetailsForm:FormGroup;
+    contactUsForm:FormGroup;
     personalInfoDto: PersonalInfoDto;
     businessInfoDto: BusinessInfo;
     paymentDetailsDto: PaymentDetails;
@@ -38,11 +42,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     isUserLoggedIn = false;
     isSetted = false;
     saving = false;
-    custom=false;
-    tenantName:string
-    repeatPassword:string;
-    firstName:string
-    lastName:string
+    custom=true;
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
@@ -70,8 +70,40 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         container.setViewMode('month');
       }
     ngOnInit() {
-        this.businessInfoDto.state="NewYark"
-        this.businessInfoDto.city="NewYark"
+        this.personalInfoForm = new FormGroup({
+            firstName: new FormControl('',[Validators.required]),
+            lastName: new FormControl('',[Validators.required]),
+            password:new FormControl('',[Validators.required]),
+            confirmPassword:new FormControl(''),
+            emailAddress: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]),
+            title: new FormControl('')
+        })
+        this.businessInfoForm = new FormGroup({
+            businessName: new FormControl('',[Validators.required]),
+            tenantName: new FormControl('',[Validators.required]),
+            website:new FormControl(''),
+            title: new FormControl('',[Validators.required]),
+            phone: new FormControl('',[Validators.pattern("^[0-9]+")]),
+            addressLineOne: new FormControl('',[Validators.required]),
+            addressLineTwo: new FormControl(''),
+            zipCode: new FormControl(''),
+            city: new FormControl('NewYark'),
+            state: new FormControl('NewYark'),
+        })
+        this.paymentDetailsForm = new FormGroup({
+            cardNumber: new FormControl('',[Validators.required]),
+            cvvCode: new FormControl('',[Validators.required]),
+            expiryDate:new FormControl('',[Validators.required]),
+            email: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]),
+            commitment: new FormControl(0,[Validators.required])
+        })
+        this.contactUsForm= new FormGroup({
+            fullName: new FormControl('',[Validators.required]),
+            description: new FormControl('',[Validators.required]),
+            companyName:new FormControl('',[Validators.required]),
+            contactEmail: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]),
+            numberOfUsers: new FormControl(0,[Validators.required])
+        })
         this.paymentDetailsDto.commitment=0
         this.isUserLoggedIn = abp.session.userId > 0;
         
@@ -92,7 +124,27 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     isTrueFalseFeature(feature: FlatFeatureSelectDto): boolean {
         return feature.inputType.name === 'CHECKBOX';
     }
-
+    get companyName() { return this.contactUsForm.get('companyName'); }
+    get numberOfUsers() { return this.contactUsForm.get('numberOfUsers'); }
+    get description() { return this.contactUsForm.get('description'); }
+    get contactEmail() { return this.contactUsForm.get('contactEmail'); }
+    get fullName() { return this.contactUsForm.get('fullName'); }
+    get firstName() { return this.personalInfoForm.get('firstName'); }
+    get lastName() { return this.personalInfoForm.get('lastName'); }
+    get emailAddress() { return this.personalInfoForm.get('emailAddress'); }
+    get title() { return this.personalInfoForm.get('title'); }
+    get password() { return this.personalInfoForm.get('password'); }
+    get tenantName() { return this.businessInfoForm.get('tenantName'); }
+    get businessName() { return this.businessInfoForm.get('businessName'); }
+    get zipCode() { return this.businessInfoForm.get('zipCode'); }
+    get addressLineOne() { return this.businessInfoForm.get('addressLineOne'); }
+    get phone() { return this.businessInfoForm.get('phone'); }
+    get commitment() { return this.paymentDetailsForm.get('commitment'); }
+    get cvvCode() { return this.paymentDetailsForm.get('cvvCode'); }
+    get cardNumber() { return this.paymentDetailsForm.get('cardNumber'); }
+    get expiryDate() { return this.paymentDetailsForm.get('expiryDate'); }
+    get email() { return this.paymentDetailsForm.get('email'); }
+    
     featureEnabledForEdition(feature: FlatFeatureSelectDto, edition: EditionWithFeaturesDto): boolean {
         const featureValues = _.filter(edition.featureValues, { name: feature.name });
         if (!featureValues || featureValues.length <= 0) {
@@ -138,7 +190,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     }
     current: number = 0;
     movetab(item: number) {
-        if(this.repeatPassword==this.personalInfoDto.password)
+        if(this.personalInfoForm.value.confirmPassword==this.personalInfoForm.value.password)
         {
             
             this.current = this.current + item;
@@ -165,22 +217,22 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         }
     }
     personalInfoValidations(){
-        if(this.firstName == null)
+        if(this.personalInfoForm.value.firstName == "")
         {
             this.notify.error("First Name is Required")
             return false;
         }
-        else if(this.lastName == null)
+        else if(this.personalInfoForm.value.lastName == "")
         {
             this.notify.error("Last Name is Required")
             return false;
         }
-        else if(this.personalInfoDto.emailAddress == null)
+        else if(this.personalInfoForm.value.emailAddress == "")
         {
             this.notify.error("Email is Required")
             return false;
         }
-        else if(this.personalInfoDto.password == null)
+        else if(this.personalInfoForm.value.password == "")
         {
             this.notify.error("Password is Required")
             return false;
@@ -188,22 +240,23 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         return true;
     }
     businessInfoValidations(){
-        if(this.businessInfoDto.businessName == null)
+        console.log("Moeen")
+        if(this.businessInfoForm.value.businessName == "")
         {
             this.notify.error("Business Name is Required")
             return false;
         }
-        else if(this.tenantName == null)
+        else if(this.businessInfoForm.value.tenantName == "")
         {
             this.notify.error("Tenant Name is Required")
             return false;
         }
-        else if(this.businessInfoDto.addressLineOne == null)
+        else if(this.businessInfoForm.value.addressLineOne == "")
         {
             this.notify.error("Address is Required")
             return false;
         }
-        else if(this.businessInfoDto.zipCode == null)
+        else if(this.businessInfoForm.value.zipCode == "")
         {
             this.notify.error("ZipCode is Required")
             return false;
@@ -211,75 +264,150 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         return true;
     }
     paymentInfoValidations(){
-        if(this.paymentDetailsDto.cardNumber == null)
+        if(this.paymentDetailsForm.value.cardNumber == "")
         {
             this.notify.error("Card Number is Required")
             return false;
         }
-        else if(this.paymentDetailsDto.cvvCode == null)
+        else if(this.paymentDetailsForm.value.cvvCode == "")
         {
             this.notify.error("CVV Code is Required")
             return false;
         }
-        else if(this.paymentDetailsDto.expiryDate == null)
+        else if(!this.paymentDetailsForm.value.expiryDate)
         {
             this.notify.error("Select Expiry Date")
             return false;
         }
-        else if(this.paymentDetailsDto.email == null)
+        else if(this.paymentDetailsForm.value.email == "")
         {
             this.notify.error("Email is Required")
             return false;
         }
-        else if(this.paymentDetailsDto.commitment == null)
+        return true;
+    }
+    contactUsValidations(){
+        if(this.contactUsForm.value.fullName == "")
         {
-            this.notify.error("Select a Commitment")
+            this.notify.error("Name is Required")
+            return false;
+        }
+        else if(this.contactUsForm.value.contactEmail == "")
+        {
+            
+            this.notify.error("Email is Required")
+            return false;
+        }
+        else if(!this.contactUsForm.value.companyName)
+        {
+            this.notify.error("Company Name is required")
+            return false;
+        }
+        else if(this.contactUsForm.value.description == "")
+        {
+            this.notify.error("Description is Required")
             return false;
         }
         return true;
     }
     save() {
-        if(this.paymentInfoValidations()){
-            this.saving = true;
-            this.personalInfoDto.userName =  this.firstName +" " + this.lastName;
-            var userResgister = new RegisterUserInput();
-            userResgister.businessInfo = this.businessInfoDto;
-        
-            userResgister.personalInfo = this.personalInfoDto;
-            userResgister.subscriptionPlans = this.subscriptionPlansDto;
-            if(this.custom)
+        if(!this.custom){
+            if(this.paymentInfoValidations())
             {
-            userResgister.contactUs = this.contactUs;
-            userResgister.paymentDetails=null;
-            }else{
-                userResgister.paymentDetails = this.paymentDetailsDto;
-                userResgister.contactUs=null;
+                this.paymentDetailsDto.cardNumber=this.paymentDetailsForm.value.cardNumber
+                this.paymentDetailsDto.cvvCode=this.paymentDetailsForm.value.cvvCode
+                this.paymentDetailsDto.commitment=this.paymentDetailsForm.value.commitment
+                this.paymentDetailsDto.expiryDate=this.paymentDetailsForm.value.expiryDate
+                this.paymentDetailsDto.email=this.paymentDetailsForm.value.email
+                this.saving = true;
+                var userResgister = new RegisterUserInput();
+                userResgister.businessInfo = this.businessInfoDto;
+            
+                userResgister.personalInfo = this.personalInfoDto;
+                userResgister.subscriptionPlans = this.subscriptionPlansDto;
+                if(this.custom)
+                {
+                userResgister.contactUs = this.contactUs;
+                userResgister.paymentDetails=null;
+                }else{
+                    userResgister.paymentDetails = this.paymentDetailsDto;
+                    userResgister.contactUs=null;
+                }
+                console.log(userResgister);
+                debugger;
+            this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
+            .pipe(finalize(() => { this.saving = false; }))
+                    .pipe(catchError((err, caught): any => {
+                        
+                    }))
+                    .subscribe((result: RegisterTenantOutput) => {
+                        this.notify.success(this.l('SuccessfullyRegistered'));
+                        this._tenantRegistrationHelper.registrationResult = result;
+    
+                        if (parseInt(userResgister.subscriptionPlans.subscriptionStartType.toString()) === SubscriptionStartType.Paid) {
+                            this._router.navigate(['account/buy'],
+                                {
+                                    queryParams: {
+                                        tenantId: result.tenantId,
+                                        editionId: userResgister.subscriptionPlans.editionId,
+                                        subscriptionStartType: userResgister.subscriptionPlans.subscriptionStartType,
+                                        editionPaymentType: this.editionPaymentType
+                                    }
+                                });
+                        } else {
+                            this._router.navigate(['account/register-tenant-result']);
+                        }
+                    });
             }
-            console.log(userResgister);
-            debugger;
-        this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
-        .pipe(finalize(() => { this.saving = false; }))
-                .pipe(catchError((err, caught): any => {
-                    
-                }))
-                .subscribe((result: RegisterTenantOutput) => {
-                    this.notify.success(this.l('SuccessfullyRegistered'));
-                    this._tenantRegistrationHelper.registrationResult = result;
 
-                    if (parseInt(userResgister.subscriptionPlans.subscriptionStartType.toString()) === SubscriptionStartType.Paid) {
-                        this._router.navigate(['account/buy'],
-                            {
-                                queryParams: {
-                                    tenantId: result.tenantId,
-                                    editionId: userResgister.subscriptionPlans.editionId,
-                                    subscriptionStartType: userResgister.subscriptionPlans.subscriptionStartType,
-                                    editionPaymentType: this.editionPaymentType
-                                }
-                            });
-                    } else {
-                        this._router.navigate(['account/register-tenant-result']);
-                    }
-                });
+        }
+        else{
+            if(this.contactUsValidations()){
+                this.contactUs.companyName=this.contactUsForm.value.companyName
+                this.contactUs.fullName=this.contactUsForm.value.fullName
+                this.contactUs.email=this.contactUsForm.value.contactEmail
+                this.contactUs.description=this.contactUsForm.value.description
+                this.contactUs.numberOfUsers=this.contactUsForm.value.numberOfUsers
+                this.saving = true;
+                var userResgister = new RegisterUserInput();
+                userResgister.businessInfo = this.businessInfoDto;
+            
+                userResgister.personalInfo = this.personalInfoDto;
+                userResgister.subscriptionPlans = this.subscriptionPlansDto;
+                if(this.custom)
+                {
+                userResgister.contactUs = this.contactUs;
+                userResgister.paymentDetails=null;
+                }else{
+                    userResgister.paymentDetails = this.paymentDetailsDto;
+                    userResgister.contactUs=null;
+                }
+                console.log(userResgister);
+                debugger;
+            this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
+            .pipe(finalize(() => { this.saving = false; }))
+                    .pipe(catchError((err, caught): any => {
+                        
+                    }))
+                    .subscribe((result: RegisterTenantOutput) => {
+                        this.notify.success(this.l('SuccessfullyRegistered'));
+                        this._tenantRegistrationHelper.registrationResult = result;
+
+                        if (parseInt(userResgister.subscriptionPlans.subscriptionStartType.toString()) === SubscriptionStartType.Paid) {
+                            this._router.navigate(['account/buy'],
+                                {
+                                    queryParams: {
+                                        tenantId: result.tenantId,
+                                        editionId: userResgister.subscriptionPlans.editionId,
+                                        subscriptionStartType: userResgister.subscriptionPlans.subscriptionStartType,
+                                        editionPaymentType: this.editionPaymentType
+                                    }
+                                });
+                        } else {
+                            this._router.navigate(['account/register-tenant-result']);
+                        }
+                    });
+            }
         }
     }
     switchTab(item: number) {
@@ -296,6 +424,10 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
             case 1:
 
                 if(this.personalInfoValidations()){
+                    this.personalInfoDto.userName=this.personalInfoForm.value.firstName+" "+this.personalInfoForm.value.lastName
+                    this.personalInfoDto.emailAddress=this.personalInfoForm.value.emailAddress
+                    this.personalInfoDto.password=this.personalInfoForm.value.password
+                    this.personalInfoDto.title=this.personalInfoForm.value.title
                     $(".detail").attr("data-ktwizard-state", "current")
                     $(".detailbody").attr("data-ktwizard-state", "current")
                     $(".servicebody").attr("data-ktwizard-state", "")
@@ -310,6 +442,15 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
             case 2:
                 
                 if(this.businessInfoValidations()){
+                    this.businessInfoDto.businessName=this.businessInfoForm.value.businessName
+                    this.businessInfoDto.tenantName=this.businessInfoForm.value.tenantName
+                    this.businessInfoDto.phoneNumber=this.businessInfoForm.value.phoneNumber
+                    this.businessInfoDto.state=this.businessInfoForm.value.state
+                    this.businessInfoDto.city=this.businessInfoForm.value.city
+                    this.businessInfoDto.addressLineOne=this.businessInfoForm.value.addressLineOne
+                    this.businessInfoDto.addressLineTwo=this.businessInfoForm.value.addressLineTwo
+                    this.businessInfoDto.website=this.businessInfoForm.value.website
+                    this.businessInfoDto.zipCode=this.businessInfoForm.value.zipCode
                     $(".service").attr("data-ktwizard-state", "current")
                     $(".detailbody").attr("data-ktwizard-state", "")
                     $(".servicebody").attr("data-ktwizard-state", "current")

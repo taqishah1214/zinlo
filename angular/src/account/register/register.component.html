@@ -56,20 +56,28 @@
                         <div class="kt-wizard-v1__content locationbody" data-ktwizard-type="step-content" data-ktwizard-state="current" >
                             <div class="kt-heading py-0">Profile Details</div>
                             <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v1__form">
+                                <form [formGroup]="personalInfoForm" class="kt-wizard-v1__form">
                                     <div class="row my-0 py-0">
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>First Name</label>
-                                                <input #firstNameOfUser="ngModel" [(ngModel)]="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
-                                                <validation-messages [formCtrl]="firstNameOfUser"></validation-messages>
+                                                <input formControlName="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
+                                                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+                                                    <div class="text-danger" *ngIf="firstName.errors.required">
+                                                        First Name is required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Last Name</label>
-                                                <input #lastNameOfUser="ngModel" [(ngModel)]="lastName"type="text" class="form-control" name="lastNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
-                                                <validation-messages [formCtrl]="lastNameOfUser"></validation-messages>
+                                                <input formControlName="lastName" type="text" class="form-control" name="lastNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
+                                                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+                                                    <div class="text-danger" *ngIf="lastName.errors.required">
+                                                        Last Name is required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -78,14 +86,21 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Title (Optional)</label>
-                                                <input #titleOfUser="ngModel" [(ngModel)]="personalInfoDto.title"type="text" class="form-control" name="titleOfUser" placeholder="Enter Title" value="" autocomplete="off" maxlength="64">
+                                                <input formControlName="title" type="text" class="form-control" name="titleOfUser" placeholder="Enter Title" value="" autocomplete="off" maxlength="64">
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Email</label>
-                                                <input #emailOfUser="ngModel" [(ngModel)]="personalInfoDto.emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required maxlength="256" email>
-                                                <validation-messages [formCtrl]="emailOfUser"></validation-messages>
+                                                <input formControlName="emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required maxlength="256" email>
+                                                <div *ngIf="emailAddress.invalid && (emailAddress.dirty || emailAddress.touched)">
+                                                    <div class="text-danger" *ngIf="emailAddress.errors.required">
+                                                        Email is required.
+                                                    </div>
+                                                    <div class="text-danger" *ngIf="emailAddress.errors.pattern">
+                                                        Email Formate Is Wrong.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -93,19 +108,25 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Password</label>
-                                                <input #passwordOfUser="ngModel" [(ngModel)]="personalInfoDto.password" type="password" class="form-control" name="passwordOfUser" placeholder="Enter Password" value="">
-                                                <validation-messages [formCtrl]="passwordOfUser"></validation-messages>
+                                                <input formControlName="password" type="password" class="form-control" name="passwordOfUser" placeholder="Enter Password" value="">
+                                                <div  *ngIf="password.invalid && (password.dirty || password.touched)"
+                                                    class="">
+
+                                                    <div class="text-danger" *ngIf="password.errors.required">
+                                                        Password is required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Confirm Password</label>
-                                                <input  type="password" class="form-control" [(ngModel)]="repeatPassword" name="passwordOfUser" placeholder="Enter Confirm Password" value="">
+                                                <input  formControlName="confirmPassword"  class="form-control" type="password" name="passwordOfUser" placeholder="Enter Confirm Password" value="">
                                                 
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         <!--end: Form Wizard Step 1-->
@@ -114,22 +135,29 @@
                         <div class="kt-wizard-v1__content detailbody" data-ktwizard-type="step-content" data-ktwizard-state="">
                             <div class="kt-heading kt-heading--md">Enter Organization Information</div>
                             <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v1__form">
+                                <form [formGroup]="businessInfoForm" class="kt-wizard-v1__form">
                                     
                                     <div class="row pb-1">
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Business Name</label>
-                                                <input #businessNameOfUser="ngModel" [(ngModel)]="businessInfoDto.businessName" type="text" class="form-control" autocomplete="off" name="businessNameOfUser" placeholder="Enter Business Name" value="" required maxlength="64">
-                                                <validation-messages [formCtrl]="businessNameOfUser"></validation-messages>
+                                                <input formControlName="businessName" type="text" class="form-control" autocomplete="off" name="businessNameOfUser" placeholder="Enter Business Name" value="" required maxlength="64">
+                                                <div *ngIf="businessName.invalid && (businessName.dirty || businessName.touched)">
+                                                    <div class="text-danger" *ngIf="businessName.errors.required">
+                                                        Business Name is required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Tenant Name</label>
-                                                <input  #tenantNameOfUser="ngModel" [(ngModel)]="tenantName" type="text" class="form-control" autocomplete="off" name="TenantOfUser" placeholder="Enter Tenant Name" value="" required maxlength="64">
-                                                <validation-messages [formCtrl]="tenantNameOfUser"></validation-messages>
-                                            
+                                                <input  formControlName="tenantName" type="text" class="form-control" autocomplete="off" name="TenantOfUser" placeholder="Enter Tenant Name" value="" required maxlength="64">
+                                                <div *ngIf="tenantName.invalid && (tenantName.dirty || tenantName.touched)">
+                                                    <div class="text-danger" *ngIf="tenantName.errors.required">
+                                                        Tenant Name is required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -137,7 +165,7 @@
                                         <div class="col-xl-6">
                                             <label><span class="text-dark">Website</span> (Optional)</label>
                                             <div class="input-group">
-                                                <input type="text" #websiteOfUser="ngModel" [(ngModel)]="businessInfoDto.website" class="form-control"autocomplete="off" name="websiteOfUser" placeholder="Enter Website" value=""maxlength="64">
+                                                <input type="text" formControlName="website" class="form-control"autocomplete="off" name="websiteOfUser" placeholder="Enter Website" value=""maxlength="64">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">.com</span>
                                                 </div>   
@@ -149,7 +177,12 @@
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-phone-volume"></i></span>
                                                   </div>
-                                                <input type="text" #phoneNumberOfUser="ngModel" [(ngModel)]="businessInfoDto.phoneNumber" class="form-control" autocomplete="off" placeholder="Enter Phone Number" name="phoneNumberOfUser"maxlength="64">
+                                                <input type="text" formControlName="phone" class="form-control" autocomplete="off" placeholder="Enter Phone Number" name="phoneNumberOfUser"maxlength="64">
+                                                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                                                    <div class="text-danger" *ngIf="phone.errors.pattern">
+                                                        Incorrect format for Phone Number.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>  
@@ -157,14 +190,18 @@
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Address Line 1</label>
-                                                <input type="text" #addressLineOneOfUser="ngModel" [(ngModel)]="businessInfoDto.addressLineOne"class="form-control" name="addressLineOneOfUser" autocomplete="off" placeholder="Enter Address" value="" required maxlength="256">
-                                                <validation-messages [formCtrl]="addressLineOneOfUser"></validation-messages>
+                                                <input type="text" formControlName="addressLineOne"class="form-control" name="addressLineOneOfUser" autocomplete="off" placeholder="Enter Address" value="" required maxlength="256">
+                                                <div *ngIf="addressLineOne.invalid && (addressLineOne.dirty || addressLineOne.touched)">
+                                                    <div class="text-danger" *ngIf="addressLineOne.errors.required">
+                                                        Address is required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label>Address Line 2</label>
-                                                <input type="text" #addressLineTwoOfUser="ngModel" [(ngModel)]="businessInfoDto.addressLineTwo"class="form-control" autocomplete="off" name="addressLineTwoOfUser" placeholder="Enter Address" value="" maxlength="256">
+                                                <input type="text" formControlName="addressLineTwo"class="form-control" autocomplete="off" name="addressLineTwoOfUser" placeholder="Enter Address" value="" maxlength="256">
                                             </div>
                                         </div>
                                     </div>   
@@ -172,7 +209,7 @@
                                         <div class="col-xl-4">
                                             <div class="form-group">
                                                 <label>City</label>
-                                                <select name="city" [(ngModel)]="businessInfoDto.city" class="form-control bg-white border">
+                                                <select name="city" formControlName="city" class="form-control bg-white border">
                                                     <option value="NewYark">New York</option>
                                                     <option value="Afghanistan">Afghanistan</option>
                                                 </select>
@@ -182,7 +219,7 @@
                                         <div class="col-xl-4">
                                             <div class="form-group">
                                                 <label>State</label>
-                                                <select name="state" [(ngModel)]="businessInfoDto.state" class="form-control bg-white border">
+                                                <select name="state" formControlName="state" class="form-control bg-white border">
                                                     <option value="NewYark">New York</option>
                                                     <option value="Afghanistan">Afghanistan</option>
                                                 </select>    
@@ -191,12 +228,16 @@
                                         <div class="col-xl-4">
                                             <div class="form-group">
                                                 <label>ZipCode</label>
-                                                <input type="text" #zipCodeOfUser="ngModel" [(ngModel)]="businessInfoDto.zipCode" class="form-control" autocomplete="off" name="zipCodeOfUser" placeholder="Enter ZipCode" value="" required required maxlength="64">                                                
-                                                <validation-messages [formCtrl]="zipCodeOfUser"></validation-messages>
+                                                <input type="text" formControlName="zipCode" class="form-control" autocomplete="off" name="zipCodeOfUser" placeholder="Enter ZipCode" value="" required required maxlength="64">                                                
+                                                <div *ngIf="zipCode.invalid && (zipCode.dirty || zipCode.touched)">
+                                                    <div class="text-danger" *ngIf="zipCode.errors.required">
+                                                        ZipCode is required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div> 
-                                </div>
+                                </form>
                             </div>
                         </div>
                         <!--end: Form Wizard Step 2-->
@@ -304,7 +345,7 @@
                         <!--end: Form Wizard Step 3-->
 
                         <!--begin: Form Wizard Step 4-->
-                        <div class="kt-wizard-v1__content deliverybody" data-ktwizard-type="step-content" data-ktwizard-state="">
+                        <!-- <div class="kt-wizard-v1__content deliverybody" data-ktwizard-type="step-content" data-ktwizard-state="">
                             <div class="kt-heading kt-heading--md">Setup Your Delivery Location</div>
                             <div class="kt-form__section kt-form__section--first">
                                 <div class="kt-wizard-v1__form">
@@ -603,7 +644,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!--end: Form Wizard Step 4-->
 
                         <!--begin: Form Wizard Step 5-->
@@ -616,45 +657,57 @@
                                             Personal Information
                                         </div>
                                         <div class="kt-wizard-v1__review-content">
-                                            {{firstName}} {{lastName}}<br/>
-                                            Title: {{personalInfoDto.title}}<br/>
-                                            Email: {{personalInfoDto.emailAddress}}
+                                            {{personalInfoForm.value.firstName}} {{personalInfoForm.value.lastName}}<br/>
+                                            Title: {{personalInfoForm.value.title}}<br/>
+                                            Email: {{personalInfoForm.value.emailAddress}}
                                         </div>
                                         <div class="kt-heading kt-wizard-v1__review-title">
                                             Business Information
                                         </div>
                                         <div class="kt-wizard-v1__review-content">
-                                            {{businessInfoDto.businessName}}<br/>
-                                            Address: {{businessInfoDto.addressLineOne}} {{businessInfoDto.addressLineOne}}<br/>
-                                            Phone: {{businessInfoDto.phoneNumber}}<br/>
-                                            Website: {{businessInfoDto.website}}
+                                            {{businessInfoForm.value.businessName}}<br/>
+                                            Address: {{businessInfoForm.value.addressLineOne}} {{businessInfoForm.value.addressLineTwo}}<br/>
+                                            Phone: {{businessInfoForm.value.phoneNumber}}<br/>
+                                            Website: {{businessInfoForm.value.website}}
                                         </div>
                                         
                                     </div>
                                 </div>
                                 <div *ngIf="!custom" class="col-xl-6 kt-wizard-v1__review">
-                                    <div class="kt-wizard-v1__review-item">
+                                    <form [formGroup]="paymentDetailsForm" class="kt-wizard-v1__review-item">
                                         <div class="kt-heading kt-wizard-v1__review-title">
                                             Payment Details:
                                         </div>
                                         <div class="form-group">
                                             <label>Card Number</label>
-                                            <input type="text" #cardNumberOfUser="ngModel" [(ngModel)]="paymentDetailsDto.cardNumber" class="form-control" name="cardNumberOfUser" placeholder="xxxx-xxxx-xxxxxx" value="" autocomplete="off" required maxlength="64">
-                                            <validation-messages [formCtrl]="cardNumberOfUser"></validation-messages>
+                                            <input type="text" formControlName="cardNumber" class="form-control" name="cardNumberOfUser" placeholder="xxxx-xxxx-xxxxxx" value="" autocomplete="off" required maxlength="64">
+                                            <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)">
+                                                <div class="text-danger" *ngIf="cardNumber.errors.required">
+                                                    Card Number is required.
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>CVV Code</label>
-                                                    <input type="text" #CVVCodeOfUser="ngModel" [(ngModel)]="paymentDetailsDto.cvvCode"  class="form-control" name="CVVCodeOfUser" placeholder="Enter CVV Code" value="" autocomplete="off" required maxlength="64">
-                                                    <validation-messages [formCtrl]="CVVCodeOfUser"></validation-messages>
+                                                    <input type="text" formControlName="cvvCode"  class="form-control" name="CVVCodeOfUser" placeholder="Enter CVV Code" value="" autocomplete="off" required maxlength="64">
+                                                    <div *ngIf="cvvCode.invalid && (cvvCode.dirty || cvvCode.touched)">
+                                                        <div class="text-danger" *ngIf="cvvCode.errors.required">
+                                                            CVV Code is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Expiry Date</label>
-                                                    <input  bsDatepicker #expiryDateOfUser="ngModel" [(ngModel)]="paymentDetailsDto.expiryDate" class="form-control" name="expiryDateOfUser" placeholder="Select Date" bsDatepicker autocomplete="off" required>
-                                                    
+                                                    <input  bsDatepicker formControlName="expiryDate" class="form-control" name="expiryDateOfUser" placeholder="Select Date" bsDatepicker autocomplete="off" required>
+                                                    <div *ngIf="expiryDate.invalid && (expiryDate.dirty || expiryDate.touched)">
+                                                        <div class="text-danger" *ngIf="expiryDate.errors.required">
+                                                            Date is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -662,99 +715,127 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Email</label>
-                                                    <input type="email" #emailOfUser="ngModel" [(ngModel)]="paymentDetailsDto.email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required maxlength="64">
-                                                    <validation-messages [formCtrl]="emailOfUser"></validation-messages>
+                                                    <input type="email" formControlName="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required maxlength="64">
+                                                    <div *ngIf="email.invalid && (email.dirty || email.touched)">
+                                                        <div class="text-danger" *ngIf="email.errors.required">
+                                                            Email is required.
+                                                        </div>
+                                                        <div class="text-danger" *ngIf="email.errors.pattern">
+                                                            Email Formate Is Wrong.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Commitment</label>
-                                                    <select name="Commitment" #commitmentOfUser="ngModel" [(ngModel)]="paymentDetailsDto.commitment"class="form-control bg-white border">
+                                                    <select name="Commitment" formControlName="commitment"class="form-control bg-white border">
                                                         <option value="0">Monthly Plan</option>
                                                         <option value="1">Annully Plan</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>       
-                                                <div class="col-lg-6 px-5" *ngIf="custom">
-                                                            <h5 class="kt-portlet__head-title">
-                                                                 <span>Contact Us</span>
-                                                            </h5>
-                                                            <span>Lorem Ipsum is simply dummy text of the print.</span>
-                                                    <div class="row py-4">
-                                                        <div class="col-xl-6">
-                                                            <div class="form-group">
-                                                                <label>First Name</label>
-                                                                <input  type="text" class="form-control" [(ngModel)]="contactUs.fullName" name="firstName" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
-                                                        
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-6">
-                                                            <div class="form-group">
-                                                                <label>Email</label>
-                                                                <input  type="text" class="form-control" [(ngModel)]="contactUs.email" name="emailAddress" placeholder="Enter Email" value="" autocomplete="off" required maxlength="64">
-                                                        
-                                                            </div>
-                                                        </div>
+                                <form [formGroup]="contactUsForm" class="col-lg-6 kt-wizard-v1__review" *ngIf="custom">
+                                    <h5 class="kt-portlet__head-title">
+                                            <span>Contact Us</span>
+                                    </h5>
+                                    <span>Lorem Ipsum is simply dummy text of the print.</span>
+                                    <div class="row py-4">
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label>Full Name</label>
+                                                  <input  type="text" class="form-control" formControlName="fullName" name="firstName" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
+                                                  <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched)">
+                                                    <div class="text-danger" *ngIf="fullName.errors.required">
+                                                        Name is required.
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-xl-6">
-                                                            <div class="form-group">
-                                                                <label>Company Name</label>
-                                                                <input  type="text" class="form-control"[(ngModel)]="contactUs.companyName" name="companyName" placeholder="Enter Company Name" value="" autocomplete="off" required maxlength="64">
-                                                        
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-6">
-                                                            <div class="form-group">
-                                                                <label>No. of Users</label>
-                                                                <input  type="text" class="form-control" [(ngModel)]="contactUs.numberOfUsers" name="noOfUsers" placeholder="Enter No Of Users" value="" autocomplete="off" required maxlength="64">
-                                                        
-                                                            </div>
-                                                        </div>
+                                                </div>      
+                                            </div>
+                                        </div>
+                                       <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input  type="text" class="form-control" formControlName="contactEmail" name="emailAddress" placeholder="Enter Email" value="" autocomplete="off" required maxlength="64">
+                                                <div *ngIf="contactEmail.invalid && (contactEmail.dirty || contactEmail.touched)">
+                                                    <div class="text-danger" *ngIf="contactEmail.errors.required">
+                                                        Email is required.
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="description">{{"Description" | localize}}</label>
-                                                            <textarea class="form-control"   id="description" [(ngModel)]="contactUs.description" name="description" placeholder="Enter Description"></textarea>
+                                                    <div class="text-danger" *ngIf="contactEmail.errors.pattern">
+                                                        Email Formate Is Wrong.
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-6 pt-4" *ngIf="custom">
-                                                    <div class="row py-3 px-4">
-                                                        <div class="col-md-8">
-                                                            <div class="item-card-box shadow "style="height: 70px;">
-                                                                <div class="item-card rounded ">
-                                                                    <img src="../../../../assets/img/placeholder.svg" class="py-3 px-3" alt="bill" style="float: left;">
-                                                                    <span class="py-5 pt-3"><b>Location :</b> 15,A Johar Town , Lahore Punjab</span>
-                                                                </div>
-                                                            
-                                                            </div>
-                                                        </div>
-                                                    </div>   
-                                                    <div class="row py-3 px-4">
-                                                        <div class="col-md-8">
-                                                            <div class="item-card-box shadow "style="height: 70px;">
-                                                                <div class="item-card rounded">
-                                                                    <img src="../../../../assets/img/message.svg" class="py-3 px-3" alt="bill" style="float: left;">
-                                                                    <span class="py-5 pt-3"><b>Email :</b> {{contactUs.email}}</span>
-                                                                </div>
-                                                            
-                                                            </div>
-                                                        </div>
-                                                    </div>   
-                                                    <div class="row py-3 px-4">
-                                                        <div class="col-md-8">
-                                                            <div class="item-card-box shadow "style="height: 70px;">
-                                                                <div class="item-card rounded">
-                                                                    <img src="../../../../assets/img/phone-call.svg" class="py-3 px-3" alt="bill" style="float: left;">
-                                                                    <span class="py-5 pt-3"><b>Phoene :</b> +92 345 0987654</span>
-                                                                </div>
-                                                            
-                                                            </div>
-                                                        </div>
+                                                </div>        
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label>Company Name</label>
+                                                <input  type="text" class="form-control" formControlName="companyName" name="companyName" placeholder="Enter Company Name" value="" autocomplete="off" required maxlength="64">                                    
+                                                <div *ngIf="companyName.invalid && (companyName.dirty || companyName.touched)">
+                                                    <div class="text-danger" *ngIf="companyName.errors.required">
+                                                        Company Name is required.
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                         <div class="col-xl-6">
+                                            <div class="form-group">
+                                                <label>No. of Users</label>
+                                                <input  type="text" class="form-control" formControlName="numberOfUsers" name="noOfUsers" placeholder="Enter No Of Users" value="" autocomplete="off" required maxlength="64">
+                                                <div *ngIf="numberOfUsers.invalid && (numberOfUsers.dirty || numberOfUsers.touched)">
+                                                    <div class="text-danger" *ngIf="numberOfUsers.errors.required">
+                                                        Number Of Users are required.
+                                                    </div>
+                                                </div>       
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                            <label for="description">{{"Description" | localize}}</label>
+                                        <textarea class="form-control"   id="description" formControlName="description" name="description" placeholder="Enter Description"></textarea>
+                                        <div *ngIf="description.invalid && (description.dirty || description.touched)">
+                                            <div class="text-danger" *ngIf="description.errors.required">
+                                                Description is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="col-lg-6 kt-wizard-v1__review" *ngIf="custom">
+                                    <div class="row py-3 pl-5">
+                                        <div class="col-md-12">
+                                             <div class="item-card-box shadow "style="height: 70px;">
+                                                <div class="item-card rounded ">
+                                                    <img src="../../../../assets/img/placeholder.svg" class="py-3 px-3" alt="bill" style="float: left;">
+                                                    <span class="py-5 pt-3"><b>Location :</b>{{businessInfoForm.value.addressLineOne}} {{businessInfoForm.value.addressLineTwo}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                    <div class="row py-3 pl-5">
+                                         <div class="col-md-12">
+                                            <div class="item-card-box shadow "style="height: 70px;">
+                                                <div class="item-card rounded">
+                                                    <img src="../../../../assets/img/message.svg" class="py-3 px-3" alt="bill" style="float: left;">
+                                                    <span class="py-5 pt-3"><b>Email :</b> {{contactUsForm.value.contactEmail}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                    <div class="row py-4 pl-5">
+                                        <div class="col-md-12">
+                                            <div class="item-card-box shadow "style="height: 70px;">
+                                                <div class="item-card rounded">
+                                                    <img src="../../../../assets/img/phone-call.svg" class="py-3 px-3" alt="bill" style="float: left;">
+                                                     <span class="py-5 pt-3"><b>Phoene :</b>{{businessInfoForm.value.phone}}</span>
+                                                </div>                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!--end: Form Wizard Step 5-->
