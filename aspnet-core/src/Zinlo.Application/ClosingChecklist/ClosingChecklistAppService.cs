@@ -157,6 +157,7 @@ namespace Zinlo.ClosingChecklist
                         if (comparisonOfInstruction == false)
                         {
                             currentTaskDetail.VersionId = await CreateInstructions(input.Instruction);
+                            await _closingChecklistManager.UpdateVersionIds(currentTaskDetail.VersionId, currentTaskDetail.GroupId);
                         }
                     }
                     else
@@ -164,6 +165,7 @@ namespace Zinlo.ClosingChecklist
                         if (currentTaskDetail.VersionId != null)
                         {
                             currentTaskDetail.VersionId = null;
+                            await _closingChecklistManager.UpdateVersionIds(currentTaskDetail.VersionId, currentTaskDetail.GroupId);
                         }
                     }
 
@@ -194,7 +196,7 @@ namespace Zinlo.ClosingChecklist
                         CurrentUnitOfWork.SaveChanges();
                     }
 
-                    await TaskIteration(input,new DateTime(),true );
+                    await TaskIteration(input, new DateTime(), true);
                 }
             }
         }
@@ -234,6 +236,7 @@ namespace Zinlo.ClosingChecklist
                 };
                 await _attachmentAppService.PostAttachmentsPath(postAttachmentsPathDto);
             }
+            CurrentUnitOfWork.SaveChanges();
         }
 
         protected virtual async Task<long> CreateInstructions(string input)
@@ -400,13 +403,13 @@ namespace Zinlo.ClosingChecklist
                         {
                             monthDifference = _closingChecklistManager.GetMonthDifference(input.ClosingMonth, openingMonth);
                         }
-                        
+
                         for (int i = 1; i <= monthDifference; i++)
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            
-                            if ( input.Id == 0 || !await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId))
+
+                            if (input.Id == 0 || !await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId))
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);
@@ -430,7 +433,7 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            if (!await _managementManager.IsClosed(input.ClosingMonth) && input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
+                            if (input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);
@@ -453,7 +456,7 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            if (!await _managementManager.IsClosed(input.ClosingMonth) && input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
+                            if (input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);
@@ -476,7 +479,7 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            if (!await _managementManager.IsClosed(input.ClosingMonth) && input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
+                            if (input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);
@@ -495,7 +498,8 @@ namespace Zinlo.ClosingChecklist
         {
             var lastYear = input.AddYears(-1).AddMonths(-1);
             var query = await _closingChecklistManager.GetAll()
-                .Where(p => p.ClosingMonth >= lastYear && p.ClosingMonth <= input).ToListAsync();
+                .Where(p => p.ClosingMonth >= lastYear && p.ClosingMonth <= input).DistinctBy(p => new {p.GroupId})
+                .OrderBy(p => p.ClosingMonth).ToDynamicListAsync();
             return ObjectMapper.Map<List<CreateOrEditClosingChecklistDto>>(query);
         }
     }
