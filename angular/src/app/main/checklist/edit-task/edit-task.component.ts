@@ -315,7 +315,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
 
       this.checklist.attachmentsPath = this.newAttachementPath;
     }
-    this.checklist.comments = [];
+    // this.checklist.comments = [];
     this.saving = true;
     this._closingChecklistService.createOrEdit(this.checklist)
     .pipe(finalize(() => { this.saving = false; }))
