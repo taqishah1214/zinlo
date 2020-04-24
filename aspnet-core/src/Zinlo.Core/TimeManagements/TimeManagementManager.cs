@@ -121,6 +121,17 @@ namespace Zinlo.TimeManagements
         {
             var month= await _timeManagementRepository.FirstOrDefaultAsync(p =>
                 p.Month.Year.Equals(input.Year) && p.Month.Month.Equals(input.Month));
+            if (month == null)
+            {
+                var timeManagement = new TimeManagement()
+                {
+                    Month = input,
+                    Status = false,
+                    IsClosed = false,
+                };
+                await _timeManagementRepository.InsertAsync(timeManagement);
+                return false;
+            }
             return month.IsClosed;
         }
     }

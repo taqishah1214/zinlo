@@ -430,7 +430,7 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            if (!await _managementManager.IsClosed(input.ClosingMonth) && input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
+                            if (input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);
@@ -453,7 +453,7 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            if (!await _managementManager.IsClosed(input.ClosingMonth) && input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
+                            if ( input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);
@@ -476,7 +476,7 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            if (!await _managementManager.IsClosed(input.ClosingMonth) && input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
+                            if (input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);
