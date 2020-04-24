@@ -18,12 +18,12 @@
                             <a  [ngClass]="{'disabled':!monthStatus}"  class="btn" href="javascript:;"
                                 (click)="editItemizedItem()">
                                 <img src="../../../../assets/img/edit.svg"></a>
-                            <a  [ngClass]="{'disabled':!monthStatus}" class="btn" href="javascript:;"
+                            <a *ngIf="itemizationDto.isDeleted != true" [ngClass]="{'disabled':!monthStatus}" class="btn" href="javascript:;"
                                 (click)="deleteItem()">
                                 <img src="../../../../assets/img/del.svg"></a>
-                                <!-- <a  [ngClass]="{'disabled':!monthStatus}" *ngIf="itemizationDto.isDeleted == true" class="btn" href="javascript:;"
+                                <a  [ngClass]="{'disabled':!monthStatus}" *ngIf="itemizationDto.isDeleted == true" class="btn" href="javascript:;"
                                 (click)="restoreItemizedItem()">
-                                <i class="fas fa-trash-restore"></i></a>    -->
+                                <i class="fas fa-trash-restore"></i></a>   
 
                         </div>
                     </div>

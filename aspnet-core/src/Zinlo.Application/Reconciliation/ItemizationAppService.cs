@@ -27,6 +27,7 @@ namespace Zinlo.Reconciliation
         private readonly ICommentAppService _commentAppService;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly ITimeManagementsAppService _timeManagementsAppService;
+        private readonly IRepository<ReconciliationAmounts, long> _reconciliationAmountsRepository;
 
 
 
@@ -34,7 +35,8 @@ namespace Zinlo.Reconciliation
         #region|#Constructor|
         public ItemizationAppService(ICommentAppService commentAppService, IChartsofAccountAppService chartsofAccountAppService,IRepository<Itemization,long> itemizationRepository, 
             IAttachmentAppService attachmentAppService,
-            IUnitOfWorkManager unitOfWorkManager, ITimeManagementsAppService timeManagementsAppService)
+            IUnitOfWorkManager unitOfWorkManager, ITimeManagementsAppService timeManagementsAppService,
+            IRepository<ReconciliationAmounts, long> reconciliationAmountsRepository)
         {
             _itemizationRepository = itemizationRepository;
             _attachmentAppService = attachmentAppService;
@@ -42,6 +44,7 @@ namespace Zinlo.Reconciliation
             _commentAppService = commentAppService;
             _unitOfWorkManager = unitOfWorkManager;
             _timeManagementsAppService = timeManagementsAppService;
+            _reconciliationAmountsRepository = reconciliationAmountsRepository;
         }
         #endregion
         #region|Get All|
@@ -50,28 +53,46 @@ namespace Zinlo.Reconciliation
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
 
-                var query = _itemizationRepository.GetAll()
+               var query = _itemizationRepository.GetAll()
               .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Description.Contains(input.Filter))
               .WhereIf((input.ChartofAccountId != 0), e => false || e.ChartsofAccountId == input.ChartofAccountId);
+                    
 
 
                query = query.Where((e => (e.CreationTime.Year < input.SelectedMonth.Year) || (e.CreationTime.Year == input.SelectedMonth.Year && e.CreationTime.Month <= input.SelectedMonth.Month)));
                 var monthStatus = await _timeManagementsAppService.GetMonthStatus(input.SelectedMonth);
                 var isDeletedAccountExist = query.Where((e => e.IsDeleted)).ToList();
-                var allItems = query.Where((e => !e.IsDeleted)).ToList();
-                if (isDeletedAccountExist.Count > 0)
+                var allItems = isDeletedAccountExist;
+                if (input.AllOrActive == false)
                 {
-                    var deletedAccount = query.Where((e => (e.IsDeleted && ((e.DeletionTime.Value.Year > input.SelectedMonth.Year) || (e.DeletionTime.Value.Year == input.SelectedMonth.Year && e.DeletionTime.Value.Month > input.SelectedMonth.Month))))).ToList();
-                    allItems.AddRange(deletedAccount);
+                    allItems = query.Where((e => !e.IsDeleted)).ToList();
+
+                    if (isDeletedAccountExist.Count > 0)
+                    {
+                        var deletedAccount = query.Where((e => (e.IsDeleted && ((e.DeletionTime.Value.Year > input.SelectedMonth.Year) || (e.DeletionTime.Value.Year == input.SelectedMonth.Year && e.DeletionTime.Value.Month > input.SelectedMonth.Month))))).ToList();
+                        allItems.AddRange(deletedAccount);
+                   
+                    }
+                   
                 }
-               // var pagedAndFilteredItems = allItems.OrderBy(input.Sorting ?? "id asc").PageBy(input);
+                else
+                {
+                    allItems = allItems.Where((e => e.DeletionTime.Value.Month == input.SelectedMonth.Month && e.DeletionTime.Value.Year == input.SelectedMonth.Year)).ToList();
+                }
+               
+
+               var itemsAmmounts =  _reconciliationAmountsRepository.GetAll().Where(p => p.ChartsofAccountId == input.ChartofAccountId && p.AmountType == AmountType.Itemized).ToList();
+
+
+
+                // var pagedAndFilteredItems = allItems.OrderBy(input.Sorting ?? "id asc").PageBy(input);
                 var totalCount = allItems.Count();
                 var ItemizedList = (from o in allItems
 
                                     select new ItemizedListForViewDto()
                                     {
                                         Id = o.Id,
-                                        Amount = o.Amount,
+                                        Amount = CalculateAmount(o.Id, itemsAmmounts , input.SelectedMonth),
                                         Date = o.Date,
                                         Description = o.Description,
                                         IsDeleted = o.IsDeleted,
@@ -100,6 +121,33 @@ namespace Zinlo.Reconciliation
                );
             }
         }
+
+
+
+        public double CalculateAmount(long itemId  ,List<ReconciliationAmounts> amountsList, DateTime SelectedMonth)
+        {
+           var getAllAmountsOfRespectiveId =  amountsList.Where(p => p.itemId == itemId).ToList();
+            var CheckIsAmountChanged = getAllAmountsOfRespectiveId.Where(p => p.isChanged).ToList();
+            if (CheckIsAmountChanged.Count > 0)
+            {
+                foreach(var e in getAllAmountsOfRespectiveId)
+                {
+                    if (((e.CreationTime.Year < SelectedMonth.Year) || (e.CreationTime.Year == SelectedMonth.Year && e.CreationTime.Month <= SelectedMonth.Month)) &&
+                       ((e.ChangeDateTime.Year > SelectedMonth.Year) || (e.ChangeDateTime.Year == SelectedMonth.Year && e.ChangeDateTime.Month >= SelectedMonth.Month)))
+                    {
+                        return e.Amount;
+                    }
+                }
+
+                var item = getAllAmountsOfRespectiveId.FirstOrDefault(p => p.ChangeDateTime.Year == 0001);
+                return item.Amount;
+            }
+            else
+            {
+                return getAllAmountsOfRespectiveId[0].Amount;
+            }          
+        }
+
         #endregion
         #region|Create Edit|
         public async Task CreateOrEdit(CreateOrEditItemizationDto input)
@@ -147,7 +195,14 @@ namespace Zinlo.Reconciliation
             {
                 item.TenantId = (int)AbpSession.TenantId;
             }
+
             long itemAddedId = await _itemizationRepository.InsertAndGetIdAsync(item);
+            ReconciliationAmounts amounts = new ReconciliationAmounts();
+            amounts.Amount = input.Amount;
+            amounts.AmountType = AmountType.Itemized;
+            amounts.itemId = itemAddedId;
+            amounts.ChartsofAccountId = input.ChartsofAccountId;
+            await _reconciliationAmountsRepository.InsertAsync(amounts);
 
             if (input.AttachmentsPath != null)
             {
@@ -165,6 +220,17 @@ namespace Zinlo.Reconciliation
             var item = await _itemizationRepository.FirstOrDefaultAsync(input.Id);
             var data = ObjectMapper.Map(input, item);
             await  _itemizationRepository.UpdateAsync(data);
+            var previousItemAmount = await _reconciliationAmountsRepository.FirstOrDefaultAsync(p => p.itemId == input.Id && p.AmountType == AmountType.Itemized);
+            previousItemAmount.isChanged = true;
+            previousItemAmount.ChangeDateTime = DateTime.Now;
+            await _reconciliationAmountsRepository.UpdateAsync(previousItemAmount);
+            ReconciliationAmounts amounts = new ReconciliationAmounts();
+            amounts.Amount = input.Amount;
+            amounts.AmountType = AmountType.Itemized;
+            amounts.itemId = input.Id;
+            amounts.isChanged = true;
+            amounts.ChartsofAccountId = input.ChartsofAccountId;
+            await _reconciliationAmountsRepository.InsertAsync(amounts);
 
             if (input.AttachmentsPath != null)
             {
@@ -198,6 +264,7 @@ namespace Zinlo.Reconciliation
             {
                 var item = await _itemizationRepository.FirstOrDefaultAsync(id);
                 item.IsDeleted = false;
+                item.DeletionTime = DateTime.MinValue;
                 await _itemizationRepository.UpdateAsync(item);
             }
 

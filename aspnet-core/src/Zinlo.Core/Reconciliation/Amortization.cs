@@ -18,14 +18,14 @@ namespace Zinlo.Reconciliation
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public double Amount { get; set; }
-        public double AccomulateAmount { get; set; }
         public string Description { get; set; }
         [DisableAuditing]
         public virtual ChartofAccounts.ChartofAccounts ChartsofAccount { get; set; }
         [DisableAuditing]
         public long ChartsofAccountId { get; set; }
         public Criteria Criteria { get; set; }
-       
+        public bool IsUserDeleted { get; set; }
+
 
 
     }

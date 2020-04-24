@@ -35,6 +35,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   userName : string;
   commantModal : Boolean;
   commantBox : Boolean;
+  updateLock : Boolean = true; 
 
   constructor(private _itemizationServiceProxy : ItemizationServiceProxy,
     private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector, private userInfo: UserInformation) {
@@ -51,6 +52,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     this.getProfilePicture();
     if(this.ItemizedItemId != 0)
     {
+      this.updateLock = false;
       this.title = "Edit Item";
       this.Save = "Update";
       this.getDetailsofItem(this.ItemizedItemId);

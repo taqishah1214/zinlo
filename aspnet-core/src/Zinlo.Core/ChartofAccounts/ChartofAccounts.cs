@@ -30,6 +30,8 @@ namespace Zinlo.ChartofAccounts
         public Reconciled Reconciled { get; set; }
         public bool IsChange { get; set; }
         public DateTime? ChangeTime { get; set; }
+        public bool IsUserDeleted { get; set; }
+
     }
     public enum ReconciliationType
     {

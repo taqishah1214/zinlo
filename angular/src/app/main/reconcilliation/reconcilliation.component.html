@@ -231,8 +231,6 @@
                                                     <div class="thead-box"><b> {{"Balanace" | localize}} </b></div>
                                                     <div class="tdata-box">
                                                         <span *ngIf="item.balance" class="">{{item.balance  | formater}}</span>
-                                                        <span *ngIf="!item.balance" class="">zero</span>
-
                                                     </div>
                                                 </li>
                                                 <li [ngClass]="{'disabled':!monthStatus}" class="assignee-cell collapsable-cell kt-user-card-v2">

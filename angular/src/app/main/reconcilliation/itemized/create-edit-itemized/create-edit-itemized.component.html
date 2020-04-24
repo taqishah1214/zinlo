@@ -23,14 +23,14 @@
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div  [ngClass]="{'disabled':!updateLock}" class="form-group">
                                             <label for="InvoiceNo">{{"Invoice No" | localize}}.</label>
                                             <input type="text" name="inoviceNo" class="form-control"
                                                 [(ngModel)]="itemizedDto.inoviceNo" autocomplete="off" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div  [ngClass]="{'disabled':!updateLock}" class="form-group">
                                             <label for="TaskName">{{"Journal Entry No" | localize}}.</label>
                                             <input type="text" name="journalEntryNo" class="form-control"
                                                 [(ngModel)]="itemizedDto.journalEntryNo" autocomplete="off">
@@ -40,7 +40,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
 
-                                        <div class="form-group category-selector">
+                                        <div  [ngClass]="{'disabled':!updateLock}" class="form-group category-selector">
                                             <label for="Date">{{"Date" | localize}}</label>
                                             <input [(ngModel)]="itemizedDto.date" required="required"
                                             class="form-control" name="date" bsDatepicker
@@ -59,7 +59,7 @@
                 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="form-group">
+                                        <div  [ngClass]="{'disabled':!updateLock}" class="form-group">
                                             <label for="description">{{"Description" | localize}}</label>
                                             <textarea class="form-control" required [(ngModel)]="itemizedDto.description"
                                                 id="description" name="description" 

@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class Formater implements PipeTransform
 {
     transform(value: any, args: any[]): any {
-        if (!value) { return ''; }
-        return new Intl.NumberFormat('en-IN',{maximumSignificantDigits: 15 }).format(value);
+        if (!value) { return 0; }
+        return new Intl.NumberFormat('en-US',{maximumSignificantDigits: 10 }).format(value);
       }
 }

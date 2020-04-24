@@ -77,6 +77,7 @@ namespace Zinlo.Migrations
                     WeeklyPrice = table.Column<decimal>(nullable: true),
                     MonthlyPrice = table.Column<decimal>(nullable: true),
                     AnnualPrice = table.Column<decimal>(nullable: true),
+                    IsCustom = table.Column<bool>(nullable: true),
                     TrialDayCount = table.Column<int>(nullable: true),
                     WaitingDayAfterExpire = table.Column<int>(nullable: true)
                 },
@@ -378,7 +379,11 @@ namespace Zinlo.Migrations
                     ShouldChangePasswordOnNextLogin = table.Column<bool>(nullable: false),
                     SignInTokenExpireTimeUtc = table.Column<DateTime>(nullable: true),
                     SignInToken = table.Column<string>(nullable: true),
-                    GoogleAuthenticatorKey = table.Column<string>(nullable: true)
+                    GoogleAuthenticatorKey = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -562,6 +567,59 @@ namespace Zinlo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ContactUs",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    FullName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    CompanyName = table.Column<string>(nullable: true),
+                    NumberOfUsers = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    Commitment = table.Column<int>(nullable: false),
+                    Pricing = table.Column<decimal>(nullable: false),
+                    IsAccepted = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactUs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReconciliationAmounts",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    ChangeDateTime = table.Column<DateTime>(nullable: false),
+                    Amount = table.Column<double>(nullable: false),
+                    AmountType = table.Column<int>(nullable: false),
+                    isChanged = table.Column<bool>(nullable: false),
+                    itemId = table.Column<long>(nullable: false),
+                    ChartsofAccountId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReconciliationAmounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TimeManagements",
                 columns: table => new
                 {
@@ -577,6 +635,59 @@ namespace Zinlo.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TimeManagements", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserBusinessInfos",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    BusinessName = table.Column<string>(nullable: true),
+                    Website = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    AddressLineOne = table.Column<string>(nullable: true),
+                    AddressLineTwo = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    ZipCode = table.Column<string>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserBusinessInfos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPaymentDetails",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    CardNumber = table.Column<string>(nullable: true),
+                    CVVCode = table.Column<string>(nullable: true),
+                    ExpiryDate = table.Column<DateTime>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
+                    Commitment = table.Column<int>(nullable: false),
+                    TenantId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPaymentDetails", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -971,11 +1082,9 @@ namespace Zinlo.Migrations
                     AccountSubTypeId = table.Column<long>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     Reconciled = table.Column<int>(nullable: false),
-                    Balance = table.Column<double>(nullable: false),
-                    Lock = table.Column<bool>(nullable: false),
-                    TrialBalance = table.Column<decimal>(nullable: false),
-                    VersionId = table.Column<long>(nullable: false),
-                    ClosingMonth = table.Column<DateTime>(nullable: false)
+                    IsChange = table.Column<bool>(nullable: false),
+                    ChangeTime = table.Column<DateTime>(nullable: true),
+                    IsUserDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1017,7 +1126,6 @@ namespace Zinlo.Migrations
                     NoOfMonths = table.Column<int>(nullable: false),
                     DueOn = table.Column<int>(nullable: false),
                     DueDate = table.Column<DateTime>(nullable: false),
-                    EndsOn = table.Column<DateTime>(nullable: true),
                     DayBeforeAfter = table.Column<int>(nullable: false),
                     EndOfMonth = table.Column<bool>(nullable: false),
                     Frequency = table.Column<int>(nullable: false),
@@ -1127,6 +1235,30 @@ namespace Zinlo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AccountBalance",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    AccountId = table.Column<long>(nullable: false),
+                    Balance = table.Column<double>(nullable: false),
+                    TrialBalance = table.Column<double>(nullable: false),
+                    Month = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccountBalance", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AccountBalance_ChartofAccounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "ChartofAccounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Amortizations",
                 columns: table => new
                 {
@@ -1145,11 +1277,10 @@ namespace Zinlo.Migrations
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
                     Amount = table.Column<double>(nullable: false),
-                    AccomulateAmount = table.Column<double>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     ChartsofAccountId = table.Column<long>(nullable: false),
                     Criteria = table.Column<int>(nullable: false),
-                    ClosingMonth = table.Column<DateTime>(nullable: false)
+                    IsUserDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1179,10 +1310,9 @@ namespace Zinlo.Migrations
                     InoviceNo = table.Column<string>(nullable: true),
                     JournalEntryNo = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
-                    Amount = table.Column<double>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     ChartsofAccountId = table.Column<long>(nullable: false),
-                    ClosingMonth = table.Column<DateTime>(nullable: false)
+                    IsUserDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1527,6 +1657,11 @@ namespace Zinlo.Migrations
                 columns: new[] { "TenantId", "UserId" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AccountBalance_AccountId",
+                table: "AccountBalance",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Amortizations_ChartsofAccountId",
                 table: "Amortizations",
                 column: "ChartsofAccountId");
@@ -1708,6 +1843,9 @@ namespace Zinlo.Migrations
                 name: "AbpUserTokens");
 
             migrationBuilder.DropTable(
+                name: "AccountBalance");
+
+            migrationBuilder.DropTable(
                 name: "Amortizations");
 
             migrationBuilder.DropTable(
@@ -1738,13 +1876,25 @@ namespace Zinlo.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "ContactUs");
+
+            migrationBuilder.DropTable(
                 name: "ImportsPaths");
 
             migrationBuilder.DropTable(
                 name: "Itemizations");
 
             migrationBuilder.DropTable(
+                name: "ReconciliationAmounts");
+
+            migrationBuilder.DropTable(
                 name: "TimeManagements");
+
+            migrationBuilder.DropTable(
+                name: "UserBusinessInfos");
+
+            migrationBuilder.DropTable(
+                name: "UserPaymentDetails");
 
             migrationBuilder.DropTable(
                 name: "AbpEntityChanges");

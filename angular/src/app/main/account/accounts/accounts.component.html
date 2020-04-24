@@ -376,7 +376,7 @@
                                 <tbody *ngFor="let item of chartsOfAccountList">
                                     <tr class="task-table-inner table-repeater" class="{{item.isDeleted == true ? 'warnning' : '' }}">
 
-                                        <td class="toggle-btn-cell" >                            
+                                        <td *ngIf="item.isDeleted == false" class="toggle-btn-cell" >                            
                                             <label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand">
                                                 <input (change)="checkValue(item.id)" type="checkbox">
                                                 <span></span>

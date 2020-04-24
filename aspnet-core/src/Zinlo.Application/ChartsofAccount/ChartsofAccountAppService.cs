@@ -62,13 +62,15 @@ namespace Zinlo.ChartsofAccount
             
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
-                var query = _chartsofAccountRepository.GetAll().Include(p => p.AccountSubType).Include(p => p.Assignee)
-                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
-                .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
-                .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
-                .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
-                var MonthStatus = await GetMonthStatus(input.SelectedMonth);
 
+                var query = _chartsofAccountRepository.GetAll().Where(x => x.IsDeleted == input.AllOrActive).Include(p => p.AccountSubType).Include(p => p.Assignee)
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
+                        .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
+                        .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId));
+                
+               
+
+                var MonthStatus = await GetMonthStatus(input.SelectedMonth);
                 var getUserWithPictures = (from o in query.ToList()
                                            select new GetUserWithPicture()
                                            {
@@ -252,6 +254,7 @@ namespace Zinlo.ChartsofAccount
         }
         public async Task Delete(long id)
         {
+
             await _chartsofAccountRepository.DeleteAsync(id);
         }
         public async Task<GetAccountForEditDto> GetAccountForEdit(long id)

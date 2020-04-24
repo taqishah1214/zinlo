@@ -1703,6 +1703,9 @@ namespace Zinlo.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsUserDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("timestamp without time zone");
 
@@ -2229,9 +2232,6 @@ namespace Zinlo.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<double>("AccomulateAmount")
-                        .HasColumnType("double precision");
-
                     b.Property<double>("Amount")
                         .HasColumnType("double precision");
 
@@ -2265,6 +2265,9 @@ namespace Zinlo.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsUserDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("JournalEntryNo")
                         .HasColumnType("text");
 
@@ -2294,9 +2297,6 @@ namespace Zinlo.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("double precision");
-
                     b.Property<long>("ChartsofAccountId")
                         .HasColumnType("bigint");
 
@@ -2324,6 +2324,9 @@ namespace Zinlo.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsUserDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("JournalEntryNo")
                         .HasColumnType("text");
 
@@ -2341,6 +2344,57 @@ namespace Zinlo.Migrations
                     b.HasIndex("ChartsofAccountId");
 
                     b.ToTable("Itemizations");
+                });
+
+            modelBuilder.Entity("Zinlo.Reconciliation.ReconciliationAmounts", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("AmountType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("ChangeDateTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("ChartsofAccountId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("isChanged")
+                        .HasColumnType("boolean");
+
+                    b.Property<long>("itemId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReconciliationAmounts");
                 });
 
             modelBuilder.Entity("Zinlo.Storage.BinaryObject", b =>

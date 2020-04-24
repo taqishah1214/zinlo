@@ -36,7 +36,8 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   commantBox : Boolean;
   userName :any;
   UserProfilePicture: any;
-
+  updateLock : Boolean = true; 
+  CriteriaButton :any = 0;
 
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -57,6 +58,8 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     if ( this.amortrizedItemId != 0)
     {     
       this.getAmortizedItemDetails()
+      this.updateLock = false;
+
     }
     else
     {         
@@ -90,6 +93,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     this.buttonTitle =  "Save"
     this._reconcialtionService.getAmortizedItemDetails(this.amortrizedItemId).subscribe(result => {
       this.amortizationDto = result
+      this.CriteriaButton = this.amortizationDto.criteria
       this.attachments = result.attachments;
       this.attachments.forEach(element => {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));

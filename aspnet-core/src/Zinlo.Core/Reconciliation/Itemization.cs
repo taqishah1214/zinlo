@@ -16,12 +16,12 @@ namespace Zinlo.Reconciliation
         public string InoviceNo { get; set; }
         public string JournalEntryNo { get; set; }
         public DateTime Date { get; set; }
-        public double Amount { get; set; }
         public string Description { get; set; }
         [DisableAuditing]
         public virtual ChartofAccounts.ChartofAccounts ChartsofAccount { get; set; }
         [DisableAuditing]
         public long ChartsofAccountId { get; set; }
+        public bool IsUserDeleted { get; set; }
 
     }
 }

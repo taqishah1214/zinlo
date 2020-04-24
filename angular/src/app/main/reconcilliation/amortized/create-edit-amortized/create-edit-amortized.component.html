@@ -21,7 +21,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="row">
-                                                        <div class="kt-portlet__body tab_button">
+                                                        <div [ngClass]="{'disabled':!updateLock}" class="kt-portlet__body tab_button">
                                                             <ul class="nav nav-pills nav-fill" role="tablist">
                                                                 <li class="nav-item">
                                                                     <a class="nav-link active" data-toggle="tab" (click)="tabFilter('Manual')">{{"Manual" | localize}}</a>
@@ -37,14 +37,14 @@
                       
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-md-6">
+                                                        <div [ngClass]="{'disabled':!updateLock}" class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="InvoiceNo">{{"Invoice No" | localize}}.</label>
                                                                 <input type="text" name="inoviceNo" class="form-control"
                                                                     [(ngModel)]="amortizationDto.inoviceNo" autocomplete="off">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6">
+                                                        <div [ngClass]="{'disabled':!updateLock}"class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="TaskName">{{"Journal Entry No" | localize}}.</label>
                                                                 <input type="text" name="accountNumber" class="form-control"
@@ -53,7 +53,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-md-6">
+                                                        <div [ngClass]="{'disabled':!updateLock}" class="col-md-6">
                                                             <div class="form-group category-selector">
                                                                 <label for="Date">{{"Start Date" | localize}}</label>
                                                                 <input [(ngModel)]="amortizationDto.startDate" required="required"
@@ -67,7 +67,7 @@
                                                         <div class="col-md-6">
                                                            
 
-                                                            <div class="form-group category-selector">
+                                                            <div [ngClass]="{'disabled':!updateLock}" class="form-group category-selector">
                                                                 <label for="Date">{{"End Date" | localize}}</label>
                                                                 <input [(ngModel)]="amortizationDto.endDate"  required="required"
                                                                 class="form-control" name="endDate" bsDatepicker
@@ -78,7 +78,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-md-6">
+                                                        <div [ngClass]="{'disabled':!updateLock}" class="col-md-6">
                                                             <label for="TaskName">{{"Amount" | localize}}</label>
                                                             <input type="text" name="amount" class="form-control"
                                                             [(ngModel)]="amortizationDto.amount" autocomplete="off">
@@ -90,7 +90,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-md-12 pt-4">
+                                                        <div [ngClass]="{'disabled':!updateLock}" class="col-md-12 pt-4">
                                                             <div class="form-group">
                                                                 <label for="description">{{"Description" | localize}}</label>
                                                                 <textarea class="form-control" required [(ngModel)]="amortizationDto.description"

@@ -28,13 +28,15 @@ namespace Zinlo.Reconciliation
         private readonly ICommentAppService _commentAppService;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly ITimeManagementsAppService _timeManagementsAppService;
+        private readonly IRepository<ReconciliationAmounts, long> _reconciliationAmountsRepository;
 
 
         #region|#Constructor|
         public AmortizationAppService(ICommentAppService commentAppService,IChartsofAccountAppService chartsofAccountAppService, IRepository<Amortization, long> amortizationRepository,
             IAttachmentAppService attachmentAppService,
             IUnitOfWorkManager unitOfWorkManager,
-            ITimeManagementsAppService timeManagementsAppService)
+            ITimeManagementsAppService timeManagementsAppService,
+            IRepository<ReconciliationAmounts, long> reconciliationAmountsRepository)
         {
             _attachmentAppService = attachmentAppService;
             _amortizationRepository = amortizationRepository;
@@ -42,6 +44,8 @@ namespace Zinlo.Reconciliation
             _commentAppService = commentAppService;
             _unitOfWorkManager = unitOfWorkManager;
             _timeManagementsAppService = timeManagementsAppService;
+            _reconciliationAmountsRepository = reconciliationAmountsRepository;
+
 
         }
         #endregion
@@ -77,17 +81,24 @@ namespace Zinlo.Reconciliation
 
                 var monthStatus = await _timeManagementsAppService.GetMonthStatus(input.SelectedMonth);
                 var isDeletedAccountExist = query.Where((e => e.IsDeleted)).ToList();
-                var AllItems = query.Where((e => !e.IsDeleted)).ToList();
-                if (isDeletedAccountExist.Count > 0)
+                var AllItems = isDeletedAccountExist;
+                if (input.AllOrActive == false)
                 {
-                    var deletedAccount = query.Where((e => (e.IsDeleted && ((e.DeletionTime.Value.Year > input.SelectedMonth.Year) || (e.DeletionTime.Value.Year == input.SelectedMonth.Year && e.DeletionTime.Value.Month > input.SelectedMonth.Month))))).ToList();
-                    AllItems.AddRange(deletedAccount);
+                    AllItems = query.Where((e => !e.IsDeleted)).ToList();
+                    if (isDeletedAccountExist.Count > 0)
+                    {
+                        var deletedAccount = query.Where((e => (e.IsDeleted && ((e.DeletionTime.Value.Year > input.SelectedMonth.Year) || (e.DeletionTime.Value.Year == input.SelectedMonth.Year && e.DeletionTime.Value.Month > input.SelectedMonth.Month))))).ToList();
+                        AllItems.AddRange(deletedAccount);
+                      
+                    }
+                   
+                }
+                else
+                {
+                    AllItems = AllItems.Where((e => e.DeletionTime.Value.Month == input.SelectedMonth.Month && e.DeletionTime.Value.Year == input.SelectedMonth.Year)).ToList();
                 }
 
-
-
-
-
+                var itemsAmounts = _reconciliationAmountsRepository.GetAll().Where(p => p.ChartsofAccountId == input.ChartofAccountId && p.AmountType == AmountType.Amortized).ToList();
                 var pagedAndFilteredItems = AllItems/*.OrderBy(input.Sorting ?? "id asc").PageBy(input)*/;
                 var totalCount = query.Count();
                 var amortizedList = (from o in pagedAndFilteredItems.ToList()
@@ -98,10 +109,10 @@ namespace Zinlo.Reconciliation
                                          StartDate = o.StartDate,
                                          EndDate = o.EndDate,
                                          Description = o.Description,
-                                         AccuredAmortization = CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.SelectedMonth, o.StartDate),
+                                         AccuredAmortization = CalculateAccuredAmount(o.Id, itemsAmounts, (int)(o.Criteria), o.Amount, o.EndDate, input.SelectedMonth, o.StartDate),
                                          BeginningAmount = o.Amount,
                                          IsDeleted = o.IsDeleted,
-                                         NetAmount = CalculateNetAmount((int)(o.Criteria) == 2 || (int)(o.Criteria) == 3 ? CalculateAccuredAmount((int)(o.Criteria), o.AccomulateAmount, o.Amount, o.EndDate, input.SelectedMonth, o.StartDate) : o.AccomulateAmount, o.Amount),
+                                         NetAmount = CalculateNetAmount(o.Id, itemsAmounts, (int)(o.Criteria), o.Amount, o.EndDate, input.SelectedMonth, o.StartDate),
                                          Attachments = _attachmentAppService.GetAttachmentsPath(o.Id, 2).Result
                                      }).ToList();
 
@@ -157,26 +168,61 @@ namespace Zinlo.Reconciliation
             }
         }
 
-        protected virtual double CalculateNetAmount(double AccomulateAmount, double BeginningAmount)
+        protected virtual double CalculateNetAmount(long itemId, List<ReconciliationAmounts> amountsList, int CriteriaId, double BeginningAmount, DateTime EndDate, DateTime Current, DateTime StartDate)
         {
-            double Result = 0;
-            Result =  BeginningAmount - AccomulateAmount;
-            return Result;
+            if (CriteriaId == 1)
+            {
+                double AccomulateAmount = CalculateAmount(itemId, amountsList, Current);
+                double Result = BeginningAmount - AccomulateAmount;
+                return Result;
+            }
+            else
+            {
+                double AccomulateAmount = CalculateAccuredAmount(itemId, amountsList, CriteriaId, BeginningAmount, EndDate, Current, StartDate);
+                double Result = BeginningAmount - AccomulateAmount;
+                return Result;
+            }
+           
+            
         }
 
-        protected virtual double CalculateAccuredAmount( int CriteriaId , double AccomulateAmount, double BeginningAmount,DateTime EndDate, DateTime Current, DateTime StartDate)
+        public double CalculateAmount(long itemId, List<ReconciliationAmounts> amountsList, DateTime SelectedMonth)
+        {
+            var getAllAmountsOfRespectiveId = amountsList.Where(p => p.itemId == itemId).ToList();
+            var CheckIsAmountChanged = getAllAmountsOfRespectiveId.Where(p => p.isChanged).ToList();
+            if (CheckIsAmountChanged.Count > 0)
+            {
+                foreach (var e in getAllAmountsOfRespectiveId)
+                {
+                    if (((e.CreationTime.Year < SelectedMonth.Year) || (e.CreationTime.Year == SelectedMonth.Year && e.CreationTime.Month <= SelectedMonth.Month)) &&
+                       ((e.ChangeDateTime.Year > SelectedMonth.Year) || (e.ChangeDateTime.Year == SelectedMonth.Year && e.ChangeDateTime.Month >= SelectedMonth.Month)))
+                    {
+                        return e.Amount;
+                    }
+                }
+
+                var item = getAllAmountsOfRespectiveId.FirstOrDefault(p => p.ChangeDateTime.Year == 0001);
+                return item.Amount;
+            }
+            else
+            {
+                return getAllAmountsOfRespectiveId[0].Amount;
+            }
+        }
+
+        protected virtual double CalculateAccuredAmount(long itemId, List<ReconciliationAmounts> amountsList, int CriteriaId , double BeginningAmount,DateTime EndDate, DateTime Current, DateTime StartDate)
         {
             double Result =1;
             switch (CriteriaId)
             {
                 case 1:
-                    Result = AccomulateAmount;
+                    Result = CalculateAmount(itemId, amountsList, Current);
                     break;
                 case 2:
-                    Result = GetAccuredAmountMonthly(AccomulateAmount, BeginningAmount, EndDate, Current, StartDate);
+                    Result = GetAccuredAmountMonthly(0, BeginningAmount, EndDate, Current, StartDate);
                     break;
                 case 3:
-                    Result = GetAccuredAmountDaily(AccomulateAmount, BeginningAmount, EndDate, Current, StartDate);
+                    Result = GetAccuredAmountDaily(0, BeginningAmount, EndDate, Current, StartDate);
                     break;
 
                 default:
@@ -248,6 +294,12 @@ namespace Zinlo.Reconciliation
         {            
             var item = ObjectMapper.Map<Amortization>(input);
             var itemAddedId = await _amortizationRepository.InsertAndGetIdAsync(item);
+            ReconciliationAmounts amounts = new ReconciliationAmounts();
+            amounts.Amount = input.Amount;
+            amounts.AmountType = AmountType.Amortized;
+            amounts.itemId = itemAddedId;
+            amounts.ChartsofAccountId = input.ChartsofAccountId;
+            await _reconciliationAmountsRepository.InsertAsync(amounts);
             if (input.AttachmentsPath != null)
             {
                 PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
@@ -268,6 +320,17 @@ namespace Zinlo.Reconciliation
             var item = await _amortizationRepository.FirstOrDefaultAsync(input.Id);
             var data = ObjectMapper.Map(input, item);
             await _amortizationRepository.UpdateAsync(data);
+            var previousItemAmount = await _reconciliationAmountsRepository.FirstOrDefaultAsync(p => p.itemId == input.Id && p.AmountType == AmountType.Amortized);
+            previousItemAmount.isChanged = true;
+            previousItemAmount.ChangeDateTime = DateTime.Now;
+            await _reconciliationAmountsRepository.UpdateAsync(previousItemAmount);
+            ReconciliationAmounts amounts = new ReconciliationAmounts();
+            amounts.Amount = input.Amount;
+            amounts.AmountType = AmountType.Amortized;
+            amounts.itemId = input.Id;
+            amounts.isChanged = true;
+            amounts.ChartsofAccountId = input.ChartsofAccountId;
+            await _reconciliationAmountsRepository.InsertAsync(amounts);
             if (input.AttachmentsPath != null)
             {
                 PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
@@ -316,6 +379,7 @@ namespace Zinlo.Reconciliation
             {
                 var item = await _amortizationRepository.FirstOrDefaultAsync(id);
                 item.IsDeleted = false;
+                item.DeletionTime = DateTime.MinValue;
                 await _amortizationRepository.UpdateAsync(item);
             }
 
