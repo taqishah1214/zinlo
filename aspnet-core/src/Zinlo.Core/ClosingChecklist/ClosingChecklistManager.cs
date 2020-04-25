@@ -112,7 +112,7 @@ namespace Zinlo.ClosingChecklist
             var task = await _closingChecklistRepository.FirstOrDefaultAsync(taskId);
             if (task != null)
             {
-                task.Status = (Status) statusId;
+                task.Status = (Status)statusId;
                 _closingChecklistRepository.Update(task);
             }
         }
@@ -197,11 +197,13 @@ namespace Zinlo.ClosingChecklist
             return await _managementManager.GetMonthStatus(dateTime);
         }
 
-        public async Task<bool> CheckTaskExist(DateTime closingMonth, Guid groupId)
+        public bool CheckTaskExist(DateTime closingMonth, Guid? groupId)
         {
-            var ifTaskExist = await _closingChecklistRepository.FirstOrDefaultAsync(p =>
-                p.GroupId == groupId && p.ClosingMonth.Month == closingMonth.Month &&
-                p.ClosingMonth.Year == closingMonth.Year);
+            if (groupId == null) return false;
+                var ifTaskExist = _closingChecklistRepository.FirstOrDefault(p =>
+               p.GroupId == groupId &&
+               p.ClosingMonth.Year == closingMonth.Year
+               && p.ClosingMonth.Month == closingMonth.Month);
             if (ifTaskExist != null) return true;
             return false;
         }

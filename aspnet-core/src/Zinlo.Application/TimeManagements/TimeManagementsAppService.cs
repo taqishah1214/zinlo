@@ -9,6 +9,8 @@ using Zinlo.TimeManagements.Dto;
 using Abp.Application.Services.Dto;
 using Zinlo.Authorization;
 using Abp.Authorization;
+using Abp.BackgroundJobs;
+using Abp.Runtime.Session;
 using Abp.Timing;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
@@ -22,13 +24,13 @@ namespace Zinlo.TimeManagements
     public class TimeManagementsAppService : ZinloAppServiceBase, ITimeManagementsAppService
     {
         private readonly TimeManagementManager _timeManagementManager;
-        private readonly IClosingChecklistAppService _checklistService;
+        private readonly IBackgroundJobManager _backgroundJobManager;
 
 
-        public TimeManagementsAppService(TimeManagementManager timeManagementManager, IClosingChecklistAppService checklistAppService, IClosingChecklistAppService checklistService)
+        public TimeManagementsAppService(TimeManagementManager timeManagementManager, IBackgroundJobManager backgroundJobManager)
         {
             _timeManagementManager = timeManagementManager;
-            _checklistService = checklistService;
+            _backgroundJobManager = backgroundJobManager;
         }
 
         public async Task<PagedResultDto<GetTimeManagementForViewDto>> GetAll(GetAllTimeManagementsInput input)
@@ -122,12 +124,11 @@ namespace Zinlo.TimeManagements
             var timeManagement = await _timeManagementManager.GetManagement(id);
             if (!timeManagement.IsClosed && !timeManagement.Status)
             {
-                var last13MonthTaskByManagement = await _checklistService.GetTaskTimeDuration(timeManagement.Month);
-                foreach (var task in last13MonthTaskByManagement)
+                _backgroundJobManager.Enqueue<OpenMonthJob, OpenMonthArgs>(new OpenMonthArgs()
                 {
-                    task.ClosingMonth = task.ClosingMonth.AddDays(-1);
-                    await _checklistService.TaskIteration(task, timeManagement.Month, false);
-                }
+                    Month = timeManagement.Month,
+                    UserIdentifier = AbpSession.ToUserIdentifier()
+                }, BackgroundJobPriority.High);
 
             }
             if (timeManagement.Status)

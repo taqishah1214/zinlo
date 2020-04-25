@@ -12,6 +12,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public virtual long AssigneeId { get; set; }
         public virtual DateTime ClosingMonth { get; set; }
         public virtual long? VersionId { get; set; }
+        public virtual int TenantId { get; set; }
         public StatusDto Status { get; set; }
         public string Instruction { get; set; }
         public int NoOfMonths { get; set; }
