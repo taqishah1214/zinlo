@@ -47,7 +47,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
-    editionIcons: string[] = ['./assets/media/ClosingCheckList/startup.svg','./assets/media/ClosingCheckList/premium.svg','./assets/media/ClosingCheckList/Business_info.ico'];
+    editionIcons: string[] = ['./assets/media/ClosingCheckList/startup.svg','./assets/media/ClosingCheckList/premium.svg','./assets/media/ClosingCheckList/Business_Info.ico'];
     constructor(
 
         injector: Injector,
@@ -70,7 +70,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         account.tenancyName=this.businessInfoForm.value.tenantName;
         if(this.businessInfoForm.value.tenantName!=""){
             this._tenantNameService.isTenantAvailable(account).subscribe(response => {
-            console.log(response.tenantId);
                 if(response.tenantId){
                     this.isTenantExist=true;
                 }
@@ -100,12 +99,12 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
             tenantName: new FormControl('',[Validators.required]),
             website:new FormControl(''),
             title: new FormControl('',[Validators.required]),
-            phone: new FormControl('',[Validators.pattern("^[0-9]+")]),
+            phone: new FormControl('',[Validators.pattern("^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$")]),
             addressLineOne: new FormControl('',[Validators.required]),
             addressLineTwo: new FormControl(''),
-            zipCode: new FormControl(''),
-            city: new FormControl('NewYark'),
-            state: new FormControl('NewYark'),
+            zipCode: new FormControl('',[Validators.required,Validators.pattern("^[0-9]{5}")]),
+            city: new FormControl('',[Validators.required]),
+            state: new FormControl('Alabama'),
         })
         this.paymentDetailsForm = new FormGroup({
             cardNumber: new FormControl('',[Validators.required]),
@@ -161,6 +160,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     get cardNumber() { return this.paymentDetailsForm.get('cardNumber'); }
     get expiryDate() { return this.paymentDetailsForm.get('expiryDate'); }
     get email() { return this.paymentDetailsForm.get('email'); }
+    get city() { return this.businessInfoForm.get('city'); }
     
     featureEnabledForEdition(feature: FlatFeatureSelectDto, edition: EditionWithFeaturesDto): boolean {
         const featureValues = _.filter(edition.featureValues, { name: feature.name });
@@ -219,12 +219,15 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 $(".previebtn").hide();
 
             }
-            
 
             if (this.current === 3) {
                 $(".nxtbtn").hide();
                 $(".submit").show();
-            } else {
+            } else if(this.current === 2){
+                $(".nxtbtn").hide();
+                $(".submit").hide();
+            }
+            else{
                 $(".nxtbtn").show();
                 $(".submit").hide();
             }
@@ -257,7 +260,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         return true;
     }
     businessInfoValidations(){
-        console.log("Moeen")
         if(this.businessInfoForm.value.businessName == "")
         {
             this.notify.error("Business Name is Required")
