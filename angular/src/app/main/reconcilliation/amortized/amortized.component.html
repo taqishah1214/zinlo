@@ -19,10 +19,10 @@
                                     <h3 class="mr-3 mb-0">
                                         <span>{{"Amortized List" | localize}}</span>
                                     </h3>
-                                    <h6 class="ml-3 mb-0">
-                                        {{"Account No" | localize}}
+                                    <h6 class="ml-3 mb-0 form-group">
+                                        <label>{{"Account No" | localize}}</label>
                                         <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountNo}}</span>
-                                        {{"Account Name" | localize}}
+                                        <label>{{"Account Name" | localize}}</label>
                                         <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountName}}</span>
                                     </h6>
 
@@ -158,7 +158,7 @@
                                                         </span> 
                                                     </div>        
                                             <div *ngIf="item.attachments?.length == 0" class="col-md-12">
-                                                <div  class="drag_drop_box">
+                                                <div  class="drag_drop_box form-group">
                                                      <div  class="attachments_section_none">
                                                         <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
                                                             <span>{{"No Attachments" | localize}}</span>
@@ -223,7 +223,7 @@
                                                                 </span> 
                                                             </div>        
                                                     <div *ngIf="item.attachments?.length == 0" class="col-md-12">
-                                                        <div  class="drag_drop_box">
+                                                        <div  class="drag_drop_box form-group">
                                                              <div  class="attachments_section_none">
                                                                 <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
                                                                     <span>{{"No Attachments" | localize}}</span>
@@ -404,7 +404,7 @@
                             </tabset>             
                         </div>
                         <div class="col-md-6">
-                            <div class="report-container">
+                            <div class="report-container form-group">
                                 <table>
                                     <thead>
                                         <tr>
@@ -416,19 +416,19 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="text-black big">{{"Total" | localize}}:</td>
+                                            <td class="text-black big"><label>{{"Total" | localize}}:</label></td>
                                             <td class="text-black big"> {{begininngAmount| formater }}</td>
                                             <td class="text-black big"> {{accuredAmount| formater }}</td>
                                             <td class="text-black big"> {{netAmount | formater}}</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-black big">{{"Trial Balance" | localize}}:</td>
+                                            <td class="text-black big"><label>{{"Trial Balance" | localize}}:</label></td>
                                             <td class="text-black big"  >{{trialBalanceBeginning | formater}}</td>
                                             <td class="text-black big"  >{{trialBalanceAccured | formater}}</td>
                                             <td class="text-black big"  >{{trialBalanceNet | formater}}</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-black big">{{"Variance" | localize}}:</td>
+                                            <td class="text-black big"><label>{{"Variance" | localize}}:</label></td>
                                             <td class="text-black big" > {{varianceBeginning | formater}}</td>
                                             <td class="text-black big" > {{varianceAccured | formater}}</td>
                                             <td class="text-black big" > {{varianceNet | formater}}</td>

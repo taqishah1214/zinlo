@@ -28,12 +28,12 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
-                                    {{"Category" | localize}} <span
+                                <div class="col-md-12 form-group">
+                                    <label>{{"Category" | localize}} </label><span
                                         class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.categoryName}}</span>
-                                    {{"ClosingMonth" | localize}} <span
+                                    <label>{{"ClosingMonth" | localize}}</label> <span
                                         class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.closingMonth | date:'MMMM, yyyy'}}</span>
-                                    {{"DueBy" | localize}} <span
+                                    <label>{{"DueBy" | localize}}</label> <span
                                         class="bg-lightgrey badge badge-secondary bagesTextColor">{{taskDetailObject.dueDate | date:'d MMMM, yyyy'}}</span>
                                 </div>
 
@@ -280,7 +280,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-12 form-group">
                                     <div [ngClass]="{'disabled':!monthStatus}" class="drag_drop_box">
                                         <label>{{"Attachments" | localize}}</label>
                                         <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">

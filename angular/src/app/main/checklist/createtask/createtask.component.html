@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-12 form-group">
                                     <label class="bg-color">{{"Instruction" | localize}}</label>
                                     <div class="form-group">
                                         <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
@@ -202,7 +202,7 @@
                                                 (onShown)="onOpenCalendar($event)">
                                         </form>
                                     </div> -->
-                                    <div class="kt-radio-list eom-radio">
+                                    <div class="kt-radio-list eom-radio form-group">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
                                             <input type="radio" [(checked)]="checklist.endOfMonth" name="endOfMonth"
@@ -212,8 +212,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="drag_drop_box">
-                                <label class="bg-color">{{"Attachments" | localize}}</label>
+                            <div class="drag_drop_box form-group">
+                                <label >{{"Attachments" | localize}}</label>
                                 <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
                             </div>
                         </div>

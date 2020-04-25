@@ -78,7 +78,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 form-group">
                                 <div class="attachment-box">
                                     <label>{{"Description" | localize}}</label>
                                     <p>{{amortizationDto.description}}</p>
@@ -223,7 +223,7 @@
                             </div>
 
                             <div [ngClass]="{'disabled':!monthStatus}" class="col-sm-6">
-                                <div class="drag_drop_box">
+                                <div class="drag_drop_box form-group">
                                     <label>{{"Attachments" | localize}}</label>
                                     <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
                                     </ng-uppy>

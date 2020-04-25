@@ -77,7 +77,7 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="row">
+                                                    <div class="row form-group">
                                                         <div [ngClass]="{'disabled':!updateLock}" class="col-md-6">
                                                             <label for="TaskName">{{"Amount" | localize}}</label>
                                                             <input type="text" name="amount" class="form-control"
@@ -101,7 +101,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="drag_drop_box">
+                                                    <div class="drag_drop_box form-group">
                                                         <label class="bg-color">{{"Attachments" | localize}}</label>
                                                         <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
                                                         <div *ngFor="let item of attachments" class="attachments_section">
