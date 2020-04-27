@@ -15,7 +15,7 @@
     cursor: pointer;
 }
 .custom-text-area{
-    height: 500px;
+    height: auto;
     border-radius: 4px;
     overflow: auto;
     margin-top: 5px;
