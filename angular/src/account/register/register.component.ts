@@ -107,8 +107,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
             state: new FormControl('Alabama'),
         })
         this.paymentDetailsForm = new FormGroup({
-            cardNumber: new FormControl('',[Validators.required]),
-            cvvCode: new FormControl('',[Validators.required]),
+            cardNumber: new FormControl('',[Validators.required,Validators.pattern("^[0-9]{4}[ -][0-9]{4}[ -][0-9]{4}[ -][0-9]{4}")]),
+            cvvCode: new FormControl('',[Validators.required,Validators.pattern("^[0-9]{3}")]),
             expiryDate:new FormControl('',[Validators.required]),
             email: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]),
             commitment: new FormControl(0,[Validators.required])
