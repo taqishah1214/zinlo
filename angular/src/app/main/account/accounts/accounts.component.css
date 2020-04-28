@@ -913,9 +913,9 @@ table.table.record-table td, table.table.record-table th {
 }
 
 .cell-none{
-    width: 20px;
+    width: 37px;
 }.delete-cell{
-    width:30px;
+    width:37px;
 }
 .assignee-cell .kt-user-card-v2__pic{
     display: flex;
