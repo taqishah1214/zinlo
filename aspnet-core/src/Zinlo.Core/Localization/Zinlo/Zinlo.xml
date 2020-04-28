@@ -4,6 +4,10 @@
 
     <text name="ItemizedRestoredSuccessfully">Itemized Item Restored Successfully!</text>
     <text name="AmortizedRestoredSuccessfully">Amortized Item Restored Successfully!</text>
+    <text name="ThisMonthIsNotActive">This month is not active.</text>
+    <text name="MonthOpenedMessage">MonthOpenedMessage.</text>
+    <text name="OpenMonthMessage">OpenMonthMessage.</text>
+    <text name="TaskReport">Task Report</text>
     
     <text name="AccountRestoredSuccessfully">Account Restored Successfully!</text>
     <text name="TaskRestoredSuccessfully">Task Restored Successfully!</text>
@@ -223,6 +227,7 @@
     <text name="ProfilePicture_Warn_FileType">You can only select JPG/JPEG file. Please select another file.</text>
     <text name="Dashboard">Dashboard</text>
     <text name="DashboardHeaderInfo">statistics and reports</text>
+    <text name="Reports">Reports</text>
     <text name="GoToApplication">Go to application</text>
     <text name="TenantInformations">Tenant information</text>
     <text name="PersonalInformations">Personal information</text>
