@@ -25,7 +25,7 @@ namespace Zinlo.ChartofAccounts
         public long AssigneeId { get; set; }
         public virtual User Assignee { get; set; }
         public long AccountSubTypeId { get; set; }
-        public Status Status { get; set; }
+        //public Status Status { get; set; }
         public virtual AccountSubType.AccountSubType AccountSubType { get; set; }
         public Reconciled Reconciled { get; set; }
         public bool IsChange { get; set; }
@@ -69,6 +69,9 @@ namespace Zinlo.ChartofAccounts
         public double Balance { get; set; }
         public double TrialBalance { get; set; }
         public DateTime Month { get; set; }
+        public bool CheckAsReconcilied { get; set; }
+        public Status Status { get; set; }
+
 
     }
 

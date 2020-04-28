@@ -32,13 +32,13 @@
                                 </div>
                                 <div class="kt-subheader__toolbar">
                                     <div class="kt-subheader__wrapper">
-                                        <button [ngClass]="{'disabled':!monthStatus}" class="btn btn-brand" (click)="RedirectToAddNew()"><i
-                                            class="fa fa-plus"></i>
-                                        {{"AddNew" | localize}}</button>
                                         <a class="mr-3" href="javascript: void(0);" (click)="BackToReconcileList()">
                                             <i class="la la-arrow-left"></i>
                                             {{"Back" | localize}}
                                         </a>
+                                        <button [ngClass]="{'disabled':!monthStatus}" class="btn btn-brand" (click)="RedirectToAddNew()"><i
+                                            class="fa fa-plus"></i>
+                                        {{"AddNew" | localize}}</button>                
                                     </div>
                                 </div>
                             </div>

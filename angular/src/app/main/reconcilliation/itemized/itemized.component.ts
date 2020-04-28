@@ -2,7 +2,7 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import * as _ from 'lodash';
-import {  ItemizationServiceProxy,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto ,AuditLogServiceProxy} from '@shared/service-proxies/service-proxies';
+import {  ItemizationServiceProxy,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto ,AuditLogServiceProxy, ChartsofAccountServiceProxy} from '@shared/service-proxies/service-proxies';
 import { UserInformation } from '../../CommonFunctions/UserInformation';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
@@ -66,11 +66,9 @@ export class ItemizedComponent extends AppComponentBase {
     private _router: Router,
     private userInfo: UserInformation,
     private _itemizedService:ItemizationServiceProxy,
-    private _timeManagementsServiceProxy :TimeManagementsServiceProxy,
     private _auditLogService : AuditLogServiceProxy,
     private storeData: StoreDateService,
-    
-
+    private _chartOfAccountService: ChartsofAccountServiceProxy
   ) {
     super(injector);
   }
@@ -103,7 +101,6 @@ export class ItemizedComponent extends AppComponentBase {
     }
 
   this.primengTableHelper.showLoadingIndicator();
-  debugger
   this._itemizedService.getAll(
     this.filterText,
     this.accountId,
@@ -138,30 +135,6 @@ export class ItemizedComponent extends AppComponentBase {
 filterByMonth(event): void {
   this.monthValue = new Date(add(event, 2, "day"));
   this.getAllItemizedList(this.primeNgEvent)
-  // this._timeManagementsServiceProxy.checkManagementExist(moment(this.monthFilter)).subscribe(result => { 
-  //   if (result)
-  //   {
-  //     this.AccountNumber = this.accountNo;
-  //     this.getAllItemizedList(this.primeNgEvent);
-  //   }
-  //   else
-  //   {
-  //     this.CreateTimeManagementDto.month =  moment(this.monthFilter)
-  //     this.CreateTimeManagementDto.status =  false
-  //     this.message.confirm(
-  //       'Are you want to define this month as closing month.',
-  //       this.l(' Selected Month Does not Exist'),
-  //       (isConfirmed) => {
-  //         if (isConfirmed) {
-  //           this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
-  //             this.AccountNumber = this.accountNo;
-  //             this.getAllItemizedList(this.primeNgEvent);
-  //            })      
-  //         }
-  //       }
-  //     );
-  //   }  
-  // })
 }
 getExtensionImagePath(str) {
 
@@ -221,10 +194,10 @@ BackToReconcileList() {
          "",
         (isConfirmed) => {
           if (isConfirmed) {
-            this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
-              this.notify.success(this.l('Variance is equal to 0, hence the account is reconciled.'));
-              this._router.navigate(['/app/main/reconcilliation']);
-             })      
+            
+            this.notify.success(this.l('Variance is equal to 0, hence the account is reconciled.'));
+            this._router.navigate(['/app/main/reconcilliation']);
+            
           }
         }
       );

@@ -191,7 +191,7 @@ namespace Zinlo.ChartsofAccount
                 result.TenantId = (int)tenantId;
                 result.AccountName = input.AccountName;
                 result.CreationTime = DateTime.Now.ToUniversalTime();
-                result.Status = (Status)2;
+               // result.Status = (Status)2;
                 result.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
                 result.CreatorUserId = UserId;
                 result.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);
@@ -207,7 +207,7 @@ namespace Zinlo.ChartsofAccount
                 account.AccountName = input.AccountName;
                 account.AccountNumber = input.AccountNumber;
                 account.CreationTime = DateTime.Now.ToUniversalTime();
-                account.Status = (Status)2;
+                //account.Status = (Status)2;
                 account.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
                 account.CreatorUserId = UserId;
                 account.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);

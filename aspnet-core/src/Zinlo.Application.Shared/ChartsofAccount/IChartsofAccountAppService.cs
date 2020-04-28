@@ -16,7 +16,7 @@ namespace Zinlo.ChartsofAccount
         Task<GetAccountForEditDto> GetAccountForEdit(long id);
         Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input);
         Task ChangeAccountsAssignee(long accountId, long assigneeId);
-        Task ChangeStatus(long accountId, long selectedStatusId);
+        Task ChangeStatus(long accountId, int selectedStatusId, DateTime SelectedMonth);
         Task AddandUpdateBalance(double balance, long id, DateTime month);
         Task<int> CheckReconcilled(long id);
         Task<FileDto> GetChartsofAccountToExcel(long id);
@@ -27,7 +27,7 @@ namespace Zinlo.ChartsofAccount
         //Task ShiftChartsOfAccountToSpecficMonth(DateTime closingMonth);
         bool CheckAccounts();
         Task RestoreAccount(long id);
-
+        Task CheckAsReconciliedMonthly(long id, DateTime month);
 
     }
 }
