@@ -18,6 +18,7 @@ using NUglify.Helpers;
 using Zinlo.TimeManagements;
 using Abp.Domain.Uow;
 using Abp.Runtime.Session;
+using Abp.UI;
 using Zinlo.InstructionVersions;
 using Zinlo.InstructionVersions.Dto;
 
@@ -33,7 +34,6 @@ namespace Zinlo.ClosingChecklist
         private readonly TimeManagementManager _managementManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IInstructionAppService _instructionVersionsAppService;
-        private readonly IAbpSession _session;
 
         public ClosingChecklistAppService(IProfileAppService profileAppService,
                                           ICommentAppService commentAppService,
@@ -42,7 +42,7 @@ namespace Zinlo.ClosingChecklist
                                           TimeManagementManager managementManager,
                                           IUnitOfWorkManager unitOfWorkManager,
                                           IInstructionAppService instructionVersionsAppService,
-                                          ClosingChecklistManager closingChecklistManager, IAbpSession session)
+                                          ClosingChecklistManager closingChecklistManager)
         {
             _commentAppService = commentAppService;
             _userRepository = userRepository;
@@ -52,7 +52,6 @@ namespace Zinlo.ClosingChecklist
             _unitOfWorkManager = unitOfWorkManager;
             _instructionVersionsAppService = instructionVersionsAppService;
             _closingChecklistManager = closingChecklistManager;
-            _session = session;
         }
         public async Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input)
         {
@@ -133,6 +132,7 @@ namespace Zinlo.ClosingChecklist
         {
             if (input.Id == 0)
             {
+                if (!await _managementManager.TaskCreationValidation(input.ClosingMonth)) throw new UserFriendlyException(L("ThisMonthIsNotActive"));
                 await TaskIteration(input, new DateTime(), true);
             }
             else
