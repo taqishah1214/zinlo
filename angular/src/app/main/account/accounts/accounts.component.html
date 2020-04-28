@@ -248,8 +248,7 @@
                                                 <input type="checkbox" [(checked)]="AllOrActive"  (change)="changeToggleValue()">
                                                 <span class="slider round"></span>
                                             </label> -->
-
-                                            <label class="switch"><input type="checkbox" id="togBtn" [(checked)]="AllOrActive"  (change)="changeToggleValue()" ><div class="slider round"><!--ADDED HTML --><span class="on">All</span><span class="off">Active</span><!--END--></div></label>
+                                            <!-- <label class="switch"><input type="checkbox" id="togBtn" [(checked)]="AllOrActive"  (change)="changeToggleValue()" ><div class="slider round"><span class="on">All</span><span class="off">Active</span></div></label> -->
                                     
                                     
                                     </div>
@@ -369,15 +368,13 @@
                                                     <i class="fas fa-list-ul"></i></div>
                                                 <div class="dropdown-menu">
                                                     <div  class="dropdown-item">
-                                                        Show Deleted <label class="kt-checkbox kt-checkbox--bold ml-5 kt-checkbox--brand">
-                                                            <input  type="checkbox">
+                                                        <label class="kt-checkbox kt-checkbox--bold mx-2 kt-checkbox--brand">
+                                                            <input  type="checkbox"  [(checked)]="AllOrActive"  (change)="changeToggleValue()">
                                                             <span></span>
                                                         </label>
+                                                        Show Deleted 
                                                     </div>
                                                 </div>
-                                            </th>
-                                            <th class="cell-none">
-                                                <!-- <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div> -->
                                             </th>
                                         </tr>
                                     </ng-template>
