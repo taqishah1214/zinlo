@@ -12,7 +12,7 @@ import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
 import { StoreDateService } from "../../../services/storedate.service";
 
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-itemized',
   templateUrl: './itemized.component.html',
@@ -75,6 +75,12 @@ export class ItemizedComponent extends AppComponentBase {
     super(injector);
   }
   ngOnInit() {
+    $(document).ready(function(){
+      // Show hide popover
+          $(".dropdown-menu").on('click', function (e) {
+    e.stopPropagation();
+    });
+    });
     this.userSignInName = this.appSession.user.name.toString().toUpperCase();
     this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.storeData.allAccountSubTypes.subscribe(accountSubypeList => this.accountSubypeList = accountSubypeList)

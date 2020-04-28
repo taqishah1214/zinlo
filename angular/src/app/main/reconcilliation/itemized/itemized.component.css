@@ -1088,7 +1088,22 @@
         width:310px;
         cursor: pointer;
     }
-    
+    .delete-cell{
+        width:30px;
+    }
+    .dropdown-toggle{
+        cursor: pointer !important;
+    }
+    .dropdown-toggle .dropdown-menu{
+
+        cursor: pointer;
+    }
+    .dropdown-menu :hover{
+        background-color: white !important;
+    }
+    .dropdown-menu :focus{
+        background-color: white !important;
+    }
     .cell-none{
         width: 20px;
     }
