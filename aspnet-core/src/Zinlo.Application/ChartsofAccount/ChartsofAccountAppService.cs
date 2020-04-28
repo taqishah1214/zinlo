@@ -145,11 +145,12 @@ namespace Zinlo.ChartsofAccount
                                        AccountSubType = o.AccountSubType != null ? o.AccountSubType.Title : "",
                                        ReconciliationTypeId = o.ReconciliationType != 0 ? (int)o.ReconciliationType : 0,
                                        AssigneeId = o.Assignee.Id,
-                                       StatusId = (int)o.Status,
+                                       StatusId = GetStatusofSelectedMonth(o.Id, input.SelectedMonth),
                                        Balance = GetTheAccountBalanceofSelectedMonth(o.Id, input.SelectedMonth),
                                        OverallMonthlyAssignee = getUserWithPictures,
                                        IsDeleted = o.IsDeleted,
                                        MonthStatus = MonthStatus,
+                                       AccountReconciliationCheck = CheckAccountReconciledofSelectedMonth(o.Id,input.SelectedMonth)
                                    };
 
                 return new PagedResultDto<ChartsofAccoutsForViewDto>(
@@ -161,6 +162,15 @@ namespace Zinlo.ChartsofAccount
 
         }
 
+        protected virtual bool CheckAccountReconciledofSelectedMonth(long accountId, DateTime SelectedMonth)
+        {
+            bool result = false;
+            var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
+            result = accountInformation != null ? accountInformation.CheckAsReconcilied : false;
+            return result;
+        }
+
+
         protected virtual double GetTheAccountBalanceofSelectedMonth (long accountId,DateTime SelectedMonth)
         {
             double result = 0;
@@ -168,6 +178,23 @@ namespace Zinlo.ChartsofAccount
             result = accountInformation != null ? accountInformation.Balance :  0;
             return result;
         }
+
+        protected virtual int GetStatusofSelectedMonth(long accountId, DateTime SelectedMonth)
+        {
+            int result = 0;
+            var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
+           
+            if (accountInformation != null)
+            {
+                result = accountInformation.Status != 0 ? (int)accountInformation.Status : (int)Status.Open;
+            }
+            else
+            {
+                result = (int)Status.Open;
+            }
+            return result;
+        }
+
 
         protected virtual async Task CreateManagment(CreateOrEditTimeManagementDto input)
         {
@@ -181,8 +208,7 @@ namespace Zinlo.ChartsofAccount
 
 
             await _timeManagementRepository.InsertAsync(timeManagement);
-/*            await ShiftChartsOfAccountToSpecficMonth(input.Month);
-*/        }
+        }
 
         protected virtual async Task<bool> GetMonthStatus(DateTime dateTime)
         {
@@ -244,7 +270,6 @@ namespace Zinlo.ChartsofAccount
         {
             var account = ObjectMapper.Map<ChartofAccounts.ChartofAccounts>(input);
             account.ChangeTime = null;
-            account.Status = (Status)2;
             if (AbpSession.TenantId != null)
             {
                 account.TenantId = (int)AbpSession.TenantId;
@@ -285,13 +310,21 @@ namespace Zinlo.ChartsofAccount
             }
         }
 
-        public async Task ChangeStatus(long accountId, long selectedStatusId)
+        public async Task ChangeStatus(long accountId, int selectedStatusId,DateTime SelectedMonth)
         {
-            var account = await _chartsofAccountRepository.FirstOrDefaultAsync(accountId);
+            var account = await _accountBalanceRepository.FirstOrDefaultAsync(p => p.AccountId ==accountId && SelectedMonth.Month == p.Month.Month && p.Month.Year == SelectedMonth.Year );
             if (account != null)
             {
                 account.Status = (Status)selectedStatusId;
-                _chartsofAccountRepository.Update(account);
+                _accountBalanceRepository.Update(account);
+            }
+            else
+            {
+                AccountBalance accountBalance = new AccountBalance();
+                accountBalance.Month = SelectedMonth;
+                accountBalance.AccountId = accountId;
+                accountBalance.Status = (Status)selectedStatusId;
+                await _accountBalanceRepository.InsertAsync(accountBalance);
             }
         }
 
@@ -313,6 +346,8 @@ namespace Zinlo.ChartsofAccount
               await _accountBalanceRepository.InsertAsync(accountBalance);
             }
         }
+
+
 
         public async Task<int> CheckReconcilled(long id)
         {
@@ -467,6 +502,30 @@ namespace Zinlo.ChartsofAccount
                 await _chartsofAccountRepository.UpdateAsync(account);
             }
                
+        }
+
+        public async Task CheckAsReconciliedMonthly(long id, DateTime month)
+        {
+            var account = await _accountBalanceRepository.FirstOrDefaultAsync(p => p.AccountId == id && month.Month == p.Month.Month && month.Year == p.Month.Year);
+            if (account != null)
+            {
+                account.Month = month;
+                account.CheckAsReconcilied = true;
+                account.Status = Status.Complete;
+                await _accountBalanceRepository.UpdateAsync(account);
+            }
+            else
+            {
+                AccountBalance accountBalance = new AccountBalance();
+                accountBalance.Month = month;
+                accountBalance.AccountId = id;
+                accountBalance.CheckAsReconcilied = true;
+                account.Status = Status.Complete;
+                await _accountBalanceRepository.InsertAsync(accountBalance);
+            }
+
+
+
         }
     }
 }

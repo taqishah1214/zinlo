@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterModule, Routes } from '@angular/router';
 import { AppUiCustomizationService } from '@shared/common/ui/app-ui-customization.service';
 
@@ -16,16 +16,18 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: []
 })
-export class RootRoutingModule {
+export class RootRoutingModule  {
     constructor(
         private router: Router,
-        private _uiCustomizationService: AppUiCustomizationService) {
+        private _uiCustomizationService: AppUiCustomizationService,
+        ) {
         router.events.subscribe((event: NavigationEnd) => {
             setTimeout(() => {
                 this.toggleBodyCssClass(event.url);
             }, 0);
         });
     }
+   
 
     toggleBodyCssClass(url: string): void {
         if (url) {

@@ -38,8 +38,7 @@
                                         </a>
                                         <button [ngClass]="{'disabled':!monthStatus}" class="btn btn-brand" (click)="RedirectToAddNew()"><i
                                             class="fa fa-plus"></i>
-                                        {{"AddNew" | localize}}</button>
-                                        
+                                        {{"AddNew" | localize}}</button>                                                        
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +85,19 @@
                                         <th class="accountSubtype-cell" scope="col">
                                             {{"Attachments" | localize}}
                                         </th>
-                                        
+                                        <th class="delete-cell">
+                                            <div class="dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" scope="col">
+                                                <i class="fas fa-list-ul"></i></div>
+                                            <div class="dropdown-menu">
+                                                <div  class="dropdown-item">
+                                                    Show Deleted <label class="kt-checkbox kt-checkbox--bold ml-5 kt-checkbox--brand">
+                                                        <input  type="checkbox">
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </th>
 
                                         <th class="cell-none">
                                             <!-- <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div> -->
@@ -154,6 +165,8 @@
                                         <!-- <span  class="attatchments-box ">+3</span> -->
 
                                     </td>
+                                    
+                                    <td class="delete-cell"></td>
                                     <td class="toggle-btn-cell">
                                         <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                     </td>

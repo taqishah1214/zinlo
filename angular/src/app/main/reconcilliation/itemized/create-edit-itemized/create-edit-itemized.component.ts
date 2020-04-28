@@ -42,7 +42,10 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     super(injector)
   }
 
-  ngOnInit() {   
+  ngOnInit() {  
+    if (history.state.navigationId == 1){
+      this._router.navigate(['/app/main/reconcilliation']);
+    }
     this.accountId = history.state.data.accountId
     this.userName = this.appSession.user.name.toString();
     this.commantBox = true;
