@@ -4,20 +4,14 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Localization;
 using Abp.Localization.Sources;
-using Abp.ObjectMapping;
-using Abp.Runtime.Session;
 using Abp.Threading;
 using Abp.UI;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Zinlo.AccountSubType;
-using Zinlo.Authorization.Roles;
 using Zinlo.Authorization.Users;
 using Zinlo.ChartofAccounts;
 using Zinlo.ChartsofAccount.Dtos;
@@ -43,8 +37,6 @@ namespace Zinlo.ChartsofAccount
         private readonly IAppNotifier _appNotifier;
         private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly ILocalizationSource _localizationSource;
-        private readonly IObjectMapper _objectMapper;
-        private readonly IHubContext<JobHub.JobHub> _hubcontext;
 
         public UserManager userManager { get; set; }
         public long TenantId = 0;
@@ -60,9 +52,7 @@ namespace Zinlo.ChartsofAccount
              IAppNotifier appNotifier,
             IBinaryObjectManager binaryObjectManager,
             ILocalizationManager localizationManager,
-            IObjectMapper objectMapper,
-            IImportPathsAppService importPathsAppService,
-            IHubContext<JobHub.JobHub> hubContext
+            IImportPathsAppService importPathsAppService
 
             )
         {
@@ -72,10 +62,8 @@ namespace Zinlo.ChartsofAccount
             _accountSubTypeAppService = accountSubTypeAppService;
             _appNotifier = appNotifier;
             _binaryObjectManager = binaryObjectManager;
-            _objectMapper = objectMapper;
             _localizationSource = localizationManager.GetSource(ZinloConsts.LocalizationSourceName);
             _importPathsAppService = importPathsAppService;
-            _hubcontext = hubContext;
         }
 
         [UnitOfWork]
@@ -191,7 +179,7 @@ namespace Zinlo.ChartsofAccount
                 result.TenantId = (int)tenantId;
                 result.AccountName = input.AccountName;
                 result.CreationTime = DateTime.Now.ToUniversalTime();
-                result.Status = (Status)2;
+               // result.Status = (Status)2;
                 result.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
                 result.CreatorUserId = UserId;
                 result.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);
@@ -207,7 +195,7 @@ namespace Zinlo.ChartsofAccount
                 account.AccountName = input.AccountName;
                 account.AccountNumber = input.AccountNumber;
                 account.CreationTime = DateTime.Now.ToUniversalTime();
-                account.Status = (Status)2;
+                //account.Status = (Status)2;
                 account.AssigneeId = await GetUserIdByEmail(input.AssignedUser);
                 account.CreatorUserId = UserId;
                 account.AccountType = (AccountType)GetAccountTypeValue(input.AccountType);

@@ -203,7 +203,7 @@
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-phone-volume"></i></span>
                                                   </div>
-                                                <input type="text" formControlName="phone" class="form-control" autocomplete="off" placeholder="Enter Phone Number" name="phoneNumberOfUser"maxlength="64">
+                                                <input type="text" formControlName="phone" class="form-control" autocomplete="off" placeholder="xxx-xxx-xxxxx" name="phoneNumberOfUser"maxlength="64">
                                             </div>
                                             <div *ngIf="phone.invalid && (phone.dirty || phone.touched)">
                                                 <div class="text-danger" *ngIf="phone.errors.pattern">
@@ -235,7 +235,7 @@
                                         <div class="col-xl-4">
                                             <div class="form-group">
                                                 <label>ZipCode</label>
-                                                <input type="text" formControlName="zipCode" class="form-control" autocomplete="off" name="zipCodeOfUser" placeholder="Enter ZipCode" value=""required maxlength="64">                                                
+                                                <input type="text" formControlName="zipCode" class="form-control" autocomplete="off" name="zipCodeOfUser" placeholder="xxxxx" value=""required maxlength="5">                                                
                                                 <div *ngIf="zipCode.invalid && (zipCode.dirty || zipCode.touched)">
                                                     <div class="text-danger" *ngIf="zipCode.errors.required">
                                                         ZipCode is required.
@@ -690,10 +690,13 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Card Number</label>
-                                            <input type="text" formControlName="cardNumber" class="form-control" name="cardNumberOfUser" placeholder="xxxx-xxxx-xxxxxx" value="" autocomplete="off" required maxlength="64">
+                                            <input type="text" formControlName="cardNumber" class="form-control" name="cardNumberOfUser" placeholder="xxxx-xxxx-xxxx-xxxx" value="" autocomplete="off" required maxlength="20">
                                             <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)">
                                                 <div class="text-danger" *ngIf="cardNumber.errors.required">
                                                     Card Number is required.
+                                                </div>
+                                                <div class="text-danger" *ngIf="cardNumber.errors.pattern">
+                                                    Incorrect format for Card Number.
                                                 </div>
                                             </div>
                                         </div>
@@ -701,10 +704,13 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>CVV Code</label>
-                                                    <input type="text" formControlName="cvvCode"  class="form-control" name="CVVCodeOfUser" placeholder="Enter CVV Code" value="" autocomplete="off" required maxlength="64">
+                                                    <input type="text" formControlName="cvvCode"  class="form-control" name="CVVCodeOfUser" placeholder="xxx" value="" autocomplete="off" required maxlength="3">
                                                     <div *ngIf="cvvCode.invalid && (cvvCode.dirty || cvvCode.touched)">
                                                         <div class="text-danger" *ngIf="cvvCode.errors.required">
                                                             CVV Code is required.
+                                                        </div>
+                                                        <div class="text-danger" *ngIf="cvvCode.errors.pattern">
+                                                            Incorrect format for CVV Code.
                                                         </div>
                                                     </div>
                                                 </div>
@@ -741,7 +747,7 @@
                                                     <label>Commitment</label>
                                                     <select name="Commitment" formControlName="commitment"class="form-control bg-white border">
                                                         <option value="0">Monthly Plan</option>
-                                                        <option value="1">Annully Plan</option>
+                                                        <option value="1">Annual Plan</option>
                                                     </select>
                                                 </div>
                                             </div>

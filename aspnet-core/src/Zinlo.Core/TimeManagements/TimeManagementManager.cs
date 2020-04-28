@@ -52,11 +52,14 @@ namespace Zinlo.TimeManagements
         }
         public virtual async Task<bool> CheckMonth(DateTime month)
         {
-            var geTimeManagement = await _timeManagementRepository.FirstOrDefaultAsync(p => p.Month.Month == month.Month && p.Month.Year == month.Year);
+            var geTimeManagement = await GetMonthByDate(month);
             return geTimeManagement != null;
         }
 
-
+        private async Task<TimeManagement> GetMonthByDate(DateTime dateTime)
+        {
+            return await _timeManagementRepository.FirstOrDefaultAsync(p => p.Month.Year == dateTime.Year && p.Month.Month == dateTime.Month);
+        }
         public virtual async Task CreateAsync(TimeManagement input)
         { 
             await _timeManagementRepository.InsertAsync(input);
@@ -77,8 +80,7 @@ namespace Zinlo.TimeManagements
         
         public async Task<bool> GetMonthStatus(DateTime dateTime)
         {
-            var management = await _timeManagementRepository.FirstOrDefaultAsync(p =>
-                p.Month.Month.Equals(dateTime.Month) && p.Month.Year.Equals(dateTime.Year));
+            var management = await GetMonthByDate(dateTime);
             if (management == null)
             {
                 if (dateTime.Year.Equals(DateTime.Now.Year) && dateTime.Month.Equals(DateTime.Now.Month))
@@ -103,10 +105,27 @@ namespace Zinlo.TimeManagements
 
         }
 
+        public async Task<bool> TaskCreationValidation(DateTime input)
+        {
+            var month = await GetMonthByDate(input);
+            if (month==null)
+            {
+                var timeManagement = new TimeManagement()
+                {
+                    Month = input,
+                    Status = false,
+                    IsClosed = false,
+                };
+                await CreateAsync(timeManagement);
+                return false;
+            }
+
+            return month.Status;
+        }
+
         public async Task<bool> CheckManagementExist(DateTime dateTime)
         {
-            var checkManagement = await _timeManagementRepository.FirstOrDefaultAsync(p =>
-                p.Month.Month == dateTime.Month && p.Month.Year == dateTime.Year);
+            var checkManagement = await GetMonthByDate(dateTime);
             var result = checkManagement != null ? true : false;
             return result;
         }
@@ -119,8 +138,7 @@ namespace Zinlo.TimeManagements
 
         public virtual async Task<bool> IsClosed(DateTime input)
         {
-            var month= await _timeManagementRepository.FirstOrDefaultAsync(p =>
-                p.Month.Year.Equals(input.Year) && p.Month.Month.Equals(input.Month));
+            var month= await GetMonthByDate(input);
             if (month == null)
             {
                 var timeManagement = new TimeManagement()
@@ -129,7 +147,7 @@ namespace Zinlo.TimeManagements
                     Status = false,
                     IsClosed = false,
                 };
-                await _timeManagementRepository.InsertAsync(timeManagement);
+                await CreateAsync(timeManagement);
                 return false;
             }
             return month.IsClosed;

@@ -37,7 +37,7 @@ export class TenantUserRegisterComponent extends AppComponentBase implements OnI
     password:new FormControl('',[Validators.required]),
     emailAddress: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]),
     title: new FormControl('',[Validators.required]),
-    phone: new FormControl(''),
+    phone: new FormControl('',[Validators.pattern("^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$")]),
     address: new FormControl('',[Validators.required]),
     city: new FormControl(''),
     state: new FormControl(''),
@@ -74,5 +74,6 @@ export class TenantUserRegisterComponent extends AppComponentBase implements OnI
   get title() { return this.personalInfoForm.get('title'); }
   get userName() { return this.personalInfoForm.get('userName'); }
   get password() { return this.personalInfoForm.get('password'); }
+  get phone() { return this.personalInfoForm.get('phone'); }
   
 }

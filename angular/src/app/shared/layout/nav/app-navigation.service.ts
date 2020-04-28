@@ -44,7 +44,10 @@ export class AppNavigationService {
 
             new AppMenuItem('Reconciliation', 'Pages.Reconciliation', './assets/media/ClosingCheckList/reconcilliation.svg', '/app/main/reconcilliation', [ 
             ]),
-
+            new AppMenuItem('Reports', 'Pages.ClosingChecklist', './assets/media/ClosingCheckList/reconcilliation.svg', '', [
+                new AppMenuItem('TaskReport', 'Pages.ClosingChecklist','./assets/media/ClosingCheckList/dot.png','/app/main/task-report'),
+                
+            ]),
            // new AppMenuItem('Tests', 'Pages.Tests', 'flaticon-more', '/app/main/tests/tests'),
              new AppMenuItem('Administration', '', './assets/media/ClosingCheckList/administration.svg', '', [
                 //new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),

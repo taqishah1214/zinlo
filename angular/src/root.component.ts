@@ -5,5 +5,4 @@ import { Component } from '@angular/core';
     template: `<router-outlet></router-outlet><ngx-spinner type="ball-clip-rotate" size="medium" color="#5ba7ea"></ngx-spinner>`
 })
 export class RootComponent {
-
 }

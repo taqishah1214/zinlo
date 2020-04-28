@@ -202,7 +202,7 @@
                                         <td [ngClass]="{'disabled':!monthStatus}" class="action-cell">
                                             <form class="task-report-form">
                                                 <select [disabled]="item.lock" onclick="console.log('test')"
-                                                    (change)="ChangeStatus($event.target.value,item.id)"
+                                                    (change)="ChangeStatus($event.target.value,item.id,item.accountReconciliationCheck)"
                                                     class="form-control border-0 {{item.statusBoxColor}} text-white">
                                                     <option value="" selected disabled hidden>
                                                         {{item.statusName}}</option>

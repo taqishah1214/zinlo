@@ -5,19 +5,16 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
-import { UserListComponentComponent } from './user-list-component/user-list-component.component';
 import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
-import { StoreDateService } from "../../services/storedate.service";
-import * as $ from 'jquery';
+import { StoreDateService } from "../../../services/storedate.service";
 
 @Component({
-  selector: 'app-tasks',
-  templateUrl: './checklist.component.html',
-  styleUrls: ['./checklist.component.css']
+  selector: 'app-task-report',
+  templateUrl: './task-report.component.html',
+  styleUrls: ['./task-report.component.css']
 })
-export class Checklist extends AppComponentBase implements OnInit {
-  @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
+export class TaskReportComponent extends AppComponentBase implements OnInit {
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   filterStatus: number = 0;
@@ -66,16 +63,6 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.FilterBoxOpen = false;
   }
   ngOnInit() {
-    // VERSION WITH BOOTSTRAP 4 : https://codepen.io/seltix/pen/XRPrwM
-
-    $(document).ready(function(){
-      // Show hide popover
-          $(".dropdown-menu").on('click', function (e) {
-    e.stopPropagation();
-    });
-  });
-
-
     this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     console.log("selected date",this.selectedDate);
     this.initializePageParameters();

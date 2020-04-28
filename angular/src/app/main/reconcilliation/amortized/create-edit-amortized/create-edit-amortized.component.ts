@@ -48,6 +48,9 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   }
 
   ngOnInit() {   
+    if (history.state.navigationId == 1){
+      this._router.navigate(['/app/main/reconcilliation']);
+    }
     this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
     this.userName = this.appSession.user.name.toString();

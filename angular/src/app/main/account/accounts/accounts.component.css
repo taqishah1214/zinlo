@@ -77,6 +77,19 @@ span{
     width: 100%;
     margin: 0 auto; 
 }
+.dropdown-toggle{
+    cursor: pointer !important;
+}
+.dropdown-toggle .dropdown-menu{
+    width: 50px;
+    cursor: pointer;
+}
+.dropdown-menu :hover{
+    background-color: white !important;
+}
+.dropdown-menu :focus{
+    background-color: white !important;
+}
 .record-card-header-top {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -900,7 +913,9 @@ table.table.record-table td, table.table.record-table th {
 }
 
 .cell-none{
-    width: 20px;
+    width: 37px;
+}.delete-cell{
+    width:37px;
 }
 .assignee-cell .kt-user-card-v2__pic{
     display: flex;

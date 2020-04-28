@@ -278,7 +278,8 @@ form.search-form .form-group{
 }
 form.search-form .form-group::after{
     content: "";
-    background:center center/cover url(./../../../assets/img/search.png); 
+    background:center center/cover url(./../../../../assets/img/search.png); 
+
   width: 16px;
   height: 16px;
   position: absolute;
@@ -496,19 +497,6 @@ form.task-report-form select {
     left: 0;
     top: 0;
 }
-.dropdown-toggle{
-    cursor: pointer !important;
-}
-.dropdown-toggle .dropdown-menu{
-    width: 50px;
-    cursor: pointer;
-}
-.dropdown-menu :hover{
-    background-color: white !important;
-}
-.dropdown-menu :focus{
-    background-color: white !important;
-}
 span.assignee-image {
     width: 40px;
     height: 40px;
@@ -666,9 +654,6 @@ table.table.record-table td, table.table.record-table th {
     .record-table th, .record-table td{
         padding: 10px;
     }
-    .delete-cell{
-        width:30px;
-    }
 }
 
 @media only screen and (max-width:1470px){
@@ -684,9 +669,6 @@ table.table.record-table td, table.table.record-table th {
     }
     .assignee-cell{
         width: 200px;
-    }
-    .delete-cell{
-        width:30px;
     }
 }
 @media only screen and (max-width:1366px){
@@ -709,9 +691,7 @@ table.table.record-table td, table.table.record-table th {
         cursor: pointer;
         width: 120px;
     }
-    .delete-cell{
-        width:30px;
-    }
+    
     .toggle-btn-cell .taggle-btn{
         display: block;
     }
@@ -748,9 +728,6 @@ table.table.record-table td, table.table.record-table th {
     }
     .status-cell-item{
         display: flex;
-    }
-    .delete-cell{
-        width:30px;
     }
 }
 
@@ -842,7 +819,7 @@ table.table.record-table td, table.table.record-table th {
 
 
 .cell-none{
-    width: 37px;
+    width: 20px;
 }
 
  /* The switch - the box around the slider */

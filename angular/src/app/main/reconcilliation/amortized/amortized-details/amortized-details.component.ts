@@ -59,6 +59,9 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   }
 
   ngOnInit() {
+    if (history.state.navigationId == 1){
+      this._router.navigate(['/app/main/reconcilliation']);
+    }
     this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList);
     this.userSignInName = this.appSession.user.name.toString().toUpperCase();
     this.accountId = history.state.data.accountId

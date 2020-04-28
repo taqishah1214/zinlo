@@ -163,12 +163,29 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     });
   }
 
-  ChangeStatus( selectedStatusId, accountId) {
-    this._chartOfAccountService.changeStatus(accountId,selectedStatusId).subscribe(result => {
-      this.ResetGrid();
-      this.notify.success(this.l('Status Successfully Updated.'));
+  ChangeStatus( selectedStatusId, accountId,accountReconciliationCheck) {
 
-    })
+    if (selectedStatusId == 3)
+    {
+      if (accountReconciliationCheck) {
+        this._chartOfAccountService.changeStatus(accountId,selectedStatusId, moment(this.selectedDate)).subscribe(result => {
+          this.notify.success(this.l('Status Successfully Updated.'));
+    
+        })
+      }
+      else {
+        this.notify.error(this.l('Variance is not equal to 0. You cannot change the status to complete'));
+      }
+    }
+    else{
+      this._chartOfAccountService.changeStatus(accountId,selectedStatusId, moment(this.selectedDate)).subscribe(result => {     
+        this.notify.success(this.l('Status Successfully Updated.'));
+  
+      })
+    }
+
+    this.ResetGrid();
+    
   }
   getUserIndex(id) {
     return this.users.findIndex(x => x.id === id);

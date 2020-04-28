@@ -37,19 +37,6 @@
                             </div>
                             <div class="record-card-header-bottom-inner2">
                                 <div class="upper-content">
-                                    
-                                    <div>
-                                       
-                                            
-                                        <!-- <label class="switch">
-                                            <input type="checkbox" [(checked)]="AllOrActive"  (change)="changeToggleValue()">
-                                            <span class="slider round"></span>
-                                        </label> -->
-
-                                        <!-- <label class="switch"><input type="checkbox" id="togBtn" [(checked)]="AllOrActive"  (change)="changeToggleValue()" ><div class="slider round"><span class="on">All</span><span class="off">Active</span></div></label>
-                                   -->
-                                   
-                                    </div>
                                     <div class="users-box-parent">
                                         <div class="users-box">
                                             <div *ngIf="plusUserBadgeForHeader"
@@ -113,17 +100,6 @@
                                 <div *ngIf="FilterBoxOpen" class="lower-content">
                                     <form>
                                         <div class="form-group">
-                                            <select class="form-control border-grey" [(ngModel)]="filterStatus"
-                                                (change)="filterByStatus($event)" id="exampleFormControlSelect1"
-                                                name="filterStatus">
-                                                <option value="0">{{"AllStatuses" | localize}}</option>
-                                                <option value="1">{{"NotStarted" | localize}}</option>
-                                                <option value="2">{{"InProcess" | localize}}</option>
-                                                <option value="3">{{"OnHold" | localize}}</option>
-                                                <option value="4">{{"Completed" | localize}}</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
                                             <select class="form-control border-grey" name="categoryFilter"
                                                 [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
                                                 id="exampleFormControlSelect2">
@@ -181,18 +157,6 @@
                                                 <p-sortIcon field="AssigneeId"></p-sortIcon>
                                             </th>
                                             <th class="cell-none">
-                                                <div class="dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" scope="col">
-                                                    <i class="fas fa-list-ul"></i></div>
-                                                <div class="dropdown-menu" style="width:auto !important">
-                                                    <div  class="dropdown-item">
-                                                        <label class="kt-checkbox kt-checkbox--bold mx-2 kt-checkbox--brand">
-                                                            <input  type="checkbox" [(checked)]="AllOrActive" (change)="changeToggleValue()">
-                                                            <span></span> 
-                                                        </label>
-                                                        Show Deleted 
-                                                    </div>
-                                                </div>
                                             </th>
                                         </tr>
                                     </ng-template>
@@ -220,7 +184,7 @@
                                         <td class="cat-cell" style="cursor: pointer;" (click)="redirectToDetail(j.id)">
                                             <span class="category-name bg-lightgrey">{{j.category}}</span>
                                         </td>
-                                        <td [ngClass]="{'disabled':!monthStatus}" class="status-cell">
+                                        <td  class="status-cell">
                                             <form class="task-report-form">
                                                 <select [disabled]="!monthStatus" onclick="console.log('test')"
                                                     (change)="ChangeStatus($event.target.value,j.id)"
@@ -234,9 +198,8 @@
                                                 </select>
                                             </form>
                                         </td>
-                                        <td [ngClass]="{'disabled':!monthStatus}" class="assignee-cell">
-                                            <div *ngIf="j.id != rowid" class="kt-user-card-v2"
-                                                (click)="monthStatus && openFieldUpdateAssignee(j.id)">
+                                        <td class="assignee-cell">
+                                            <div *ngIf="j.id != rowid" class="kt-user-card-v2">
                                                 <div class="kt-user-card-v2__pic">
                                                     <div *ngIf="j.profilePicture" class="kt-badge kt-badge--xl">
                                                         <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
@@ -252,17 +215,10 @@
                                                         class="kt-user-card-v2__name">
                                                         {{j.assigniName}}</span> </div>
                                             </div>
-                                            <div *ngIf="j.id == rowid">
-                                                <app-user-list-component (callBack)="getClosingCheckListAllTasks()"
-                                                    taskId={{j.id}} comingChangeReguest="ClosingCheckList"
-                                                    userId={{j.assigneeId}}></app-user-list-component>
-                                            </div>
                                         </td>
-                                        
                                         <td class="toggle-btn-cell">
                                             <div (click)="collapsibleRowClick(j.id)" class="taggle-btn"></div>
                                         </td>
-                                        
                                     </tr>
                                     <!-- show-collapsible-row -->
                                     <tr *ngFor="let j of i.group ; let value = index" class="table-row-collapsible ">
@@ -297,18 +253,7 @@
                                                 <li class="status-cell-item">
                                                     <div class="thead-box"><b>{{"Status" | localize}} : </b></div>
                                                     <div class="tdata-box">
-                                                        <form class="task-report-form">
-                                                            <select onclick="console.log('test')"
-                                                                (change)="ChangeStatus($event.target.value,j.id)"
-                                                                class="form-control border-0 {{j.StatusColor}} text-white">
-                                                                <option value="" selected disabled hidden>
-                                                                    {{j.status}}</option>
-                                                                    <option value="1">{{"NotStarted" | localize}}</option>
-                                                                    <option value="2">{{"InProcess" | localize}}</option>
-                                                                    <option value="3">{{"OnHold" | localize}}</option>
-                                                                    <option value="4">{{"Completed" | localize}}</option>
-                                                                </select>
-                                                        </form>
+                                                        <span *ngIf= "j.status == 1" class="border-0 bg-gray text-white statusWidth1">{{i.status}}</span>
                                                     </div>
                                                 </li>
                                                 <li class="category-cell-item">
@@ -327,7 +272,6 @@
                                 {{'NoData' | localize}}
                             </div>
                         </div>
-                        
                         <div class="pagination-block">
                             <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
                                 (onPageChange)="getClosingCheckListAllTasks($event)"
