@@ -33,4 +33,12 @@ export class CustomizedPlanRequestComponent extends AppComponentBase implements 
         });
         }
     }
+    approveRequest()
+    {
+       
+       this._contectusService.approveRequest(this.contactus).subscribe ((result) => {
+        this._router.navigate(['app/admin/custom-tenants']);
+        
+    });
+    }
 }
