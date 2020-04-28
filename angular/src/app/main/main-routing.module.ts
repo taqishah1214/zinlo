@@ -18,7 +18,7 @@ import { ItemizedComponent } from './reconcilliation/itemized/itemized.component
 import { AmortizedComponent } from './reconcilliation/amortized/amortized.component';
 import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-details/itemized-details.component';
 import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component';
-import { TaskReportComponent } from './task-report/task-report.component';
+import { TaskReportComponent } from './reports/task-report/task-report.component';
 
 
 @NgModule({

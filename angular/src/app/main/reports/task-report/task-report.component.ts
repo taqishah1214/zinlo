@@ -7,7 +7,7 @@ import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
-import { StoreDateService } from "../../services/storedate.service";
+import { StoreDateService } from "../../../services/storedate.service";
 
 @Component({
   selector: 'app-task-report',
