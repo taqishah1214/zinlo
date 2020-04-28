@@ -130,6 +130,8 @@ export class Checklist extends AppComponentBase implements OnInit {
       moment(this.dateFilter),
       this.getTaskWithAssigneeId,
       this.AllOrActive,
+      undefined,
+      undefined,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)

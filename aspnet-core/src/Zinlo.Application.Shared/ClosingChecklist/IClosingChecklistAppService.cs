@@ -10,7 +10,7 @@ namespace Zinlo.ClosingChecklist
 {
     public interface IClosingChecklistAppService : IApplicationService
     {
-
+        Task<PagedResultDto<TasksGroup>> GetReport(GetAllClosingCheckListInput input);  
         Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input);
         Task CreateOrEdit(CreateOrEditClosingChecklistDto input);
         Task<DetailsClosingCheckListDto> GetDetails(long id);

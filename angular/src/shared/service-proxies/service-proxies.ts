@@ -4361,12 +4361,125 @@ export class ClosingChecklistServiceProxy {
      * @param dateFilter (optional) 
      * @param assigneeId (optional) 
      * @param allOrActive (optional) 
+     * @param startDate (optional) 
+     * @param endDate (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
+    getReport(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, startDate: moment.Moment | undefined, endDate: moment.Moment | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetReport?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (titleFilter === null)
+            throw new Error("The parameter 'titleFilter' cannot be null.");
+        else if (titleFilter !== undefined)
+            url_ += "TitleFilter=" + encodeURIComponent("" + titleFilter) + "&"; 
+        if (categoryFilter === null)
+            throw new Error("The parameter 'categoryFilter' cannot be null.");
+        else if (categoryFilter !== undefined)
+            url_ += "CategoryFilter=" + encodeURIComponent("" + categoryFilter) + "&"; 
+        if (statusFilter === null)
+            throw new Error("The parameter 'statusFilter' cannot be null.");
+        else if (statusFilter !== undefined)
+            url_ += "StatusFilter=" + encodeURIComponent("" + statusFilter) + "&"; 
+        if (dateFilter === null)
+            throw new Error("The parameter 'dateFilter' cannot be null.");
+        else if (dateFilter !== undefined)
+            url_ += "DateFilter=" + encodeURIComponent(dateFilter ? "" + dateFilter.toJSON() : "") + "&"; 
+        if (assigneeId === null)
+            throw new Error("The parameter 'assigneeId' cannot be null.");
+        else if (assigneeId !== undefined)
+            url_ += "AssigneeId=" + encodeURIComponent("" + assigneeId) + "&"; 
+        if (allOrActive === null)
+            throw new Error("The parameter 'allOrActive' cannot be null.");
+        else if (allOrActive !== undefined)
+            url_ += "AllOrActive=" + encodeURIComponent("" + allOrActive) + "&"; 
+        if (startDate === null)
+            throw new Error("The parameter 'startDate' cannot be null.");
+        else if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent(startDate ? "" + startDate.toJSON() : "") + "&"; 
+        if (endDate === null)
+            throw new Error("The parameter 'endDate' cannot be null.");
+        else if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent(endDate ? "" + endDate.toJSON() : "") + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetReport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetReport(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfTasksGroup>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfTasksGroup>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetReport(response: HttpResponseBase): Observable<PagedResultDtoOfTasksGroup> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfTasksGroup.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfTasksGroup>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param titleFilter (optional) 
+     * @param categoryFilter (optional) 
+     * @param statusFilter (optional) 
+     * @param dateFilter (optional) 
+     * @param assigneeId (optional) 
+     * @param allOrActive (optional) 
+     * @param startDate (optional) 
+     * @param endDate (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, startDate: moment.Moment | undefined, endDate: moment.Moment | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -4396,6 +4509,14 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'allOrActive' cannot be null.");
         else if (allOrActive !== undefined)
             url_ += "AllOrActive=" + encodeURIComponent("" + allOrActive) + "&"; 
+        if (startDate === null)
+            throw new Error("The parameter 'startDate' cannot be null.");
+        else if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent(startDate ? "" + startDate.toJSON() : "") + "&"; 
+        if (endDate === null)
+            throw new Error("The parameter 'endDate' cannot be null.");
+        else if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent(endDate ? "" + endDate.toJSON() : "") + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -20164,6 +20285,7 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
     assigneeId!: number;
     closingMonth!: moment.Moment;
     versionId!: number | undefined;
+    tenantId!: number;
     status!: StatusDto;
     instruction!: string | undefined;
     noOfMonths!: number;
@@ -20193,6 +20315,7 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
             this.assigneeId = data["assigneeId"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.versionId = data["versionId"];
+            this.tenantId = data["tenantId"];
             this.status = data["status"];
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
@@ -20226,6 +20349,7 @@ export class CreateOrEditClosingChecklistDto implements ICreateOrEditClosingChec
         data["assigneeId"] = this.assigneeId;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["versionId"] = this.versionId;
+        data["tenantId"] = this.tenantId;
         data["status"] = this.status;
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
@@ -20252,6 +20376,7 @@ export interface ICreateOrEditClosingChecklistDto {
     assigneeId: number;
     closingMonth: moment.Moment;
     versionId: number | undefined;
+    tenantId: number;
     status: StatusDto;
     instruction: string | undefined;
     noOfMonths: number;
@@ -20422,6 +20547,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
     assigneeId!: number;
     closingMonth!: moment.Moment;
     versionId!: number | undefined;
+    tenantId!: number;
     status!: StatusDto;
     instruction!: string | undefined;
     noOfMonths!: number;
@@ -20468,6 +20594,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
             this.assigneeId = data["assigneeId"];
             this.closingMonth = data["closingMonth"] ? moment(data["closingMonth"].toString()) : <any>undefined;
             this.versionId = data["versionId"];
+            this.tenantId = data["tenantId"];
             this.status = data["status"];
             this.instruction = data["instruction"];
             this.noOfMonths = data["noOfMonths"];
@@ -20518,6 +20645,7 @@ export class DetailsClosingCheckListDto implements IDetailsClosingCheckListDto {
         data["assigneeId"] = this.assigneeId;
         data["closingMonth"] = this.closingMonth ? this.closingMonth.toISOString() : <any>undefined;
         data["versionId"] = this.versionId;
+        data["tenantId"] = this.tenantId;
         data["status"] = this.status;
         data["instruction"] = this.instruction;
         data["noOfMonths"] = this.noOfMonths;
@@ -20553,6 +20681,7 @@ export interface IDetailsClosingCheckListDto {
     assigneeId: number;
     closingMonth: moment.Moment;
     versionId: number | undefined;
+    tenantId: number;
     status: StatusDto;
     instruction: string | undefined;
     noOfMonths: number;
