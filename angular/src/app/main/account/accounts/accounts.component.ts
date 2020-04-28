@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
 import { SignalRService } from '@app/services/signalRService';
 import { StoreDateService } from "../../../services/storedate.service";
 import * as moment from 'moment';
-
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-accounts',
@@ -97,6 +97,12 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     }
  }
   ngOnInit() {
+    $(document).ready(function(){
+        // Show hide popover
+            $(".dropdown-menu").on('click', function (e) {
+      e.stopPropagation();
+      });
+    });
     this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;

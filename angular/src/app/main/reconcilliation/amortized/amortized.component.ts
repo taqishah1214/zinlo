@@ -11,8 +11,7 @@ import { AppConsts } from '@shared/AppConsts';
 import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
 import { StoreDateService } from "../../../services/storedate.service";
-
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-amortized',
   templateUrl: './amortized.component.html',
@@ -79,6 +78,12 @@ export class AmortizedComponent extends AppComponentBase {
     super(injector);
   }
   ngOnInit() {
+      $(document).ready(function(){
+        // Show hide popover
+            $(".dropdown-menu").on('click', function (e) {
+      e.stopPropagation();
+      });
+    });
     this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.storeData.allAccountSubTypes.subscribe(accountSubypeList => this.accountSubypeList = accountSubypeList)
     this.accountId = history.state.data.accountId

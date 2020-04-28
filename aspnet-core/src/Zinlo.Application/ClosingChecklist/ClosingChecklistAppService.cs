@@ -6,20 +6,18 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
-using Zinlo.Tasks.Dtos;
 using Zinlo.Comment;
 using Zinlo.Comment.Dtos;
 using Zinlo.ClosingChecklist.Dtos;
 using System.Collections.Generic;
-using Abp.UI;
 using Zinlo.Authorization.Users;
 using Zinlo.Attachments;
 using Zinlo.Attachments.Dtos;
 using Zinlo.Authorization.Users.Profile;
 using NUglify.Helpers;
 using Zinlo.TimeManagements;
-using Zinlo.TimeManagements.Dto;
 using Abp.Domain.Uow;
+using Abp.Runtime.Session;
 using Zinlo.InstructionVersions;
 using Zinlo.InstructionVersions.Dto;
 
@@ -35,6 +33,7 @@ namespace Zinlo.ClosingChecklist
         private readonly TimeManagementManager _managementManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IInstructionAppService _instructionVersionsAppService;
+        private readonly IAbpSession _session;
 
         public ClosingChecklistAppService(IProfileAppService profileAppService,
                                           ICommentAppService commentAppService,
@@ -43,7 +42,7 @@ namespace Zinlo.ClosingChecklist
                                           TimeManagementManager managementManager,
                                           IUnitOfWorkManager unitOfWorkManager,
                                           IInstructionAppService instructionVersionsAppService,
-                                          ClosingChecklistManager closingChecklistManager)
+                                          ClosingChecklistManager closingChecklistManager, IAbpSession session)
         {
             _commentAppService = commentAppService;
             _userRepository = userRepository;
@@ -53,6 +52,7 @@ namespace Zinlo.ClosingChecklist
             _unitOfWorkManager = unitOfWorkManager;
             _instructionVersionsAppService = instructionVersionsAppService;
             _closingChecklistManager = closingChecklistManager;
+            _session = session;
         }
         public async Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input)
         {
@@ -348,9 +348,9 @@ namespace Zinlo.ClosingChecklist
             return await _managementManager.GetMonthStatus(dateTime);
         }
 
-        private async Task<bool> CheckTaskExist(DateTime closingMonth, Guid groupId)
+        private  bool CheckTaskExist(DateTime closingMonth, Guid? groupId)
         {
-            return await _closingChecklistManager.CheckTaskExist(closingMonth, groupId);
+            return  _closingChecklistManager.CheckTaskExist(closingMonth, groupId);
         }
         public async Task RestoreTask(long id)
         {
@@ -389,7 +389,8 @@ namespace Zinlo.ClosingChecklist
                     {
                         input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
 
-                        if (input.Id == 0 || !await CheckTaskExist(input.ClosingMonth, (Guid)oldGroupId))
+                        var taskExist = CheckTaskExist(input.ClosingMonth, oldGroupId);
+                        if (!taskExist )
                         {
                             if (forEdit) input.Id = 0;
                             await Create(input);
@@ -408,8 +409,8 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-
-                            if (input.Id == 0 || !await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId))
+                            var taskExist  = CheckTaskExist(input.ClosingMonth, oldGroupId);
+                            if (!taskExist)
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);
@@ -433,7 +434,8 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            if (input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
+                            var taskExist = CheckTaskExist(input.ClosingMonth, oldGroupId);
+                            if (!taskExist)
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);
@@ -456,7 +458,8 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            if (input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
+                            var taskExist = CheckTaskExist(input.ClosingMonth, oldGroupId);
+                            if (!taskExist)
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);
@@ -479,7 +482,8 @@ namespace Zinlo.ClosingChecklist
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
                                 input.DueOn, input.EndOfMonth);
-                            if (input.Id == 0 || (!await CheckTaskExist(input.ClosingMonth, (Guid)input.GroupId)))
+                            var taskExist = CheckTaskExist(input.ClosingMonth, oldGroupId);
+                            if (input.Id == 0 || !taskExist)
                             {
                                 if (forEdit) input.Id = 0;
                                 await Create(input);

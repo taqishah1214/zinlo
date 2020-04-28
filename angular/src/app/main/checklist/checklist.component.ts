@@ -9,6 +9,7 @@ import { UserListComponentComponent } from './user-list-component/user-list-comp
 import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
 import { StoreDateService } from "../../services/storedate.service";
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-tasks',
@@ -65,6 +66,16 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.FilterBoxOpen = false;
   }
   ngOnInit() {
+    // VERSION WITH BOOTSTRAP 4 : https://codepen.io/seltix/pen/XRPrwM
+
+    $(document).ready(function(){
+      // Show hide popover
+          $(".dropdown-menu").on('click', function (e) {
+    e.stopPropagation();
+    });
+  });
+
+
     this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     console.log("selected date",this.selectedDate);
     this.initializePageParameters();

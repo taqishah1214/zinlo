@@ -821,6 +821,18 @@
         transform: translateY(-50%);
     
     }
+    .dropdown-toggle{
+        cursor: pointer !important;
+    }
+    .dropdown-toggle .dropdown-menu{
+        cursor: pointer;
+    }
+    .dropdown-menu :hover{
+        background-color: white !important;
+    }
+    .dropdown-menu :focus{
+        background-color: white !important;
+    }
     .category-selector .dropdown-menu{
         width: 170px;
     }
@@ -1092,7 +1104,9 @@
         width:310px;
         cursor: pointer;
     }
-    
+    .delete-cell{
+        width:30px;
+    }
     .cell-none{
         width: 20px;
     }
