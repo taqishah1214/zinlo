@@ -424,25 +424,25 @@
                                         <tr>
                                             <th></th>
                                             <th class="text-navyblue big">{{"Beginning Amount" | localize}}</th>
-                                            <th class="text-navyblue big">{{"Accrued Amortization" | localize}}</th>
+                                            <th class="text-navyblue big">{{"Accrued Amount" | localize}}</th>
                                             <th class="text-navyblue big">{{"Net Amount" | localize}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="text-black big"><label>{{"Total" | localize}}:</label></td>
+                                            <td class="text-navyblue big"><label><b>{{"Total" | localize}}:</b></label></td>
                                             <td class="text-black big"> {{begininngAmount| formater }}</td>
                                             <td class="text-black big"> {{accuredAmount| formater }}</td>
                                             <td class="text-black big"> {{netAmount | formater}}</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-black big"><label>{{"Trial Balance" | localize}}:</label></td>
+                                            <td class="text-navyblue big"><label><b>{{"Trial Balance" | localize}}:</b></label></td>
                                             <td class="text-black big"  >{{trialBalanceBeginning | formater}}</td>
                                             <td class="text-black big"  >{{trialBalanceAccured | formater}}</td>
                                             <td class="text-black big"  >{{trialBalanceNet | formater}}</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-black big"><label>{{"Variance" | localize}}:</label></td>
+                                            <td class="text-navyblue big"><label><b>{{"Variance" | localize}}:</b></label></td>
                                             <td class="text-black big" > {{varianceBeginning | formater}}</td>
                                             <td class="text-black big" > {{varianceAccured | formater}}</td>
                                             <td class="text-black big" > {{varianceNet | formater}}</td>
