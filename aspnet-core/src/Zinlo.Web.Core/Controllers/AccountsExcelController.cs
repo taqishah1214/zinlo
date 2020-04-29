@@ -84,7 +84,8 @@ namespace Zinlo.Web.Controllers
                     TenantId = tenantId,
                     BinaryObjectId = fileObject.Id,
                     User = AbpSession.ToUserIdentifier(),
-                    selectedMonth = selectedMonth
+                    selectedMonth = selectedMonth,
+                    url = url
                  });
 
                 return Json(new AjaxResponse(new { }));

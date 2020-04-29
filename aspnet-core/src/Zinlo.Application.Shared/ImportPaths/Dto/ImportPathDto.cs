@@ -14,5 +14,6 @@ namespace Zinlo.ImportPaths.Dto
         public int TenantId { get; set; }
         public long CreatorId { get; set; }
         public string SuccessFilePath { get; set; }
+        public string  UploadedFilePath { get; set; }
     }
 }

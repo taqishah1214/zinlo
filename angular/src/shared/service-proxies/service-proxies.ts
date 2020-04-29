@@ -15678,11 +15678,82 @@ export class TrialBalanceReportingServiceProxy {
     }
 
     /**
+     * @param filter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfImportLogForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/TrialBalanceReporting/GetAll?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfImportLogForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfImportLogForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfImportLogForViewDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfImportLogForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfImportLogForViewDto>(<any>null);
+    }
+
+    /**
      * @param selectedMonth (optional) 
      * @return Success
      */
-    getAllTrialBalanceUploadOfMonth(selectedMonth: moment.Moment | undefined): Observable<TrialBalanceReportingViewDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/TrialBalanceReporting/GetAllTrialBalanceUploadOfMonth?";
+    getTrialBalancesofSpecficMonth(selectedMonth: moment.Moment | undefined): Observable<GetTrialBalanceofSpecficMonth[]> {
+        let url_ = this.baseUrl + "/api/services/app/TrialBalanceReporting/GetTrialBalancesofSpecficMonth?";
         if (selectedMonth === null)
             throw new Error("The parameter 'selectedMonth' cannot be null.");
         else if (selectedMonth !== undefined)
@@ -15698,20 +15769,20 @@ export class TrialBalanceReportingServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAllTrialBalanceUploadOfMonth(response_);
+            return this.processGetTrialBalancesofSpecficMonth(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetAllTrialBalanceUploadOfMonth(<any>response_);
+                    return this.processGetTrialBalancesofSpecficMonth(<any>response_);
                 } catch (e) {
-                    return <Observable<TrialBalanceReportingViewDto[]>><any>_observableThrow(e);
+                    return <Observable<GetTrialBalanceofSpecficMonth[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<TrialBalanceReportingViewDto[]>><any>_observableThrow(response_);
+                return <Observable<GetTrialBalanceofSpecficMonth[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAllTrialBalanceUploadOfMonth(response: HttpResponseBase): Observable<TrialBalanceReportingViewDto[]> {
+    protected processGetTrialBalancesofSpecficMonth(response: HttpResponseBase): Observable<GetTrialBalanceofSpecficMonth[]> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -15725,7 +15796,7 @@ export class TrialBalanceReportingServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(TrialBalanceReportingViewDto.fromJS(item));
+                    result200!.push(GetTrialBalanceofSpecficMonth.fromJS(item));
             }
             return _observableOf(result200);
             }));
@@ -15734,7 +15805,7 @@ export class TrialBalanceReportingServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<TrialBalanceReportingViewDto[]>(<any>null);
+        return _observableOf<GetTrialBalanceofSpecficMonth[]>(<any>null);
     }
 }
 
@@ -23943,6 +24014,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
     type!: string | undefined;
     records!: string | undefined;
     createdBy!: string | undefined;
+    createdById!: number;
     filePath!: string | undefined;
     creationTime!: moment.Moment;
     isRollBacked!: boolean;
@@ -23963,6 +24035,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
             this.type = data["type"];
             this.records = data["records"];
             this.createdBy = data["createdBy"];
+            this.createdById = data["createdById"];
             this.filePath = data["filePath"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.isRollBacked = data["isRollBacked"];
@@ -23983,6 +24056,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
         data["type"] = this.type;
         data["records"] = this.records;
         data["createdBy"] = this.createdBy;
+        data["createdById"] = this.createdById;
         data["filePath"] = this.filePath;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["isRollBacked"] = this.isRollBacked;
@@ -23996,6 +24070,7 @@ export interface IImportLogForViewDto {
     type: string | undefined;
     records: string | undefined;
     createdBy: string | undefined;
+    createdById: number;
     filePath: string | undefined;
     creationTime: moment.Moment;
     isRollBacked: boolean;
@@ -31018,11 +31093,12 @@ export interface IExternalAuthenticateResultModel {
     refreshTokenExpireInSeconds: number;
 }
 
-export class TrialBalanceReportingViewDto implements ITrialBalanceReportingViewDto {
-    dateTimeOfUpload!: moment.Moment;
-    filePath!: string | undefined;
+export class GetTrialBalanceofSpecficMonth implements IGetTrialBalanceofSpecficMonth {
+    id!: number;
+    creationTime!: moment.Moment;
+    name!: string | undefined;
 
-    constructor(data?: ITrialBalanceReportingViewDto) {
+    constructor(data?: IGetTrialBalanceofSpecficMonth) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -31033,29 +31109,32 @@ export class TrialBalanceReportingViewDto implements ITrialBalanceReportingViewD
 
     init(data?: any) {
         if (data) {
-            this.dateTimeOfUpload = data["dateTimeOfUpload"] ? moment(data["dateTimeOfUpload"].toString()) : <any>undefined;
-            this.filePath = data["filePath"];
+            this.id = data["id"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.name = data["name"];
         }
     }
 
-    static fromJS(data: any): TrialBalanceReportingViewDto {
+    static fromJS(data: any): GetTrialBalanceofSpecficMonth {
         data = typeof data === 'object' ? data : {};
-        let result = new TrialBalanceReportingViewDto();
+        let result = new GetTrialBalanceofSpecficMonth();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["dateTimeOfUpload"] = this.dateTimeOfUpload ? this.dateTimeOfUpload.toISOString() : <any>undefined;
-        data["filePath"] = this.filePath;
+        data["id"] = this.id;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["name"] = this.name;
         return data; 
     }
 }
 
-export interface ITrialBalanceReportingViewDto {
-    dateTimeOfUpload: moment.Moment;
-    filePath: string | undefined;
+export interface IGetTrialBalanceofSpecficMonth {
+    id: number;
+    creationTime: moment.Moment;
+    name: string | undefined;
 }
 
 export class UserListRoleDto implements IUserListRoleDto {

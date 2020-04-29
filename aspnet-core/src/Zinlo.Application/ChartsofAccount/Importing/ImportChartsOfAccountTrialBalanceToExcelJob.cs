@@ -118,6 +118,7 @@ namespace Zinlo.ChartsofAccount.Importing
             pathDto.FilePath = "";
             pathDto.Type = FileTypes.TrialBalance.ToString();
             pathDto.TenantId = (int)TenantId;
+            pathDto.UploadedFilePath = args.url;
             pathDto.CreatorId = UserId;
             pathDto.FailedRecordsCount = 0;
             pathDto.SuccessRecordsCount = 0;
@@ -169,6 +170,7 @@ namespace Zinlo.ChartsofAccount.Importing
             pathDtoUpdate.FilePath = "";
             pathDtoUpdate.Type = FileTypes.TrialBalance.ToString();
             pathDtoUpdate.TenantId = (int)TenantId;
+            pathDto.UploadedFilePath = args.url;
             pathDtoUpdate.CreatorId = UserId;
             pathDtoUpdate.FailedRecordsCount = 0;
             pathDtoUpdate.SuccessRecordsCount = 0;
@@ -211,6 +213,7 @@ namespace Zinlo.ChartsofAccount.Importing
                 ImportPathDto pathDto = new ImportPathDto();
                 pathDto.Id = loggedFileId;
                 pathDto.FilePath = url;
+                pathDto.UploadedFilePath = args.url;
                 pathDto.FailedRecordsCount = invalidAccounts.Count;
                 pathDto.SuccessRecordsCount = SuccessRecordsCount;
                 await _importPathsAppService.UpdateFilePath(pathDto);
@@ -226,6 +229,7 @@ namespace Zinlo.ChartsofAccount.Importing
                 ImportPathDto pathDto = new ImportPathDto();
                 pathDto.Id = loggedFileId;
                 pathDto.FilePath = "";
+                pathDto.UploadedFilePath = args.url;
                 pathDto.FailedRecordsCount = invalidAccounts.Count;
                 pathDto.SuccessRecordsCount = SuccessRecordsCount;
                 await _importPathsAppService.UpdateFilePath(pathDto);

@@ -47,7 +47,8 @@ import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SharedModule } from 'primeng/components/common/shared';
 import { AppSharedModule } from '@app/app-shared/app-shared.module';
-import { TaskReportComponent } from './reports/task-report/task-report.component';
+import { TaskReportComponent } from './reports/task-report/task-report.component';;
+import { TrialbalanceReportsComponent } from './reports/trialbalance-reports/trialbalance-reports.component'
 
 
 
@@ -106,7 +107,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 AmortizedComponent ,
                 ItemizedDetailsComponent ,
                 AmortizedDetailsComponent ,
-                TaskReportComponent
+                TaskReportComponent,
+                TrialbalanceReportsComponent
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
