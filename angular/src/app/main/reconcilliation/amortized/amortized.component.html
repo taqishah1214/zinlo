@@ -125,22 +125,22 @@
                         <table class="table record-table">
                             <tbody *ngFor="let item of itemList">
                                 <tr  class="task-table-inner table-repeater" class="{{item.isDeleted == true ? 'warnning' : '' }}" >
-                                    <td class="accountNo-cell">
+                                    <td class="accountNo-cell" (click)="RedirectToDetails(item.id,item.accuredAmortization,item.netAmount)">
                                         <span class="">{{item.startDate | date}}</span>
                                     </td>
-                                    <td class="accountType-cell ">
+                                    <td class="accountType-cell " (click)="RedirectToDetails(item.id,item.accuredAmortization,item.netAmount)">
                                         <span class="">{{item.endDate | date}}</span>
                                     </td>
                                     <td class="accountName-cell" (click)="RedirectToDetails(item.id,item.accuredAmortization,item.netAmount)">
                                         <span class="task-box">{{item.description}}</span>
                                     </td>
-                                    <td class="reconciliation-cell">
+                                    <td class="reconciliation-cell" (click)="RedirectToDetails(item.id,item.accuredAmortization,item.netAmount)">
                                         <span class=""> {{item.beginningAmount | formater }}</span>
                                     </td>
-                                    <td class="accountSubtype-cell">
+                                    <td class="accountSubtype-cell" (click)="RedirectToDetails(item.id,item.accuredAmortization,item.netAmount)">
                                         <span class=""> {{item.accuredAmortization | formater }}</span>
                                     </td>
-                                    <td class="assignee-cell">
+                                    <td class="assignee-cell" (click)="RedirectToDetails(item.id,item.accuredAmortization,item.netAmount)">
                                         <span class=""> {{item.netAmount | formater}}</span>
                                     </td>
                                     <td class="action-cell">
