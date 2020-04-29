@@ -11,7 +11,7 @@
                             <div class="col-xl-6">
                                 <div class="form-group">
                                     <label>First Name</label>
-                                    <input  formControlName="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Wnter First Name" value="" autocomplete="off" required>
+                                    <input  formControlName="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Enter First Name" value="" autocomplete="off" required>
                                     <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
                                         <div class="text-danger" *ngIf="firstName.errors.required">
                                             First Name is required.
