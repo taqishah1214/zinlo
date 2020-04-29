@@ -576,7 +576,7 @@ namespace Zinlo.ClosingChecklist
         {
             var query = GetTaskQuery(input);
             var tasks =  query
-                .OrderBy(input.Sorting)
+                .OrderBy(input.Sorting ?? "DueDate asc")
                 .ToList();
             var taskListDtos = ObjectMapper.Map<List<TaskListDto>>(tasks);
              await FillStatusName(taskListDtos);
