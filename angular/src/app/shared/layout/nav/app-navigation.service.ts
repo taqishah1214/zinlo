@@ -46,7 +46,8 @@ export class AppNavigationService {
             ]),
             new AppMenuItem('Reports', 'Pages.ClosingChecklist', './assets/media/ClosingCheckList/reconcilliation.svg', '', [
                 new AppMenuItem('TaskReport', 'Pages.ClosingChecklist','./assets/media/ClosingCheckList/dot.png','/app/main/task-report'),
-                
+                new AppMenuItem('Trial Balance Report', 'Pages.ClosingChecklist','./assets/media/ClosingCheckList/dot.png','/app/main/trialbalance-report'),
+
             ]),
            // new AppMenuItem('Tests', 'Pages.Tests', 'flaticon-more', '/app/main/tests/tests'),
              new AppMenuItem('Administration', '', './assets/media/ClosingCheckList/administration.svg', '', [

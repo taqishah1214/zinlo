@@ -8,6 +8,8 @@ namespace Zinlo.ImportLog.Dto
         public string Type { get; set; }
         public string Records { get; set; }
         public string CreatedBy { get; set; }
+        public long CreatedById { get; set; }
+
         public string FilePath { get; set; }
         public DateTime CreationTime { get; set; }
         public bool IsRollBacked { get; set; }

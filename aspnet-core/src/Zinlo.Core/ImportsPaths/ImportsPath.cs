@@ -18,5 +18,7 @@ namespace Zinlo.ImportsPaths
         public virtual long UserId { get; set; }
         public bool IsRollBacked { get; set; }
         public string SuccessFilePath { get; set; }
+        public string UploadedFilePath { get; set; }
+
     }
 }
