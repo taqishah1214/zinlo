@@ -14,6 +14,7 @@ namespace Zinlo.Authorization.Users
         /// Can be set to user's plain password to include it in the email.
         /// </param>
         Task SendEmailActivationLinkAsync(User user, string link, string plainPassword = null);
+        Task SendCustomPlaEmail(string email,string price,int tenantId);
 
         /// <summary>
         /// Sends a password reset link to user's email.

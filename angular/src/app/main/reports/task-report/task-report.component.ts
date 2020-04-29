@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Injector } from '@angular/core';
+import { Component, OnInit, ViewChild, Injector, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto, CategoriesServiceProxy, NameValueDtoOfInt64 } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -6,7 +6,6 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import * as moment from 'moment';
-import { add, subtract } from 'add-subtract-date';
 import { StoreDateService } from "../../../services/storedate.service";
 
 @Component({
@@ -17,14 +16,15 @@ import { StoreDateService } from "../../../services/storedate.service";
 export class TaskReportComponent extends AppComponentBase implements OnInit {
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
+  @ViewChild("dateRangePicker", { static: true }) dateRangePickerElement: ElementRef;
+  selectedDateRange: moment.Moment[] = [moment().add(-1, 'month').startOf('day'), moment().endOf('day')];
   filterStatus: number = 0;
   AllOrActive = false;
   advancedFiltersAreShown = false;
   filterText = '';
   titleFilter = '';
   categoryFilter: number = 0;
-  statusFilter: number = 0;
-  dateFilter: Date = new Date();
+  statusFilter: number = 1;
   tasksList: any;
   list: any = []
   ClosingCheckList: any = []
@@ -55,7 +55,6 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
   monthStatus: boolean;
   remainingUserForHeader: any = [];
   category: NameValueDtoOfInt64[] = [];
-  selectedDate = new Date();
   constructor(private _router: Router,
     private _categoryService: CategoriesServiceProxy,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector, private userDate: StoreDateService) {
@@ -64,7 +63,6 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
   }
   ngOnInit() {
     this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
-    console.log("selected date",this.selectedDate);
     this.initializePageParameters();
     this.loadCategories();
   }
@@ -73,7 +71,9 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
     this.AssigniBoxView = true;
     this.collapsibleRow = false;
   }
-
+  onChange() {
+    abp.event.trigger('app.dashboardFilters.dateRangePicker.onDateChange', this.selectedDateRange);
+  }
   openFieldUpdateAssignee(record) {
     this.rowid = record;
   }
@@ -89,16 +89,6 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
     container.setViewMode('month');
   }
   filterByMonth(event) {
-    if(event===1){
-      this.selectedDate =new Date(add(this.selectedDate, 1, "month"));
-   }
-   else if(event === -1) {
-     this.selectedDate = new Date( subtract(this.selectedDate, 1, "month"));
-   }
-   else {
-     this.selectedDate = new Date(add(event, 2, "day"));
-   }
-   
    this.getClosingCheckListAllTasks();
   }
 
@@ -107,16 +97,18 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
       this.paginator.changePage(0);
       return;
     }
-    this.dateFilter = this.selectedDate;
+    debugger
     this.primengTableHelper.showLoadingIndicator();
-    this._closingChecklistService.getAll(
+    this._closingChecklistService.getReport(
       this.filterText,
       this.titleFilter,
       this.categoryFilter,
       this.statusFilter,
-      moment(this.dateFilter),
+      undefined,
       this.getTaskWithAssigneeId,
       this.AllOrActive,
+      this.selectedDateRange[0],
+      this.selectedDateRange[1],
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -223,21 +215,7 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
     this._router.navigate(['/app/main/checklist/task-details'], { state: { data: { id: recordId } } });
 
   }
-  filterByStatus(event): void {
-    this.statusFilter = event.target.value.toString();
-    this.updateAssigneeOnHeader = false;
-    this.getClosingCheckListAllTasks();
-  }
-  filterByCategory(event): void {
-    this.categoryFilter = event.target.value.toString();
-    this.updateAssigneeOnHeader = false;
-    this.getClosingCheckListAllTasks();
-  }
-  filterByDate(event): void {
-    this.dateFilter = event;
-    this.updateAssigneeOnHeader = false;
-    this.getClosingCheckListAllTasks();
-  }
+
 
   loadCategories(): void {
     this._categoryService.categoryDropDown().subscribe(result => {
@@ -246,8 +224,7 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
   }
   ResetGrid(): void {
     this.statusFilter = 0;
-    this.categoryFilter = 0;
-    this.dateFilter = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
+    this.categoryFilter = 0;  
     this.titleFilter = '';
     this.filterStatus = 0;
     this.getTaskWithAssigneeId = 0;

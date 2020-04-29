@@ -363,5 +363,16 @@ namespace Zinlo.Authorization.Users
 
             return basePath + "?" + encrptedParameterName + "=" + HttpUtility.UrlEncode(SimpleStringCipher.Instance.Encrypt(query));
         }
+
+        public async Task SendCustomPlaEmail(string email, string price, int tenantId)
+        {
+            var tenancyName = GetTenancyNameOrNull(tenantId);
+            var emailTemplate = GetTitleAndSubTitle(tenantId,"Request Approve","Custom Plan Request Approve");
+            var mailMessage = new StringBuilder();
+            mailMessage.AppendLine("<b>" + L("TenancyName") + "</b>: " + tenancyName + "<br />");
+            mailMessage.AppendLine(" Dear Customer Thanks for chosing zinlo we have review your request ");
+            mailMessage.AppendLine($"<br/> accodig to your custom request here is our price offer letter ${price}");
+            await ReplaceBodyAndSend(email,"Custom Plan Request Approve", emailTemplate, mailMessage);
+        }
     }
 }

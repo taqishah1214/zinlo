@@ -8,7 +8,7 @@ namespace Zinlo.Editions
 {
     public class EditionManager : AbpEditionManager
     {
-        public const string DefaultEditionName = "Standard";
+        public const string DefaultEditionName = "Custom";
 
         public EditionManager(
             IRepository<Edition> editionRepository,

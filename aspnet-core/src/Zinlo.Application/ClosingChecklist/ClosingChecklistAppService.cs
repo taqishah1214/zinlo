@@ -53,6 +53,73 @@ namespace Zinlo.ClosingChecklist
             _instructionVersionsAppService = instructionVersionsAppService;
             _closingChecklistManager = closingChecklistManager;
         }
+        public async Task<PagedResultDto<TasksGroup>> GetReport(GetAllClosingCheckListInput input)
+        {
+            var query = _closingChecklistManager.GetAll().Include(rest => rest.Category)
+                    .Include(u => u.Assignee)
+                    .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.TaskName.Contains(input.Filter))
+                    .WhereIf(input.StatusFilter != 0,
+                        e => false || e.Status == (Zinlo.ClosingChecklist.Status)input.StatusFilter)
+                    .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
+                    .WhereIf(input.AssigneeId != 0, e => false || e.AssigneeId == input.AssigneeId)
+                    .WhereIf(input.StartDate != null && input.EndDate != null, e => e.DueDate >= input.StartDate && e.DueDate <= input.EndDate);
+            var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "DueDate asc").PageBy(input);
+                var totalCount = query.Count();
+                var getUserWithPictures = (from o in query.ToList()
+
+                                           select new GetUserWithPicture()
+                                           {
+                                               Id = o.AssigneeId,
+                                               Name = o.Assignee.FullName,
+                                               Picture = o.Assignee.ProfilePictureId.HasValue
+                                                   ? "data:image/jpeg;base64," + _profileAppService
+                                                         .GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture
+                                                   : ""
+                                           }).ToList();
+
+                getUserWithPictures = getUserWithPictures.DistinctBy(p => new { p.Id, p.Name }).ToList();
+
+                var closingCheckList = from o in pagedAndFilteredTasks.ToList()
+
+                                       select new ClosingCheckListForViewDto()
+                                       {
+                                           Id = o.Id,
+                                           AssigneeId = o.AssigneeId,
+                                           StatusId = (int)o.Status,
+                                           TaskName = o.TaskName,
+                                           Status = o.Status.ToString(),
+                                           Category = o.Category.Title,
+                                           DueDate = o.DueDate,
+                                           IsDeleted = o.IsDeleted,
+                                       };
+
+                var result = closingCheckList.ToList();
+                var response = result.GroupBy(x => x.DueDate.Date).Select( x => new TasksGroup
+                {
+                    MonthStatus =  GetMonthStatus(x.Key).Result,
+                    OverallMonthlyAssignee = getUserWithPictures,
+                    DueDate = x.Key,
+                    Group = x.Select(y => new ClosingCheckListForViewDto
+                    {
+                        DueDate = y.DueDate,
+                        AssigneeId = y.AssigneeId,
+                        Category = y.Category,
+                        StatusId = y.StatusId,
+                        Id = y.Id,
+                        Status = y.Status,
+                        TaskName = y.TaskName,
+                        IsDeleted = y.IsDeleted
+                    }
+                    )
+                });
+
+
+
+                return new PagedResultDto<TasksGroup>(
+                    totalCount,
+                     response.ToList());
+            
+        }
         public async Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input)
         {
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))

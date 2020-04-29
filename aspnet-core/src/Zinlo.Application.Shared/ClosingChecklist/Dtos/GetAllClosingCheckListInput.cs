@@ -14,5 +14,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public DateTime? DateFilter { get; set; }
         public long AssigneeId { get; set; }
         public bool? AllOrActive { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }

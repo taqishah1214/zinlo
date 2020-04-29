@@ -26,7 +26,7 @@ namespace Zinlo.Migrations.Seed.Host
             var defaultEdition = _context.Editions.IgnoreQueryFilters().FirstOrDefault(e => e.Name == EditionManager.DefaultEditionName);
             if (defaultEdition == null)
             {
-                defaultEdition = new SubscribableEdition { Name = EditionManager.DefaultEditionName, DisplayName = EditionManager.DefaultEditionName };
+                defaultEdition = new SubscribableEdition { Name = EditionManager.DefaultEditionName, DisplayName = EditionManager.DefaultEditionName, IsCustom = true };
                 _context.Editions.Add(defaultEdition);
                 _context.SaveChanges();
 

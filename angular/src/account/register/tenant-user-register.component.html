@@ -1,15 +1,17 @@
 
-<div class="" style="padding:0% 10%;">
+<div class="px-5 py-5" >
     <div class="kt-container kt-grid__item kt-grid__item--fluid">
         <div class="kt-portlet pb-4">
             <div class="kt-wizard-v1__content locationbody" data-ktwizard-type="step-content" data-ktwizard-state="current" >
-                <div class="kt-heading d-flex justify-content-center">Personal Information</div>
-                <div class="kt-form__section kt-form__section--first">
-                    <form class="kt-wizard-v1__form" [formGroup]="personalInfoForm">
+                
+                <div class="kt-form__section kt-form__section--first" style="padding:0% 15%">
+                    <div class="kt-heading d-flex justify-content-center">Personal Information</div>
+                    <form class="kt-wizard-v1__form px-5" [formGroup]="personalInfoForm">
                         <div class="row my-0 px-5">
                             <div class="col-xl-6">
                                 <div class="form-group">
-                                    <input  formControlName="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="First Name" value="" autocomplete="off" required>
+                                    <label>First Name</label>
+                                    <input  formControlName="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Enter First Name" value="" autocomplete="off" required>
                                     <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
                                         <div class="text-danger" *ngIf="firstName.errors.required">
                                             First Name is required.
@@ -20,7 +22,8 @@
                                 
                             <div class="col-xl-6">
                                 <div class="form-group">
-                                    <input formControlName="lastName" type="text" class="form-control" name="lastNameOfUser" placeholder="Last Name" value="" autocomplete="off" required>
+                                    <label>Last Name</label>
+                                    <input formControlName="lastName" type="text" class="form-control" name="lastNameOfUser" placeholder="Enter Last Name" value="" autocomplete="off" required>
                                     <div  *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
                                         <div class="text-danger" *ngIf="lastName.errors.required">
                                             Last Name is required.
@@ -30,7 +33,8 @@
                             </div>
                             <div class="col-xl-6">
                                 <div class="form-group">
-                                    <input formControlName="userName" type="text" class="form-control" name="userName" placeholder="UserName" value="" autocomplete="off" required>
+                                    <label>User Name</label>
+                                    <input formControlName="userName" type="text" class="form-control" name="userName" placeholder="Enter UserName" value="" autocomplete="off" required>
                                     <div  *ngIf="userName.invalid && (userName.dirty || userName.touched)">
                                         <div class="text-danger" *ngIf="userName.errors.required">
                                             User Name is required.
@@ -40,20 +44,22 @@
                             </div>
                             <div class="col-xl-6">
                                 <div class="form-group">
-                                    <input formControlName="emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Email" value="" autocomplete="off" required>
+                                    <label>Email</label>
+                                    <input formControlName="emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required>
                                     <div *ngIf="emailAddress.invalid && (emailAddress.dirty || emailAddress.touched)">
                                         <div class="text-danger" *ngIf="emailAddress.errors.required">
                                             Email is required.
                                         </div>
                                         <div class="text-danger" *ngIf="emailAddress.errors.pattern">
-                                            Email Formate Is Wrong.
+                                            Email Format Is wrong.
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-6">
                                 <div class="form-group">
-                                    <input formControlName="password" type="password" class="form-control" name="password" placeholder="Password" value="" autocomplete="off" required>
+                                    <label>Password</label>
+                                    <input formControlName="password" type="password" class="form-control" name="password" placeholder="Enter Password" value="" autocomplete="off" required>
                                     <div  *ngIf="password.invalid && (password.dirty || password.touched)"
                                         class="">
 
@@ -66,7 +72,8 @@
 
                             <div class="col-xl-6">
                                 <div class="form-group">
-                                    <input formControlName="title" type="text" class="form-control" name="titleOfUser" placeholder="Title" value="" autocomplete="off" required>
+                                    <label>Title</label>
+                                    <input formControlName="title" type="text" class="form-control" name="titleOfUser" placeholder="Enter Title" value="" autocomplete="off" required>
                                     <div *ngIf="title.invalid && (title.dirty || title.touched)"
                                         class="">
 
@@ -79,13 +86,24 @@
                             </div>
                             
                             <div class="col-xl-6">
-                                <div class="form-group">
-                                    <input type="text" formControlName="phone" class="form-control" name="passwordOfUser" placeholder="Phone Number (Optional)" value="">
+                                
+                                <label><span class="text-dark">Phone Number</span>(Optional)</label>
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fas fa-phone-volume"></i></span>
+                                    </div>
+                                    <input type="text" formControlName="phone" class="form-control" autocomplete="off" placeholder="xxx-xxx-xxxxx" name="phoneNumberOfUser"maxlength="64">
+                                </div>
+                                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                                     <div class="text-danger" *ngIf="phone.errors.pattern">
+                                        Incorrect format for Phone Number.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xl-6">
                                 <div class="form-group">
-                                    <input type="text" formControlName="address" class="form-control" name="passwordOfUser" placeholder="Address" value="">
+                                    <label>Address</label>
+                                    <input type="text" formControlName="address" class="form-control" name="passwordOfUser" placeholder="Enter Address" value="">
                                     <div *ngIf="address.invalid && (address.dirty || address.touched)"
                                         class="">
                                         <div class="text-danger" *ngIf="address.errors.required">
@@ -98,20 +116,22 @@
                             <div class="col-xl-12">
                                 <div class="row">
                                     <div class="col-xl-6">
-                                        <div class="form-group">
-                                            <input type="text" formControlName="city" class="form-control" name="passwordOfUser" placeholder="City (Optional)" value="">
+                                        <div class="form-group">    
+                                        <label>City (Optional)</label>
+                                            <input type="text" formControlName="city" class="form-control" name="passwordOfUser" placeholder="Enter City" value="">
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-group">
-                                            <input type="text" formControlName="state" class="form-control" name="passwordOfUser" placeholder="State (Optional)" value="">
+                                        <label>State (Optional)</label>
+                                            <input type="text" formControlName="state" class="form-control" name="passwordOfUser" placeholder="Enter State" value="">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end mr-5">
-                            <button class="btn btn-success" (click)="register()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                            <button class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u nxtbtn" (click)="register()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                                 Save
                             </button>
                         </div>

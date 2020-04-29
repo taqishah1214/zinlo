@@ -256,63 +256,63 @@
                         <div class="kt-wizard-v1__content servicebody" data-ktwizard-type="step-content" data-ktwizard-state="">
                             <div class="kt-pricing-1 kt-pricing-1--fixed">
                                                 <div class="kt-pricing-1__items row row-centered">
-                                                    <div class="kt-pricing-1__item col-lg-3 col-centered"
+                                                    <div class="kt-pricing-1__item col-lg-3 col-centered" 
                                                         *ngFor="let editionWithFeatures of editionsSelectOutput.editionsWithFeatures;  let i = index">
-                        
-                                                        <div class="kt-pricing-1__visual">
-                                                            <div class="kt-pricing-1__hexagon1"></div>
-                                                            <div class="kt-pricing-1__hexagon2"></div>
-                                                            <span class="kt-pricing-1__icon kt-font-brand">
-                                                                
-                                                         <img src="{{editionIcons[i]}}" alt="block-btn">
+                                                        
+                                                            <div class="kt-pricing-1__visual">
+                                                                <div class="kt-pricing-1__hexagon1"></div>
+                                                                <div class="kt-pricing-1__hexagon2"></div>
+                                                                <span class="kt-pricing-1__icon kt-font-brand">
+                                                                    
+                                                            <img src="{{editionIcons[i]}}" alt="block-btn">
+                                                                </span>
+                                                            </div>
+                                                            <div style="height: 200px !important;">
+                                                            <span class="kt-pricing-1__price">
+                                                                {{editionWithFeatures.edition.displayName}}
+                                                            </span>
+                            
+                                                            <h2 class="kt-pricing-1__subtitle" *ngIf="editionWithFeatures.edition.isCustom">
+                                                                Custom
+                                                            </h2>
+                            
+                                                            <h2 class="kt-pricing-1__subtitle" *ngIf="!editionWithFeatures.edition.isCustom">
+                                                                <span *ngIf="editionWithFeatures.edition.dailyPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.dailyPrice}}
+                                                                {{"PerDay" | localize}}<br /></span>
+                                                                <span *ngIf="editionWithFeatures.edition.weeklyPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.weeklyPrice}}
+                                                                {{"PerWeek" | localize}}<br /></span>
+                                                                <span *ngIf="editionWithFeatures.edition.monthlyPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.monthlyPrice}}
+                                                                {{"PerMonth" | localize}} <br /></span>
+                                                                <span *ngIf="editionWithFeatures.edition.annualPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.annualPrice}}
+                                                                {{"PerYear" | localize}}</span>
+                                                            </h2>
+                            
+                                                            <span class="kt-pricing-1__description">
+                            
+                                                                <ng-container *ngFor="let feature of editionsSelectOutput.allFeatures">
+                                                                    <!--Checbox Feature-->
+                                                                    <ng-container *ngIf="isTrueFalseFeature(feature)">
+                                                                        <i class="la la-check kt-font-success"
+                                                                            *ngIf="featureEnabledForEdition(feature,editionWithFeatures)"></i>
+                                                                        <i class="la la-times kt-font-dark"
+                                                                            *ngIf="!featureEnabledForEdition(feature,editionWithFeatures)"></i>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="isTrueFalseFeature(feature)">{{feature.displayName}}
+                                                                    </ng-container>
+                                                                    <!--Checbox Feature-->
+                                                                    <!--Not Checbox Feature-->
+                                                                    <ng-container *ngIf="!isTrueFalseFeature(feature)">
+                                                                        <i class="la la-check kt-font-success"></i>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="!isTrueFalseFeature(feature)">
+                                                                        {{feature.displayName}}:{{getFeatureValueForEdition(feature,editionWithFeatures)}}
+                                                                    </ng-container>
+                                                                    <!--Not Checbox Feature-->
+                                                                    <br />
+                                                                </ng-container>
+                            
                                                             </span>
                                                         </div>
-                        
-                                                        <span class="kt-pricing-1__price">
-                                                            {{editionWithFeatures.edition.displayName}}
-                                                        </span>
-                        
-                                                        <h2 class="kt-pricing-1__subtitle" *ngIf="editionWithFeatures.edition.isCustom">
-                                                            Custom
-                                                        </h2>
-                        
-                                                        <h2 class="kt-pricing-1__subtitle" *ngIf="!editionWithFeatures.edition.isCustom">
-                                                            <span *ngIf="editionWithFeatures.edition.dailyPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.dailyPrice}}
-                                                            {{"PerDay" | localize}}<br /></span>
-                                                            <span *ngIf="editionWithFeatures.edition.weeklyPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.weeklyPrice}}
-                                                            {{"PerWeek" | localize}}<br /></span>
-                                                            <span *ngIf="editionWithFeatures.edition.monthlyPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.monthlyPrice}}
-                                                            {{"PerMonth" | localize}} <br /></span>
-                                                            <span *ngIf="editionWithFeatures.edition.annualPrice > 0" class="kt-pricing-1__label">{{appSession.application.currencySign}} {{editionWithFeatures.edition.annualPrice}}
-                                                            {{"PerYear" | localize}}</span>
-                                                        </h2>
-                        
-                                                        <span class="kt-pricing-1__description">
-                        
-                                                            <ng-container *ngFor="let feature of editionsSelectOutput.allFeatures">
-                                                                <!--Checbox Feature-->
-                                                                <ng-container *ngIf="isTrueFalseFeature(feature)">
-                                                                    <i class="la la-check kt-font-success"
-                                                                        *ngIf="featureEnabledForEdition(feature,editionWithFeatures)"></i>
-                                                                    <i class="la la-times kt-font-dark"
-                                                                        *ngIf="!featureEnabledForEdition(feature,editionWithFeatures)"></i>
-                                                                </ng-container>
-                                                                <ng-container *ngIf="isTrueFalseFeature(feature)">{{feature.displayName}}
-                                                                </ng-container>
-                                                                <!--Checbox Feature-->
-                                                                <!--Not Checbox Feature-->
-                                                                <ng-container *ngIf="!isTrueFalseFeature(feature)">
-                                                                    <i class="la la-check kt-font-success"></i>
-                                                                </ng-container>
-                                                                <ng-container *ngIf="!isTrueFalseFeature(feature)">
-                                                                    {{feature.displayName}}:{{getFeatureValueForEdition(feature,editionWithFeatures)}}
-                                                                </ng-container>
-                                                                <!--Not Checbox Feature-->
-                                                                <br />
-                                                            </ng-container>
-                        
-                                                        </span>
-                        
                                                         <div class="kt-pricing-1__btn">
                         
                                                             <button

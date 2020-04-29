@@ -3,17 +3,11 @@
         <div class="kt-subheader__main">
             <h3 class="kt-subheader__title">
                 <img src="./assets/media/ClosingCheckList/clipboard.svg" alt="clipboard">
-                <span class="headSpace">{{"Checklist" | localize}}</span>
+                <span class="headSpace">{{"TaskReports" | localize}}</span>
             </h3>
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
             <span class="kt-subheader__desc">
             </span>
-        </div>
-        <div class="kt-subheader__toolbar">
-            <div class="kt-subheader__wrapper">
-                <button (click)="RedirectToCreateTask()" class="btn btn-primary"><i class="fa fa-plus"></i>
-                    {{"AddNew" | localize}}</button>
-            </div>
         </div>
     </div>
 </div>
@@ -26,14 +20,27 @@
                     <div class="record-card-header">
                         <div class="record-card-header-bottom">
                             <div class="record-card-header-bottom-inner1">
-                                <button class="btn arrow-btn left-arrow-btn btn-square"  (click)="filterByMonth(-1)">
-                                    <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
-                                </button>
-                                <button class="btn arrow-btn right-arrow-btn btn-square" (click)="filterByMonth(1)">
-                                    <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
-                                </button>
-                                <h5  style="cursor: default;">{{selectedDate | momentFormat:'MMMM YYYY'}}</h5>
-
+                                
+                                <select style="margin-right: 10px;" class="form-control border-grey" name="statusFilter" [(ngModel)]="statusFilter"
+                                    (change)="getClosingCheckListAllTasks()" id="statusFilter">
+                                    <option value="0">{{"AllStatuses" | localize}}</option>
+                                    <option value="1">{{"NotStarted" | localize}}</option>
+                                    <option value="2">{{"InProcess" | localize}}</option>
+                                    <option value="3">{{"OnHold" | localize}}</option>
+                                    <option value="4">{{"Completed" | localize}}</option>
+                                </select>
+                            
+                            
+                                 <select class="form-control border-grey" name="categoryFilter"
+                                    [(ngModel)]="categoryFilter" (change)="getClosingCheckListAllTasks()"
+                                    id="exampleFormControlSelect2">
+                                    <option value="0">{{"AllCategories" | localize}}</option>
+                                    <option *ngFor="let item of category;" [value]="item.value">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                            
+                               
                             </div>
                             <div class="record-card-header-bottom-inner2">
                                 <div class="upper-content">
@@ -43,7 +50,7 @@
                                                 class="member-count bg-lightgrey text-blue">
                                                 <span>+{{remainingUserForHeader.length}}</span>
                                                 <div class="member-dropdown">
-                                                    <ul *ngFor="let item of remainingUserForHeader" >
+                                                    <ul *ngFor="let item of remainingUserForHeader">
                                                         <li (click)="GetUserTasks(item.id)">
                                                             <div class="kt-user-card-v2__pic">
                                                                 <div *ngIf="item.picture"
@@ -64,10 +71,10 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                           
-                                            <div *ngFor="let item of assigniNameForHeader "
-                                                 class="kt-user-card-v2">
-                                                <div (click)="GetUserTasks(item.id)" class="kt-user-card-v2__pic user-image-box">
+
+                                            <div *ngFor="let item of assigniNameForHeader " class="kt-user-card-v2">
+                                                <div (click)="GetUserTasks(item.id)"
+                                                    class="kt-user-card-v2__pic user-image-box">
                                                     <div *ngIf="item.picture" class="kt-badge kt-badge--xl">
                                                         <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
                                                             alt="Pic" [src]="item.picture">
@@ -79,46 +86,30 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="date-picker">
-                                        <input id="monthValue" (ngModelChange)="filterByMonth($event)"
-                                            class="date-field" name="monthValue"
-                                            [(ngModel)]="selectedDate" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                            (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
+                                    <div class="input-group">
+                                        <input type="text" class="form-control  date-range-filter"
+                                            value="{{selectedDateRange[0] | momentFormat: 'LL'}} - {{selectedDateRange[1] | momentFormat: 'LL'}}"
+                                            disabled="disabled" #dateRangePicker="bsDaterangepicker" bsDaterangepicker
+                                            dateRangePickerMomentModifier placement="bottom"
+                                            [(date)]="selectedDateRange"  (bsValueChange)="getClosingCheckListAllTasks()">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button"
+                                                (click)="dateRangePicker.toggle()">
+                                                <i class="fa fa-calendar-day p-0" style="color:white;"
+                                                    aria-hidden="true"></i></button>
+                                        </div>
                                     </div>
-                                    <div class="dropdown-btn-box">
-                                        <button (click)="openFilterClick()" data-toggle="tooltip" title="More Filters"class="btn btn-square"><img
-                                                src="./assets/media/ClosingCheckList/filter.png" alt="filter"></button>
-                                    </div>
+                                    <!-- <div class="date-picker">
+                                            <input id="monthValue" (ngModelChange)="filterByMonth($event)"
+                                                class="date-field" name="monthValue" [(ngModel)]="selectedDate"
+                                                [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
+                                        </div> -->
                                     <form class="search-form pl-3">
                                         <div class="form-group">
                                             <input type="text" autoFocus (input)="getClosingCheckListAllTasks()"
                                                 [(ngModel)]="filterText" name="filterText"
                                                 [placeholder]="l('SearchWithThreeDot')" class="border-grey">
-                                        </div>
-                                    </form>
-                                </div>
-                                <div *ngIf="FilterBoxOpen" class="lower-content">
-                                    <form>
-                                        <div class="form-group">
-                                            <select class="form-control border-grey" name="categoryFilter"
-                                                [(ngModel)]="categoryFilter" (change)="filterByCategory($event)"
-                                                id="exampleFormControlSelect2">
-                                                <option value="0">{{"AllCategories" | localize}}</option>
-                                                <option *ngFor="let item of category;" [value]="item.value">
-                                                    {{item.name}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="titleFilter" (ngModelChange)="filterByDate($event)"
-                                                class="form-control border-grey" name="titleFilter"
-                                                [(ngModel)]="titleFilter" type="text" bsDatepicker
-                                                class="form-control" />
-                                        </div>
-                                        <div class="block-btn">
-                                            <button class="btn btn-square bg-lightgrey" data-toggle="tooltip" title="Reset Filters" (click)="ResetGrid()">
-                                                <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
-                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -168,7 +159,8 @@
                                 <tbody *ngFor="let i of ClosingCheckList">
 
                                     <tr *ngFor="let j of i.group ; let value = index"
-                                        class="task-table-inner table-repeater" class="{{j.isDeleted == true ? 'warnning' : '' }}">
+                                        class="task-table-inner table-repeater"
+                                        class="{{j.isDeleted == true ? 'warnning' : '' }}">
 
                                         <td class="date-cell" (click)="redirectToDetail(j.id)" *ngIf="value === 0">
                                             <span class=""><b>{{i.dueDate | date:'d'}}</b>
@@ -177,16 +169,16 @@
                                         <td (click)="redirectToDetail(j.id)" *ngIf="value != 0">
                                             <span class="">{{""}}</span>
                                         </td>
-                                        <td class="task-cell"  (click)="redirectToDetail(j.id)">
+                                        <td class="task-cell" (click)="redirectToDetail(j.id)">
                                             <span style="cursor: pointer;" class="task-box"><span
                                                     class="task-box-dot-{{j.StatusColor}}"></span><b>{{j.taskName}}</b></span>
                                         </td>
                                         <td class="cat-cell" style="cursor: pointer;" (click)="redirectToDetail(j.id)">
                                             <span class="category-name bg-lightgrey">{{j.category}}</span>
                                         </td>
-                                        <td  class="status-cell">
+                                        <td class="status-cell">
                                             <form class="task-report-form">
-                                                <select [disabled]="!monthStatus" onclick="console.log('test')"
+                                                <select [disabled]="!i.monthStatus"
                                                     (change)="ChangeStatus($event.target.value,j.id)"
                                                     class="form-control border-0 {{j.StatusColor}} text-white">
                                                     <option value="" selected disabled hidden>
@@ -198,8 +190,9 @@
                                                 </select>
                                             </form>
                                         </td>
-                                        <td class="assignee-cell">
-                                            <div *ngIf="j.id != rowid" class="kt-user-card-v2">
+                                        <td [ngClass]="{'disabled':!i.monthStatus}" class="assignee-cell">
+                                            <div *ngIf="j.id != rowid" class="kt-user-card-v2"
+                                                (click)="i.monthStatus && openFieldUpdateAssignee(j.id)">
                                                 <div class="kt-user-card-v2__pic">
                                                     <div *ngIf="j.profilePicture" class="kt-badge kt-badge--xl">
                                                         <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
@@ -214,6 +207,11 @@
                                                 <div class="kt-user-card-v2__details"> <span
                                                         class="kt-user-card-v2__name">
                                                         {{j.assigniName}}</span> </div>
+                                            </div>
+                                            <div *ngIf="j.id == rowid">
+                                                <app-user-list-component (callBack)="getClosingCheckListAllTasks()"
+                                                    taskId={{j.id}} comingChangeReguest="ClosingCheckList"
+                                                    userId={{j.assigneeId}}></app-user-list-component>
                                             </div>
                                         </td>
                                         <td class="toggle-btn-cell">
@@ -253,7 +251,8 @@
                                                 <li class="status-cell-item">
                                                     <div class="thead-box"><b>{{"Status" | localize}} : </b></div>
                                                     <div class="tdata-box">
-                                                        <span *ngIf= "j.status == 1" class="border-0 bg-gray text-white statusWidth1">{{i.status}}</span>
+                                                        <span *ngIf="j.status == 1"
+                                                            class="border-0 bg-gray text-white statusWidth1">{{i.status}}</span>
                                                     </div>
                                                 </li>
                                                 <li class="category-cell-item">
