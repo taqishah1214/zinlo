@@ -38,7 +38,6 @@ using Zinlo.Notifications.Dto;
 using Zinlo.Organizations.Dto;
 using Zinlo.Sessions.Dto;
 using Zinlo.Comment.Dtos;
-using Zinlo.Tasks.Dtos;
 using Zinlo.ClosingChecklist.Dtos;
 using Zinlo.Attachments.Dtos;
 using Zinlo.AccountSubType.Dtos;
@@ -163,8 +162,11 @@ namespace Zinlo
                 ForMember(dto=>dto.Status, entity=>entity.MapFrom(p=>p.Status.ToString())).
                 ForMember(dto=>dto.StatusId, entity=>entity.MapFrom(p=>(int)p.Status)).
                 ForMember(dto=>dto.FrequencyId, entity=>entity.MapFrom(p=>(int)p.Frequency));
-            configuration.CreateMap<Comment.Comment, CommentDto>().ReverseMap();
-
+            configuration.CreateMap<ClosingChecklist.ClosingChecklist, TaskListDto>()
+                .ForMember(dto => dto.AssigneeName, entity => entity.MapFrom(p => p.Assignee.FullName))
+                .ForMember(dto => dto.CategoryName, entity => entity.MapFrom(p => p.Category.Title))
+                .ForMember(dto => dto.Status, entity => entity.MapFrom(p => p.Status.ToString()));
+            
             //Attachment
             configuration.CreateMap<Attachment.Attachment, AttachmentsDto>().ReverseMap();
 

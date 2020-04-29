@@ -213,6 +213,8 @@
     <text name="NewRegisteredUsersIsActiveByDefault">New registered users are active by default.</text>
     <text name="NewRegisteredUsersIsActiveByDefault_Hint">If you disable this, new users will not be active (and can not login) until admin manually activates the account.</text>
     <text name="Default">Default</text>
+    <text name="TaskReports">Task Reports
+    </text>
     <text name="DefaultRole_Description">Assign to new users by default.</text>
     <text name="StaticRole_Tooltip">Static roles can not be deleted.</text>
     <text name="EmailConfirmationRequiredForLogin">Email confirmation required for login.</text>
