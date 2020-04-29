@@ -41,26 +41,21 @@ namespace Zinlo.Contactus
             await _userEmailer.SendCustomPlaEmail(response.Email, "" + response.Pricing, response.TenantId);
             return true;
         }
-        private string isExistTenancName = "";
+       
         private string GetTenancyNameOrNull(int? tenantId)
         {
             if (tenantId == null)
             {
                 return null;
             }
-            if (string.IsNullOrEmpty(isExistTenancName))
-            {
+            
                 using (_unitOfWorkProvider.Current.SetTenantId(null))
                 {
 
-                    isExistTenancName = _tenantRepository.Get(tenantId.Value).TenancyName;
-                    return isExistTenancName;
+                    return _tenantRepository.Get(tenantId.Value).TenancyName;
+                   
                 }
-            }
-            else
-            {
-                return isExistTenancName;
-            }
+            
         }
         public async Task Create(CreateOrUpdateContactusInput create, int tenantId)
         {
