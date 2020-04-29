@@ -629,7 +629,7 @@
     <text name="FreeTrial">Free trial</text>
     <text name="BuyNow">Buy now</text>
     <text name="WhatWillDoneAfterSubscriptionExpiry">What will be done after subscription expiry</text>
-    <text name="DeactiveTenant">Deactive tenant</text>
+    <text name="DeactiveTenant">Deactivate tenant</text>
     <text name="AssignToAnotherEdition">Assign to another edition</text>
     <text name="SubscriptionPrice">Subscription price</text>
     <text name="Free">Free</text>
@@ -1109,7 +1109,7 @@
     <text name="IsClosed">Is closed</text>
 
     <text name="NullValuesAreNotAllowed">Null values are not allowed.</text>
-    <text name="ReconcilationError">Reconcilation Error.</text>
+    <text name="ReconcilationError">Reconciliation Error.</text>
     <text name="DueDate">Due date</text>
     <text name="ImportLog">Import Log</text>
     <text name="ImportLogHeaderInfo">Manage import log</text>
