@@ -1165,7 +1165,7 @@
     <text name="Start Date">Start Date</text>
     <text name="End Date">End Date</text>
     <text name="Beginning Amount">Beginning Amount</text>
-    <text name="Accrued Amount">Accrued Amount</text>
+    <text name="Accrued Amortization">Accrued Amortization</text>
     <text name="Net Amount">Net Amount</text>
     <text name="Manual">Manual</text>
     <text name="Accumulate Amount">Accumulate Amount</text>
