@@ -7,6 +7,7 @@ import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import * as moment from 'moment';
 import { StoreDateService } from "../../../services/storedate.service";
+import { FileDownloadService } from '@shared/utils/file-download.service';
 
 @Component({
   selector: 'app-task-report',
@@ -19,10 +20,9 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
   @ViewChild("dateRangePicker", { static: true }) dateRangePickerElement: ElementRef;
   selectedDateRange: moment.Moment[] = [moment().add(-1, 'month').startOf('day'), moment().endOf('day')];
   filterStatus: number = 0;
-  AllOrActive = false;
   advancedFiltersAreShown = false;
   filterText = '';
-  titleFilter = '';
+
   categoryFilter: number = 0;
   statusFilter: number = 1;
   tasksList: any;
@@ -57,7 +57,8 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
   category: NameValueDtoOfInt64[] = [];
   constructor(private _router: Router,
     private _categoryService: CategoriesServiceProxy,
-    private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector, private userDate: StoreDateService) {
+    private _closingChecklistService: ClosingChecklistServiceProxy,
+    private _fileDownloadService: FileDownloadService, injector: Injector, private userDate: StoreDateService) {
     super(injector)
     this.FilterBoxOpen = false;
   }
@@ -71,6 +72,18 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
     this.AssigniBoxView = true;
     this.collapsibleRow = false;
   }
+   exportToExcel(): void {
+        this._closingChecklistService.getTaskToExcel(
+          this.filterText,
+          this.categoryFilter,
+          this.statusFilter,
+          this.getTaskWithAssigneeId,
+          this.selectedDateRange[0],
+          this.selectedDateRange[1],
+          this.primengTableHelper.getSorting(this.dataTable)).subscribe(result => {
+                this._fileDownloadService.downloadTempFile(result);
+            });
+    }
   onChange() {
     abp.event.trigger('app.dashboardFilters.dateRangePicker.onDateChange', this.selectedDateRange);
   }
@@ -101,12 +114,9 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
     this.primengTableHelper.showLoadingIndicator();
     this._closingChecklistService.getReport(
       this.filterText,
-      this.titleFilter,
       this.categoryFilter,
       this.statusFilter,
-      undefined,
       this.getTaskWithAssigneeId,
-      this.AllOrActive,
       this.selectedDateRange[0],
       this.selectedDateRange[1],
       this.primengTableHelper.getSorting(this.dataTable),
@@ -225,27 +235,9 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
   ResetGrid(): void {
     this.statusFilter = 0;
     this.categoryFilter = 0;  
-    this.titleFilter = '';
     this.filterStatus = 0;
     this.getTaskWithAssigneeId = 0;
     this.updateAssigneeOnHeader = true;
     this.getClosingCheckListAllTasks();
   }
-
-  changeToggleValue():void{
-    if(this.AllOrActive)
-    {
-      this.AllOrActive = false;
-    }
-    else{
-         this.AllOrActive = true;
-    }
-    this.getClosingCheckListAllTasks();
-    console.log(this.AllOrActive);
-
-  }
-
-
-
-
 }

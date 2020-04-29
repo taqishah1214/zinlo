@@ -47,7 +47,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
-    editionIcons: string[] = ['./assets/media/ClosingCheckList/startup.svg','./assets/media/ClosingCheckList/premium.svg','./assets/media/ClosingCheckList/Business_Info.ico'];
+    editionIcons: string[] = ['./assets/media/ClosingCheckList/startup.svg','./assets/media/ClosingCheckList/startup.svg','./assets/media/ClosingCheckList/startup.svg','./assets/media/ClosingCheckList/startup.svg'];
     constructor(
 
         injector: Injector,

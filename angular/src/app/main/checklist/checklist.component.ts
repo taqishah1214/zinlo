@@ -24,7 +24,6 @@ export class Checklist extends AppComponentBase implements OnInit {
   AllOrActive = false;
   advancedFiltersAreShown = false;
   filterText = '';
-  titleFilter = '';
   categoryFilter: number = 0;
   statusFilter: number = 0;
   dateFilter: Date = new Date();
@@ -124,14 +123,13 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.primengTableHelper.showLoadingIndicator();
     this._closingChecklistService.getAll(
       this.filterText,
-      this.titleFilter,
       this.categoryFilter,
       this.statusFilter,
       moment(this.dateFilter),
       this.getTaskWithAssigneeId,
+      undefined,
+      undefined,
       this.AllOrActive,
-      undefined,
-      undefined,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -263,7 +261,6 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.statusFilter = 0;
     this.categoryFilter = 0;
     this.dateFilter = new Date(2000, 0O5, 0O5, 17, 23, 42, 11);
-    this.titleFilter = '';
     this.filterStatus = 0;
     this.getTaskWithAssigneeId = 0;
     this.updateAssigneeOnHeader = true;

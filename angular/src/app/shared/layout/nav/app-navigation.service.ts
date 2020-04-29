@@ -44,7 +44,7 @@ export class AppNavigationService {
 
             new AppMenuItem('Reconciliation', 'Pages.Reconciliation', './assets/media/ClosingCheckList/reconcilliation.svg', '/app/main/reconcilliation', [ 
             ]),
-            new AppMenuItem('Reports', 'Pages.ClosingChecklist', './assets/media/ClosingCheckList/reconcilliation.svg', '', [
+            new AppMenuItem('Reports', 'Pages.ClosingChecklist', './assets/media/ClosingCheckList/MaskGroup30.svg', '', [
                 new AppMenuItem('TaskReport', 'Pages.ClosingChecklist','./assets/media/ClosingCheckList/dot.png','/app/main/task-report'),
                 new AppMenuItem('Trial Balance Report', 'Pages.ClosingChecklist','./assets/media/ClosingCheckList/dot.png','/app/main/trialbalance-report'),
 
