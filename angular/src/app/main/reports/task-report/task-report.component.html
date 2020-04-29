@@ -9,6 +9,19 @@
             <span class="kt-subheader__desc">
             </span>
         </div>
+        <div class="kt-subheader__wrapper pt-4">
+            <div class="dropdown"
+                data-toggle="dropdown" >
+                <i class="fas fa-plus"></i>
+            </div>
+            <div class="dropdown-menu">
+                <div  class="dropdown-item">
+                    <label>
+                         <span> Download</span>
+                     </label>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
@@ -19,7 +32,7 @@
                 <div class="card">
                     <div class="record-card-header">
                         <div class="record-card-header-bottom">
-                            <div class="record-card-header-bottom-inner1">
+                            <div class="record-card-header-bottom-inner1 form-group">
                                 
                                 <select style="margin-right: 10px;" class="form-control border-grey" name="statusFilter" [(ngModel)]="statusFilter"
                                     (change)="getClosingCheckListAllTasks()" id="statusFilter">
@@ -31,7 +44,7 @@
                                 </select>
                             
                             
-                                 <select class="form-control border-grey" name="categoryFilter"
+                                 <select class="form-control border-grey" style="width: auto;"name="categoryFilter"
                                     [(ngModel)]="categoryFilter" (change)="getClosingCheckListAllTasks()"
                                     id="exampleFormControlSelect2">
                                     <option value="0">{{"AllCategories" | localize}}</option>
