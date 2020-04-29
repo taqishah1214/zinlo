@@ -4355,12 +4355,9 @@ export class ClosingChecklistServiceProxy {
 
     /**
      * @param filter (optional) 
-     * @param titleFilter (optional) 
      * @param categoryFilter (optional) 
      * @param statusFilter (optional) 
-     * @param dateFilter (optional) 
      * @param assigneeId (optional) 
-     * @param allOrActive (optional) 
      * @param startDate (optional) 
      * @param endDate (optional) 
      * @param sorting (optional) 
@@ -4368,16 +4365,12 @@ export class ClosingChecklistServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getReport(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, startDate: moment.Moment | undefined, endDate: moment.Moment | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
+    getReport(filter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, assigneeId: number | undefined, startDate: moment.Moment | undefined, endDate: moment.Moment | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetReport?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
         else if (filter !== undefined)
             url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
-        if (titleFilter === null)
-            throw new Error("The parameter 'titleFilter' cannot be null.");
-        else if (titleFilter !== undefined)
-            url_ += "TitleFilter=" + encodeURIComponent("" + titleFilter) + "&"; 
         if (categoryFilter === null)
             throw new Error("The parameter 'categoryFilter' cannot be null.");
         else if (categoryFilter !== undefined)
@@ -4386,18 +4379,10 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'statusFilter' cannot be null.");
         else if (statusFilter !== undefined)
             url_ += "StatusFilter=" + encodeURIComponent("" + statusFilter) + "&"; 
-        if (dateFilter === null)
-            throw new Error("The parameter 'dateFilter' cannot be null.");
-        else if (dateFilter !== undefined)
-            url_ += "DateFilter=" + encodeURIComponent(dateFilter ? "" + dateFilter.toJSON() : "") + "&"; 
         if (assigneeId === null)
             throw new Error("The parameter 'assigneeId' cannot be null.");
         else if (assigneeId !== undefined)
             url_ += "AssigneeId=" + encodeURIComponent("" + assigneeId) + "&"; 
-        if (allOrActive === null)
-            throw new Error("The parameter 'allOrActive' cannot be null.");
-        else if (allOrActive !== undefined)
-            url_ += "AllOrActive=" + encodeURIComponent("" + allOrActive) + "&"; 
         if (startDate === null)
             throw new Error("The parameter 'startDate' cannot be null.");
         else if (startDate !== undefined)
@@ -4466,29 +4451,24 @@ export class ClosingChecklistServiceProxy {
 
     /**
      * @param filter (optional) 
-     * @param titleFilter (optional) 
      * @param categoryFilter (optional) 
      * @param statusFilter (optional) 
      * @param dateFilter (optional) 
      * @param assigneeId (optional) 
-     * @param allOrActive (optional) 
      * @param startDate (optional) 
      * @param endDate (optional) 
+     * @param allOrActive (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, titleFilter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, startDate: moment.Moment | undefined, endDate: moment.Moment | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
+    getAll(filter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, dateFilter: moment.Moment | undefined, assigneeId: number | undefined, startDate: moment.Moment | undefined, endDate: moment.Moment | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfTasksGroup> {
         let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
         else if (filter !== undefined)
             url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
-        if (titleFilter === null)
-            throw new Error("The parameter 'titleFilter' cannot be null.");
-        else if (titleFilter !== undefined)
-            url_ += "TitleFilter=" + encodeURIComponent("" + titleFilter) + "&"; 
         if (categoryFilter === null)
             throw new Error("The parameter 'categoryFilter' cannot be null.");
         else if (categoryFilter !== undefined)
@@ -4505,10 +4485,6 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'assigneeId' cannot be null.");
         else if (assigneeId !== undefined)
             url_ += "AssigneeId=" + encodeURIComponent("" + assigneeId) + "&"; 
-        if (allOrActive === null)
-            throw new Error("The parameter 'allOrActive' cannot be null.");
-        else if (allOrActive !== undefined)
-            url_ += "AllOrActive=" + encodeURIComponent("" + allOrActive) + "&"; 
         if (startDate === null)
             throw new Error("The parameter 'startDate' cannot be null.");
         else if (startDate !== undefined)
@@ -4517,6 +4493,10 @@ export class ClosingChecklistServiceProxy {
             throw new Error("The parameter 'endDate' cannot be null.");
         else if (endDate !== undefined)
             url_ += "EndDate=" + encodeURIComponent(endDate ? "" + endDate.toJSON() : "") + "&"; 
+        if (allOrActive === null)
+            throw new Error("The parameter 'allOrActive' cannot be null.");
+        else if (allOrActive !== undefined)
+            url_ += "AllOrActive=" + encodeURIComponent("" + allOrActive) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -5249,6 +5229,92 @@ export class ClosingChecklistServiceProxy {
             }));
         }
         return _observableOf<CreateOrEditClosingChecklistDto[]>(<any>null);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param categoryFilter (optional) 
+     * @param statusFilter (optional) 
+     * @param assigneeId (optional) 
+     * @param startDate (optional) 
+     * @param endDate (optional) 
+     * @param sorting (optional) 
+     * @return Success
+     */
+    getTaskToExcel(filter: string | undefined, categoryFilter: number | undefined, statusFilter: number | undefined, assigneeId: number | undefined, startDate: moment.Moment | undefined, endDate: moment.Moment | undefined, sorting: string | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/ClosingChecklist/GetTaskToExcel?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (categoryFilter === null)
+            throw new Error("The parameter 'categoryFilter' cannot be null.");
+        else if (categoryFilter !== undefined)
+            url_ += "CategoryFilter=" + encodeURIComponent("" + categoryFilter) + "&"; 
+        if (statusFilter === null)
+            throw new Error("The parameter 'statusFilter' cannot be null.");
+        else if (statusFilter !== undefined)
+            url_ += "StatusFilter=" + encodeURIComponent("" + statusFilter) + "&"; 
+        if (assigneeId === null)
+            throw new Error("The parameter 'assigneeId' cannot be null.");
+        else if (assigneeId !== undefined)
+            url_ += "AssigneeId=" + encodeURIComponent("" + assigneeId) + "&"; 
+        if (startDate === null)
+            throw new Error("The parameter 'startDate' cannot be null.");
+        else if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent(startDate ? "" + startDate.toJSON() : "") + "&"; 
+        if (endDate === null)
+            throw new Error("The parameter 'endDate' cannot be null.");
+        else if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent(endDate ? "" + endDate.toJSON() : "") + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTaskToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTaskToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTaskToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
     }
 }
 
