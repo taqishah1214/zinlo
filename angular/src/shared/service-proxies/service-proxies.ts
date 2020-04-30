@@ -17304,7 +17304,8 @@ export class CustomTenantRequestLinkResolverDto implements ICustomTenantRequestL
     editionId!: number | undefined;
     subscriptionStartType!: number | undefined;
     editionPaymentType!: number | undefined;
-    price!: string | undefined;
+    price!: number;
+    commitment!: number | undefined;
 
     constructor(data?: ICustomTenantRequestLinkResolverDto) {
         if (data) {
@@ -17322,6 +17323,7 @@ export class CustomTenantRequestLinkResolverDto implements ICustomTenantRequestL
             this.subscriptionStartType = data["subscriptionStartType"];
             this.editionPaymentType = data["editionPaymentType"];
             this.price = data["price"];
+            this.commitment = data["commitment"];
         }
     }
 
@@ -17339,6 +17341,7 @@ export class CustomTenantRequestLinkResolverDto implements ICustomTenantRequestL
         data["subscriptionStartType"] = this.subscriptionStartType;
         data["editionPaymentType"] = this.editionPaymentType;
         data["price"] = this.price;
+        data["commitment"] = this.commitment;
         return data; 
     }
 }
@@ -17348,7 +17351,8 @@ export interface ICustomTenantRequestLinkResolverDto {
     editionId: number | undefined;
     subscriptionStartType: number | undefined;
     editionPaymentType: number | undefined;
-    price: string | undefined;
+    price: number;
+    commitment: number | undefined;
 }
 
 export class IsTenantAvailableInput implements IIsTenantAvailableInput {
@@ -26684,6 +26688,7 @@ export class CreatePaymentDto implements ICreatePaymentDto {
     subscriptionPaymentGatewayType!: SubscriptionPaymentGatewayType;
     recurringPaymentEnabled!: boolean;
     successUrl!: string | undefined;
+    price!: number;
     errorUrl!: string | undefined;
 
     constructor(data?: ICreatePaymentDto) {
@@ -26703,6 +26708,7 @@ export class CreatePaymentDto implements ICreatePaymentDto {
             this.subscriptionPaymentGatewayType = data["subscriptionPaymentGatewayType"];
             this.recurringPaymentEnabled = data["recurringPaymentEnabled"];
             this.successUrl = data["successUrl"];
+            this.price = data["price"];
             this.errorUrl = data["errorUrl"];
         }
     }
@@ -26722,6 +26728,7 @@ export class CreatePaymentDto implements ICreatePaymentDto {
         data["subscriptionPaymentGatewayType"] = this.subscriptionPaymentGatewayType;
         data["recurringPaymentEnabled"] = this.recurringPaymentEnabled;
         data["successUrl"] = this.successUrl;
+        data["price"] = this.price;
         data["errorUrl"] = this.errorUrl;
         return data; 
     }
@@ -26734,6 +26741,7 @@ export interface ICreatePaymentDto {
     subscriptionPaymentGatewayType: SubscriptionPaymentGatewayType;
     recurringPaymentEnabled: boolean;
     successUrl: string | undefined;
+    price: number;
     errorUrl: string | undefined;
 }
 

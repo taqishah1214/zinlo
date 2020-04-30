@@ -49,7 +49,7 @@ namespace Zinlo.Web.Url
 
         public string CreateCustomPlanPaymentUrlFormat(string tenancyName)
         {
-            var activationLink = WebUrlService.GetSiteRootAddress(tenancyName).EnsureEndsWith('/') + BuyCustomPlaRoute + "?tenantId={tenantId}&editionId={editionId}&subscriptionStartType={subscriptionStartType}&editionPaymentType={editionPaymentType}&price={price}";
+            var activationLink = WebUrlService.GetSiteRootAddress(tenancyName).EnsureEndsWith('/') + BuyCustomPlaRoute + "?tenantId={tenantId}&editionId={editionId}&subscriptionStartType={subscriptionStartType}&editionPaymentType={editionPaymentType}&price={price}&commitment={commitment}";
             return activationLink;
         }
 

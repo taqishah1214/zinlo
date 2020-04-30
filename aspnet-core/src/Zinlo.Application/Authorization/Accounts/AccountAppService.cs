@@ -73,14 +73,17 @@ namespace Zinlo.Authorization.Accounts
             var subscriptionStartType = Convert.ToInt32(query["subscriptionStartType"]) as int?;
             var editionPaymentType = Convert.ToInt32(query["editionPaymentType"]) as int?;
             var tenantId = Convert.ToInt32(query["tenantId"]) as int?;
+            var commitment = Convert.ToInt32(query["Commitment"]) as int?;
 
             return new CustomTenantRequestLinkResolverDto
             {
                 EditionId = editionId,
                 EditionPaymentType = editionPaymentType,
-                Price = Convert.ToDouble(query["price"].ToString()),
+                Price = Convert.ToDecimal(query["price"].ToString()),
                 SubscriptionStartType = subscriptionStartType,
-                TenantId = tenantId
+                TenantId = tenantId,
+                 Commitment = commitment
+                
             };
         }
 

@@ -364,7 +364,7 @@ namespace Zinlo.Authorization.Users
             return basePath + "?" + encrptedParameterName + "=" + HttpUtility.UrlEncode(SimpleStringCipher.Instance.Encrypt(query));
         }
 
-        public async Task SendCustomPlaEmail(string email, string price, string link=null, int tenantId=0, int editionId=0,int subscriptionStartType=0,int editionPaymentType=0)
+        public async Task SendCustomPlaEmail(string email, string price, string link=null, int tenantId=0, int editionId=0,int subscriptionStartType=0,int editionPaymentType=0,int commitment=0)
         {
            
            link = link.Replace("{tenantId}",""+tenantId);
@@ -372,6 +372,7 @@ namespace Zinlo.Authorization.Users
             link = link.Replace("{subscriptionStartType}", "" + subscriptionStartType);
             link = link.Replace("{editionPaymentType}", ""+ editionPaymentType);
             link = link.Replace("{price}",price);
+            link = link.Replace("{commitment}",""+commitment);
             link = EncryptQueryParameters(link);
             var tenancyName = GetTenancyNameOrNull(tenantId);
             var emailTemplate = GetTitleAndSubTitle(tenantId,"Request Approve","Custom Plan Request Approve");

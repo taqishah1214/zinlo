@@ -15,7 +15,7 @@ namespace Zinlo.MultiTenancy.Payments.Dto
         public bool RecurringPaymentEnabled { get; set; }
 
         public string SuccessUrl { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         public string ErrorUrl { get; set; }
     }

@@ -36,7 +36,7 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
     supportsRecurringPayments = false;
     recurringPaymentEnabled = false;
     editionId = 0;
-  price = "";
+  price = 0;
 
     constructor(
         injector: Injector,
@@ -51,13 +51,9 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
 
     ngOnInit():
         void {
-        debugger;
         if (this._activatedRoute.snapshot.queryParams['c']) {
-            debugger;
             var c = this._activatedRoute.snapshot.queryParams['c'];
-            console.log(c)
             this._accountService.linkResolve(new CustomTenantRequestLinkResolveInput({ c: c })).subscribe((response) => {
-
                 abp.multiTenancy.setTenantIdCookie(response.tenantId);
                 this.editionPaymentType = response.editionPaymentType;
                 this.editionId = response.editionId;
@@ -65,9 +61,8 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
                 this._tenantRegistrationService.getEdition(this.editionId)
                     .subscribe((result: EditionSelectDto) => {
                         this.edition = result;
-                        this.selectedPaymentPeriodType = 365;//this._paymnetHelperService.getInitialSelectedPaymentPeriodType(this.edition);
                     });
-
+                    this.selectedPaymentPeriodType = response.commitment;
                 this._paymentAppService.getActiveGateways(undefined)
                     .subscribe((result: PaymentGatewayModel[]) => {
                         this.paymentGateways = result;
@@ -107,6 +102,7 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
         input.paymentPeriodType = ((this.selectedPaymentPeriodType) as any);
         input.recurringPaymentEnabled = this.recurringPaymentEnabled;
         input.subscriptionPaymentGatewayType = gatewayType;
+        input.price = this.price;
         input.successUrl = AppConsts.remoteServiceBaseUrl + '/api/services/app/payment/' + this._paymnetHelperService.getEditionPaymentType(this.editionPaymentType) + 'Succeed';
         input.errorUrl = AppConsts.remoteServiceBaseUrl + '/api/services/app/payment/PaymentFailed';
 
