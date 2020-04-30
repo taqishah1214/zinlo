@@ -392,7 +392,14 @@ namespace Zinlo.MultiTenancy.Payments.Stripe
             {
                 var edition = (SubscribableEdition)await _editionManager.GetByIdAsync(payment.EditionId);
                 planId = GetPlanId(edition.Name, payment.GetPaymentPeriodType());
-                amount = edition.GetPaymentAmount(payment.GetPaymentPeriodType());
+                if (edition.IsCustom)
+                {
+                    amount = payment.Amount;
+                }
+                else
+                {
+                    amount = edition.GetPaymentAmount(payment.GetPaymentPeriodType());
+                }
             }
 
             var product = await GetOrCreateProductAsync(ProductName);

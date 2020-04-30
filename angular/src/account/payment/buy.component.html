@@ -51,23 +51,14 @@
 
 
         <!--custom payment-->
-        <div *ngIf="price > 0 && selectedPaymentPeriodType.Monthly" class="form-group">
-            <label class="kt-radio">
-                <input class="form-control" type="radio" name="PaymentPeriodType" [checked]="selectedPaymentPeriodType==paymentPeriodType.Monthly"
-                    [value]="paymentPeriodType.Monthly"
-                    (change)="onPaymentPeriodChangeChange(paymentPeriodType.Monthly)" />
-                {{"MonthlyPrice" | localize}}:
-                {{appSession.application.currencySign}}{{price | number : '1.2-2'}}
-                <span></span>
-            </label>
-        </div>
+        
 
-        <div *ngIf="price > 0 && selectedPaymentPeriodType.Annual" class="form-group">
+        <div *ngIf="price > 0" class="form-group">
             <label class="kt-radio">
-                <input class="form-control" type="radio" name="PaymentPeriodType" [checked]="selectedPaymentPeriodType==paymentPeriodType.Annual"
-                [value]="paymentPeriodType.Annual"
-                    (change)="onPaymentPeriodChangeChange(paymentPeriodType.Annual)" />
-                {{"AnnualPrice" | localize}}:
+                <input class="form-control" type="radio" name="PaymentPeriodType"
+               
+                    />
+               Payment:
                 {{appSession.application.currencySign}}{{price | number : '1.2-2'}}
                 <span></span>
             </label>

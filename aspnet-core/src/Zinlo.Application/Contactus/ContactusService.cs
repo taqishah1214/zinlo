@@ -46,6 +46,7 @@ namespace Zinlo.Contactus
             var response = _contactusRepository.GetAll().FirstOrDefault(x => x.TenantId == contactus.TenantId);
             response.Pricing = contactus.Pricing;
             response.IsAccepted = true;
+            response.Commitment = contactus.Commitment;
             await _contactusRepository.UpdateAsync(response);
             var res = _tenantRepository.FirstOrDefault(x => x.Id == response.TenantId);
             await _userEmailer.SendCustomPlaEmail(response.Email, "" + response.Pricing, AppUrlService.CreateCustomPlanUrlFormat(response.TenantId), response.TenantId, res.EditionId.Value, 4, 0,response.Commitment);
