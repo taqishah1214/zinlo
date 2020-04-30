@@ -38,7 +38,7 @@
             </label>
         </div>
 
-        <div *ngIf="edition.annualPrice > 0" class="form-group">
+        <div *ngIf="price.length>0" class="form-group">
             <label class="kt-radio">
                 <input class="form-control" type="radio" name="PaymentPeriodType" [checked]="selectedPaymentPeriodType==paymentPeriodType.Annual"
                 [value]="paymentPeriodType.Annual"
@@ -46,6 +46,20 @@
                 {{"AnnualPrice" | localize}}:
                 {{appSession.application.currencySign}}{{edition.annualPrice | number : '1.2-2'}}
                 <span></span>
+            </label>
+        </div>
+
+        <div *ngIf="price.length>0" class="form-group">
+            <label class="kt-radio">
+                <input class="form-control" type="radio" name="PaymentPeriodType"
+                
+                     />
+                {{"AnnualPrice" | localize}}:
+                
+                {{price}}
+                <span>
+
+                </span>
             </label>
         </div>
 

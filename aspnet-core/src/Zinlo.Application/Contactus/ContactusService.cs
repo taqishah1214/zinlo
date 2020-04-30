@@ -11,6 +11,10 @@ using Microsoft.EntityFrameworkCore;
 using Zinlo.MultiTenancy;
 using Abp.Domain.Uow;
 using Zinlo.Url;
+using Zinlo.Authorization.Accounts.Dto;
+using Abp.Runtime.Security;
+using System.Web;
+using System;
 
 namespace Zinlo.Contactus
 {
@@ -42,24 +46,24 @@ namespace Zinlo.Contactus
             response.IsAccepted = true;
             await _contactusRepository.UpdateAsync(response);
             var res = _tenantRepository.FirstOrDefault(x => x.Id == response.TenantId);
-           await _userEmailer.SendCustomPlaEmail(response.Email, "" + response.Pricing, AppUrlService.CreateCustomPlanUrlFormat(response.TenantId), response.TenantId, res.EditionId.Value,4,0);
+            await _userEmailer.SendCustomPlaEmail(response.Email, "" + response.Pricing, AppUrlService.CreateCustomPlanUrlFormat(response.TenantId), response.TenantId, res.EditionId.Value, 4, 0);
             return true;
         }
-       
+
         private string GetTenancyNameOrNull(int? tenantId)
         {
             if (tenantId == null)
             {
                 return null;
             }
-            
-                using (_unitOfWorkProvider.Current.SetTenantId(null))
-                {
 
-                    return _tenantRepository.Get(tenantId.Value).TenancyName;
-                   
-                }
-            
+            using (_unitOfWorkProvider.Current.SetTenantId(null))
+            {
+
+                return _tenantRepository.Get(tenantId.Value).TenancyName;
+
+            }
+
         }
         public async Task Create(CreateOrUpdateContactusInput create, int tenantId)
         {
@@ -99,6 +103,7 @@ namespace Zinlo.Contactus
                 CreationTime = response.CreationTime
             };
         }
+       
 
         public async Task<PagedResultDto<ContactusDto>> GetContectus(GetContactusListInput input)
         {

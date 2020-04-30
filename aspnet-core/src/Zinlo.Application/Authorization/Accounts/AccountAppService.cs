@@ -14,6 +14,7 @@ using Zinlo.Authorization.Accounts.Dto;
 using Zinlo.Authorization.Impersonation;
 using Zinlo.Authorization.Users;
 using Zinlo.Configuration;
+using Zinlo.Contactus.Dto;
 using Zinlo.Debugging;
 using Zinlo.MultiTenancy;
 using Zinlo.MultiTenancy.Dto;
@@ -54,6 +55,33 @@ namespace Zinlo.Authorization.Accounts
 
             AppUrlService = NullAppUrlService.Instance;
             RecaptchaValidator = NullRecaptchaValidator.Instance;
+        }
+
+
+
+        public async Task<CustomTenantRequestLinkResolverDto> LinkResolve(CustomTenantRequestLinkResolveInput input)
+        {
+            //if (string.IsNullOrEmpty(input.c))
+            //{
+            //    return Task.FromResult(AbpSession.TenantId);
+            //}
+
+            var parameters = SimpleStringCipher.Instance.Decrypt(input.c);
+            var query = HttpUtility.ParseQueryString(parameters);
+
+            var editionId = Convert.ToInt32(query["editionId"]) as int?;
+            var subscriptionStartType = Convert.ToInt32(query["subscriptionStartType"]) as int?;
+            var editionPaymentType = Convert.ToInt32(query["editionPaymentType"]) as int?;
+            var tenantId = Convert.ToInt32(query["tenantId"]) as int?;
+
+            return new CustomTenantRequestLinkResolverDto
+            {
+                EditionId = editionId,
+                EditionPaymentType = editionPaymentType,
+                Price = Convert.ToDouble(query["price"].ToString()),
+                SubscriptionStartType = subscriptionStartType,
+                TenantId = tenantId
+            };
         }
 
         public async Task<IsTenantAvailableOutput> IsTenantAvailable(IsTenantAvailableInput input)
