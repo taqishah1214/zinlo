@@ -294,12 +294,27 @@ namespace Zinlo.Reconciliation
         {            
             var item = ObjectMapper.Map<Amortization>(input);
             var itemAddedId = await _amortizationRepository.InsertAndGetIdAsync(item);
-            ReconciliationAmounts amounts = new ReconciliationAmounts();
-            amounts.Amount = input.Amount;
-            amounts.AmountType = AmountType.Amortized;
-            amounts.itemId = itemAddedId;
-            amounts.ChartsofAccountId = input.ChartsofAccountId;
-            await _reconciliationAmountsRepository.InsertAsync(amounts);
+            if ((int)input.Criteria == (int)Criteria.Manual)
+            {
+
+                ReconciliationAmounts amounts = new ReconciliationAmounts();
+                amounts.Amount = input.AccomulateAmount;
+                amounts.AmountType = AmountType.Amortized;
+                amounts.itemId = itemAddedId;
+                amounts.ChartsofAccountId = input.ChartsofAccountId;
+                await _reconciliationAmountsRepository.InsertAsync(amounts);
+            }
+            else
+            {
+                ReconciliationAmounts amounts = new ReconciliationAmounts();
+                amounts.Amount = input.Amount;
+                amounts.AmountType = AmountType.Amortized;
+                amounts.itemId = itemAddedId;
+                amounts.ChartsofAccountId = input.ChartsofAccountId;
+                await _reconciliationAmountsRepository.InsertAsync(amounts);
+            }
+               
+          
             if (input.AttachmentsPath != null)
             {
                 PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();
@@ -317,20 +332,22 @@ namespace Zinlo.Reconciliation
         }
         protected virtual async Task Update(CreateOrEditAmortizationDto input)
         {
-            var item = await _amortizationRepository.FirstOrDefaultAsync(input.Id);
-            var data = ObjectMapper.Map(input, item);
-            await _amortizationRepository.UpdateAsync(data);
-            var previousItemAmount = await _reconciliationAmountsRepository.FirstOrDefaultAsync(p => p.itemId == input.Id && p.AmountType == AmountType.Amortized);
-            previousItemAmount.isChanged = true;
-            previousItemAmount.ChangeDateTime = DateTime.Now;
-            await _reconciliationAmountsRepository.UpdateAsync(previousItemAmount);
-            ReconciliationAmounts amounts = new ReconciliationAmounts();
-            amounts.Amount = input.Amount;
-            amounts.AmountType = AmountType.Amortized;
-            amounts.itemId = input.Id;
-            amounts.isChanged = true;
-            amounts.ChartsofAccountId = input.ChartsofAccountId;
-            await _reconciliationAmountsRepository.InsertAsync(amounts);
+            if ((int)input.Criteria == (int)Criteria.Manual)
+            {
+                var item = await _amortizationRepository.FirstOrDefaultAsync(input.Id);
+                var previousItemAmount = await _reconciliationAmountsRepository.FirstOrDefaultAsync(p => p.itemId == input.Id && p.AmountType == AmountType.Amortized);
+                previousItemAmount.isChanged = true;
+                previousItemAmount.ChangeDateTime = DateTime.Now;
+                await _reconciliationAmountsRepository.UpdateAsync(previousItemAmount);
+                ReconciliationAmounts amounts = new ReconciliationAmounts();
+                amounts.Amount = input.AccomulateAmount;
+                amounts.AmountType = AmountType.Amortized;
+                amounts.itemId = input.Id;
+                amounts.isChanged = true;
+                amounts.ChartsofAccountId = input.ChartsofAccountId;
+                await _reconciliationAmountsRepository.InsertAsync(amounts);
+            }
+          
             if (input.AttachmentsPath != null)
             {
                 PostAttachmentsPathDto postAttachmentsPathDto = new PostAttachmentsPathDto();

@@ -31,6 +31,62 @@ export class AccountServiceProxy {
      * @param body (optional) 
      * @return Success
      */
+    linkResolve(body: CustomTenantRequestLinkResolveInput | undefined): Observable<CustomTenantRequestLinkResolverDto> {
+        let url_ = this.baseUrl + "/api/services/app/Account/LinkResolve";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLinkResolve(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLinkResolve(<any>response_);
+                } catch (e) {
+                    return <Observable<CustomTenantRequestLinkResolverDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CustomTenantRequestLinkResolverDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processLinkResolve(response: HttpResponseBase): Observable<CustomTenantRequestLinkResolverDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CustomTenantRequestLinkResolverDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CustomTenantRequestLinkResolverDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     isTenantAvailable(body: IsTenantAvailableInput | undefined): Observable<IsTenantAvailableOutput> {
         let url_ = this.baseUrl + "/api/services/app/Account/IsTenantAvailable";
         url_ = url_.replace(/[?&]$/, "");
@@ -17344,6 +17400,98 @@ export class WebLogServiceProxy {
     }
 }
 
+export class CustomTenantRequestLinkResolveInput implements ICustomTenantRequestLinkResolveInput {
+    c!: string | undefined;
+
+    constructor(data?: ICustomTenantRequestLinkResolveInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.c = data["c"];
+        }
+    }
+
+    static fromJS(data: any): CustomTenantRequestLinkResolveInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CustomTenantRequestLinkResolveInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["c"] = this.c;
+        return data; 
+    }
+}
+
+export interface ICustomTenantRequestLinkResolveInput {
+    c: string | undefined;
+}
+
+export class CustomTenantRequestLinkResolverDto implements ICustomTenantRequestLinkResolverDto {
+    tenantId!: number | undefined;
+    editionId!: number | undefined;
+    subscriptionStartType!: number | undefined;
+    editionPaymentType!: number | undefined;
+    price!: number;
+    commitment!: number | undefined;
+
+    constructor(data?: ICustomTenantRequestLinkResolverDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.tenantId = data["tenantId"];
+            this.editionId = data["editionId"];
+            this.subscriptionStartType = data["subscriptionStartType"];
+            this.editionPaymentType = data["editionPaymentType"];
+            this.price = data["price"];
+            this.commitment = data["commitment"];
+        }
+    }
+
+    static fromJS(data: any): CustomTenantRequestLinkResolverDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CustomTenantRequestLinkResolverDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tenantId"] = this.tenantId;
+        data["editionId"] = this.editionId;
+        data["subscriptionStartType"] = this.subscriptionStartType;
+        data["editionPaymentType"] = this.editionPaymentType;
+        data["price"] = this.price;
+        data["commitment"] = this.commitment;
+        return data; 
+    }
+}
+
+export interface ICustomTenantRequestLinkResolverDto {
+    tenantId: number | undefined;
+    editionId: number | undefined;
+    subscriptionStartType: number | undefined;
+    editionPaymentType: number | undefined;
+    price: number;
+    commitment: number | undefined;
+}
+
 export class IsTenantAvailableInput implements IIsTenantAvailableInput {
     tenancyName!: string | undefined;
 
@@ -26681,6 +26829,7 @@ export class CreatePaymentDto implements ICreatePaymentDto {
     subscriptionPaymentGatewayType!: SubscriptionPaymentGatewayType;
     recurringPaymentEnabled!: boolean;
     successUrl!: string | undefined;
+    price!: number;
     errorUrl!: string | undefined;
 
     constructor(data?: ICreatePaymentDto) {
@@ -26700,6 +26849,7 @@ export class CreatePaymentDto implements ICreatePaymentDto {
             this.subscriptionPaymentGatewayType = data["subscriptionPaymentGatewayType"];
             this.recurringPaymentEnabled = data["recurringPaymentEnabled"];
             this.successUrl = data["successUrl"];
+            this.price = data["price"];
             this.errorUrl = data["errorUrl"];
         }
     }
@@ -26719,6 +26869,7 @@ export class CreatePaymentDto implements ICreatePaymentDto {
         data["subscriptionPaymentGatewayType"] = this.subscriptionPaymentGatewayType;
         data["recurringPaymentEnabled"] = this.recurringPaymentEnabled;
         data["successUrl"] = this.successUrl;
+        data["price"] = this.price;
         data["errorUrl"] = this.errorUrl;
         return data; 
     }
@@ -26731,6 +26882,7 @@ export interface ICreatePaymentDto {
     subscriptionPaymentGatewayType: SubscriptionPaymentGatewayType;
     recurringPaymentEnabled: boolean;
     successUrl: string | undefined;
+    price: number;
     errorUrl: string | undefined;
 }
 

@@ -23,5 +23,15 @@ namespace Zinlo.Test.Base.Url
         {
             return "http://test.com/";
         }
+
+        public string CreateCustomPlanUrlFormat(int? tenantId)
+        {
+            return "http://test.com/";
+        }
+
+        public string CreateCustomPlanPaymentUrlFormat(string tenancyName)
+        {
+            return "http://test.com/";
+        }
     }
 }

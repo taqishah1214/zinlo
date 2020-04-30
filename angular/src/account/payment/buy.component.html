@@ -49,6 +49,23 @@
             </label>
         </div>
 
+
+        <!--custom payment-->
+        
+
+        <div *ngIf="price > 0" class="form-group">
+            <label class="kt-radio">
+                <input class="form-control" type="radio" name="PaymentPeriodType"
+               
+                    />
+               Payment:
+                {{appSession.application.currencySign}}{{price | number : '1.2-2'}}
+                <span></span>
+            </label>
+        </div>
+
+
+
         <div class="kt-separator kt-separator--border-dashed"></div>
 
         <div *ngIf="supportsRecurringPayments" class="form-group">

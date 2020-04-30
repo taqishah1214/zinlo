@@ -11,7 +11,8 @@ namespace Zinlo.Contactus
     public interface IContactusService:IApplicationService
     {
 
-        Task<PagedResultDto<ContactusDto>> GetContectus(GetContactusListInput input);
+        
+         Task<PagedResultDto<ContactusDto>> GetContectus(GetContactusListInput input);
         Task<ContactusDto> GetContactusByTenantId(GetContactusInput nput);
         Task Create(CreateOrUpdateContactusInput create,int tenantId);
         Task<bool> ApproveRequest(ContactusDto contactus);

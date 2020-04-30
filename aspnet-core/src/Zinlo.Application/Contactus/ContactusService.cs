@@ -10,6 +10,11 @@ using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Zinlo.MultiTenancy;
 using Abp.Domain.Uow;
+using Zinlo.Url;
+using Zinlo.Authorization.Accounts.Dto;
+using Abp.Runtime.Security;
+using System.Web;
+using System;
 
 namespace Zinlo.Contactus
 {
@@ -19,6 +24,7 @@ namespace Zinlo.Contactus
         private readonly IRepository<ContactUs, long> _contactusRepository;
         private readonly IUserEmailer _userEmailer;
         private readonly IRepository<Tenant> _tenantRepository;
+        public IAppUrlService AppUrlService { get; set; }
         public ContactusService(
             IRepository<ContactUs, long> contactusRepository,
               IUserEmailer userEmailer,
@@ -30,32 +36,37 @@ namespace Zinlo.Contactus
             _userEmailer = userEmailer;
             _tenantRepository = tenantRepository;
             _unitOfWorkProvider = unitOfWorkProvider;
+            AppUrlService = NullAppUrlService.Instance;
         }
 
         public async Task<bool> ApproveRequest(ContactusDto contactus)
         {
+            
+            
             var response = _contactusRepository.GetAll().FirstOrDefault(x => x.TenantId == contactus.TenantId);
             response.Pricing = contactus.Pricing;
             response.IsAccepted = true;
+            response.Commitment = contactus.Commitment;
             await _contactusRepository.UpdateAsync(response);
-            await _userEmailer.SendCustomPlaEmail(response.Email, "" + response.Pricing, response.TenantId);
+            var res = _tenantRepository.FirstOrDefault(x => x.Id == response.TenantId);
+            await _userEmailer.SendCustomPlaEmail(response.Email, "" + response.Pricing, AppUrlService.CreateCustomPlanUrlFormat(response.TenantId), response.TenantId, res.EditionId.Value, 4, 0,response.Commitment);
             return true;
         }
-       
+
         private string GetTenancyNameOrNull(int? tenantId)
         {
             if (tenantId == null)
             {
                 return null;
             }
-            
-                using (_unitOfWorkProvider.Current.SetTenantId(null))
-                {
 
-                    return _tenantRepository.Get(tenantId.Value).TenancyName;
-                   
-                }
-            
+            using (_unitOfWorkProvider.Current.SetTenantId(null))
+            {
+
+                return _tenantRepository.Get(tenantId.Value).TenancyName;
+
+            }
+
         }
         public async Task Create(CreateOrUpdateContactusInput create, int tenantId)
         {
@@ -95,6 +106,7 @@ namespace Zinlo.Contactus
                 CreationTime = response.CreationTime
             };
         }
+       
 
         public async Task<PagedResultDto<ContactusDto>> GetContectus(GetContactusListInput input)
         {

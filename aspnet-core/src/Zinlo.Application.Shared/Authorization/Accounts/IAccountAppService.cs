@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Abp.Application.Services;
 using Zinlo.Authorization.Accounts.Dto;
+using Zinlo.Contactus.Dto;
 
 namespace Zinlo.Authorization.Accounts
 {
     public interface IAccountAppService : IApplicationService
     {
+        Task<CustomTenantRequestLinkResolverDto> LinkResolve(CustomTenantRequestLinkResolveInput input);
         Task<IsTenantAvailableOutput> IsTenantAvailable(IsTenantAvailableInput input);
 
         Task<int?> ResolveTenantId(ResolveTenantIdInput input);

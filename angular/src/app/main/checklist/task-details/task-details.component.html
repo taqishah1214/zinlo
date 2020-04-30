@@ -190,7 +190,7 @@
                                             <div class="activity-inner-b mb-3">
                                                 <div class="notification-line1">
                                                     <span>{{i.result.ChangeOccurUser.name}}</span> Changed the
-                                                    <span>Assignee </span>{{i.changeTime | momentFormat:'Do MMM YY LTS'}}
+                                                    <span>{{"Assignee" | localize}} </span>{{i.changeTime | momentFormat:'Do MMM YY LTS'}}
                                                 </div>
                                                 <div>
                                                     <div style="height: 25px !important;width: 25px !important;"
@@ -251,7 +251,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div [ngClass]="{'disabled':!monthStatus}">
-                                        <app-status [TaskId]="recordId" [StatusList]=taskDetailObject.taskStatus>
+                                        <app-status [TaskId]="recordId" (reload)="onReload($event)" [StatusList]=taskDetailObject.taskStatus>
                                         </app-status>
 
                                     </div>
