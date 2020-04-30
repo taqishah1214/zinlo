@@ -13,7 +13,8 @@ export class StatusComponent implements OnInit {
   @Input() TaskId : any;
   @Output() messageEvent = new EventEmitter<number>();
   _changeStatus: ChangeStatusDto = new ChangeStatusDto();
-
+  
+  @Output() reload: EventEmitter<any> = new EventEmitter();
   constructor( private _closingChecklistService: ClosingChecklistServiceProxy ,private _router: Router) { }
 
   ngOnInit() {
@@ -24,6 +25,8 @@ export class StatusComponent implements OnInit {
 
   }
   ChangeStatus(value) : void {
+    
+   
     this.ChangeValue(value);
     this._changeStatus.statusId = value;
     this._changeStatus.taskId = this.TaskId;
@@ -34,7 +37,7 @@ export class StatusComponent implements OnInit {
     else{
       this.messageEvent.emit(this._changeStatus.statusId);
     }
-    
+    this.reload.emit();
   }
 
   ChangeValue(value): void {

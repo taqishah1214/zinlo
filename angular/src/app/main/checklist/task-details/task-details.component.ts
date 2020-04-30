@@ -267,7 +267,10 @@ setTaskNameHistoryParam(item){
     }
 
   }
-
+  onReload(){
+    this.getAuditLogOfTask();
+    this.getTaskDetails(this.recordId);
+  }
   getProfilePicture() {
     this.userInfo.getProfilePicture();
     this.userInfo.profilePicture.subscribe(
@@ -282,6 +285,7 @@ setTaskNameHistoryParam(item){
     this.commantBox = false;
   }
   updateDetails(): void {
+    this.getAuditLogOfTask();
     this.getTaskDetails(this.recordId);
   }
   onComment(): void {
