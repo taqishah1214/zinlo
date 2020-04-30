@@ -30,5 +30,15 @@ namespace Zinlo.Url
         {
             throw new NotImplementedException();
         }
+
+        public string CreateCustomPlanUrlFormat(int? tenantId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string CreateCustomPlanPaymentUrlFormat(string tenancyName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

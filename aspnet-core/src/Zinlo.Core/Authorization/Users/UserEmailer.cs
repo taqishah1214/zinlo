@@ -364,14 +364,22 @@ namespace Zinlo.Authorization.Users
             return basePath + "?" + encrptedParameterName + "=" + HttpUtility.UrlEncode(SimpleStringCipher.Instance.Encrypt(query));
         }
 
-        public async Task SendCustomPlaEmail(string email, string price, int tenantId)
+        public async Task SendCustomPlaEmail(string email, string price, string link=null, int tenantId=0, int editionId=0,int subscriptionStartType=0,int editionPaymentType=0)
         {
+           
+           link = link.Replace("{tenantId}",""+tenantId);
+            link = link.Replace("{editionId}", "" + editionId);
+            link = link.Replace("{subscriptionStartType}", "" + subscriptionStartType);
+            link = link.Replace("{editionPaymentType}", ""+ editionPaymentType);
+            link = link.Replace("{price}",price);
+            link = EncryptQueryParameters(link);
             var tenancyName = GetTenancyNameOrNull(tenantId);
             var emailTemplate = GetTitleAndSubTitle(tenantId,"Request Approve","Custom Plan Request Approve");
             var mailMessage = new StringBuilder();
             mailMessage.AppendLine("<b>" + L("TenancyName") + "</b>: " + tenancyName + "<br />");
             mailMessage.AppendLine(" Dear Customer Thanks for chosing zinlo we have review your request ");
             mailMessage.AppendLine($"<br/> accodig to your custom request here is our price offer letter ${price}");
+            mailMessage.AppendLine("<span style=\"font-size: 8pt;\">" + link + "</span>");
             await ReplaceBodyAndSend(email,"Custom Plan Request Approve", emailTemplate, mailMessage);
         }
     }

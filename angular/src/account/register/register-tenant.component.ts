@@ -106,6 +106,7 @@ export class RegisterTenantComponent extends AppComponentBase implements OnInit,
                                 editionPaymentType: this.editionPaymentType
                             }
                         });
+                        
                 } else {
                     this._router.navigate(['account/register-tenant-result']);
                 }

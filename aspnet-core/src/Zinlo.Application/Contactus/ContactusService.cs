@@ -10,6 +10,7 @@ using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Zinlo.MultiTenancy;
 using Abp.Domain.Uow;
+using Zinlo.Url;
 
 namespace Zinlo.Contactus
 {
@@ -19,6 +20,7 @@ namespace Zinlo.Contactus
         private readonly IRepository<ContactUs, long> _contactusRepository;
         private readonly IUserEmailer _userEmailer;
         private readonly IRepository<Tenant> _tenantRepository;
+        public IAppUrlService AppUrlService { get; set; }
         public ContactusService(
             IRepository<ContactUs, long> contactusRepository,
               IUserEmailer userEmailer,
@@ -30,6 +32,7 @@ namespace Zinlo.Contactus
             _userEmailer = userEmailer;
             _tenantRepository = tenantRepository;
             _unitOfWorkProvider = unitOfWorkProvider;
+            AppUrlService = NullAppUrlService.Instance;
         }
 
         public async Task<bool> ApproveRequest(ContactusDto contactus)
@@ -38,7 +41,8 @@ namespace Zinlo.Contactus
             response.Pricing = contactus.Pricing;
             response.IsAccepted = true;
             await _contactusRepository.UpdateAsync(response);
-            await _userEmailer.SendCustomPlaEmail(response.Email, "" + response.Pricing, response.TenantId);
+            var res = _tenantRepository.FirstOrDefault(x => x.Id == response.TenantId);
+           await _userEmailer.SendCustomPlaEmail(response.Email, "" + response.Pricing, AppUrlService.CreateCustomPlanUrlFormat(response.TenantId), response.TenantId, res.EditionId.Value,4,0);
             return true;
         }
        

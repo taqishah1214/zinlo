@@ -10,7 +10,8 @@ import {
     CreatePaymentDto,
     EditionPaymentType,
     PaymentPeriodType,
-    SubscriptionPaymentGatewayType
+    SubscriptionPaymentGatewayType,
+    ResolveTenantIdInput
 } from '@shared/service-proxies/service-proxies';
 import { AppConsts } from '@shared/AppConsts';
 import { PaymentHelperService } from './payment-helper.service';
@@ -33,6 +34,7 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
     recurringPaymentEnabled = false;
     editionId = 0;
 
+
     constructor(
         injector: Injector,
         private _activatedRoute: ActivatedRoute,
@@ -44,6 +46,13 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
     }
 
     ngOnInit(): void {
+        debugger;
+        if (this._activatedRoute.snapshot.queryParams['c']) {
+            debugger;
+            var c = this._activatedRoute.snapshot.queryParams['c'];
+          new ResolveTenantIdInput({ c: c });
+           
+        }
         let tenantId = parseInt(this._activatedRoute.snapshot.queryParams['tenantId']);
         abp.multiTenancy.setTenantIdCookie(tenantId);
 
