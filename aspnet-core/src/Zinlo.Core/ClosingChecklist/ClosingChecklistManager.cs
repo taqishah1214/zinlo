@@ -39,7 +39,10 @@ namespace Zinlo.ClosingChecklist
 
         public async Task<long> InsertAndGetIdAsync(ClosingChecklist input)
         {
-            return await _closingChecklistRepository.InsertAndGetIdAsync(input);
+            var entity = new ClosingChecklist();
+            entity = input;
+            var id= await _closingChecklistRepository.InsertAndGetIdAsync(input);
+            return id;
         }
 
         public IQueryable<ClosingChecklist> GetAll()
@@ -48,6 +51,15 @@ namespace Zinlo.ClosingChecklist
         }
 
         public async Task UpdateVersionIds(long? versionId, Guid groupId)
+        {
+            var taskList = await _closingChecklistRepository.GetAllListAsync(p => p.GroupId == groupId);
+            foreach (var task in taskList)
+            {
+                task.VersionId = versionId;
+                await UpdateAsync(task);
+            }
+        }
+        public async Task UpdateTask(long? versionId, Guid groupId)
         {
             var taskList = await _closingChecklistRepository.GetAllListAsync(p => p.GroupId == groupId);
             foreach (var task in taskList)

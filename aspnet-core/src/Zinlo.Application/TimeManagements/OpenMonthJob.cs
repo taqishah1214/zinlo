@@ -10,6 +10,7 @@ using Abp.Localization;
 using Abp.Localization.Sources;
 using Abp.Runtime.Session;
 using Abp.Threading;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Zinlo.ClosingChecklist;
 using Zinlo.Notifications;
 using Zinlo.TimeManagements.Dto;
@@ -37,10 +38,7 @@ namespace Zinlo.TimeManagements
         {
             using (_session.Use(args.UserIdentifier.TenantId,args.UserIdentifier.UserId))
             {
-                AsyncHelper.RunSync(() => _appNotifier.SendMessageAsync(
-                    args.UserIdentifier,
-                    _localizationSource.GetString("OpenMonthMessage"),
-                    Abp.Notifications.NotificationSeverity.Success));
+                
                 var last13MonthTaskByManagement = AsyncHelper.RunSync(() => _checklistService.GetTaskTimeDuration(args.Month));
                 foreach (var task in last13MonthTaskByManagement)
                 {
