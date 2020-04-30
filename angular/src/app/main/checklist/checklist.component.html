@@ -256,8 +256,8 @@
                                                         class="kt-user-card-v2__name">
                                                         {{j.assigniName}}</span> </div>
                                             </div>
-                                            <div *ngIf="j.id == rowid">
-                                                <app-user-list-component (callBack)="getClosingCheckListAllTasks()"
+                                            <div *ngIf="j.id == rowid" (focusout)="OnChange()" (change)="OnChange()">
+                                                <app-user-list-component (change)="OnChange()" (callBack)="getClosingCheckListAllTasks()"
                                                     taskId={{j.id}} comingChangeReguest="ClosingCheckList"
                                                     userId={{j.assigneeId}}></app-user-list-component>
                                             </div>

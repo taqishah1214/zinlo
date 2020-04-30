@@ -85,7 +85,9 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.AssigniBoxView = true;
     this.collapsibleRow = false;
   }
-
+  OnChange(){
+    this.rowid=-1;
+  }
   openFieldUpdateAssignee(record) {
     this.rowid = record;
   }
