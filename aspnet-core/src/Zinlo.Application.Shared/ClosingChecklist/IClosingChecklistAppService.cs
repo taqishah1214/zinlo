@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Zinlo.ClosingChecklist.Dtos;
-using Zinlo.Tasks.Dtos;
+using Zinlo.Dto;
 
 namespace Zinlo.ClosingChecklist
 {
     public interface IClosingChecklistAppService : IApplicationService
     {
-        Task<PagedResultDto<TasksGroup>> GetReport(GetAllClosingCheckListInput input);  
+        Task<PagedResultDto<TasksGroup>> GetReport(GetTaskReportInput input);  
         Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input);
         Task CreateOrEdit(CreateOrEditClosingChecklistDto input);
         Task<DetailsClosingCheckListDto> GetDetails(long id);
@@ -24,6 +24,7 @@ namespace Zinlo.ClosingChecklist
         List<NameValueDto<string>> GetCurrentMonthDays(DateTime dateTime);
         Task TaskIteration(CreateOrEditClosingChecklistDto input, DateTime openingMonth, bool singleIteration);
         Task<List<CreateOrEditClosingChecklistDto>> GetTaskTimeDuration(DateTime input);
+        Task<FileDto> GetTaskToExcel(GetTaskToExcelInput input);
 
     }
 }

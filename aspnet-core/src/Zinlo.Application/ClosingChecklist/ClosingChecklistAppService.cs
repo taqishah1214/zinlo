@@ -19,6 +19,8 @@ using Zinlo.TimeManagements;
 using Abp.Domain.Uow;
 using Abp.Runtime.Session;
 using Abp.UI;
+using Zinlo.ClosingChecklist.Exporting;
+using Zinlo.Dto;
 using Zinlo.InstructionVersions;
 using Zinlo.InstructionVersions.Dto;
 
@@ -34,6 +36,7 @@ namespace Zinlo.ClosingChecklist
         private readonly TimeManagementManager _managementManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IInstructionAppService _instructionVersionsAppService;
+        private readonly ITaskExcelExporter _taskExcelExporter;
 
         public ClosingChecklistAppService(IProfileAppService profileAppService,
                                           ICommentAppService commentAppService,
@@ -42,7 +45,7 @@ namespace Zinlo.ClosingChecklist
                                           TimeManagementManager managementManager,
                                           IUnitOfWorkManager unitOfWorkManager,
                                           IInstructionAppService instructionVersionsAppService,
-                                          ClosingChecklistManager closingChecklistManager)
+                                          ClosingChecklistManager closingChecklistManager, ITaskExcelExporter taskExcelExporter)
         {
             _commentAppService = commentAppService;
             _userRepository = userRepository;
@@ -52,17 +55,11 @@ namespace Zinlo.ClosingChecklist
             _unitOfWorkManager = unitOfWorkManager;
             _instructionVersionsAppService = instructionVersionsAppService;
             _closingChecklistManager = closingChecklistManager;
+            _taskExcelExporter = taskExcelExporter;
         }
-        public async Task<PagedResultDto<TasksGroup>> GetReport(GetAllClosingCheckListInput input)
+        public async Task<PagedResultDto<TasksGroup>> GetReport(GetTaskReportInput input)
         {
-            var query = _closingChecklistManager.GetAll().Include(rest => rest.Category)
-                    .Include(u => u.Assignee)
-                    .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.TaskName.Contains(input.Filter))
-                    .WhereIf(input.StatusFilter != 0,
-                        e => false || e.Status == (Zinlo.ClosingChecklist.Status)input.StatusFilter)
-                    .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
-                    .WhereIf(input.AssigneeId != 0, e => false || e.AssigneeId == input.AssigneeId)
-                    .WhereIf(input.StartDate != null && input.EndDate != null, e => e.DueDate >= input.StartDate && e.DueDate <= input.EndDate);
+            var query = GetTaskQuery(input);
             var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "DueDate asc").PageBy(input);
                 var totalCount = query.Count();
                 var getUserWithPictures = (from o in query.ToList()
@@ -120,15 +117,16 @@ namespace Zinlo.ClosingChecklist
                      response.ToList());
             
         }
+
         public async Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input)
         {
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
-                if (!(input.DateFilter != null /*&& input.DateFilter < DateTime.Now.AddMonths(1)*/))
-                    return new PagedResultDto<TasksGroup>();
+                //if (input.DateFilter < DateTime.Now.AddMonths(1))
+                //    return new PagedResultDto<TasksGroup>();
                 var query = _closingChecklistManager.GetAll()
-                    .Where(e => e.ClosingMonth.Month == input.DateFilter.Value.Month &&
-                                e.ClosingMonth.Year == input.DateFilter.Value.Year).Include(rest => rest.Category)
+                    .Where(e => e.ClosingMonth.Month == input.DateFilter.Month &&
+                                e.ClosingMonth.Year == input.DateFilter.Year).Include(rest => rest.Category)
                     .Include(u => u.Assignee)
                     .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.TaskName.Contains(input.Filter))
                     .WhereIf(input.StatusFilter != 0,
@@ -572,6 +570,54 @@ namespace Zinlo.ClosingChecklist
                 .Where(p => p.ClosingMonth >= lastYear && p.ClosingMonth <= input).DistinctBy(p => new {p.GroupId})
                 .OrderBy(p => p.ClosingMonth).ToDynamicListAsync();
             return ObjectMapper.Map<List<CreateOrEditClosingChecklistDto>>(query);
+        }
+
+        public async Task<FileDto> GetTaskToExcel(GetTaskToExcelInput input)
+        {
+            var query = GetTaskQuery(input);
+            var tasks =  query
+                .OrderBy(input.Sorting ?? "DueDate asc")
+                .ToList();
+            var taskListDtos = ObjectMapper.Map<List<TaskListDto>>(tasks);
+             await FillStatusName(taskListDtos);
+
+            return  _taskExcelExporter.ExportToFile(taskListDtos);
+
+        }
+
+        protected virtual async Task FillStatusName(IEnumerable<TaskListDto> input)
+        {
+            foreach (var taskListDto in input)
+            {
+                if (taskListDto.Status.Equals("1"))
+                {
+                    taskListDto.Status = "Not started";
+                }
+                else if (taskListDto.Status.Equals("2"))
+                {
+                    taskListDto.Status = "In process";
+                }
+                else if (taskListDto.Status.Equals("3"))
+                {
+                    taskListDto.Status = "On hold";
+                }
+                else if (taskListDto.Status.Equals("4"))
+                {
+                    taskListDto.Status = "Completed";
+                }
+            }
+
+        }
+        private IQueryable<ClosingChecklist> GetTaskQuery(IGetTaskInput input)
+        {
+            return  _closingChecklistManager.GetAll().Include(rest => rest.Category)
+                .Include(u => u.Assignee)
+                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.TaskName.Contains(input.Filter))
+                .WhereIf(input.StatusFilter != 0,
+                    e => false || e.Status == (Zinlo.ClosingChecklist.Status)input.StatusFilter)
+                .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
+                .WhereIf(input.AssigneeId != 0, e => false || e.AssigneeId == input.AssigneeId)
+                .WhereIf(input.StartDate != null && input.EndDate != null, e => e.DueDate >= input.StartDate && e.DueDate <= input.EndDate);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Zinlo.ImportPaths
         {
             ImportsPath importsPath = new ImportsPath();
             importsPath.FilePath = input.FilePath;
+            importsPath.UploadedFilePath = input.UploadedFilePath;
             importsPath.SuccessFilePath = input.SuccessFilePath;
             importsPath.TenantId = input.TenantId;
             importsPath.Type = input.Type;

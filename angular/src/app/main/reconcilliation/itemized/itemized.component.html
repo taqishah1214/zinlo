@@ -114,16 +114,16 @@
                         <table class="table record-table">
                             <tbody *ngFor="let item of itemList">
                                 <tr  class="task-table-inner table-repeater" class="{{item.isDeleted == true ? 'warnning' : '' }}">
-                                    <td class="accountNo-cell">
+                                    <td class="accountNo-cell" (click)="RedirectToDetail(item.id)">
                                         <span class="">{{item.date | date}}</span>
                                     </td>
                                     <td class="accountName-cell" (click)="RedirectToDetail(item.id)">
                                         <span class="task-box">{{item.description}}</span>
                                     </td>
-                                    <td class="reconciliation-cell">
+                                    <td class="reconciliation-cell" (click)="RedirectToDetail(item.id)">
                                         <span class="">{{item.amount | formater }}</span>
                                     </td>
-                                    <td class="accountSubtype-cell">
+                                    <td class="accountSubtype-cell" >
                                         <span class="">
                                             <div class="d-flex">
                                                 <div *ngIf="item.attachments?.length > 0" class="drag_drop_box">

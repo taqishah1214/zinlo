@@ -737,7 +737,7 @@
                                                             Email is required.
                                                         </div>
                                                         <div class="text-danger" *ngIf="email.errors.pattern">
-                                                            Email Formate Is Wrong.
+                                                            Email format is wrong.
                                                         </div>
                                                     </div>
                                                 </div>
@@ -746,8 +746,8 @@
                                                 <div class="form-group">
                                                     <label>Commitment</label>
                                                     <select name="Commitment" formControlName="commitment"class="form-control bg-white border">
-                                                        <option value="0">Monthly Plan</option>
-                                                        <option value="1">Annual Plan</option>
+                                                        <option value="30">Monthly Plan</option>
+                                                        <option value="265">Annual Plan</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -780,7 +780,7 @@
                                                         Email is required.
                                                     </div>
                                                     <div class="text-danger" *ngIf="contactEmail.errors.pattern">
-                                                        Email Formate Is Wrong.
+                                                        Email format is wrong.
                                                     </div>
                                                 </div>        
                                             </div>
@@ -846,7 +846,7 @@
                                             <div class="item-card-box shadow "style="height: 70px;">
                                                 <div class="item-card rounded">
                                                     <img src="../../../../assets/img/phone-call.svg" class="py-3 px-3" alt="bill" style="float: left;">
-                                                     <span class="py-5 pt-3"><b>Phoene :</b>{{businessInfoForm.value.phone}}</span>
+                                                     <span class="py-5 pt-3"><b>Phone :</b>{{businessInfoForm.value.phone}}</span>
                                                 </div>                                    
                                             </div>
                                         </div>

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Zinlo.Attachments.Dtos;
 using Zinlo.Comment.Dtos;
-using Zinlo.Tasks.Dtos;
 
 namespace Zinlo.ClosingChecklist.Dtos
 {
-  public  class DetailsClosingCheckListDto : CreateOrEditClosingChecklistDto
+    public class DetailsClosingCheckListDto : CreateOrEditClosingChecklistDto
     {
         public string AssigneeName { get; set; }
         public string CategoryName { get; set; }
@@ -18,10 +16,9 @@ namespace Zinlo.ClosingChecklist.Dtos
         public bool MonthStatus { get; set; }
         public DateTime DueDate { get; set; }
         public string InstructionBody { get; set; }
-        public  List<CommentDto>  Comments { get; set; }
-
+        public List<CommentDto> Comments { get; set; }
         public List<GetAttachmentsDto> Attachments { get; set; }
         public bool IsDeleted { get; set; }
     }
-    
+
 }

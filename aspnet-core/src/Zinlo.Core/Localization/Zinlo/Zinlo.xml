@@ -213,6 +213,8 @@
     <text name="NewRegisteredUsersIsActiveByDefault">New registered users are active by default.</text>
     <text name="NewRegisteredUsersIsActiveByDefault_Hint">If you disable this, new users will not be active (and can not login) until admin manually activates the account.</text>
     <text name="Default">Default</text>
+    <text name="TaskReports">Task Reports
+    </text>
     <text name="DefaultRole_Description">Assign to new users by default.</text>
     <text name="StaticRole_Tooltip">Static roles can not be deleted.</text>
     <text name="EmailConfirmationRequiredForLogin">Email confirmation required for login.</text>
@@ -629,7 +631,7 @@
     <text name="FreeTrial">Free trial</text>
     <text name="BuyNow">Buy now</text>
     <text name="WhatWillDoneAfterSubscriptionExpiry">What will be done after subscription expiry</text>
-    <text name="DeactiveTenant">Deactive tenant</text>
+    <text name="DeactiveTenant">Deactivate tenant</text>
     <text name="AssignToAnotherEdition">Assign to another edition</text>
     <text name="SubscriptionPrice">Subscription price</text>
     <text name="Free">Free</text>
@@ -1109,7 +1111,7 @@
     <text name="IsClosed">Is closed</text>
 
     <text name="NullValuesAreNotAllowed">Null values are not allowed.</text>
-    <text name="ReconcilationError">Reconcilation Error.</text>
+    <text name="ReconcilationError">Reconciliation Error.</text>
     <text name="DueDate">Due date</text>
     <text name="ImportLog">Import Log</text>
     <text name="ImportLogHeaderInfo">Manage import log</text>
@@ -1165,7 +1167,7 @@
     <text name="Start Date">Start Date</text>
     <text name="End Date">End Date</text>
     <text name="Beginning Amount">Beginning Amount</text>
-    <text name="Accrued Amount">Accrued Amount</text>
+    <text name="Accrued Amortization">Accrued Amortization</text>
     <text name="Net Amount">Net Amount</text>
     <text name="Manual">Manual</text>
     <text name="Accumulate Amount">Accumulate Amount</text>

@@ -11,6 +11,7 @@ namespace Zinlo.ChartsofAccount.Importing
         public Guid BinaryObjectId { get; set; }
         public UserIdentifier User { get; set; }
         public DateTime selectedMonth { get; set; }
+        public string url { get; set; }
 
     }
 }
