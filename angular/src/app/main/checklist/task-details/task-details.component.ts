@@ -267,7 +267,7 @@ setTaskNameHistoryParam(item){
     }
 
   }
-  onReload(){
+  onReload(val){
     this.getAuditLogOfTask();
     this.getTaskDetails(this.recordId);
   }
