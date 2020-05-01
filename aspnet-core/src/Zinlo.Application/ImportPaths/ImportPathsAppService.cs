@@ -23,6 +23,7 @@ namespace Zinlo.ImportPaths
             importsPath.SuccessFilePath = input.SuccessFilePath;
             importsPath.TenantId = input.TenantId;
             importsPath.Type = input.Type;
+            importsPath.UploadMonth = input.UploadMonth;
             importsPath.FailedRecordsCount = input.FailedRecordsCount;
             importsPath.SuccessRecordsCount = input.SuccessRecordsCount;
             importsPath.CreatorUserId = input.CreatorId;

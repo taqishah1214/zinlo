@@ -17,6 +17,8 @@ import { SignalRService } from '@app/services/signalRService';
 import { StoreDateService } from "../../../services/storedate.service";
 import * as moment from 'moment';
 import * as $ from 'jquery';
+import { add, subtract } from 'add-subtract-date';
+
 
 @Component({
   selector: 'app-accounts',
@@ -358,7 +360,14 @@ RedirectToCreateAccount(): void {
         }
       });
   }
+
+  filterByMonth(event) {
+      this.selectedDate =new Date(add(this.selectedDate, 1, "month")); 
+      debugger;
+  }
   uploadAccountsTrialBalanceExcel(url: string): void {
+
+    debugger;
     this._httpClient
       .get<any>(this.uploadBalanceUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url + "&" +"monthSelected="+ this.selectedDate)
       .subscribe(response => {

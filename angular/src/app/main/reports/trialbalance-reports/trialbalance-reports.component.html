@@ -8,7 +8,7 @@
                     </h3>
                     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
                     <span class="kt-subheader__desc">
-                        {{"Reports" | localize}}
+                        {{"Trial Balance Reports" | localize}}
                     </span>
                 </div>
             </div>
@@ -27,8 +27,28 @@
                                 </div>
                                 <div>
                                 </div>
-                                <div class="kt-subheader__toolbar">
-                                    <div class="kt-subheader__wrapper">
+                                <div  class="kt-subheader__toolbar row">
+                                    <div *ngIf="compareTable" class="dropdown dropdown-inline exportexcel">
+                                        <button type="button" class="btn btn-default btn-icon-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="la la-download"></i> Export  	
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <ul class="kt-nav">
+                                                <li class="kt-nav__section kt-nav__section--first">
+                                                    <span class="kt-nav__section-text">Choose an option</span>
+                                                </li>
+                                            
+                                                <li class="kt-nav__item">
+                                                    <a (click)="DownloadInExcel()" class="kt-nav__link">
+                                                        <i class="kt-nav__link-icon la la-file-excel-o"></i>
+                                                        <span class="kt-nav__link-text">Excel</span>
+                                                    </a>
+                                                </li>
+                                                
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="!compareTable"class="kt-subheader__wrapper">
                                         <button data-toggle="modal" data-target="#kt_modal_6" class="btn btn-brand">Compare</button>                                                        
                                     </div>
                                 </div>
@@ -37,12 +57,32 @@
                     </div>
 
 
+                  
+
+                   
                     
 
 <div class="record-card-header">
     <div class="record-card-header-bottom">
-        <div class="modal fade" id="kt_modal_6" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="modal fade" id="kt_modal_6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Compare Trial Balance</h5>
@@ -65,12 +105,14 @@
                                         <div class="dateRadio col-9">
                                             <div *ngFor="let item of firstMonthData" class="kt-radio-list">
                                                 <label class="kt-radio kt-radio--brand" name="radio1">
-                                                    <input type="radio" > {{item.attachmentName}}
+                                                    <input type="radio" [checked]="item.id === firstMonthid" 
+                                                    [value]="item.id"  (change)="onSelectionChange(item.id)" >  {{item.attachmentName}}
                                                     <span></span>
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
+                                    
                             <div >
                                 <div class="month-calender">
                                     <form class="input-arrow">
@@ -85,7 +127,8 @@
                                         <div *ngFor="let item of secondMonthData" class="kt-radio-list">
 
                                             <label class="kt-radio kt-radio--brand" name="radio1">
-                                                <input type="radio" > {{item.attachmentName}}
+                                                <input type="radio" [checked]="item.id === secondMonthid" 
+                                                [value]="item.id"  (change)="onSelectionSecondMonthChange(item.id)" > {{item.attachmentName}}
                                                 <span></span>
                                             </label>
 
@@ -200,8 +243,8 @@
                                             {{l('AccountName')}}
                                         </th>
                                         <th style="width: 220px"> {{l('AccountNumber')}} </th>
-                                        <th style="width: 120px"> {{l('1stMonthBalance')}} </th>
-                                        <th style="width: 120px"> {{l('2ndMonthBalance')}} </th>
+                                        <th style="width: 120px"> {{FirstMonth | momentFormat:'MMMM' }} </th>
+                                        <th style="width: 120px"> {{l(SecondMonth | momentFormat:'MMMM' )}} </th>
 
                                     </tr>
                                     
@@ -258,38 +301,23 @@
 
 
                                     <tr *ngIf="compareTable">
-                                        <!-- <td style="width: 150px">
+                                        <td style="width: 150px">
                                             <span class="ui-column-title"> {{l('AccountName')}}</span>
-                                            {{record.creationTime | momentFormat:'L hh:mm a'}}
+                                            {{record.accountName}}
                                         </td>
                                         <td style="width: 220px">
-                                            <div class="kt-user-card-v2">
-                                                <div class="kt-user-card-v2__pic">
-                                                    <div *ngIf="record.profilePicture" class="kt-badge kt-badge--xl">
-                                                        <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                            alt="Pic" [src]="record.profilePicture">
-                                                    </div>
-
-                                                    <div *ngIf="!record.profilePicture"
-                                                        class="kt-badge kt-badge--xl kt-badge--primary">
-                                                        {{record.assigniName | firstLetterOfWords}}
-                                                    </div>
-                                                </div>
-                                                <div class="kt-user-card-v2__details"> <span
-                                                        class="kt-user-card-v2__name">
-                                                        {{record.assigniName}}</span> </div>
-                                            </div>
+                                            <span class="ui-column-title"> {{l('AccountName')}}</span>
+                                            {{record.accountNumber}}
                                         </td>
                                         <td style="width: 120px">
-                                            <a *ngIf="!record.isRollBacked && record.type == 'TrialBalance'" class="btn"
-                                                href="javascript:;" (click)="rollBack(record.id)">
-                                                <img src="../../../../assets/img/edit.svg"></a>
+                                            <span class="ui-column-title"> {{l('FirstMonth')}}</span>
+                                            {{record.firstMonthBalance  | formater}}
                                         </td>
                                         <td style="width: 120px">
-                                            <a *ngIf="!record.isRollBacked && record.type == 'TrialBalance'" class="btn"
-                                                href="javascript:;" (click)="rollBack(record.id)">
-                                                <img src="../../../../assets/img/edit.svg"></a>
-                                        </td> -->
+                                            <span class="ui-column-title"> {{l('SecondMonth')}}</span>
+                                            {{record.secondMonthBalance  | formater}}
+                                        </td>
+                                        
                                     </tr>
 
 

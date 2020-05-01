@@ -422,7 +422,7 @@ namespace Zinlo.ChartsofAccount
             var accountInformation = await _chartsofAccountRepository.FirstOrDefaultAsync(x => x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower()&& x.IsDeleted == false);
             if (accountInformation != null)
             {
-               var TrialBalanceIsExistOrNot = await _accountBalanceRepository.FirstOrDefaultAsync(x => x.AccountId == accountInformation.Id);
+               var TrialBalanceIsExistOrNot = await _accountBalanceRepository.FirstOrDefaultAsync(x => x.AccountId == accountInformation.Id && x.Month.Month == input.selectedMonth.Month && x.Month.Year == input.selectedMonth.Year);
                 if (TrialBalanceIsExistOrNot == null)
                 {
                     AccountBalance accountBalance = new AccountBalance();
