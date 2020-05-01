@@ -24486,6 +24486,7 @@ export class ImportPathDto implements IImportPathDto {
     creatorId!: number;
     successFilePath!: string | undefined;
     uploadedFilePath!: string | undefined;
+    uploadMonth!: moment.Moment;
 
     constructor(data?: IImportPathDto) {
         if (data) {
@@ -24507,6 +24508,7 @@ export class ImportPathDto implements IImportPathDto {
             this.creatorId = data["creatorId"];
             this.successFilePath = data["successFilePath"];
             this.uploadedFilePath = data["uploadedFilePath"];
+            this.uploadMonth = data["uploadMonth"] ? moment(data["uploadMonth"].toString()) : <any>undefined;
         }
     }
 
@@ -24528,6 +24530,7 @@ export class ImportPathDto implements IImportPathDto {
         data["creatorId"] = this.creatorId;
         data["successFilePath"] = this.successFilePath;
         data["uploadedFilePath"] = this.uploadedFilePath;
+        data["uploadMonth"] = this.uploadMonth ? this.uploadMonth.toISOString() : <any>undefined;
         return data; 
     }
 }
@@ -24542,6 +24545,7 @@ export interface IImportPathDto {
     creatorId: number;
     successFilePath: string | undefined;
     uploadedFilePath: string | undefined;
+    uploadMonth: moment.Moment;
 }
 
 export class InstallDto implements IInstallDto {
