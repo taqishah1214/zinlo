@@ -100,7 +100,16 @@ namespace Zinlo.MultiTenancy.Payments
                 targetEditionName = targetEdition.DisplayName;
 
                 var tenant = await TenantManager.GetByIdAsync(AbpSession.GetTenantId());
-                amount = await CalculateAmountForPaymentAsync(targetEdition, input.PaymentPeriodType, input.EditionPaymentType, tenant);
+                //check for custom
+                if(input.Price>0)
+                {
+                    amount = input.Price;
+                }
+                else
+                {
+                    amount = await CalculateAmountForPaymentAsync(targetEdition, input.PaymentPeriodType, input.EditionPaymentType, tenant);
+                }
+                
 
                 if (tenant != null && input.RecurringPaymentEnabled)
                 {

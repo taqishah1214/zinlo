@@ -137,34 +137,36 @@ namespace Zinlo.MultiTenancy.Payments
 
         public async Task<string> CreatePaymentSession(StripeCreatePaymentSessionInput input)
         {
-            var payment = await _subscriptionPaymentRepository.GetAsync(input.PaymentId);
-
-            var paymentTypes = _stripePaymentGatewayConfiguration.PaymentMethodTypes;
-            var sessionCreateOptions = new SessionCreateOptions
+            try
             {
-                PaymentMethodTypes = paymentTypes,
-                SuccessUrl = input.SuccessUrl + (input.SuccessUrl.Contains("?") ? "&" : "?") + "sessionId={CHECKOUT_SESSION_ID}",
-                CancelUrl = input.CancelUrl,
-            };
+                var payment = await _subscriptionPaymentRepository.GetAsync(input.PaymentId);
 
-            if (payment.IsRecurring && !payment.IsProrationPayment())
-            {
-                var plan = await _stripeGatewayManager.GetOrCreatePlanForPayment(input.PaymentId);
-
-                sessionCreateOptions.SubscriptionData = new SessionSubscriptionDataOptions
+                var paymentTypes = _stripePaymentGatewayConfiguration.PaymentMethodTypes;
+                var sessionCreateOptions = new SessionCreateOptions
                 {
-                    Items = new List<SessionSubscriptionDataItemOptions>
+                    PaymentMethodTypes = paymentTypes,
+                    SuccessUrl = input.SuccessUrl + (input.SuccessUrl.Contains("?") ? "&" : "?") + "sessionId={CHECKOUT_SESSION_ID}",
+                    CancelUrl = input.CancelUrl,
+                };
+
+                if (payment.IsRecurring && !payment.IsProrationPayment())
+                {
+                    var plan = await _stripeGatewayManager.GetOrCreatePlanForPayment(input.PaymentId);
+
+                    sessionCreateOptions.SubscriptionData = new SessionSubscriptionDataOptions
+                    {
+                        Items = new List<SessionSubscriptionDataItemOptions>
                     {
                         new SessionSubscriptionDataItemOptions
                         {
                             Plan = plan.Id,
                         }
                     }
-                };
-            }
-            else
-            {
-                sessionCreateOptions.LineItems = new List<SessionLineItemOptions>
+                    };
+                }
+                else
+                {
+                    sessionCreateOptions.LineItems = new List<SessionLineItemOptions>
                 {
                     new SessionLineItemOptions
                     {
@@ -175,18 +177,24 @@ namespace Zinlo.MultiTenancy.Payments
                         Quantity = 1
                     }
                 };
+                }
+
+                var service = new SessionService();
+                var session = await service.CreateAsync(sessionCreateOptions);
+
+                await _subscriptionPaymentExtensionDataRepository.SetExtensionDataAsync(
+                    payment.Id,
+                    StripeGatewayManager.StripeSessionIdSubscriptionPaymentExtensionDataKey,
+                    session.Id
+                );
+
+                return session.Id;
             }
+            catch (Exception ex)
+            {
 
-            var service = new SessionService();
-            var session = await service.CreateAsync(sessionCreateOptions);
-
-            await _subscriptionPaymentExtensionDataRepository.SetExtensionDataAsync(
-                payment.Id,
-                StripeGatewayManager.StripeSessionIdSubscriptionPaymentExtensionDataKey,
-                session.Id
-            );
-
-            return session.Id;
+                throw;
+            }
         }
 
         public async Task<StripePaymentResultOutput> GetPaymentResult(StripePaymentResultInput input)

@@ -86,7 +86,7 @@ export class UserListComponentComponent implements OnInit, OnChanges {
           this.changeAssigneeDto.assigneeId = this.selectedUserId;
           this.changeAssigneeDto.taskId = this.taskId;
           this._closingChecklistService.changeAssignee(this.changeAssigneeDto).subscribe(result => {
-            this.callBack.emit()
+           this.callBack.emit()
           })
         }
         else if (this.comingChangeReguest == "accounts") {

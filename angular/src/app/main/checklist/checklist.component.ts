@@ -85,7 +85,9 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.AssigniBoxView = true;
     this.collapsibleRow = false;
   }
-
+  OnChange(){
+    this.rowid=-1;
+  }
   openFieldUpdateAssignee(record) {
     this.rowid = record;
   }
@@ -115,6 +117,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   }
 
   getClosingCheckListAllTasks(event?: LazyLoadEvent) {
+    this.rowid=-1;
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
       return;
