@@ -8,7 +8,7 @@ namespace Zinlo.Reporting.Importing
     {
         public interface ITrialBalanceExporter
         {
-            FileDto ExportToFile(List<CompareTrialBalanceViewDto> List);
+            FileDto ExportToFile(List<CompareTrialBalanceViewDto> List, string FirstMonth, string SecondMonth);
         }
     }
 
