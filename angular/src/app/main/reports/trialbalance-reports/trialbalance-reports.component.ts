@@ -9,6 +9,7 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { TrialBalanceReportingServiceProxy } from '@shared/service-proxies/service-proxies';
 import { StoreDateService } from "../../../services/storedate.service";
 import { add, subtract } from 'add-subtract-date';
+import { FileDownloadService } from '@shared/utils/file-download.service';
 
 
 @Component({
@@ -32,9 +33,12 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
   firstMonthData : any = [];
   secondMonthData : any = [];
   compareTable  = false;
+  firstMonthid
+  secondMonthid
+  compareBalanceList : any = []
   constructor(
     injector: Injector,
-    private _trialBalanceServiceProxy: TrialBalanceReportingServiceProxy, private userDate: StoreDateService) {
+    private _trialBalanceServiceProxy: TrialBalanceReportingServiceProxy, private userDate: StoreDateService,private _fileDownloadService: FileDownloadService) {
     super(injector);
   }
   ngOnInit() {
@@ -75,23 +79,24 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
       });
 
     }
-    else {
-      
+    else {  
       if (this.primengTableHelper.shouldResetPaging(event)) {
         this.paginator.changePage(0);
         return;
       }
       this.primengTableHelper.showLoadingIndicator();
-      this._trialBalanceServiceProxy.getAll(
-        this.filterText,
+      this._trialBalanceServiceProxy.getCompareTrialBalances(
+        this.firstMonthid,
+        this.secondMonthid,
         this.primengTableHelper.getSorting(this.dataTable),
         this.primengTableHelper.getSkipCount(this.paginator, event),
         this.primengTableHelper.getMaxResultCount(this.paginator, event)
       ).subscribe(result => {
-        this.primengTableHelper.totalRecordsCount = 0;
-        let data = result.items;      
-        this.primengTableHelper.records = [];
-        this.primengTableHelper.hideLoadingIndicator();        
+        this.primengTableHelper.totalRecordsCount = result.totalCount;
+        this.primengTableHelper.records =  result.items;
+        this.compareBalanceList = result.items
+        this.primengTableHelper.hideLoadingIndicator();  
+        this.exceptionsList = result.items;      
         this.primengTableHelper.records = this.exceptionsList;
       });
 
@@ -119,10 +124,24 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
     container.setViewMode('month');
   }
 
+  onSelectionChange (key) {
+   this.firstMonthid = key;
+  }
+
+   onSelectionSecondMonthChange(key){
+   this.secondMonthid = key
+  }
+
+  DownloadInExcel() {
+    this._trialBalanceServiceProxy.getInToExcel(this.compareBalanceList).subscribe(resp => {
+      this._fileDownloadService.downloadTempFile(resp);
+    })
+  }
   LoadandCompareTrialBalance() {
     if (this.modalButtonText == "Compare")
     {
-       this.compareTable = true;
+        this.compareTable = true;
+        this.getAllImportLog();
     }
     else {
       if (this.FirstMonth == "" || this.SecondMonth == "") {

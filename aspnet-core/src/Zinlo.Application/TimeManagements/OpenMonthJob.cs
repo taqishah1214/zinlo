@@ -20,38 +20,44 @@ namespace Zinlo.TimeManagements
     public class OpenMonthJob : BackgroundJob<OpenMonthArgs>, ITransientDependency
     {
         private readonly IClosingChecklistAppService _checklistService;
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IAbpSession _session;
         private readonly IAppNotifier _appNotifier;
         private readonly ILocalizationSource _localizationSource;
         public OpenMonthJob(IClosingChecklistAppService checklistService,
                             IAbpSession session,
                             IAppNotifier appNotifier,
-                            ILocalizationManager localizationManager)
+                            ILocalizationManager localizationManager,
+                            IUnitOfWorkManager unitOfWorkManager)
         {
             _checklistService = checklistService;
             _session = session;
             _appNotifier = appNotifier;
+            _unitOfWorkManager = unitOfWorkManager;
             _localizationSource = localizationManager.GetSource(ZinloConsts.LocalizationSourceName); ;
         }
         [UnitOfWork]
         public override void Execute(OpenMonthArgs args)
         {
-            using (_session.Use(args.UserIdentifier.TenantId,args.UserIdentifier.UserId))
+            using (_session.Use(args.UserIdentifier.TenantId, args.UserIdentifier.UserId))
             {
-                
-                var last13MonthTaskByManagement = AsyncHelper.RunSync(() => _checklistService.GetTaskTimeDuration(args.Month));
-                foreach (var task in last13MonthTaskByManagement)
+                using (_unitOfWorkManager.Current.SetTenantId(args.UserIdentifier.TenantId))
                 {
-                    task.ClosingMonth = task.ClosingMonth.AddDays(-1);
-                    AsyncHelper.RunSync(() => _checklistService.TaskIteration(task, args.Month, false));
-                }
+                    var last13MonthTaskByManagement =
+                        AsyncHelper.RunSync(() => _checklistService.GetTaskTimeDuration(args.Month));
+                    foreach (var task in last13MonthTaskByManagement)
+                    {
+                        task.ClosingMonth = task.ClosingMonth.AddDays(-1);
+                        AsyncHelper.RunSync(() => _checklistService.TaskIteration(task, args.Month, false));
+                    }
 
-                AsyncHelper.RunSync(() => _appNotifier.SendMessageAsync(
-                    args.UserIdentifier,
-                    _localizationSource.GetString("MonthOpenedMessage",args.Month),
-                    Abp.Notifications.NotificationSeverity.Success));
+                    AsyncHelper.RunSync(() => _appNotifier.SendMessageAsync(
+                        args.UserIdentifier,
+                        _localizationSource.GetString("MonthOpenedMessage", args.Month),
+                        Abp.Notifications.NotificationSeverity.Success));
+                }
             }
-            
+
         }
     }
 }

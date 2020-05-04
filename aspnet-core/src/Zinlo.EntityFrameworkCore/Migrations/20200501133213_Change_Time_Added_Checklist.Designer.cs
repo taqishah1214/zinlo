@@ -10,8 +10,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20200427122853_add-column-in-accountBalances")]
-    partial class addcolumninaccountBalances
+    [Migration("20200501133213_Change_Time_Added_Checklist")]
+    partial class Change_Time_Added_Checklist
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1854,6 +1854,9 @@ namespace Zinlo.Migrations
                     b.Property<string>("TaskName")
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("TaskUpdatedTime")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
 
@@ -1982,6 +1985,9 @@ namespace Zinlo.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UploadedFilePath")
                         .HasColumnType("text");
 
                     b.Property<long>("UserId")

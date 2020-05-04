@@ -10,7 +10,7 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20200424103130_Initial")]
+    [Migration("20200501124935_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1643,6 +1643,9 @@ namespace Zinlo.Migrations
                     b.Property<double>("Balance")
                         .HasColumnType("double precision");
 
+                    b.Property<bool>("CheckAsReconcilied")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
 
@@ -1651,6 +1654,9 @@ namespace Zinlo.Migrations
 
                     b.Property<DateTime>("Month")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<double>("TrialBalance")
                         .HasColumnType("double precision");
@@ -1718,9 +1724,6 @@ namespace Zinlo.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("ReconciliationType")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<int>("TenantId")
@@ -1979,6 +1982,12 @@ namespace Zinlo.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UploadMonth")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("UploadedFilePath")
                         .HasColumnType("text");
 
                     b.Property<long>("UserId")

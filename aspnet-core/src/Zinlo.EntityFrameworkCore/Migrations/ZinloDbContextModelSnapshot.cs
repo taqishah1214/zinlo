@@ -1852,6 +1852,9 @@ namespace Zinlo.Migrations
                     b.Property<string>("TaskName")
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("TaskUpdatedTime")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
 
@@ -1981,6 +1984,9 @@ namespace Zinlo.Migrations
 
                     b.Property<string>("Type")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("UploadMonth")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("UploadedFilePath")
                         .HasColumnType("text");

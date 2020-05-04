@@ -1047,7 +1047,9 @@ namespace Zinlo.Migrations
                     SuccessRecordsCount = table.Column<int>(nullable: false),
                     UserId = table.Column<long>(nullable: false),
                     IsRollBacked = table.Column<bool>(nullable: false),
-                    SuccessFilePath = table.Column<string>(nullable: true)
+                    SuccessFilePath = table.Column<string>(nullable: true),
+                    UploadedFilePath = table.Column<string>(nullable: true),
+                    UploadMonth = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1080,7 +1082,6 @@ namespace Zinlo.Migrations
                     ReconciliationType = table.Column<int>(nullable: false),
                     AssigneeId = table.Column<long>(nullable: false),
                     AccountSubTypeId = table.Column<long>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
                     Reconciled = table.Column<int>(nullable: false),
                     IsChange = table.Column<bool>(nullable: false),
                     ChangeTime = table.Column<DateTime>(nullable: true),
@@ -1245,7 +1246,9 @@ namespace Zinlo.Migrations
                     AccountId = table.Column<long>(nullable: false),
                     Balance = table.Column<double>(nullable: false),
                     TrialBalance = table.Column<double>(nullable: false),
-                    Month = table.Column<DateTime>(nullable: false)
+                    Month = table.Column<DateTime>(nullable: false),
+                    CheckAsReconcilied = table.Column<bool>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
