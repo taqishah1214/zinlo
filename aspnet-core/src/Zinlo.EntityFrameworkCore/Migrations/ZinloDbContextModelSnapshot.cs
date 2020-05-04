@@ -1985,6 +1985,9 @@ namespace Zinlo.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("UploadMonth")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("UploadedFilePath")
                         .HasColumnType("text");
 

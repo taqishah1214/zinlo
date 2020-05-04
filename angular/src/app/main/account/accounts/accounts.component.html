@@ -147,7 +147,7 @@
                                                              <div class="month-calender">
                                                                  <form class="input-arrow">
                                                                     <input id="selectedDate" 
-                                                                    value="january 2020" (ngModelChange)="filterByMonth($event)" class="date-field"  name="monthValue"
+                                                                    value="january 2020" class="date-field"  name="monthValue" (ngModelChange)="filterByMonth($event)"
                                                                     [(ngModel)]="selectedDate" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                                                     (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
                                                                  </form>

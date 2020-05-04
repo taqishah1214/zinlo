@@ -19,6 +19,8 @@ namespace Zinlo.ImportsPaths
         public bool IsRollBacked { get; set; }
         public string SuccessFilePath { get; set; }
         public string UploadedFilePath { get; set; }
+        public DateTime UploadMonth { get; set; }
+
 
     }
 }
