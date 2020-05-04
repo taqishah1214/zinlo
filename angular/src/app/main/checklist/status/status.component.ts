@@ -57,6 +57,8 @@ export class StatusComponent implements OnInit {
       this._changeStatus.statusId = 4;
       this.StatusList = "Completed"
     }
+    
+    this.reload.emit();
   }
 
 }
