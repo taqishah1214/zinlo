@@ -136,7 +136,7 @@ namespace Zinlo.MultiTenancy
 
                     //grant all permissions to manager role
                     var managerRole = _roleManager.Roles.Single(r => r.Name == StaticRoleNames.Tenants.Manager);
-                    permissions.Add(AppPermissions.Pages_Tasks);
+                    permissions.Add(AppPermissions.Pages_Closing_Checklist);
                     permissions.Add(AppPermissions.Pages_Tasks_Create);
                     permissions.Add(AppPermissions.Pages_Tasks_Edit);
                     permissions.Add(AppPermissions.Pages_Tasks_Delete);
@@ -144,7 +144,8 @@ namespace Zinlo.MultiTenancy
                     permissions.Add(AppPermissions.Pages_Tasks_Change_Assignee);
                     permissions.Add(AppPermissions.Pages_Tasks_Change_Status);
                     permissions.Add(AppPermissions.Pages_Tasks_Comment);
-                    permissions.Add(AppPermissions.Pages_Tasks_Check_Report);
+                    permissions.Add(AppPermissions.Pages_Reports);
+                    permissions.Add(AppPermissions.Pages_Tasks_Report);
                     permissions.Add(AppPermissions.Pages_Tasks_Attachments);
                     
                     foreach (var permission in permissions)
@@ -155,12 +156,13 @@ namespace Zinlo.MultiTenancy
 
                     //User role should be default
                     var userRole = _roleManager.Roles.Single(r => r.Name == StaticRoleNames.Tenants.User);
-                    permissions.Add(AppPermissions.Pages_Tasks);
+                    permissions.Add(AppPermissions.Pages_Closing_Checklist);
                     permissions.Add(AppPermissions.Pages_Tasks_Create);
                     permissions.Add(AppPermissions.Pages_Tasks_Edit);
                     permissions.Add(AppPermissions.Pages_Tasks_Change_Status);
                     permissions.Add(AppPermissions.Pages_Tasks_Comment);
-                    permissions.Add(AppPermissions.Pages_Tasks_Check_Report);
+                    permissions.Add(AppPermissions.Pages_Reports);
+                    permissions.Add(AppPermissions.Pages_Tasks_Report);
                     permissions.Add(AppPermissions.Pages_Tasks_Attachments);
                     userRole.IsDefault = true;
                     foreach (var permission in permissions)

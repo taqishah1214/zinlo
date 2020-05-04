@@ -20,17 +20,20 @@
         public const string Pages_Reconciliation = "Pages.Reconciliation";
 
 
-        public const string Pages_Tasks = "Pages.Tasks";
+        public const string Pages_Closing_Checklist = "Pages.ClosingChecklist";
         public const string Pages_Tasks_Create = "Pages.Tasks.Create";
         public const string Pages_Tasks_Edit = "Pages.Tasks.Edit";
         public const string Pages_Tasks_Delete = "Pages.Tasks.Delete";
         public const string Pages_Tasks_Duplicate = "Pages.Tasks.Duplicate";
-        public const string Pages_Tasks_Check_Report = "Pages.Tasks.Check.Reports";
         public const string Pages_Tasks_Comment = "Pages.Tasks.Comment";
         public const string Pages_Tasks_Change_Status = "Pages.Tasks.Change.Status";
         public const string Pages_Tasks_Change_Assignee = "Pages.Tasks.Change.Assignee";
         public const string Pages_Tasks_Attachments = "Pages.Tasks.Attachments";
 
+        public const string Pages_Reports = "Pages.Rerports";
+        public const string Pages_Tasks_Report = "Pages.Task.Reports";
+        public const string Pages_Trial_Balance_Report = "Pages.Trial.Reports";
+        public const string Pages_Observe_Variance_Reports = "Pages.Observe.Variance.Reports";
 
         public const string Pages_Categories = "Pages.Categories";
         public const string Pages_Categories_Create = "Pages.Categories.Create";

@@ -44,10 +44,10 @@ export class AppNavigationService {
 
             new AppMenuItem('Reconciliation', 'Pages.Reconciliation', './assets/media/ClosingCheckList/reconcilliation.svg', '/app/main/reconcilliation', [ 
             ]),
-            new AppMenuItem('Reports', 'Pages.ClosingChecklist', './assets/media/ClosingCheckList/MaskGroup30.svg', '', [
-                new AppMenuItem('TaskReport', 'Pages.ClosingChecklist','./assets/media/ClosingCheckList/dot.png','/app/main/task-report'),
-                new AppMenuItem('Trial Balance Report', 'Pages.ClosingChecklist','./assets/media/ClosingCheckList/dot.png','/app/main/trialbalance-report'),
-                new AppMenuItem('Observe Variance', 'Pages.ClosingChecklist','./assets/media/ClosingCheckList/dot.png','/app/main/observe-variance'),
+            new AppMenuItem('Reports', 'Pages.Rerports', './assets/media/ClosingCheckList/MaskGroup30.svg', '', [
+                new AppMenuItem('TaskReport', 'Pages.Task.Reports','./assets/media/ClosingCheckList/dot.png','/app/main/task-report'),
+                new AppMenuItem('TrialBalanceReport', 'Pages.Trial.Reports','./assets/media/ClosingCheckList/dot.png','/app/main/trialbalance-report'),
+                new AppMenuItem('ObserveVariance', 'Pages.Observe.Variance.Reports','./assets/media/ClosingCheckList/dot.png','/app/main/observe-variance'),
 
             ]),
            // new AppMenuItem('Tests', 'Pages.Tests', 'flaticon-more', '/app/main/tests/tests'),

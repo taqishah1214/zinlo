@@ -73,7 +73,6 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
     this.collapsibleRow = false;
   }
    exportToExcel(): void {
-     debugger
         this._closingChecklistService.getTaskToExcel(
           this.filterText,
           this.categoryFilter,
@@ -82,8 +81,7 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
           this.selectedDateRange[0],
           this.selectedDateRange[1],
           this.primengTableHelper.getSorting(this.dataTable)).subscribe(result => {
-            debugger
-                this._fileDownloadService.downloadTempFile(result);
+                  this._fileDownloadService.downloadTempFile(result);
             });
     }
   onChange() {
