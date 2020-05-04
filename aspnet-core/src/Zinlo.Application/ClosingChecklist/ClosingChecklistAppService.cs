@@ -230,7 +230,10 @@ namespace Zinlo.ClosingChecklist
                         editIteration = true;
                     }
                 }
-                
+                else
+                {
+                    ObjectMapper.Map(input, currentTaskDetail);
+                }
                 if (editIteration)
                 {
                     await UpdateTaskProperties(input,isDueDateChanged);
@@ -287,6 +290,7 @@ namespace Zinlo.ClosingChecklist
                     task.CategoryId = input.CategoryId;
                     task.AssigneeId = input.AssigneeId;
                     task.TaskName = input.TaskName;
+                    task.TaskUpdatedTime = DateTime.UtcNow;
                     if (isDueDatetChanged)
                     {
                         task.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, task.ClosingMonth, input.DueOn, input.EndOfMonth);
@@ -613,10 +617,10 @@ namespace Zinlo.ClosingChecklist
         public async Task<List<CreateOrEditClosingChecklistDto>> GetTaskTimeDuration(DateTime input)
         {
             var lastYear = input.AddYears(-1).AddMonths(-1);
-            var query = await _closingChecklistManager.GetAll()
-                .Where(p => p.ClosingMonth >= lastYear && p.ClosingMonth <= input).DistinctBy(p => new { p.GroupId })
-                .OrderBy(p => p.ClosingMonth).ToDynamicListAsync();
-            return ObjectMapper.Map<List<CreateOrEditClosingChecklistDto>>(query);
+            var query =  _closingChecklistManager.GetAll()
+                .Where(p => p.ClosingMonth >= lastYear && p.ClosingMonth <= input).ToList();
+            var result = query.GroupBy(p => p.GroupId).Select(o=>o.OrderBy(p=>p.TaskUpdatedTime ?? p.ClosingMonth).First()).ToList();
+            return ObjectMapper.Map<List<CreateOrEditClosingChecklistDto>>(result);
         }
 
         public async Task<FileDto> GetTaskToExcel(GetTaskToExcelInput input)

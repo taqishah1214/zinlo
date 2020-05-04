@@ -35,6 +35,8 @@ namespace Zinlo.ClosingChecklist
         public Frequency Frequency { get; set; }
         [DisableAuditing]
         public Guid GroupId { get; set; }
+        [DisableAuditing]
+        public DateTime? TaskUpdatedTime { get; set; }
     }
     public enum Status
     {
