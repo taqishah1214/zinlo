@@ -24,13 +24,13 @@
         public const string Pages_Tasks_Create = "Pages.Tasks.Create";
         public const string Pages_Tasks_Edit = "Pages.Tasks.Edit";
         public const string Pages_Tasks_Delete = "Pages.Tasks.Delete";
+        public const string Pages_Tasks_Duplicate = "Pages.Tasks.Duplicate";
+        public const string Pages_Tasks_Check_Report = "Pages.Tasks.Check.Reports";
+        public const string Pages_Tasks_Comment = "Pages.Tasks.Comment";
+        public const string Pages_Tasks_Change_Status = "Pages.Tasks.Change.Status";
+        public const string Pages_Tasks_Change_Assignee = "Pages.Tasks.Change.Assignee";
+        public const string Pages_Tasks_Attachments = "Pages.Tasks.Attachments";
 
-
-
-        public const string Pages_ClosingChecklist = "Pages.ClosingChecklist";
-        public const string Pages_ClosingChecklist_Create = "Pages.ClosingChecklist.Create";
-        public const string Pages_ClosingChecklist_Edit = "Pages.ClosingChecklist.Edit";
-        public const string Pages_ClosingChecklist_Delete = "Pages.ClosingChecklist.Delete";
 
         public const string Pages_Categories = "Pages.Categories";
         public const string Pages_Categories_Create = "Pages.Categories.Create";

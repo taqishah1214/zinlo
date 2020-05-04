@@ -20,6 +20,16 @@ namespace Zinlo.Authorization.Roles
 
             roleManagementConfig.StaticRoles.Add(
                 new StaticRoleDefinition(
+                    StaticRoleNames.Tenants.PrimaryAdmin,
+                    MultiTenancySides.Tenant)
+            );
+            roleManagementConfig.StaticRoles.Add(
+                new StaticRoleDefinition(
+                    StaticRoleNames.Tenants.Manager,
+                    MultiTenancySides.Tenant)
+            );
+            roleManagementConfig.StaticRoles.Add(
+                new StaticRoleDefinition(
                     StaticRoleNames.Tenants.Admin,
                     MultiTenancySides.Tenant,
                     grantAllPermissionsByDefault: true)

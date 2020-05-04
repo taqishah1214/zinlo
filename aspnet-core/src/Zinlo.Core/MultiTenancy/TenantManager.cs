@@ -17,9 +17,12 @@ using Abp.Runtime.Security;
 using Microsoft.AspNetCore.Identity;
 using Zinlo.Notifications;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using Abp.Authorization;
 using Abp.Runtime.Session;
 using Abp.UI;
+using Zinlo.Authorization;
 using Zinlo.MultiTenancy.Payments;
 
 namespace Zinlo.MultiTenancy
@@ -39,6 +42,7 @@ namespace Zinlo.MultiTenancy
         private readonly INotificationSubscriptionManager _notificationSubscriptionManager;
         private readonly IAppNotifier _appNotifier;
         private readonly IAbpZeroDbMigrator _abpZeroDbMigrator;
+        private readonly IPermissionManager _permissionManager;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IRepository<SubscribableEdition> _subscribableEditionRepository;
 
@@ -56,7 +60,7 @@ namespace Zinlo.MultiTenancy
             IAbpZeroFeatureValueStore featureValueStore,
             IAbpZeroDbMigrator abpZeroDbMigrator,
             IPasswordHasher<User> passwordHasher,
-            IRepository<SubscribableEdition> subscribableEditionRepository) : base(
+            IRepository<SubscribableEdition> subscribableEditionRepository, IPermissionManager permissionManager) : base(
                 tenantRepository,
                 tenantFeatureRepository,
                 editionManager,
@@ -75,6 +79,7 @@ namespace Zinlo.MultiTenancy
             _abpZeroDbMigrator = abpZeroDbMigrator;
             _passwordHasher = passwordHasher;
             _subscribableEditionRepository = subscribableEditionRepository;
+            _permissionManager = permissionManager;
         }
 
         public async Task<int> CreateWithAdminUserAsync(
@@ -93,7 +98,7 @@ namespace Zinlo.MultiTenancy
         {
             int newTenantId;
             long newAdminId;
-
+            List<string> permissions = new List<string>();
             await CheckEditionAsync(editionId, isInTrialPeriod);
 
             using (var uow = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
@@ -125,9 +130,43 @@ namespace Zinlo.MultiTenancy
                     var adminRole = _roleManager.Roles.Single(r => r.Name == StaticRoleNames.Tenants.Admin);
                     await _roleManager.GrantAllPermissionsAsync(adminRole);
 
+                    //grant all permissions to primary admin role
+                    var primaryAdminRole = _roleManager.Roles.Single(r => r.Name == StaticRoleNames.Tenants.PrimaryAdmin);
+                    await _roleManager.GrantAllPermissionsAsync(primaryAdminRole);
+
+                    //grant all permissions to manager role
+                    var managerRole = _roleManager.Roles.Single(r => r.Name == StaticRoleNames.Tenants.Manager);
+                    permissions.Add(AppPermissions.Pages_Tasks);
+                    permissions.Add(AppPermissions.Pages_Tasks_Create);
+                    permissions.Add(AppPermissions.Pages_Tasks_Edit);
+                    permissions.Add(AppPermissions.Pages_Tasks_Delete);
+                    permissions.Add(AppPermissions.Pages_Tasks_Duplicate);
+                    permissions.Add(AppPermissions.Pages_Tasks_Change_Assignee);
+                    permissions.Add(AppPermissions.Pages_Tasks_Change_Status);
+                    permissions.Add(AppPermissions.Pages_Tasks_Comment);
+                    permissions.Add(AppPermissions.Pages_Tasks_Check_Report);
+                    permissions.Add(AppPermissions.Pages_Tasks_Attachments);
+                    
+                    foreach (var permission in permissions)
+                    {
+                        await _roleManager.GrantPermissionAsync(managerRole, _permissionManager.GetPermission(permission));
+                    }
+                    permissions.Clear();
+
                     //User role should be default
                     var userRole = _roleManager.Roles.Single(r => r.Name == StaticRoleNames.Tenants.User);
+                    permissions.Add(AppPermissions.Pages_Tasks);
+                    permissions.Add(AppPermissions.Pages_Tasks_Create);
+                    permissions.Add(AppPermissions.Pages_Tasks_Edit);
+                    permissions.Add(AppPermissions.Pages_Tasks_Change_Status);
+                    permissions.Add(AppPermissions.Pages_Tasks_Comment);
+                    permissions.Add(AppPermissions.Pages_Tasks_Check_Report);
+                    permissions.Add(AppPermissions.Pages_Tasks_Attachments);
                     userRole.IsDefault = true;
+                    foreach (var permission in permissions)
+                    {
+                        await _roleManager.GrantPermissionAsync(userRole, _permissionManager.GetPermission(permission));
+                    }
                     CheckErrors(await _roleManager.UpdateAsync(userRole));
 
                     //Create admin user for the tenant

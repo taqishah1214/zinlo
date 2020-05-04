@@ -30,10 +30,16 @@ namespace Zinlo.Authorization
 
             var pages = context.GetPermissionOrNull(AppPermissions.Pages) ?? context.CreatePermission(AppPermissions.Pages, L("Pages"));
 
-            var tests = pages.CreateChildPermission(AppPermissions.Pages_ClosingChecklist, L("ClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
-            tests.CreateChildPermission(AppPermissions.Pages_ClosingChecklist_Create, L("CreateClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
-            tests.CreateChildPermission(AppPermissions.Pages_ClosingChecklist_Edit, L("EditClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
-            tests.CreateChildPermission(AppPermissions.Pages_ClosingChecklist_Delete, L("DeleteClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
+            var tasks = pages.CreateChildPermission(AppPermissions.Pages_Tasks, L("ClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
+            tasks.CreateChildPermission(AppPermissions.Pages_Tasks_Create, L("Create"), multiTenancySides: MultiTenancySides.Tenant);
+            tasks.CreateChildPermission(AppPermissions.Pages_Tasks_Edit, L("Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            tasks.CreateChildPermission(AppPermissions.Pages_Tasks_Delete, L("Delete"), multiTenancySides: MultiTenancySides.Tenant);
+            tasks.CreateChildPermission(AppPermissions.Pages_Tasks_Duplicate, L("Duplicate"), multiTenancySides: MultiTenancySides.Tenant);
+            tasks.CreateChildPermission(AppPermissions.Pages_Tasks_Change_Status, L("ChangeStatus"), multiTenancySides: MultiTenancySides.Tenant);
+            tasks.CreateChildPermission(AppPermissions.Pages_Tasks_Change_Assignee, L("ChangeAssignee"), multiTenancySides: MultiTenancySides.Tenant);
+            tasks.CreateChildPermission(AppPermissions.Pages_Tasks_Attachments, L("Attachments"), multiTenancySides: MultiTenancySides.Tenant);
+            tasks.CreateChildPermission(AppPermissions.Pages_Tasks_Comment, L("Comment"), multiTenancySides: MultiTenancySides.Tenant);
+            tasks.CreateChildPermission(AppPermissions.Pages_Tasks_Check_Report, L("CheckReports"), multiTenancySides: MultiTenancySides.Tenant);
 
             var reconcilliations = pages.CreateChildPermission(AppPermissions.Pages_Reconciliation, L("Reconciliation"), multiTenancySides: MultiTenancySides.Tenant);
 
