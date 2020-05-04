@@ -31,7 +31,7 @@ export class AppNavigationService {
 
             
             
-            new AppMenuItem('Closing Checklist', '', './assets/media/ClosingCheckList/clipboard.svg', '', [
+            new AppMenuItem('Closing Checklist', 'Pages.ClosingChecklist', './assets/media/ClosingCheckList/clipboard.svg', '', [
                 new AppMenuItem('Checklist', 'Pages.ClosingChecklist','./assets/media/ClosingCheckList/dot.png','/app/main/checklist'),
                 new AppMenuItem('Task Categories', 'Pages.Categories', './assets/media/ClosingCheckList/dot.png', '/app/main/categories'),
             ]),
