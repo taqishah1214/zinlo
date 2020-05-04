@@ -82,7 +82,7 @@
                                         <th class="reconciliation-cell" scope="col">
                                             {{"Amount" | localize}}
                                         </th>
-                                        <th class="accountSubtype-cell" scope="col">
+                                        <th class="action-cell" scope="col">
                                             {{"Attachments" | localize}}
                                         </th>
                                         <th class="delete-cell">
@@ -123,7 +123,7 @@
                                     <td class="reconciliation-cell" (click)="RedirectToDetail(item.id)">
                                         <span class="">{{item.amount | formater }}</span>
                                     </td>
-                                    <td class="accountSubtype-cell" >
+                                    <td class="action-cell" >
                                         <span class="">
                                             <div class="d-flex">
                                                 <div *ngIf="item.attachments?.length > 0" class="drag_drop_box">
@@ -151,14 +151,12 @@
                                                             </div>
                                                         </span> 
                                                     </div>        
-                                            <div *ngIf="item.attachments?.length == 0" class="col-md-12">
-                                                <div  class="drag_drop_box form-group">
-                                                     <div  class="attachments_section_none">
-                                                        <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
-                                                            <span>{{"No Attachments" | localize}}</span>
-                                                        </a>
-                                                    </div>    
-                                                </div>
+                                            <div *ngIf="item.attachments?.length == 0" class="">
+                                                <div  class="">
+                                                    <a *ngIf="item.attachments?.length == 0"class="">
+                                                        <span>{{"No Attachments" | localize}}</span>
+                                                    </a>
+                                                </div> 
                                             </div>
                                         </div>
                                         </span>
@@ -206,7 +204,7 @@
                                                                     </div>
                                                                 </span> 
                                                             </div>        
-                                                    <div *ngIf="item.attachments?.length == 0" class="col-md-12">
+                                                    <div *ngIf="item.attachments?.length == 0" class="col-md-12" style="padding-top:25px;">
                                                         <div  class="drag_drop_box form-group">
                                                              <div  class="attachments_section_none">
                                                                 <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">

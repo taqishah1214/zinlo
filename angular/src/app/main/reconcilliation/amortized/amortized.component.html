@@ -171,16 +171,14 @@
                                                             </div>
                                                         </span> 
                                                     </div>        
-                                            <div *ngIf="item.attachments?.length == 0" class="col-md-12" style="padding-top:25px;">
-                                                <div  class="drag_drop_box form-group">
-                                                     <div  class="attachments_section_none">
-                                                        <a  *ngIf="item.attachments?.length == 0"class="attachement_btn">
+                                                <div *ngIf="item.attachments?.length == 0" class="">
+                                                    <div  class="">
+                                                        <a *ngIf="item.attachments?.length == 0"class="">
                                                             <span>{{"No Attachments" | localize}}</span>
                                                         </a>
-                                                    </div>    
+                                                    </div> 
                                                 </div>
                                             </div>
-                                        </div>
 
                                         </span>
 
