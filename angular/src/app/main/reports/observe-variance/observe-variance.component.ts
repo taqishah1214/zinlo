@@ -141,7 +141,9 @@ export class ObserveVarianceComponent extends AppComponentBase {
       this.firstMonthData = result;
       this.firstMonthData.forEach(i => {
         var attachmentName = i.name.substring(i.name.lastIndexOf("/") + 1, i.name.lastIndexOf("zinlo"));
-        i["attachmentName"] = attachmentName
+        i["attachmentName"] = attachmentName  
+        var creationDate=i.creationTime 
+        i["creationTime"]=creationDate 
       }) 
     })
   }
@@ -153,6 +155,8 @@ export class ObserveVarianceComponent extends AppComponentBase {
       this.secondMonthData.forEach(i => {
         var attachmentName = i.name.substring(i.name.lastIndexOf("/") + 1, i.name.lastIndexOf("zinlo"));
         i["attachmentName"] = attachmentName  
+        var creationDate=i.creationTime 
+        i["creationTime"]=creationDate   
         this.modalButtonText = "Compare"
       })
       ;  
