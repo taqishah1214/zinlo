@@ -151,6 +151,7 @@
 
 .dateRadio{
     padding-top: 15px;
+    padding-left: 0px !important;
 }
 .modal_month {
     padding-top: 15px;

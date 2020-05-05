@@ -69,10 +69,10 @@
 
                     <div class="record-card-header">
                         <div class="record-card-header-bottom">
-                            <div class="modal fade" id="kt_modal_6" tabindex="-1" role="dialog"
+                            <div class="modal fade bd-example-modal-lg" id="kt_modal_6" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
+                                <div class="modal-dialog modal-lg"  role="document">
+                                    <div class="modal-content"style="width: 600px !important;">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLongTitle">Compare Trial Balance
                                             </h5>
@@ -84,7 +84,7 @@
 
                                             <div class="modal_month">
                                                 <div class="row">
-                                                    <div class="col-6 px-4">
+                                                    <div class="col-6">
                                                         <div class="month-calender">
                                                             <form class="input-arrow">
                                                                 <input (ngModelChange)="firstmonth($event)"
@@ -96,22 +96,28 @@
                                                                     (onShown)="onOpenCalendar($event)">
                                                             </form>
                                                         </div>
-                                                        <div class="dateRadio col-9">
+                                                        <div class="dateRadio">
                                                             <div *ngFor="let item of firstMonthData"
-                                                                class="kt-radio-list">
-                                                                <label class="kt-radio kt-radio--brand" name="radio1">
-                                                                    <input type="radio"
-                                                                        [checked]="item.id === firstMonthid"
-                                                                        [value]="item.id"
-                                                                        (change)="onSelectionChange(item.id)">
-                                                                    {{item.attachmentName}}
-                                                                    <span></span>
-                                                                </label>
+                                                                class="kt-radio-list row">
+                                                                <div class="col-8">
+                                                                    <label class="kt-radio kt-radio--brand" name="radio1">
+                                                                        <input type="radio"
+                                                                            [checked]="item.id === firstMonthid"
+                                                                            [value]="item.id"
+                                                                            (change)="onSelectionChange(item.id)">
+                                                                            {{item.attachmentName}}
+                                                                        <span></span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                
+                                                                    <span class="pl-0" style="color: blue;">{{item.creationTime | momentFormat:'MMMM YYYY'}}</span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-6 px-4 border-gray border-left">
+                                                    <div class="col-6 border-gray border-left">
                                                         <div class="month-calender">
                                                             <form class="input-arrow">
                                                                 <input (ngModelChange)="secondMonth($event)"
@@ -123,26 +129,27 @@
                                                                     (onShown)="onOpenCalendar($event)">
                                                             </form>
                                                         </div>
-                                                        <div class="dateRadio col-9">
+                                                        <div class="dateRadio">
                                                             <div class="kt-radio-list">
 
                                                                 <div *ngFor="let item of secondMonthData"
-                                                                    class="kt-radio-list">
+                                                                    class="kt-radio-list row">
+                                                                    <div class="col-8">
 
-                                                                    <label class="kt-radio kt-radio--brand"
-                                                                        name="radio1">
-                                                                        <input type="radio"
-                                                                            [checked]="item.id === secondMonthid"
-                                                                            [value]="item.id"
-                                                                            (change)="onSelectionSecondMonthChange(item.id)">
-                                                                        {{item.attachmentName}}
-                                                                        <span></span>
-                                                                    </label>
-
+                                                                        <label class="kt-radio kt-radio--brand "
+                                                                            name="radio1">
+                                                                            <input type="radio"
+                                                                                [checked]="item.id === secondMonthid"
+                                                                                [value]="item.id"
+                                                                                (change)="onSelectionSecondMonthChange(item.id)">
+                                                                                {{item.attachmentName}} 
+                                                                            <span></span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-4">                               
+                                                                        <span class="pl-0" style=" color: blue;">{{item.creationTime | momentFormat:'MMMM YYYY'}}</span>
+                                                                    </div>
                                                                 </div>
-
-
-
                                                             </div>
                                                         </div>
                                                     </div>

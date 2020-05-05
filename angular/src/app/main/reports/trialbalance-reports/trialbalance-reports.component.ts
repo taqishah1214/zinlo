@@ -142,10 +142,11 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
   firstmonth(event) {
     this.FirstMonth = new Date(add(event , 2, "day"));
     this._trialBalanceServiceProxy.getTrialBalancesofSpecficMonth(this.FirstMonth).subscribe(result => {
-      this.firstMonthData = result;
       this.firstMonthData.forEach(i => {
         var attachmentName = i.name.substring(i.name.lastIndexOf("/") + 1, i.name.lastIndexOf("zinlo"));
         i["attachmentName"] = attachmentName
+        var creationDate=i.creationTime
+        i["creationTime"]=creationDate 
       }) 
     })
   }
@@ -156,7 +157,9 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
       this.secondMonthData = result
       this.secondMonthData.forEach(i => {
         var attachmentName = i.name.substring(i.name.lastIndexOf("/") + 1, i.name.lastIndexOf("zinlo"));
-        i["attachmentName"] = attachmentName         
+        i["attachmentName"] = attachmentName   
+        var creationDate=i.creationTime 
+        i["creationTime"]=creationDate    
       })
       this.modalButtonText = "Compare";  
     })
