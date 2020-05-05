@@ -30,6 +30,7 @@ namespace Zinlo.Authorization
 
             var pages = context.GetPermissionOrNull(AppPermissions.Pages) ?? context.CreatePermission(AppPermissions.Pages, L("Pages"));
 
+            //ClosingCheckList
             var closingChecklist = pages.CreateChildPermission(AppPermissions.Pages_Closing_Checklist, L("ClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
             closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Create, L("Create"), multiTenancySides: MultiTenancySides.Tenant);
             closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Edit, L("Edit"), multiTenancySides: MultiTenancySides.Tenant);
@@ -40,36 +41,61 @@ namespace Zinlo.Authorization
             closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Attachments, L("Attachments"), multiTenancySides: MultiTenancySides.Tenant);
             closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Comment, L("Comment"), multiTenancySides: MultiTenancySides.Tenant);
 
+            //Reports
             var reports = pages.CreateChildPermission(AppPermissions.Pages_Reports, L("Reports"), multiTenancySides: MultiTenancySides.Tenant);
             reports.CreateChildPermission(AppPermissions.Pages_Tasks_Report, L("TaskReports"), multiTenancySides: MultiTenancySides.Tenant);
             reports.CreateChildPermission(AppPermissions.Pages_Observe_Variance_Reports, L("ObserveVariance"), multiTenancySides: MultiTenancySides.Tenant);
             reports.CreateChildPermission(AppPermissions.Pages_Trial_Balance_Report, L("TrialBalance"), multiTenancySides: MultiTenancySides.Tenant);
 
+            //Reconciliation
             var reconcilliations = pages.CreateChildPermission(AppPermissions.Pages_Reconciliation, L("Reconciliation"), multiTenancySides: MultiTenancySides.Tenant);
+            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Change_Status, L("ChangeAssignee"), multiTenancySides: MultiTenancySides.Tenant);
+            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Attachments, L("Attachments"), multiTenancySides: MultiTenancySides.Tenant);
+            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Comment, L("Comment"), multiTenancySides: MultiTenancySides.Tenant);
+            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Create, L("Create"), multiTenancySides: MultiTenancySides.Tenant);
+            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Edit, L("Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Delete, L("Delete"), multiTenancySides: MultiTenancySides.Tenant);
 
-
-
+            //Categories
             var categories = closingChecklist.CreateChildPermission(AppPermissions.Pages_Categories, L("Categories"), multiTenancySides: MultiTenancySides.Tenant);
             categories.CreateChildPermission(AppPermissions.Pages_Categories_Create, L("Create") ,multiTenancySides: MultiTenancySides.Tenant);
             categories.CreateChildPermission(AppPermissions.Pages_Categories_Edit, L("Edit"), multiTenancySides: MultiTenancySides.Tenant);
             categories.CreateChildPermission(AppPermissions.Pages_Categories_Delete, L("Delete"), multiTenancySides: MultiTenancySides.Tenant);
 
+            //ImportLog
+            var importLog = pages.CreateChildPermission(AppPermissions.Pages_ImportLog, L("ImportLog"), multiTenancySides: MultiTenancySides.Tenant);
 
+            //AccountSubType
+      
+            var accountSubType = pages.CreateChildPermission(AppPermissions.Pages_AccountSubType, L("AccountSubType"), multiTenancySides: MultiTenancySides.Tenant);
+            accountSubType.CreateChildPermission(AppPermissions.Pages_AccountSubType_Create, L("Create"), multiTenancySides: MultiTenancySides.Tenant);
+            accountSubType.CreateChildPermission(AppPermissions.Pages_AccountSubType_Edit, L("Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            accountSubType.CreateChildPermission(AppPermissions.Pages_AccountSubType_Delete, L("Delete"), multiTenancySides: MultiTenancySides.Tenant);
+
+            //ChartsOfAccounts
             var chartofAccounts = pages.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts, L("ChartsofAccounts"), multiTenancySides: MultiTenancySides.Tenant);
-            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Create, L("CreateNewChartsofAccounts"), multiTenancySides: MultiTenancySides.Tenant);
-            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Edit, L("EditChartsofAccounts"), multiTenancySides: MultiTenancySides.Tenant);
-            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Delete, L("DeleteChartsofAccounts"), multiTenancySides: MultiTenancySides.Tenant);
+            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Create, L("Create"), multiTenancySides: MultiTenancySides.Tenant);
+            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Edit, L("Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Delete, L("Delete"), multiTenancySides: MultiTenancySides.Tenant);
+            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Upload, L("Upload"), multiTenancySides: MultiTenancySides.Tenant);
+            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Upload_TrialBalance, L("Upload_trialBalance"), multiTenancySides: MultiTenancySides.Tenant);
+            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Download, L("Download"), multiTenancySides: MultiTenancySides.Tenant);
+            chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Download_TrialBalance, L("Download_trialBalance"), multiTenancySides: MultiTenancySides.Tenant);
 
+            //RestoreItems
+            var restoreItems = pages.CreateChildPermission(AppPermissions.Pages_Restore_Items, L("Restore_Items"), multiTenancySides: MultiTenancySides.Tenant);
 
             pages.CreateChildPermission(AppPermissions.Pages_DemoUiComponents, L("DemoUiComponents"));
 
             var administration = pages.CreateChildPermission(AppPermissions.Pages_Administration, L("Administration"));
 
+
+           //TimeMangment
             var timeManagements = administration.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements, L("Management"), multiTenancySides: MultiTenancySides.Tenant);
-            timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Create, L("DefineClosingMonth"), multiTenancySides: MultiTenancySides.Tenant);
-            //timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Edit, L("EditTimeManagement"), multiTenancySides: MultiTenancySides.Tenant);
-            //timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Delete, L("DeleteTimeManagement"), multiTenancySides: MultiTenancySides.Tenant);
-            timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Status, L("ChangeStatus"), multiTenancySides: MultiTenancySides.Tenant);
+            timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Create, L("Create"), multiTenancySides: MultiTenancySides.Tenant);
+            timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Edit, L("Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Delete, L("Delete"), multiTenancySides: MultiTenancySides.Tenant);
+            timeManagements.CreateChildPermission(AppPermissions.Pages_Administration_TimeManagements_Status, L("Status"), multiTenancySides: MultiTenancySides.Tenant);
 
 
 

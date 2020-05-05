@@ -62,10 +62,14 @@ namespace Zinlo.ChartofAccounts
 
 
     [Table("AccountBalance")]
+    [Audited]
     public class AccountBalance : CreationAuditedEntity<long>
     {
+        [DisableAuditing]
         public long AccountId { get; set; }
+        [DisableAuditing]
         public virtual ChartofAccounts Account { get; set; }
+        [DisableAuditing]
         public double Balance { get; set; }
         public double TrialBalance { get; set; }
         public DateTime Month { get; set; }

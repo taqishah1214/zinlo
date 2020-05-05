@@ -136,6 +136,7 @@ namespace Zinlo.MultiTenancy
 
                     //grant all permissions to manager role
                     var managerRole = _roleManager.Roles.Single(r => r.Name == StaticRoleNames.Tenants.Manager);
+                    
                     permissions.Add(AppPermissions.Pages_Closing_Checklist);
                     permissions.Add(AppPermissions.Pages_Tasks_Create);
                     permissions.Add(AppPermissions.Pages_Tasks_Edit);
@@ -144,10 +145,41 @@ namespace Zinlo.MultiTenancy
                     permissions.Add(AppPermissions.Pages_Tasks_Change_Assignee);
                     permissions.Add(AppPermissions.Pages_Tasks_Change_Status);
                     permissions.Add(AppPermissions.Pages_Tasks_Comment);
+                    permissions.Add(AppPermissions.Pages_Tasks_Attachments);
+
+                    ///////////////////////////////////////////////
                     permissions.Add(AppPermissions.Pages_Reports);
                     permissions.Add(AppPermissions.Pages_Tasks_Report);
-                    permissions.Add(AppPermissions.Pages_Tasks_Attachments);
-                    
+                    permissions.Add(AppPermissions.Pages_Trial_Balance_Report);
+                    permissions.Add(AppPermissions.Pages_Observe_Variance_Reports);
+
+                    ///////////////////
+                    permissions.Add(AppPermissions.Pages_Reconciliation);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Create);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Edit);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Delete);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Change_Status);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Change_Assignee);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Comment);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Attachments);
+                    //////////////////
+
+                    permissions.Add(AppPermissions.Pages_ChartsofAccounts);
+                    permissions.Add(AppPermissions.Pages_ChartsofAccounts_Create);
+                    permissions.Add(AppPermissions.Pages_ChartsofAccounts_Edit);
+                    permissions.Add(AppPermissions.Pages_ChartsofAccounts_Delete);
+                    permissions.Add(AppPermissions.Pages_ChartsofAccounts_Upload);
+                    permissions.Add(AppPermissions.Pages_ChartsofAccounts_Upload_TrialBalance);
+                    permissions.Add(AppPermissions.Pages_ChartsofAccounts_Download);
+                    permissions.Add(AppPermissions.Pages_ChartsofAccounts_Download_TrialBalance);
+                    ///////////////////////////////////////////////////////////////
+                    permissions.Add(AppPermissions.Pages_AccountSubType);
+                    permissions.Add(AppPermissions.Pages_AccountSubType_Create);
+                    permissions.Add(AppPermissions.Pages_AccountSubType_Edit);
+                    permissions.Add(AppPermissions.Pages_AccountSubType_Delete);
+
+                  
+
                     foreach (var permission in permissions)
                     {
                         await _roleManager.GrantPermissionAsync(managerRole, _permissionManager.GetPermission(permission));
@@ -161,9 +193,16 @@ namespace Zinlo.MultiTenancy
                     permissions.Add(AppPermissions.Pages_Tasks_Edit);
                     permissions.Add(AppPermissions.Pages_Tasks_Change_Status);
                     permissions.Add(AppPermissions.Pages_Tasks_Comment);
-                    permissions.Add(AppPermissions.Pages_Reports);
-                    permissions.Add(AppPermissions.Pages_Tasks_Report);
                     permissions.Add(AppPermissions.Pages_Tasks_Attachments);
+
+
+                    permissions.Add(AppPermissions.Pages_Reconciliation);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Create);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Edit);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Delete);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Change_Status);
+                    permissions.Add(AppPermissions.Pages_Reconciliation_Comment);
+
                     userRole.IsDefault = true;
                     foreach (var permission in permissions)
                     {

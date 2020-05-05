@@ -6,20 +6,43 @@
     /// </summary>
     public static class AppPermissions
     {
+        //TimeMangment
         public const string Pages_Administration_TimeManagements = "Pages.Administration.TimeManagements";
         public const string Pages_Administration_TimeManagements_Create = "Pages.Administration.TimeManagements.Create";
         public const string Pages_Administration_TimeManagements_Edit = "Pages.Administration.TimeManagements.Edit";
         public const string Pages_Administration_TimeManagements_Delete = "Pages.Administration.TimeManagements.Delete";
         public const string Pages_Administration_TimeManagements_Status = "Pages.Administration.TimeManagements.Status";
 
+        //ChartsOfAccounts
         public const string Pages_ChartsofAccounts = "Pages.ChartsofAccounts";
         public const string Pages_ChartsofAccounts_Create = "Pages.ChartsofAccounts.Create";
         public const string Pages_ChartsofAccounts_Edit = "Pages.ChartsofAccounts.Edit";
         public const string Pages_ChartsofAccounts_Delete = "Pages.ChartsofAccounts.Delete";
+        public const string Pages_ChartsofAccounts_Upload = "Pages.ChartsofAccounts.Upload";
+        public const string Pages_ChartsofAccounts_Upload_TrialBalance = "Pages.ChartsofAccounts.Upload.TrialBalance";
+        public const string Pages_ChartsofAccounts_Download= "Pages.ChartsofAccounts.Download";
+        public const string Pages_ChartsofAccounts_Download_TrialBalance = "Pages.ChartsofAccounts.Download.TrialBalance";
+        
+        //ImportLog
+        public const string Pages_ImportLog = "Pages.ImportLog";
 
+        //AccountSubType
+        public const string Pages_AccountSubType = "Pages.AccountSubType";
+        public const string Pages_AccountSubType_Create = "Pages.AccountSubType.Create";
+        public const string Pages_AccountSubType_Edit = "Pages.AccountSubType.Edit";
+        public const string Pages_AccountSubType_Delete = "Pages.AccountSubType.Delete";
+
+        //Reconciliation
         public const string Pages_Reconciliation = "Pages.Reconciliation";
+        public const string Pages_Reconciliation_Change_Status = "Pages.Reconciliation.Change.Status";
+        public const string Pages_Reconciliation_Create = "Pages.Reconciliation.Create";
+        public const string Pages_Reconciliation_Edit = "Pages.Reconciliation.Edit";
+        public const string Pages_Reconciliation_Delete = "Pages.Reconciliation.Delete";
+        public const string Pages_Reconciliation_Change_Assignee = "Pages.Reconciliation.Change.Assignee";
+        public const string Pages_Reconciliation_Comment = "Pages.Reconciliation.Comment";
+        public const string Pages_Reconciliation_Attachments = "Pages.Reconciliation.Attachments";
 
-
+        //ClosingChecklist
         public const string Pages_Closing_Checklist = "Pages.ClosingChecklist";
         public const string Pages_Tasks_Create = "Pages.Tasks.Create";
         public const string Pages_Tasks_Edit = "Pages.Tasks.Edit";
@@ -30,15 +53,20 @@
         public const string Pages_Tasks_Change_Assignee = "Pages.Tasks.Change.Assignee";
         public const string Pages_Tasks_Attachments = "Pages.Tasks.Attachments";
 
-        public const string Pages_Reports = "Pages.Rerports";
+        //Reports
+        public const string Pages_Reports = "Pages.Reports";
         public const string Pages_Tasks_Report = "Pages.Task.Reports";
         public const string Pages_Trial_Balance_Report = "Pages.Trial.Reports";
         public const string Pages_Observe_Variance_Reports = "Pages.Observe.Variance.Reports";
 
+        //Categories
         public const string Pages_Categories = "Pages.Categories";
         public const string Pages_Categories_Create = "Pages.Categories.Create";
         public const string Pages_Categories_Edit = "Pages.Categories.Edit";
         public const string Pages_Categories_Delete = "Pages.Categories.Delete";
+
+        //RestoreItems
+        public const string Pages_Restore_Items = "Pages.RestoreItems";
 
         //COMMON PERMISSIONS (FOR BOTH OF TENANTS AND HOST)
 
