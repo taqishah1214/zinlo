@@ -5787,6 +5787,165 @@ export class CommonLookupServiceProxy {
 }
 
 @Injectable()
+export class CompareVarianceServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param firstMonthId (optional) 
+     * @param secondMonthId (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getCompareTrialBalances(firstMonthId: number | undefined, secondMonthId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfCompareVarianceViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/CompareVariance/GetCompareTrialBalances?";
+        if (firstMonthId === null)
+            throw new Error("The parameter 'firstMonthId' cannot be null.");
+        else if (firstMonthId !== undefined)
+            url_ += "FirstMonthId=" + encodeURIComponent("" + firstMonthId) + "&"; 
+        if (secondMonthId === null)
+            throw new Error("The parameter 'secondMonthId' cannot be null.");
+        else if (secondMonthId !== undefined)
+            url_ += "SecondMonthId=" + encodeURIComponent("" + secondMonthId) + "&"; 
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCompareTrialBalances(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCompareTrialBalances(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfCompareVarianceViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfCompareVarianceViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCompareTrialBalances(response: HttpResponseBase): Observable<PagedResultDtoOfCompareVarianceViewDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfCompareVarianceViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfCompareVarianceViewDto>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @param firstMonth (optional) 
+     * @param secondMonth (optional) 
+     * @return Success
+     */
+    getInToExcel(input: CompareVarianceViewDto[] | undefined, firstMonth: moment.Moment | undefined, secondMonth: moment.Moment | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/CompareVariance/GetInToExcel?";
+        if (input === null)
+            throw new Error("The parameter 'input' cannot be null.");
+        else if (input !== undefined)
+            input && input.forEach((item, index) => { 
+                for (let attr in item)
+        			if (item.hasOwnProperty(attr)) {
+        				url_ += "input[" + index + "]." + attr + "=" + encodeURIComponent("" + (<any>item)[attr]) + "&";
+        			}
+            });
+        if (firstMonth === null)
+            throw new Error("The parameter 'firstMonth' cannot be null.");
+        else if (firstMonth !== undefined)
+            url_ += "FirstMonth=" + encodeURIComponent(firstMonth ? "" + firstMonth.toJSON() : "") + "&"; 
+        if (secondMonth === null)
+            throw new Error("The parameter 'secondMonth' cannot be null.");
+        else if (secondMonth !== undefined)
+            url_ += "SecondMonth=" + encodeURIComponent(secondMonth ? "" + secondMonth.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetInToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetInToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class ContactusServiceServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -16008,9 +16167,11 @@ export class TrialBalanceReportingServiceProxy {
 
     /**
      * @param input (optional) 
+     * @param firstMonth (optional) 
+     * @param secondMonth (optional) 
      * @return Success
      */
-    getInToExcel(input: CompareTrialBalanceViewDto[] | undefined): Observable<FileDto> {
+    getInToExcel(input: CompareTrialBalanceViewDto[] | undefined, firstMonth: moment.Moment | undefined, secondMonth: moment.Moment | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/TrialBalanceReporting/GetInToExcel?";
         if (input === null)
             throw new Error("The parameter 'input' cannot be null.");
@@ -16021,6 +16182,14 @@ export class TrialBalanceReportingServiceProxy {
         				url_ += "input[" + index + "]." + attr + "=" + encodeURIComponent("" + (<any>item)[attr]) + "&";
         			}
             });
+        if (firstMonth === null)
+            throw new Error("The parameter 'firstMonth' cannot be null.");
+        else if (firstMonth !== undefined)
+            url_ += "FirstMonth=" + encodeURIComponent(firstMonth ? "" + firstMonth.toJSON() : "") + "&"; 
+        if (secondMonth === null)
+            throw new Error("The parameter 'secondMonth' cannot be null.");
+        else if (secondMonth !== undefined)
+            url_ += "SecondMonth=" + encodeURIComponent(secondMonth ? "" + secondMonth.toJSON() : "") + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -21571,6 +21740,102 @@ export class GetDefaultEditionNameOutput implements IGetDefaultEditionNameOutput
 
 export interface IGetDefaultEditionNameOutput {
     name: string | undefined;
+}
+
+export class CompareVarianceViewDto implements ICompareVarianceViewDto {
+    accountName!: string | undefined;
+    accountNumber!: string | undefined;
+    firstMonthVariance!: number;
+    secondMonthVariance!: number;
+
+    constructor(data?: ICompareVarianceViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.accountName = data["accountName"];
+            this.accountNumber = data["accountNumber"];
+            this.firstMonthVariance = data["firstMonthVariance"];
+            this.secondMonthVariance = data["secondMonthVariance"];
+        }
+    }
+
+    static fromJS(data: any): CompareVarianceViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompareVarianceViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["accountName"] = this.accountName;
+        data["accountNumber"] = this.accountNumber;
+        data["firstMonthVariance"] = this.firstMonthVariance;
+        data["secondMonthVariance"] = this.secondMonthVariance;
+        return data; 
+    }
+}
+
+export interface ICompareVarianceViewDto {
+    accountName: string | undefined;
+    accountNumber: string | undefined;
+    firstMonthVariance: number;
+    secondMonthVariance: number;
+}
+
+export class PagedResultDtoOfCompareVarianceViewDto implements IPagedResultDtoOfCompareVarianceViewDto {
+    totalCount!: number;
+    items!: CompareVarianceViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfCompareVarianceViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items!.push(CompareVarianceViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfCompareVarianceViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfCompareVarianceViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfCompareVarianceViewDto {
+    totalCount: number;
+    items: CompareVarianceViewDto[] | undefined;
 }
 
 export class ContactusDto implements IContactusDto {

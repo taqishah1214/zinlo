@@ -30,19 +30,29 @@ namespace Zinlo.Authorization
 
             var pages = context.GetPermissionOrNull(AppPermissions.Pages) ?? context.CreatePermission(AppPermissions.Pages, L("Pages"));
 
-            var tests = pages.CreateChildPermission(AppPermissions.Pages_ClosingChecklist, L("ClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
-            tests.CreateChildPermission(AppPermissions.Pages_ClosingChecklist_Create, L("CreateClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
-            tests.CreateChildPermission(AppPermissions.Pages_ClosingChecklist_Edit, L("EditClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
-            tests.CreateChildPermission(AppPermissions.Pages_ClosingChecklist_Delete, L("DeleteClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
+            var closingChecklist = pages.CreateChildPermission(AppPermissions.Pages_Closing_Checklist, L("ClosingChecklist"), multiTenancySides: MultiTenancySides.Tenant);
+            closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Create, L("Create"), multiTenancySides: MultiTenancySides.Tenant);
+            closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Edit, L("Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Delete, L("Delete"), multiTenancySides: MultiTenancySides.Tenant);
+            closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Duplicate, L("Duplicate"), multiTenancySides: MultiTenancySides.Tenant);
+            closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Change_Status, L("ChangeStatus"), multiTenancySides: MultiTenancySides.Tenant);
+            closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Change_Assignee, L("ChangeAssignee"), multiTenancySides: MultiTenancySides.Tenant);
+            closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Attachments, L("Attachments"), multiTenancySides: MultiTenancySides.Tenant);
+            closingChecklist.CreateChildPermission(AppPermissions.Pages_Tasks_Comment, L("Comment"), multiTenancySides: MultiTenancySides.Tenant);
+
+            var reports = pages.CreateChildPermission(AppPermissions.Pages_Reports, L("Reports"), multiTenancySides: MultiTenancySides.Tenant);
+            reports.CreateChildPermission(AppPermissions.Pages_Tasks_Report, L("TaskReports"), multiTenancySides: MultiTenancySides.Tenant);
+            reports.CreateChildPermission(AppPermissions.Pages_Observe_Variance_Reports, L("ObserveVariance"), multiTenancySides: MultiTenancySides.Tenant);
+            reports.CreateChildPermission(AppPermissions.Pages_Trial_Balance_Report, L("TrialBalance"), multiTenancySides: MultiTenancySides.Tenant);
 
             var reconcilliations = pages.CreateChildPermission(AppPermissions.Pages_Reconciliation, L("Reconciliation"), multiTenancySides: MultiTenancySides.Tenant);
 
 
 
-            var categories = pages.CreateChildPermission(AppPermissions.Pages_Categories, L("Categories"), multiTenancySides: MultiTenancySides.Tenant);
-            categories.CreateChildPermission(AppPermissions.Pages_Categories_Create, L("CreateNewCategory") ,multiTenancySides: MultiTenancySides.Tenant);
-            categories.CreateChildPermission(AppPermissions.Pages_Categories_Edit, L("EditCategory"), multiTenancySides: MultiTenancySides.Tenant);
-            categories.CreateChildPermission(AppPermissions.Pages_Categories_Delete, L("DeleteCategory"), multiTenancySides: MultiTenancySides.Tenant);
+            var categories = closingChecklist.CreateChildPermission(AppPermissions.Pages_Categories, L("Categories"), multiTenancySides: MultiTenancySides.Tenant);
+            categories.CreateChildPermission(AppPermissions.Pages_Categories_Create, L("Create") ,multiTenancySides: MultiTenancySides.Tenant);
+            categories.CreateChildPermission(AppPermissions.Pages_Categories_Edit, L("Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            categories.CreateChildPermission(AppPermissions.Pages_Categories_Delete, L("Delete"), multiTenancySides: MultiTenancySides.Tenant);
 
 
             var chartofAccounts = pages.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts, L("ChartsofAccounts"), multiTenancySides: MultiTenancySides.Tenant);

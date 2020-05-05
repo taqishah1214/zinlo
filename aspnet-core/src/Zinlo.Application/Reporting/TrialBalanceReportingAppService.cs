@@ -154,9 +154,11 @@ namespace Zinlo.Reporting
 
         }
 
-        public async Task<FileDto> GetInToExcel(List<CompareTrialBalanceViewDto> input)
+        public async Task<FileDto> GetInToExcel(List<CompareTrialBalanceViewDto> input, DateTime FirstMonth, DateTime SecondMonth)
         {
-            return _trialBalanceExporter.ExportToFile(input);
+            string firstMonth = FirstMonth.ToString("MMM") + " " + FirstMonth.Year.ToString();
+            string secondMonth = SecondMonth.ToString("MMM") + " " + SecondMonth.Year.ToString();
+            return _trialBalanceExporter.ExportToFile(input, firstMonth, secondMonth);
         }
     }
 }

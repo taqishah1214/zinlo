@@ -6,7 +6,7 @@ import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import * as _ from 'lodash';
 import { AppConsts } from '@shared/AppConsts';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { TrialBalanceReportingServiceProxy } from '@shared/service-proxies/service-proxies';
+import { TrialBalanceReportingServiceProxy, ChartsofAccountServiceProxy, CompareVarianceServiceProxy } from '@shared/service-proxies/service-proxies';
 import { StoreDateService } from "../../../services/storedate.service";
 import { add, subtract } from 'add-subtract-date';
 import { FileDownloadService } from '@shared/utils/file-download.service';
@@ -14,11 +14,11 @@ import * as moment from 'moment';
 
 
 @Component({
-  selector: 'app-trialbalance-reports',
-  templateUrl: './trialbalance-reports.component.html',
-  styleUrls: ['./trialbalance-reports.component.css']
+  selector: 'app-observe-variance',
+  templateUrl: './observe-variance.component.html',
+  styleUrls: ['./observe-variance.component.css']
 })
-export class TrialbalanceReportsComponent extends AppComponentBase {
+export class ObserveVarianceComponent extends AppComponentBase {
 
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
@@ -39,7 +39,7 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
   compareBalanceList : any = []
   constructor(
     injector: Injector,
-    private _trialBalanceServiceProxy: TrialBalanceReportingServiceProxy, private userDate: StoreDateService,private _fileDownloadService: FileDownloadService) {
+    private _trialBalanceServiceProxy: TrialBalanceReportingServiceProxy,private _chartOfAccountService: ChartsofAccountServiceProxy,private  _compareVarianceServiceProxy: CompareVarianceServiceProxy , private userDate: StoreDateService,private _fileDownloadService: FileDownloadService) {
     super(injector);
   }
   ngOnInit() {
@@ -49,14 +49,17 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
   getAllImportLog(event?: LazyLoadEvent) {
     if (this.compareTable == false)
     {
-
       if (this.primengTableHelper.shouldResetPaging(event)) {
         this.paginator.changePage(0);
         return;
       }
       this.primengTableHelper.showLoadingIndicator();
-      this._trialBalanceServiceProxy.getAll(
-        this.filterText,
+      this._chartOfAccountService.getAll(
+        "",
+        0,
+        moment(new Date()),
+        0,
+        false,
         this.primengTableHelper.getSorting(this.dataTable),
         this.primengTableHelper.getSkipCount(this.paginator, event),
         this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -64,9 +67,8 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
         this.primengTableHelper.totalRecordsCount = result.totalCount;
         let data = result.items;
         data.forEach(i => {
-          i["assigniName"] = this.users[this.getUserIndex(i.createdById)].name;
-          i["profilePicture"] = this.users[this.getUserIndex(i.createdById)].profilePicture;
-  
+          i["assigneeName"] =  this.users[this.getUserIndex(i.assigneeId)].name;
+          i["profilePicture"] =  this.users[this.getUserIndex(i.assigneeId)].profilePicture;
           // var attachmentName = i.filePath.substring(i.filePath.lastIndexOf("/") + 1, i.filePath.lastIndexOf("zinlo"));
           // i["attachmentName"] = attachmentName
           // i["attachmentUrl"] =  i.filePath
@@ -86,7 +88,7 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
         return;
       }
       this.primengTableHelper.showLoadingIndicator();
-      this._trialBalanceServiceProxy.getCompareTrialBalances(
+      this._compareVarianceServiceProxy.getCompareTrialBalances(
         this.firstMonthid,
         this.secondMonthid,
         this.primengTableHelper.getSorting(this.dataTable),
@@ -133,20 +135,13 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
    this.secondMonthid = key
   }
 
-  DownloadInExcel() {
-    this._trialBalanceServiceProxy.getInToExcel(this.compareBalanceList,moment(this.FirstMonth),moment(this.SecondMonth)).subscribe(resp => {
-      this._fileDownloadService.downloadTempFile(resp);
-    })
-  }
-
   firstmonth(event) {
     this.FirstMonth = new Date(add(event , 2, "day"));
     this._trialBalanceServiceProxy.getTrialBalancesofSpecficMonth(this.FirstMonth).subscribe(result => {
+      this.firstMonthData = result;
       this.firstMonthData.forEach(i => {
         var attachmentName = i.name.substring(i.name.lastIndexOf("/") + 1, i.name.lastIndexOf("zinlo"));
         i["attachmentName"] = attachmentName
-        var creationDate=i.creationTime
-        i["creationTime"]=creationDate 
       }) 
     })
   }
@@ -157,11 +152,16 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
       this.secondMonthData = result
       this.secondMonthData.forEach(i => {
         var attachmentName = i.name.substring(i.name.lastIndexOf("/") + 1, i.name.lastIndexOf("zinlo"));
-        i["attachmentName"] = attachmentName   
-        var creationDate=i.creationTime 
-        i["creationTime"]=creationDate    
+        i["attachmentName"] = attachmentName  
+        this.modalButtonText = "Compare"
       })
-      this.modalButtonText = "Compare";  
+      ;  
+    })
+  }
+
+  DownloadInExcel() {
+    this._compareVarianceServiceProxy.getInToExcel(this.compareBalanceList,moment(this.FirstMonth),moment (this.SecondMonth)).subscribe(resp => {
+      this._fileDownloadService.downloadTempFile(resp);
     })
   }
   LoadandCompareTrialBalance() {
@@ -184,21 +184,6 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
 
   reloadPage(): void {
     this.paginator.changePage(this.paginator.getPage());
-  }
-  rollBack(id): void {
-    // this.message.confirm(
-    //     this.l('RollBackWarningMessage'),
-    //     this.l('AreYouSure'),
-    //     (isConfirmed) => {
-    //         if (isConfirmed) {
-    //             this._trialBalanceServiceProxy.rollBackTrialBalance(id)
-    //                 .subscribe(() => {
-    //                     this.getAllImportLog();
-    //                     this.notify.success(this.l('SuccessfullyRolledBack'));
-    //                 });
-    //         }
-    //     }
-    // );
   }
 }
 

@@ -49,6 +49,7 @@ import { SharedModule } from 'primeng/components/common/shared';
 import { AppSharedModule } from '@app/app-shared/app-shared.module';
 import { TaskReportComponent } from './reports/task-report/task-report.component';;
 import { TrialbalanceReportsComponent } from './reports/trialbalance-reports/trialbalance-reports.component'
+import { ObserveVarianceComponent } from './reports/observe-variance/observe-variance.component';
 
 
 
@@ -107,7 +108,9 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 AmortizedComponent ,
                 ItemizedDetailsComponent ,
                 AmortizedDetailsComponent ,
-                TaskReportComponent,
+                TaskReportComponent,
+                ObserveVarianceComponent
+,
                 TrialbalanceReportsComponent
         ],
         providers: [

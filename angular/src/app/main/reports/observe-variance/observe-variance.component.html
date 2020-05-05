@@ -9,7 +9,7 @@
                     </h3>
                     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
                     <span class="kt-subheader__desc">
-                        {{"Trial Balance Reports" | localize}}
+                        {{"Observe Variance" | localize}}
                     </span>
                 </div>
             </div>
@@ -24,8 +24,7 @@
                                     <h3 class="mr-3 mb-0">
                                     </h3>
                                     <h6 *ngIf="compareTable" class="ml-3 mb-0 form-group">
-                                        {{FirstMonth | momentFormat:'MMMM YYYY'}} Vs
-                                        {{SecondMonth | momentFormat:'MMMM YYYY'}}
+                                        {{FirstMonth | momentFormat:'MMMM YYYY'}} Vs {{SecondMonth | momentFormat:'MMMM YYYY'}}
                                     </h6>
                                 </div>
                                 <div>
@@ -61,34 +60,27 @@
                         </div>
                     </div>
 
-
-
-
-
-
-
                     <div class="record-card-header">
                         <div class="record-card-header-bottom">
-                            <div class="modal fade bd-example-modal-lg" id="kt_modal_6" tabindex="-1" role="dialog"
+                            <div class="modal fade" id="kt_modal_6" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg"  role="document">
-                                    <div class="modal-content"style="width: 600px !important;">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Compare Trial Balance
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Compare Variances
                                             </h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Please select the months to compare the trial balance.</p>
+                                            <p>Please select the months and versions of trial balance to compare the variances.</p>
 
                                             <div class="modal_month">
                                                 <div class="row">
-                                                    <div class="col-6">
+                                                    <div>
                                                         <div class="month-calender">
                                                             <form class="input-arrow">
-                                                                <input (ngModelChange)="firstmonth($event)"
-                                                                    [(ngModel)]="FirstMonth" required="required"
+                                                                <input (ngModelChange)="firstmonth($event)" [(ngModel)]="FirstMonth" required="required"
                                                                     autocomplete="off" class="form-control" name="date"
                                                                     bsDatepicker placeholder="Select Month"
                                                                     class="form-control" name="date" bsDatepicker
@@ -96,32 +88,25 @@
                                                                     (onShown)="onOpenCalendar($event)">
                                                             </form>
                                                         </div>
-                                                        <div class="dateRadio">
+                                                        <div class="dateRadio col-9">
                                                             <div *ngFor="let item of firstMonthData"
-                                                                class="kt-radio-list row">
-                                                                <div class="col-8">
-                                                                    <label class="kt-radio kt-radio--brand" name="radio1">
-                                                                        <input type="radio"
-                                                                            [checked]="item.id === firstMonthid"
-                                                                            [value]="item.id"
-                                                                            (change)="onSelectionChange(item.id)">
-                                                                            {{item.attachmentName}}
-                                                                        <span></span>
-                                                                    </label>
-                                                                </div>
-                                                                <div class="col-4">
-                                                                
-                                                                    <span class="pl-0" style="color: blue;">{{item.creationTime | momentFormat:'MMMM YYYY'}}</span>
-                                                                </div>
+                                                                class="kt-radio-list">
+                                                                <label class="kt-radio kt-radio--brand" name="radio1">
+                                                                    <input type="radio"
+                                                                        [checked]="item.id === firstMonthid"
+                                                                        [value]="item.id"
+                                                                        (change)="onSelectionChange(item.id)">
+                                                                    {{item.attachmentName}}
+                                                                    <span></span>
+                                                                </label>
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <div class="col-6 border-gray border-left">
+                                                    
+                                                    <div>
                                                         <div class="month-calender">
                                                             <form class="input-arrow">
-                                                                <input (ngModelChange)="secondMonth($event)"
-                                                                    [(ngModel)]="SecondMonth" required="required"
+                                                                <input (ngModelChange)="secondMonth($event)" [(ngModel)]="SecondMonth" required="required"
                                                                     autocomplete="off" class="form-control" name="date"
                                                                     bsDatepicker placeholder="Select Month"
                                                                     class="form-control" name="date" bsDatepicker
@@ -129,27 +114,26 @@
                                                                     (onShown)="onOpenCalendar($event)">
                                                             </form>
                                                         </div>
-                                                        <div class="dateRadio">
+                                                        <div class="dateRadio col-9">
                                                             <div class="kt-radio-list">
 
                                                                 <div *ngFor="let item of secondMonthData"
-                                                                    class="kt-radio-list row">
-                                                                    <div class="col-8">
+                                                                    class="kt-radio-list">
 
-                                                                        <label class="kt-radio kt-radio--brand "
-                                                                            name="radio1">
-                                                                            <input type="radio"
-                                                                                [checked]="item.id === secondMonthid"
-                                                                                [value]="item.id"
-                                                                                (change)="onSelectionSecondMonthChange(item.id)">
-                                                                                {{item.attachmentName}} 
-                                                                            <span></span>
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="col-4">                               
-                                                                        <span class="pl-0" style=" color: blue;">{{item.creationTime | momentFormat:'MMMM YYYY'}}</span>
-                                                                    </div>
+                                                                    <label class="kt-radio kt-radio--brand"
+                                                                        name="radio1">
+                                                                        <input type="radio"
+                                                                            [checked]="item.id === secondMonthid"
+                                                                            [value]="item.id"
+                                                                            (change)="onSelectionSecondMonthChange(item.id)">
+                                                                        {{item.attachmentName}}
+                                                                        <span></span>
+                                                                    </label>
+
                                                                 </div>
+
+
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -174,65 +158,6 @@
                         </div>
                     </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <div class="row align-items-center">
                         <div class="categories-table primeng-datatable-container"
                             [busyIf]="primengTableHelper.isLoading">
@@ -245,16 +170,14 @@
                                 <ng-template pTemplate="header">
                                     <tr *ngIf="!compareTable">
                                         <th style="width: 150px" pSortableColumn="creationTime">
-                                            {{l('Date')}}
+                                            {{l('Account Number')}}
                                             <p-sortIcon field="record.creationTime"></p-sortIcon>
                                         </th>
                                         <th style="width: 150px" pSortableColumn="type">
-                                            {{l('Type')}}
+                                            {{l('Account Name')}}
                                             <p-sortIcon field="record.type"></p-sortIcon>
                                         </th>
                                         <th style="width: 220px"> {{l('User')}} </th>
-                                        <th style="width: 80px">{{l('Record')}}</th>
-                                        <th style="width: 120px"> {{l('Action')}} </th>
                                     </tr>
 
                                     <tr *ngIf="compareTable">
@@ -272,15 +195,12 @@
 
                                     <tr *ngIf="!compareTable">
                                         <td style="width: 150px">
-                                            <span class="ui-column-title"> {{l('Date')}}</span>
-                                            {{record.creationTime | momentFormat:'L hh:mm a'}}
+                                            <span class="ui-column-title"> {{l('Account Number')}}</span>
+                                            {{record.accountNumber}}
                                         </td>
                                         <td style="width: 150px">
-                                            <span class="ui-column-title"> {{l('Type')}}</span>
-                                            <a *ngIf="record.successFilePath"
-                                                style="color: #848fe4;cursor: pointer !important;"
-                                                (click)="downloadFile(record.successFilePath)"> {{record.type}}</a>
-                                            <a *ngIf="!record.successFilePath">{{record.type}}</a>
+                                            <span class="ui-column-title"> {{l('Account Name')}}</span>
+                                            <a>{{record.accountName}}</a>
                                         </td>
                                         <td style="width: 220px">
                                             <div class="kt-user-card-v2">
@@ -292,63 +212,33 @@
 
                                                     <div *ngIf="!record.profilePicture"
                                                         class="kt-badge kt-badge--xl kt-badge--primary">
-                                                        {{record.assigniName | firstLetterOfWords}}
+                                                        {{record.assigneeName | firstLetterOfWords}}
                                                     </div>
                                                 </div>
                                                 <div class="kt-user-card-v2__details"> <span
                                                         class="kt-user-card-v2__name">
-                                                        {{record.assigniName}}</span> </div>
+                                                        {{record.assigneeName}}</span> </div>
                                             </div>
                                         </td>
-                                        <td style="width: 80px">
-                                            <span class="ui-column-title"> {{l('Record')}}</span>
-                                            {{record.records}}
-                                        </td>
-                                        <td style="width: 120px">
-                                            <a *ngIf="!record.isRollBacked && record.type == 'TrialBalance'" class="btn"
-                                                href="javascript:;" (click)="rollBack(record.id)">
-                                                <img src="../../../../assets/img/edit.svg"></a>
-                                        </td>
                                     </tr>
-
-
-
-
-
-
-
-
-
-
-
                                     <tr *ngIf="compareTable">
                                         <td style="width: 150px">
-                                            <span class="ui-column-title"> {{l('Account Name')}}</span>
-                                            {{record.accountName}}
-                                        </td>
-                                        <td style="width: 220px">
                                             <span class="ui-column-title"> {{l('Account Number')}}</span>
                                             {{record.accountNumber}}
                                         </td>
+                                        <td style="width: 220px">
+                                            <span class="ui-column-title"> {{l('Account Name')}}</span>
+                                            {{record.accountName}}
+                                        </td>
                                         <td style="width: 120px">
                                             <span class="ui-column-title"> {{l('FirstMonth')}}</span>
-                                            {{record.firstMonthBalance  | formater}}
+                                            {{record.firstMonthVariance  | formater}}
                                         </td>
                                         <td style="width: 120px">
                                             <span class="ui-column-title"> {{l('SecondMonth')}}</span>
-                                            {{record.secondMonthBalance  | formater}}
+                                            {{record.secondMonthVariance  | formater}}
                                         </td>
-
                                     </tr>
-
-
-
-
-
-
-
-
-
                                 </ng-template>
                             </p-table>
                             <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
@@ -367,36 +257,6 @@
                             </span>
                         </div>
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 </div>
             </div>
         </div>

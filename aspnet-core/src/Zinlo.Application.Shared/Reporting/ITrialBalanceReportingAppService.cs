@@ -15,7 +15,7 @@ namespace Zinlo.Reporting
         Task<PagedResultDto<ImportLogForViewDto>> GetAll(GetAllImportLogInput input);
         Task<List<GetTrialBalanceofSpecficMonth>> GetTrialBalancesofSpecficMonth(DateTime SelectedMonth);
         Task<PagedResultDto<CompareTrialBalanceViewDto>> GetCompareTrialBalances(ComparingTrialBalanceInputDto input);
-        Task<FileDto> GetInToExcel(List<CompareTrialBalanceViewDto> input);
+        Task<FileDto> GetInToExcel(List<CompareTrialBalanceViewDto> input, DateTime FirstMonth, DateTime SecondMonth);
 
     }
 }

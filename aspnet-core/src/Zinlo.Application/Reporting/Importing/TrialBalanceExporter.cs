@@ -15,10 +15,10 @@ namespace Zinlo.Reporting.Importing
            : base(tempFileCacheManager)
         {
         }
-        public FileDto ExportToFile(List<CompareTrialBalanceViewDto> List)
+        public FileDto ExportToFile(List<CompareTrialBalanceViewDto> List, string FirstMonth, string SecondMonth)
         {
             return CreateExcelPackage(
-                "Balance Compare List.xlsx",
+                "Trial Balance Compare List.xlsx",
                 excelPackage =>
                 {
                     var sheet = excelPackage.Workbook.Worksheets.Add(L("Tasks"));
@@ -28,8 +28,8 @@ namespace Zinlo.Reporting.Importing
                         sheet,
                         L("AccountName"),
                         L("AccountNumber"),
-                        L("FirstMonthBalance"),
-                        L("SecondMonthBalance")
+                        L(FirstMonth),
+                        L(SecondMonth)
                        
                     );
 
@@ -41,10 +41,6 @@ namespace Zinlo.Reporting.Importing
                         _ => _.SecondMonthBalance
                     );
 
-                    //Formatting cells
-
-                    var creationTimeColumn = sheet.Column(4);
-                    creationTimeColumn.Style.Numberformat.Format = "yyyy-mm-dd";
 
                     for (var i = 1; i <= 4; i++)
                     {

@@ -20,6 +20,7 @@ import { ItemizedDetailsComponent } from './reconcilliation/itemized/itemized-de
 import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized-details/amortized-details.component';
 import { TaskReportComponent } from './reports/task-report/task-report.component';
 import { TrialbalanceReportsComponent } from './reports/trialbalance-reports/trialbalance-reports.component';
+import { ObserveVarianceComponent } from './reports/observe-variance/observe-variance.component';
 
 
 @NgModule({
@@ -49,6 +50,8 @@ import { TrialbalanceReportsComponent } from './reports/trialbalance-reports/tri
                     { path: 'reconcilliation/amortized/amortized-details', component: AmortizedDetailsComponent, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'task-report', component: TaskReportComponent, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'trialbalance-report', component: TrialbalanceReportsComponent , data: { permission: 'Pages.ClosingChecklist' }},
+                    { path: 'observe-variance', component: ObserveVarianceComponent , data: { permission: 'Pages.ClosingChecklist' }},
+
                 ]
             }
         ])
