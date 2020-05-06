@@ -66,7 +66,9 @@ label{
 .btn-brand{
  margin-top: 5px;
 }
-
+.compress{
+    width: 22px !important;
+}
 
 
 .chat-wrapper-inner{

@@ -36,12 +36,18 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   commantModal : Boolean;
   commantBox : Boolean;
   updateLock : Boolean = true; 
-
+  commentFiles:File[]=[];
   constructor(private _itemizationServiceProxy : ItemizationServiceProxy,
     private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector, private userInfo: UserInformation) {
     super(injector)
   }
-
+  uploadCommentFile($event) {
+    this.commentFiles.push($event.target.files[0]);
+  }
+  removeCommentFile(index)
+  {
+    this.commentFiles.splice(index, 1);
+  }
   ngOnInit() {  
     if (history.state.navigationId == 1){
       this._router.navigate(['/app/main/reconcilliation']);
