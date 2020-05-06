@@ -906,6 +906,10 @@
         .table-row-collapsible .reconciliation-cell{
             display: none;
         }
+        .toggle-btn-cell .taggle-btn{
+            display: table-cell;
+            cursor: pointer;
+        }
     }   
     @media only screen and (max-width:1279px){
         
@@ -933,6 +937,7 @@
         }
         .toggle-btn-cell .taggle-btn{
             display: table-cell;
+            cursor: pointer;
         }
         .category-selector{
             width: 150px;
@@ -946,6 +951,10 @@
     @media only screen and (max-width:1140px){
         button.btn.arrow-btn{
             margin: 0 10px; 
+        }
+        .toggle-btn-cell .taggle-btn{
+            display: table-cell;
+            cursor: pointer;
         }
         .record-card-header-bottom-inner1 .right-arrow-btn{
             order: 3;
