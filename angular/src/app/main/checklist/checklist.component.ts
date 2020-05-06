@@ -231,7 +231,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.getClosingCheckListAllTasks();
     });
   }
-  RedirectToCreateTask(): void {
+  redirectToCreateTask(): void {
     this._router.navigate(['/app/main/checklist/createtask'], { state: { data: { categoryid: 0, categoryTitle: "" } } });
   }
 
