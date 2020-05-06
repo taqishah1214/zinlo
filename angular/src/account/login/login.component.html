@@ -2,7 +2,7 @@
 <div class="kt-grid kt-grid--hor kt-grid--root kt-login kt-login--v2 kt-login--signin" id="kt_login">
     <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor container-fluid"
         style="background-image: url(./assets/media//bg/background_1.png);">
-        <div *ngIf="!multiTenancySideIsTeanant" routerLink="/account/tenant-user-register" class="row d-flex justify-content-end pt-3 pr-5">
+        <div *ngIf="!multiTenancySideIsTeanant" routerLink="/account/register" class="row d-flex justify-content-end pt-3 pr-5">
             <a  
                 class="btn btn-transparent border text-white">Get Started</a>
         </div>
@@ -66,7 +66,7 @@
                     <span class="kt-login__account-msg">
                         Don't have an account yet ?
                     </span>&nbsp;&nbsp;
-                    <a routerLink="/account/register"  id="kt_login_signup"
+                    <a routerLink="/account/tenant-user-register"  id="kt_login_signup"
                         class="kt-link kt-link--light kt-login__account-link">Request Access</a>
                         <!-- <a *ngIf="multiTenancySideIsTeanant" routerLink="/account/tenant-user-register"  id="kt_login_signup"
                         class="kt-link kt-link--light kt-login__account-link">Request Access</a> -->

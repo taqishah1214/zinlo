@@ -36,7 +36,7 @@ export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implem
    })
   }
   redirectToSubAccountsList () : void {
-    this._router.navigate(['/app/main/sub']);
+    this.redirect('','')
   }
   redirect(title,selectedId) : void {
     
