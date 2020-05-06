@@ -20,6 +20,7 @@ using Abp.Domain.Uow;
 using Abp.Runtime.Session;
 using Abp.UI;
 using Microsoft.Extensions.Logging;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Zinlo.ClosingChecklist.Exporting;
 using Zinlo.Dto;
 using Zinlo.InstructionVersions;
@@ -619,8 +620,22 @@ namespace Zinlo.ClosingChecklist
             var lastYear = input.AddYears(-1).AddMonths(-1);
             var query =  _closingChecklistManager.GetAll()
                 .Where(p => p.ClosingMonth >= lastYear && p.ClosingMonth <= input).ToList();
-            var result = query.GroupBy(p => p.GroupId).Select(o=>o.OrderBy(p=>p.TaskUpdatedTime ?? p.ClosingMonth).First()).ToList();
-            return ObjectMapper.Map<List<CreateOrEditClosingChecklistDto>>(result);
+            var groupBy = query.GroupBy(i => i.GroupId);
+            var taskList = new List<ClosingChecklist>();
+            foreach (var group in groupBy)
+            {
+                var getLatestUpdatedTask = group.FirstOrDefault(t=>t.TaskUpdatedTime.HasValue);
+                if (getLatestUpdatedTask == null)
+                {
+                    taskList.Add(group.OrderByDescending(t => t.ClosingMonth).FirstOrDefault());
+                }
+                else
+                {
+                    taskList.Add(group.OrderByDescending(t => t.TaskUpdatedTime).FirstOrDefault());
+                }
+            }
+            
+            return ObjectMapper.Map<List<CreateOrEditClosingChecklistDto>>(taskList);
         }
 
         public async Task<FileDto> GetTaskToExcel(GetTaskToExcelInput input)

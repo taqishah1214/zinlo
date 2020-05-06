@@ -36,15 +36,15 @@ export class AppNavigationService {
                 new AppMenuItem('Task Categories', 'Pages.Categories', './assets/media/ClosingCheckList/dot.png', '/app/main/categories'),
             ]),
             
-            new AppMenuItem('Chart of Accounts', '', './assets/media/ClosingCheckList/chartofaccount.svg', '', [
+            new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts', './assets/media/ClosingCheckList/chartofaccount.svg', '', [
                 new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','./assets/media/ClosingCheckList/dot.png','/app/main/account'),
-                new AppMenuItem('Account Sub Type', 'Pages.Categories', './assets/media/ClosingCheckList/dot.png', '/app/main/sub'),
+                new AppMenuItem('Account Sub Type', 'Pages.AccountSubType', './assets/media/ClosingCheckList/dot.png', '/app/main/sub'),
                 
             ]),
 
             new AppMenuItem('Reconciliation', 'Pages.Reconciliation', './assets/media/ClosingCheckList/reconcilliation.svg', '/app/main/reconcilliation', [ 
             ]),
-            new AppMenuItem('Reports', 'Pages.Rerports', './assets/media/ClosingCheckList/MaskGroup30.svg', '', [
+            new AppMenuItem('Reports', 'Pages.Reports', './assets/media/ClosingCheckList/MaskGroup30.svg', '', [
                 new AppMenuItem('TaskReport', 'Pages.Task.Reports','./assets/media/ClosingCheckList/dot.png','/app/main/task-report'),
                 new AppMenuItem('TrialBalanceReport', 'Pages.Trial.Reports','./assets/media/ClosingCheckList/dot.png','/app/main/trialbalance-report'),
                 new AppMenuItem('ObserveVariance', 'Pages.Observe.Variance.Reports','./assets/media/ClosingCheckList/dot.png','/app/main/observe-variance'),
