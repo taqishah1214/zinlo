@@ -49,7 +49,8 @@ namespace Zinlo.Authorization
 
             //Reconciliation
             var reconcilliations = pages.CreateChildPermission(AppPermissions.Pages_Reconciliation, L("Reconciliation"), multiTenancySides: MultiTenancySides.Tenant);
-            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Change_Status, L("ChangeAssignee"), multiTenancySides: MultiTenancySides.Tenant);
+            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Change_Status, L("ChangeStatus"), multiTenancySides: MultiTenancySides.Tenant);
+            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Change_Assignee, L("ChangeAssignee"), multiTenancySides: MultiTenancySides.Tenant);
             reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Attachments, L("Attachments"), multiTenancySides: MultiTenancySides.Tenant);
             reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Comment, L("Comment"), multiTenancySides: MultiTenancySides.Tenant);
             reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Create, L("Create"), multiTenancySides: MultiTenancySides.Tenant);
