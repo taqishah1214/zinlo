@@ -30,8 +30,8 @@
 }  
 
 ::ng-deep .uppy-Dashboard-inner {
-    min-height:300px !important;
-    height: 300px !important;
+    min-height:273px !important;
+    height: 273px !important;
 }
 .category-selector button {
     width: 100%;
