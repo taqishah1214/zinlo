@@ -18,6 +18,7 @@ import * as $ from 'jquery';
   styleUrls: ['./amortized.component.css']
 })
 export class AmortizedComponent extends AppComponentBase {
+  commentFiles:File[]=[];
   AllOrActive :boolean = false;
   UserProfilePicture: any;
   monthValue: Date = new Date();
@@ -193,7 +194,13 @@ filterByMonth(event): void {
   //   }  
   // })
 }
-
+uploadCommentFile($event) {
+  this.commentFiles.push($event.target.files[0]);
+}
+removeCommentFile(index)
+{
+  this.commentFiles.splice(index, 1);
+}
 getExtensionImagePath(str) {
 
   var extension = str.split('.')[1];

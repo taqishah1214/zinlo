@@ -30,7 +30,7 @@ import { ObserveVarianceComponent } from './reports/observe-variance/observe-var
                 path: '',
                 children: [
                     { path: 'categories/create-or-edit-category', component: CreateOrEditCategoryComponent, data: { permission: 'Pages.Categories.Create', id : 'id' }  },
-                    { path: 'checklist/task-details', component: TaskDetailsComponent, data: { permission: 'Pages.ClosingChecklist.Create' }  },
+                    { path: 'checklist/task-details', component: TaskDetailsComponent, data: { permission: '' }  },
                     { path: 'checklist', component: Checklist, data: { permission: 'Pages.ClosingChecklist' }},
                     { path: 'checklist/edit-task', component: EditTaskComponent, data: { permission: 'Pages.Tasks.Edit' }},
                     { path: 'checklist/createtask', component: CreatetaskComponent, data: { permission: 'Pages.Tasks.Create' }  },

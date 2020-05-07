@@ -65,6 +65,22 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     super(injector)
 
   }
+  commentFiles:File[]=[];
+  instructionFiles:File[]=[];
+  uploadFile($event) {
+    this.instructionFiles.push($event.target.files[0]);
+  }
+  removeFile(index)
+  {
+    this.instructionFiles.splice(index, 1);
+  }
+  uploadCommentFile($event) {
+    this.commentFiles.push($event.target.files[0]);
+  }
+  removeCommentFile(index)
+  {
+    this.commentFiles.splice(index, 1);
+  }
   ngOnInit() {
     this.initializePageParameters();
     this.loadDaysDropdown();

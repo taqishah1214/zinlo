@@ -38,6 +38,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   UserProfilePicture: any;
   updateLock : Boolean = true; 
   CriteriaButton :any = 0;
+  commentFiles:File[]=[];
 
 
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
@@ -70,6 +71,13 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     }   
   }
 
+  uploadCommentFile($event) {
+    this.commentFiles.push($event.target.files[0]);
+  }
+  removeCommentFile(index)
+  {
+    this.commentFiles.splice(index, 1);
+  }
   getExtensionImagePath(str) {
 
     var extension = str.split('.')[1];

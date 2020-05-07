@@ -17,6 +17,8 @@ import * as moment from 'moment';
   styleUrls: ['./createtask.component.css']
 })
 export class CreatetaskComponent extends AppComponentBase implements OnInit {
+  commentFiles:File[]=[];
+  instructionFiles:File[]=[];
   saving = false;
   categories: any;
   Email: string;
@@ -239,6 +241,20 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     else {
       this.enableValue = false;
     }
+  }
+  uploadFile($event) {
+    this.instructionFiles.push($event.target.files[0]);
+  }
+  removeFile(index)
+  {
+    this.instructionFiles.splice(index, 1);
+  }
+  uploadCommentFile($event) {
+    this.commentFiles.push($event.target.files[0]);
+  }
+  removeCommentFile(index)
+  {
+    this.commentFiles.splice(index, 1);
   }
   loadDaysByMonth(event):void{
     var month = moment(new Date(add(this.checklist.closingMonth, 2, "day")));
