@@ -51,7 +51,8 @@
 
 
                             <div [ngClass]="{'disabled':!monthStatus}" class="form-group giveCommentView"
-                                *ngIf="commantBox">
+                                *ngIf="commantBox ">
+                                
                                 <label>{{"Comments" | localize}}</label>
                                 <div (click)="commentClick()">
                                     <div class="kt-user-card-v2">
@@ -258,11 +259,11 @@
                                 </div>
                                 <div class="col-md-4">
 
-                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer"data-toggle="tooltip" title="Edit"><img src="../../../../assets/img/edit.svg"
+                                    <a *ngIf="!isDeleted == true && 'Pages.Tasks.Edit' | permission" class="action-btn btn-pointer"data-toggle="tooltip" title="Edit"><img src="../../../../assets/img/edit.svg"
                                             (click)="RedirectToEditTaskPage()"></a>
-                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" (click)="deleteTask()"data-toggle="tooltip" title="Delete"><img
+                                    <a *ngIf="!isDeleted == true && 'Pages.Tasks.Delete' | permission" class="action-btn btn-pointer" (click)="deleteTask()"data-toggle="tooltip" title="Delete"><img
                                             src="../../../../assets/img/del.svg"></a>
-                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" data-toggle="tooltip" title="Duplicate"(click)="duplicateTask()"><img
+                                    <a *ngIf="!isDeleted == true && 'Pages.Tasks.Duplicate' | permission" class="action-btn btn-pointer" data-toggle="tooltip" title="Duplicate"(click)="duplicateTask()"><img
                                             src="../../../../assets/img/dup.svg"></a>
                                             <a *ngIf="isDeleted == true" class="btn" href="javascript:;"
                                             (click)="restoreTask()">

@@ -49,12 +49,13 @@ namespace Zinlo.Authorization
 
             //Reconciliation
             var reconcilliations = pages.CreateChildPermission(AppPermissions.Pages_Reconciliation, L("Reconciliation"), multiTenancySides: MultiTenancySides.Tenant);
-            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Change_Status, L("ChangeAssignee"), multiTenancySides: MultiTenancySides.Tenant);
+            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Change_Status, L("ChangeStatus"), multiTenancySides: MultiTenancySides.Tenant);
             reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Attachments, L("Attachments"), multiTenancySides: MultiTenancySides.Tenant);
             reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Comment, L("Comment"), multiTenancySides: MultiTenancySides.Tenant);
             reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Create, L("Create"), multiTenancySides: MultiTenancySides.Tenant);
             reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Edit, L("Edit"), multiTenancySides: MultiTenancySides.Tenant);
             reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Delete, L("Delete"), multiTenancySides: MultiTenancySides.Tenant);
+            reconcilliations.CreateChildPermission(AppPermissions.Pages_Reconciliation_Change_Assignee, L("ChangeAssignee"), multiTenancySides: MultiTenancySides.Tenant);
 
             //Categories
             var categories = closingChecklist.CreateChildPermission(AppPermissions.Pages_Categories, L("Categories"), multiTenancySides: MultiTenancySides.Tenant);
@@ -81,6 +82,7 @@ namespace Zinlo.Authorization
             chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Upload_TrialBalance, L("Upload_trialBalance"), multiTenancySides: MultiTenancySides.Tenant);
             chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Download, L("Download"), multiTenancySides: MultiTenancySides.Tenant);
             chartofAccounts.CreateChildPermission(AppPermissions.Pages_ChartsofAccounts_Download_TrialBalance, L("Download_trialBalance"), multiTenancySides: MultiTenancySides.Tenant);
+
 
             //RestoreItems
             var restoreItems = pages.CreateChildPermission(AppPermissions.Pages_Restore_Items, L("Restore_Items"), multiTenancySides: MultiTenancySides.Tenant);

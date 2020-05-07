@@ -93,7 +93,6 @@ export class AmortizedComponent extends AppComponentBase {
     this.getProfilePicture();
     this.getAuditLogOfAccount();
     this.userName = this.appSession.user.name.toString();
-    this.getAllAmortizedList();
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {
     this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net }} });

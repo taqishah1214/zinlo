@@ -33,7 +33,7 @@ using Zinlo.Authorization.Users.Profile;
 
 namespace Zinlo.Authorization.Users
 {
-    [AbpAuthorize(AppPermissions.Pages_Administration_Users)]
+    //[AbpAuthorize(AppPermissions.Pages_Administration_Users)]
     public class UserAppService : ZinloAppServiceBase, IUserAppService
     {
         public IAppUrlService AppUrlService { get; set; }

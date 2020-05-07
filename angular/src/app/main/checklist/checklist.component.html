@@ -140,7 +140,7 @@
                                                 class="form-control" />
                                         </div>
                                         <div class="block-btn">
-                                            <button class="btn btn-square bg-lightgrey" data-toggle="tooltip"
+                                            <button *ngIf="'Pages.Tasks.Create' | permission" class="btn btn-square bg-lightgrey" data-toggle="tooltip"
                                                 title="Reset Filters" (click)="ResetGrid()">
                                                 <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
                                             </button>
@@ -238,7 +238,7 @@
                                                 </select>
                                             </form>
                                         </td>
-                                        <td [ngClass]="{'disabled':!monthStatus}" class="assignee-cell">
+                                        <td  [ngClass]="{'disabled':!monthStatus && Pages.Tasks.Change.Assignee}" class="assignee-cell">
                                             <div *ngIf="j.id != rowid" class="kt-user-card-v2"
                                                 (click)="monthStatus && openFieldUpdateAssignee(j.id)">
                                                 <div class="kt-user-card-v2__pic">
