@@ -270,7 +270,7 @@
                     <div class="row">
                         <div class="col-md-6">
 
-
+<!-- 
                             <div [ngClass]="{'disabled':!monthStatus}" class="form-group giveCommentView" *ngIf="commantBox">
                                 <label>{{"Comments" | localize}}</label>
                                 <div (click)="commentClick()">
@@ -292,9 +292,9 @@
                                         <input class="form-control">
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
-                            <div class="form-group " *ngIf="!commantBox">
+                            <div class="form-group " [ngClass]="{'disabled':!monthStatus}">
                                 <label>{{"Comments" | localize}}</label>
                                 <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>        
                                 <div class="border-left border-bottom border-right">
@@ -354,12 +354,50 @@
                                                 </li>
                                             </ul>
                                 </div>  
-                                <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
-                                <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
+                                <!-- <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button> -->
+                            </div>      
+                        </div>
+                        <div class="col-md-6 pt-4">
+                            <div class="report-container form-group">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="text-navyblue big">{{"Beginning Amount" | localize}}</th>
+                                            <th class="text-navyblue big">{{"Accrued Amortization" | localize}}</th>
+                                            <th class="text-navyblue big">{{"Net Amount" | localize}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-navyblue big"><label><b>{{"Total" | localize}}:</b></label></td>
+                                            <td class="text-black big"> {{begininngAmount| formater }}</td>
+                                            <td class="text-black big"> {{accuredAmount| formater }}</td>
+                                            <td class="text-black big"> {{netAmount | formater}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-navyblue big"><label><b>{{"Trial Balance" | localize}}:</b></label></td>
+                                            <td class="text-black big"  >{{trialBalanceBeginning | formater}}</td>
+                                            <td class="text-black big"  >{{trialBalanceAccured | formater}}</td>
+                                            <td class="text-black big"  >{{trialBalanceNet | formater}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-navyblue big"><label><b>{{"Variance" | localize}}:</b></label></td>
+                                            <td class="text-black big" > {{varianceBeginning | formater}}</td>
+                                            <td class="text-black big" > {{varianceAccured | formater}}</td>
+                                            <td class="text-black big" > {{varianceNet | formater}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-
-
-
+                            <div [ngClass]="{'disabled':!monthStatus}"  class="Check-reconcile-btn">
+                                <button (click)="reconciledClick()" class="btn btn-brand" >{{"Check as Reconciled" | localize}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
                             <div class="activity-box">
                                 <h5>Activity</h5>
                             </div>
@@ -466,44 +504,7 @@
                                         </div> 
                                     </div> 
                                 </tab>
-                            </tabset>             
-                        </div>
-                        <div class="col-md-6">
-                            <div class="report-container form-group">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th class="text-navyblue big">{{"Beginning Amount" | localize}}</th>
-                                            <th class="text-navyblue big">{{"Accrued Amortization" | localize}}</th>
-                                            <th class="text-navyblue big">{{"Net Amount" | localize}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-navyblue big"><label><b>{{"Total" | localize}}:</b></label></td>
-                                            <td class="text-black big"> {{begininngAmount| formater }}</td>
-                                            <td class="text-black big"> {{accuredAmount| formater }}</td>
-                                            <td class="text-black big"> {{netAmount | formater}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-navyblue big"><label><b>{{"Trial Balance" | localize}}:</b></label></td>
-                                            <td class="text-black big"  >{{trialBalanceBeginning | formater}}</td>
-                                            <td class="text-black big"  >{{trialBalanceAccured | formater}}</td>
-                                            <td class="text-black big"  >{{trialBalanceNet | formater}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-navyblue big"><label><b>{{"Variance" | localize}}:</b></label></td>
-                                            <td class="text-black big" > {{varianceBeginning | formater}}</td>
-                                            <td class="text-black big" > {{varianceAccured | formater}}</td>
-                                            <td class="text-black big" > {{varianceNet | formater}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div [ngClass]="{'disabled':!monthStatus}"  class="Check-reconcile-btn">
-                                <button (click)="reconciledClick()" class="btn btn-brand" >{{"Check as Reconciled" | localize}}</button>
-                            </div>
+                            </tabset>
                         </div>
                     </div>
                 </div>
