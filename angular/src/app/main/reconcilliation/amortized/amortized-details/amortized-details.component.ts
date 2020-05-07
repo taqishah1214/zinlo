@@ -16,6 +16,7 @@ import * as moment from 'moment';
 })
 export class AmortizedDetailsComponent extends AppComponentBase implements OnInit {
   taskObject: any;
+  commentFiles:File[]=[];
   taskDetailObject: DetailsClosingCheckListDto = new DetailsClosingCheckListDto();
   recordId: number = 0;
   taskStatus: any = "";
@@ -57,7 +58,14 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   ) {
     super(injector);
   }
-
+  
+  uploadCommentFile($event) {
+    this.commentFiles.push($event.target.files[0]);
+  }
+  removeCommentFile(index)
+  {
+    this.commentFiles.splice(index, 1);
+  }
   ngOnInit() {
     if (history.state.navigationId == 1){
       this._router.navigate(['/app/main/reconcilliation']);

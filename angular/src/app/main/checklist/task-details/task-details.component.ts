@@ -69,7 +69,14 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     this.getAuditLogOfTask();
     this.getVersionsofInstrutions();
   }
-
+  commentFiles:File[]=[];
+  uploadCommentFile($event) {
+    this.commentFiles.push($event.target.files[0]);
+  }
+  removeCommentFile(index)
+  {
+    this.commentFiles.splice(index, 1);
+  }
 
   getVersionsofInstrutions () { 
   
