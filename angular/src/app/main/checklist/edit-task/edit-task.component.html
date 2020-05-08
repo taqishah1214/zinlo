@@ -132,7 +132,7 @@
                                     <div class="form-group giveCommentView">
                                         <label>{{"Comments" | localize}}</label>
                                         <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>
-                                        <div class="form-group border-bottom border-right border-left">
+                                        <div class="form-group border-bottom border-right border-left rounded">
                                             <p-editor [(ngModel)]="checklist.commentBody"
                                                 (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
                                                 [style]="{'height':'230px','border':'none'}">
@@ -204,7 +204,7 @@
                                             [style]="{'height':'150px'}"></p-editor>
                                     </div> -->
                                     <input hidden type="file" (change)="uploadFile($event)" #instructionFile>
-                                        <div class="form-group border-bottom border-right border-left">
+                                        <div class="form-group border-bottom border-right border-left rounded">
                                             <p-editor [(ngModel)]="getTaskForEdit.instructionBody"
                                                 (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
                                                 [style]="{'height':'230px','border':'none'}">

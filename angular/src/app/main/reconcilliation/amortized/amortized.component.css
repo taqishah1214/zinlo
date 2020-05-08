@@ -1107,6 +1107,9 @@
         word-break: break-all;
         cursor: pointer;
     }
+    .toggle-btn-cell {
+        width:37px;
+    }
     .accountSubtype-cell {
         cursor: pointer;
         width: 200px;

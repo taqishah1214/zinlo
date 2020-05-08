@@ -109,7 +109,7 @@
                             <div class="form-group ">
                                 <label>{{"Comments" | localize}}</label>
                                 <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>
-                                        <div class="form-group border-bottom border-right border-left">
+                                        <div class="form-group border-bottom border-right border-left rounded">
                                             <p-editor [disabled]="!taskDetailObject.monthStatus" [(ngModel)]="comment.body"
                                                 (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
                                                 [style]="{'height':'230px','border':'none'}">
@@ -204,10 +204,9 @@
                             <div class="activity-box">
                                 <h5>Activity</h5>
                             </div>
-                            <tabset class="tab-container tabbable-line">
+                            <tabset class="tab-container tabbable-line" style="height: auto;">
                                 <tab heading="{{'Comment' | localize}}">
-                                    <div class="commentmainView show-comments">
-                                        <div class="kt-widget3 ">
+                                        <div class="kt-widget3" style="height: auto !important;">
                                             <div *ngFor="let i of commentsData" class="kt-widget3__item ">
                                                 <div class="comments-header kt-widget3__header">
                                                     <div class="kt-widget3__user-img">
@@ -231,7 +230,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                 </tab>
                                 <tab heading="{{'History' | localize}}">
                                     <div *ngFor="let i of historyOfTask" class="activity-box">

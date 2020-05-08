@@ -166,7 +166,7 @@
     
     .record-table th,
     .record-table td{
-    padding: 10px 30px;
+    padding: 10px 0px;
     vertical-align: middle;
     }
     .record-table th{
@@ -548,15 +548,7 @@
     .task-table{
         min-width: 991px;
     } */
-    .record-table th,
-    .record-table td{
-        padding: 10px 26px;
-        vertical-align: middle;
-    }
-    .record-table th{
-        border: 0;
-        border-bottom-width: 1px !important; 
-    }
+    
     .record-card-body table th,
     .record-card-body table td{
         vertical-align: middle;
