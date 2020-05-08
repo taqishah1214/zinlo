@@ -13,6 +13,9 @@
     height: 170px;
     overflow: auto;
 }
+.drag_drop_box {
+    margin-top: -50px;
+}
 .duplicate_box {
     margin-top: 50px
 }
@@ -38,8 +41,8 @@
     margin-left: 135px;
 }
 ::ng-deep .uppy-Dashboard-inner {
-    min-height:220px !important;
-    height: 220px !important;
+    min-height:273px !important;
+    height: 273px !important;
 }
 .category-selector button {
     width: 100%;

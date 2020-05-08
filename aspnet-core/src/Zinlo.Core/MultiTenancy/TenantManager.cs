@@ -24,6 +24,7 @@ using Abp.Runtime.Session;
 using Abp.UI;
 using Zinlo.Authorization;
 using Zinlo.MultiTenancy.Payments;
+using Abp.Authorization.Roles;
 
 namespace Zinlo.MultiTenancy
 {
@@ -178,7 +179,7 @@ namespace Zinlo.MultiTenancy
                     permissions.Add(AppPermissions.Pages_AccountSubType_Edit);
                     permissions.Add(AppPermissions.Pages_AccountSubType_Delete);
 
-                  
+
 
                     foreach (var permission in permissions)
                     {
@@ -194,9 +195,7 @@ namespace Zinlo.MultiTenancy
                     permissions.Add(AppPermissions.Pages_Tasks_Change_Status);
                     permissions.Add(AppPermissions.Pages_Tasks_Comment);
                     permissions.Add(AppPermissions.Pages_Tasks_Attachments);
-
-
-                    permissions.Add(AppPermissions.Pages_Reconciliation);
+                   permissions.Add(AppPermissions.Pages_Reconciliation);
                     permissions.Add(AppPermissions.Pages_Reconciliation_Create);
                     permissions.Add(AppPermissions.Pages_Reconciliation_Edit);
                     permissions.Add(AppPermissions.Pages_Reconciliation_Delete);
@@ -208,6 +207,7 @@ namespace Zinlo.MultiTenancy
                     {
                         await _roleManager.GrantPermissionAsync(userRole, _permissionManager.GetPermission(permission));
                     }
+
                     CheckErrors(await _roleManager.UpdateAsync(userRole));
 
                     //Create admin user for the tenant

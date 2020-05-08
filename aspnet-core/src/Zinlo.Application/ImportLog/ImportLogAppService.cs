@@ -1,10 +1,16 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Net;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
+using Abp.IO.Extensions;
 using Abp.Linq.Extensions;
+using Abp.UI;
 using Microsoft.EntityFrameworkCore;
+using Zinlo.ChartsofAccount.Dtos;
+using Zinlo.ChartsofAccount.Importing;
 using Zinlo.ErrorLog.Dto;
 using Zinlo.ImportLog.Dto;
 using Zinlo.ImportsPaths;
@@ -15,11 +21,18 @@ namespace Zinlo.ImportLog
     {
         private readonly IRepository<ImportsPath, long> _importsPathRepository;
         private readonly IRepository<ChartofAccounts.ChartofAccounts, long> _chartOfAccountRepository;
+        private readonly IChartsOfAccontTrialBalanceListExcelDataReader _chartsOfAccontTrialBalanceListExcelDataReader;
+        private readonly IRepository<ChartofAccounts.AccountBalance, long> _accountBalanceRepositry;
+
         public ImportLogAppService(IRepository<ImportsPath, long> importsPathRepository,
-            IRepository<ChartofAccounts.ChartofAccounts, long> chartOfAccountRepository)
+            IRepository<ChartofAccounts.ChartofAccounts, long> chartOfAccountRepository,
+            IChartsOfAccontTrialBalanceListExcelDataReader chartsOfAccontTrialBalanceListExcelDataReader,
+            IRepository<ChartofAccounts.AccountBalance, long> accountBalanceRepositry)
         {
             _importsPathRepository = importsPathRepository;
             _chartOfAccountRepository = chartOfAccountRepository;
+            _chartsOfAccontTrialBalanceListExcelDataReader = chartsOfAccontTrialBalanceListExcelDataReader;
+            _accountBalanceRepositry = accountBalanceRepositry;
         }
 
         public async Task<PagedResultDto<ImportLogForViewDto>> GetAll(GetAllImportLogInput input)
@@ -52,16 +65,58 @@ namespace Zinlo.ImportLog
 
         public async Task RollBackTrialBalance(long id)
         {
-            //var result = _chartOfAccountRepository.GetAll().Where(x => x.VersionId == id).ToList();
-            //foreach (var item in result)
-            //{
-            //    //item.TrialBalance = 0;
-            //    //item.VersionId = 0;
-            //    await _chartOfAccountRepository.UpdateAsync(item);
-            //}
-            //var versionFile = _importsPathRepository.FirstOrDefault(id);
-            //versionFile.IsRollBacked = true;
-            //_importsPathRepository.Update(versionFile);
+            var result = _importsPathRepository.FirstOrDefault(p => p.Id == id);
+            byte[] FileBytes = RequestToGetTheFile(result.UploadedFilePath);
+            var FileList = readDateFromBytesArray(FileBytes);
+            var RollBackFileList = FileList.ToList();
+            var accounts =  _chartOfAccountRepository.GetAll();
+            var accountBalanceInformation = _accountBalanceRepositry.GetAll();
+            foreach (var item in RollBackFileList)
+            {
+                var itemAccount = accounts.Where(p => p.AccountNumber == item.AccountNumber).ToList();
+                var itemAccountBalanceInfo = accountBalanceInformation.FirstOrDefault(p => p.AccountId == itemAccount[0].Id && result.UploadMonth.Month == p.Month.Month && result.UploadMonth.Year == p.Month.Year);
+                itemAccountBalanceInfo.TrialBalance = long.Parse(item.Balance);
+                _accountBalanceRepositry.Update(itemAccountBalanceInfo);
+            }
+            result.IsRollBacked = true;
+
+            _importsPathRepository.Update(result);
+
+        }
+
+        protected virtual byte[] RequestToGetTheFile(string url)
+        {
+            try
+            {
+                WebRequest request = WebRequest.Create(url);
+                byte[] fileBytes;
+                using (var response = request.GetResponse())
+                using (var stream = response.GetResponseStream())
+                {
+                    fileBytes = stream.GetAllBytes();
+                }
+
+                return fileBytes;
+            }
+            catch (UserFriendlyException ex)
+            {
+                throw new UserFriendlyException(L(ex.ToString()));
+            }
+
+        }
+
+        protected virtual List<ChartsOfAccountsTrialBalanceExcellImportDto> readDateFromBytesArray(byte[] file)
+        {
+            try
+            {
+                var result = _chartsOfAccontTrialBalanceListExcelDataReader.GetAccountsTrialBalanceFromExcel(file);
+                return result;
+            }
+            catch (UserFriendlyException ex)
+            {
+                throw new UserFriendlyException(L(ex.ToString()));
+            }
+
         }
     }
 }

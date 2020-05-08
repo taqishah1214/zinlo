@@ -16,7 +16,6 @@ using Zinlo.Authorization.Users.Profile;
 
 namespace Zinlo.Categories
 {
-    [AbpAuthorize(AppPermissions.Pages_Categories)]
     public class CategoriesAppService : ZinloAppServiceBase, ICategoriesAppService
     {
         private readonly IRepository<Category, long> _categoryRepository;

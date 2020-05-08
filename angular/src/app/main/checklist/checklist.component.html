@@ -29,10 +29,10 @@
                                 <button class="btn arrow-btn left-arrow-btn btn-square" (click)="filterByMonth(-1)">
                                     <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
                                 </button>
-                                <button class="btn arrow-btn right-arrow-btn btn-square" (click)="filterByMonth(1)">
+                                <h5 style="cursor: default;">{{selectedDate | momentFormat:'MMMM YYYY'}}</h5>
+                                <button class="btn arrow-btn right-arrow-btn btn-square ml-2" (click)="filterByMonth(1)">
                                     <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
                                 </button>
-                                <h5 style="cursor: default;">{{selectedDate | momentFormat:'MMMM YYYY'}}</h5>
 
                             </div>
                             <div class="record-card-header-bottom-inner2">
@@ -140,7 +140,7 @@
                                                 class="form-control" />
                                         </div>
                                         <div class="block-btn">
-                                            <button class="btn btn-square bg-lightgrey" data-toggle="tooltip"
+                                            <button *ngIf="'Pages.Tasks.Create' | permission" class="btn btn-square bg-lightgrey" data-toggle="tooltip"
                                                 title="Reset Filters" (click)="ResetGrid()">
                                                 <img src="./assets/media/ClosingCheckList/block.png" alt="block-btn">
                                             </button>
@@ -150,7 +150,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="primeng-paging-container">
+                    <div class="primeng-paging-container"style="margin:0px -5px">
                         <div class="table-box">
 
                             <!--<Primeng-TurboTable-Start>-->
@@ -238,7 +238,7 @@
                                                 </select>
                                             </form>
                                         </td>
-                                        <td [ngClass]="{'disabled':!monthStatus}" class="assignee-cell">
+                                        <td  [ngClass]="{'disabled':!monthStatus && Pages.Tasks.Change.Assignee}" class="assignee-cell">
                                             <div *ngIf="j.id != rowid" class="kt-user-card-v2"
                                                 (click)="monthStatus && openFieldUpdateAssignee(j.id)">
                                                 <div class="kt-user-card-v2__pic">

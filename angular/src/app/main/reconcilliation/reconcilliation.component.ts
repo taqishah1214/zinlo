@@ -112,6 +112,8 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       return;
     }
 
+    this.primengTableHelper.getMaxResultCount(this.paginator, event)
+debugger;
     this.primengTableHelper.showLoadingIndicator();
     this._chartOfAccountService.getAll(
       this.filterText,

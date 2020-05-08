@@ -80,6 +80,9 @@ export class ItemizedComponent extends AppComponentBase {
     this.commentFiles.splice(index, 1);
   }
   ngOnInit() {
+    if (history.state.navigationId == 1){
+      this._router.navigate(['/app/main/reconcilliation']);
+    }
     $(document).ready(function(){
       // Show hide popover
           $(".dropdown-menu").on('click', function (e) {
@@ -96,7 +99,6 @@ export class ItemizedComponent extends AppComponentBase {
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
     this.getAuditLogOfAccount();
-    this.getAllItemizedList();
 
 
   }
@@ -112,7 +114,8 @@ export class ItemizedComponent extends AppComponentBase {
       this.paginator.changePage(0);
       return;
     }
-
+    debugger;
+    this.primengTableHelper.getMaxResultCount(this.paginator, event)
   this.primengTableHelper.showLoadingIndicator();
   this._itemizedService.getAll(
     this.filterText,
@@ -121,7 +124,7 @@ export class ItemizedComponent extends AppComponentBase {
     this.AllOrActive,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
-    10
+    this.primengTableHelper.getMaxResultCount(this.paginator, event)
   ).subscribe(result => {
     this.primengTableHelper.totalRecordsCount = result.totalCount;
     this.primengTableHelper.records = result.items[0].itemizedListForViewDto;
