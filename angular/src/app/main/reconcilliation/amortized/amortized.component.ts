@@ -79,6 +79,9 @@ export class AmortizedComponent extends AppComponentBase {
     super(injector);
   }
   ngOnInit() {
+    if (history.state.navigationId == 1){
+      this._router.navigate(['/app/main/reconcilliation']);
+    }
       $(document).ready(function(){
         // Show hide popover
             $(".dropdown-menu").on('click', function (e) {

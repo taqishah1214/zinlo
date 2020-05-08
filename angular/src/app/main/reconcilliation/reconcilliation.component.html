@@ -176,7 +176,7 @@
                                             <span class=""> {{item.balance  | formater}}</span>
                                         </td>
                                        
-                                        <td  [ngClass]="{'disabled':!monthStatus && Pages.Reconciliation.Change.Assignee}"  class="assignee-cell">
+                                        <td  [ngClass]="{'disabled':!monthStatus }"  class="assignee-cell">
                                             <div *ngIf="item.id != rowid" class="kt-user-card-v2"
                                                 (click)="openFieldUpdateAssignee(item.id)">
                                                 <div class="kt-user-card-v2__pic">
