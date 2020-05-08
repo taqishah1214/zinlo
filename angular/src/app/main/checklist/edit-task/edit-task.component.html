@@ -80,7 +80,7 @@
                                                 data-container="body">{{"Action" | localize}}</a>
                                         </div>
                                     </div>
-                                    <div class="commentmainView show-comments">
+                                    <!-- <div class="commentmainView show-comments">
                                         <div class="kt-widget3 ">
                                             <div *ngFor="let i of comment" class="kt-widget3__item ">
                                                 <div class="comments-header kt-widget3__header">
@@ -107,160 +107,7 @@
                                         </div>
                                     </div>
 
-                                    <div [ngClass]="{'disabled':!monthStatus}"  class="form-group giveCommentView" *ngIf="!commantBox">
-                                        <label>{{"Comments" | localize}}</label>
-                                        <div (click)="commentClick()">
-                                            <div class="kt-user-card-v2">
-                                                <div class="kt-user-card-v2__pic">
-                                                    <div class="kt-user-card-v2__pic">
-                                                        <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
-                                                            <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                                alt="Pic" [src]="UserProfilePicture">
-                                                        </div>
-        
-                                                        <div *ngIf="!UserProfilePicture"
-                                                            class="kt-badge kt-badge--xl kt-badge--primary">
-                                                            {{userSignInName | firstLetterOfWords}}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div innerHTML="{{checklist.commentBody}}"
-                                                    class="form-control create-comments"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group giveCommentView">
-                                        <label>{{"Comments" | localize}}</label>
-                                        <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>
-                                        <div class="form-group border-bottom border-right border-left">
-                                            <p-editor [(ngModel)]="checklist.commentBody"
-                                                (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
-                                                [style]="{'height':'230px','border':'none'}">
-                                                <p-header>
-                                                    <span class="ql-formats">
-                                                        <select class="ql-size" data-toggle="tooltip" title="Font Size"style="width:75px">
-                                                            <option value="small">small</option>
-                                                            <option selected></option>
-                                                            <option value="large">large</option>
-                                                            <option value="huge">huge</option>
-                                                        </select>
-                                                        <select class="ql-font" data-toggle="tooltip" title="Font"style="width:90px">
-                                                            <option selected></option>
-                                                            <option value="serif">Serif</option>
-                                                            
-                                                            <option value="monospace">Monospace</option>
-                                                        </select>
-                                                        <button class="ql-bold compress" data-toggle="tooltip" title="Bold" aria-label="Bold"></button>
-                                                        <button class="ql-italic compress" data-toggle="tooltip" title="Italic" aria-label="Italic"></button>
-                                                        <button class="ql-underline " data-toggle="tooltip" title="Underline" aria-label="Underline"></button>
-                                                        
-                                                        <select title="Text Color" data-toggle="tooltip" title="Font Color"style="margin-top:-2.5px; padding-top:-3px" class="ql-color" defaultValue="rgb(0, 0, 0)">
-                                                            <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
-                                                        </select>
-                                                        <select title="Background Color" style="margin-top:-3px; padding-top:-3px" class="ql-background" defaultValue="rgb(255, 255, 255)">
-                                                            <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
-                                                        </select>
-                                                            <button class="ql-list" data-toggle="tooltip" title="Numbered List" value="ordered"></button>
-                                                            <button class="ql-list" value="bullet" data-toggle="tooltip" title="Bullet List"></button>
-                                                        <select title="Text Alignment" data-toggle="tooltip" title="Text Alignment" style="margin-top:-3px; padding-top:-3px" class="ql-align" >
-                                                            <option selected>Gauche</option>
-                                                            <option value="center" label="Center"></option>
-                                                            <option value="right" label="Right"></option>
-                                                            <option value="justify" label="Justify"></option>
-                                                        </select>    
-                                                        <button (click)="commentFile.click()" data-toggle="tooltip" title="Upload File">
-                                                            <svg viewBox="0 0 18 18">
-                                                            <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
-                                                            <circle class="ql-fill" cx="6" cy="7" r="1">                                 
-                                                            </circle>
-                                                            <polyline class="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12">
-                                                            </polyline>
-                                                            </svg>
-                                                        </button>
-                                                    </span>
-                                                </p-header>
-                                            </p-editor>
-                                            <ul class="chat-wrapper px-2">
-                                                <li *ngFor="let i of commentFiles; let indexx = index" class="chat-wrapper-inner">
-                                                <a href="javascipt:void(0)" class="docx-btn">
-                                                    <span>{{i.name}}</span>
-                                                    <i class="fas fa-times" (click)="removeCommentFile(indexx)"></i>
-                                                </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="btnMargin" >
-                                        <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
-                                        <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label>{{"Instruction" | localize}}</label>
-                                    <!-- <div class="form-group">
-                                        <p-editor [(ngModel)]="getTaskForEdit.instructionBody" name="HtmlEditorInput"
-                                            [style]="{'height':'150px'}"></p-editor>
-                                    </div> -->
-                                    <input hidden type="file" (change)="uploadFile($event)" #instructionFile>
-                                        <div class="form-group border-bottom border-right border-left">
-                                            <p-editor [(ngModel)]="getTaskForEdit.instructionBody"
-                                                (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
-                                                [style]="{'height':'230px','border':'none'}">
-                                                <p-header>
-                                                    <span class="ql-formats">
-                                                        <select class="ql-size" data-toggle="tooltip" title="Font Size"style="width:75px">
-                                                            <option value="small">small</option>
-                                                            <option selected></option>
-                                                            <option value="large">large</option>
-                                                            <option value="huge">huge</option>
-                                                        </select>
-                                                        <select class="ql-font" data-toggle="tooltip" title="Font"style="width:90px">
-                                                            <option selected></option>
-                                                            <option value="serif">Serif</option>
-                                                            
-                                                            <option value="monospace">Monospace</option>
-                                                        </select>
-                                                        <button class="ql-bold compress" data-toggle="tooltip" title="Bold" aria-label="Bold"></button>
-                                                        <button class="ql-italic compress" data-toggle="tooltip" title="Italic" aria-label="Italic"></button>
-                                                        <button class="ql-underline " data-toggle="tooltip" title="Underline" aria-label="Underline"></button>
-                                                        
-                                                        <select title="Text Color" data-toggle="tooltip" title="Font Color"style="margin-top:-2.5px; padding-top:-3px" class="ql-color" defaultValue="rgb(0, 0, 0)">
-                                                            <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
-                                                        </select>
-                                                        <select title="Background Color" style="margin-top:-3px; padding-top:-3px" class="ql-background" defaultValue="rgb(255, 255, 255)">
-                                                            <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
-                                                        </select>
-                                                            <button class="ql-list" data-toggle="tooltip" title="Numbered List" value="ordered"></button>
-                                                            <button class="ql-list" value="bullet" data-toggle="tooltip" title="Bullet List"></button>
-                                                        <select title="Text Alignment" data-toggle="tooltip" title="Text Alignment" style="margin-top:-3px; padding-top:-3px" class="ql-align" >
-                                                            <option selected>Gauche</option>
-                                                            <option value="center" label="Center"></option>
-                                                            <option value="right" label="Right"></option>
-                                                            <option value="justify" label="Justify"></option>
-                                                        </select>   
-                                                        <button (click)="instructionFile.click()" data-toggle="tooltip" title="Upload File">
-                                                            <svg viewBox="0 0 18 18">
-                                                            <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
-                                                            <circle class="ql-fill" cx="6" cy="7" r="1">                                 
-                                                            </circle>
-                                                            <polyline class="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12">
-                                                            </polyline>
-                                                            </svg>
-                                                        </button>
-                                                    </span>
-                                                </p-header>
-                                            </p-editor>
-                                            <ul class="chat-wrapper px-2">
-                                                <li *ngFor="let i of instructionFiles; let indexx = index" class="chat-wrapper-inner">
-                                                <a href="javascipt:void(0)" class="docx-btn">
-                                                    <span>{{i.name}}</span>
-                                                    <i class="fas fa-times" (click)="removeFile(indexx)"></i>
-                                                </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                     -->
                                 </div>
                             </div>
                         </div>
@@ -341,7 +188,101 @@
                                     </div>
                                 </div>
                             </div>
-                            <div [ngClass]="{'disabled':!monthStatus}" class="drag_drop_box">
+                        </div>
+                    </div>
+                    <div class="row drag_drop_box">
+                        <div class="col-md-7">
+                            <!-- <div [ngClass]="{'disabled':!monthStatus}"  class="form-group giveCommentView" *ngIf="!commantBox">
+                                <label>{{"Comments" | localize}}</label>
+                                <div (click)="commentClick()">
+                                    <div class="kt-user-card-v2">
+                                        <div class="kt-user-card-v2__pic">
+                                            <div class="kt-user-card-v2__pic">
+                                                <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
+                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
+                                                        alt="Pic" [src]="UserProfilePicture">
+                                                </div>
+
+                                                <div *ngIf="!UserProfilePicture"
+                                                    class="kt-badge kt-badge--xl kt-badge--primary">
+                                                    {{userSignInName | firstLetterOfWords}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div innerHTML="{{checklist.commentBody}}"
+                                            class="form-control create-comments"></div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="form-group giveCommentView" [ngClass]="{'disabled':!monthStatus}">
+                                <label>{{"Comments" | localize}}</label>
+                                <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>
+                                <div class="form-group border-bottom border-right border-left rounded">
+                                    <p-editor [(ngModel)]="checklist.commentBody"
+                                        (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
+                                        [style]="{'height':'230px','border':'none'}">
+                                        <p-header>
+                                            <span class="ql-formats">
+                                                <select class="ql-size" data-toggle="tooltip" title="Font Size"style="width:75px">
+                                                    <option value="small">small</option>
+                                                    <option selected></option>
+                                                    <option value="large">large</option>
+                                                    <option value="huge">huge</option>
+                                                </select>
+                                                <select class="ql-font" data-toggle="tooltip" title="Font"style="width:90px">
+                                                    <option selected></option>
+                                                    <option value="serif">Serif</option>
+                                                    
+                                                    <option value="monospace">Monospace</option>
+                                                </select>
+                                                <button class="ql-bold compress" data-toggle="tooltip" title="Bold" aria-label="Bold"></button>
+                                                <button class="ql-italic compress" data-toggle="tooltip" title="Italic" aria-label="Italic"></button>
+                                                <button class="ql-underline " data-toggle="tooltip" title="Underline" aria-label="Underline"></button>
+                                                
+                                                <select title="Text Color" data-toggle="tooltip" title="Font Color"style="margin-top:-2.5px; padding-top:-3px" class="ql-color" defaultValue="rgb(0, 0, 0)">
+                                                    <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
+                                                </select>
+                                                <select title="Background Color" style="margin-top:-3px; padding-top:-3px" class="ql-background" defaultValue="rgb(255, 255, 255)">
+                                                    <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
+                                                </select>
+                                                    <button class="ql-list" data-toggle="tooltip" title="Numbered List" value="ordered"></button>
+                                                    <button class="ql-list" value="bullet" data-toggle="tooltip" title="Bullet List"></button>
+                                                <select title="Text Alignment" data-toggle="tooltip" title="Text Alignment" style="margin-top:-3px; padding-top:-3px" class="ql-align" >
+                                                    <option selected>Gauche</option>
+                                                    <option value="center" label="Center"></option>
+                                                    <option value="right" label="Right"></option>
+                                                    <option value="justify" label="Justify"></option>
+                                                </select>    
+                                                <button (click)="commentFile.click()" data-toggle="tooltip" title="Upload File">
+                                                    <svg viewBox="0 0 18 18">
+                                                    <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
+                                                    <circle class="ql-fill" cx="6" cy="7" r="1">                                 
+                                                    </circle>
+                                                    <polyline class="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12">
+                                                    </polyline>
+                                                    </svg>
+                                                </button>
+                                            </span>
+                                        </p-header>
+                                    </p-editor>
+                                    <ul class="chat-wrapper px-2">
+                                        <li *ngFor="let i of commentFiles; let indexx = index" class="chat-wrapper-inner">
+                                        <a href="javascipt:void(0)" class="docx-btn">
+                                            <span>{{i.name}}</span>
+                                            <i class="fas fa-times" (click)="removeCommentFile(indexx)"></i>
+                                        </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- <div class="mt-3 d-flex justify-content-end" >
+                                    <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                     <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            
+                            <div [ngClass]="{'disabled':!monthStatus}" class="pt-4">
                                 <label>{{"Attachments" | localize}}</label>
                                 <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
                                 </ng-uppy>
@@ -356,6 +297,108 @@
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <label>{{"Instruction" | localize}}</label>
+                            <!-- <div class="form-group">
+                                <p-editor [(ngModel)]="getTaskForEdit.instructionBody" name="HtmlEditorInput"
+                                    [style]="{'height':'150px'}"></p-editor>
+                            </div> -->
+                            <input hidden type="file" (change)="uploadFile($event)" #instructionFile>
+                                <div class="form-group border-bottom border-right border-left rounded">
+                                    <p-editor [(ngModel)]="getTaskForEdit.instructionBody"
+                                        (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
+                                        [style]="{'height':'230px','border':'none'}">
+                                        <p-header>
+                                            <span class="ql-formats">
+                                                <select class="ql-size" data-toggle="tooltip" title="Font Size"style="width:75px">
+                                                    <option value="small">small</option>
+                                                    <option selected></option>
+                                                    <option value="large">large</option>
+                                                    <option value="huge">huge</option>
+                                                </select>
+                                                <select class="ql-font" data-toggle="tooltip" title="Font"style="width:90px">
+                                                    <option selected></option>
+                                                    <option value="serif">Serif</option>
+                                                    
+                                                    <option value="monospace">Monospace</option>
+                                                </select>
+                                                <button class="ql-bold compress" data-toggle="tooltip" title="Bold" aria-label="Bold"></button>
+                                                <button class="ql-italic compress" data-toggle="tooltip" title="Italic" aria-label="Italic"></button>
+                                                <button class="ql-underline " data-toggle="tooltip" title="Underline" aria-label="Underline"></button>
+                                                
+                                                <select title="Text Color" data-toggle="tooltip" title="Font Color"style="margin-top:-2.5px; padding-top:-3px" class="ql-color" defaultValue="rgb(0, 0, 0)">
+                                                    <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
+                                                </select>
+                                                <select title="Background Color" style="margin-top:-3px; padding-top:-3px" class="ql-background" defaultValue="rgb(255, 255, 255)">
+                                                    <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
+                                                </select>
+                                                    <button class="ql-list" data-toggle="tooltip" title="Numbered List" value="ordered"></button>
+                                                    <button class="ql-list" value="bullet" data-toggle="tooltip" title="Bullet List"></button>
+                                                <select title="Text Alignment" data-toggle="tooltip" title="Text Alignment" style="margin-top:-3px; padding-top:-3px" class="ql-align" >
+                                                    <option selected>Gauche</option>
+                                                    <option value="center" label="Center"></option>
+                                                    <option value="right" label="Right"></option>
+                                                    <option value="justify" label="Justify"></option>
+                                                </select>   
+                                                <button (click)="instructionFile.click()" data-toggle="tooltip" title="Upload File">
+                                                    <svg viewBox="0 0 18 18">
+                                                    <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
+                                                    <circle class="ql-fill" cx="6" cy="7" r="1">                                 
+                                                    </circle>
+                                                    <polyline class="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12">
+                                                    </polyline>
+                                                    </svg>
+                                                </button>
+                                            </span>
+                                        </p-header>
+                                    </p-editor>
+                                    <ul class="chat-wrapper px-2">
+                                        <li *ngFor="let i of instructionFiles; let indexx = index" class="chat-wrapper-inner">
+                                        <a href="javascipt:void(0)" class="docx-btn">
+                                            <span>{{i.name}}</span>
+                                            <i class="fas fa-times" (click)="removeFile(indexx)"></i>
+                                        </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 form-group">
+                            <div class="activity-box">
+                                <h5>Activity</h5>
+                            </div>
+                            <tabset class="tab-container tabbable-line">
+                                <tab heading="{{'Comments' | localize}}">
+                                            <div class="kt-widget3 " style="height: auto !important;">
+                                                <div *ngFor="let i of comment" class="kt-widget3__item ">
+                                                    <div class="comments-header kt-widget3__header">
+                                                        <div class="kt-widget3__user-img">
+                                                            <div class="kt-user-card-v2__pic">
+                                                                <div class="kt-badge kt-badge--xl kt-badge--warning">
+                                                                    {{i.NameAvatar}}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="kt-widget3__info">
+                                                            <a class="kt-widget3__username">
+                                                                {{i.userName}}
+                                                            </a><br>
+                                                        </div>
+                                                        <span class="kt-widget3__status kt-font-info">
+                                                            {{i.daysCount}}
+                                                        </span>
+                                                    </div>
+                                                    <div class="kt-widget3__body comments-body show-comments-inner">
+                                                        <p class="kt-widget3__text commentViewBox" innerHTML="{{i.body}}">
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                </tab>
+                            </tabset>
                         </div>
                     </div>
                     <div class="kt-portlet__head mb-2">

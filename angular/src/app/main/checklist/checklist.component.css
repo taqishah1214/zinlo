@@ -368,7 +368,7 @@ form.search-form input::after{
 } */
 .record-table th,
 .record-table td{
-    padding: 10px 30px;
+    padding: 10px 0px;
     vertical-align: middle;
 }
 .record-table th{
@@ -670,7 +670,9 @@ table.table.record-table td, table.table.record-table th {
         width:30px;
     }
 }
-
+.toggle-btn-cell {
+    width:37px;
+}
 @media only screen and (max-width:1470px){
     .date-cell {
         cursor: pointer;
@@ -713,6 +715,7 @@ table.table.record-table td, table.table.record-table th {
         width:30px;
     }
     .toggle-btn-cell .taggle-btn{
+        margin-left: 10px;
         display: block;
     }
 }
