@@ -9,10 +9,6 @@
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
-                        <a href="javascript: void(0);" (click)="BackToList()">
-                            <i class="la la-arrow-left"></i>
-                            {{"Back" | localize}}
-                        </a>
                         <div class="btn-group">
 
                             <a  [ngClass]="{'disabled':!monthStatus}" class="btn" href="javascript:;"
@@ -26,6 +22,10 @@
                                 <i class="fas fa-trash-restore"></i></a> 
 
                         </div>
+                        <a href="javascript: void(0);" (click)="BackToList()">
+                            <i class="la la-arrow-left"></i>
+                            {{"Back" | localize}}
+                        </a>
                     </div>
                 </div>
                 <div class="kt-portlet__body">
@@ -167,6 +167,9 @@
                                                             </li>
                                                         </ul>
                                     </div>
+                                    <div class="mt-3 d-flex justify-content-end" >
+                                        <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                                    </div>
                                     <!-- <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
                                     <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button> -->
                                 </div>
@@ -198,8 +201,7 @@
                                 </div>
                                 <tabset class="tab-container tabbable-line">
                                     <tab heading="{{'Comment' | localize}}">
-                                        <div class="commentmainView show-comments">
-                                            <div class="kt-widget3 ">
+                                            <div class="kt-widget3 "style="height: auto !important;">
                                                 <div *ngFor="let i of postedCommentList" class="kt-widget3__item ">
                                                     <div class="comments-header kt-widget3__header">
                                                         <div class="kt-widget3__user-img">
@@ -223,7 +225,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                     </tab>
                                     <tab heading="{{'History' | localize}}">
                                         <div  *ngFor="let i of historyOfTask"  class="activity-box">

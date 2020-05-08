@@ -869,6 +869,8 @@
     }
     .toggle-btn-cell .taggle-btn{
         display: table-cell;
+        cursor: pointer;
+        margin-left: 10px;
         }
     }
     @media only screen and (max-width:1600px){
@@ -893,6 +895,8 @@
        }
        .toggle-btn-cell .taggle-btn{
            display: table-cell;
+           cursor: pointer;
+           margin-left: 10px;
        }
        .table-row-collapsible{
         display: table-row;
@@ -963,6 +967,7 @@
         .toggle-btn-cell .taggle-btn{
             display: table-cell;
             cursor: pointer;
+            margin-left: 10px;
         }
         .category-selector{
             width: 150px;

@@ -163,7 +163,9 @@
     border-bottom: 1px solid #f1f2fc;
     }
     
-    
+    .toggle-btn-cell {
+        width:37px;
+    }
     .record-table th,
     .record-table td{
     padding: 10px 0px;
@@ -863,6 +865,7 @@
         }
         
         .toggle-btn-cell .action-cell{
+          
            display: none;
        }
        .table-row-collapsible{
@@ -901,6 +904,7 @@
         .toggle-btn-cell .taggle-btn{
             display: table-cell;
             cursor: pointer;
+            margin-left: 10px;
         }
     }   
     @media only screen and (max-width:1279px){
@@ -930,6 +934,7 @@
         .toggle-btn-cell .taggle-btn{
             display: table-cell;
             cursor: pointer;
+              margin-left: 10px;
         }
         .category-selector{
             width: 150px;
@@ -947,6 +952,7 @@
         .toggle-btn-cell .taggle-btn{
             display: table-cell;
             cursor: pointer;
+            margin-left: 10px;
         }
         .record-card-header-bottom-inner1 .right-arrow-btn{
             order: 3;
