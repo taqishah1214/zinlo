@@ -39,7 +39,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   historyList : any =[];
   AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
   monthStatus : boolean;
-
+  commentFiles:File[]=[]
   constructor(
     injector: Injector,
     private _router: Router,
@@ -51,7 +51,13 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   ) {
     super(injector);
   }
-
+  uploadCommentFile($event) {
+    this.commentFiles.push($event.target.files[0]);
+  }
+  removeCommentFile(index)
+  {
+    this.commentFiles.splice(index, 1);
+  }
   ngOnInit() {
     if (history.state.navigationId == 1){
       this._router.navigate(['/app/main/reconcilliation']);

@@ -60,7 +60,7 @@ export class ItemizedComponent extends AppComponentBase {
   buttonColorForHistory : any = "bg-lightgrey"
   accountSubypeList : any  = []
   monthStatus : boolean;
-
+  commentFiles:File[]=[];
   constructor(
     injector: Injector,
     private _router: Router,
@@ -71,6 +71,13 @@ export class ItemizedComponent extends AppComponentBase {
     private _chartOfAccountService: ChartsofAccountServiceProxy
   ) {
     super(injector);
+  }
+  uploadCommentFile($event) {
+    this.commentFiles.push($event.target.files[0]);
+  }
+  removeCommentFile(index)
+  {
+    this.commentFiles.splice(index, 1);
   }
   ngOnInit() {
     $(document).ready(function(){
@@ -89,7 +96,6 @@ export class ItemizedComponent extends AppComponentBase {
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
     this.getAuditLogOfAccount();
-    this.getAllItemizedList();
 
 
   }
@@ -105,7 +111,8 @@ export class ItemizedComponent extends AppComponentBase {
       this.paginator.changePage(0);
       return;
     }
-
+    debugger;
+    this.primengTableHelper.getMaxResultCount(this.paginator, event)
   this.primengTableHelper.showLoadingIndicator();
   this._itemizedService.getAll(
     this.filterText,
@@ -114,7 +121,7 @@ export class ItemizedComponent extends AppComponentBase {
     this.AllOrActive,
     this.primengTableHelper.getSorting(this.dataTable),
     this.primengTableHelper.getSkipCount(this.paginator, event),
-    10
+    this.primengTableHelper.getMaxResultCount(this.paginator, event)
   ).subscribe(result => {
     this.primengTableHelper.totalRecordsCount = result.totalCount;
     this.primengTableHelper.records = result.items[0].itemizedListForViewDto;

@@ -18,6 +18,7 @@ import * as $ from 'jquery';
   styleUrls: ['./amortized.component.css']
 })
 export class AmortizedComponent extends AppComponentBase {
+  commentFiles:File[]=[];
   AllOrActive :boolean = false;
   UserProfilePicture: any;
   monthValue: Date = new Date();
@@ -93,7 +94,6 @@ export class AmortizedComponent extends AppComponentBase {
     this.getProfilePicture();
     this.getAuditLogOfAccount();
     this.userName = this.appSession.user.name.toString();
-    this.getAllAmortizedList();
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {
     this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net }} });
@@ -194,7 +194,13 @@ filterByMonth(event): void {
   //   }  
   // })
 }
-
+uploadCommentFile($event) {
+  this.commentFiles.push($event.target.files[0]);
+}
+removeCommentFile(index)
+{
+  this.commentFiles.splice(index, 1);
+}
 getExtensionImagePath(str) {
 
   var extension = str.split('.')[1];

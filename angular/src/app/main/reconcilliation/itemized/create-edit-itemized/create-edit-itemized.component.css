@@ -4,6 +4,49 @@
     border: 1px solid #000;
     cursor: pointer;
 }
+.compress{
+    width: 22px !important;
+}
+
+
+.chat-wrapper-inner{
+    background-color: #E8E8E8;
+    padding: 2px 10px;
+    margin-top: 5px;
+}
+.docx-btn{
+        display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.chat-wrapper{
+    
+    padding :0px 30px !important;
+    overflow-y: auto;
+}
+
+ul, ul li {
+    -webkit-transform: scaleY(-1);
+       -moz-transform: scaleY(-1);
+        -ms-transform: scaleY(-1);
+         -o-transform: scaleY(-1);
+            transform: scaleY(-1);
+    
+    }
+    ul {
+        list-style: none;
+        width: 100%;
+        padding :0px;
+        margin:0px;
+        border:none;
+    }
+     li {
+        width: 100%;
+        padding :0px;
+        margin:0px;
+        border:none;
+        *display: inline;
+    }
 
 .select .options {
     position: absolute;
@@ -69,8 +112,9 @@ label{
 color: #606060;
 }
 ::ng-deep .uppy-Dashboard-inner {
-    min-height:220px !important;
-    height: 220px !important;
+    min-height:273px !important;
+    height: 273px !important;
+
     
 }
 .attachments_section{
@@ -110,11 +154,7 @@ color: #606060;
 .comment{
     width: 500px
     }
-::ng-deep .uppy-Dashboard-inner {
-    min-height:220px !important;
-    height: 220px !important;
-    
-}
+
 ::ng-deep table.days.weeks th:first-child, ::ng-deep table.days.weeks td:first-child {
     display: none;
 }
