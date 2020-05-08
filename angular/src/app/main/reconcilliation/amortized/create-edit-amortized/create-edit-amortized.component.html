@@ -132,7 +132,7 @@
                                                     <div class="form-group">
                                                         <label>{{"Comments" | localize}}</label>
                                                         <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>        
-                                                        <div class="border-left border-right border-bottom">
+                                                        <div class="border-left border-right border-bottom rounded">
                                                             <p-editor [(ngModel)]="amortizationDto.commentBody" (keydown.space)="$event.preventDefault();"name="HtmlEditorInput" 
                                                             [style]="{'height':'230px','border':'none'}">
                                                             <p-header>

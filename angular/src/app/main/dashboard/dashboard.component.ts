@@ -21,19 +21,8 @@ export class DashboardComponent  extends AppComponentBase implements OnInit {
         injector: Injector , private storeData: StoreDateService , private _userService: UserServiceProxy,private _categoryService: CategoriesServiceProxy, private _accountSubtypeService :AccountSubTypeServiceProxy)
        {
         super(injector);
-        }
+    }
     ngOnInit(): void {
-        this._userService.getAllUsers().subscribe(result => { 
-            this.userList = result
-            this.storeData.setUserList(this.userList)
-        })  
-        this._categoryService.categoryDropDown().subscribe(result => { 
-            this.categoriesList = result
-            this.storeData.setCategoriesList(this.categoriesList)
-        })  
-        this._accountSubtypeService.accountSubTypeDropDown().subscribe(result => { 
-            this.accountSubTypeList = result
-            this.storeData.setAccountSubTypeList(this.accountSubTypeList)
-        })       
+           
     }
 }

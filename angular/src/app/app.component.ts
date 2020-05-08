@@ -13,6 +13,8 @@ import { ChangeProfilePictureModalComponent } from '@app/shared/layout/profile/c
 import { MySettingsModalComponent } from '@app/shared/layout/profile/my-settings-modal.component';
 import { NotificationSettingsModalComponent } from '@app/shared/layout/notifications/notification-settings-modal.component';
 import { UserNotificationHelper } from '@app/shared/layout/notifications/UserNotificationHelper';
+import { UserServiceProxy,AccountSubTypeServiceProxy ,CategoriesServiceProxy} from '@shared/service-proxies/service-proxies';
+import { StoreDateService } from './services/storedate.service';
 
 @Component({
     templateUrl: './app.component.html',
@@ -23,7 +25,9 @@ export class AppComponent extends AppComponentBase implements OnInit {
     subscriptionStartType = SubscriptionStartType;
     theme: string;
     installationMode = true;
-
+    userList :any = []
+    categoriesList :any = []
+    accountSubTypeList :any = []
     @ViewChild('loginAttemptsModal', {static: true}) loginAttemptsModal: LoginAttemptsModalComponent;
     @ViewChild('linkedAccountsModal', {static: false}) linkedAccountsModal: LinkedAccountsModalComponent;
     @ViewChild('changePasswordModal', {static: true}) changePasswordModal: ChangePasswordModalComponent;
@@ -37,12 +41,25 @@ export class AppComponent extends AppComponentBase implements OnInit {
     public constructor(
         injector: Injector,
         private _chatSignalrService: ChatSignalrService,
-        private _userNotificationHelper: UserNotificationHelper
+        private _userNotificationHelper: UserNotificationHelper,
+        private storeData: StoreDateService,private _userService: UserServiceProxy,private _categoryService: CategoriesServiceProxy, private _accountSubtypeService :AccountSubTypeServiceProxy
     ) {
         super(injector);
     }
 
     ngOnInit(): void {
+        this._userService.getAllUsers().subscribe(result => { 
+            this.userList = result
+            this.storeData.setUserList(this.userList)
+        })  
+        this._categoryService.categoryDropDown().subscribe(result => { 
+            this.categoriesList = result
+            this.storeData.setCategoriesList(this.categoriesList)
+        })  
+        this._accountSubtypeService.accountSubTypeDropDown().subscribe(result => { 
+            this.accountSubTypeList = result
+            this.storeData.setAccountSubTypeList(this.accountSubTypeList)
+        })  
         this._userNotificationHelper.settingsModal = this.notificationSettingsModal;
         this.theme = abp.setting.get('App.UiManagement.Theme').toLocaleLowerCase();
         this.installationMode = UrlHelper.isInstallUrl(location.href);
