@@ -268,7 +268,7 @@
                             <label class="bg-color">{{"Instruction" | localize}}</label>
                             <div class="form-group border-bottom border-right border-left rounded">
                                 <input hidden type="file" (change)="uploadFile($event)" #insturctionFile>
-                                <p-editor [(ngModel)]="checklist.instruction" required name="HtmlEditorInput"
+                                <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
                                     [style]="{'height':'230px','border':'none'}">
                                     <p-header>
                                         <span class="ql-formats">
