@@ -11,6 +11,7 @@ namespace Zinlo.Web.Url
 
         public abstract string PasswordResetRoute { get; }
         public abstract string BuyCustomPlaRoute { get; }
+        public abstract string InViteUserRoute { get; }
 
         protected readonly IWebUrlService WebUrlService;
         protected readonly ITenantCache TenantCache;
@@ -33,6 +34,19 @@ namespace Zinlo.Web.Url
         public string CreateCustomPlanUrlFormat(int? tenantId)
         {
             return CreateCustomPlanPaymentUrlFormat(GetTenancyName(tenantId));
+        }
+
+        public string CreateInviteUserUrlFormat(int? tenantId)
+        {
+            return CreateInviteUserUrlFormat(GetTenancyName(tenantId));
+        }
+
+        public string CreateInviteUserUrlFormat(string tenancyName)
+        {
+            var activationLink = WebUrlService.GetSiteRootAddress(tenancyName).EnsureEndsWith('/') + InViteUserRoute + "?tenantId={tenantId}&email={email}";
+
+
+            return activationLink;
         }
 
         public string CreateEmailActivationUrlFormat(string tenancyName)
@@ -70,5 +84,7 @@ namespace Zinlo.Web.Url
         {
             return tenantId.HasValue ? TenantCache.Get(tenantId.Value).TenancyName : null;
         }
+
+        
     }
 }

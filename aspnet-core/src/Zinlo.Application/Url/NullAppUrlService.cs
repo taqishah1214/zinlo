@@ -40,5 +40,15 @@ namespace Zinlo.Url
         {
             throw new NotImplementedException();
         }
+
+        public string CreateInviteUserUrlFormat(int? tenantId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string CreateInviteUserUrlFormat(string tenancyName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

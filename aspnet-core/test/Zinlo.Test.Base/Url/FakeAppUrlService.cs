@@ -33,5 +33,15 @@ namespace Zinlo.Test.Base.Url
         {
             return "http://test.com/";
         }
+
+        public string CreateInviteUserUrlFormat(int? tenantId)
+        {
+            return "http://test.com/";
+        }
+
+        public string CreateInviteUserUrlFormat(string tenancyName)
+        {
+            return "http://test.com/";
+        }
     }
 }
