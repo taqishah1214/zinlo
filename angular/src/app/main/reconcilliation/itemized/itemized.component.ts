@@ -241,21 +241,28 @@ BackToReconcileList() {
 
 
   getAuditLogOfAccount() {
-    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.AccountBalance","").subscribe(resp => {
-     console.log("hammad",resp)
-      debugger;
+    let statusList = [];
+    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","",history.state.data.accountBalanceId).subscribe(resp => {
+      resp.forEach((element,index) => {
+      switch (element.propertyName) {
+      case "Status":          
+      element["result"] = this.setStatusHistoryParam(element)
+      statusList.push(element)
+      break;
+      default:
+        console.log("not found");
+      }
+    })
+     
     })
 
-    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","").subscribe(resp => {
+    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","","").subscribe(resp => {
       this.historyOfTask = resp
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
           case "AssigneeId":         
             element["result"] =  this.setAssigniHistoryParam(element,index)
-            break;
-            case "Status":          
-            element["result"] = this.setStatusHistoryParam(element)
-            break;
+            break;         
             case "AccountName":          
             element["result"] = this.setAccountNameHistoryParam(element)
             break;
@@ -271,6 +278,10 @@ BackToReconcileList() {
         }
         ;
       });
+      debugger
+      statusList.forEach((item,index) => {
+        this.historyOfTask.push(item);
+      })
     })
   }
 

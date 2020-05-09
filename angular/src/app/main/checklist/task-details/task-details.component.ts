@@ -80,7 +80,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
 
   getVersionsofInstrutions () { 
   
-    this._auditLogService.getEntityHistory(this.recordId.toString(), "Zinlo.ClosingChecklist.ClosingChecklist","VersionId").subscribe(resp => {
+    this._auditLogService.getEntityHistory(this.recordId.toString(), "Zinlo.ClosingChecklist.ClosingChecklist","VersionId","").subscribe(resp => {
       this.instructionVersions = resp
       this.instructionVersions.forEach((element,index) => {
         switch (element.propertyName) {
@@ -114,7 +114,7 @@ setVerionIdHistoryParam (item) {
 
 
   getAuditLogOfTask() {
-    this._auditLogService.getEntityHistory(this.recordId.toString(), "Zinlo.ClosingChecklist.ClosingChecklist","").subscribe(resp => {
+    this._auditLogService.getEntityHistory(this.recordId.toString(), "Zinlo.ClosingChecklist.ClosingChecklist","","").subscribe(resp => {
       this.historyOfTask = resp
       debugger;
       this.historyOfTask.forEach((element,index) => {

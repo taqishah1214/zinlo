@@ -4,6 +4,8 @@ import { CategoriesServiceProxy, CreateOrEditCategoryDto } from '@shared/service
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { CategoriesComponent } from '../categories.component';
+import { StoreDateService } from '../../../services/storedate.service';
+
 @Component({
   selector: 'app-create-or-edit-category',
   templateUrl: './create-or-edit-category.component.html',
@@ -19,10 +21,12 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
   categoryobj: CreateOrEditCategoryDto = new CreateOrEditCategoryDto();
   categoryId: number = 0;
   redirectPath: any;
+  categoriesList :any = []
   isCategoryExist:boolean = false;
   constructor(private _router: Router,
     private _categoriesServiceProxy: CategoriesServiceProxy,
-    injector: Injector) {
+    injector: Injector,
+    private storeData: StoreDateService) {
     super(injector);
   }
 
@@ -64,6 +68,10 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
       this._categoriesServiceProxy.createOrEdit(this.categoryobj)
       .pipe(finalize(() => { this.saving = false;}))
       .subscribe(result => {
+        this._categoriesServiceProxy.categoryDropDown().subscribe(result => { 
+          this.categoriesList = result
+          this.storeData.setCategoriesList(this.categoriesList)
+      })
         this.backToRoute(this.categoryobj.title,result);
         this.notify.info(this.l('SavedSuccessfully'));
 

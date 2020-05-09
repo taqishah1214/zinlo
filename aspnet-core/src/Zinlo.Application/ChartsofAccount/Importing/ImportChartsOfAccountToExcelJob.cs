@@ -349,6 +349,7 @@ namespace Zinlo.ChartsofAccount
             }
             else
             {
+                input.Exception += _localizationSource.GetString("InvalidEmailProvided");
                 input.isValid = false;
                 return input;
             }

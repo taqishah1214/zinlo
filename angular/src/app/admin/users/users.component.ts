@@ -1,20 +1,11 @@
 import { Component, Injector, ViewChild, ViewEncapsulation, AfterViewInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AppConsts } from '@shared/AppConsts';
+
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { EntityDtoOfInt64, UserListDto, UserServiceProxy, PermissionServiceProxy, FlatPermissionDto } from '@shared/service-proxies/service-proxies';
-import { FileDownloadService } from '@shared/utils/file-download.service';
-import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
-import { Paginator } from 'primeng/components/paginator/paginator';
-import { Table } from 'primeng/components/table/table';
 import { CreateOrEditUserModalComponent } from './create-or-edit-user-modal.component';
 import { EditUserPermissionsModalComponent } from './edit-user-permissions-modal.component';
-import { ImpersonationService } from './impersonation.service';
-import { HttpClient } from '@angular/common/http';
-import { FileUpload } from 'primeng/fileupload';
-import { finalize } from 'rxjs/operators';
-import { PermissionTreeModalComponent } from '../shared/permission-tree-modal.component';
+import { UserServiceProxy,AccountSubTypeServiceProxy ,CategoriesServiceProxy} from '@shared/service-proxies/service-proxies';
+import { StoreDateService } from '../../services/storedate.service';
 
 @Component({
     templateUrl: './users.component.html',
@@ -164,11 +155,12 @@ export class UsersComponent extends AppComponentBase   {
     count: number = 8
     filterText: any = ""
     userList: any = []
+    storeuserList: any = []
 
     @ViewChild('createOrEditUserModal', { static: true }) createOrEditUserModal: CreateOrEditUserModalComponent;
     @ViewChild('editUserPermissionsModal', { static: true }) editUserPermissionsModal: EditUserPermissionsModalComponent;
 
-    constructor(_injector: Injector, private _userServiceProxy: UserServiceProxy) {
+    constructor(_injector: Injector, private _userServiceProxy: UserServiceProxy,  private storeData: StoreDateService,private _userService: UserServiceProxy) {
         super(_injector);
     }
    
@@ -179,6 +171,11 @@ export class UsersComponent extends AppComponentBase   {
     getAllUsers() {
         this._userServiceProxy.getAllUserList(this.filterText, this.count).subscribe(result => {
             this.userList = result;
+            this._userService.getAllUsers().subscribe(result => { 
+                this.storeuserList = result
+                this.storeData.setUserList(this.storeuserList)
+            })
+
         })
     }
 

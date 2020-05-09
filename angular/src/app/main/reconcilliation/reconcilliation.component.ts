@@ -218,15 +218,15 @@ debugger;
     }
   }
 
-  reDirectToItemizedAmotized (reconciliationTypeId,accountId,accountNo,accountName){
+  reDirectToItemizedAmotized (reconciliationTypeId,accountId,accountNo,accountName,accountBalanceId){
      
       if (reconciliationTypeId == 1)
       {
-        this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : accountId, accountName :accountName ,accountNo: accountNo  }} });
+        this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : accountId, accountName :accountName ,accountNo: accountNo,accountBalanceId : accountBalanceId  }} });
     
       }
       else if (reconciliationTypeId == 2) {
-        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo}} });
+        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo , accountBalanceId : accountBalanceId}} });
       }
  
   }
