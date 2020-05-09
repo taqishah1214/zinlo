@@ -191,7 +191,7 @@
                                         <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>
                                         <div class="form-group rounded border-bottom border-right border-left">
                                             <p-editor [(ngModel)]="checklist.commentBody"
-                                                (keydown.space)="$event.preventDefault();" required name="HtmlEditorInput" 
+                                                (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
                                                 [style]="{'height':'230px','border':'none'}">
                                                 <p-header>
                                                     <span class="ql-formats">
