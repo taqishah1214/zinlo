@@ -62,7 +62,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     if(this.ItemizedItemId != 0)
     {
       this.updateLock = false;
-      this.title = "Edit Item";
+      this.title = "Edit an Item";
       this.Save = "Update";
       this.getDetailsofItem(this.ItemizedItemId);
     }
