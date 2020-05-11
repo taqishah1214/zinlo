@@ -111,7 +111,7 @@
                                 <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>
                                         <div class="form-group border-bottom border-right border-left rounded">
                                             <p-editor [disabled]="!taskDetailObject.monthStatus" [(ngModel)]="comment.body"
-                                                (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
+                                                 name="HtmlEditorInput" 
                                                 [style]="{'height':'230px','border':'none'}">
                                                 <p-header>
                                                     <span class="ql-formats">
