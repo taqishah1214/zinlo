@@ -23,17 +23,6 @@ import { ImpersonationService } from './admin/users/impersonation.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DefaultLayoutComponent } from './shared/layout/themes/default/default-layout.component';
-import { Theme2LayoutComponent } from './shared/layout/themes/theme2/theme2-layout.component';
-import { Theme3LayoutComponent } from './shared/layout/themes/theme3/theme3-layout.component';
-import { Theme4LayoutComponent } from './shared/layout/themes/theme4/theme4-layout.component';
-import { Theme5LayoutComponent } from './shared/layout/themes/theme5/theme5-layout.component';
-import { Theme6LayoutComponent } from './shared/layout/themes/theme6/theme6-layout.component';
-import { Theme9LayoutComponent } from './shared/layout/themes/theme9/theme9-layout.component';
-import { Theme7LayoutComponent } from './shared/layout/themes/theme7/theme7-layout.component';
-import { Theme8LayoutComponent } from './shared/layout/themes/theme8/theme8-layout.component';
-import { Theme10LayoutComponent } from './shared/layout/themes/theme10/theme10-layout.component';
-import { Theme11LayoutComponent } from './shared/layout/themes/theme11/theme11-layout.component';
-import { Theme12LayoutComponent } from './shared/layout/themes/theme12/theme12-layout.component';
 import { AppCommonModule } from './shared/common/app-common.module';
 import { ChatBarComponent } from './shared/layout/chat/chat-bar.component';
 import { ThemeSelectionPanelComponent } from './shared/layout/theme-selection/theme-selection-panel.component';
@@ -46,17 +35,6 @@ import { SideBarMenuComponent } from './shared/layout/nav/side-bar-menu.componen
 import { TopBarMenuComponent } from './shared/layout/nav/top-bar-menu.component';
 import { TopBarComponent } from './shared/layout/topbar.component';
 import { DefaultBrandComponent } from './shared/layout/themes/default/default-brand.component';
-import { Theme2BrandComponent } from './shared/layout/themes/theme2/theme2-brand.component';
-import { Theme3BrandComponent } from './shared/layout/themes/theme3/theme3-brand.component';
-import { Theme4BrandComponent } from './shared/layout/themes/theme4/theme4-brand.component';
-import { Theme5BrandComponent } from './shared/layout/themes/theme5/theme5-brand.component';
-import { Theme6BrandComponent } from './shared/layout/themes/theme6/theme6-brand.component';
-import { Theme7BrandComponent } from './shared/layout/themes/theme7/theme7-brand.component';
-import { Theme8BrandComponent } from './shared/layout/themes/theme8/theme8-brand.component';
-import { Theme9BrandComponent } from './shared/layout/themes/theme9/theme9-brand.component';
-import { Theme10BrandComponent } from './shared/layout/themes/theme10/theme10-brand.component';
-import { Theme11BrandComponent } from './shared/layout/themes/theme11/theme11-brand.component';
-import { Theme12BrandComponent } from './shared/layout/themes/theme12/theme12-brand.component';
 import { UserNotificationHelper } from './shared/layout/notifications/UserNotificationHelper';
 import { HeaderNotificationsComponent } from './shared/layout/notifications/header-notifications.component';
 import { NotificationSettingsModalComponent } from './shared/layout/notifications/notification-settings-modal.component';
@@ -88,17 +66,6 @@ import { ScrollTopComponent } from './shared/layout/scroll-top.component';
     declarations: [
         AppComponent,
         DefaultLayoutComponent,
-        Theme2LayoutComponent,
-        Theme3LayoutComponent,
-        Theme4LayoutComponent,
-        Theme5LayoutComponent,
-        Theme6LayoutComponent,
-        Theme7LayoutComponent,
-        Theme8LayoutComponent,
-        Theme9LayoutComponent,
-        Theme10LayoutComponent,
-        Theme11LayoutComponent,
-        Theme12LayoutComponent,
         HeaderNotificationsComponent,
         SideBarMenuComponent,
         TopBarMenuComponent,
@@ -120,17 +87,6 @@ import { ScrollTopComponent } from './shared/layout/scroll-top.component';
         ChatMessageComponent,
         TopBarComponent,
         DefaultBrandComponent,
-        Theme2BrandComponent,
-        Theme3BrandComponent,
-        Theme4BrandComponent,
-        Theme5BrandComponent,
-        Theme6BrandComponent,
-        Theme7BrandComponent,
-        Theme8BrandComponent,
-        Theme9BrandComponent,
-        Theme10BrandComponent,
-        Theme11BrandComponent,
-        Theme12BrandComponent,
         SessionTimeoutModalComponent,
         SessionTimeoutComponent,
         MenuSearchBarComponent,

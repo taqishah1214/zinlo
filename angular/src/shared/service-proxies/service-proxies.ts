@@ -2452,9 +2452,10 @@ export class AuditLogServiceProxy {
      * @param entityId (optional) 
      * @param entityFullName (optional) 
      * @param propertyName (optional) 
+     * @param accountBalanceId (optional) 
      * @return Success
      */
-    getEntityHistory(entityId: string | undefined, entityFullName: string | undefined, propertyName: string | undefined): Observable<EntityPropertyHistory[]> {
+    getEntityHistory(entityId: string | undefined, entityFullName: string | undefined, propertyName: string | undefined, accountBalanceId: string | undefined): Observable<EntityPropertyHistory[]> {
         let url_ = this.baseUrl + "/api/services/app/AuditLog/GetEntityHistory?";
         if (entityId === null)
             throw new Error("The parameter 'entityId' cannot be null.");
@@ -2468,6 +2469,10 @@ export class AuditLogServiceProxy {
             throw new Error("The parameter 'propertyName' cannot be null.");
         else if (propertyName !== undefined)
             url_ += "PropertyName=" + encodeURIComponent("" + propertyName) + "&"; 
+        if (accountBalanceId === null)
+            throw new Error("The parameter 'accountBalanceId' cannot be null.");
+        else if (accountBalanceId !== undefined)
+            url_ += "AccountBalanceId=" + encodeURIComponent("" + accountBalanceId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -20064,6 +20069,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
     isDeleted!: boolean;
     monthStatus!: boolean;
     accountReconciliationCheck!: boolean;
+    accountBalanceId!: number;
 
     constructor(data?: IChartsofAccoutsForViewDto) {
         if (data) {
@@ -20094,6 +20100,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
             this.isDeleted = data["isDeleted"];
             this.monthStatus = data["monthStatus"];
             this.accountReconciliationCheck = data["accountReconciliationCheck"];
+            this.accountBalanceId = data["accountBalanceId"];
         }
     }
 
@@ -20124,6 +20131,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
         data["isDeleted"] = this.isDeleted;
         data["monthStatus"] = this.monthStatus;
         data["accountReconciliationCheck"] = this.accountReconciliationCheck;
+        data["accountBalanceId"] = this.accountBalanceId;
         return data; 
     }
 }
@@ -20143,6 +20151,7 @@ export interface IChartsofAccoutsForViewDto {
     isDeleted: boolean;
     monthStatus: boolean;
     accountReconciliationCheck: boolean;
+    accountBalanceId: number;
 }
 
 export class PagedResultDtoOfChartsofAccoutsForViewDto implements IPagedResultDtoOfChartsofAccoutsForViewDto {

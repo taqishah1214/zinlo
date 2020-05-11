@@ -33,17 +33,6 @@ namespace Zinlo.Configuration
             return GetHostSettings().Union(GetTenantSettings()).Union(GetSharedSettings())
                 // theme settings
                 .Union(GetDefaultThemeSettings())
-                .Union(GetTheme2Settings())
-                .Union(GetTheme3Settings())
-                .Union(GetTheme4Settings())
-                .Union(GetTheme5Settings())
-                .Union(GetTheme6Settings())
-                .Union(GetTheme7Settings())
-                .Union(GetTheme8Settings())
-                .Union(GetTheme9Settings())
-                .Union(GetTheme10Settings())
-                .Union(GetTheme11Settings())
-                .Union(GetTheme12Settings())
                 .Union(GetDashboardSettings());
         }
 

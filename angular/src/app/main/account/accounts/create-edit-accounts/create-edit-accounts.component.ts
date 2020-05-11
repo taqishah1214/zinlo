@@ -21,7 +21,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   accountId : number;
   selectedUserID : any;
   editAccountCheck :  boolean = false;
-  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
+  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Asset" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
   reconcillationType: any="Select Reconciliation Type";
   assigniId : number;

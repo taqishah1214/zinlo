@@ -100,7 +100,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   }
 
   getAmortizedItemDetails() : void {
-    this.title = "Edit a Item"
+    this.title = "Edit an Item"
     this.buttonTitle =  "Save"
     this._reconcialtionService.getAmortizedItemDetails(this.amortrizedItemId).subscribe(result => {
       this.amortizationDto = result
@@ -146,7 +146,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   createNewAccount() : void {
     this.amortizationDto.closingMonth = moment(new Date())
     this.amortizationDto.criteria = 1;
-    this.title = "Create a Item"
+    this.title = "Create an Item"
     this.buttonTitle =  "Create"
   }
 

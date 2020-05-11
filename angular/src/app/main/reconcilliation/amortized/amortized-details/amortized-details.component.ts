@@ -224,7 +224,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
 
   
   getAuditLogOfAccount() {
-    this._auditLogService.getEntityHistory(this.amortrizedItemId.toString(), "Zinlo.Reconciliation.Amortization","").subscribe(resp => {
+    this._auditLogService.getEntityHistory(this.amortrizedItemId.toString(), "Zinlo.Reconciliation.Amortization","","").subscribe(resp => {
       this.historyOfTask = resp
       debugger;
       this.historyOfTask.forEach((element,index) => {

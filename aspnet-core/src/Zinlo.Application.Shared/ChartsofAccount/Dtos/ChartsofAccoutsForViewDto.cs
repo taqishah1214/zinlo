@@ -21,6 +21,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         public bool IsDeleted { get; set; }        
         public bool MonthStatus { get; set; }
         public bool AccountReconciliationCheck { get; set; }
+        public long  AccountBalanceId { get; set; }
 
     }
 }
