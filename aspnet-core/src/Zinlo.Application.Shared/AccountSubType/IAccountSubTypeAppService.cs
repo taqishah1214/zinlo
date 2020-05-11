@@ -19,6 +19,7 @@ namespace Zinlo.AccountSubType
 
         Task<List<NameValueDto<long>>> AccountSubTypeDropDown();
          Task<long> GetAccountSubTypeIdByTitle(string title,long UserId, long TenantId);
+        bool IsAccountSubTypeExist(string input);
 
     }
 }

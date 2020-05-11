@@ -162,6 +162,19 @@ namespace Zinlo.AccountSubType
           long id  = await _accountSubTypeRepository.InsertAndGetIdAsync(accountSubType);
             return id;
         }
+        public bool IsAccountSubTypeExist(string input)
+        {
+            if (input != null)
+            {
+                bool isExist = _accountSubTypeRepository.GetAll().Any(x => x.Title.Trim().ToLower() == input.Trim().ToLower());
+                return isExist;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
 
 
     }

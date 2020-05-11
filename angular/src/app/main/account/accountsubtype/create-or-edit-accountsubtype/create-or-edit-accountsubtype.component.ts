@@ -15,7 +15,7 @@ export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implem
   accountsSubType : CreateOrEditAccountSubTypeDto = new CreateOrEditAccountSubTypeDto()
   accountSubTypeId : number;
   accountSubTypeList :any = []
-
+  accountSubtypeExist : boolean = false
   saving = false;
   constructor(private storeData: StoreDateService,private accountSubTypeServiceProxy: AccountSubTypeServiceProxy , injector: Injector,private _router: Router) {
     super(injector) 
@@ -28,6 +28,14 @@ export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implem
         this.accountsSubType = result;
       });
     }
+  }
+
+  CheckAccountSubType() { 
+    this.accountsSubType.title
+    this.accountSubTypeServiceProxy.isAccountSubTypeExist(this.accountsSubType.title).subscribe(resp => {
+      this.accountSubtypeExist = resp
+    })
+    
   }
 
   onSubmit() : void {

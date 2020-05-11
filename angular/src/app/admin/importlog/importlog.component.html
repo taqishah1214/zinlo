@@ -68,7 +68,11 @@
                                             <span class="ui-column-title"> {{l('User')}}</span>
                                             {{record.createdBy}}
                                         </td>                                                                  
-                                        <td style="width: 80px">
+                                        <td *ngIf="!record.filePath" class="successColor" style="width: 80px">
+                                            <span class="ui-column-title"> {{l('Record')}}</span>
+                                            {{record.records}}
+                                        </td>
+                                        <td *ngIf="record.filePath" class="failedColor" style="width: 80px">
                                             <span class="ui-column-title"> {{l('Record')}}</span>
                                             {{record.records}}
                                         </td>

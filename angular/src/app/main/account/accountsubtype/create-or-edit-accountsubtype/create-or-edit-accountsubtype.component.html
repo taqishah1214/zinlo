@@ -22,7 +22,8 @@
                                 <div class="form-group">
                                     <label for="title">{{"Title" | localize}}</label>
                                     <input autofocus type="text" class="form-control" id="title" name="title"
-                                    autocomplete="off" [(ngModel)]="accountsSubType.title">
+                                    autocomplete="off" required (focusout)="CheckAccountSubType()" [(ngModel)]="accountsSubType.title">
+                                    <span style="color:red" *ngIf="accountSubtypeExist">{{"AccountSubtypewithsameNamealreadyexist" | localize}}</span>
                                 </div>
                             </div>
                         </div>
@@ -36,8 +37,8 @@
                         </div>
                         <div class="kt-portlet__head">
                         </div>
-                        <div class="form-group margin-top-5">
-                            <button class="btn btn-brand" type="submit">
+                        <div [ngClass]="{'disabled':accountSubtypeExist}" class="form-group margin-top-5">
+                            <button  class="btn btn-brand" type="submit">
                                 <i class="fa fa-save"></i>
                                 <span>{{"Save" | localize}}</span>
                             </button>

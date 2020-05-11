@@ -7,7 +7,14 @@
     margin: 0;
     top: 0;
   }
-  
+  .successColor {
+   color: green;
+   font-weight: bold;
+  }
+  .failedColor {
+    color: red;
+    font-weight: bold;
+  }
     /* Hide default HTML checkbox */
     .switch input {
         opacity: 0;
