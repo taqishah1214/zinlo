@@ -6,7 +6,7 @@ namespace Zinlo.Web.Url
     public class AngularAppUrlService : AppUrlServiceBase
     {
         public override string EmailActivationRoute => "account/confirm-email";
-
+        public override string InViteUserRoute => "account/tenant-user-register";
         public override string PasswordResetRoute => "account/reset-password";
         public override string BuyCustomPlaRoute => "account/buy";
 

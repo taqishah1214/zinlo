@@ -3,8 +3,9 @@ import { Component, Injector, ViewChild, ViewEncapsulation, AfterViewInit } from
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { CreateOrEditUserModalComponent } from './create-or-edit-user-modal.component';
+import { InviteUserModalComponent } from './invite-user-modal.component';
 import { EditUserPermissionsModalComponent } from './edit-user-permissions-modal.component';
-import { UserServiceProxy,AccountSubTypeServiceProxy ,CategoriesServiceProxy} from '@shared/service-proxies/service-proxies';
+import { UserServiceProxy, AccountSubTypeServiceProxy, CategoriesServiceProxy } from '@shared/service-proxies/service-proxies';
 import { StoreDateService } from '../../services/storedate.service';
 
 @Component({
@@ -13,7 +14,7 @@ import { StoreDateService } from '../../services/storedate.service';
     styleUrls: ['./users.component.less'],
     animations: [appModuleAnimation()]
 })
-export class UsersComponent extends AppComponentBase   {
+export class UsersComponent extends AppComponentBase {
 
     // @ViewChild('createOrEditUserModal', { static: true }) createOrEditUserModal: CreateOrEditUserModalComponent;
     // @ViewChild('editUserPermissionsModal', { static: true }) editUserPermissionsModal: EditUserPermissionsModalComponent;
@@ -158,12 +159,13 @@ export class UsersComponent extends AppComponentBase   {
     storeuserList: any = []
 
     @ViewChild('createOrEditUserModal', { static: true }) createOrEditUserModal: CreateOrEditUserModalComponent;
-    @ViewChild('editUserPermissionsModal', { static: true }) editUserPermissionsModal: EditUserPermissionsModalComponent;
 
-    constructor(_injector: Injector, private _userServiceProxy: UserServiceProxy,  private storeData: StoreDateService,private _userService: UserServiceProxy) {
+    @ViewChild('editUserPermissionsModal', { static: true }) editUserPermissionsModal: EditUserPermissionsModalComponent;
+    @ViewChild('inviteUserModal', { static: true }) inviteUserModal: InviteUserModalComponent;
+    constructor(_injector: Injector, private _userServiceProxy: UserServiceProxy, private storeData: StoreDateService, private _userService: UserServiceProxy) {
         super(_injector);
     }
-   
+
     ngOnInit() {
         this.getAllUsers()
     }
@@ -171,7 +173,7 @@ export class UsersComponent extends AppComponentBase   {
     getAllUsers() {
         this._userServiceProxy.getAllUserList(this.filterText, this.count).subscribe(result => {
             this.userList = result;
-            this._userService.getAllUsers().subscribe(result => { 
+            this._userService.getAllUsers().subscribe(result => {
                 this.storeuserList = result
                 this.storeData.setUserList(this.storeuserList)
             })
@@ -181,5 +183,8 @@ export class UsersComponent extends AppComponentBase   {
 
     createUser() {
         this.createOrEditUserModal.show();
+    }
+    inviteUser() {
+        this.inviteUserModal.show();
     }
 }

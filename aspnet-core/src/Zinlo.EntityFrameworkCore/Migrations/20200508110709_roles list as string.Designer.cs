@@ -10,8 +10,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20200501124935_Initial")]
-    partial class Initial
+    [Migration("20200508110709_roles list as string")]
+    partial class roleslistasstring
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1337,6 +1337,66 @@ namespace Zinlo.Migrations
                     b.ToTable("ContactUs");
                 });
 
+            modelBuilder.Entity("Zinlo.Authorization.Users.InviteUser", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReportingRelationship")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InviteUsers");
+                });
+
             modelBuilder.Entity("Zinlo.Authorization.Users.User", b =>
                 {
                     b.Property<long>("Id")
@@ -1853,6 +1913,9 @@ namespace Zinlo.Migrations
 
                     b.Property<string>("TaskName")
                         .HasColumnType("text");
+
+                    b.Property<DateTime?>("TaskUpdatedTime")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");

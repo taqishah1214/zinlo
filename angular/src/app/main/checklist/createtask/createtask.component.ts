@@ -131,7 +131,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
 
 
   onCreateTask(): void {
-  
      if (this.checklist.endOfMonth) {
       this.checklist.dayBeforeAfter = 1;
       this.checklist.dueOn = 0;
