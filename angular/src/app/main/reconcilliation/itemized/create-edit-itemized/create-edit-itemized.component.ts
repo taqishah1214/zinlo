@@ -37,6 +37,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   commantBox : Boolean;
   updateLock : Boolean = true; 
   commentFiles:File[]=[];
+  monthStatus:boolean
   constructor(private _itemizationServiceProxy : ItemizationServiceProxy,
     private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector, private userInfo: UserInformation) {
     super(injector)
@@ -58,6 +59,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     this.ItemizedItemId = history.state.data.ItemizedItemId;
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
+    this.monthStatus = history.state.data.monthStatus
     this.getProfilePicture();
     if(this.ItemizedItemId != 0)
     {
@@ -71,7 +73,9 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     }
   
   }
-
+  RedirectToDetail(ItemizedItemId) : void {   
+    this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId }} });
+  }
   commentClick(): void {
     this.commantModal = true;
     this.commantBox = false;
@@ -126,7 +130,12 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
      return true;
     }
   redirectToItemsList () : void {
-    this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
+    if(this.ItemizedItemId!=0){
+      this.RedirectToDetail(this.ItemizedItemId)
+    }
+    else{
+      this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
+    }
   }
   settings: UppyConfig = {
     uploadAPI: {

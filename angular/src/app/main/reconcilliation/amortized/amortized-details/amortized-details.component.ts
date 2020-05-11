@@ -78,7 +78,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     this.amortrizedItemId = history.state.data.amortrizedItemId;
     this.netAmount = history.state.data.netAmount;
     this.accuredAmount = history.state.data.accuredAmount
-    this.monthStatus = history.state.data.monthStatus
+    console.log(this.monthStatus = history.state.data.monthStatus)
     this.getTaskDetails();
     this.getProfilePicture();
     this.getAuditLogOfAccount();
@@ -116,7 +116,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   }
 
   editAmortizedItem() : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : this.amortrizedItemId, netAmount : this.netAmount, accuredAmount : this.accuredAmount }} });
+    this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,monthStatus:this.monthStatus,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : this.amortrizedItemId, netAmount : this.netAmount, accuredAmount : this.accuredAmount }} });
   }
 
   BackToList() : void {

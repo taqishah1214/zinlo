@@ -103,7 +103,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   }
 
   editItemizedItem() : void {
-    this._router.navigate(['/app/main/reconcilliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : this.itemizedItemId}} });
+    this._router.navigate(['/app/main/reconcilliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,monthStatus:this.monthStatus,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : this.itemizedItemId}} });
   }
   BackToList() : void {
     this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo}} });

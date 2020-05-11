@@ -39,15 +39,15 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   updateLock : Boolean = true; 
   CriteriaButton :any = 0;
   commentFiles:File[]=[];
-
-
+  monthStatus:boolean;
+  netAmount : any;
+  accuredAmount : any;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(
     private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector,
     private _reconcialtionService : AmortizationServiceProxy,private userInfo: UserInformation) {
     super(injector)
   }
-
   ngOnInit() {   
     if (history.state.navigationId == 1){
       this._router.navigate(['/app/main/reconcilliation']);
@@ -56,6 +56,9 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     this.accountName = history.state.data.accountName
     this.userName = this.appSession.user.name.toString();
     this.accountNo = history.state.data.accountNo
+    this.netAmount =history.state.data.netAmount
+    this.accuredAmount =history.state.data.accuredAmount
+    this.monthStatus = history.state.data.monthStatus
     this.commantBox = true;
     this.getProfilePicture();
     this.amortrizedItemId = history.state.data.amortrizedItemId;
@@ -70,7 +73,9 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
       this.createNewAccount();
     }   
   }
-
+  RedirectToDetails(amortizedItemId,accured,net) : void {
+    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net }} });
+  }
   uploadCommentFile($event) {
     this.commentFiles.push($event.target.files[0]);
   }
@@ -98,7 +103,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     this.commantModal = false;
     this.commantBox = true;
   }
-
+  
   getAmortizedItemDetails() : void {
     this.title = "Edit an Item"
     this.buttonTitle =  "Save"
@@ -263,11 +268,14 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   }
 
   redirectToAmortizedList () : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
-
+    if (this.amortrizedItemId != 0)
+      {
+        this.RedirectToDetails(this.amortrizedItemId,this.accuredAmount,this.netAmount)
+      }
+      else{
+        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
+      }
   }
-
-
   settings: UppyConfig = {
     uploadAPI: {
       endpoint:  AppConsts.remoteServiceBaseUrl + '/api/services/app/Attachments/PostAttachmentFile',
