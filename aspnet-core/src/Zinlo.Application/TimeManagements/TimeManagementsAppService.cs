@@ -171,6 +171,11 @@ namespace Zinlo.TimeManagements
             return await CheckMonth(dateTime);
         }
 
+        public async Task<bool> CheckMonthStatus(DateTime dateTime)
+        {
+            return await _timeManagementManager.CheckMonthStatus(dateTime);
+        }
+
         protected virtual async Task<TimeManagement> GetManagement(long id)
         {
             return await _timeManagementManager.GetById(id);

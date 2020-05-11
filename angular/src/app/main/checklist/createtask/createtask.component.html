@@ -52,7 +52,7 @@
                                         <label for="dateOfBirth">{{"ClosingMonth" | localize}}</label>
                                         <div class="month-calender">
                                             <form class="input-arrow">
-                                                <input [(ngModel)]="checklist.closingMonth" (ngModelChange)="loadDaysByMonth($event)" required="required"
+                                                <input [(ngModel)]="checklist.closingMonth" (focusout)="checkMonth()" (ngModelChange)="loadDaysByMonth($event)" required="required"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker 
                                                     placeholder="Select Month" class="form-control" name="date"
                                                     bsDatepicker
@@ -60,6 +60,10 @@
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
                                         </div>
+                                    </div>
+                                    <div>
+                                        <span class="form-control-feedback"
+                                            *ngIf="!monthStatus">{{"ThisMonthIsNotActive" | localize}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -329,7 +333,7 @@
                     <div class="kt-portlet__head">
                     </div>
                     <div class="btn-create">
-                        <button class="btn btn-brand" (click)="onCreateTask()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid">
+                        <button class="btn btn-brand" (click)="onCreateTask()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid || !monthStatus">
                             <i class="fa fa-save"></i>
                             <span>{{"Create" | localize}}</span>
                         </button>

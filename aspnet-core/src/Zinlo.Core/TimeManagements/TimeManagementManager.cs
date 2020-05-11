@@ -55,6 +55,11 @@ namespace Zinlo.TimeManagements
             var geTimeManagement = await GetMonthByDate(month);
             return geTimeManagement != null;
         }
+        public virtual async Task<bool> CheckMonthStatus(DateTime month)
+        {
+            var geTimeManagement = await GetMonthByDate(month);
+            return geTimeManagement != null && geTimeManagement.Status;
+        }
 
         private async Task<TimeManagement> GetMonthByDate(DateTime dateTime)
         {

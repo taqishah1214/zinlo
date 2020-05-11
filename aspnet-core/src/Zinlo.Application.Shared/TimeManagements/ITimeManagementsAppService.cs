@@ -20,6 +20,7 @@ namespace Zinlo.TimeManagements
         Task<bool> GetMonthStatus(DateTime dateTime);
         List<TimeManagementDto> GetOpenManagement();
         Task<bool> CheckManagementExist(DateTime dateTime);
+        Task<bool> CheckMonthStatus(DateTime dateTime);
 
     }
 }
