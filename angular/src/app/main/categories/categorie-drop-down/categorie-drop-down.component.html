@@ -1,6 +1,6 @@
    <div class="form-group category-selector">
         <label>{{"Category" | localize}}</label>
-        <button type="button"  data-toggle="dropdown" class="btn btn-secondary dropdown-toggle"
+        <button type="button"  data-toggle="dropdown" class="btn btn-secondary input-arrow"
             aria-expanded="false">{{categoryName}}</button>
         <div class="dropdown-menu" name="categoryName" [(ngModel)]="categoryName" ngDefaultControl>
             <a href="javascript:void(0)" class="dropdown-item" *ngFor="let item of categoriesList"

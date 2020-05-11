@@ -45,9 +45,10 @@
                         <div class="col-md-7 pb-0">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <app-categorie-drop-down category = {{categoryTitle}}></app-categorie-drop-down>
+                                    <app-categorie-drop-down category = {{categoryTitle}}></app-categorie-drop-down>   
                                 </div>
-                                <div class="col-md-6">
+                                
+                                <div class="col-md-6" style="height: 50px !important;">
                                     <div class="form-group">
                                         <label for="dateOfBirth">{{"ClosingMonth" | localize}}</label>
                                         <div class="month-calender">
@@ -60,10 +61,8 @@
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
                                         </div>
-                                    </div>
-                                    <div>
                                         <span class="form-control-feedback"
-                                            *ngIf="!monthStatus">{{"ThisMonthIsNotActive" | localize}}</span>
+                                        *ngIf="!monthStatus">{{"ThisMonthIsNotActive" | localize}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -230,14 +229,8 @@
                                                             <option value="justify" label="Justify"></option>
                                                         </select>
                                                         <button _ngcontent-c7="" data-toggle="tooltip" title="Upload Image"aria-label="Image" class="ql-image " type="button"><svg viewBox="0 0 18 18"> <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect> <circle class="ql-fill" cx="6" cy="7" r="1"></circle> <polyline class="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12"></polyline> </svg></button>   
-                                                        <button (click)="commentFile.click()" data-toggle="tooltip" title="Upload Files"aria-label="Link" class="ql-link">
-                                                            <svg viewBox="0 0 18 18">
-                                                            <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
-                                                            <circle class="ql-fill" cx="6" cy="7" r="1">                                 
-                                                            </circle>
-                                                            <polyline class="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12">
-                                                            </polyline>
-                                                            </svg>
+                                                        <button (click)="commentFile.click()" data-toggle="tooltip" class="ql-link" title="Upload Files">
+                                                            
                                                         </button>
                                                     </span>
                                                 </p-header>

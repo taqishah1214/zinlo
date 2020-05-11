@@ -1172,5 +1172,8 @@
     <text name="Net Amount">Net Amount</text>
     <text name="Manual">Manual</text>
     <text name="Accumulate Amount">Accumulate Amount</text>
+    
+    <text name="FirstName">First Name</text>
+    <text name="LastName">Last Name</text>
   </texts>
 </localizationDictionary>
