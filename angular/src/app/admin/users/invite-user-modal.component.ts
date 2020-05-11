@@ -142,7 +142,7 @@ export class InviteUserModalComponent extends AppComponentBase {
         
         var roles =
             _.map(
-                _.filter(this.roles, { isAssigned: true, inheritedFromOrganizationUnit: false }), role => role.roleId
+                _.filter(this.roles, { isAssigned: true, inheritedFromOrganizationUnit: false }), role => role.roleName
             );
             input.roleId="";
             roles.forEach(element => {
