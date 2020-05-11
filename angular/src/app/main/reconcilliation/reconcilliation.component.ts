@@ -44,7 +44,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   remainingUserForHeader: any = [];
   accountSubTypes: any = [];
   accountType : any;
-  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Assets" }, { id: 3, name: "Liability" }];
+  accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Asset" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
   StatusColorBox: any = ["bg-blue", "bg-sea-green", "bg-gray"]
   updateAssigneeOnHeader: boolean = true;
@@ -218,15 +218,15 @@ debugger;
     }
   }
 
-  reDirectToItemizedAmotized (reconciliationTypeId,accountId,accountNo,accountName){
+  reDirectToItemizedAmotized (reconciliationTypeId,accountId,accountNo,accountName,accountBalanceId){
      
       if (reconciliationTypeId == 1)
       {
-        this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : accountId, accountName :accountName ,accountNo: accountNo  }} });
+        this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : accountId, accountName :accountName ,accountNo: accountNo,accountBalanceId : accountBalanceId  }} });
     
       }
       else if (reconciliationTypeId == 2) {
-        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo}} });
+        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo , accountBalanceId : accountBalanceId}} });
       }
  
   }

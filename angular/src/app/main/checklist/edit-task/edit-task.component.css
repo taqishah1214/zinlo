@@ -13,6 +13,9 @@
     height: 170px;
     overflow: auto;
 }
+.drag_drop_box {
+    margin-top: -50px;
+}
 .duplicate_box {
     margin-top: 50px
 }
@@ -38,8 +41,8 @@
     margin-left: 135px;
 }
 ::ng-deep .uppy-Dashboard-inner {
-    min-height:220px !important;
-    height: 220px !important;
+    min-height:273px !important;
+    height: 273px !important;
 }
 .category-selector button {
     width: 100%;
@@ -152,7 +155,7 @@ label{
 }
 .chat-wrapper{
     
-    padding :0px 30px !important;
+    padding-left : 10px !important;
     overflow-y: auto;
 }
 
@@ -166,7 +169,7 @@ ul, ul li {
     }
     ul {
         list-style: none;
-        width: 100%;
+        width: 85%;
         padding :0px;
         margin:0px;
         border:none;

@@ -243,16 +243,17 @@ namespace Zinlo.Auditing
         public async Task<List<EntityPropertyHistory>> GetEntityHistory(GetEntityHistoryInput input)
         {
             var query = from entityChangeSet in _entityChangeSetRepository.GetAll()
-                        join entityChange in _entityChangeRepository.GetAll() on entityChangeSet.Id equals entityChange
+                        join entityChange in _entityChangeRepository.GetAll()
+                                .WhereIf( input.EntityFullName.Equals("Zinlo.ChartofAccounts.ChartofAccounts"), p =>(p.EntityTypeFullName.Equals("Zinlo.ChartofAccounts.ChartofAccounts") && p.EntityId == input.EntityId )||(p.EntityId == input.AccountBalanceId && p.EntityTypeFullName.Equals("Zinlo.ChartofAccounts.AccountBalance")))
+                                .WhereIf( String.IsNullOrWhiteSpace(input.AccountBalanceId), p =>p.EntityTypeFullName== "Zinlo.ClosingChecklist.ClosingChecklist" && p.EntityId == input.EntityId)
+                            on entityChangeSet.Id equals entityChange
                             .EntityChangeSetId
                         join entityPropertyChange in _entityPropertyChangeRepository.GetAll()
                                 .WhereIf(!String.IsNullOrWhiteSpace(input.PropertyName), p => p.PropertyName == input.PropertyName)
                                 .WhereIf(input.EntityFullName.Equals("Zinlo.ClosingChecklist.ClosingChecklist") && String.IsNullOrWhiteSpace(input.PropertyName),p=>p.PropertyName != "VersionId")
+                                .Where(p=>p.OriginalValue!=null)
                             on entityChange.Id equals entityPropertyChange.EntityChangeId
                         join user in _userRepository.GetAll() on entityChangeSet.UserId equals user.Id
-                        where entityChange.EntityId == input.EntityId && entityPropertyChange.OriginalValue != null
-                                                                && entityChange.EntityTypeFullName == input.EntityFullName
-
                         select new EntityPropertyHistory()
                         {
                             UserId = (long)entityChangeSet.UserId,

@@ -289,7 +289,7 @@
 }
 .chat-wrapper{
     
-    padding :0px 30px !important;
+    padding-left : 10px !important;
     overflow-y: auto;
 }
 
@@ -303,7 +303,7 @@ ul, ul li {
     }
     ul {
         list-style: none;
-        width: 100%;
+        width: 85%;
         padding :0px;
         margin:0px;
         border:none;

@@ -3,6 +3,7 @@ import { AccountSubTypeServiceProxy, CreateOrEditAccountSubTypeDto } from '@shar
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { StoreDateService } from '../../../../services/storedate.service';
 
 
 @Component({
@@ -13,8 +14,10 @@ import { finalize } from 'rxjs/operators';
 export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implements OnInit {
   accountsSubType : CreateOrEditAccountSubTypeDto = new CreateOrEditAccountSubTypeDto()
   accountSubTypeId : number;
+  accountSubTypeList :any = []
+
   saving = false;
-  constructor(private accountSubTypeServiceProxy: AccountSubTypeServiceProxy , injector: Injector,private _router: Router) {
+  constructor(private storeData: StoreDateService,private accountSubTypeServiceProxy: AccountSubTypeServiceProxy , injector: Injector,private _router: Router) {
     super(injector) 
   }
 
@@ -31,6 +34,10 @@ export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implem
     this.saving = true;  
    this.accountSubTypeServiceProxy.createOrEdit(this.accountsSubType).pipe(finalize(() => { this.saving = false; })).subscribe(result => {
     this.notify.success(this.l('SavedSuccessfully'));
+    this.accountSubTypeServiceProxy.accountSubTypeDropDown().subscribe(result => { 
+      this.accountSubTypeList = result
+      this.storeData.setAccountSubTypeList(this.accountSubTypeList)
+  })  
     this.redirect(this.accountsSubType.title,result);
     
    })

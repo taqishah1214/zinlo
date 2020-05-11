@@ -563,6 +563,9 @@
         font-weight: bold;
         margin-right: 10px;
     }
+    .accountName-cell{
+        cursor: pointer;
+    }
     .task-box {
         /* padding: 2px 20px; */
         border-radius: 20px;
@@ -570,6 +573,7 @@
         position: relative;
         word-break: break-all;
         color: #575962;
+
     }
     .task-report-form{
         width: 100px;
@@ -838,9 +842,11 @@
     }
     @media only screen and (max-width:1900px){
         .table-row-collapsible .accountSubtype-cell{
+            cursor: pointer;
             display: none;
         }
         .table-row-collapsible .assignee-cell{
+            cursor: pointer;
             display: none;
         }
     .table-row-collapsible{
@@ -855,6 +861,7 @@
     }
     
     .table-row-collapsible  .reconciliation-cell{
+        cursor:pointer;
         display: none;
     }
     .table-row-collapsible  .action-cell{
@@ -862,13 +869,17 @@
     }
     .toggle-btn-cell .taggle-btn{
         display: table-cell;
+        cursor: pointer;
+        margin-left: 10px;
         }
     }
     @media only screen and (max-width:1600px){
         .assignee-cell {
+            cursor: pointer;
             width: 250px;
         }
         .accountSubtype-cell{
+            cursor: pointer;
             width: 200px;
             display: table-cell;
         }
@@ -884,6 +895,8 @@
        }
        .toggle-btn-cell .taggle-btn{
            display: table-cell;
+           cursor: pointer;
+           margin-left: 10px;
        }
        .table-row-collapsible{
         display: table-row;
@@ -901,30 +914,38 @@
     
     @media only screen and (max-width:1470px){
         .assignee-cell{
+            cursor: pointer;
             display: none;
         }
         .table-row-collapsible  .assignee-cell{
+            cursor: pointer;
         display: flex;
         }
         .accountType-cell{
+            cursor:pointer;
             width:160px !important;
         }
         .accountSubtype-cell{
+            cursor: pointer;
             width: 180px !important;
         }
         .reconciliation-cell{
+            cursor:pointer;
             display: table-cell;
         }
         .table-row-collapsible .reconciliation-cell{
+            cursor:pointer;
             display: none;
         }
     }   
     @media only screen and (max-width:1279px){
         
         .reconciliation-cell{
+            cursor:pointer;
             display: none;
             }
             .table-row-collapsible  .reconciliation-cell{
+                cursor:pointer;
                 display: flex;
             }
         .table-row-collapsible{
@@ -938,12 +959,15 @@
             display: flex;
         }
         .accountNo-cell {
+            
+            cursor:pointer;
             width: 120px;
         }
         
         .toggle-btn-cell .taggle-btn{
             display: table-cell;
             cursor: pointer;
+            margin-left: 10px;
         }
         .category-selector{
             width: 150px;
@@ -1079,6 +1103,7 @@
         background-color: #F1F2FC ;
     }
     .accountNo-cell{
+        cursor:pointer;
         width: 160px;
     }
     .accountNo-cell span {
@@ -1087,16 +1112,23 @@
         word-break: break-all;
         cursor: pointer;
     }
+    .toggle-btn-cell {
+        width:37px;
+    }
     .accountSubtype-cell {
+        cursor: pointer;
         width: 200px;
     }
     .reconciliation-cell{
+        cursor:pointer;
         width: 220px;
     }
     .accountType-cell{
+        cursor:pointer;
         width: 170px;
     }
     .assignee-cell {
+        cursor: pointer;
         width:260px;
     } 
     
@@ -1512,7 +1544,7 @@
 }
 .chat-wrapper{
     
-    padding :0px 30px !important;
+    padding-left : 10px !important;
     overflow-y: auto;
 }
 
@@ -1526,7 +1558,7 @@ ul, ul li {
     }
     ul {
         list-style: none;
-        width: 100%;
+        width: 85%;
         padding :0px;
         margin:0px;
         border:none;

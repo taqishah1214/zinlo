@@ -65,17 +65,6 @@ import { CustomTenantsComponent } from './tenants/custom-tenants.component';
 
 import { UiCustomizationComponent } from './ui-customization/ui-customization.component';
 import { DefaultThemeUiSettingsComponent } from './ui-customization/default-theme-ui-settings.component';
-import { Theme2ThemeUiSettingsComponent } from './ui-customization/theme2-theme-ui-settings.component';
-import { Theme3ThemeUiSettingsComponent } from './ui-customization/theme3-theme-ui-settings.component';
-import { Theme4ThemeUiSettingsComponent } from './ui-customization/theme4-theme-ui-settings.component';
-import { Theme5ThemeUiSettingsComponent } from './ui-customization/theme5-theme-ui-settings.component';
-import { Theme6ThemeUiSettingsComponent } from './ui-customization/theme6-theme-ui-settings.component';
-import { Theme7ThemeUiSettingsComponent } from './ui-customization/theme7-theme-ui-settings.component';
-import { Theme8ThemeUiSettingsComponent } from './ui-customization/theme8-theme-ui-settings.component';
-import { Theme9ThemeUiSettingsComponent } from './ui-customization/theme9-theme-ui-settings.component';
-import { Theme10ThemeUiSettingsComponent } from './ui-customization/theme10-theme-ui-settings.component';
-import { Theme11ThemeUiSettingsComponent } from './ui-customization/theme11-theme-ui-settings.component';
-import { Theme12ThemeUiSettingsComponent } from './ui-customization/theme12-theme-ui-settings.component';
 import { CreateOrEditUserModalComponent } from './users/create-or-edit-user-modal.component';
 import { InviteUserModalComponent } from './users/invite-user-modal.component';
 import { EditUserPermissionsModalComponent } from './users/edit-user-permissions-modal.component';
@@ -186,17 +175,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         DemoUiEditorComponent,
         UiCustomizationComponent,
         DefaultThemeUiSettingsComponent,
-        Theme2ThemeUiSettingsComponent,
-        Theme3ThemeUiSettingsComponent,
-        Theme4ThemeUiSettingsComponent,
-        Theme5ThemeUiSettingsComponent,
-        Theme6ThemeUiSettingsComponent,
-        Theme7ThemeUiSettingsComponent,
-        Theme8ThemeUiSettingsComponent,
-        Theme9ThemeUiSettingsComponent,
-        Theme10ThemeUiSettingsComponent,
-        Theme12ThemeUiSettingsComponent,
-        Theme11ThemeUiSettingsComponent,
         PermissionTreeModalComponent,
     ],
     exports: [

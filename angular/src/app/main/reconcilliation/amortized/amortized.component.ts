@@ -79,6 +79,9 @@ export class AmortizedComponent extends AppComponentBase {
     super(injector);
   }
   ngOnInit() {
+    if (history.state.navigationId == 1){
+      this._router.navigate(['/app/main/reconcilliation']);
+    }
       $(document).ready(function(){
         // Show hide popover
             $(".dropdown-menu").on('click', function (e) {
@@ -304,7 +307,23 @@ BackToReconcileList() {
 
 
   getAuditLogOfAccount() {
-    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","").subscribe(resp => {
+
+    let statusList = [];
+    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","",history.state.data.accountBalanceId).subscribe(resp => {
+      resp.forEach((element,index) => {
+      switch (element.propertyName) {
+      case "Status":          
+      element["result"] = this.setStatusHistoryParam(element)
+      statusList.push(element)
+      break;
+      default:
+        console.log("not found");
+      }
+    })
+     
+    })
+
+    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","","").subscribe(resp => {
       this.historyOfTask = resp
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
