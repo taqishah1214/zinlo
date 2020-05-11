@@ -52,7 +52,7 @@
                                         <label for="dateOfBirth">{{"ClosingMonth" | localize}}</label>
                                         <div class="month-calender">
                                             <form class="input-arrow">
-                                                <input [(ngModel)]="checklist.closingMonth" (ngModelChange)="loadDaysByMonth($event)" required="required"
+                                                <input [(ngModel)]="checklist.closingMonth" (focusout)="checkMonth()" (ngModelChange)="loadDaysByMonth($event)" required="required"
                                                 autocomplete="off" class="form-control" name="date" bsDatepicker 
                                                     placeholder="Select Month" class="form-control" name="date"
                                                     bsDatepicker
@@ -60,6 +60,10 @@
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
                                         </div>
+                                    </div>
+                                    <div>
+                                        <span class="form-control-feedback"
+                                            *ngIf="!monthStatus">{{"ThisMonthIsNotActive" | localize}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -190,10 +194,10 @@
                                         <label>{{"Comments" | localize}}</label>
                                         <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>
                                         <div class="form-group rounded border-bottom border-right border-left">
-                                            <p-editor [(ngModel)]="checklist.commentBody"
-                                                (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
+                                            <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput" 
                                                 [style]="{'height':'230px','border':'none'}">
                                                 <p-header>
+                                                    
                                                     <span class="ql-formats">
                                                         <select class="ql-size" data-toggle="tooltip" title="Font Size"style="width:75px">
                                                             <option value="small">small</option>
@@ -224,8 +228,9 @@
                                                             <option value="center" label="Center"></option>
                                                             <option value="right" label="Right"></option>
                                                             <option value="justify" label="Justify"></option>
-                                                        </select>   
-                                                        <button (click)="commentFile.click()" data-toggle="tooltip" title="Upload Files">
+                                                        </select>
+                                                        <button _ngcontent-c7="" data-toggle="tooltip" title="Upload Image"aria-label="Image" class="ql-image " type="button"><svg viewBox="0 0 18 18"> <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect> <circle class="ql-fill" cx="6" cy="7" r="1"></circle> <polyline class="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12"></polyline> </svg></button>   
+                                                        <button (click)="commentFile.click()" data-toggle="tooltip" title="Upload Files"aria-label="Link" class="ql-link">
                                                             <svg viewBox="0 0 18 18">
                                                             <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
                                                             <circle class="ql-fill" cx="6" cy="7" r="1">                                 
@@ -329,7 +334,7 @@
                     <div class="kt-portlet__head">
                     </div>
                     <div class="btn-create">
-                        <button class="btn btn-brand" (click)="onCreateTask()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid">
+                        <button class="btn btn-brand" (click)="onCreateTask()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid || !monthStatus">
                             <i class="fa fa-save"></i>
                             <span>{{"Create" | localize}}</span>
                         </button>

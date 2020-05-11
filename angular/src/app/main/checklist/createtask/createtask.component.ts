@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateOrEditClosingChecklistDto, ClosingChecklistServiceProxy, TimeManagementsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CategorieDropDownComponent } from '@app/main/categories/categorie-drop-down/categorie-drop-down.component';
 import { UserListComponentComponent } from '../user-list-component/user-list-component.component';
 import { IgxMonthPickerComponent } from "igniteui-angular";
@@ -53,9 +53,11 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   daysBeforeAfter : any = 1;
   DaysByMonth: Date = new Date();
   errorMessage = "";
+  monthStatus = true;
   constructor
     (private _router: Router,
       private _closingChecklistService: ClosingChecklistServiceProxy,
+      private _managementService: TimeManagementsServiceProxy,
       private userInfo: UserInformation,
       injector: Injector) {
     super(injector)
@@ -255,11 +257,14 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   {
     this.commentFiles.splice(index, 1);
   }
-  loadDaysByMonth(event):void{
+  loadDaysByMonth():void{
     var month = moment(new Date(add(this.checklist.closingMonth, 2, "day")));
     this._closingChecklistService.getCurrentMonthDays(month).subscribe(result => {
       this.days = result;
       this.checklist.dueOn =1
+    });
+    this._managementService.checkMonthStatus(moment(new Date(add(this.checklist.closingMonth, 2, "day")))).subscribe(result => {
+      this.monthStatus = result;
     });
   }
    getNoOfmonths(date1, date2) {

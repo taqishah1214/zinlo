@@ -33,7 +33,7 @@
                                             <label for="TaskName"> {{"Account No" | localize}}.</label>
                                             <input type="text" name="accountNumber" (focusout)="CheckAccountNumber()" class="form-control"
                                                 [(ngModel)]="accountDto.accountNumber" autocomplete="off">
-                                                <span style="color:red" *ngIf="isAccountExist">{{"Account Number already exists" | localize}}</span>   
+                                                <span style="color:red" *ngIf="isAccountExist">{{"AccountNumberExist" | localize}}</span>   
                                         </div>
                                     </div>
                                 </div>

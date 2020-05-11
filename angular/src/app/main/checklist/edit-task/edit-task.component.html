@@ -218,8 +218,7 @@
                                 <label>{{"Comments" | localize}}</label>
                                 <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>
                                 <div class="form-group border-bottom border-right border-left rounded">
-                                    <p-editor [(ngModel)]="checklist.commentBody"
-                                        (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
+                                    <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput" 
                                         [style]="{'height':'230px','border':'none'}">
                                         <p-header>
                                             <span class="ql-formats">
@@ -252,8 +251,8 @@
                                                     <option value="center" label="Center"></option>
                                                     <option value="right" label="Right"></option>
                                                     <option value="justify" label="Justify"></option>
-                                                </select>    
-                                                <button (click)="commentFile.click()" data-toggle="tooltip" title="Upload File">
+                                                </select>  
+                                                <button (click)="commentFile.click()" data-toggle="tooltip" title="Upload File" aria-label="Link" class="ql-link">
                                                     <svg viewBox="0 0 18 18">
                                                     <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
                                                     <circle class="ql-fill" cx="6" cy="7" r="1">                                 
@@ -308,8 +307,7 @@
                             </div> -->
                             <input hidden type="file" (change)="uploadFile($event)" #instructionFile>
                                 <div class="form-group border-bottom border-right border-left rounded">
-                                    <p-editor [(ngModel)]="getTaskForEdit.instructionBody"
-                                        (keydown.space)="$event.preventDefault();" name="HtmlEditorInput" 
+                                    <p-editor [(ngModel)]="getTaskForEdit.instructionBody" name="HtmlEditorInput" 
                                         [style]="{'height':'230px','border':'none'}">
                                         <p-header>
                                             <span class="ql-formats">
