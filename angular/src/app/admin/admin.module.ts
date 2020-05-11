@@ -77,6 +77,7 @@ import { Theme10ThemeUiSettingsComponent } from './ui-customization/theme10-them
 import { Theme11ThemeUiSettingsComponent } from './ui-customization/theme11-theme-ui-settings.component';
 import { Theme12ThemeUiSettingsComponent } from './ui-customization/theme12-theme-ui-settings.component';
 import { CreateOrEditUserModalComponent } from './users/create-or-edit-user-modal.component';
+import { InviteUserModalComponent } from './users/invite-user-modal.component';
 import { EditUserPermissionsModalComponent } from './users/edit-user-permissions-modal.component';
 import { ImpersonationService } from './users/impersonation.service';
 import { UsersComponent } from './users/users.component';
@@ -138,6 +139,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         PermissionComboComponent,
         RoleComboComponent,
         CreateOrEditUserModalComponent,
+        InviteUserModalComponent,
         EditUserPermissionsModalComponent,
         PermissionTreeComponent,
         FeatureTreeComponent,

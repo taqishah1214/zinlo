@@ -142,7 +142,7 @@ namespace Zinlo
             configuration.CreateMap<ImportUserDto, User>();
 
             //InviteUser
-            configuration.CreateMap<InviteUser, CreateOrUpdateInviteUser>();
+            configuration.CreateMap<CreateOrUpdateInviteUser,InviteUser>();
             configuration.CreateMap<InviteUser, InviteUserDto>();
 
             //AuditLog

@@ -1,4 +1,5 @@
-﻿using Abp.Domain.Repositories;
+﻿using Abp.Authorization;
+using Abp.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,13 @@ namespace Zinlo.Authorization.Users.InviteUsers
             _userEmailer = userEmailer;
             AppUrlService = NullAppUrlService.Instance;
         }
+        [AbpAuthorize(AppPermissions.Pages_Administration_Users_Edit)]
         public async Task Create(CreateOrUpdateInviteUser input)
         {
-            var response = await _inviteUserRepostiry.InsertAsync(ObjectMapper.Map<InviteUser>(input));
+            var user=ObjectMapper.Map<InviteUser>(input);
+           user.TenantId= AbpSession.TenantId.Value;
+            var response = await _inviteUserRepostiry.InsertAsync(user);
+
             //send email
             await _userEmailer.SendInviteUserEmail(response.Email, response.TenantId, AppUrlService.CreateInviteUserUrlFormat(response.TenantId));
 

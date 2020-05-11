@@ -9,6 +9,7 @@ import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { CreateOrEditUserModalComponent } from './create-or-edit-user-modal.component';
+import {InviteUserModalComponent} from './invite-user-modal.component';
 import { EditUserPermissionsModalComponent } from './edit-user-permissions-modal.component';
 import { ImpersonationService } from './impersonation.service';
 import { HttpClient } from '@angular/common/http';
@@ -166,8 +167,10 @@ export class UsersComponent extends AppComponentBase   {
     userList: any = []
 
     @ViewChild('createOrEditUserModal', { static: true }) createOrEditUserModal: CreateOrEditUserModalComponent;
+  
     @ViewChild('editUserPermissionsModal', { static: true }) editUserPermissionsModal: EditUserPermissionsModalComponent;
-
+    @ViewChild('inviteUserModal', { static: true }) inviteUserModal: InviteUserModalComponent;
+  
     constructor(_injector: Injector, private _userServiceProxy: UserServiceProxy) {
         super(_injector);
     }
@@ -184,5 +187,9 @@ export class UsersComponent extends AppComponentBase   {
 
     createUser() {
         this.createOrEditUserModal.show();
+    }
+    inviteUser()
+    {
+        this.inviteUserModal.show();
     }
 }

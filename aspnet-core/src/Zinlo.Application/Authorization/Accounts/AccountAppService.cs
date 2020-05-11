@@ -61,11 +61,6 @@ namespace Zinlo.Authorization.Accounts
 
         public async Task<CustomTenantRequestLinkResolverDto> LinkResolve(CustomTenantRequestLinkResolveInput input)
         {
-            //if (string.IsNullOrEmpty(input.c))
-            //{
-            //    return Task.FromResult(AbpSession.TenantId);
-            //}
-
             var parameters = SimpleStringCipher.Instance.Decrypt(input.c);
             var query = HttpUtility.ParseQueryString(parameters);
 
@@ -82,8 +77,23 @@ namespace Zinlo.Authorization.Accounts
                 Price = Convert.ToDecimal(query["price"].ToString()),
                 SubscriptionStartType = subscriptionStartType,
                 TenantId = tenantId,
-                 Commitment = commitment
-                
+                Commitment = commitment
+
+            };
+        }
+
+        public async Task<UserLinkResolverDto> RegsiterLinkResolve(CustomTenantRequestLinkResolveInput input)
+        {
+            var parameters = SimpleStringCipher.Instance.Decrypt(input.c);
+            var query = HttpUtility.ParseQueryString(parameters);
+
+            var email = query["email"].ToString();
+            var tenantId = Convert.ToInt32(query["tenantId"]) as int?;
+            return new UserLinkResolverDto
+            {
+                TenantId = tenantId,
+                Email = email
+
             };
         }
 
@@ -123,7 +133,7 @@ namespace Zinlo.Authorization.Accounts
         }
 
         //using for signup it's multi purpose method 
-       
+
         //old method
         public async Task<RegisterOutput> Register(RegisterInput input)
         {
@@ -141,7 +151,7 @@ namespace Zinlo.Authorization.Accounts
                 false,
                 AppUrlService.CreateEmailActivationUrlFormat(AbpSession.TenantId)
             );
-          
+
 
             var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);
 
@@ -312,6 +322,6 @@ namespace Zinlo.Authorization.Accounts
             return user;
         }
 
-       
+
     }
 }

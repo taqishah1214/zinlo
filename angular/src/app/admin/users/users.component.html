@@ -281,6 +281,9 @@
             </div>
             <div class="kt-subheader__toolbar">
                 <div class="kt-subheader__wrapper">
+                    <button (click)="inviteUser()" class="btn btn-primary"><i class="fa fa-plus"></i>Invite User</button>
+                </div>
+                <div class="kt-subheader__wrapper">
                     <button (click)="createUser()" class="btn btn-primary"><i class="fa fa-plus"></i> {{"AddNew" | localize}}</button>
                 </div>
             </div>
@@ -310,7 +313,8 @@
     </div>
 
     <createOrEditUserModal #createOrEditUserModal (modalSave)="getAllUsers()"></createOrEditUserModal>
-        <editUserPermissionsModal #editUserPermissionsModal></editUserPermissionsModal>
+       <inviteUserModalComponent #inviteUserModal (modalSave)="getAllUsers()"></inviteUserModalComponent>
+    <editUserPermissionsModal #editUserPermissionsModal></editUserPermissionsModal>
 
 </div>
 

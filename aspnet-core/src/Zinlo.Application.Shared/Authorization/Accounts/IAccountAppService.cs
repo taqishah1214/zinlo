@@ -7,6 +7,9 @@ namespace Zinlo.Authorization.Accounts
 {
     public interface IAccountAppService : IApplicationService
     {
+
+        //
+        Task<UserLinkResolverDto> RegsiterLinkResolve(CustomTenantRequestLinkResolveInput input);
         Task<CustomTenantRequestLinkResolverDto> LinkResolve(CustomTenantRequestLinkResolveInput input);
         Task<IsTenantAvailableOutput> IsTenantAvailable(IsTenantAvailableInput input);
 

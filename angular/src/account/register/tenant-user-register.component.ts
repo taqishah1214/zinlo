@@ -1,9 +1,9 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { ReactiveFormsModule,FormGroup, FormControl} from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { RegisterTenantUserInput, AccountServiceProxy, SessionServiceProxy } from '@shared/service-proxies/service-proxies';
+import { RegisterTenantUserInput, AccountServiceProxy, SessionServiceProxy, CustomTenantRequestLinkResolveInput, InviteUserServiceServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AbpSessionService } from 'abp-ng2-module/dist/src/session/abp-session.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 
 @Component({
@@ -22,7 +22,9 @@ export class TenantUserRegisterComponent extends AppComponentBase implements OnI
     injector: Injector,
     private _accountServiceProxy:AccountServiceProxy,
     private _sessionService: AbpSessionService,
-    private _router: Router
+    private _router: Router,
+    private _inviteUserService:InviteUserServiceServiceProxy,
+    private _activatedRoute: ActivatedRoute,
   ){
     super(injector);
       
@@ -30,6 +32,35 @@ export class TenantUserRegisterComponent extends AppComponentBase implements OnI
   }
   ngOnInit()
   {
+
+    if (this._activatedRoute.snapshot.queryParams['c']) {
+      var c = this._activatedRoute.snapshot.queryParams['c'];
+      this._accountServiceProxy.regsiterLinkResolve(new CustomTenantRequestLinkResolveInput({ c: c })).subscribe((response) => {
+       console.log(response)
+       this._inviteUserService.getByEmail(response.email).subscribe((res)=>
+        {
+          console.log(res)
+          this.personalInfoForm = new FormGroup({
+            firstName: new FormControl(''+res.firstName,[Validators.required]),
+            lastName: new FormControl(res.lastName,[Validators.required]),
+            userName:new FormControl(res.userName,[Validators.required]),
+            password:new FormControl('',[Validators.required]),
+            emailAddress: new FormControl(res.email,[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]),
+            title: new FormControl(res.title,[Validators.required]),
+            phone: new FormControl(res.phoneNumber,[Validators.pattern("^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$")]),
+            address: new FormControl('',[Validators.required]),
+            city: new FormControl(''),
+            state: new FormControl(''),
+          });
+
+        })
+          abp.multiTenancy.setTenantIdCookie(response.tenantId);
+      });
+
+  }
+
+  
+
    this.personalInfoForm = new FormGroup({
     firstName: new FormControl('',[Validators.required]),
     lastName: new FormControl('',[Validators.required]),
@@ -42,6 +73,7 @@ export class TenantUserRegisterComponent extends AppComponentBase implements OnI
     city: new FormControl(''),
     state: new FormControl(''),
   });
+
 }
   FormGroup(arg0: { firstName: FormControl; lastName: FormControl; }) {
     throw new Error("Method not implemented.");
