@@ -132,12 +132,18 @@ namespace Zinlo
                 .ForMember(user => user.Password, options => options.Ignore());
             configuration.CreateMap<User, UserLoginInfoDto>();
             configuration.CreateMap<User, UserListDto>();
+
+            
             configuration.CreateMap<User, ChatUserDto>();
             configuration.CreateMap<User, OrganizationUnitUserListDto>();
             configuration.CreateMap<Role, OrganizationUnitRoleListDto>();
             configuration.CreateMap<CurrentUserProfileEditDto, User>().ReverseMap();
             configuration.CreateMap<UserLoginAttemptDto, UserLoginAttempt>().ReverseMap();
             configuration.CreateMap<ImportUserDto, User>();
+
+            //InviteUser
+            configuration.CreateMap<CreateOrUpdateInviteUser,InviteUser>();
+            configuration.CreateMap<InviteUser, InviteUserDto>();
 
             //AuditLog
             configuration.CreateMap<AuditLog, AuditLogListDto>();

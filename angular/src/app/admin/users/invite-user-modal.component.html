@@ -1,0 +1,84 @@
+<div bsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #userForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span >Invite User</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <tabset>
+                        <tab heading="{{'UserInformations' | localize}}">
+                            <div class="row">
+                                <div class="col-sm-3 text-center mb-5 mt-5">
+                                    <img src="{{profilePicture}}" width="128" height="128" class="img-thumbnail img-rounded" />
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <label for="Name">{{"Name" | localize}} *</label>
+                                        <input id="Name" #nameInput="ngModel" class="form-control" type="text" autocomplete="off" name="Name" [(ngModel)]="user.firstName" required maxlength="64">
+                                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Surname">{{"Surname" | localize}} *</label>
+                                        <input id="Surname" #surnameInput="ngModel" type="text" name="Surname" class="form-control" [(ngModel)]="user.lastName" autocomplete="off" required maxlength="64">
+                                        <validation-messages [formCtrl]="surnameInput"></validation-messages>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="EmailAddress">{{"EmailAddress" | localize}} *</label>
+                                <input id="EmailAddress" #emailAddressInput="ngModel" type="email" name="EmailAddress" class="form-control" [(ngModel)]="user.email" autocomplete="off" required maxlength="256" email />
+                                <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="PhoneNumber">{{"PhoneNumber" | localize}}</label>
+                                <input id="PhoneNumber" type="text" name="PhoneNumber" class="form-control" autocomplete="off" [(ngModel)]="user.phoneNumber" maxlength="32">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="UserName">{{"UserName" | localize}} *</label>
+                                <input id="UserName" #userNameInput="ngModel" type="text" [disabled]="!canChangeUserName" name="UserName" class="form-control" autocomplete="off" [(ngModel)]="user.userName" required maxlength="256">
+                                <span class="help-block" *ngIf="!canChangeUserName">{{"CanNotChangeAdminUserName" | localize}}</span>
+                                <validation-messages [formCtrl]="userNameInput"></validation-messages>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Title">Title</label>
+                                <input id="Title" type="text" name="Title" class="form-control" autocomplete="off" [(ngModel)]="user.title" >
+                            </div>
+                            <div class="form-group">
+                                <label for="Title">Reporting Relationship</label>
+                                <input id="ReportingRelationship" type="text" name="ReportingRelationship" class="form-control" autocomplete="off" [(ngModel)]="user.reportingRelationship" >
+                            </div>
+                           
+                        </tab>
+                        <tab heading="{{'Roles' | localize}}">
+                            <ng-template tabHeading>
+                                <span class="kt-badge kt-badge--success kt-badge--inline">{{getAssignedRoleCount()}}</span>
+                            </ng-template>
+                            <div class="kt-checkbox-list">
+                                <label attr.for="EditUser_{{role.roleName}}" class="kt-checkbox" *ngFor="let role of roles">
+                                    <input id="EditUser_{{role.roleName}}" type="checkbox" name="{{role.roleName}}" [(ngModel)]="role.isAssigned" [disabled]="role.inheritedFromOrganizationUnit">
+                                    {{role.roleDisplayName}} <small *ngIf="role.inheritedFromOrganizationUnit">({{'RoleIsInheritedFromOrganizationUnit' | localize}})</small>
+                                    <span></span>
+                                </label>
+                            </div>
+                        </tab>
+                        
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!userForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>Send</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

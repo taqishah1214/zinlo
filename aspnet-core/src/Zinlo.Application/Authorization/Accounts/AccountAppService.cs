@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Zinlo.Authorization.Accounts.Dto;
 using Zinlo.Authorization.Impersonation;
 using Zinlo.Authorization.Users;
+using Zinlo.Authorization.Users.Dto;
 using Zinlo.Configuration;
 using Zinlo.Contactus.Dto;
 using Zinlo.Debugging;
@@ -37,15 +38,21 @@ namespace Zinlo.Authorization.Accounts
         private readonly IUserLinkManager _userLinkManager;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IWebUrlService _webUrlService;
+        private readonly IUserAppService _userAppService;
+        private readonly IInviteUserService _inviteUserService;
 
         public AccountAppService(
+            IInviteUserService inviteUserService,
             IUserEmailer userEmailer,
             UserRegistrationManager userRegistrationManager,
             IImpersonationManager impersonationManager,
             IUserLinkManager userLinkManager,
             IPasswordHasher<User> passwordHasher,
+            IUserAppService userAppService,
             IWebUrlService webUrlService)
         {
+            _userAppService = userAppService;
+            _inviteUserService = inviteUserService;
             _userEmailer = userEmailer;
             _userRegistrationManager = userRegistrationManager;
             _impersonationManager = impersonationManager;
@@ -61,11 +68,6 @@ namespace Zinlo.Authorization.Accounts
 
         public async Task<CustomTenantRequestLinkResolverDto> LinkResolve(CustomTenantRequestLinkResolveInput input)
         {
-            //if (string.IsNullOrEmpty(input.c))
-            //{
-            //    return Task.FromResult(AbpSession.TenantId);
-            //}
-
             var parameters = SimpleStringCipher.Instance.Decrypt(input.c);
             var query = HttpUtility.ParseQueryString(parameters);
 
@@ -82,8 +84,23 @@ namespace Zinlo.Authorization.Accounts
                 Price = Convert.ToDecimal(query["price"].ToString()),
                 SubscriptionStartType = subscriptionStartType,
                 TenantId = tenantId,
-                 Commitment = commitment
-                
+                Commitment = commitment
+
+            };
+        }
+
+        public async Task<UserLinkResolverDto> RegsiterLinkResolve(CustomTenantRequestLinkResolveInput input)
+        {
+            var parameters = SimpleStringCipher.Instance.Decrypt(input.c);
+            var query = HttpUtility.ParseQueryString(parameters);
+
+            var email = query["email"].ToString();
+            var tenantId = Convert.ToInt32(query["tenantId"]) as int?;
+            return new UserLinkResolverDto
+            {
+                TenantId = tenantId,
+                Email = email
+
             };
         }
 
@@ -123,7 +140,7 @@ namespace Zinlo.Authorization.Accounts
         }
 
         //using for signup it's multi purpose method 
-       
+
         //old method
         public async Task<RegisterOutput> Register(RegisterInput input)
         {
@@ -141,7 +158,7 @@ namespace Zinlo.Authorization.Accounts
                 false,
                 AppUrlService.CreateEmailActivationUrlFormat(AbpSession.TenantId)
             );
-          
+
 
             var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);
 
@@ -151,28 +168,66 @@ namespace Zinlo.Authorization.Accounts
             };
         }
 
+
+        private CreateOrUpdateUserInput RegisterInviteUSer(RegisterTenantUserInput input, InviteUserDto inviteUserDto)
+        {
+            var user = new CreateOrUpdateUserInput
+            {
+                User = new UserEditDto
+                {
+                    EmailAddress = input.EmailAddress,
+                    IsActive = true,
+                    Name = input.Name,
+                    Surname = input.Surname,
+                    Password = input.Password,
+                    UserName = input.UserName,
+                    PhoneNumber = input.PhoneNumber,
+                    ShouldChangePasswordOnNextLogin = false,
+                },
+                AssignedRoleNames = inviteUserDto.RoleId.Split(","),
+                SendActivationEmail = false,
+                SetRandomPassword = false
+            };
+            return user;
+        }
+
+
         public async Task<RegisterOutput> RegisterTenantUser(RegisterTenantUserInput input)
         {
-            var user = await _userRegistrationManager.RegisterTenantUSerAsync(
-                input.Name,
-                input.Surname,
-                input.Title,
-                input.PhoneNumber,
-                input.Address,
-                input.City,
-                input.State,
-                input.EmailAddress,
-                input.UserName,
-                input.Password,
-                false,
-                AppUrlService.CreateEmailActivationUrlFormat(AbpSession.TenantId),
-                input.TenantId
-            );
-            var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);
-            return new RegisterOutput
+
+            var isInviteUser = await _inviteUserService.GetByEmail(input.EmailAddress);
+            if (isInviteUser != null)
             {
-                CanLogin = user.IsActive && (user.IsEmailConfirmed || !isEmailConfirmationRequiredForLogin)
-            };
+                await _userAppService.CreateOrUpdateUser(RegisterInviteUSer(input, isInviteUser));
+                return new RegisterOutput
+                {
+                    CanLogin = true
+                };
+            }
+            else
+            {
+                var user = await _userRegistrationManager.RegisterTenantUSerAsync(
+                    input.Name,
+                    input.Surname,
+                    input.Title,
+                    input.PhoneNumber,
+                    input.Address,
+                    input.City,
+                    input.State,
+                    input.EmailAddress,
+                    input.UserName,
+                    input.Password,
+                    false,
+                    AppUrlService.CreateEmailActivationUrlFormat(AbpSession.TenantId),
+                    input.TenantId
+                );
+
+                var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);
+                return new RegisterOutput
+                {
+                    CanLogin = user.IsActive && (user.IsEmailConfirmed || !isEmailConfirmationRequiredForLogin)
+                };
+            }
         }
 
         public async Task SendPasswordResetCode(SendPasswordResetCodeInput input)
@@ -312,6 +367,6 @@ namespace Zinlo.Authorization.Accounts
             return user;
         }
 
-       
+
     }
 }

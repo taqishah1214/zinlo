@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Zinlo.Migrations
 {
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -595,6 +595,33 @@ namespace Zinlo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InviteUsers",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
+                    RoleId = table.Column<int>(nullable: true),
+                    ReportingRelationship = table.Column<string>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InviteUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ReconciliationAmounts",
                 columns: table => new
                 {
@@ -1130,7 +1157,8 @@ namespace Zinlo.Migrations
                     DayBeforeAfter = table.Column<int>(nullable: false),
                     EndOfMonth = table.Column<bool>(nullable: false),
                     Frequency = table.Column<int>(nullable: false),
-                    GroupId = table.Column<Guid>(nullable: false)
+                    GroupId = table.Column<Guid>(nullable: false),
+                    TaskUpdatedTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1883,6 +1911,9 @@ namespace Zinlo.Migrations
 
             migrationBuilder.DropTable(
                 name: "ImportsPaths");
+
+            migrationBuilder.DropTable(
+                name: "InviteUsers");
 
             migrationBuilder.DropTable(
                 name: "Itemizations");

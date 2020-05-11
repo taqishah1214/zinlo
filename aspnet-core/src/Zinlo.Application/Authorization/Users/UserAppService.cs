@@ -310,7 +310,7 @@ namespace Zinlo.Authorization.Users
             }
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Administration_Users_Create)]
+       
         protected virtual async Task CreateUserAsync(CreateOrUpdateUserInput input)
         {
             if (AbpSession.TenantId.HasValue)
@@ -370,6 +370,8 @@ namespace Zinlo.Authorization.Users
                 );
             }
         }
+
+
 
         private async Task FillRoleNames(IReadOnlyCollection<UserListDto> userListDtos)
         {

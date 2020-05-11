@@ -6,6 +6,8 @@
 
         string CreatePasswordResetUrlFormat(int? tenantId);
         string CreateCustomPlanUrlFormat(int? tenantId);
+        string CreateInviteUserUrlFormat(int? tenantId);
+        string CreateInviteUserUrlFormat(string tenancyName);
 
         string CreateEmailActivationUrlFormat(string tenancyName);
 

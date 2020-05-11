@@ -29,6 +29,7 @@ import { ZeroRefreshTokenService } from '@account/auth/zero-refresh-token.servic
         ApiServiceProxies.TenantSettingsServiceProxy,
         ApiServiceProxies.TimingServiceProxy,
         ApiServiceProxies.UserServiceProxy,
+        ApiServiceProxies.InviteUserServiceServiceProxy,
         ApiServiceProxies.UserLinkServiceProxy,
         ApiServiceProxies.UserLoginServiceProxy,
         ApiServiceProxies.WebLogServiceProxy,

@@ -27,7 +27,7 @@ namespace Zinlo.EntityFrameworkCore
         public virtual DbSet<TimeManagement> TimeManagements { get; set; }
 
         public virtual DbSet<Attachment.Attachment> Attachments { get; set; }
-        public virtual DbSet<AccountBalance> AccountBalance { get; set; } 
+        public virtual DbSet<AccountBalance> AccountBalance { get; set; }
         public virtual DbSet<ReconciliationAmounts> ReconciliationAmounts { get; set; }
         public virtual DbSet<ClosingChecklist.ClosingChecklist> ClosingChecklists { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
@@ -38,9 +38,9 @@ namespace Zinlo.EntityFrameworkCore
         public virtual DbSet<Amortization> Amortizations { get; set; }
         public virtual DbSet<ImportsPath> ImportsPaths { get; set; }
 
-        public virtual DbSet<UserPaymentDetails>  UserPaymentDetails { get; set; }
-        public virtual DbSet<UserBusinessInfo>  UserBusinessInfos { get; set; }
-        public virtual DbSet<ContactUs>  ContactUs { get; set; }
+        public virtual DbSet<UserPaymentDetails> UserPaymentDetails { get; set; }
+        public virtual DbSet<UserBusinessInfo> UserBusinessInfos { get; set; }
+        public virtual DbSet<ContactUs> ContactUs { get; set; }
 
         /* Define an IDbSet for each entity of the application */
 
@@ -59,6 +59,7 @@ namespace Zinlo.EntityFrameworkCore
 
         public virtual DbSet<PersistedGrantEntity> PersistedGrants { get; set; }
         public virtual DbSet<InstructionVersion> Versions { get; set; }
+        public virtual DbSet<InviteUser> InviteUsers { get; set; }
 
         public virtual DbSet<SubscriptionPaymentExtensionData> SubscriptionPaymentExtensionDatas { get; set; }
 
@@ -73,14 +74,14 @@ namespace Zinlo.EntityFrameworkCore
             base.OnModelCreating(modelBuilder);
 
             //Specific for postgresql bellow 3 lines
-           
+
             modelBuilder.Entity<TimeManagement>(t =>
             {
                 t.HasIndex(e => new { e.TenantId });
             });
- modelBuilder.Entity<ApplicationLanguageText>()
-            .Property(p => p.Value)
-            .HasMaxLength(100); // any integer that is smaller than 10485760
+            modelBuilder.Entity<ApplicationLanguageText>()
+                       .Property(p => p.Value)
+                       .HasMaxLength(100); // any integer that is smaller than 10485760
 
 
             //           modelBuilder.Entity<Category>(c =>

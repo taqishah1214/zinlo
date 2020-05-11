@@ -39,10 +39,10 @@ namespace Zinlo.MultiTenancy.Payments
         public async Task ConfirmPayment(StripeConfirmPaymentInput input)
         {
             var paymentId = await _subscriptionPaymentExtensionDataRepository.GetPaymentIdOrNullAsync(
-                StripeGatewayManager.StripeSessionIdSubscriptionPaymentExtensionDataKey, 
+                StripeGatewayManager.StripeSessionIdSubscriptionPaymentExtensionDataKey,
                 input.StripeSessionId
             );
-            
+
             if (!paymentId.HasValue)
             {
                 throw new ApplicationException($"Cannot find any payment with sessionId {input.StripeSessionId}");

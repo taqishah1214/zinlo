@@ -87,6 +87,62 @@ export class AccountServiceProxy {
      * @param body (optional) 
      * @return Success
      */
+    regsiterLinkResolve(body: CustomTenantRequestLinkResolveInput | undefined): Observable<UserLinkResolverDto> {
+        let url_ = this.baseUrl + "/api/services/app/Account/RegsiterLinkResolve";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegsiterLinkResolve(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegsiterLinkResolve(<any>response_);
+                } catch (e) {
+                    return <Observable<UserLinkResolverDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserLinkResolverDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRegsiterLinkResolve(response: HttpResponseBase): Observable<UserLinkResolverDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UserLinkResolverDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserLinkResolverDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     isTenantAvailable(body: IsTenantAvailableInput | undefined): Observable<IsTenantAvailableOutput> {
         let url_ = this.baseUrl + "/api/services/app/Account/IsTenantAvailable";
         url_ = url_.replace(/[?&]$/, "");
@@ -8990,6 +9046,126 @@ export class InstructionServiceProxy {
 }
 
 @Injectable()
+export class InviteUserServiceServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: CreateOrUpdateInviteUser | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/InviteUserService/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param email (optional) 
+     * @return Success
+     */
+    getByEmail(email: string | undefined): Observable<InviteUserDto> {
+        let url_ = this.baseUrl + "/api/services/app/InviteUserService/GetByEmail?";
+        if (email === null)
+            throw new Error("The parameter 'email' cannot be null.");
+        else if (email !== undefined)
+            url_ += "email=" + encodeURIComponent("" + email) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetByEmail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetByEmail(<any>response_);
+                } catch (e) {
+                    return <Observable<InviteUserDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<InviteUserDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetByEmail(response: HttpResponseBase): Observable<InviteUserDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InviteUserDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<InviteUserDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class InvoiceServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -17859,6 +18035,46 @@ export interface ICustomTenantRequestLinkResolverDto {
     commitment: number | undefined;
 }
 
+export class UserLinkResolverDto implements IUserLinkResolverDto {
+    email!: string | undefined;
+    tenantId!: number | undefined;
+
+    constructor(data?: IUserLinkResolverDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.email = data["email"];
+            this.tenantId = data["tenantId"];
+        }
+    }
+
+    static fromJS(data: any): UserLinkResolverDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserLinkResolverDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["tenantId"] = this.tenantId;
+        return data; 
+    }
+}
+
+export interface IUserLinkResolverDto {
+    email: string | undefined;
+    tenantId: number | undefined;
+}
+
 export class IsTenantAvailableInput implements IIsTenantAvailableInput {
     tenancyName!: string | undefined;
 
@@ -25144,6 +25360,146 @@ export class GetInstruction implements IGetInstruction {
 export interface IGetInstruction {
     body: string | undefined;
     id: number;
+}
+
+export class CreateOrUpdateInviteUser implements ICreateOrUpdateInviteUser {
+    firstName!: string | undefined;
+    lastName!: string | undefined;
+    email!: string | undefined;
+    phoneNumber!: string | undefined;
+    title!: string | undefined;
+    roleId!: string | undefined;
+    userName!: string | undefined;
+    reportingRelationship!: string | undefined;
+    tenantId!: number;
+
+    constructor(data?: ICreateOrUpdateInviteUser) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.firstName = data["firstName"];
+            this.lastName = data["lastName"];
+            this.email = data["email"];
+            this.phoneNumber = data["phoneNumber"];
+            this.title = data["title"];
+            this.roleId = data["roleId"];
+            this.userName = data["userName"];
+            this.reportingRelationship = data["reportingRelationship"];
+            this.tenantId = data["tenantId"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrUpdateInviteUser {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrUpdateInviteUser();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["email"] = this.email;
+        data["phoneNumber"] = this.phoneNumber;
+        data["title"] = this.title;
+        data["roleId"] = this.roleId;
+        data["userName"] = this.userName;
+        data["reportingRelationship"] = this.reportingRelationship;
+        data["tenantId"] = this.tenantId;
+        return data; 
+    }
+}
+
+export interface ICreateOrUpdateInviteUser {
+    firstName: string | undefined;
+    lastName: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+    title: string | undefined;
+    roleId: string | undefined;
+    userName: string | undefined;
+    reportingRelationship: string | undefined;
+    tenantId: number;
+}
+
+export class InviteUserDto implements IInviteUserDto {
+    id!: number;
+    firstName!: string | undefined;
+    lastName!: string | undefined;
+    email!: string | undefined;
+    phoneNumber!: string | undefined;
+    title!: string | undefined;
+    roleId!: string | undefined;
+    userName!: string | undefined;
+    reportingRelationship!: string | undefined;
+    tenantId!: number;
+
+    constructor(data?: IInviteUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.firstName = data["firstName"];
+            this.lastName = data["lastName"];
+            this.email = data["email"];
+            this.phoneNumber = data["phoneNumber"];
+            this.title = data["title"];
+            this.roleId = data["roleId"];
+            this.userName = data["userName"];
+            this.reportingRelationship = data["reportingRelationship"];
+            this.tenantId = data["tenantId"];
+        }
+    }
+
+    static fromJS(data: any): InviteUserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InviteUserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["email"] = this.email;
+        data["phoneNumber"] = this.phoneNumber;
+        data["title"] = this.title;
+        data["roleId"] = this.roleId;
+        data["userName"] = this.userName;
+        data["reportingRelationship"] = this.reportingRelationship;
+        data["tenantId"] = this.tenantId;
+        return data; 
+    }
+}
+
+export interface IInviteUserDto {
+    id: number;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+    title: string | undefined;
+    roleId: string | undefined;
+    userName: string | undefined;
+    reportingRelationship: string | undefined;
+    tenantId: number;
 }
 
 export class InvoiceDto implements IInvoiceDto {
