@@ -20398,6 +20398,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
     monthStatus!: boolean;
     accountReconciliationCheck!: boolean;
     accountBalanceId!: number;
+    trialBalance!: number;
 
     constructor(data?: IChartsofAccoutsForViewDto) {
         if (data) {
@@ -20429,6 +20430,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
             this.monthStatus = data["monthStatus"];
             this.accountReconciliationCheck = data["accountReconciliationCheck"];
             this.accountBalanceId = data["accountBalanceId"];
+            this.trialBalance = data["trialBalance"];
         }
     }
 
@@ -20460,6 +20462,7 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
         data["monthStatus"] = this.monthStatus;
         data["accountReconciliationCheck"] = this.accountReconciliationCheck;
         data["accountBalanceId"] = this.accountBalanceId;
+        data["trialBalance"] = this.trialBalance;
         return data; 
     }
 }
@@ -20480,6 +20483,7 @@ export interface IChartsofAccoutsForViewDto {
     monthStatus: boolean;
     accountReconciliationCheck: boolean;
     accountBalanceId: number;
+    trialBalance: number;
 }
 
 export class PagedResultDtoOfChartsofAccoutsForViewDto implements IPagedResultDtoOfChartsofAccoutsForViewDto {

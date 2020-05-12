@@ -151,7 +151,8 @@ namespace Zinlo.ChartsofAccount
                                        IsDeleted = o.IsDeleted,
                                        MonthStatus = MonthStatus,
                                        AccountReconciliationCheck = CheckAccountReconciledofSelectedMonth(o.Id,input.SelectedMonth),
-                                       AccountBalanceId = getTheAccountBalanceId(o.Id, input.SelectedMonth)
+                                       AccountBalanceId = getTheAccountBalanceId(o.Id, input.SelectedMonth),
+                                       TrialBalance = GetTheTrialBalanceofSelectedMonth(o.Id, input.SelectedMonth)
                                    };
 
                 return new PagedResultDto<ChartsofAccoutsForViewDto>(
@@ -189,7 +190,13 @@ namespace Zinlo.ChartsofAccount
             result = accountInformation != null ? accountInformation.Balance :  0;
             return result;
         }
-
+        protected virtual double GetTheTrialBalanceofSelectedMonth(long accountId, DateTime SelectedMonth)
+        {
+            double result = 0;
+            var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
+            result = accountInformation != null ? accountInformation.TrialBalance : 0;
+            return result;
+        }
         protected virtual int GetStatusofSelectedMonth(long accountId, DateTime SelectedMonth)
         {
             int result = 0;

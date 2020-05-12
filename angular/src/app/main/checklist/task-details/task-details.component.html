@@ -318,8 +318,9 @@
                                 <tab heading="{{'Instruction History' | localize}}">
                                     <div *ngFor="let i of instructionVersions" class="activity-box">
             
-                                        <div
-                                            class="activity-inner d-flex flex-wrap align-items-start mb-4">
+                                        
+                                        <div class="activity-inner d-flex flex-wrap align-items-start mb-4">
+                                           
                                             <div class="activity-inner-a mb-3">
                                                 <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
                                                     {{i.result.ChangeOccurUser.name   | firstLetterOfWords}}
@@ -333,15 +334,19 @@
                                                     <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" (click)="rollBackInstruction(i.id)"><img
                                                         src="../../../../assets/img/dup.svg"></a>
                                                 </div>
-                                                <div>
-                                                    <span innerHTML="{{i.result.PreviousValue}}" ></span>
-                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
-                                                        class="mr-2 ml-2 arrowimage">
-                                                    <span innerHTML="{{i.result.NewValue}}" ></span>
+                                                <div class="row">
+                                                    <div class="col-md-5"> <span innerHTML="{{i.result.PreviousValue}}" ></span> </div>
+                                                    <div class="col-md-2">  <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
+                                                        class="mr-2 ml-2 arrowimage"> </div>
+                                                    <div class="col-md-5"> <span innerHTML="{{i.result.NewValue}}" ></span> </div>
+                                                   
+                                                   
                                                 </div>
                             
                                             </div>
                                         </div>
+
+
 
                                     </div>
                                 </tab> 
