@@ -262,7 +262,6 @@
         
                                     <div class="form-group " [ngClass]="{'disabled':!monthStatus}">
                                         <label>{{"Comments" | localize}}</label>
-                                        <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>        
                                         <div class="border-left border-bottom border-right rounded">
                                             <p-editor [(ngModel)]="comment" name="HtmlEditorInput" 
                                                 [style]="{'height':'230px','border':'none'}">
@@ -297,27 +296,11 @@
                                                             <option value="center" label="Center"></option>
                                                             <option value="right" label="Right"></option>
                                                             <option value="justify" label="Justify"></option>
-                                                        </select>   
-                                                        <button (click)="commentFile.click()" data-toggle="tooltip" title="Upload File">
-                                                            <svg viewBox="0 0 18 18">
-                                                            <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
-                                                            <circle class="ql-fill" cx="6" cy="7" r="1">                                 
-                                                            </circle>
-                                                            <polyline class="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12">
-                                                            </polyline>
-                                                            </svg>
-                                                        </button>
+                                                        </select>  
+                                                        <button aria-label="Image" class="ql-image"></button>
                                                     </span>
                                                 </p-header>
                                             </p-editor>
-                                            <ul class="chat-wrapper px-2">
-                                                <li *ngFor="let i of commentFiles; let indexx = index" class="chat-wrapper-inner">
-                                                <a href="javascipt:void(0)" class="docx-btn">
-                                                    <span>{{i.name}}</span>
-                                                    <i class="fas fa-times" (click)="removeCommentFile(indexx)"></i>
-                                                </a>
-                                                </li>
-                                            </ul>
                                         </div> 
                                         <div class="mt-3 d-flex justify-content-end" >
                                             <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
