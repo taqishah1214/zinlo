@@ -11,6 +11,7 @@ import {UserInformation} from "../../CommonFunctions/UserInformation"
 import { finalize } from 'rxjs/operators';
 import { add, subtract } from 'add-subtract-date';
 import * as moment from 'moment';
+import { HttpRequest, HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-createtask',
   templateUrl: './createtask.component.html',
@@ -38,6 +39,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   endOnIsEnabled: boolean = true; 
   newAttachementPath: string[] = [];
   public isChecked: boolean = false;
+  commentFilesPath:any[]=[];
   days: any;
   users: any;
   checklist: CreateOrEditClosingChecklistDto;
@@ -59,6 +61,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       private _closingChecklistService: ClosingChecklistServiceProxy,
       private _managementService: TimeManagementsServiceProxy,
       private userInfo: UserInformation,
+      private http:HttpClient,
       injector: Injector) {
     super(injector)
   }
@@ -250,8 +253,20 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   {
     this.instructionFiles.splice(index, 1);
   }
+  attachmentPathsTrialBalance:any=[];
   uploadCommentFile($event) {
     this.commentFiles.push($event.target.files[0]);
+    var response
+    let formData= new FormData();
+    for(let file of this.commentFiles){
+      formData.append(file.name, file)
+    }
+    let uploadReq= new HttpRequest('POST',AppConsts.remoteServiceBaseUrl + '/api/services/app/Attachments/PostAttachmentFile',formData ,{
+      reportProgress: true,
+    })
+    this.http.request(uploadReq).subscribe(event => {
+        console.log(event)
+      });
   }
   removeCommentFile(index)
   {
