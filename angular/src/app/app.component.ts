@@ -15,7 +15,7 @@ import { NotificationSettingsModalComponent } from '@app/shared/layout/notificat
 import { UserNotificationHelper } from '@app/shared/layout/notifications/UserNotificationHelper';
 import { UserServiceProxy,AccountSubTypeServiceProxy ,CategoriesServiceProxy} from '@shared/service-proxies/service-proxies';
 import { StoreDateService } from './services/storedate.service';
-
+import { SwUpdate } from '@angular/service-worker'
 @Component({
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.less']
@@ -42,12 +42,14 @@ export class AppComponent extends AppComponentBase implements OnInit {
         injector: Injector,
         private _chatSignalrService: ChatSignalrService,
         private _userNotificationHelper: UserNotificationHelper,
-        private storeData: StoreDateService,private _userService: UserServiceProxy,private _categoryService: CategoriesServiceProxy, private _accountSubtypeService :AccountSubTypeServiceProxy
+        private storeData: StoreDateService,private _userService: UserServiceProxy,private _categoryService: CategoriesServiceProxy, private _accountSubtypeService :AccountSubTypeServiceProxy,
+        private updates: SwUpdate
     ) {
         super(injector);
     }
 
     ngOnInit(): void {
+        this.realoadApp();
         this._userService.getAllUsers().subscribe(result => { 
             this.userList = result
             this.storeData.setUserList(this.userList)
@@ -71,6 +73,11 @@ export class AppComponent extends AppComponentBase implements OnInit {
         }
     }
 
+    realoadApp() {
+        this.updates.available.subscribe(event => {
+        this.updates.activateUpdate().then(() => document.location.reload());
+        });
+      }
     subscriptionStatusBarVisible(): boolean {
         return this.appSession.tenantId > 0 &&
             (this.appSession.tenant.isInTrialPeriod ||
