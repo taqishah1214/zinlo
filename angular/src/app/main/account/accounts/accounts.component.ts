@@ -340,13 +340,16 @@ RedirectToCreateAccount(): void {
 
   fileUploadedResponseTrialBalance(value): void {
     var response = value.successful
+    console.log(response)
     response.forEach(i => {
       this.attachmentPathsTrialBalance.push(i.response.body.result);
 
     });
-    this.chartsOfAccountsfileUrlTrialBalance = this.attachmentPathsTrialBalance[0].toString();
+    console.log(this.attachmentPathsTrialBalance)
+    console.log(this.chartsOfAccountsfileUrlTrialBalance = this.attachmentPathsTrialBalance[0].toString());
+
    // this.uploadAccountsTrialBalanceExcel(url);
-    this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
+    this.notify.success(this.l('Attachments are Saved Successfully'));
 
   }
   uploadaccountExcel(url: string): void {
@@ -366,11 +369,14 @@ RedirectToCreateAccount(): void {
       debugger;
   }
   uploadAccountsTrialBalanceExcel(url: string): void {
-
+    console.log(this.uploadBalanceUrl)
+    console.log(url)
+    console.log(AppConsts.remoteServiceBaseUrl)
     debugger;
     this._httpClient
       .get<any>(this.uploadBalanceUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url + "&" +"monthSelected="+ this.selectedDate)
       .subscribe(response => {
+        console.log(response)
         if (response.success) {
           this.notify.success(this.l('ImportAccountsTrialBalanceProcessStart'));
         } else if (response.error != null) {
