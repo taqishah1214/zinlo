@@ -838,9 +838,6 @@
         display: table-cell;
     }
     
-    .action-cell{
-        display: none;
-    }
     
     .table-row-collapsible  .reconciliation-cell{
         display: none;
@@ -863,11 +860,16 @@
         .record-table th, .record-table td{
             padding: 10px;
         }
-        
+        .action-cell{
+            display: table-cell;
+        }
         .toggle-btn-cell .action-cell{
           
            display: none;
-       }
+       }.toggle-btn-cell .taggle-btn{
+          
+        display: none;
+    }
        .table-row-collapsible{
         display: table-row;
     }
@@ -897,6 +899,8 @@
         }
         .reconciliation-cell{
             display: table-cell;
+        }.action-cell{
+            display: none;
         }
         .table-row-collapsible .reconciliation-cell{
             display: none;
