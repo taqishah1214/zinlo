@@ -74,7 +74,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   
   }
   RedirectToDetail(ItemizedItemId) : void {   
-    this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId }} });
+    this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId , selectedDate :history.state.data.selectedDate}} });
   }
   commentClick(): void {
     this.commantModal = true;
@@ -134,7 +134,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
       this.RedirectToDetail(this.ItemizedItemId)
     }
     else{
-      this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
+      this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo ,selectedDate :history.state.data.selectedDate}} });
     }
   }
   settings: UppyConfig = {
@@ -171,6 +171,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   this.itemizedDto.attachmentsPath = this.newAttachementPath;
 }
     this.itemizedDto.chartsofAccountId = this.accountId;
+      this.itemizedDto.creationTime =history.state.data.selectedDate
     this._itemizationServiceProxy.createOrEdit(this.itemizedDto).pipe(finalize(() => { this.saving = false; })).subscribe(response => {
       this.notify.success(this.l('Item Successfully Created.'));
       this.redirectToItemsList();

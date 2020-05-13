@@ -54,7 +54,7 @@
                                     <div class="date-picker">
                                         <input id="monthValue" 
                                             value="january 2020" (ngModelChange)="filterByMonth($event)" class="date-field"  name="monthValue"
-                                            [(ngModel)]="monthValue" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                            [(ngModel)]="monthFilter" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                             (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
                                     </div>
                                 </div>

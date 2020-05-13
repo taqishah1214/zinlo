@@ -42,6 +42,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   monthStatus:boolean;
   netAmount : any;
   accuredAmount : any;
+  selectedDate = new Date;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(
     private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector,
@@ -52,6 +53,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     if (history.state.navigationId == 1){
       this._router.navigate(['/app/main/reconcilliation']);
     }
+    this.selectedDate = history.state.data.selectedDate
     this.accountId = history.state.data.accountId
     this.accountName = history.state.data.accountName
     this.userName = this.appSession.user.name.toString();
@@ -74,7 +76,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     }   
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net }} });
+    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net,selectedDate : this.selectedDate }} });
   }
   uploadCommentFile($event) {
     this.commentFiles.push($event.target.files[0]);
@@ -219,7 +221,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
 
       this.amortizationDto.attachmentsPath = this.newAttachementPath;
     }
-
+    this.amortizationDto.creationTime = moment(this.selectedDate)
     this._reconcialtionService.createOrEdit(this.amortizationDto).pipe(finalize(() => { this.saving = false; })).subscribe(response => {
       this.notify.success(this.l('Amortized Item  Successfully Created.'));
       this.redirectToAmortizedList();
@@ -273,7 +275,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
         this.RedirectToDetails(this.amortrizedItemId,this.accuredAmount,this.netAmount)
       }
       else{
-        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
+        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo, selectedDate : this.selectedDate}} });
       }
   }
   settings: UppyConfig = {

@@ -89,6 +89,7 @@ export class ItemizedComponent extends AppComponentBase {
     e.stopPropagation();
     });
     });
+    this.monthValue = history.state.data.selectedDate
     this.userSignInName = this.appSession.user.name.toString().toUpperCase();
     this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.storeData.allAccountSubTypes.subscribe(accountSubypeList => this.accountSubypeList = accountSubypeList)
@@ -103,10 +104,10 @@ export class ItemizedComponent extends AppComponentBase {
 
   }
   RedirectToAddNew() : void {
-    this._router.navigate(['/app/main/reconcilliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : 0 }} });
+    this._router.navigate(['/app/main/reconcilliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : 0 , selectedDate : this.monthValue }} });
   }
   RedirectToDetail(ItemizedItemId) : void {   
-      this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId }} });
+      this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId ,selectedDate :this.monthValue }} });
   }
   getAllItemizedList(event?: LazyLoadEvent){
     this.primeNgEvent = event;
@@ -114,7 +115,6 @@ export class ItemizedComponent extends AppComponentBase {
       this.paginator.changePage(0);
       return;
     }
-    debugger;
     this.primengTableHelper.getMaxResultCount(this.paginator, event)
   this.primengTableHelper.showLoadingIndicator();
   this._itemizedService.getAll(
@@ -206,14 +206,15 @@ BackToReconcileList() {
     if (this.TotalAmount - this.trialBalance == 0) {
 
       this.message.confirm(
-        'The variance is equal to 0. Do you want to reconciled this account',
+        'The variance is equal to 0. Do you want to reconciled this account?',
          "",
         (isConfirmed) => {
           if (isConfirmed) {
             
-            this.notify.success(this.l('Variance is equal to 0, hence the account is reconciled.'));
-            this._router.navigate(['/app/main/reconcilliation']);
-            
+            this._chartOfAccountService.checkAsReconciliedMonthly(this.accountId,moment(this.monthValue)).subscribe(resp => {
+              this.notify.success(this.l('Variance is equal to 0, hence the account is reconciled.'));
+              this._router.navigate(['/app/main/reconcilliation']);
+            })
           }
         }
       );

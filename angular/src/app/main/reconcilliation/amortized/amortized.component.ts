@@ -2,7 +2,7 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import * as _ from 'lodash';
-import { AmortizationServiceProxy ,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto, AuditLogServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AmortizationServiceProxy ,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto, AuditLogServiceProxy, ChartsofAccountServiceProxy } from '@shared/service-proxies/service-proxies';
 import { UserInformation } from '../../CommonFunctions/UserInformation';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
@@ -73,7 +73,7 @@ export class AmortizedComponent extends AppComponentBase {
     private _timeManagementsServiceProxy :TimeManagementsServiceProxy,
     private _auditLogService : AuditLogServiceProxy,
     private storeData: StoreDateService,
-
+    private _chartOfAccountService: ChartsofAccountServiceProxy
 
   ) {
     super(injector);
@@ -88,6 +88,7 @@ export class AmortizedComponent extends AppComponentBase {
       e.stopPropagation();
       });
     });
+    this.monthFilter = history.state.data.selectedDate
     this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.storeData.allAccountSubTypes.subscribe(accountSubypeList => this.accountSubypeList = accountSubypeList)
     this.accountId = history.state.data.accountId
@@ -99,11 +100,11 @@ export class AmortizedComponent extends AppComponentBase {
     this.userName = this.appSession.user.name.toString();
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net }} });
+    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net ,  selectedDate : this.monthFilter}} });
   }
   RedirectToAddNewItem()
   {
-      this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : 0 }} });
+      this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : 0 , selectedDate : this.monthFilter}} });
   }
 
   getAllAmortizedList(event?: LazyLoadEvent){
@@ -255,14 +256,17 @@ BackToReconcileList() {
 
   reconciliedAccount() {
     this.message.confirm(
-      'The variance is equal to 0. Do you want to reconciled this account',
+      'The variance is equal to 0. Do you want to reconciled this account?',
        "",
       (isConfirmed) => {
         if (isConfirmed) {
-          this._timeManagementsServiceProxy.createOrEdit(this.CreateTimeManagementDto).subscribe(() => {
-            this.notify.success(this.l('Variance is equal to 0, hence the account is reconciled'));
-            this._router.navigate(['/app/main/reconcilliation']);
-           })      
+          if (isConfirmed) {
+            
+            this._chartOfAccountService.checkAsReconciliedMonthly(this.accountId,moment(this.monthValue)).subscribe(resp => {
+              this.notify.success(this.l('Variance is equal to 0, hence the account is reconciled.'));
+              this._router.navigate(['/app/main/reconcilliation']);
+            })
+          }
         }
       }
     );
