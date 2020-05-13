@@ -329,16 +329,15 @@
                                             <div class="activity-inner-b mb-3">
                                                 <div class="mb-2 notification-line1">
                                                     <span>{{i.result.ChangeOccurUser.name}}</span> Changed the
-                                                    <span>Instruction</span>
-                                                    {{i.changeTime | momentFormat:'Do MMM YY LT'}}
-                                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" (click)="rollBackInstruction(i.id)">
-                                                        <i class="fas fa-trash-restore"></i>
+                                                    <span> Instruction </span>
+                                                    {{i.changeTime | momentFormat:'Do MMM YY LT'}} 
+                                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer px-2" (click)="rollBackInstruction(i.id)">
+                                                        <i class="fas fa-trash-restore" style="font-size: 17px; color:cornflowerblue"data-toggle="tooltip" title="Restore Instruction"></i>
                                                     </a>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row d-flex">
                                                     <div class="col-md-5"> <span innerHTML="{{i.result.PreviousValue}}" ></span> </div>
-                                                    <div class="col-md-2">  <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
-                                                        class="mr-2 ml-2 arrowimage"> </div>
+                                                    <div class="col-md-2 align-self-center"> <i class="fas fa-arrow-right arrowimage"></i> </div>
                                                     <div class="col-md-5"> <span innerHTML="{{i.result.NewValue}}" ></span> </div>
                                                    
                                                    
