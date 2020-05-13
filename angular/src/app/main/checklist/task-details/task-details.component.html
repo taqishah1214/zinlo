@@ -108,11 +108,10 @@
 
                             <div class="form-group ">
                                 <label>{{"Comments" | localize}}</label>
-                                <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>
-                                        <div class="form-group border-bottom border-right border-left rounded">
+                                        <div class="form-group">
                                             <p-editor [disabled]="!taskDetailObject.monthStatus" [(ngModel)]="comment.body"
                                                  name="HtmlEditorInput" 
-                                                [style]="{'height':'230px','border':'none'}">
+                                                [style]="{'height':'230px'}">
                                                 <p-header>
                                                     <span class="ql-formats">
                                                         <select class="ql-size" data-toggle="tooltip" title="Font Size"style="width:75px">
@@ -144,27 +143,11 @@
                                                             <option value="center" label="Center"></option>
                                                             <option value="right" label="Right"></option>
                                                             <option value="justify" label="Justify"></option>
-                                                        </select>   
-                                                        <button (click)="commentFile.click()" data-toggle="tooltip" title="Upload File">
-                                                            <svg viewBox="0 0 18 18">
-                                                            <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
-                                                            <circle class="ql-fill" cx="6" cy="7" r="1">                                 
-                                                            </circle>
-                                                            <polyline class="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12">
-                                                            </polyline>
-                                                            </svg>
-                                                        </button>
+                                                        </select>  
+                                                        <button aria-label="Image" data-toggle="tooltip" title="Upload Image" class="ql-image"></button>
                                                     </span>
                                                 </p-header>
                                             </p-editor>
-                                            <ul class="chat-wrapper px-2">
-                                                <li *ngFor="let i of commentFiles; let indexx = index" class="chat-wrapper-inner">
-                                                <a href="javascipt:void(0)" class="docx-btn">
-                                                    <span>{{i.name}}</span>
-                                                    <i class="fas fa-times" (click)="removeCommentFile(indexx)"></i>
-                                                </a>
-                                                </li>
-                                            </ul>
                                         </div>
 
                                  <div class="mt-3 d-flex justify-content-end">
@@ -202,7 +185,7 @@
                     <div class="row">
                         <div class="col-md-10">
                             <div class="activity-box">
-                                <h5>Activity</h5>
+                                <h5>{{"Activity" | localize}}</h5>
                             </div>
                             <tabset class="tab-container tabbable-line" style="height: auto;">
                                 <tab heading="{{'Comments' | localize}}">
@@ -249,8 +232,7 @@
                                                 <div>
                                                     <span
                                                         class="border-0 {{i.result.PreviousValueColor}} text-white statusWidth1">{{i.result.PreviousValue}}</span>
-                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
-                                                        class="mr-2 ml-2 arrowimage">
+                                                        <i class="fas fa-arrow-right mx-3"></i>
                                                     <span
                                                         class="border-0 {{i.result.NewValueColor}} text-white statusWidth1">{{i.result.NewValue}}</span>
                                                 </div>
@@ -272,15 +254,13 @@
                                                 </div>
                                                 <div *ngIf="i.propertyName == 'DueDate'">
                                                     <span>{{i.result.PreviousValue}}</span>
-                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
-                                                        class="mr-2 ml-2 arrowimage">
+                                                    <i class="fas fa-arrow-right mx-3"></i>
                                                     <span>{{i.result.NewValue }}</span>
                                                 </div>
                             
                                                 <div>
                                                     <span>{{i.result.PreviousValue}}</span>
-                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
-                                                        class="mr-2 ml-2 arrowimage">
+                                                    <i class="fas fa-arrow-right mx-3"></i>
                                                     <span>{{i.result.NewValue}}</span>
                                                 </div>
                             
@@ -303,8 +283,7 @@
                                                         class="badge2 {{i.result.colorPreviousValue}} d-inline-flex align-items-center justify-content-center">
                                                         {{i.result.PreviousValue.name | firstLetterOfWords}}</div>
                                                     <span>{{i.result.PreviousValue.name}}</span>
-                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
-                                                        class="mr-2 ml-2 arrowimage">
+                                                    <i class="fas fa-arrow-right mx-3"></i>
                                                     <div style="height: 25px !important;width: 25px !important;"
                                                         class="badge2 {{i.result.colorNewValue}} d-inline-flex align-items-center justify-content-center">
                                                         {{i.result.NewValue.name | firstLetterOfWords}}</div>
@@ -318,8 +297,9 @@
                                 <tab heading="{{'Instruction History' | localize}}">
                                     <div *ngFor="let i of instructionVersions" class="activity-box">
             
-                                        <div
-                                            class="activity-inner d-flex flex-wrap align-items-start mb-4">
+                                        
+                                        <div class="activity-inner d-flex flex-wrap align-items-start mb-4">
+                                           
                                             <div class="activity-inner-a mb-3">
                                                 <div class="badge2 bg-golden d-inline-flex align-items-center justify-content-center">
                                                     {{i.result.ChangeOccurUser.name   | firstLetterOfWords}}
@@ -328,20 +308,24 @@
                                             <div class="activity-inner-b mb-3">
                                                 <div class="mb-2 notification-line1">
                                                     <span>{{i.result.ChangeOccurUser.name}}</span> Changed the
-                                                    <span>Instruction</span>
-                                                    {{i.changeTime | momentFormat:'Do MMM YY LT'}}
-                                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" (click)="rollBackInstruction(i.id)"><img
-                                                        src="../../../../assets/img/dup.svg"></a>
+                                                    <span> Instruction </span>
+                                                    {{i.changeTime | momentFormat:'Do MMM YY LT'}} 
+                                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer px-2" (click)="rollBackInstruction(i.id)">
+                                                        <i class="fas fa-trash-restore" style="font-size: 17px; color:cornflowerblue"data-toggle="tooltip" title="Restore Instruction"></i>
+                                                    </a>
                                                 </div>
-                                                <div>
-                                                    <span innerHTML="{{i.result.PreviousValue}}" ></span>
-                                                    <img src="./assets/media/ClosingCheckList/picturemessage_uzg0nq30.png"
-                                                        class="mr-2 ml-2 arrowimage">
-                                                    <span innerHTML="{{i.result.NewValue}}" ></span>
+                                                <div class="row d-flex">
+                                                    <div class="col-md-5"> <span innerHTML="{{i.result.PreviousValue}}" ></span> </div>
+                                                    <div class="col-md-2 align-self-center"> <i class="fas fa-arrow-right arrowimage"></i> </div>
+                                                    <div class="col-md-5"> <span innerHTML="{{i.result.NewValue}}" ></span> </div>
+                                                   
+                                                   
                                                 </div>
                             
                                             </div>
                                         </div>
+
+
 
                                     </div>
                                 </tab> 

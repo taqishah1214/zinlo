@@ -268,13 +268,8 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   }
 
   redirectToAmortizedList () : void {
-    if (this.amortrizedItemId != 0)
-      {
-        this.RedirectToDetails(this.amortrizedItemId,this.accuredAmount,this.netAmount)
-      }
-      else{
+    
         this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo}} });
-      }
   }
   settings: UppyConfig = {
     uploadAPI: {

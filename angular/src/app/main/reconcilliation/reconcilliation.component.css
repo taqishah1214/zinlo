@@ -883,11 +883,11 @@ table.table.record-table td, table.table.record-table th {
     word-break: break-all;
 }
 .accountSubtype-cell {
-    width: 200px;
+    width: 150px;
 }
 .reconciliation-cell{
 
-    width: 220px;
+    width: 150px;
 }
 .accountType-cell{
     width: 170px;

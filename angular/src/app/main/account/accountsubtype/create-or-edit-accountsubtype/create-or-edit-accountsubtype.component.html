@@ -37,7 +37,7 @@
                         </div>
                         <div class="kt-portlet__head">
                         </div>
-                        <div [ngClass]="{'disabled':accountSubtypeExist}" class="form-group margin-top-5">
+                        <div [ngClass]="{'disabled':accountSubtypeExist}" class="form-group margin-top-5"  [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                             <button  class="btn btn-brand" type="submit">
                                 <i class="fa fa-save"></i>
                                 <span>{{"Save" | localize}}</span>

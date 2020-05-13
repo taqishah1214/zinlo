@@ -36,7 +36,7 @@ import { ObserveVarianceComponent } from './reports/observe-variance/observe-var
                     { path: 'checklist/createtask', component: CreatetaskComponent, data: { permission: 'Pages.Tasks.Create' }  },
                     { path: 'categories', component: CategoriesComponent, data: { permission: 'Pages.Categories' }  },
                     { path: 'dashboard', component: DashboardComponent, data: { permission: 'Pages.Tenant.Dashboard' } },
-                    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+                    { path: '', redirectTo: 'checklist', pathMatch: 'full' },
                     { path: 'sub/create-or-edit-accountsubtype', component: CreateOrEditAccountsubtypeComponent , data: { permission: 'Pages.AccountSubType.Create' }  },
                     { path: 'sub', component: AccountsubtypeComponent , data: { permission: 'Pages.AccountSubType' }  },
                     { path: 'account', component: AccountsComponent , data: { permission: 'Pages.ChartsofAccounts' }  },

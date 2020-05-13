@@ -12,6 +12,7 @@ using Abp.Runtime.Session;
 using Abp.Threading;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Zinlo.ClosingChecklist;
+using Zinlo.ClosingChecklist.Dtos;
 using Zinlo.Notifications;
 using Zinlo.TimeManagements.Dto;
 
@@ -48,6 +49,7 @@ namespace Zinlo.TimeManagements
                     foreach (var task in last13MonthTaskByManagement)
                     {
                         task.ClosingMonth = task.ClosingMonth.AddDays(-1);
+                        task.Status = StatusDto.NotStarted;
                         AsyncHelper.RunSync(() => _checklistService.TaskIteration(task, args.Month, false));
                     }
 

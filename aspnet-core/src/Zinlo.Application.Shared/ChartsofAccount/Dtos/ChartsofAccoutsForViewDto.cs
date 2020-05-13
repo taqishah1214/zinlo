@@ -22,6 +22,9 @@ namespace Zinlo.ChartsofAccount.Dtos
         public bool MonthStatus { get; set; }
         public bool AccountReconciliationCheck { get; set; }
         public long  AccountBalanceId { get; set; }
+        public double TrialBalance { get; set; }
+
+
 
     }
 }

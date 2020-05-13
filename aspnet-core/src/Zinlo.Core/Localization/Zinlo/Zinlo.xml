@@ -1175,5 +1175,7 @@
     
     <text name="FirstName">First Name</text>
     <text name="LastName">Last Name</text>
+  <text name="AccountSubtypewithsameNamealreadyexist">Account Sub type with same Name already exist</text>
+  <text name="Activity">Activity</text>
   </texts>
 </localizationDictionary>

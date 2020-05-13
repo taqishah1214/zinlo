@@ -16,6 +16,17 @@
         </div>
         <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
             <div class="kt-portlet kt-portlet--mobile">
+                <div *ngIf="compareTable" class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <a href="javascript: void(0);" (click)="redirectToReports()">
+                            <i class="la la-arrow-left"></i>
+                            {{"Back" | localize}}
+                        </a>
+                    </div>
+                </div>
                 <div class="kt-portlet__body">
                     <div class="kt-grid__item ">
                         <div class="itemized-head">

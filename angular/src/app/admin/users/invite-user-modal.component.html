@@ -19,13 +19,13 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-group">
-                                        <label for="Name">{{"Name" | localize}} *</label>
+                                        <label for="Name">{{"FirstName" | localize}} *</label>
                                         <input id="Name" #nameInput="ngModel" class="form-control" type="text" autocomplete="off" name="Name" [(ngModel)]="user.firstName" required maxlength="64">
                                         <validation-messages [formCtrl]="nameInput"></validation-messages>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="Surname">{{"Surname" | localize}} *</label>
+                                        <label for="Surname">{{"LastName" | localize}} *</label>
                                         <input id="Surname" #surnameInput="ngModel" type="text" name="Surname" class="form-control" [(ngModel)]="user.lastName" autocomplete="off" required maxlength="64">
                                         <validation-messages [formCtrl]="surnameInput"></validation-messages>
                                     </div>
