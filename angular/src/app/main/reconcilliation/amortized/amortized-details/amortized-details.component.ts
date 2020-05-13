@@ -79,9 +79,8 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     this.netAmount = history.state.data.netAmount;
     this.accuredAmount = history.state.data.accuredAmount
     this.monthStatus = history.state.data.monthStatus
-    this.getTaskDetails();
+    this.getAmortizeDetail();
     this.getProfilePicture();
-    this.getAuditLogOfAccount();
   }
 
   getProfilePicture() {
@@ -98,17 +97,17 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     this.commantBox = false;
   }
   updateDetails(): void {
-    this.getTaskDetails();
+    this.getAmortizeDetail();
   }
   onComment(): void {
     this.commantBox = true;
-    this.SaveComments();
-    this.getTaskDetails();
+    this.saveComments();
+    this.getAmortizeDetail();
   }
-  SaveComments(): void {
+  saveComments(): void {
     this._amortizationService.postComment(this.comment,this.amortrizedItemId,3).subscribe((result)=> {
       this.comment = ""
-      this.getTaskDetails();
+      this.getAmortizeDetail();
     }) 
   }
   onCancelComment(): void {
@@ -125,7 +124,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   
   
 
-  getTaskDetails(): void {
+  getAmortizeDetail(): void {
     
     this._amortizationService.getAmortizedItemDetails(this.amortrizedItemId).subscribe(result => {
       this.amortizationDto = result
@@ -155,7 +154,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     this.postAttachment.type = 2;
     this._attachmentService.postAttachmentsPath(this.postAttachment).subscribe(response => {
       this.notify.success(this.l('Attachment is successfully Uploaded'));
-      this.getTaskDetails();
+      this.getAmortizeDetail();
     })
   }
 
@@ -168,7 +167,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
           this._attachmentService.deleteAttachmentPath(id)
             .subscribe(() => {
               this.notify.success(this.l('Attachment is successfully removed'));
-              this.getTaskDetails();
+              this.getAmortizeDetail();
 
             });
         }

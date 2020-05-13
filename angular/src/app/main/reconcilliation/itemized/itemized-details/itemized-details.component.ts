@@ -69,9 +69,8 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
     this.accountNo = history.state.data.accountNo
     this.itemizedItemId = history.state.data.ItemizedItemId    
     this.monthStatus = history.state.data.monthStatus
-    this.getTaskDetails();
+    this.getItemizeDetail();
     this.getProfilePicture();
-    this.getAuditLogOfAccount(this.itemizedItemId);
   }
 
   getProfilePicture() {
@@ -88,13 +87,13 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
     this.commantBox = false;
   }
   updateDetails(): void {
-    this.getTaskDetails();
+    this.getItemizeDetail();
   }
   onComment(): void {
     this.commantBox = true;
     this._itemizationService.postComment(this.comment,this.itemizedItemId,2).subscribe((result)=> {
       this.comment = ""
-      this.getTaskDetails();
+      this.getItemizeDetail();
     })   
   }
  
@@ -110,7 +109,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   }
   
 
-  getTaskDetails(): void {
+  getItemizeDetail(): void {
     
     this._itemizationService.getEdit(this.itemizedItemId).subscribe(result => {
       this.itemizationDto = result
@@ -139,7 +138,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
     this.postAttachment.type = 3;
     this._attachmentService.postAttachmentsPath(this.postAttachment).subscribe(response => {
       this.notify.success(this.l('Attachment is successfully Uploaded'));
-      this.getTaskDetails();
+      this.getItemizeDetail();
     })
   }
 
@@ -152,7 +151,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
           this._attachmentService.deleteAttachmentPath(id)
             .subscribe(() => {
               this.notify.success(this.l('Attachment is successfully removed'));
-              this.getTaskDetails();
+              this.getItemizeDetail();
 
             });
         }
@@ -198,8 +197,8 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
 
 
   
-  getAuditLogOfAccount(id) {
-    this._auditLogService.getEntityHistory(id.toString(), "Zinlo.Reconciliation.Itemization","","").subscribe(resp => {
+  getAuditLogOfAccount() {
+    this._auditLogService.getEntityHistory(this.itemizedItemId, "Zinlo.Reconciliation.Itemization","","").subscribe(resp => {
       this.historyOfTask = resp
       debugger;
       this.historyOfTask.forEach((element,index) => {

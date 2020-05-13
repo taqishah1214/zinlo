@@ -3,6 +3,7 @@
   <texts>
 
     <text name="ItemizedRestoredSuccessfully">Itemized Item Restored Successfully!</text>
+    <text name="SuccessfullyUpdated">Successfully updated.</text>
     <text name="AmortizedRestoredSuccessfully">Amortized Item Restored Successfully!</text>
     <text name="ThisMonthIsNotActive">This month is not active.</text>
     <text name="MonthOpenedMessage">MonthOpenedMessage.</text>

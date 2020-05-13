@@ -96,7 +96,6 @@ export class AmortizedComponent extends AppComponentBase {
     this.accountNo = history.state.data.accountNo
     this.commantBox = true;
     this.getProfilePicture();
-    this.getAuditLogOfAccount();
     this.userName = this.appSession.user.name.toString();
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {

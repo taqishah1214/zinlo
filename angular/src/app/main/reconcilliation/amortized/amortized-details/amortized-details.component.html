@@ -209,7 +209,7 @@
                                                 </div>
                                             </div>
                                     </tab>
-                                    <tab heading="{{'History' | localize}}">
+                                    <tab (selectTab)="getAuditLogOfAccount()" heading="{{'History' | localize}}">
                                         <div  *ngFor="let i of historyOfTask"  class="activity-box">
                                                                                               
                                             <div *ngIf="i.propertyName != 'AssigneeId' && i.propertyName != 'CreationTime'" class="activity-inner d-flex flex-wrap align-items-center mb-4">

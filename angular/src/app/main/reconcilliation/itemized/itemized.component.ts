@@ -99,8 +99,6 @@ export class ItemizedComponent extends AppComponentBase {
     this.commantBox = true;
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
-    this.getAuditLogOfAccount();
-
 
   }
   RedirectToAddNew() : void {
