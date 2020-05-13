@@ -66,8 +66,6 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     this.recordId = history.state.data.id;
     this.getTaskDetails(this.recordId);
     this.getProfilePicture();
-    this.getAuditLogOfTask();
-    this.getVersionsofInstrutions();
   }
   commentFiles:File[]=[];
   uploadCommentFile($event) {
@@ -116,7 +114,6 @@ setVerionIdHistoryParam (item) {
   getAuditLogOfTask() {
     this._auditLogService.getEntityHistory(this.recordId.toString(), "Zinlo.ClosingChecklist.ClosingChecklist","","").subscribe(resp => {
       this.historyOfTask = resp
-      debugger;
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
           case "AssigneeId":         
@@ -150,7 +147,6 @@ setVerionIdHistoryParam (item) {
             console.log("not found");
             break;
         };
-        debugger
       });
     })
   }
@@ -297,15 +293,15 @@ setTaskNameHistoryParam(item){
   }
   onComment(): void {
     this.commantBox = true;
-    this.SaveComments();
-    this.getTaskDetails(this.recordId);
+    this.saveComments();
   }
-  SaveComments(): void {
+  saveComments(): void {
     this.comment.typeId = this.recordId;
     this.comment.type = 1;
     this._commentServiceProxy.create(this.comment).subscribe(result => {
       this.comment.body = "";
       this.notify.success(this.l('Comment is successfully posted'));
+      this.getTaskDetails(this.recordId);
     });
   }
   onCancelComment(): void {
@@ -326,7 +322,6 @@ setTaskNameHistoryParam(item){
   getTaskDetails(id): void {
     this._closingChecklistService.getDetails(id).subscribe(result => {
       this.taskDetailObject = result;
-      debugger
       this.commentsData = this.taskDetailObject.comments;
       this.assigneeId = this.taskDetailObject.assigneeId;
       this.taskStatus = this.taskDetailObject.taskStatus;

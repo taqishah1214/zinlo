@@ -214,7 +214,7 @@
                                             </div>
                                         </div>
                                 </tab>
-                                <tab heading="{{'History' | localize}}">
+                                <tab (selectTab)="getAuditLogOfTask()" heading="{{'History' | localize}}">
                                     <div *ngFor="let i of historyOfTask" class="activity-box">
                             
                                         <div *ngIf="i.propertyName == 'Status' || i.propertyName == 'CategoryId'"
@@ -298,7 +298,7 @@
                                     </div>
                                 </tab>    
                                 
-                                <tab heading="{{'Instruction History' | localize}}">
+                                <tab (selectTab)="getVersionsofInstrutions()" heading="{{'Instruction History' | localize}}">
                                     <div *ngFor="let i of instructionVersions" class="activity-box">
             
                                         
