@@ -9,7 +9,10 @@
     <text name="MonthOpenedMessage">MonthOpenedMessage.</text>
     <text name="OpenMonthMessage">OpenMonthMessage.</text>
     <text name="TaskReport">Task Report</text>
+    <text name="Attachment is successfully removed">Instruction rolled back successfully</text>
+    <text name="AttachmentRemoved">Attachment is successfully removed</text>
     <text name="AccountNumberExist">Account number already exists.</text>
+    <text name="VarianceReconcileMessage">The variance is equal to 0. Do you want to reconcile this account?</text>
     
     <text name="AccountRestoredSuccessfully">Account Restored Successfully!</text>
     <text name="TaskRestoredSuccessfully">Task Restored Successfully!</text>

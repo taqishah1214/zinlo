@@ -204,7 +204,7 @@ BackToReconcileList() {
     if (this.TotalAmount - this.trialBalance == 0) {
 
       this.message.confirm(
-        'The variance is equal to 0. Do you want to reconciled this account?',
+        'VarianceReconcileMessage',
          "",
         (isConfirmed) => {
           if (isConfirmed) {
@@ -220,7 +220,7 @@ BackToReconcileList() {
     }
     else
     {
-      this.notify.error(this.l('Variance is not equal to 0, hence the account is not reconciled'));
+      this.notify.error(this.l('VarianceNotZero'));
     }
 
   }
