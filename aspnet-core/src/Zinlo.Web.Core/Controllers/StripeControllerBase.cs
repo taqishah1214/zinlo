@@ -31,7 +31,7 @@ namespace Zinlo.Web.Controllers
 
             try
             {
-                var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"], _stripeConfiguration.WebhookSecret);
+                var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"], _stripeConfiguration.WebhookSecret,300,false);
 
                 if (stripeEvent.Type == Events.InvoicePaymentSucceeded)
                 {
