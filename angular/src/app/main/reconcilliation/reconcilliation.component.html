@@ -135,8 +135,11 @@
                                             <th class="reconciliation-cell" scope="col">
                                                 {{"Reconciliation Type" | localize}}    
                                             </th>
-                                            <th class="accountSubtype-cell" scope="col">
+                                            <th class="reconciliation-cell" scope="col">
                                                 {{"Balance" | localize}}
+                                            </th>
+                                            <th class="reconciliation-cell" scope="col">
+                                                {{"Trial Balance"}}
                                             </th>
                                             <th class="assignee-cell" scope="col" pSortableColumn="AssigneeId">
                                                 {{"Assignee" | localize}}
@@ -172,8 +175,11 @@
                                         <td class="reconciliation-cell">
                                             <span class="">{{item.reconciliationType}}</span>
                                         </td>
-                                        <td class="accountSubtype-cell">
+                                        <td class="reconciliation-cell">
                                             <span class=""> {{item.balance  | formater}}</span>
+                                        </td>
+                                        <td class="reconciliation-cell">
+                                            <span class=""> {{item.trialBalance  | formater}}</span>
                                         </td>
                                        
                                         <td  [ngClass]="{'disabled':!monthStatus }"  class="assignee-cell">
@@ -231,6 +237,13 @@
                                                     <div class="thead-box"><b> {{"Balanace" | localize}} </b></div>
                                                     <div class="tdata-box">
                                                         <span *ngIf="item.balance" class="">{{item.balance  | formater}}</span>
+                                                    </div>
+                                                </li>
+                                                <li class="accountSubtype-cell collapsable-cell">
+
+                                                    <div class="thead-box"><b> Trial Balance </b></div>
+                                                    <div class="tdata-box">
+                                                        <span *ngIf="item.balance" class="">{{item.trialBalance  | formater}}</span>
                                                     </div>
                                                 </li>
                                                 <li [ngClass]="{'disabled':!monthStatus}" class="assignee-cell collapsable-cell kt-user-card-v2">

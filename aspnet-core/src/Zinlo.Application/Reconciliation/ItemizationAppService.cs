@@ -220,10 +220,16 @@ namespace Zinlo.Reconciliation
             var item = await _itemizationRepository.FirstOrDefaultAsync(input.Id);
             var data = ObjectMapper.Map(input, item);
             await  _itemizationRepository.UpdateAsync(data);
-            var previousItemAmount = await _reconciliationAmountsRepository.FirstOrDefaultAsync(p => p.itemId == input.Id && p.AmountType == AmountType.Itemized);
-            previousItemAmount.isChanged = true;
-            previousItemAmount.ChangeDateTime = DateTime.Now;
-            await _reconciliationAmountsRepository.UpdateAsync(previousItemAmount);
+            var previousItemAmount = _reconciliationAmountsRepository.GetAll().Where(p => p.itemId == input.Id && p.AmountType == AmountType.Itemized).ToList();
+            foreach (var i in previousItemAmount)
+            {
+                if (i.ChangeDateTime == DateTime.MinValue)
+                {
+                    i.isChanged = true;
+                    i.ChangeDateTime = DateTime.Now;
+                    await _reconciliationAmountsRepository.UpdateAsync(i);
+                }
+            }
             ReconciliationAmounts amounts = new ReconciliationAmounts();
             amounts.Amount = input.Amount;
             amounts.AmountType = AmountType.Itemized;

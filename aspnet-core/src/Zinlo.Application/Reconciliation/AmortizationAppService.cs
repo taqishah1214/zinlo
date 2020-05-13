@@ -335,10 +335,17 @@ namespace Zinlo.Reconciliation
             if ((int)input.Criteria == (int)Criteria.Manual)
             {
                 var item = await _amortizationRepository.FirstOrDefaultAsync(input.Id);
-                var previousItemAmount = await _reconciliationAmountsRepository.FirstOrDefaultAsync(p => p.itemId == input.Id && p.AmountType == AmountType.Amortized);
-                previousItemAmount.isChanged = true;
-                previousItemAmount.ChangeDateTime = DateTime.Now;
-                await _reconciliationAmountsRepository.UpdateAsync(previousItemAmount);
+                var previousItemAmount =  _reconciliationAmountsRepository.GetAll().Where(p => p.itemId == input.Id && p.AmountType == AmountType.Amortized).ToList();
+                foreach(var i in previousItemAmount)
+                {
+                    if (i.ChangeDateTime == DateTime.MinValue)
+                    {
+                        i.isChanged = true;
+                        i.ChangeDateTime = DateTime.Now;
+                        await _reconciliationAmountsRepository.UpdateAsync(i);
+                    }
+                                      
+                }      
                 ReconciliationAmounts amounts = new ReconciliationAmounts();
                 amounts.Amount = input.AccomulateAmount;
                 amounts.AmountType = AmountType.Amortized;
@@ -368,9 +375,14 @@ namespace Zinlo.Reconciliation
             {
                 CreateOrEditAmortizationDto ItemData = new CreateOrEditAmortizationDto();
                 var item = await _amortizationRepository.FirstOrDefaultAsync(x => x.Id == Id);
+                var data = ObjectMapper.Map(item, ItemData);
+                if (item.Criteria == Criteria.Manual)
+                {
+                    var itemsAmounts = _reconciliationAmountsRepository.GetAll().Where(p => p.ChartsofAccountId == item.ChartsofAccountId && p.AmountType == AmountType.Amortized).ToList();
+                   data.AccomulateAmount = CalculateAmount(item.Id, itemsAmounts, DateTime.Now);
+                }
                 ItemData.Attachments = await _attachmentAppService.GetAttachmentsPath(Id, 2);
                 ItemData.Comments = await _commentAppService.GetComments((int)CommentType.AmortizedItem, Id);
-                var data = ObjectMapper.Map(item, ItemData);
                 return data;
             }
         }

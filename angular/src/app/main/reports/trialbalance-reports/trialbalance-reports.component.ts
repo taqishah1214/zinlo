@@ -45,7 +45,11 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
   ngOnInit() {
     this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
   }
-
+  redirectToReports(){
+    this.compareTable=false
+    this.ngOnInit()
+    this.getAllImportLog();
+  }
   getAllImportLog(event?: LazyLoadEvent) {
     if (this.compareTable == false)
     {

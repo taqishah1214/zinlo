@@ -307,23 +307,7 @@ BackToReconcileList() {
 
 
   getAuditLogOfAccount() {
-
-    let statusList = [];
-    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","",history.state.data.accountBalanceId).subscribe(resp => {
-      resp.forEach((element,index) => {
-      switch (element.propertyName) {
-      case "Status":          
-      element["result"] = this.setStatusHistoryParam(element)
-      statusList.push(element)
-      break;
-      default:
-        console.log("not found");
-      }
-    })
-     
-    })
-
-    this._auditLogService.getEntityHistory(this.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","","").subscribe(resp => {
+    this._auditLogService.getEntityHistory( history.state.data.accountId.toString(), "Zinlo.ChartofAccounts.ChartofAccounts","",history.state.data.accountBalanceId).subscribe(resp => {
       this.historyOfTask = resp
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
@@ -341,6 +325,9 @@ BackToReconcileList() {
             break;
             case "AccountSubTypeId":          
             element["result"] = this.setAccountSubTypeHistoryParam(element)
+            break;
+            case "Status":          
+            element["result"] = this.setStatusHistoryParam(element)
             break;
             default:
             console.log("not found");
