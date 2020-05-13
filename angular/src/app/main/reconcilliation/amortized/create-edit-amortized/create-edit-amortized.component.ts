@@ -276,7 +276,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
       }
       else{
         this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo, selectedDate : this.selectedDate}} });
-      }
+      } 
   }
   settings: UppyConfig = {
     uploadAPI: {

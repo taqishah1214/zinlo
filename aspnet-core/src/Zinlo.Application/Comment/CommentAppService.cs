@@ -38,30 +38,22 @@ namespace Zinlo.Comment
         }
         public async Task<List<CommentDto>> GetComments(int type, long typeId)
         {
-            List<CommentDto> commentList = new List<CommentDto>();
-             var taskComments = await _commentRepository.GetAll().Where(x => x.Type== (CommentType)type && x.TypeId == typeId).ToListAsync();
-            //var taskComments = await _commentRepository.GetAll().Where(x => x.Type == type).ToListAsync();
-            if (taskComments.Count > 0)
+            var commentList = new List<CommentDto>();
+            var taskComments = await _commentRepository.GetAll().Where(x => x.Type == (CommentType)type && x.TypeId == typeId).ToListAsync();
+            if (taskComments.Count <= 0) return new List<CommentDto>();
+            commentList.AddRange(taskComments.Select(comment => new CommentDto
             {
-                foreach (var comment in taskComments)
-                {
-                    CommentDto commentDto = new CommentDto();
-                    commentDto.Id = comment.Id;
-                    commentDto.Type = comment.Type.ToString();
-                    commentDto.TypeId = (int)comment.TypeId;
-                    commentDto.UserName = _userRepository.FirstOrDefaultAsync((long)comment.CreatorUserId).Result.FullName;
-                    commentDto.Body = comment.Body;
-                    commentDto.ProfilePicture = "";
-                    commentDto.CreationDateTime = comment.CreationTime;
-                    commentDto.DaysCount = CalculateDays(comment.CreationTime);
-                    commentList.Add(commentDto);
-                }
-                return commentList;
-            }
-            else
-            {
-                return new List<CommentDto>();
-            }
+                Id = comment.Id,
+                Type = comment.Type.ToString(),
+                TypeId = (int) comment.TypeId,
+                UserName = _userRepository.FirstOrDefaultAsync((long) comment.CreatorUserId).Result.FullName,
+                Body = comment.Body,
+                ProfilePicture = "",
+                CreationTime = comment.CreationTime,
+                DaysCount = CalculateDays(comment.CreationTime)
+            }));
+            return commentList.OrderByDescending(p=>p.CreationTime).ToList();
+
         }
         public string CalculateDays(DateTime dateTime)
         {

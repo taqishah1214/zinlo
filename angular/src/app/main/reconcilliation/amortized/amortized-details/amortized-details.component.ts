@@ -78,7 +78,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     this.amortrizedItemId = history.state.data.amortrizedItemId;
     this.netAmount = history.state.data.netAmount;
     this.accuredAmount = history.state.data.accuredAmount
-    console.log(this.monthStatus = history.state.data.monthStatus)
+    this.monthStatus = history.state.data.monthStatus
     this.getTaskDetails();
     this.getProfilePicture();
     this.getAuditLogOfAccount();

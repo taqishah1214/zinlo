@@ -35,6 +35,9 @@ import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bo
 import { LocaleMappingService } from '@shared/locale-mapping.service';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ServiceWorkerModule } from '@angular/service-worker';
+// import { environment } from '../environments/environment';
+
 
 export function appInitializerFactory(
     injector: Injector,
@@ -240,7 +243,8 @@ function handleLogoutRequest(authService: AppAuthService) {
         HttpClientModule,
         RootRoutingModule,
         NgxSpinnerModule,
-        InfiniteScrollModule
+        InfiniteScrollModule,
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: true })
     ],
     declarations: [
         RootComponent

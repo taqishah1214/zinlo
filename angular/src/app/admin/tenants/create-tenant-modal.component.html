@@ -38,13 +38,13 @@
                         <validation-messages [formCtrl]="nameInput"></validation-messages>
                     </div>
 
-                    <div class="kt-checkbox-list">
+                    <!-- <div class="kt-checkbox-list">
                         <label class="kt-checkbox">
                             <input id="CreateTenant_UseHostDb" type="checkbox" name="UseHostDb" [(ngModel)]="useHostDb">
                             {{"UseHostDatabase" | localize}}
                             <span></span>
                         </label>
-                    </div>
+                    </div> -->
 
                     <div class="form-group" *ngIf="!useHostDb">
                         <label for="DatabaseConnectionString">{{"DatabaseConnectionString" | localize}} *</label>

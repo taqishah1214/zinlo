@@ -135,7 +135,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     }
     else{
       this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo ,selectedDate :history.state.data.selectedDate}} });
-    }
+    }   
   }
   settings: UppyConfig = {
     uploadAPI: {

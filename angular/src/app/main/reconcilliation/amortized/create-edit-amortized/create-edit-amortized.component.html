@@ -20,19 +20,19 @@
                                         <form (ngSubmit)="onSubmit()" >
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <div class="row d-flex justify-content-center">
+                                                    <div class="row">
                                                         <div [ngClass]="{'disabled':!updateLock}" class="">
-                                                            <div class="nav nav-pills nav-fill" role="tablist">
-                                                                <div class="nav-item px-3">
-                                                                    <a class="nav-link active px-5" data-toggle="tab" (click)="tabFilter('Manual')">{{"Manual" | localize}}</a>
-                                                                </div>
-                                                                <div class="nav-item px-3">
-                                                                    <a class="nav-link px-5" data-toggle="tab" (click)="tabFilter('Monthly')">{{"Monthly" | localize}}</a>
-                                                                </div>
-                                                                <div class="nav-item px-3">
-                                                                    <a class="nav-link px-5" data-toggle="tab" (click)="tabFilter('Daily')">{{"Daily" | localize}}</a>
-                                                                </div>
-                                                            </div>                                    
+                                                            <ul class="nav nav-pills" role="tablist">
+                                                                <li class="nav-item px-3">
+                                                                    <a class="nav-link active px-5" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" (click)="tabFilter('Manual')">{{"Manual" | localize}}</a>
+                                                                </li>
+                                                                <li class="nav-item px-3">
+                                                                    <a class="nav-link px-5" data-toggle="pill" role="tab" href="#pills-home" aria-controls="pills-home" aria-selected="true" (click)="tabFilter('Monthly')">{{"Monthly" | localize}}</a>
+                                                                </li>
+                                                                <li class="nav-item px-3">
+                                                                    <a class="nav-link px-5" data-toggle="pill" role="tab" href="#pills-home" aria-controls="pills-home" aria-selected="true" (click)="tabFilter('Daily')">{{"Daily" | localize}}</a>
+                                                                </li>
+                                                            </ul>                                    
                                                         </div>
                       
                                                     </div>
@@ -131,7 +131,6 @@
                 
                                                     <div class="form-group">
                                                         <label>{{"Comments" | localize}}</label>
-                                                        <input hidden type="file" (change)="uploadCommentFile($event)" #commentFile>        
                                                         <div class="border-left border-right border-bottom rounded">
                                                             <p-editor [(ngModel)]="amortizationDto.commentBody" name="HtmlEditorInput" 
                                                             [style]="{'height':'230px','border':'none'}">
@@ -166,27 +165,11 @@
                                                                         <option value="center" label="Center"></option>
                                                                         <option value="right" label="Right"></option>
                                                                         <option value="justify" label="Justify"></option>
-                                                                    </select>   
-                                                                    <button (click)="commentFile.click()" data-toggle="tooltip" title="Upload File">
-                                                                        <svg viewBox="0 0 18 18">
-                                                                        <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
-                                                                        <circle class="ql-fill" cx="6" cy="7" r="1">                                 
-                                                                        </circle>
-                                                                        <polyline class="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12">
-                                                                        </polyline>
-                                                                        </svg>
-                                                                    </button>
+                                                                    </select> 
+                                                                    <button aria-label="Image"data-toggle="tooltip" title="Upload Image" class="ql-image"></button>
                                                                 </span>
                                                             </p-header>
                                                         </p-editor>
-                                                        <ul class="chat-wrapper px-2">
-                                                            <li *ngFor="let i of commentFiles; let indexx = index" class="chat-wrapper-inner">
-                                                            <a href="javascipt:void(0)" class="docx-btn">
-                                                                <span>{{i.name}}</span>
-                                                                <i class="fas fa-times" (click)="removeCommentFile(indexx)"></i>
-                                                            </a>
-                                                            </li>
-                                                        </ul>
                                                     </div>
                                                         <!-- <div class="btnMargin" >
                                                         <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
