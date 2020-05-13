@@ -331,8 +331,9 @@
                                                     <span>{{i.result.ChangeOccurUser.name}}</span> Changed the
                                                     <span>Instruction</span>
                                                     {{i.changeTime | momentFormat:'Do MMM YY LT'}}
-                                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" (click)="rollBackInstruction(i.id)"><img
-                                                        src="../../../../assets/img/dup.svg"></a>
+                                                    <a *ngIf="!isDeleted == true" class="action-btn btn-pointer" (click)="rollBackInstruction(i.id)">
+                                                        <i class="fas fa-trash-restore"></i>
+                                                    </a>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-5"> <span innerHTML="{{i.result.PreviousValue}}" ></span> </div>
