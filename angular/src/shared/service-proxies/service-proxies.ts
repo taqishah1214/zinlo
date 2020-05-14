@@ -3239,12 +3239,13 @@ export class ChartsofAccountServiceProxy {
      * @param selectedMonth (optional) 
      * @param assigneeId (optional) 
      * @param allOrActive (optional) 
+     * @param beginingAmountCheck (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, accountType: number | undefined, selectedMonth: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
+    getAll(filter: string | undefined, accountType: number | undefined, selectedMonth: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, beginingAmountCheck: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
         let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -3266,6 +3267,10 @@ export class ChartsofAccountServiceProxy {
             throw new Error("The parameter 'allOrActive' cannot be null.");
         else if (allOrActive !== undefined)
             url_ += "AllOrActive=" + encodeURIComponent("" + allOrActive) + "&"; 
+        if (beginingAmountCheck === null)
+            throw new Error("The parameter 'beginingAmountCheck' cannot be null.");
+        else if (beginingAmountCheck !== undefined)
+            url_ += "BeginingAmountCheck=" + encodeURIComponent("" + beginingAmountCheck) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -4274,6 +4279,67 @@ export class ChartsofAccountServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param accountId (optional) 
+     * @param month (optional) 
+     * @return Success
+     */
+    getLinkAccountDetails(accountId: number | undefined, month: moment.Moment | undefined): Observable<LinkedAccountInfo> {
+        let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetLinkAccountDetails?";
+        if (accountId === null)
+            throw new Error("The parameter 'accountId' cannot be null.");
+        else if (accountId !== undefined)
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+        if (month === null)
+            throw new Error("The parameter 'month' cannot be null.");
+        else if (month !== undefined)
+            url_ += "month=" + encodeURIComponent(month ? "" + month.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLinkAccountDetails(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLinkAccountDetails(<any>response_);
+                } catch (e) {
+                    return <Observable<LinkedAccountInfo>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<LinkedAccountInfo>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetLinkAccountDetails(response: HttpResponseBase): Observable<LinkedAccountInfo> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LinkedAccountInfo.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<LinkedAccountInfo>(<any>null);
     }
 
     /**
@@ -19028,7 +19094,7 @@ export class CommentDto implements ICommentDto {
     typeId!: number;
     body!: string | undefined;
     userName!: string | undefined;
-    creationDateTime!: moment.Moment | undefined;
+    creationTime!: moment.Moment;
     profilePicture!: string | undefined;
     daysCount!: string | undefined;
     id!: number;
@@ -19048,7 +19114,7 @@ export class CommentDto implements ICommentDto {
             this.typeId = data["typeId"];
             this.body = data["body"];
             this.userName = data["userName"];
-            this.creationDateTime = data["creationDateTime"] ? moment(data["creationDateTime"].toString()) : <any>undefined;
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.profilePicture = data["profilePicture"];
             this.daysCount = data["daysCount"];
             this.id = data["id"];
@@ -19068,7 +19134,7 @@ export class CommentDto implements ICommentDto {
         data["typeId"] = this.typeId;
         data["body"] = this.body;
         data["userName"] = this.userName;
-        data["creationDateTime"] = this.creationDateTime ? this.creationDateTime.toISOString() : <any>undefined;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["profilePicture"] = this.profilePicture;
         data["daysCount"] = this.daysCount;
         data["id"] = this.id;
@@ -19081,7 +19147,7 @@ export interface ICommentDto {
     typeId: number;
     body: string | undefined;
     userName: string | undefined;
-    creationDateTime: moment.Moment | undefined;
+    creationTime: moment.Moment;
     profilePicture: string | undefined;
     daysCount: string | undefined;
     id: number;
@@ -19296,13 +19362,15 @@ export class AmortizedListDto implements IAmortizedListDto {
     totalBeginningAmount!: number;
     totalAccuredAmortization!: number;
     totalNetAmount!: number;
-    totalTrialBalance!: number;
+    totalTrialBalanceNet!: number;
     varianceNetAmount!: number;
     varianceBeginningAmount!: number;
     varianceAccuredAmount!: number;
     comments!: CommentDto[] | undefined;
     reconciliedBase!: number;
     monthStatus!: boolean;
+    totalTrialBalanceBegininng!: number;
+    totalTrialBalanceAccured!: number;
 
     constructor(data?: IAmortizedListDto) {
         if (data) {
@@ -19323,7 +19391,7 @@ export class AmortizedListDto implements IAmortizedListDto {
             this.totalBeginningAmount = data["totalBeginningAmount"];
             this.totalAccuredAmortization = data["totalAccuredAmortization"];
             this.totalNetAmount = data["totalNetAmount"];
-            this.totalTrialBalance = data["totalTrialBalance"];
+            this.totalTrialBalanceNet = data["totalTrialBalanceNet"];
             this.varianceNetAmount = data["varianceNetAmount"];
             this.varianceBeginningAmount = data["varianceBeginningAmount"];
             this.varianceAccuredAmount = data["varianceAccuredAmount"];
@@ -19334,6 +19402,8 @@ export class AmortizedListDto implements IAmortizedListDto {
             }
             this.reconciliedBase = data["reconciliedBase"];
             this.monthStatus = data["monthStatus"];
+            this.totalTrialBalanceBegininng = data["totalTrialBalanceBegininng"];
+            this.totalTrialBalanceAccured = data["totalTrialBalanceAccured"];
         }
     }
 
@@ -19354,7 +19424,7 @@ export class AmortizedListDto implements IAmortizedListDto {
         data["totalBeginningAmount"] = this.totalBeginningAmount;
         data["totalAccuredAmortization"] = this.totalAccuredAmortization;
         data["totalNetAmount"] = this.totalNetAmount;
-        data["totalTrialBalance"] = this.totalTrialBalance;
+        data["totalTrialBalanceNet"] = this.totalTrialBalanceNet;
         data["varianceNetAmount"] = this.varianceNetAmount;
         data["varianceBeginningAmount"] = this.varianceBeginningAmount;
         data["varianceAccuredAmount"] = this.varianceAccuredAmount;
@@ -19365,6 +19435,8 @@ export class AmortizedListDto implements IAmortizedListDto {
         }
         data["reconciliedBase"] = this.reconciliedBase;
         data["monthStatus"] = this.monthStatus;
+        data["totalTrialBalanceBegininng"] = this.totalTrialBalanceBegininng;
+        data["totalTrialBalanceAccured"] = this.totalTrialBalanceAccured;
         return data; 
     }
 }
@@ -19374,13 +19446,15 @@ export interface IAmortizedListDto {
     totalBeginningAmount: number;
     totalAccuredAmortization: number;
     totalNetAmount: number;
-    totalTrialBalance: number;
+    totalTrialBalanceNet: number;
     varianceNetAmount: number;
     varianceBeginningAmount: number;
     varianceAccuredAmount: number;
     comments: CommentDto[] | undefined;
     reconciliedBase: number;
     monthStatus: boolean;
+    totalTrialBalanceBegininng: number;
+    totalTrialBalanceAccured: number;
 }
 
 export class PagedResultDtoOfAmortizedListDto implements IPagedResultDtoOfAmortizedListDto {
@@ -20562,6 +20636,7 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
     balance!: number;
     changeTime!: moment.Moment;
     isChange!: boolean;
+    linkedAccountNumber!: string | undefined;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -20587,6 +20662,7 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
             this.balance = data["balance"];
             this.changeTime = data["changeTime"] ? moment(data["changeTime"].toString()) : <any>undefined;
             this.isChange = data["isChange"];
+            this.linkedAccountNumber = data["linkedAccountNumber"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -20612,6 +20688,7 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
         data["balance"] = this.balance;
         data["changeTime"] = this.changeTime ? this.changeTime.toISOString() : <any>undefined;
         data["isChange"] = this.isChange;
+        data["linkedAccountNumber"] = this.linkedAccountNumber;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -20630,6 +20707,7 @@ export interface ICreateOrEditChartsofAccountDto {
     balance: number;
     changeTime: moment.Moment;
     isChange: boolean;
+    linkedAccountNumber: string | undefined;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
@@ -20765,6 +20843,46 @@ export interface IChartsOfAccountsTrialBalanceExcellImportDto {
     balance: string | undefined;
     exception: string | undefined;
     selectedMonth: moment.Moment;
+}
+
+export class LinkedAccountInfo implements ILinkedAccountInfo {
+    balance!: number;
+    trialBalance!: number;
+
+    constructor(data?: ILinkedAccountInfo) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.balance = data["balance"];
+            this.trialBalance = data["trialBalance"];
+        }
+    }
+
+    static fromJS(data: any): LinkedAccountInfo {
+        data = typeof data === 'object' ? data : {};
+        let result = new LinkedAccountInfo();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["balance"] = this.balance;
+        data["trialBalance"] = this.trialBalance;
+        return data; 
+    }
+}
+
+export interface ILinkedAccountInfo {
+    balance: number;
+    trialBalance: number;
 }
 
 export enum FriendshipState {

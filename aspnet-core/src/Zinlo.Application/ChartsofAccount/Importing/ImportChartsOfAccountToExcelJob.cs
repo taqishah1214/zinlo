@@ -266,7 +266,7 @@ namespace Zinlo.ChartsofAccount
             {
                 return 1;
             }
-            else if (name.Trim().ToLower() == "assets")
+            else if (name.Trim().ToLower() == "asset")
             {
                 return 2;
             }
@@ -283,10 +283,15 @@ namespace Zinlo.ChartsofAccount
             {
                 return 1;
             }
-            else
+            else if (name.Trim().ToLower() == "amortized")
             {
                 return 2;
             }
+            else if (name.Trim().ToLower() == "notreconcilied")
+            {
+                return 3;
+            }
+            return 0;
         }
 
         public int GetReconciledValue(string name)
@@ -312,19 +317,45 @@ namespace Zinlo.ChartsofAccount
         public ChartsOfAccountsExcellImportDto CheckReconciliationTypeErrors(ChartsOfAccountsExcellImportDto input)
         {
             bool result = false;
+            bool reconcilaitionTypeError = true;
+            bool AccountTypeError = true;
+
             string[] strReconciledArray = { "netamount", "beginningamount", "accruedamount" }; 
             if (!string.IsNullOrEmpty(input.ReconciliationType))
             {
-                if (input.ReconciliationType.Trim().ToLower() == "amortization")
+                if (input.ReconciliationType.Trim().ToLower() == "amortized")
                 {
                     result = !Array.Exists(strReconciledArray, E => E == input.ReconciliationAs.ToLower());
                 }
             }
+            if (!string.IsNullOrEmpty(input.ReconciliationType))
+            {
+                if (input.ReconciliationType.Trim().ToLower() == "amortized" || input.ReconciliationType.Trim().ToLower() == "notreconcilied" || input.ReconciliationType.Trim().ToLower() == "itemized")
+                {
+                    reconcilaitionTypeError = false;
+                }
+            }
+            if (!string.IsNullOrEmpty(input.AccountType))
+            {
+                if (input.AccountType.Trim().ToLower() == "liability" || input.AccountType.Trim().ToLower() == "equity" || input.AccountType.Trim().ToLower() == "asset")
+                {
+                    AccountTypeError = false;
+                }
+            }
+            if (AccountTypeError)
+            {
+                input.isValid = false;
+                input.Exception += _localizationSource.GetString("Invalid Account Type");
+            }           
             if (result)
             {
                 input.isValid = false;
-                input.Exception += _localizationSource.GetString("ReconcilationError");
-                return input;
+                input.Exception += _localizationSource.GetString("Invalid Reconcilied");
+            }
+            if (reconcilaitionTypeError)
+            {
+                input.isValid = false;
+                input.Exception += _localizationSource.GetString("Invalid Reconciliation Type");
             }
             return input;
         }

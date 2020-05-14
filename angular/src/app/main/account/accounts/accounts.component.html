@@ -335,9 +335,9 @@
                                     [resizableColumns]="primengTableHelper.resizableColumns">
                                     <ng-template pTemplate="header">
                                         <tr class="task-table-inner">
-                                            <th class="cell-none">
+                                            <!-- <th class="cell-none">
                                                 
-                                            </th>
+                                            </th> -->
                                             <th class="accountNo-cell" scope="col" pSortableColumn="AccountNumber">
                                                 {{"Account No" |localize}}
                                                 <p-sortIcon field="AccountNumber"></p-sortIcon>
@@ -386,12 +386,12 @@
                                 <tbody *ngFor="let item of chartsOfAccountList">
                                     <tr class="task-table-inner table-repeater" class="{{item.isDeleted == true ? 'warnning' : '' }}">
 
-                                        <td *ngIf="item.isDeleted == false" class="toggle-btn-cell" >                            
+                                        <!-- <td *ngIf="item.isDeleted == false" class="toggle-btn-cell" >                            
                                             <label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand">
                                                 <input (change)="checkValue(item.id)" type="checkbox">
                                                 <span></span>
                                             </label>
-                                        </td>
+                                        </td> -->
                                         <td class="accountNo-cell">
                                             <span class="">{{item.accountNumber}}</span>
 

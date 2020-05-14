@@ -66,9 +66,8 @@ namespace Zinlo.ChartsofAccount
                 var query = _chartsofAccountRepository.GetAll().Where(x => x.IsDeleted == input.AllOrActive).Include(p => p.AccountSubType).Include(p => p.Assignee)
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
                         .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
-                        .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId));
-                
-               
+                        .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
+                        .WhereIf(input.BeginingAmountCheck, e => (e.Reconciled == ChartofAccounts.Reconciled.BeginningAmount));
 
                 var MonthStatus = await GetMonthStatus(input.SelectedMonth);
                 var getUserWithPictures = (from o in query.ToList()
@@ -293,6 +292,15 @@ namespace Zinlo.ChartsofAccount
                 account.TenantId = (int)AbpSession.TenantId;
             }
             var accountId = _chartsofAccountRepository.InsertAndGetId(account);
+
+            if (input.Reconciled == Dtos.Reconciled.AccruedAmount)
+            {
+                var Beginningaccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == input.LinkedAccountNumber);
+                Beginningaccount.LinkedAccountNumber = input.AccountNumber;
+                _chartsofAccountRepository.Update(Beginningaccount);
+            }
+
+
             return accountId;
         }
         public async Task Delete(long id)
@@ -421,7 +429,7 @@ namespace Zinlo.ChartsofAccount
                     type = "Equity";
                     break;
                 case 2:
-                    type = "Assets";
+                    type = "Asset";
                     break;
                 case 3:
                     type = "Liability";
@@ -490,7 +498,10 @@ namespace Zinlo.ChartsofAccount
         }
         public string GetReconcilationType(int value)
         {
-            return value == 1 ? "Itemized" : "Amortization";
+            if (value == 1) return "Itemized";
+            else if (value == 2) return "Amortized";
+            else if (value == 3) return "NotReconcilied";
+            return "";
         }
       
 
@@ -520,6 +531,20 @@ namespace Zinlo.ChartsofAccount
                 await _chartsofAccountRepository.UpdateAsync(account);
             }
                
+        }
+
+        public async Task<LinkedAccountInfo> GetLinkAccountDetails(long accountId, DateTime month)
+        {
+            var currentAccount = _chartsofAccountRepository.FirstOrDefault(p => p.Id == accountId);
+            var linkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == currentAccount.LinkedAccountNumber);
+            var linkedAccountBalance = await _accountBalanceRepository.FirstOrDefaultAsync(p => p.AccountId == linkedAccount.Id && month.Month == p.Month.Month && month.Year == p.Month.Year);
+
+            LinkedAccountInfo linkedAccountInfo = new LinkedAccountInfo();
+            linkedAccountInfo.Balance = linkedAccountBalance == null ? 0 : linkedAccountBalance.Balance;
+            linkedAccountInfo.TrialBalance = linkedAccountBalance == null ? 0 :  linkedAccountBalance.TrialBalance;
+
+            return linkedAccountInfo;
+
         }
 
         public async Task CheckAsReconciliedMonthly(long id, DateTime month)

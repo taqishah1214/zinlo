@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body">
-                    <form (ngSubmit)="onSubmit()" >
+                    <form (ngSubmit)="onSubmit()">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
@@ -25,15 +25,17 @@
                                         <div class="form-group">
                                             <label for="TaskName">{{"Account Name" | localize}}</label>
                                             <input type="text" name="accountName" class="form-control"
-                                                [(ngModel)]="accountDto.accountName" autocomplete="off" >
+                                                [(ngModel)]="accountDto.accountName" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="TaskName"> {{"Account No" | localize}}.</label>
-                                            <input type="text" name="accountNumber" (focusout)="CheckAccountNumber()" class="form-control"
-                                                [(ngModel)]="accountDto.accountNumber" autocomplete="off">
-                                                <span style="color:red" *ngIf="isAccountExist">{{"AccountNumberExist" | localize}}</span>   
+                                            <input type="text" name="accountNumber" (focusout)="CheckAccountNumber()"
+                                                class="form-control" [(ngModel)]="accountDto.accountNumber"
+                                                autocomplete="off">
+                                            <span style="color:red"
+                                                *ngIf="isAccountExist">{{"AccountNumberExist" | localize}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -45,8 +47,9 @@
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{accountType}}</button>
-                                            <div class="dropdown-menu" >
-                                                <a href="javascript:void(0)" class="dropdown-item" *ngFor="let item of accountTypeList"
+                                            <div class="dropdown-menu">
+                                                <a href="javascript:void(0)" class="dropdown-item"
+                                                    *ngFor="let item of accountTypeList"
                                                     (click)="accountTypeClick(item.id,item.name)">
                                                     {{item.name}}
                                                 </a>
@@ -59,8 +62,9 @@
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{accountSubTypeName}}</button>
-                                            <div class="dropdown-menu" >
-                                                <a href="javascript:void(0)"class="dropdown-item" *ngFor="let item of accountSubTypeList"
+                                            <div class="dropdown-menu">
+                                                <a href="javascript:void(0)" class="dropdown-item"
+                                                    *ngFor="let item of accountSubTypeList"
                                                     (click)="accountSubTypeClick(item.value,item.name)">
                                                     {{item.name}}</a>
                                                 <div class="dropdown-divider"></div>
@@ -74,7 +78,8 @@
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label>{{"Assignee" | localize}}</label>
-                                        <app-user-list-component comingChangeReguest = "" userId = {{selectedUserID}} ></app-user-list-component>
+                                        <app-user-list-component comingChangeReguest="" userId={{selectedUserID}}>
+                                        </app-user-list-component>
                                     </div>
                                     <div class="col-md-6">
 
@@ -84,7 +89,8 @@
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{reconcillationType}}</button>
                                             <div class="dropdown-menu">
-                                                <a href="javascript:void(0)" class="dropdown-item" *ngFor="let item of reconcillationTypeList"
+                                                <a href="javascript:void(0)" class="dropdown-item"
+                                                    *ngFor="let item of reconcillationTypeList"
                                                     (click)="reconcillationClick(item.id,item.name)">
                                                     {{item.name}}</a>
                                             </div>
@@ -101,26 +107,148 @@
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{recociled}}</button>
                                             <div class="dropdown-menu">
-                                                <a href="javascript:void(0)"class="dropdown-item" *ngFor="let item of recociledList"
+                                                <div class="dropdown-item" *ngFor="let item of recociledList"
                                                     (click)="recociledClick(item.id,item.name)">
-                                                    {{item.name}}</a>
+                                                    <a *ngIf="item.id == 3" data-toggle="modal"
+                                                        data-target="#kt_modal_KTDatatable_local">{{item.name}}</a>
+                                                    <a *ngIf="item.id != 3">{{item.name}}</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>                             
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div *ngIf="linkAccountCheck" class="form-group category-selector">
+                                            <label for="TaskName">Link Account No</label>
+                                            <button  data-target="#kt_modal_KTDatatable_local" data-toggle="modal" type="button" class="btn btn-secondary" aria-haspopup="true"
+                                                aria-expanded="false">{{linkAccountNumber}}</button>
+                                        </div>
+                                    </div>
+
                                 </div>
+
+
+
                             </div>
                         </div>
                         <div class="kt-portlet__head">
                         </div>
                         <div class="form-group margin-top-5">
-                            <button *ngIf="editAccountCheck == false" class="btn btn-brand" type="submit"  [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                            <button type="button" class="btn btn-brand" *ngIf="editAccountCheck == false" type="submit"
+                                [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                                 <i class="fa fa-save"></i>
                                 <span>{{"Create" | localize}}</span>
                             </button>
-                            <button *ngIf="editAccountCheck == true" class="btn btn-brand" type="submit"  [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" >
+                            <button *ngIf="editAccountCheck == true" class="btn btn-brand" type="submit"
+                                [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                                 <i class="fa fa-save"></i>
                                 <span>{{"Update" | localize}}</span>
                             </button>
+                        </div>
+
+
+                        <div id="kt_modal_KTDatatable_local" class="modal fade" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content" style="min-height: 590px;">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">
+                                            Accounts List
+                                            <small>  Beginninng Amount</small>
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!--begin: Search Form -->
+                                        <div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">
+                                            <span>Link your account with one of the following accounts</span>
+                                            <div class="row align-items-center">
+                                                <div class="col-xl-8 order-2 order-xl-1">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                                                            <div class="kt-input-icon kt-input-icon--left">
+                                                                <input type="text" class="form-control" (input)="searchWithName()"
+                                                                [(ngModel)]="searchAccount" name="searchAccount" placeholder="Search..." id="generalSearch">
+                                                                <span
+                                                                    class="kt-input-icon__icon kt-input-icon__icon--left">
+                                                                    <span><i class="la la-search"></i></span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center">
+                                            <div class="categories-table primeng-datatable-container"
+                                                [busyIf]="primengTableHelper.isLoading">
+                                                <p-table #dataTable (onLazyLoad)="getAllImportLog($event)"
+                                                    [value]="primengTableHelper.records"
+                                                    rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                                    [paginator]="false" [lazy]="true" [scrollable]="true"
+                                                    ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                                                    [resizableColumns]="primengTableHelper.resizableColumns">
+                                                    <ng-template pTemplate="header">
+                                                        <tr>
+                                                            <th>
+                                                                {{l('Account Number')}}
+                                                            </th>
+                                                            <th>
+                                                                {{l('Account Name')}}
+                                                            </th>
+                                                            <th>
+                                                                {{l('Account Type')}}
+                                                            </th>
+                                                        </tr>
+
+
+                                                    </ng-template>
+                                                    <ng-template pTemplate="body" let-record="$implicit">
+
+                                                        <tr  data-dismiss="modal" (click)="linkedAccountClick(record.accountNumber,record.accountName)">
+                                                            <td>
+                                                                {{record.accountNumber}}
+                                                            </td>
+                                                            <td class="accountName-cell" >
+                                                                <span class="task-box">{{record.accountName}}</span>
+                                                            </td>
+                                                            <td>
+                                                                <span>{{record.accountType}}</span>
+                                                            </td>
+                                                        </tr>
+
+                                                    </ng-template>
+                                                </p-table>
+                                                <div class="primeng-no-data"
+                                                    *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                                    {{l('NoData')}}
+                                                </div>
+                                                <div class="primeng-paging-container">
+                                                    <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                                        #paginator (onPageChange)="getAllImportLog($event)"
+                                                        [totalRecords]="primengTableHelper.totalRecordsCount"
+                                                        [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                                    </p-paginator>
+
+                                                </div>
+                                                <span class="total-records-count">
+                                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!--end: Search Form -->
+                                    </div>
+                                  
+                                    <div class="modal-footer kt-hidden">
+                                        <button type="button" class="btn btn-clean btn-bold btn-upper btn-font-md"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="button"
+                                            class="btn btn-default btn-bold btn-upper btn-font-md">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>

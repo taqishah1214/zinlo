@@ -28,6 +28,7 @@ namespace Zinlo.ChartsofAccount
         bool CheckAccounts();
         Task RestoreAccount(long id);
         Task CheckAsReconciliedMonthly(long id, DateTime month);
+        Task<LinkedAccountInfo> GetLinkAccountDetails(long accountId, DateTime month);
 
     }
 }

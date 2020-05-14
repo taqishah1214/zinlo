@@ -64,6 +64,7 @@ export class ObserveVarianceComponent extends AppComponentBase {
         moment(new Date()),
         0,
         false,
+        false,
         this.primengTableHelper.getSorting(this.dataTable),
         this.primengTableHelper.getSkipCount(this.paginator, event),
         this.primengTableHelper.getMaxResultCount(this.paginator, event)

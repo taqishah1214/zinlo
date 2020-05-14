@@ -15,6 +15,8 @@ namespace Zinlo.ChartsofAccount.Dtos
         public double Balance { get; set; }
         public DateTime ChangeTime { get; set; }
         public bool IsChange  { get; set; }
+        public virtual string LinkedAccountNumber { get; set; }
+
 
     }
     public enum ReconciliationType
@@ -25,7 +27,7 @@ namespace Zinlo.ChartsofAccount.Dtos
     public enum AccountType
     {
         Equity = 1,
-        Assets = 2,
+        Asset = 2,
         Liability = 3
     }
     public enum Reconciled

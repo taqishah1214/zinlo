@@ -138,19 +138,19 @@ export class AmortizedComponent extends AppComponentBase {
     this.monthStatus = j.monthStatus;
     switch (j.reconciliedBase) {
       case 1:
-        this.trialBalanceNet = j.totalTrialBalance
+        this.trialBalanceNet = j.totalTrialBalanceNet
         this.varianceNet = j.varianceNetAmount 
         break;
       case 2:
-        this.trialBalanceBeginning = j.totalTrialBalance
+        this.trialBalanceBeginning = j.totalTrialBalanceBegininng
         this.varianceBeginning = j.varianceBeginningAmount
-        this.trialBalanceAccured = j.totalTrialBalance
+        this.trialBalanceAccured = j.totalTrialBalanceAccured
         this.varianceAccured = j.varianceAccuredAmount
         break;
       case 3:
-        this.trialBalanceBeginning = j.totalTrialBalance
+        this.trialBalanceBeginning = j.totalTrialBalanceBegininng
         this.varianceBeginning = j.varianceBeginningAmount
-        this.trialBalanceAccured = j.totalTrialBalance
+        this.trialBalanceAccured = j.totalTrialBalanceAccured
         this.varianceAccured = j.varianceAccuredAmount
         break;
       default:
@@ -256,7 +256,7 @@ BackToReconcileList() {
 
   reconciliedAccount() {
     this.message.confirm(
-      'The variance is equal to 0. Do you want to reconciled this account?',
+      'The variance is equal to 0. Are you sure you want to reconcile this account?',
        "",
       (isConfirmed) => {
         if (isConfirmed) {
