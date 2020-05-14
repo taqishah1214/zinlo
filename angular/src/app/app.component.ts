@@ -74,9 +74,7 @@ export class AppComponent extends AppComponentBase implements OnInit {
     }
 
     realoadApp() {
-        this.updates.available.subscribe(event => {
         this.updates.activateUpdate().then(() => document.location.reload());
-        });
       }
     subscriptionStatusBarVisible(): boolean {
         return this.appSession.tenantId > 0 &&

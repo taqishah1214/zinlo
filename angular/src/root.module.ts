@@ -36,8 +36,7 @@ import { LocaleMappingService } from '@shared/locale-mapping.service';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ServiceWorkerModule } from '@angular/service-worker';
-// import { environment } from '../environments/environment';
-
+import { environment } from 'environments/environment';
 
 export function appInitializerFactory(
     injector: Injector,
@@ -244,7 +243,7 @@ function handleLogoutRequest(authService: AppAuthService) {
         RootRoutingModule,
         NgxSpinnerModule,
         InfiniteScrollModule,
-        ServiceWorkerModule.register('ngsw-worker.js', { enabled: true })
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production})
     ],
     declarations: [
         RootComponent

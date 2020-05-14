@@ -337,7 +337,7 @@ export class EditTaskComponent extends AppComponentBase implements OnInit {
     this._closingChecklistService.createOrEdit(this.checklist)
     .pipe(finalize(() => { this.saving = false; }))
     .subscribe(result => {
-      this.notify.success(this.l('SavedSuccessfully Updated'));
+      this.notify.success(this.l('SuccessfullyUpdated'));
       this._router.navigate(['/app/main/checklist']);
     });
   }

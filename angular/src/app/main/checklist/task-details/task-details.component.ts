@@ -97,9 +97,19 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
 
   rollBackInstruction(id) {
     this.recordId;
-    this._closingChecklistService.revertInstruction(this.recordId,id).subscribe(resp => {
-      this.notify.success(this.l('Instruction rolled back successfully'));
-    })
+
+
+    this.message.confirm(
+      '',
+      this.l('AreYouSure'),
+      (isConfirmed) => {
+        if (isConfirmed) {
+          this._closingChecklistService.revertInstruction(this.recordId,id).subscribe(resp => {
+            this.notify.success(this.l('VersionrolledbackMessage'));
+          });
+        }
+      }
+    );
   }
 
 setVerionIdHistoryParam (item) {
@@ -378,7 +388,7 @@ setTaskNameHistoryParam(item){
     this.postAttachment.typeId = this.recordId;
     this.postAttachment.type = 1;
     this._attachmentService.postAttachmentsPath(this.postAttachment).subscribe(response => {
-      this.notify.success(this.l('Attachment is successfully Uploaded'));
+      this.notify.success(this.l('AttachmentRemoved'));
       this.getTaskDetails(this.recordId);
     })
   }

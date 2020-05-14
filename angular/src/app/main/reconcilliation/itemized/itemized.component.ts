@@ -99,8 +99,6 @@ export class ItemizedComponent extends AppComponentBase {
     this.commantBox = true;
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
-    this.getAuditLogOfAccount();
-
 
   }
   RedirectToAddNew() : void {
@@ -207,7 +205,7 @@ BackToReconcileList() {
 
       this.message.confirm(
         'The variance is equal to 0. Are you sure you want to reconcile this account?',
-         "",
+        'VarianceReconcileMessage',
         (isConfirmed) => {
           if (isConfirmed) {
             
@@ -222,7 +220,7 @@ BackToReconcileList() {
     }
     else
     {
-      this.notify.error(this.l('Variance is not equal to 0, hence the account is not reconciled'));
+      this.notify.error(this.l('VarianceNotZero'));
     }
 
   }

@@ -251,7 +251,7 @@ namespace Zinlo.Auditing
                         join entityPropertyChange in _entityPropertyChangeRepository.GetAll()
                                 .WhereIf(!String.IsNullOrWhiteSpace(input.PropertyName), p => p.PropertyName == input.PropertyName)
                                 .WhereIf(input.EntityFullName.Equals("Zinlo.ClosingChecklist.ClosingChecklist") && String.IsNullOrWhiteSpace(input.PropertyName),p=>p.PropertyName != "VersionId")
-                                .Where(p=>p.OriginalValue!=null)
+                                .WhereIf(input.PropertyName!="VersionId",p=>p.OriginalValue!=null)
                             on entityChange.Id equals entityPropertyChange.EntityChangeId
                         join user in _userRepository.GetAll() on entityChangeSet.UserId equals user.Id
                         select new EntityPropertyHistory()
