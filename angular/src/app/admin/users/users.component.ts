@@ -7,6 +7,7 @@ import { InviteUserModalComponent } from './invite-user-modal.component';
 import { EditUserPermissionsModalComponent } from './edit-user-permissions-modal.component';
 import { UserServiceProxy, AccountSubTypeServiceProxy, CategoriesServiceProxy } from '@shared/service-proxies/service-proxies';
 import { StoreDateService } from '../../services/storedate.service';
+import { AbpSessionService } from '@abp/session/abp-session.service';
 
 @Component({
     templateUrl: './users.component.html',
@@ -157,19 +158,27 @@ export class UsersComponent extends AppComponentBase {
     filterText: any = ""
     userList: any = []
     storeuserList: any = []
+    
 
     @ViewChild('createOrEditUserModal', { static: true }) createOrEditUserModal: CreateOrEditUserModalComponent;
 
     @ViewChild('editUserPermissionsModal', { static: true }) editUserPermissionsModal: EditUserPermissionsModalComponent;
     @ViewChild('inviteUserModal', { static: true }) inviteUserModal: InviteUserModalComponent;
-    constructor(_injector: Injector, private _userServiceProxy: UserServiceProxy, private storeData: StoreDateService, private _userService: UserServiceProxy) {
+    constructor(_injector: Injector, 
+        private _userServiceProxy: UserServiceProxy,
+         private storeData: StoreDateService,
+          private _userService: UserServiceProxy,
+          private _sessionService: AbpSessionService
+          ) {
         super(_injector);
     }
 
     ngOnInit() {
         this.getAllUsers()
     }
-
+    get multiTenancySideIsTeanant(): boolean {
+        return this._sessionService.tenantId > 0;
+    }
     getAllUsers() {
         this._userServiceProxy.getAllUserList(this.filterText, this.count).subscribe(result => {
             this.userList = result;
