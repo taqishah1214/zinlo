@@ -33,6 +33,7 @@
     "@ngrx/store": "^9.0.0",
     "@progress/kendo-angular-popup": "^3.0.5",
     "@swimlane/ngx-charts": "^12.0.1",
+    "@syncfusion/ej2-angular-richtexteditor": "^18.1.52",
     "@uppy/core": "^1.7.1",
     "@uppy/dashboard": "^1.5.2",
     "@uppy/xhr-upload": "^1.4.2",

@@ -51,12 +51,14 @@ import { TaskReportComponent } from './reports/task-report/task-report.component
 import { TrialbalanceReportsComponent } from './reports/trialbalance-reports/trialbalance-reports.component'
 import { ObserveVarianceComponent } from './reports/observe-variance/observe-variance.component';
 
+import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
 @NgModule({
         imports: [
+                RichTextEditorAllModule,
                 FileUploadModule,
                 AutoCompleteModule,
                 PaginatorModule,
