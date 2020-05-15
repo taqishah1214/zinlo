@@ -39,7 +39,7 @@ namespace Zinlo.ChartofAccounts
     {
         Itemized = 1,
         Amortization = 2,
-        NotReconcilied = 3
+        NotReconciled = 3
     }
     public enum AccountType
     {

@@ -500,7 +500,7 @@ namespace Zinlo.ChartsofAccount
         {
             if (value == 1) return "Itemized";
             else if (value == 2) return "Amortized";
-            else if (value == 3) return "NotReconcilied";
+            else if (value == 3) return "NotReconciled";
             return "";
         }
       
