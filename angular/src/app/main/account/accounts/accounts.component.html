@@ -240,7 +240,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">{{"Close" | localize}}</button>
-                                            <button type="button" class="btn btn-primary"  data-dismiss="modal" (click)="SaveChanges()" >Save changes</button>
+                                            <button type="button" class="btn btn-primary"  data-dismiss="modal" (click)="SaveChanges()" [disabled]="activeSaveButton" >Save changes</button>
                                         </div>
                                     </div>
                                 </div>
