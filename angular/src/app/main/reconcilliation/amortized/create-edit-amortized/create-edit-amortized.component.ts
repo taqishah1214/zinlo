@@ -111,6 +111,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     this.buttonTitle =  "Save"
     this._reconcialtionService.getAmortizedItemDetails(this.amortrizedItemId).subscribe(result => {
       this.amortizationDto = result
+      debugger;
       this.CriteriaButton = this.amortizationDto.criteria
       this.attachments = result.attachments;
       this.attachments.forEach(element => {

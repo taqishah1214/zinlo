@@ -141,19 +141,27 @@
                                                 <div class="col-md-12">
                                                     <!-- <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a></p> -->
                                                     <div class="row py-0">
-                                                        <div class="col-xl-5">{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a>
+                                                        <div class="col-xl-5 form-group"><label>{{"Trial Balance Format" | localize}} </label><a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a>
                                                         </div>    
-                                                         <div class="form-group col-xl-3">
+                                                        <div class="form-group col-xl-3 pt-2">
+                                                            <label>{{"Select Month for Trial Balance" | localize}} </label>
+                                                        </div>
+                                                         <div class="form-group col-xl-3" style="height: 40px !important;">
                                                              <div class="month-calender">
-                                                                 <form class="input-arrow">
-                                                                    <input id="selectedDate" 
-                                                                    value="january 2020" class="date-field"  name="monthValue" (ngModelChange)="filterByMonth($event)"
-                                                                    [(ngModel)]="selectedDate" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                                                    (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
-                                                                 </form>
+                                                                <form class="input-arrow">
+                                                                    <input [(ngModel)]="selectedDate" (focusout)="checkMonth()" (ngModelChange)="filterByMonth($event)" required="required"
+                                                                    autocomplete="off" class="form-control" name="date" bsDatepicker 
+                                                                        placeholder="Select Month" class="form-control" name="date"
+                                                                        bsDatepicker
+                                                                        [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                                        (onShown)="onOpenCalendar($event)">
+                                                                </form>                
+                                                                <span class="form-control-feedback"
+                                                                *ngIf="!checkActiveMonth">{{"ThisMonthIsNotActive" | localize}}</span>
                                                              </div>
                                                          </div>
-                                                    </div>
+                                                      </div>
+                                                      
                                                     <div class="inner-col-record border border-default">
 
                                                         <div class="row">
@@ -335,9 +343,9 @@
                                     [resizableColumns]="primengTableHelper.resizableColumns">
                                     <ng-template pTemplate="header">
                                         <tr class="task-table-inner">
-                                            <th class="cell-none">
+                                            <!-- <th class="cell-none">
                                                 
-                                            </th>
+                                            </th> -->
                                             <th class="accountNo-cell" scope="col" pSortableColumn="AccountNumber">
                                                 {{"Account No" |localize}}
                                                 <p-sortIcon field="AccountNumber"></p-sortIcon>
@@ -386,12 +394,12 @@
                                 <tbody *ngFor="let item of chartsOfAccountList">
                                     <tr class="task-table-inner table-repeater" class="{{item.isDeleted == true ? 'warnning' : '' }}">
 
-                                        <td *ngIf="item.isDeleted == false" class="toggle-btn-cell" >                            
+                                        <!-- <td *ngIf="item.isDeleted == false" class="toggle-btn-cell" >                            
                                             <label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand">
                                                 <input (change)="checkValue(item.id)" type="checkbox">
                                                 <span></span>
                                             </label>
-                                        </td>
+                                        </td> -->
                                         <td class="accountNo-cell">
                                             <span class="">{{item.accountNumber}}</span>
 

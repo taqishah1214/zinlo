@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy, TimeManagementsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
@@ -58,7 +58,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   accountSubTypes: any = [];
   accountType: any;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Asset" }, { id: 3, name: "Liability" }];
-  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
+  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" },{ id: 3, name: "Not Reconcilied" }]
   updateAssigneeOnHeader: boolean = true;
   getAccountWithAssigneeId: number = 0;
   attachmentPathsTrialBalance: any = [];
@@ -68,7 +68,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   monthStatus : boolean = false
   users: any;
   delectedBulkAccounts : any [];
-  selectedDate : any = new Date();
+  selectedDate : any
+  checkActiveMonth:boolean=true;
 
 
   uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
@@ -77,6 +78,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   @ViewChild('ExcelFileUpload', { static: true }) excelFileUpload: FileUpload;
 
   constructor(private _router: Router,
+    private _managementService: TimeManagementsServiceProxy,
     private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector, private _httpClient: HttpClient,
     private _chartOfAccountService: ChartsofAccountServiceProxy, private _fileDownloadService: FileDownloadService,
     private _signalRService: SignalRService,private userDate: StoreDateService) {
@@ -84,7 +86,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     this.FilterBoxOpen = false;
   }
   onClose(){
-    console.log(this.chartsOfAccountsfileUrl)
+    this.chartsOfAccountsfileUrl
   }
   onBreadChange(value){
     if(value=="Upload Trial Balance")
@@ -169,6 +171,7 @@ this.chartsOfAccountList.forEach(element => {
       moment(this.selectedDate),
       this.getAccountWithAssigneeId,
       this.AllOrActive,
+      false,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event),
@@ -340,13 +343,11 @@ RedirectToCreateAccount(): void {
 
   fileUploadedResponseTrialBalance(value): void {
     var response = value.successful
-    console.log(response)
     response.forEach(i => {
       this.attachmentPathsTrialBalance.push(i.response.body.result);
 
     });
-    console.log(this.attachmentPathsTrialBalance)
-    console.log(this.chartsOfAccountsfileUrlTrialBalance = this.attachmentPathsTrialBalance[0].toString());
+    this.chartsOfAccountsfileUrlTrialBalance = this.attachmentPathsTrialBalance[0].toString();
 
    // this.uploadAccountsTrialBalanceExcel(url);
     this.notify.success(this.l('Attachments are Saved Successfully'));
@@ -365,18 +366,16 @@ RedirectToCreateAccount(): void {
   }
 
   filterByMonth(event) {
-      this.selectedDate =new Date(add(this.selectedDate, 1, "month")); 
-      debugger;
-  }
+    debugger
+    this._managementService.checkMonthStatus(moment(new Date(add(this.selectedDate, 2, "day")))).subscribe(result => {
+    this.checkActiveMonth = result;
+  });
+}
   uploadAccountsTrialBalanceExcel(url: string): void {
-    console.log(this.uploadBalanceUrl)
-    console.log(url)
-    console.log(AppConsts.remoteServiceBaseUrl)
     debugger;
     this._httpClient
       .get<any>(this.uploadBalanceUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url + "&" +"monthSelected="+ this.selectedDate)
       .subscribe(response => {
-        console.log(response)
         if (response.success) {
           this.notify.success(this.l('ImportAccountsTrialBalanceProcessStart'));
         } else if (response.error != null) {
@@ -430,7 +429,7 @@ RedirectToCreateAccount(): void {
          this.AllOrActive = true;
     }
     this.getAllAccounts();
-    console.log(this.AllOrActive);
+    this.AllOrActive;
 
   }
   restoreAccount(id):void{

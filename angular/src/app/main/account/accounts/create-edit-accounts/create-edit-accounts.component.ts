@@ -5,6 +5,10 @@ import { UserListComponentComponent } from '@app/main/checklist/user-list-compon
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
+import { Table } from 'primeng/components/table/table';
+import { Paginator } from 'primeng/components/paginator/paginator';
+import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
+import { StoreDateService } from "../../../../services/storedate.service";
 
 
 @Component({
@@ -15,6 +19,7 @@ import * as moment from 'moment';
 export class CreateEditAccountsComponent extends AppComponentBase implements OnInit  {
   check:boolean=false;
   saving = false;
+  users: any;
   accountSubTypeName: any =  "Select Account Sub Type";
   accountSubTypeList: any;
   accountType: any = "Select Account Type";
@@ -22,7 +27,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   selectedUserID : any;
   editAccountCheck :  boolean = false;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Asset" }, { id: 3, name: "Liability" }];
-  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
+  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" },{ id: 3, name: "Not Reconcilied" }]
   reconcillationType: any="Select Reconciliation Type";
   assigniId : number;
   accountDto: CreateOrEditChartsofAccountDto = new CreateOrEditChartsofAccountDto()
@@ -33,14 +38,23 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   seclectedSubTypeTitle : any;
   isAccountExist : boolean = false;
   date : Date = new Date();
+  exceptionsList: any;
+  linkAccountCheck = false;
+  linkAccountNumber
+  searchAccount ;
 
+
+  @ViewChild('dataTable', { static: true }) dataTable: Table;
+  @ViewChild('paginator', { static: true }) paginator: Paginator;
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   constructor(private _accountSubTypeService: AccountSubTypeServiceProxy,
-    private _chartOfAccountService: ChartsofAccountServiceProxy, private _router: Router, injector: Injector) {
+    private _chartOfAccountService: ChartsofAccountServiceProxy, private _router: Router, injector: Injector,
+    private userDate: StoreDateService) {
     super(injector)
   }
 
   ngOnInit() {   
+  this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
    this.accountId = history.state.data.id;
    this.accountDto.accountName=history.state.data.name
    this.accountDto.accountNumber=history.state.data.number
@@ -230,6 +244,30 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     }
   }
 
+  linkedAccountClick(accountNo,accountName)
+  {
+
+    this.message.confirm(
+      '',
+      this.l('Are you sure you want to link this account with Account No: ' +accountNo+' Account Name: ' +accountName),
+      (isConfirmed) => {
+        if (isConfirmed) {
+          this.linkAccountCheck =  true;
+          this.linkAccountNumber = accountNo
+          this.accountDto.linkedAccountNumber = accountNo;
+        }
+      }
+    );
+
+
+   
+  }
+
+  searchWithName() {
+    this.searchAccount
+    this.getAllImportLog();
+  }
+
   onSubmit(): void {
     
     if (this.validationCheck())
@@ -317,5 +355,69 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     this._router.navigate(['/app/main/account']);
   }
 
+  getUserIndex(id) {
+    return this.users.findIndex(x => x.id === id);
+  }
 
-}
+  getNameofAccountTypeAndReconcillation(id, key): string {
+    var result = "";
+    if (key === "accountType") {
+      this.accountTypeList.forEach(i => {
+        if (i.id == id) {
+          result = i.name
+        }
+      })
+      return result;
+    }
+    else if (key === "reconcillation") {
+      this.reconcillationTypeList.forEach(i => {
+        if (i.id == id) {
+          result = i.name
+        }
+      })
+      return result;
+    }
+  }
+
+  getAllImportLog(event?: LazyLoadEvent) {
+      if (this.primengTableHelper.shouldResetPaging(event)) {
+        this.paginator.changePage(0);
+        return;
+      }
+      this.primengTableHelper.showLoadingIndicator();
+      this._chartOfAccountService.getAll(
+        this.searchAccount,
+        0,
+        moment(new Date()),
+        0,
+        false,
+        true,
+        this.primengTableHelper.getSorting(this.dataTable),
+        this.primengTableHelper.getSkipCount(this.paginator, event),
+        this.primengTableHelper.getMaxResultCount(this.paginator, event)
+      ).subscribe(result => {
+        this.primengTableHelper.totalRecordsCount = result.totalCount;
+        let data = result.items;
+        data.forEach(i => {
+          i["assigneeName"] =  this.users[this.getUserIndex(i.assigneeId)].name;
+          i["profilePicture"] =  this.users[this.getUserIndex(i.assigneeId)].profilePicture;
+          i["accountType"] = this.getNameofAccountTypeAndReconcillation(i.accountTypeId, "accountType")
+
+          // var attachmentName = i.filePath.substring(i.filePath.lastIndexOf("/") + 1, i.filePath.lastIndexOf("zinlo"));
+          // i["attachmentName"] = attachmentName
+          // i["attachmentUrl"] =  i.filePath
+        })
+  
+        this.primengTableHelper.records = data;
+        this.primengTableHelper.hideLoadingIndicator();
+        this.exceptionsList = result.items;
+        
+        this.primengTableHelper.records = this.exceptionsList;
+      });
+
+    }
+    
+    
+  }
+
+

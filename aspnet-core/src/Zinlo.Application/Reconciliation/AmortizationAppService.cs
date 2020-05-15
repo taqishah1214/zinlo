@@ -122,15 +122,15 @@ namespace Zinlo.Reconciliation
                 AmortizedListDto amortizedListDto = new AmortizedListDto
                 {
                     amortizedListForViewDtos = amortizedList,
-                    TotalBeginningAmount = amortizedList.Sum(item => item.BeginningAmount),
-                    TotalAccuredAmortization = amortizedList.Sum(item => item.AccuredAmortization),
-                    TotalNetAmount = amortizedList.Sum(item => item.NetAmount)
+                    Comments = await _commentAppService.GetComments((int)CommentType.AmortizedList, input.ChartofAccountId),
+                    MonthStatus = monthStatus
                 };
 
-                amortizedListDto.TotalTrialBalance = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId,input.SelectedMonth);
-                amortizedListDto.Comments = await _commentAppService.GetComments((int)CommentType.AmortizedList, input.ChartofAccountId);
-                amortizedListDto.MonthStatus = monthStatus;
+               
 
+        //        NetAmount = 1,
+        //BeginningAmount = 2,
+        //AccruedAmount = 3,
 
                 if (input.ChartofAccountId != 0)
                 {
@@ -139,22 +139,42 @@ namespace Zinlo.Reconciliation
                     switch (reconcilledResult)
                     {
                         case 1:
+                            amortizedListDto.TotalTrialBalanceNet = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId, input.SelectedMonth);
+                            amortizedListDto.TotalBeginningAmount = amortizedList.Sum(item => item.BeginningAmount);
+                            amortizedListDto.TotalAccuredAmortization = amortizedList.Sum(item => item.AccuredAmortization);
+                            amortizedListDto.TotalNetAmount = amortizedList.Sum(item => item.NetAmount);
+
                             await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalNetAmount, input.ChartofAccountId,input.SelectedMonth);
-                            amortizedListDto.VarianceNetAmount = amortizedListDto.TotalNetAmount - amortizedListDto.TotalTrialBalance;
+                            amortizedListDto.VarianceNetAmount = amortizedListDto.TotalNetAmount - amortizedListDto.TotalTrialBalanceNet;
                             amortizedListDto.VarianceBeginningAmount = 0;
                             amortizedListDto.VarianceAccuredAmount = 0;
+                            amortizedListDto.TotalTrialBalanceBegininng = 0;
+                            amortizedListDto.TotalTrialBalanceAccured = 0;
                             break;
                         case 2:
+                            var linkedAccountInfo = await _chartsofAccountAppService.GetLinkAccountDetails(input.ChartofAccountId, input.SelectedMonth);
+                            amortizedListDto.TotalTrialBalanceBegininng = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId, input.SelectedMonth);
+                            amortizedListDto.TotalBeginningAmount = amortizedList.Sum(item => item.BeginningAmount);
+                            amortizedListDto.TotalAccuredAmortization = linkedAccountInfo.Balance;
+                            amortizedListDto.TotalNetAmount = amortizedList.Sum(item => item.NetAmount);
+                            amortizedListDto.TotalTrialBalanceAccured = linkedAccountInfo.TrialBalance;
                             await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalBeginningAmount, input.ChartofAccountId,input.SelectedMonth);
-                            amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalance;
-                            amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalance;
+                            amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalanceBegininng;
+                            amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalanceAccured;
+                            amortizedListDto.TotalTrialBalanceNet = 0;
                             break;
                         case 3:
+                            var linkedAccount = await _chartsofAccountAppService.GetLinkAccountDetails(input.ChartofAccountId, input.SelectedMonth);
+                            amortizedListDto.TotalTrialBalanceAccured = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId, input.SelectedMonth);
+                            amortizedListDto.TotalBeginningAmount = linkedAccount.Balance ;
+                            amortizedListDto.TotalAccuredAmortization = amortizedList.Sum(item => item.AccuredAmortization);
+                            amortizedListDto.TotalNetAmount = amortizedList.Sum(item => item.NetAmount);
+                            amortizedListDto.TotalTrialBalanceBegininng = linkedAccount.TrialBalance;
                             await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalAccuredAmortization, input.ChartofAccountId,input.SelectedMonth);
-                            amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalance;
-                            amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalance;
+                            amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalanceBegininng;
+                            amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalanceAccured;
+                            amortizedListDto.TotalTrialBalanceNet = 0;
                             break;
-
                         default:
                             break;
                     }

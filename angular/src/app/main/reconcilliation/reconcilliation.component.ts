@@ -45,7 +45,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   accountSubTypes: any = [];
   accountType : any;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Asset" }, { id: 3, name: "Liability" }];
-  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" }]
+  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" },,{ id: 3, name: "Not Reconcilied" }]
   StatusColorBox: any = ["bg-blue", "bg-sea-green", "bg-gray"]
   updateAssigneeOnHeader: boolean = true;
   currentDate :any 
@@ -120,6 +120,7 @@ debugger;
       this.accountTypeFilter,
       moment(this.selectedDate),
       this.getAccountWithAssigneeId,
+      false,
       false,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),

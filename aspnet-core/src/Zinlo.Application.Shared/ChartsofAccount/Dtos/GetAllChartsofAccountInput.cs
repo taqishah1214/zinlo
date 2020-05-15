@@ -12,5 +12,6 @@ namespace Zinlo.ChartsofAccount.Dtos
         public DateTime SelectedMonth { get; set; }
         public long AssigneeId { get; set; }
         public bool? AllOrActive { get; set; }
+        public bool BeginingAmountCheck { get; set; }
     }
 }
