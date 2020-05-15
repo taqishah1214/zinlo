@@ -287,7 +287,7 @@ namespace Zinlo.ChartsofAccount
             {
                 return 2;
             }
-            else if (name.Trim().ToLower() == "notreconcilied")
+            else if (name.Trim().ToLower() == "notreconciled")
             {
                 return 3;
             }
@@ -330,7 +330,7 @@ namespace Zinlo.ChartsofAccount
             }
             if (!string.IsNullOrEmpty(input.ReconciliationType))
             {
-                if (input.ReconciliationType.Trim().ToLower() == "amortized" || input.ReconciliationType.Trim().ToLower() == "notreconcilied" || input.ReconciliationType.Trim().ToLower() == "itemized")
+                if (input.ReconciliationType.Trim().ToLower() == "amortized" || input.ReconciliationType.Trim().ToLower() == "notreconciled" || input.ReconciliationType.Trim().ToLower() == "itemized")
                 {
                     reconcilaitionTypeError = false;
                 }
