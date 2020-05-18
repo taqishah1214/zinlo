@@ -65,7 +65,7 @@
                                     </div>
                                     <div *ngIf="!compareTable" class="kt-subheader__wrapper">
                                         <button data-toggle="modal" data-target="#kt_modal_6"
-                                            class="btn btn-brand">Compare</button>
+                                            class="btn btn-brand btn-width">Compare</button>
                                     </div>
                                 </div>
                             </div>
@@ -162,14 +162,14 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
+                                            <button type="button" class="btn btn-secondary btn-width"
                                                 data-dismiss="modal">Cancel</button>
                                             <button *ngIf="modalButtonText == 'Next'" type="button"
                                                 (click)="LoadandCompareTrialBalance()"
-                                                class="btn btn-primary">{{modalButtonText}}</button>
+                                                class="btn btn-primary btn-width">{{modalButtonText}}</button>
                                             <button *ngIf="modalButtonText == 'Compare'" type="button"
                                                 data-dismiss="modal" (click)="LoadandCompareTrialBalance()"
-                                                class="btn btn-primary">{{modalButtonText}}</button>
+                                                class="btn btn-primary btn-width">{{modalButtonText}}</button>
 
                                         </div>
                                     </div>

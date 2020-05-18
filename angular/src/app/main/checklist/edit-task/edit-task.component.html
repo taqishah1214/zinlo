@@ -162,7 +162,7 @@
                                         </select>
                                     </div>
                                     <div class="duplicate_box">
-                                        <button type="button" class="btn btn-outline-primary"
+                                        <button type="button" class="btn btn-outline-primary btn-width"
                                             (click)="duplicateTask()">{{"Duplicate" | localize}}</button>
                                     </div>
                                 </div>
@@ -357,7 +357,7 @@
                     <div class="kt-portlet__head mb-2">
                     </div>
                     <div class="">
-                        <button class="btn btn-brand" (click)="saveTaskChanges()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid">
+                        <button class="btn btn-brand btn-width" (click)="saveTaskChanges()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid">
                             <i class="fa fa-save"></i>
                             <span>{{"Update" | localize}}</span>
                         </button>
