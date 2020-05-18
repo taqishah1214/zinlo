@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.Authorization;
 using Abp.Authorization.Roles;
+using Abp.Authorization.Users;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Localization;
@@ -12,6 +13,7 @@ using Abp.Runtime.Caching;
 using Abp.UI;
 using Abp.Zero.Configuration;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Zinlo.Authorization.Users;
 
@@ -24,7 +26,8 @@ namespace Zinlo.Authorization.Roles
     public class RoleManager : AbpRoleManager<Role, User>
     {
         private readonly ILocalizationManager _localizationManager;
-        
+        private readonly IRepository<UserRole, long> _userRoleRepository;
+
         public RoleManager(
             RoleStore store,
             IEnumerable<IRoleValidator<Role>> roleValidators,
@@ -37,7 +40,7 @@ namespace Zinlo.Authorization.Roles
             IUnitOfWorkManager unitOfWorkManager,
             ILocalizationManager localizationManager,
             IRepository<OrganizationUnit, long> organizationUnitRepository,
-            IRepository<OrganizationUnitRole, long> organizationUnitRoleRepository)
+            IRepository<OrganizationUnitRole, long> organizationUnitRoleRepository, IRepository<UserRole, long> userRoleRepository)
             : base(
                 store,
                 roleValidators,
@@ -52,6 +55,7 @@ namespace Zinlo.Authorization.Roles
                 organizationUnitRoleRepository)
         {
             _localizationManager = localizationManager;
+            _userRoleRepository = userRoleRepository;
         }
 
         public override Task SetGrantedPermissionsAsync(Role role, IEnumerable<Permission> permissions)
@@ -72,6 +76,12 @@ namespace Zinlo.Authorization.Roles
             return role;
         }
 
+        public virtual async Task<string> GetRoleNameByUserId(long userId)
+        {
+            var userRole = await _userRoleRepository.FirstOrDefaultAsync(p=>p.UserId == userId);
+            var role =  await Roles.Where(p => p.Id == userRole.RoleId).FirstOrDefaultAsync();
+            return role.Name;
+        }
         private void CheckPermissionsToUpdate(Role role, IEnumerable<Permission> permissions)
         {
             if (role.Name == StaticRoleNames.Host.Admin &&
