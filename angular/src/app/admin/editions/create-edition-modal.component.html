@@ -174,9 +174,9 @@
                     </tabset>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="btn btn-secondary"
+                    <button [disabled]="saving" type="button" class="btn btn-secondary btn-width"
                         (click)="close()">{{"Cancel" | localize}}</button>
-                    <button type="submit" class="btn btn-primary" [disabled]="!editionForm.form.valid"
+                    <button type="submit" class="btn btn-primary btn-width" [disabled]="!editionForm.form.valid"
                         [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
                         <span>{{"Save" | localize}}</span></button>
                 </div>

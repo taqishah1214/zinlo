@@ -70,6 +70,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   delectedBulkAccounts : any [];
   selectedDate : any
   checkActiveMonth:boolean=true;
+  activeSaveButton:boolean=true;
 
 
   uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
@@ -93,11 +94,14 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     {
       this.account=false;
       this.balance=true;
+      this.activeSaveButton=true
+
     }
     else if(value=="Upload Chart of Accounts")
     {
       this.balance=false;
       this.account=true;
+      this.activeSaveButton=false
     }
  }
   ngOnInit() {
@@ -369,6 +373,7 @@ RedirectToCreateAccount(): void {
     debugger
     this._managementService.checkMonthStatus(moment(new Date(add(this.selectedDate, 2, "day")))).subscribe(result => {
     this.checkActiveMonth = result;
+    this.activeSaveButton=!this.checkActiveMonth
   });
 }
   uploadAccountsTrialBalanceExcel(url: string): void {
