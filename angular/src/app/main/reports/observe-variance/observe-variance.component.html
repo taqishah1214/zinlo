@@ -12,6 +12,13 @@
                         {{"Observe Variance" | localize}}
                     </span>
                 </div>
+                <div class="kt-subheader__wrapper pt-2">
+                    
+                    <div *ngIf="!compareTable" class="kt-subheader__wrapper">
+                        <button data-toggle="modal" data-target="#kt_modal_6"
+                            class="btn btn-brand btn-width">Compare</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
@@ -58,10 +65,6 @@
 
                                             </ul>
                                         </div>
-                                    </div>
-                                    <div *ngIf="!compareTable" class="kt-subheader__wrapper">
-                                        <button data-toggle="modal" data-target="#kt_modal_6"
-                                            class="btn btn-brand btn-width">Compare</button>
                                     </div>
                                 </div>
                             </div>
