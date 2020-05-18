@@ -316,21 +316,21 @@
                                                         <div class="kt-pricing-1__btn">
                         
                                                             <button
-                                                                class="btn btn-warning btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                                                class="btn btn-warning btn-pill btn-width btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
                                                                 (click)="upgrade(editionWithFeatures.edition, editionPaymentType.Upgrade)"
                                                                 *ngIf="isUserLoggedIn">
                                                                 {{"Upgrade" | localize}}
                                                             </button>
                         
                                                             <button
-                                                                class="btn btn-success btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                                                class="btn btn-success btn-pill btn-width btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
                                                                 (click)="startSubscription(editionWithFeatures.edition.id,subscriptionStartType.Free,editionPaymentType.Free)"
                                                                 href="#" *ngIf="!isUserLoggedIn && editionWithFeatures.edition.isCustom">
                                                                 Contact Us
                                                             </button>
                         
                                                             <button
-                                                                class="btn btn-warning btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                                                class="btn btn-warning btn-pill btn-width btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
                                                                 (click)="trailSubscription(editionWithFeatures.edition.id,subscriptionStartType.Trail,editionPaymentType.Trail)"
                                                                 href="#"
                                                                 *ngIf="!isUserLoggedIn && !editionWithFeatures.edition.isCustom && editionWithFeatures.edition.trialDayCount">
@@ -338,7 +338,7 @@
                                                             </button>
                         
                                                             <button
-                                                                class="btn btn-primary btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                                                class="btn btn-primary btn-pill btn-width btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
                                                                 (click)="buySubscription(editionWithFeatures.edition.id,subscriptionStartType.Paid,editionPaymentType.NewRegistration)"
                                                                 href="#" *ngIf="!isUserLoggedIn && !editionWithFeatures.edition.isCustom">
                                                                 {{"BuyNow" | localize}}
@@ -858,13 +858,13 @@
 
                         <!--begin: Form Actions -->
                         <div class="kt-form__actions">
-                            <button class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previebtn" (click)="movetab(-1)" data-ktwizard-type="action-prev">
+                            <button class="btn btn-secondary btn-width btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previebtn" (click)="movetab(-1)" data-ktwizard-type="action-prev">
                                 Previous
                             </button>
-                            <button class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u submit" (click)="save()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" data-ktwizard-type="action-submit">
+                            <button class="btn btn-success btn-width btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u submit" (click)="save()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" data-ktwizard-type="action-submit">
                                 Submit
                             </button>
-                            <button class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u nxtbtn" (click)="movetab(1)" data-ktwizard-type="action-next">
+                            <button class="btn btn-brand btn-width btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u nxtbtn" (click)="movetab(1)" data-ktwizard-type="action-next">
                                 Next Step
                             </button>
                         </div>
