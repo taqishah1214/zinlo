@@ -72,6 +72,11 @@ namespace Zinlo.ClosingChecklist
         {
             await _closingChecklistRepository.UpdateAsync(entity);
         }
+
+        public async Task DeleteTask(ClosingChecklist entity)
+        {
+            await _closingChecklistRepository.DeleteAsync(entity);
+        }
         public int GetMonthDifference(DateTime start, DateTime end)
         {
             return ((end.Year * 12 + end.Month) - (start.Year * 12 + start.Month)) + 1;

@@ -10,6 +10,7 @@ using Zinlo.Comment;
 using Zinlo.Comment.Dtos;
 using Zinlo.ClosingChecklist.Dtos;
 using System.Collections.Generic;
+using Abp.Authorization;
 using Zinlo.Authorization.Users;
 using Zinlo.Attachments;
 using Zinlo.Attachments.Dtos;
@@ -17,10 +18,12 @@ using Zinlo.Authorization.Users.Profile;
 using NUglify.Helpers;
 using Zinlo.TimeManagements;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.Runtime.Session;
 using Abp.UI;
 using Microsoft.Extensions.Logging;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using Zinlo.Authorization.Roles;
 using Zinlo.ClosingChecklist.Exporting;
 using Zinlo.Dto;
 using Zinlo.InstructionVersions;
@@ -39,6 +42,7 @@ namespace Zinlo.ClosingChecklist
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IInstructionAppService _instructionVersionsAppService;
         private readonly ITaskExcelExporter _taskExcelExporter;
+        private readonly RoleManager _roleManager;
 
         public ClosingChecklistAppService(IProfileAppService profileAppService,
                                           ICommentAppService commentAppService,
@@ -47,7 +51,9 @@ namespace Zinlo.ClosingChecklist
                                           TimeManagementManager managementManager,
                                           IUnitOfWorkManager unitOfWorkManager,
                                           IInstructionAppService instructionVersionsAppService,
-                                          ClosingChecklistManager closingChecklistManager, ITaskExcelExporter taskExcelExporter)
+                                          ClosingChecklistManager closingChecklistManager,
+                                          ITaskExcelExporter taskExcelExporter,
+                                          RoleManager roleManager)
         {
             _commentAppService = commentAppService;
             _userRepository = userRepository;
@@ -58,6 +64,7 @@ namespace Zinlo.ClosingChecklist
             _instructionVersionsAppService = instructionVersionsAppService;
             _closingChecklistManager = closingChecklistManager;
             _taskExcelExporter = taskExcelExporter;
+            _roleManager = roleManager;
         }
         public async Task<PagedResultDto<TasksGroup>> GetReport(GetTaskReportInput input)
         {
@@ -135,7 +142,8 @@ namespace Zinlo.ClosingChecklist
                         e => false || e.Status == (Zinlo.ClosingChecklist.Status)input.StatusFilter)
                     .WhereIf(input.CategoryFilter != 0, e => false || e.CategoryId == input.CategoryFilter)
                     .WhereIf(input.AssigneeId != 0, e => false || e.AssigneeId == input.AssigneeId)
-                    .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive));
+                    .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive))
+                    .WhereIf(GetRoleName().Equals("User"), p => p.AssigneeId == AbpSession.UserId);
                 var status = await GetMonthStatus((DateTime)input.DateFilter);
                 var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "DueDate asc").PageBy(input);
                 var totalCount = query.Count();
@@ -195,6 +203,14 @@ namespace Zinlo.ClosingChecklist
                 );
             }
         }
+
+        private string GetRoleName()
+        {
+            if (AbpSession.UserId == null) return "User session null";
+            var role =  _roleManager.GetRoleByIdAsync((long)AbpSession.UserId).Result;
+            return role.Name;
+
+        }
         public async Task CreateOrEdit(CreateOrEditClosingChecklistDto input)
         {
             if (input.Id == 0)
@@ -204,8 +220,8 @@ namespace Zinlo.ClosingChecklist
             }
             else
             {
-                bool editIteration = false;
-                bool isDueDateChanged = false; 
+                var editIteration = false;
+                var isDueDateChanged = false;
                 var currentTaskDetail = await _closingChecklistManager.GetById(input.Id);
                 var checkMonthStatus = await _managementManager.IsClosed(currentTaskDetail.ClosingMonth);
 
@@ -222,7 +238,30 @@ namespace Zinlo.ClosingChecklist
                     }
                     else
                     {
-                        //Change Frequency Implemetation
+                        var taskList = _closingChecklistManager.GetAll().Where(p => p.GroupId == input.GroupId && p.Id != input.Id && p.ClosingMonth > input.ClosingMonth).ToList();
+                        foreach (var task in taskList)
+                        {
+                            var checkManagementExist = await _managementManager.CheckManagementExist(task.ClosingMonth);
+                            if (checkManagementExist) continue;
+                            var managementDto = new TimeManagement()
+                            {
+                                Month = task.ClosingMonth,
+                                Status = false
+                            };
+                            await _managementManager.CreateAsync(managementDto);
+                        }
+                        var openManagement = _managementManager.GetOpenManagement();
+                        foreach (var item in openManagement)
+                        {
+
+                            var task = taskList.FirstOrDefault(p => p.ClosingMonth.Year == item.Month.Year && p.ClosingMonth.Month == item.Month.Month);
+                            if (task != null)
+                            {
+                                await _closingChecklistManager.DeleteTask(task);
+                                await CurrentUnitOfWork.SaveChangesAsync();
+                            }
+                        }
+
                         editIteration = true;
                     }
 
@@ -237,11 +276,11 @@ namespace Zinlo.ClosingChecklist
                 }
                 if (editIteration)
                 {
-                    await UpdateTaskProperties(input,isDueDateChanged);
+                    await UpdateTaskProperties(input, isDueDateChanged);
                 }
-                if (!String.IsNullOrWhiteSpace(input.Instruction))
+                if (!string.IsNullOrWhiteSpace(input.Instruction))
                 {
-                    bool comparisonOfInstruction = false;
+                    var comparisonOfInstruction = false;
                     if (currentTaskDetail.VersionId != null)
                     {
                         comparisonOfInstruction = await _instructionVersionsAppService.Comparison((long)currentTaskDetail.VersionId, input.Instruction);
@@ -265,7 +304,7 @@ namespace Zinlo.ClosingChecklist
                 CurrentUnitOfWork.SaveChanges();
             }
         }
-        protected virtual async Task UpdateTaskProperties(CreateOrEditClosingChecklistDto input,bool isDueDatetChanged)
+        protected virtual async Task UpdateTaskProperties(CreateOrEditClosingChecklistDto input, bool isDueDatetChanged)
         {
             var taskList = _closingChecklistManager.GetAll().Where(p => p.GroupId == input.GroupId).ToList();
             foreach (var task in taskList)
@@ -284,7 +323,7 @@ namespace Zinlo.ClosingChecklist
             var openManagement = _managementManager.GetOpenManagement();
             foreach (var item in openManagement)
             {
-                
+
                 var task = taskList.FirstOrDefault(p => p.ClosingMonth.Year == item.Month.Year && p.ClosingMonth.Month == item.Month.Month);
                 if (task != null)
                 {
@@ -618,13 +657,13 @@ namespace Zinlo.ClosingChecklist
         public async Task<List<CreateOrEditClosingChecklistDto>> GetTaskTimeDuration(DateTime input)
         {
             var lastYear = input.AddYears(-1).AddMonths(-1);
-            var query =  _closingChecklistManager.GetAll()
+            var query = _closingChecklistManager.GetAll()
                 .Where(p => p.ClosingMonth >= lastYear && p.ClosingMonth <= input).ToList();
             var groupBy = query.GroupBy(i => i.GroupId);
             var taskList = new List<ClosingChecklist>();
             foreach (var group in groupBy)
             {
-                var getLatestUpdatedTask = group.FirstOrDefault(t=>t.TaskUpdatedTime.HasValue);
+                var getLatestUpdatedTask = group.FirstOrDefault(t => t.TaskUpdatedTime.HasValue);
                 if (getLatestUpdatedTask == null)
                 {
                     taskList.Add(group.OrderByDescending(t => t.ClosingMonth).FirstOrDefault());
@@ -634,7 +673,7 @@ namespace Zinlo.ClosingChecklist
                     taskList.Add(group.OrderByDescending(t => t.TaskUpdatedTime).FirstOrDefault());
                 }
             }
-            
+
             return ObjectMapper.Map<List<CreateOrEditClosingChecklistDto>>(taskList);
         }
 
