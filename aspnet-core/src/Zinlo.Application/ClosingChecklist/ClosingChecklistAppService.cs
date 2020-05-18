@@ -207,8 +207,8 @@ namespace Zinlo.ClosingChecklist
         private string GetRoleName()
         {
             if (AbpSession.UserId == null) return "User session null";
-            var role =  _roleManager.GetRoleByIdAsync((long)AbpSession.UserId).Result;
-            return role.Name;
+            var name =  _roleManager.GetRoleNameByUserId((long)AbpSession.UserId).Result;
+            return name;
 
         }
         public async Task CreateOrEdit(CreateOrEditClosingChecklistDto input)
