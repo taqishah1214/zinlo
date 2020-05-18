@@ -38,15 +38,6 @@
               "node_modules/primeicons/primeicons.css",
               "node_modules/sweetalert2/dist/sweetalert2.css",
               "node_modules/cookieconsent/build/cookieconsent.min.css",
-              "node_modules/@syncfusion/ej2-base/styles/material.css",
-              "node_modules/@syncfusion/ej2-icons/styles/material.css",
-              "node_modules/@syncfusion/ej2-buttons/styles/material.css",
-              "node_modules/@syncfusion/ej2-splitbuttons/styles/material.css",
-              "node_modules/@syncfusion/ej2-inputs/styles/material.css",
-              "node_modules/@syncfusion/ej2-lists/styles/material.css",
-              "node_modules/@syncfusion/ej2-navigations/styles/material.css",
-              "node_modules/@syncfusion/ej2-popups/styles/material.css",
-              "node_modules/@syncfusion/ej2-richtexteditor/styles/material.css",
               
               "src/assets/primeng/file-upload/css/primeng.file-upload.css",
               "src/assets/primeng/autocomplete/css/primeng.autocomplete.css",
@@ -84,7 +75,9 @@
 
               "src/assets/metronic/vendors/global/vendors.bundle.js",
               "src/assets/metronic/common/js/scripts.bundle.js",
-              "node_modules/jquery/dist/jquery.min.js"
+              "node_modules/jquery/dist/jquery.min.js",
+              "src/assets/js/past-image.js",
+              "src/assets/js/myjson.js"
             ]
           },
           "configurations": {

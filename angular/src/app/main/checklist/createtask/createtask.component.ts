@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { HttpRequest, HttpClient } from '@angular/common/http';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 
+declare const initeditor: any;
 @Component({
   selector: 'app-createtask',
   templateUrl: './createtask.component.html',
@@ -71,6 +72,7 @@ public quickTools: object = {
   DaysByMonth: Date = new Date();
   errorMessage = "";
   monthStatus = true;
+  ql: any;
   constructor
     (private _router: Router,
       private _closingChecklistService: ClosingChecklistServiceProxy,
@@ -81,6 +83,7 @@ public quickTools: object = {
     super(injector)
   }
   ngOnInit() {
+    this.ql=initeditor();
     this.getProfilePicture(); 
     this.initializePageParameters();
 

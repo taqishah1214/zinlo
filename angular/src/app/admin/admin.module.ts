@@ -62,7 +62,6 @@ import { EditTenantModalComponent } from './tenants/edit-tenant-modal.component'
 import { TenantFeaturesModalComponent } from './tenants/tenant-features-modal.component';
 import { TenantsComponent } from './tenants/tenants.component';
 import { CustomTenantsComponent } from './tenants/custom-tenants.component';
-
 import { UiCustomizationComponent } from './ui-customization/ui-customization.component';
 import { DefaultThemeUiSettingsComponent } from './ui-customization/default-theme-ui-settings.component';
 import { CreateOrEditUserModalComponent } from './users/create-or-edit-user-modal.component';
