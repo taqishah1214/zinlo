@@ -94,11 +94,14 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     {
       this.account=false;
       this.balance=true;
+      this.activeSaveButton=true
+
     }
     else if(value=="Upload Chart of Accounts")
     {
       this.balance=false;
       this.account=true;
+      this.activeSaveButton=false
     }
  }
   ngOnInit() {
