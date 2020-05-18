@@ -67,7 +67,7 @@ namespace Zinlo.ChartsofAccount
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
                         .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
                         .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
-                        .WhereIf(input.BeginingAmountCheck, e => (e.Reconciled == ChartofAccounts.Reconciled.BeginningAmount));
+                        .WhereIf(input.BeginingAmountCheck, e => (e.Reconciled == ChartofAccounts.Reconciled.BeginningAmount && e.LinkedAccountNumber == null));
 
                 var MonthStatus = await GetMonthStatus(input.SelectedMonth);
                 var getUserWithPictures = (from o in query.ToList()

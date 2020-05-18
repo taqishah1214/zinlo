@@ -101,7 +101,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
 
     this.message.confirm(
       '',
-      this.l('AreYouSure'),
+      this.l('Are you sure you want to roll back to this version of instructions?'),
       (isConfirmed) => {
         if (isConfirmed) {
           this._closingChecklistService.revertInstruction(this.recordId,id).subscribe(resp => {
