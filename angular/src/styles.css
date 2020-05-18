@@ -153,6 +153,9 @@ body,html{
     padding-left: 10px;
     padding-top: 10px;
 }
+.btn-width{
+    min-width: 105px !important;
+}
 
 .e-icon-btn.e-active .e-md-preview::before {
     content: '\e350';

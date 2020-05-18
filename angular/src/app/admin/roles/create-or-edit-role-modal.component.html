@@ -39,8 +39,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="btn btn-secondary" (click)="close()">{{"Cancel" | localize}}</button>
-                    <button type="submit" class="btn btn-primary" [disabled]="!roleForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                    <button [disabled]="saving" type="button" class="btn btn-secondary btn-width" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary btn-width" [disabled]="!roleForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
                 </div>
 
             </form>

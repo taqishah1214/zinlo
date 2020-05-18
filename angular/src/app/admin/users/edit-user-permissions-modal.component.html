@@ -18,9 +18,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" [buttonBusy]="resettingPermissions" [busyText]="l('SavingWithThreeDot')" type="button" class="btn btn-default pull-left" (click)="resetPermissions()" [tooltip]="l('ResetPermissionsTooltip')" placement="top"><span>{{"ResetSpecialPermissions" | localize}}</span></button>
-                    <button [disabled]="saving || resettingPermissions" type="button" class="btn btn-default" (click)="close()">{{"Cancel" | localize}}</button>
-                    <button type="submit" class="btn btn-primary" [disabled]="!userForm.form.valid || resettingPermissions" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                    <button [disabled]="saving" [buttonBusy]="resettingPermissions" [busyText]="l('SavingWithThreeDot')" type="button" class="btn btn-default btn-width pull-left" (click)="resetPermissions()" [tooltip]="l('ResetPermissionsTooltip')" placement="top"><span>{{"ResetSpecialPermissions" | localize}}</span></button>
+                    <button [disabled]="saving || resettingPermissions" type="button" class="btn btn-default btn-width" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary btn-width" [disabled]="!userForm.form.valid || resettingPermissions" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
                 </div>
             </form>
         </div>

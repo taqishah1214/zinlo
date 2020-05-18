@@ -15,7 +15,7 @@
                 <div class="kt-subheader__toolbar">
                     <div class="kt-subheader__wrapper">
                         <button *ngIf="('Pages.Administration.Languages.Create' | permission) && multiTenancySideIsHost"
-                            (click)="createOrEditLanguageModal.show()" class="btn btn-primary"><i
+                            (click)="createOrEditLanguageModal.show()" class="btn btn-primary btn-width"><i
                                 class="fa fa-plus"></i> {{"CreateNewLanguage" | localize}}</button>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                                     <tr>
                                         <td style="width: 130px; text-align: center">
                                             <div class="btn-group dropdown" dropdown>
-                                                <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
+                                                <button dropdownToggle class="dropdown-toggle btn btn-sm btn-width btn-primary">
                                                     <i class="fa fa-cog"></i><span class="caret"></span>
                                                     {{"Actions" | localize}}
                                                 </button>

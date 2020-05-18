@@ -19,7 +19,7 @@
                                     <p>{{"CachesHeaderInfo" | localize}}</p>
                                 </div>
                                 <div class="col-xl-6 text-right">
-                                    <button class="btn btn-primary" (click)="clearAllCaches()"><i
+                                    <button class="btn btn-primary btn-width" (click)="clearAllCaches()"><i
                                             class="fa fa-recycle"></i>
                                         {{"ClearAll" | localize}}</button>
                                 </div>
@@ -31,7 +31,7 @@
                                             <tr *ngFor="let cache of caches">
                                                 <td>
                                                     <span>{{cache.name}}</span>
-                                                    <button class="btn btn-primary btn-sm pull-right"
+                                                    <button class="btn btn-primary btn-width btn-sm pull-right"
                                                         (click)="clearCache(cache.name);">
                                                         {{"Clear" | localize}}
                                                     </button>
@@ -48,9 +48,9 @@
                                     <p>{{"WebSiteLogsHeaderInfo" | localize}}</p>
                                 </div>
                                 <div class="col-xl-6 text-right">
-                                    <button class="btn btn-secondary" (click)="downloadWebLogs()"><i
+                                    <button class="btn btn-secondary btn-width" (click)="downloadWebLogs()"><i
                                             class="fa fa-download"></i> {{"DownloadAll" | localize}}</button>
-                                    <button class="btn btn-primary" (click)="getWebLogs()"><i class="fa fa-sync"></i>
+                                    <button class="btn btn-primary btn-width" (click)="getWebLogs()"><i class="fa fa-sync"></i>
                                         {{"Refresh" | localize}}</button>
                                 </div>
                             </div>
