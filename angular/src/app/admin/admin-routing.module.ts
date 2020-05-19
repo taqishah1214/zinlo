@@ -14,8 +14,9 @@ import { HostSettingsComponent } from './settings/host-settings.component';
 import { TenantSettingsComponent } from './settings/tenant-settings.component';
 import { InvoiceComponent } from './subscription-management/invoice/invoice.component';
 import { SubscriptionManagementComponent } from './subscription-management/subscription-management.component';
+import { SubscriptionComponent } from './subscription-management/subscription.component'
 import { TenantsComponent } from './tenants/tenants.component';
-import {  CustomTenantsComponent } from './tenants/custom-tenants.component';
+import { CustomTenantsComponent } from './tenants/custom-tenants.component';
 import { UiCustomizationComponent } from './ui-customization/ui-customization.component';
 import { UsersComponent } from './users/users.component';
 import { ManagementComponent } from './management/management.component';
@@ -25,9 +26,10 @@ import { CustomizedPlanRequestComponent } from './tenants/customized-plan-reques
     imports: [
         RouterModule.forChild([
             {
+
                 path: '',
                 children: [
-                    { path: 'management', component: ManagementComponent, data: { permission: 'Pages.Administration.TimeManagements' }  },
+                    { path: 'management', component: ManagementComponent, data: { permission: 'Pages.Administration.TimeManagements' } },
                     { path: 'users', component: UsersComponent, data: { permission: 'Pages.Administration.Users' } },
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Administration.Roles' } },
                     { path: 'auditLogs', component: AuditLogsComponent, data: { permission: 'Pages.Administration.AuditLogs' } },
@@ -40,6 +42,7 @@ import { CustomizedPlanRequestComponent } from './tenants/customized-plan-reques
                     { path: 'custom-tenants', component: CustomTenantsComponent, data: { permission: 'Pages.Tenants' } },
                     { path: 'organization-units', component: OrganizationUnitsComponent, data: { permission: 'Pages.Administration.OrganizationUnits' } },
                     { path: 'subscription-management', component: SubscriptionManagementComponent, data: { permission: 'Pages.Administration.Tenant.SubscriptionManagement' } },
+                  //  { path: 'subscription', component: SubscriptionComponent},
                     { path: 'invoice/:paymentId', component: InvoiceComponent, data: { permission: 'Pages.Administration.Tenant.SubscriptionManagement' } },
                     { path: 'tenantSettings', component: TenantSettingsComponent, data: { permission: 'Pages.Administration.Tenant.Settings' } },
                     { path: 'hostDashboard', component: HostDashboardComponent, data: { permission: 'Pages.Administration.Host.Dashboard' } },
@@ -47,7 +50,7 @@ import { CustomizedPlanRequestComponent } from './tenants/customized-plan-reques
                     { path: 'install', component: InstallComponent },
                     { path: 'ui-customization', component: UiCustomizationComponent },
                     { path: 'customized-plan-request', component: CustomizedPlanRequestComponent },
-                    { path: 'importlog', component: ImportLogComponent, data: { }  },
+                    { path: 'importlog', component: ImportLogComponent, data: {} },
                     { path: '', redirectTo: 'hostDashboard', pathMatch: 'full' }
                 ]
             }
