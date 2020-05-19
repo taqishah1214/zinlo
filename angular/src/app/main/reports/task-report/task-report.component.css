@@ -32,6 +32,9 @@ p{
 .btn{
     font-size: 14px; 
 }
+::ng-deep table.days.weeks th:first-child, ::ng-deep table.days.weeks td:first-child {
+    display: none;
+}
 ul{
     margin: 0;
     padding: 0;
