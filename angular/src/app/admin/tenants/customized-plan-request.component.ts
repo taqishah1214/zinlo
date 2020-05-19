@@ -4,7 +4,8 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { ContactusServiceServiceProxy, ContactusDto } from '@shared/service-proxies/service-proxies';
 @Component({
     selector: 'customizedPlanRequest',
-    templateUrl: './customized-plan-request.component.html'
+    templateUrl: './customized-plan-request.component.html',
+    styleUrls: ['./create-tenant-modal.component.css']
 })
 export class CustomizedPlanRequestComponent extends AppComponentBase implements OnInit, AfterViewInit {
     
@@ -33,6 +34,12 @@ export class CustomizedPlanRequestComponent extends AppComponentBase implements 
         });
         }
     }
+    onOpenCalendar(container) {
+        container.monthSelectHandler = (event: any): void => {
+          container._store.dispatch(container._actions.select(event.date));
+        };
+        container.setViewMode('month');
+      }
     approveRequest()
     {
        this.saving=true
