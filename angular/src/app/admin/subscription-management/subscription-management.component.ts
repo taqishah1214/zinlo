@@ -24,6 +24,7 @@ import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { finalize } from 'rxjs/operators';
+import { AppAuthService } from '@app/shared/common/auth/app-auth.service';
 
 @Component({
     templateUrl: './subscription-management.component.html',
@@ -56,7 +57,8 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
         private _invoiceServiceProxy: InvoiceServiceProxy,
         private _subscriptionServiceProxy: SubscriptionServiceProxy,
         private _activatedRoute: ActivatedRoute,
-        private _router: Router
+        private _router: Router,
+        private _authService: AppAuthService,
     ) {
         super(injector);
         this.filterText = this._activatedRoute.snapshot.queryParams['filterText'] || '';
@@ -91,6 +93,16 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
             console.log(this.tenant )
             this.application = this.appSession.application;
         });
+    }
+
+    CancelSubscription()
+    {
+        this._tenantRegistrationService.unRegisterTenant(this.tenant.id).subscribe(result => {
+            
+            //send to login
+          this._authService.logout();
+
+           });
     }
 
     getPaymentHistory(event?: LazyLoadEvent) {

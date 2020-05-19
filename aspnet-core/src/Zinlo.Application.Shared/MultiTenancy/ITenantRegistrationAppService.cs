@@ -12,5 +12,6 @@ namespace Zinlo.MultiTenancy
         Task<EditionsSelectOutput> GetEditionsForSelect();
 
         Task<EditionSelectDto> GetEdition(int editionId);
+        Task<bool> UnRegisterTenant(int tenantId);
     }
 }

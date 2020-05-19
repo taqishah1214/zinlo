@@ -294,5 +294,13 @@ namespace Zinlo.MultiTenancy
                 //    break;
             }
         }
+
+        public async Task<bool> UnRegisterTenant(int tenantId)
+        {
+           var tenant=_tenantManager.GetById(tenantId);
+            tenant.IsActive = false;
+            await _tenantManager.UpdateAsync(tenant);
+            return true;
+        }
     }
 }

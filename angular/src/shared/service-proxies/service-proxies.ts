@@ -14946,6 +14946,62 @@ export class TenantRegistrationServiceProxy {
         }
         return _observableOf<EditionSelectDto>(<any>null);
     }
+
+    /**
+     * @param tenantId (optional) 
+     * @return Success
+     */
+    unRegisterTenant(tenantId: number | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/TenantRegistration/UnRegisterTenant?";
+        if (tenantId === null)
+            throw new Error("The parameter 'tenantId' cannot be null.");
+        else if (tenantId !== undefined)
+            url_ += "tenantId=" + encodeURIComponent("" + tenantId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUnRegisterTenant(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUnRegisterTenant(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUnRegisterTenant(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
 }
 
 @Injectable()
@@ -29182,6 +29238,7 @@ export class EditionInfoDto implements IEditionInfoDto {
     annualPrice!: number | undefined;
     isHighestEdition!: boolean;
     isFree!: boolean;
+    isCustom!: boolean;
     id!: number;
 
     constructor(data?: IEditionInfoDto) {
@@ -29201,6 +29258,7 @@ export class EditionInfoDto implements IEditionInfoDto {
             this.annualPrice = data["annualPrice"];
             this.isHighestEdition = data["isHighestEdition"];
             this.isFree = data["isFree"];
+            this.isCustom = data["isCustom"];
             this.id = data["id"];
         }
     }
@@ -29220,6 +29278,7 @@ export class EditionInfoDto implements IEditionInfoDto {
         data["annualPrice"] = this.annualPrice;
         data["isHighestEdition"] = this.isHighestEdition;
         data["isFree"] = this.isFree;
+        data["isCustom"] = this.isCustom;
         data["id"] = this.id;
         return data; 
     }
@@ -29232,6 +29291,7 @@ export interface IEditionInfoDto {
     annualPrice: number | undefined;
     isHighestEdition: boolean;
     isFree: boolean;
+    isCustom: boolean;
     id: number;
 }
 
