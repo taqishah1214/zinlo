@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { AppComponentBase } from '@shared/common/app-component-base';
 
 
 @Component({
@@ -6,5 +7,17 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
     styleUrls: ['./subscription.component.css'],
 })
 
-export class SubscriptionComponent  {
+export class SubscriptionComponent  extends AppComponentBase implements OnInit {
+   
+   
+    constructor(
+        injector: Injector,
+        
+    ) {
+        super(injector);
+        
+    }
+    ngOnInit(): void {
+      
+    }
 }

@@ -189,12 +189,12 @@ namespace Zinlo.MultiTenancy
 
                     if (lastPayment != null)
                     {
-                        editionWithFeatures = editionWithFeatures
-                            .Where(e =>
-                                e.Edition.GetPaymentAmount(lastPayment.PaymentPeriodType) >
-                                currentEdition.GetPaymentAmount(lastPayment.PaymentPeriodType)
-                            )
-                            .ToList();
+                        //editionWithFeatures = editionWithFeatures
+                        //    .Where(e =>
+                        //        e.Edition.GetPaymentAmount(lastPayment.PaymentPeriodType) >
+                        //        currentEdition.GetPaymentAmount(lastPayment.PaymentPeriodType)
+                        //    )
+                        //    .ToList();
                     }
                 }
             }
