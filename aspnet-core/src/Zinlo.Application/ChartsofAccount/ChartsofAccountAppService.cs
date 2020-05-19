@@ -20,6 +20,8 @@ using ReconciliationType = Zinlo.ChartofAccounts.ReconciliationType;
 using Abp.Domain.Uow;
 using Zinlo.TimeManagements;
 using Zinlo.TimeManagements.Dto;
+using Microsoft.AspNetCore.Identity;
+using Zinlo.Authorization.Roles;
 
 namespace Zinlo.ChartsofAccount
 {
@@ -34,6 +36,7 @@ namespace Zinlo.ChartsofAccount
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IRepository<TimeManagement, long> _timeManagementRepository;
         private readonly IRepository<AccountBalance, long> _accountBalanceRepository;
+        private readonly RoleManager _roleManager;
 
 
         public ChartsofAccountAppService(IRepository<Itemization, long> itemizationRepository,
@@ -44,7 +47,8 @@ namespace Zinlo.ChartsofAccount
                                          IChartsOfAccountsTrialBalanceExcelExporter chartsOfAccountsTrialBalanceExcelExporter,
                                          IUnitOfWorkManager unitOfWorkManager,
                                          IRepository<TimeManagement, long> timeManagementRepository,
-                                         IRepository<AccountBalance, long> accountBalanceRepository)
+                                         IRepository<AccountBalance, long> accountBalanceRepository,
+                                         RoleManager roleManager)
         {
             _amortizationRepository = amortizationRepository;
             _itemizationRepository = itemizationRepository;
@@ -55,6 +59,7 @@ namespace Zinlo.ChartsofAccount
             _unitOfWorkManager = unitOfWorkManager;
             _timeManagementRepository = timeManagementRepository;
             _accountBalanceRepository = accountBalanceRepository;
+            _roleManager = roleManager;
         }
 
         public async Task<PagedResultDto<ChartsofAccoutsForViewDto>> GetAll(GetAllChartsofAccountInput input)
@@ -67,8 +72,8 @@ namespace Zinlo.ChartsofAccount
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
                         .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
                         .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
-                        .WhereIf(input.BeginingAmountCheck, e => (e.Reconciled == ChartofAccounts.Reconciled.BeginningAmount && e.LinkedAccountNumber == null));
-
+                        .WhereIf(input.BeginingAmountCheck, e => (e.Reconciled == ChartofAccounts.Reconciled.BeginningAmount && e.LinkedAccountNumber == null))
+                        .WhereIf(GetRoleName().Equals("User"), p => p.AssigneeId == AbpSession.UserId);
                 var MonthStatus = await GetMonthStatus(input.SelectedMonth);
                 var getUserWithPictures = (from o in query.ToList()
                                            select new GetUserWithPicture()
@@ -171,7 +176,13 @@ namespace Zinlo.ChartsofAccount
             return result;
         }
 
+        private string GetRoleName()
+        {
+            if (AbpSession.UserId == null) return "User session null";
+            var name = _roleManager.GetRoleNameByUserId((long)AbpSession.UserId).Result;
+            return name;
 
+        }
 
         protected virtual bool CheckAccountReconciledofSelectedMonth(long accountId, DateTime SelectedMonth)
         {
@@ -331,6 +342,7 @@ namespace Zinlo.ChartsofAccount
             mappedAccount.ReconciledId = (int)account.Reconciled;
             mappedAccount.CreatorUserId = account.CreatorUserId;
             mappedAccount.CreationTime = account.CreationTime;
+            mappedAccount.LinkedAccount = account.LinkedAccountNumber;
             return mappedAccount;
         }
 

@@ -20610,7 +20610,7 @@ export interface IPagedResultDtoOfChartsofAccoutsForViewDto {
 
 export enum AccountType {
     Equity = 1,
-    Assets = 2,
+    Asset = 2,
     Liability = 3,
 }
 
@@ -20723,6 +20723,7 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
     accountType!: number;
     accountSubTypeId!: number;
     reconciledId!: number;
+    linkedAccount!: string | undefined;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -20747,6 +20748,7 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
             this.accountType = data["accountType"];
             this.accountSubTypeId = data["accountSubTypeId"];
             this.reconciledId = data["reconciledId"];
+            this.linkedAccount = data["linkedAccount"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -20771,6 +20773,7 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
         data["accountType"] = this.accountType;
         data["accountSubTypeId"] = this.accountSubTypeId;
         data["reconciledId"] = this.reconciledId;
+        data["linkedAccount"] = this.linkedAccount;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -20788,6 +20791,7 @@ export interface IGetAccountForEditDto {
     accountType: number;
     accountSubTypeId: number;
     reconciledId: number;
+    linkedAccount: string | undefined;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;

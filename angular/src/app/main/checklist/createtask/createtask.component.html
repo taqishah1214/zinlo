@@ -189,13 +189,14 @@
                                         </div>
                                     </div> -->
 
-                                    <div class="form-group ">
-                                        <label>{{"Comments" | localize}}</label>
+                                    
+
+                                    <div class="col-md-10 form-group">
+                                        <label class="bg-color">{{"Instruction" | localize}}</label>
                                         <div class="form-group">
-                                            <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput" 
+                                            <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
                                                 [style]="{'height':'230px'}">
                                                 <p-header>
-                                                    
                                                     <span class="ql-formats">
                                                         <select class="ql-size" data-toggle="tooltip" title="Font Size"style="width:75px">
                                                             <option value="small">small</option>
@@ -226,17 +227,15 @@
                                                             <option value="center" label="Center"></option>
                                                             <option value="right" label="Right"></option>
                                                             <option value="justify" label="Justify"></option>
-                                                        </select>
-                                                         
-                                                        <button aria-label="Image" data-toggle="tooltip" title="Upload Image" class="ql-image"></button>
+                                                        </select> 
+                                                        <button aria-label="Image" data-toggle="tooltip" title="Upload Image" class="ql-image">
+            
+                                                        </button>
                                                     </span>
                                                 </p-header>
                                             </p-editor>
                                         </div>
-                                        <!-- <div class="btnMargin" >
-                                        <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
-                                        <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
-                                    </div> -->
+            
                                     </div>
 
                                 </div>
@@ -250,13 +249,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-10 form-group">
-                            <label class="bg-color">{{"Instruction" | localize}}</label>
+                   
+                        <div *ngIf="CreateOrEdit" class="form-group ">
+                            <label>{{"Comments" | localize}}</label>
                             <div class="form-group">
-                                <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
+                                <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput" 
                                     [style]="{'height':'230px'}">
                                     <p-header>
+                                        
                                         <span class="ql-formats">
                                             <select class="ql-size" data-toggle="tooltip" title="Font Size"style="width:75px">
                                                 <option value="small">small</option>
@@ -287,17 +287,19 @@
                                                 <option value="center" label="Center"></option>
                                                 <option value="right" label="Right"></option>
                                                 <option value="justify" label="Justify"></option>
-                                            </select> 
-                                            <button aria-label="Image" data-toggle="tooltip" title="Upload Image" class="ql-image">
-
-                                            </button>
+                                            </select>
+                                             
+                                            <button aria-label="Image" data-toggle="tooltip" title="Upload Image" class="ql-image"></button>
                                         </span>
                                     </p-header>
                                 </p-editor>
                             </div>
-
+                            <!-- <div class="btnMargin" >
+                            <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
+                            <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
+                        </div> -->
                         </div>
-                    </div>
+                   
                     <div class="kt-portlet__head">
                     </div>
                     <div class="btn-create">
