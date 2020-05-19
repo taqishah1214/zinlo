@@ -14,7 +14,6 @@ import { HostSettingsComponent } from './settings/host-settings.component';
 import { TenantSettingsComponent } from './settings/tenant-settings.component';
 import { InvoiceComponent } from './subscription-management/invoice/invoice.component';
 import { SubscriptionManagementComponent } from './subscription-management/subscription-management.component';
-import { SubscriptionComponent } from './subscription-management/subscription.component'
 import { TenantsComponent } from './tenants/tenants.component';
 import { CustomTenantsComponent } from './tenants/custom-tenants.component';
 import { UiCustomizationComponent } from './ui-customization/ui-customization.component';
