@@ -58,6 +58,7 @@ export class Checklist extends AppComponentBase implements OnInit {
   remainingUserForHeader: any = [];
   category: NameValueDtoOfInt64[] = [];
   selectedDate = new Date();
+  changeAssigneePermission: boolean;
   constructor(private _router: Router,
     private _categoryService: CategoriesServiceProxy,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector, private userDate: StoreDateService) {
@@ -67,16 +68,17 @@ export class Checklist extends AppComponentBase implements OnInit {
   ngOnInit() {
     // VERSION WITH BOOTSTRAP 4 : https://codepen.io/seltix/pen/XRPrwM
 
-    $(document).ready(function(){
+    $(document).ready(function () {
       // Show hide popover
-          $(".dropdown-menu").on('click', function (e) {
-    e.stopPropagation();
+      $(".dropdown-menu").on('click', function (e) {
+        e.stopPropagation();
+      });
     });
-  });
+    debugger;
+    this.changeAssigneePermission = this.isGranted("Pages.Tasks.Change.Assignee");
 
 
     this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
-    console.log("selected date",this.selectedDate);
     this.initializePageParameters();
     this.loadCategories();
   }
@@ -85,8 +87,8 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.AssigniBoxView = true;
     this.collapsibleRow = false;
   }
-  OnChange(){
-    this.rowid=-1;
+  OnChange() {
+    this.rowid = -1;
   }
   openFieldUpdateAssignee(record) {
     this.rowid = record;
@@ -103,21 +105,21 @@ export class Checklist extends AppComponentBase implements OnInit {
     container.setViewMode('month');
   }
   filterByMonth(event) {
-    if(event===1){
-      this.selectedDate =new Date(add(this.selectedDate, 1, "month"));
-   }
-   else if(event === -1) {
-     this.selectedDate = new Date( subtract(this.selectedDate, 1, "month"));
-   }
-   else {
-     this.selectedDate = new Date(add(event, 2, "day"));
-   }
-   
-   this.getClosingCheckListAllTasks();
+    if (event === 1) {
+      this.selectedDate = new Date(add(this.selectedDate, 1, "month"));
+    }
+    else if (event === -1) {
+      this.selectedDate = new Date(subtract(this.selectedDate, 1, "month"));
+    }
+    else {
+      this.selectedDate = new Date(add(event, 2, "day"));
+    }
+
+    this.getClosingCheckListAllTasks();
   }
 
   getClosingCheckListAllTasks(event?: LazyLoadEvent) {
-    this.rowid=-1;
+    this.rowid = -1;
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
       return;
@@ -141,8 +143,8 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
       this.list = result.items;
-      if(result.items.length>0){
-      this.monthStatus = result.items[0].monthStatus;
+      if (result.items.length > 0) {
+        this.monthStatus = result.items[0].monthStatus;
       }
       this.ClosingCheckList = result.items
       this.ClosingCheckList.forEach(j => {
@@ -159,8 +161,8 @@ export class Checklist extends AppComponentBase implements OnInit {
           else if (i.status === "Completed") {
             i["StatusColor"] = this.StatusColorBox[2]
           }
-          i["assigniName"] =  this.users[this.getUserIndex(i.assigneeId)].name;
-          i["profilePicture"] =  this.users[this.getUserIndex(i.assigneeId)].profilePicture;
+          i["assigniName"] = this.users[this.getUserIndex(i.assigneeId)].name;
+          i["profilePicture"] = this.users[this.getUserIndex(i.assigneeId)].profilePicture;
           if (i.statusId == 1) {
             i.status = "Not Started";
           }
@@ -270,16 +272,14 @@ export class Checklist extends AppComponentBase implements OnInit {
     this.getClosingCheckListAllTasks();
   }
 
-  changeToggleValue():void{
-    if(this.AllOrActive)
-    {
+  changeToggleValue(): void {
+    if (this.AllOrActive) {
       this.AllOrActive = false;
     }
-    else{
-         this.AllOrActive = true;
+    else {
+      this.AllOrActive = true;
     }
     this.getClosingCheckListAllTasks();
-    console.log(this.AllOrActive);
 
   }
 

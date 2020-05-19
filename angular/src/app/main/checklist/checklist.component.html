@@ -238,7 +238,7 @@
                                                 </select>
                                             </form>
                                         </td>
-                                        <td  [ngClass]="{'disabled':!monthStatus && Pages.Tasks.Change.Assignee}" class="assignee-cell">
+                                        <td  [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}"  class="assignee-cell">
                                             <div *ngIf="j.id != rowid" class="kt-user-card-v2"
                                                 (click)="monthStatus && openFieldUpdateAssignee(j.id)">
                                                 <div class="kt-user-card-v2__pic">

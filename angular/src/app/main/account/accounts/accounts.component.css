@@ -359,6 +359,10 @@ form.search-form input::after{
 .lower-content form > div{
     margin-left: 12px;
 }
+.block-btn{
+    
+    width: 170px;
+}
 .lower-content form > div:not(.block-btn){
     max-width: 170px;
     width: 100%;

@@ -29,7 +29,7 @@ export class TrialbalanceReportsComponent extends AppComponentBase {
   exceptionsList: any;
   FirstMonth: any = "";
   SecondMonth: any = "";
-  modalButtonText: any = "Next";
+  modalButtonText: any = "Compare";
   users: any;
   firstMonthData : any = [];
   secondMonthData : any = [];
