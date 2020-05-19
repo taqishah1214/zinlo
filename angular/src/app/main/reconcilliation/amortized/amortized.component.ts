@@ -255,8 +255,8 @@ BackToReconcileList() {
 
   reconciliedAccount() {
     this.message.confirm(
+      '',
       'The variance is equal to 0. Are you sure you want to reconcile this account?',
-       "",
       (isConfirmed) => {
         if (isConfirmed) {
           if (isConfirmed) {

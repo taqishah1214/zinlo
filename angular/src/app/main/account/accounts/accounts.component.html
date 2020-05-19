@@ -12,7 +12,7 @@
         </div>
         <div class="kt-subheader__toolbar">
             <div class="kt-subheader__wrapper">
-                <button *ngIf="'Pages.ChartsofAccounts.Create' | permission" (click)="RedirectToCreateAccount()" class="btn btn-primary"><i class="fa fa-plus"></i>
+                <button *ngIf="'Pages.ChartsofAccounts.Create' | permission" (click)="RedirectToCreateAccount()" class="btn btn-primary btn-width"><i class="fa fa-plus"></i>
                     {{"AddNew" | localize}}</button>
             </div>
         </div>
@@ -29,11 +29,11 @@
                         <div class="record-card-header-bottom">
 
                             <div class="record-card-header-bottom-inner1">
-                                <button *ngIf="'Pages.ChartsofAccounts.Download' | permission" class="btn btn-images" data-toggle="modal" data-target="#kt_modal_1">
+                                <button *ngIf="'Pages.ChartsofAccounts.Download' | permission" class="btn btn-images btn-width" data-toggle="modal" data-target="#kt_modal_1">
                                     <img src="../../../../assets/img/download.png">
                                     {{"Download" | localize}}
                                 </button>
-                                <button *ngIf="'Pages.ChartsofAccounts.Upload' | permission" class="btn btn-images" data-toggle="modal" data-target="#kt_modal_2">
+                                <button *ngIf="'Pages.ChartsofAccounts.Upload' | permission" class="btn btn-images btn-width" data-toggle="modal" data-target="#kt_modal_2">
                                     <img src="../../../../assets/img/upload.png">
                                     {{"Upload" | localize}}
                                 </button>
@@ -58,7 +58,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
+                                            <button type="button" class="btn btn-secondary btn-width"
                                                 data-dismiss="modal">{{"Cancel" | localize}}</button>
                                         </div>
                                     </div>
@@ -238,9 +238,9 @@
                                         </div>
 
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
+                                            <button type="button" class="btn btn-secondary btn-width"
                                                 data-dismiss="modal">{{"Close" | localize}}</button>
-                                            <button type="button" class="btn btn-primary"  data-dismiss="modal" (click)="SaveChanges()" >Save changes</button>
+                                            <button type="button" class="btn btn-primary btn-width"  data-dismiss="modal" (click)="SaveChanges()" [disabled]="activeSaveButton" >Save changes</button>
                                         </div>
                                     </div>
                                 </div>
@@ -303,7 +303,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="block-btn">
+                                    <div class="block-btn mr-1">
                                         <select class="form-control border-grey" name="categoryFilter"
                                             [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
                                             id="exampleFormControlSelect2">

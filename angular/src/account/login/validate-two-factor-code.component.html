@@ -20,7 +20,7 @@
 
             <div class="kt-login__actions">
                 <span class="remaining-time-counter" *ngIf="remainingSeconds >= 0">{{"RemainingTime" | localize}}: {{"SecondShort{0}" | localize:remainingSeconds}}.</span>
-                <button type="submit" class="btn btn-primary btn-elevate kt-login__btn-primary" [disabled]="!twoFactorForm.form.valid">{{"Submit" | localize}}</button>
+                <button type="submit" class="btn btn-primary btn-width btn-elevate kt-login__btn-primary" [disabled]="!twoFactorForm.form.valid">{{"Submit" | localize}}</button>
             </div>
         </form>
     </div>

@@ -82,6 +82,17 @@ namespace Zinlo.ImportLog
 
             _importsPathRepository.Update(result);
 
+            var remainingFile =  _importsPathRepository.GetAll().Where(p => p.Id != id && p.UploadMonth.Month == result.UploadMonth.Month && p.UploadMonth.Year == result.UploadMonth.Year).ToList();
+           if (remainingFile.Count > 0)
+            {
+                foreach (var item in remainingFile)
+                {
+                    item.IsRollBacked = false;
+                    _importsPathRepository.Update(item);
+                }
+            }
+            
+
         }
 
         protected virtual byte[] RequestToGetTheFile(string url)

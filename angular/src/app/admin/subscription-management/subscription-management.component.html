@@ -55,16 +55,16 @@
                                         <a *ngIf="!hasRecurringSubscription() && tenant.edition && !tenant.edition.isFree && !tenant.isInTrialPeriod"
                                             [routerLink]="['/account/extend']"
                                             [queryParams]="{ editionPaymentType: editionPaymentType.Extend}"
-                                            class="btn btn-info">
+                                            class="btn btn-info btn-width">
                                             {{"Extend" | localize}}
                                         </a>
                                         <a *ngIf="tenant.isInTrialPeriod" [routerLink]="['/account/buy']"
                                             [queryParams]="{editionPaymentType: editionPaymentType.BuyNow, editionId: tenant.edition.id, tenantId: tenant.id }"
-                                            class="btn btn-info">
+                                            class="btn btn-info btn-width">
                                             {{"BuyNow" | localize}}
                                         </a>
                                         <a *ngIf="tenant.edition && (tenant.edition.isFree || !tenant.edition.isHighestEdition) && !tenant.isInTrialPeriod"
-                                            [routerLink]="['/account/select-edition']" class="btn btn-warning">
+                                            [routerLink]="['/account/select-edition']" class="btn btn-warning btn-width">
                                             {{"Upgrade" | localize}}
                                         </a>
                                     </div>

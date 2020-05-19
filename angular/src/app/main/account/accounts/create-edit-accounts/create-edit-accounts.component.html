@@ -109,7 +109,7 @@
                                             <div class="dropdown-menu">
                                                 <div class="dropdown-item" *ngFor="let item of recociledList"
                                                     (click)="recociledClick(item.id,item.name)">
-                                                    <a *ngIf="item.id == 3" data-toggle="modal"
+                                                    <a href="javascript:void(0)" *ngIf="item.id == 3" data-toggle="modal"
                                                         data-target="#kt_modal_KTDatatable_local">{{item.name}}</a>
                                                     <a *ngIf="item.id != 3">{{item.name}}</a>
                                                 </div>
@@ -119,7 +119,7 @@
 
                                     <div class="col-md-6">
                                         <div *ngIf="linkAccountCheck" class="form-group category-selector">
-                                            <label for="TaskName">Link Account No</label>
+                                            <label for="TaskName">Link Account</label>
                                             <button  data-target="#kt_modal_KTDatatable_local" data-toggle="modal" type="button" class="btn btn-secondary" aria-haspopup="true"
                                                 aria-expanded="false">{{linkAccountNumber}}</button>
                                         </div>
@@ -134,12 +134,12 @@
                         <div class="kt-portlet__head">
                         </div>
                         <div class="form-group margin-top-5">
-                            <button type="button" class="btn btn-brand" *ngIf="editAccountCheck == false" type="submit"
+                            <button type="button" class="btn btn-brand btn-width" *ngIf="editAccountCheck == false" type="submit"
                                 [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                                 <i class="fa fa-save"></i>
                                 <span>{{"Create" | localize}}</span>
                             </button>
-                            <button *ngIf="editAccountCheck == true" class="btn btn-brand" type="submit"
+                            <button *ngIf="editAccountCheck == true" class="btn btn-brand btn-width" type="submit"
                                 [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                                 <i class="fa fa-save"></i>
                                 <span>{{"Update" | localize}}</span>
@@ -153,7 +153,7 @@
                                     <div class="modal-header">
                                         <h5 class="modal-title">
                                             Accounts List
-                                            <small>  Beginninng Amount</small>
+                                            <small>  Beginning Amount</small>
                                         </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -161,9 +161,9 @@
                                     </div>
                                     <div class="modal-body">
                                         <!--begin: Search Form -->
-                                        <div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">
+                                        <div class="kt-form px-1 kt-form--label-right kt-margin-t-7 kt-margin-b-10">
                                             <span>Link your account with one of the following accounts</span>
-                                            <div class="row align-items-center">
+                                            <div class="row align-items-center pt-3">
                                                 <div class="col-xl-8 order-2 order-xl-1">
                                                     <div class="row align-items-center">
                                                         <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
@@ -181,7 +181,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="row align-items-center">
+                                        <div class="row align-items-center px-3">
                                             <div class="categories-table primeng-datatable-container"
                                                 [busyIf]="primengTableHelper.isLoading">
                                                 <p-table #dataTable (onLazyLoad)="getAllImportLog($event)"

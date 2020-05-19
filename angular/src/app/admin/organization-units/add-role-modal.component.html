@@ -18,7 +18,7 @@
                     <div class="input-group mb-2">
                         <input autoFocus [(ngModel)]="filterText" name="filterText" class="form-control" placeholder="{{'SearchWithThreeDot' | localize}}" type="text">
                         <span class="input-group-btn">
-                            <button class="btn btn-primary" type="submit"><i class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
+                            <button class="btn btn-primary " type="submit"><i class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
                         </span>
                     </div>
 
@@ -76,8 +76,8 @@
             </div>
 
             <div class="modal-footer">
-                <button [disabled]="saving" type="button" class="btn btn-secondary" (click)="close()">{{"Cancel" | localize}}</button>
-                <button class="btn btn-primary" (click)="addRolesToOrganizationUnit()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                <button [disabled]="saving" type="button" class="btn btn-secondary btn-width" (click)="close()">{{"Cancel" | localize}}</button>
+                <button class="btn btn-primary btn-width" (click)="addRolesToOrganizationUnit()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
             </div>
 
         </div>

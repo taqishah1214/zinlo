@@ -75,8 +75,8 @@
                     </tabset>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{"Cancel" | localize}}</button>
-                    <button type="submit" class="btn btn-primary" [disabled]="!userForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>Send</span></button>
+                    <button [disabled]="saving" type="button" class="btn btn-default btn-width" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary btn-width" [disabled]="!userForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>Send</span></button>
                 </div>
             </form>
         </div>

@@ -67,7 +67,7 @@ namespace Zinlo.ChartsofAccount
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
                         .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
                         .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
-                        .WhereIf(input.BeginingAmountCheck, e => (e.Reconciled == ChartofAccounts.Reconciled.BeginningAmount));
+                        .WhereIf(input.BeginingAmountCheck, e => (e.Reconciled == ChartofAccounts.Reconciled.BeginningAmount && e.LinkedAccountNumber == null));
 
                 var MonthStatus = await GetMonthStatus(input.SelectedMonth);
                 var getUserWithPictures = (from o in query.ToList()
@@ -259,7 +259,14 @@ namespace Zinlo.ChartsofAccount
         }
         protected virtual async Task<long> Update(CreateOrEditChartsofAccountDto input)
         {
+
             var account = await _chartsofAccountRepository.FirstOrDefaultAsync(input.Id);
+            if (input.Reconciled == Dtos.Reconciled.AccruedAmount)
+            {
+                var Beginningaccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == input.LinkedAccountNumber);
+                Beginningaccount.LinkedAccountNumber = input.AccountNumber;
+                _chartsofAccountRepository.Update(Beginningaccount);
+            }
             if ((int)account.ReconciliationType != (int)input.ReconciliationType)
             {
                 account.IsChange = true;
@@ -278,6 +285,7 @@ namespace Zinlo.ChartsofAccount
                 var accountId = await _chartsofAccountRepository.InsertOrUpdateAndGetIdAsync(updatedAccount);
                 return accountId;
             }
+
            
 
 
@@ -536,12 +544,21 @@ namespace Zinlo.ChartsofAccount
         public async Task<LinkedAccountInfo> GetLinkAccountDetails(long accountId, DateTime month)
         {
             var currentAccount = _chartsofAccountRepository.FirstOrDefault(p => p.Id == accountId);
-            var linkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == currentAccount.LinkedAccountNumber);
-            var linkedAccountBalance = await _accountBalanceRepository.FirstOrDefaultAsync(p => p.AccountId == linkedAccount.Id && month.Month == p.Month.Month && month.Year == p.Month.Year);
-
             LinkedAccountInfo linkedAccountInfo = new LinkedAccountInfo();
-            linkedAccountInfo.Balance = linkedAccountBalance == null ? 0 : linkedAccountBalance.Balance;
-            linkedAccountInfo.TrialBalance = linkedAccountBalance == null ? 0 :  linkedAccountBalance.TrialBalance;
+            if (currentAccount.LinkedAccountNumber != null)
+            {
+                var linkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == currentAccount.LinkedAccountNumber);
+                var linkedAccountBalance = await _accountBalanceRepository.FirstOrDefaultAsync(p => p.AccountId == linkedAccount.Id && month.Month == p.Month.Month && month.Year == p.Month.Year);
+                linkedAccountInfo.Balance = linkedAccountBalance == null ? 0 : linkedAccountBalance.Balance;
+                linkedAccountInfo.TrialBalance = linkedAccountBalance == null ? 0 : linkedAccountBalance.TrialBalance;
+            }
+            else
+            {
+                linkedAccountInfo.Balance = 0;
+                linkedAccountInfo.TrialBalance = 0;
+            }
+
+           
 
             return linkedAccountInfo;
 

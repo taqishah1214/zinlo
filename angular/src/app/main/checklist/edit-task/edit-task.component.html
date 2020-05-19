@@ -68,18 +68,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                            {{"Comment" | localize}}
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#" data-toggle="kt-tooltip"
-                                                title="Tooltip title" data-placement="right" data-skin="dark"
-                                                data-container="body">{{"Action" | localize}}</a>
-                                        </div>
-                                    </div>
+                                    
                                     <!-- <div class="commentmainView show-comments">
                                         <div class="kt-widget3 ">
                                             <div *ngFor="let i of comment" class="kt-widget3__item ">
@@ -173,7 +162,7 @@
                                         </select>
                                     </div>
                                     <div class="duplicate_box">
-                                        <button type="button" class="btn btn-outline-primary"
+                                        <button type="button" class="btn btn-outline-primary btn-width"
                                             (click)="duplicateTask()">{{"Duplicate" | localize}}</button>
                                     </div>
                                 </div>
@@ -217,7 +206,7 @@
                             <div class="form-group giveCommentView" [ngClass]="{'disabled':!monthStatus}">
                                 <label>{{"Comments" | localize}}</label>
                                 <div class="form-group">
-                                    <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput" 
+                                    <p-editor [(ngModel)]="checklist.commentBody" name="" 
                                         [style]="{'height':'230px'}">
                                         <p-header>
                                             <span class="ql-formats">
@@ -333,7 +322,7 @@
                     <div class="row">
                         <div class="col-sm-10 form-group">
                             <div class="activity-box">
-                                <h5>Activity</h5>
+                                <h5>{{"Activity" | localize}}</h5>
                             </div>
                             <tabset class="tab-container tabbable-line">
                                 <tab heading="{{'Comments' | localize}}">
@@ -368,7 +357,7 @@
                     <div class="kt-portlet__head mb-2">
                     </div>
                     <div class="">
-                        <button class="btn btn-brand" (click)="saveTaskChanges()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid">
+                        <button class="btn btn-brand btn-width" (click)="saveTaskChanges()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid">
                             <i class="fa fa-save"></i>
                             <span>{{"Update" | localize}}</span>
                         </button>

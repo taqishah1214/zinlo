@@ -23,8 +23,8 @@ export class AppNavigationService {
             //new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
             new AppMenuItem('Tenants', '', './assets/media/ClosingCheckList/clipboard.svg', '',
             [
-                new AppMenuItem('Paid Plan', 'Pages.Tenants', './assets/media/ClosingCheckList/clipboard.svg', '/app/admin/tenants'),
-                new AppMenuItem('Custom Plan', 'Pages.Tenants', './assets/media/ClosingCheckList/administration.svg', '/app/admin/custom-tenants'),
+                new AppMenuItem('Paid Plan', 'Pages.Tenants', './assets/media/ClosingCheckList/dot.png', '/app/admin/tenants'),
+                new AppMenuItem('Custom Plan', 'Pages.Tenants', './assets/media/ClosingCheckList/dot.png', '/app/admin/custom-tenants'),
             ]),
             new AppMenuItem('Editions', 'Pages.Editions', './assets/media/ClosingCheckList/clipboard.svg', '/app/admin/editions'),
 
