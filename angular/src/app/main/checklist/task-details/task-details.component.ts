@@ -302,8 +302,9 @@ setTaskNameHistoryParam(item){
     this.getTaskDetails(this.recordId);
   }
   onComment(): void {
-    this.commantBox = true;
-    this.saveComments();
+    console.log(this.comment.body);
+    if(this.comment.body){
+    this.saveComments();}
   }
   saveComments(): void {
     this.comment.typeId = this.recordId;
