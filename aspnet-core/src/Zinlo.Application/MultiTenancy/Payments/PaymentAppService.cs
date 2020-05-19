@@ -326,5 +326,16 @@ namespace Zinlo.MultiTenancy.Payments
 
             return description;
         }
+
+        public async Task<SubscriptionPaymentListDto> GetLastPaymentHistory()
+        {
+            var query = await _subscriptionPaymentRepository.GetAll()
+                .Include(sp => sp.Edition)
+                .Where(sp => sp.TenantId == AbpSession.GetTenantId())
+                .OrderByDescending(o => o.Id).FirstOrDefaultAsync();
+
+
+            return  ObjectMapper.Map<SubscriptionPaymentListDto>(query);
+        }
     }
 }

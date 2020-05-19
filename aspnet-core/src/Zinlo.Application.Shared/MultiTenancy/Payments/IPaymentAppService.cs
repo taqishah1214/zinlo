@@ -16,6 +16,7 @@ namespace Zinlo.MultiTenancy.Payments
         Task CancelPayment(CancelPaymentDto input);
 
         Task<PagedResultDto<SubscriptionPaymentListDto>> GetPaymentHistory(GetPaymentHistoryInput input);
+        Task<SubscriptionPaymentListDto> GetLastPaymentHistory();
 
         List<PaymentGatewayModel> GetActiveGateways(GetActiveGatewaysInput input);
         

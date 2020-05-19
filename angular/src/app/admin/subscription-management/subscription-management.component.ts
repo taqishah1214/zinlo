@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
@@ -13,17 +13,23 @@ import {
     CreateInvoiceDto,
     EditionPaymentType,
     SubscriptionStartType,
-    SubscriptionPaymentType
+    SubscriptionPaymentType,
+    TenantRegistrationServiceProxy,
+    EditionsSelectOutput,
+    EditionSelectDto,
+    SubscriptionPaymentListDto
 } from '@shared/service-proxies/service-proxies';
 
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { finalize } from 'rxjs/operators';
+import { AppAuthService } from '@app/shared/common/auth/app-auth.service';
 
 @Component({
     templateUrl: './subscription-management.component.html',
-    animations: [appModuleAnimation()]
+    animations: [appModuleAnimation()],
+    styleUrls: ['./subscription.component.css'],
 })
 
 export class SubscriptionManagementComponent extends AppComponentBase implements OnInit {
@@ -33,12 +39,13 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
 
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     subscriptionPaymentType: typeof SubscriptionPaymentType = SubscriptionPaymentType;
-
+    lastPayment : SubscriptionPaymentListDto =new SubscriptionPaymentListDto();
     loading: boolean;
     user: UserLoginInfoDto = new UserLoginInfoDto();
     tenant: TenantLoginInfoDto = new TenantLoginInfoDto();
     application: ApplicationInfoDto = new ApplicationInfoDto();
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
+    editionsSelectOutput: EditionsSelectOutput = new EditionsSelectOutput();
 
     filterText = '';
 
@@ -46,9 +53,12 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
         injector: Injector,
         private _sessionService: SessionServiceProxy,
         private _paymentServiceProxy: PaymentServiceProxy,
+        private _tenantRegistrationService: TenantRegistrationServiceProxy,
         private _invoiceServiceProxy: InvoiceServiceProxy,
         private _subscriptionServiceProxy: SubscriptionServiceProxy,
-        private _activatedRoute: ActivatedRoute
+        private _activatedRoute: ActivatedRoute,
+        private _router: Router,
+        private _authService: AppAuthService,
     ) {
         super(injector);
         this.filterText = this._activatedRoute.snapshot.queryParams['filterText'] || '';
@@ -56,6 +66,11 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
 
     ngOnInit(): void {
         this.getSettings();
+        this._tenantRegistrationService.getEditionsForSelect()
+            .subscribe((result) => {
+                this.editionsSelectOutput = result;
+                console.log(result)
+            });
     }
 
     createOrShowInvoice(paymentId: number, invoiceNo: string): void {
@@ -75,8 +90,19 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
             this.loading = false;
             this.user = this.appSession.user;
             this.tenant = this.appSession.tenant;
+            console.log(this.tenant )
             this.application = this.appSession.application;
         });
+    }
+
+    CancelSubscription()
+    {
+        this._tenantRegistrationService.unRegisterTenant(this.tenant.id).subscribe(result => {
+            
+            //send to login
+          this._authService.logout();
+
+           });
     }
 
     getPaymentHistory(event?: LazyLoadEvent) {
@@ -85,6 +111,7 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
 
             return;
         }
+        this.getLastPaymentHistory();
 
         this.primengTableHelper.showLoadingIndicator();
 
@@ -96,6 +123,12 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
             this.primengTableHelper.hideLoadingIndicator();
+        });
+    }
+    getLastPaymentHistory()
+    {
+        this._paymentServiceProxy.getLastPaymentHistory().subscribe(result => {
+         this.lastPayment=result;
         });
     }
 
@@ -113,5 +146,9 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
 
     hasRecurringSubscription(): boolean {
         return this.tenant.subscriptionPaymentType !== this.subscriptionPaymentType.Manual;
+    }
+
+    upgrade(upgradeEdition: EditionSelectDto, editionPaymentType: EditionPaymentType): void {
+        this._router.navigate(['/account/upgrade'], { queryParams: { upgradeEditionId: upgradeEdition.id, editionPaymentType: editionPaymentType } });
     }
 }
