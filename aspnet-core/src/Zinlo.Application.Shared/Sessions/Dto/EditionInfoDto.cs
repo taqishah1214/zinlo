@@ -15,5 +15,6 @@ namespace Zinlo.Sessions.Dto
         public bool IsHighestEdition { get; set; }
 
         public bool IsFree { get; set; }
+        public bool IsCustom { get; set; }
     }
 }
