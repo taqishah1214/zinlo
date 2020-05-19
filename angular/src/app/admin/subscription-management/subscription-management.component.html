@@ -275,6 +275,27 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-10 mt-4">
+                            <div class="form-group row"
+                                    [hidden]="tenant.subscriptionPaymentType != subscriptionPaymentType.RecurringAutomatic">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-8">
+                                        <button class="btn btn-secondary" (click)="disableRecurringPayments()">
+                                            {{"DisableRecurringPayments" | localize}}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row"
+                                    [hidden]="tenant.subscriptionPaymentType != subscriptionPaymentType.RecurringManual">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-8">
+                                        <button class="btn btn-info" (click)="enableRecurringPayments()">
+                                            {{"EnableRecurringPayments" | localize}}
+                                        </button>
+                                    </div>
+                                </div>
+                        </div>
                         
                     </div>
                 </div>
