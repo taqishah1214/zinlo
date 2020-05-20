@@ -1181,5 +1181,18 @@
     <text name="LastName">Last Name</text>
   <text name="AccountSubtypewithsameNamealreadyexist">Account Sub type with same Name already exist</text>
   <text name="Activity">Activity</text>
+   <text name="AccountSubType">Account SubType</text>
+    <text name="ChartsofAccounts">Chart of Account</text>
+
+    <text name="Download_trialBalance">Download Trial Balance</text>
+    <text name="Restore_Items">Restore Items</text>
+    <text name="Upload_trialBalance">Upload Trial Balance</text>
+    <text name="ChangeAssignee">Change Assignee</text>
+    <text name="ChangeStatus">Change Status</text>
+    <text name="ObserveVariance">Observe Variance</text>
+    <text name="TrialBalance">Trial Balance</text>
+
+
+
   </texts>
 </localizationDictionary>
