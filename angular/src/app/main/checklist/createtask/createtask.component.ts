@@ -71,6 +71,7 @@ public quickTools: object = {
   DaysByMonth: Date = new Date();
   errorMessage = "";
   monthStatus = true;
+  CreateOrEdit = false;
   constructor
     (private _router: Router,
       private _closingChecklistService: ClosingChecklistServiceProxy,

@@ -189,12 +189,12 @@ namespace Zinlo.MultiTenancy
 
                     if (lastPayment != null)
                     {
-                        editionWithFeatures = editionWithFeatures
-                            .Where(e =>
-                                e.Edition.GetPaymentAmount(lastPayment.PaymentPeriodType) >
-                                currentEdition.GetPaymentAmount(lastPayment.PaymentPeriodType)
-                            )
-                            .ToList();
+                        //editionWithFeatures = editionWithFeatures
+                        //    .Where(e =>
+                        //        e.Edition.GetPaymentAmount(lastPayment.PaymentPeriodType) >
+                        //        currentEdition.GetPaymentAmount(lastPayment.PaymentPeriodType)
+                        //    )
+                        //    .ToList();
                     }
                 }
             }
@@ -293,6 +293,14 @@ namespace Zinlo.MultiTenancy
                 //    }
                 //    break;
             }
+        }
+
+        public async Task<bool> UnRegisterTenant(int tenantId)
+        {
+           var tenant=_tenantManager.GetById(tenantId);
+            tenant.IsActive = false;
+            await _tenantManager.UpdateAsync(tenant);
+            return true;
         }
     }
 }

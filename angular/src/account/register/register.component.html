@@ -164,6 +164,9 @@
                                                 <div class="text-danger" *ngIf="tenantName.errors.required">
                                                     Tenant Name is required.
                                                 </div>
+                                                <div class="text-danger" *ngIf="tenantName.errors.pattern">
+                                                    Only Lower Cases letters are Allowed.
+                                                </div>
                                             </div>
                                             <div class="text-danger" *ngIf="isTenantExist">
                                                 Tenant Name already exists.

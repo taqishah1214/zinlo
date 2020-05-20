@@ -108,6 +108,12 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   editAccount() : void {
     this.editAccountCheck = true;
     this._chartOfAccountService.getAccountForEdit( this.accountId).subscribe(result => {
+
+      if (result.reconciledId == 3 || result.reconciledId == 2){
+        this.linkAccountCheck =  true;
+        this.linkAccountNumber = result.linkedAccount;
+      }
+
       this.accountDto.creatorUserId = result.creatorUserId; 
       if(history.state.data.userId){
         this.accountDto.assigneeId=history.state.data.userId

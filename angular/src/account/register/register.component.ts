@@ -96,7 +96,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         })
         this.businessInfoForm = new FormGroup({
             businessName: new FormControl('',[Validators.required]),
-            tenantName: new FormControl('',[Validators.required]),
+            tenantName: new FormControl('',[Validators.required,Validators.pattern("^[a-z]+")]),
             website:new FormControl(''),
             title: new FormControl('',[Validators.required]),
             phone: new FormControl('',[Validators.pattern("^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$")]),

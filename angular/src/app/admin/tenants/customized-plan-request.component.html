@@ -12,7 +12,7 @@
             </div>
             <div class="row px-4 py-4">
                 <div class="col-lg-6 px-5">
-                    <div class="row py-4">
+                    <div class="row">
                         <div class="col-xl-6">
                             <div class="form-group">
                                 <label>First Name</label>
@@ -29,11 +29,20 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xl-6">
+                        <div class="col-xl-12">
                             <div class="form-group">
                                 <label>Company Name</label>
                                 <input [(ngModel)]="contactus.companyName"  type="text" class="form-control" name="companyName" placeholder="Enter Company Name" value="" autocomplete="off" required maxlength="64">
                         
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div  class="form-group">
+                                <label >Select Expiry Date</label>
+                                <input  bsDatepicker formControlName="expiryDate" class="form-control" name="expiryDateOfUser" placeholder="Select Date" bsDatepicker autocomplete="off" required>
+                                                    
                             </div>
                         </div>
                         <div class="col-xl-6">

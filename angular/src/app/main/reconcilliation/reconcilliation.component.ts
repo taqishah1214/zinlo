@@ -53,8 +53,8 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   monthStatus : boolean = false;
   users : any;
   selectedDate = new Date();
-
-
+  changeAssigneePermission : boolean;
+  changeStatusPermission : boolean;
   constructor(private _router: Router,
     private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector,
     private _chartOfAccountService: ChartsofAccountServiceProxy,private userDate: StoreDateService) {
@@ -62,6 +62,9 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this.FilterBoxOpen = false;
   }
   ngOnInit() {
+    this.changeAssigneePermission = this.isGranted("Pages.Tasks.Change.Assignee");
+    this.changeStatusPermission = this.isGranted("Pages.Reconciliation.Change.Status");
+
     this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
