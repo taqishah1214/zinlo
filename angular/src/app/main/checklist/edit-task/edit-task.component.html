@@ -180,37 +180,9 @@
                         </div>
                     </div>
                     <div class="row drag_drop_box">
-                        <div class="col-md-7">
-                            <!-- <div [ngClass]="{'disabled':!monthStatus}"  class="form-group giveCommentView" *ngIf="!commantBox">
-                                <label>{{"Comments" | localize}}</label>
-                                <div (click)="commentClick()">
-                                    <div class="kt-user-card-v2">
-                                        <div class="kt-user-card-v2__pic">
-                                            <div class="kt-user-card-v2__pic">
-                                                <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
-                                                    <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                        alt="Pic" [src]="UserProfilePicture">
-                                                </div>
-
-                                                <div *ngIf="!UserProfilePicture"
-                                                    class="kt-badge kt-badge--xl kt-badge--primary">
-                                                    {{userSignInName | firstLetterOfWords}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div innerHTML="{{checklist.commentBody}}"
-                                            class="form-control create-comments"></div>
-                                    </div>
-                                </div>
-                            </div> -->
-                            
-
-                            <div class="col-md-10 form-group">
+                        <div class="col-md-7 form-group">
+                            <div class="pt-4">
                                 <label>{{"Instruction" | localize}}</label>
-                                <!-- <div class="form-group">
-                                    <p-editor [(ngModel)]="getTaskForEdit.instructionBody" name="HtmlEditorInput"
-                                        [style]="{'height':'150px'}"></p-editor>
-                                </div> -->
                                    <div class="form-group ">
                                         <p-editor [(ngModel)]="getTaskForEdit.instructionBody" name="HtmlEditorInput" 
                                             [style]="{'height':'230px'}">
