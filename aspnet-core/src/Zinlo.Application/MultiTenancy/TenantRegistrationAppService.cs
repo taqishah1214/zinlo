@@ -302,5 +302,13 @@ namespace Zinlo.MultiTenancy
             await _tenantManager.UpdateAsync(tenant);
             return true;
         }
+
+        public async Task<bool> SetTenantExpire(int tenantId, DateTime expireDate)
+        {
+            var tenant = _tenantManager.GetById(tenantId);
+            tenant.SubscriptionEndDateUtc = expireDate;
+            await _tenantManager.UpdateAsync(tenant).ConfigureAwait(false);
+            return true;
+        }
     }
 }
