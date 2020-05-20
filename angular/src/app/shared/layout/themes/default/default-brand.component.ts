@@ -3,6 +3,7 @@ import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { DOCUMENT } from '@angular/common';
 import { AccountServiceProxy } from '@shared/service-proxies/service-proxies';
+import { LocaleMappingService } from '../../../../../shared/locale-mapping.service';
 
 @Component({
     templateUrl: './default-brand.component.html',
@@ -13,10 +14,10 @@ export class DefaultBrandComponent extends AppComponentBase {
 
     defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-' + this.currentTheme.baseSettings.menu.asideSkin + '.svg';
     remoteServiceBaseUrl: string = AppConsts.remoteServiceBaseUrl;
-
     constructor(
         injector: Injector,
         private proxy:AccountServiceProxy,
+        private toggel:LocaleMappingService,
         @Inject(DOCUMENT) private document: Document
     ) {
         super(injector);
@@ -24,5 +25,6 @@ export class DefaultBrandComponent extends AppComponentBase {
 
     toggleLeftAside(): void {
         this.document.body.classList.toggle('kt-aside--minimize');
+        this.toggel.updatedItemCount(1);
     }
 }

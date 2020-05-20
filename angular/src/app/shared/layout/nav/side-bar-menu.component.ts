@@ -8,6 +8,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MenuOptions } from '@metronic/app/core/_base/layout/directives/menu.directive';
 import { AccountServiceProxy } from '@shared/service-proxies/service-proxies';
+import { LocaleMappingService } from '../../../../shared/locale-mapping.service';
 
 @Component({
     templateUrl: './side-bar-menu.component.html',
@@ -22,7 +23,7 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
     currentRouteUrl = '';
     insideTm: any;
     outsideTm: any;
-
+    toggleButton:any;
     menuOptions: MenuOptions = {
         // vertical scroll
         scroll: null,
@@ -53,6 +54,7 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
         private proxy:AccountServiceProxy,
         public permission: PermissionCheckerService,
         private _appNavigationService: AppNavigationService,
+        private toggel:LocaleMappingService,
         @Inject(DOCUMENT) private document: Document,
         private render: Renderer2) {
         super(injector);
@@ -62,7 +64,16 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
         
         this.releaseDate = this.appSession.application.releaseDate.format('YYYYMMDD');
         this.menu = this._appNavigationService.getMenu();
-
+        this.toggel.count.subscribe(data=>{
+            this.toggleButton=data
+            if(this.toggleButton%2==0){
+                this.copyright=false
+            }
+            else{
+                this.copyright=true
+            }
+        });
+        console.log(this.toggleButton)
         this.currentRouteUrl = this.router.url.split(/[?#]/)[0];
 
         this.router.events

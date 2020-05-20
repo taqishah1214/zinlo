@@ -8,7 +8,8 @@ import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'editTenantModal',
-    templateUrl: './edit-tenant-modal.component.html'
+    templateUrl: './edit-tenant-modal.component.html',
+    styleUrls: ['./create-tenant-modal.component.css']
 })
 export class EditTenantModalComponent extends AppComponentBase {
 

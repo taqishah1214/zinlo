@@ -15002,6 +15002,67 @@ export class TenantRegistrationServiceProxy {
         }
         return _observableOf<boolean>(<any>null);
     }
+
+    /**
+     * @param tenantId (optional) 
+     * @param expireDate (optional) 
+     * @return Success
+     */
+    setTenantExpire(tenantId: number | undefined, expireDate: moment.Moment | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/TenantRegistration/SetTenantExpire?";
+        if (tenantId === null)
+            throw new Error("The parameter 'tenantId' cannot be null.");
+        else if (tenantId !== undefined)
+            url_ += "tenantId=" + encodeURIComponent("" + tenantId) + "&"; 
+        if (expireDate === null)
+            throw new Error("The parameter 'expireDate' cannot be null.");
+        else if (expireDate !== undefined)
+            url_ += "expireDate=" + encodeURIComponent(expireDate ? "" + expireDate.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSetTenantExpire(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSetTenantExpire(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSetTenantExpire(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
 }
 
 @Injectable()
@@ -22421,6 +22482,7 @@ export class ContactusDto implements IContactusDto {
     isAccepted!: boolean;
     tenantName!: string | undefined;
     creationTime!: moment.Moment;
+    expireTime!: moment.Moment;
 
     constructor(data?: IContactusDto) {
         if (data) {
@@ -22445,6 +22507,7 @@ export class ContactusDto implements IContactusDto {
             this.isAccepted = data["isAccepted"];
             this.tenantName = data["tenantName"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.expireTime = data["expireTime"] ? moment(data["expireTime"].toString()) : <any>undefined;
         }
     }
 
@@ -22469,6 +22532,7 @@ export class ContactusDto implements IContactusDto {
         data["isAccepted"] = this.isAccepted;
         data["tenantName"] = this.tenantName;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["expireTime"] = this.expireTime ? this.expireTime.toISOString() : <any>undefined;
         return data; 
     }
 }
@@ -22486,6 +22550,7 @@ export interface IContactusDto {
     isAccepted: boolean;
     tenantName: string | undefined;
     creationTime: moment.Moment;
+    expireTime: moment.Moment;
 }
 
 export class CreateOrUpdateContactusInput implements ICreateOrUpdateContactusInput {

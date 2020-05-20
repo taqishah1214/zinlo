@@ -11,7 +11,9 @@ import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'createTenantModal',
-    templateUrl: './create-tenant-modal.component.html'
+    templateUrl: './create-tenant-modal.component.html',
+    styleUrls: ['./create-tenant-modal.component.css']
+
 })
 export class CreateTenantModalComponent extends AppComponentBase {
 

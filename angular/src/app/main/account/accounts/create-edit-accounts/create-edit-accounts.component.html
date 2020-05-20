@@ -107,9 +107,9 @@
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{recociled}}</button>
                                             <div class="dropdown-menu">
-                                                <div class="dropdown-item" *ngFor="let item of recociledList"
+                                                <div class="dropdown-item" style="cursor: pointer;" *ngFor="let item of recociledList"
                                                     (click)="recociledClick(item.id,item.name)">
-                                                    <a href="javascript:void(0)" *ngIf="item.id == 3" data-toggle="modal"
+                                                    <a *ngIf="item.id == 3" data-toggle="modal"
                                                         data-target="#kt_modal_KTDatatable_local">{{item.name}}</a>
                                                     <a *ngIf="item.id != 3">{{item.name}}</a>
                                                 </div>

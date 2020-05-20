@@ -19,6 +19,7 @@ import { finalize } from 'rxjs/operators';
 @Component({
     templateUrl: './tenants.component.html',
     encapsulation: ViewEncapsulation.None,
+    styleUrls: ['./create-tenant-modal.component.css'],
     animations: [appModuleAnimation()]
 })
 export class TenantsComponent extends AppComponentBase implements OnInit {
