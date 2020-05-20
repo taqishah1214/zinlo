@@ -20,7 +20,13 @@ namespace Zinlo.ImportsPaths
         public string SuccessFilePath { get; set; }
         public string UploadedFilePath { get; set; }
         public DateTime UploadMonth { get; set; }
+        public Status FileStatus { get; set; }
 
+    }
 
+    public enum Status
+    {
+        InProcess = 1,
+        Completed = 2
     }
 }

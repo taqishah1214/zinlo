@@ -68,7 +68,21 @@ namespace Zinlo.ChartsofAccount.Importing
             using (CurrentUnitOfWork.SetTenantId(args.TenantId))
             {
                 var accountsTrialBalance = GetAccountsTrialBalanceListFromExcelOrNull(args);
-               
+
+                var fileUrl = _invalidAccountsTrialBalanceExporter.ExportToFile(accountsTrialBalance);
+                ImportPathDto pathDto = new ImportPathDto();
+                pathDto.FilePath = "";
+                pathDto.Type = FileTypes.TrialBalance.ToString();
+                pathDto.TenantId = (int)TenantId;
+                pathDto.UploadedFilePath = args.url;
+                pathDto.CreatorId = UserId;
+                pathDto.FailedRecordsCount = 0;
+                pathDto.SuccessRecordsCount = 0;
+                pathDto.SuccessFilePath = fileUrl;
+                pathDto.UploadMonth = args.selectedMonth;
+                pathDto.FileStatus = Status.InProcess;
+                loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
+
                 //var sumOfAllBalance =  accountsTrialBalance.Sum(p => long.Parse(p.Balance));
 
                 //if (sumOfAllBalance != 0)
@@ -113,19 +127,6 @@ namespace Zinlo.ChartsofAccount.Importing
             var invalidAccounts = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
             var list = new List<ChartsOfAccountsTrialBalanceExcellImportDto>();
             var fileUrl = _invalidAccountsTrialBalanceExporter.ExportToFile(accounts);
-            #region|Log intial info|
-            ImportPathDto pathDto = new ImportPathDto();
-            pathDto.FilePath = "";
-            pathDto.Type = FileTypes.TrialBalance.ToString();
-            pathDto.TenantId = (int)TenantId;
-            pathDto.UploadedFilePath = args.url;
-            pathDto.CreatorId = UserId;
-            pathDto.FailedRecordsCount = 0;
-            pathDto.SuccessRecordsCount = 0;
-            pathDto.SuccessFilePath = fileUrl;
-            pathDto.UploadMonth = args.selectedMonth;
-            loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
-            #endregion
             #region|mgs to  be deleted|
             _appNotifier.SendMessageAsync(
                   args.User,
@@ -175,6 +176,7 @@ namespace Zinlo.ChartsofAccount.Importing
             pathDtoUpdate.CreatorId = UserId;
             pathDtoUpdate.FailedRecordsCount = 0;
             pathDtoUpdate.SuccessRecordsCount = 0;
+            pathDtoUpdate.FileStatus = Status.InProcess;
             pathDtoUpdate.UploadMonth = args.selectedMonth;
             _importPathsAppService.UpdateFilePath(pathDtoUpdate);
             #endregion
@@ -219,6 +221,7 @@ namespace Zinlo.ChartsofAccount.Importing
                 pathDto.FailedRecordsCount = invalidAccounts.Count;
                 pathDto.SuccessRecordsCount = SuccessRecordsCount;
                 pathDto.UploadMonth = args.selectedMonth;
+                pathDto.FileStatus = Status.Completed;
                 await _importPathsAppService.UpdateFilePath(pathDto);
                 #endregion
                 await _appNotifier.SendMessageAsync(
@@ -236,6 +239,7 @@ namespace Zinlo.ChartsofAccount.Importing
                 pathDto.UploadedFilePath = args.url;
                 pathDto.FailedRecordsCount = invalidAccounts.Count;
                 pathDto.SuccessRecordsCount = SuccessRecordsCount;
+                pathDto.FileStatus = Status.Completed;
                 await _importPathsAppService.UpdateFilePath(pathDto);
                 #endregion
                 await _appNotifier.SendMessageAsync(

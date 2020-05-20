@@ -25205,6 +25205,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
     creationTime!: moment.Moment;
     isRollBacked!: boolean;
     successFilePath!: string | undefined;
+    fileStatus!: number;
 
     constructor(data?: IImportLogForViewDto) {
         if (data) {
@@ -25226,6 +25227,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.isRollBacked = data["isRollBacked"];
             this.successFilePath = data["successFilePath"];
+            this.fileStatus = data["fileStatus"];
         }
     }
 
@@ -25247,6 +25249,7 @@ export class ImportLogForViewDto implements IImportLogForViewDto {
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["isRollBacked"] = this.isRollBacked;
         data["successFilePath"] = this.successFilePath;
+        data["fileStatus"] = this.fileStatus;
         return data; 
     }
 }
@@ -25261,6 +25264,7 @@ export interface IImportLogForViewDto {
     creationTime: moment.Moment;
     isRollBacked: boolean;
     successFilePath: string | undefined;
+    fileStatus: number;
 }
 
 export class PagedResultDtoOfImportLogForViewDto implements IPagedResultDtoOfImportLogForViewDto {
@@ -25311,6 +25315,11 @@ export interface IPagedResultDtoOfImportLogForViewDto {
     items: ImportLogForViewDto[] | undefined;
 }
 
+export enum Status {
+    InProcess = 1,
+    Completed = 2,
+}
+
 export class ImportPathDto implements IImportPathDto {
     id!: number;
     filePath!: string | undefined;
@@ -25322,6 +25331,7 @@ export class ImportPathDto implements IImportPathDto {
     successFilePath!: string | undefined;
     uploadedFilePath!: string | undefined;
     uploadMonth!: moment.Moment;
+    fileStatus!: Status;
 
     constructor(data?: IImportPathDto) {
         if (data) {
@@ -25344,6 +25354,7 @@ export class ImportPathDto implements IImportPathDto {
             this.successFilePath = data["successFilePath"];
             this.uploadedFilePath = data["uploadedFilePath"];
             this.uploadMonth = data["uploadMonth"] ? moment(data["uploadMonth"].toString()) : <any>undefined;
+            this.fileStatus = data["fileStatus"];
         }
     }
 
@@ -25366,6 +25377,7 @@ export class ImportPathDto implements IImportPathDto {
         data["successFilePath"] = this.successFilePath;
         data["uploadedFilePath"] = this.uploadedFilePath;
         data["uploadMonth"] = this.uploadMonth ? this.uploadMonth.toISOString() : <any>undefined;
+        data["fileStatus"] = this.fileStatus;
         return data; 
     }
 }
@@ -25381,6 +25393,7 @@ export interface IImportPathDto {
     successFilePath: string | undefined;
     uploadedFilePath: string | undefined;
     uploadMonth: moment.Moment;
+    fileStatus: Status;
 }
 
 export class InstallDto implements IInstallDto {
