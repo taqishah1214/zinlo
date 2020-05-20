@@ -965,6 +965,9 @@ table.table.record-table td, table.table.record-table th {
     flex-wrap: wrap;
     position: relative;
 }
+::ng-deep table.days.weeks th:first-child, ::ng-deep table.days.weeks td:first-child {
+    display: none;
+}
 .uppy-modal .modal-dialog ::ng-deep .drag-drop-area .uppy-Root {
     width: 100% !important;
     margin-left: 0% 5% !important;
