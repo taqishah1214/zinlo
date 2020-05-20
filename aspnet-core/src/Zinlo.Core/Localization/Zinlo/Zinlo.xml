@@ -1190,7 +1190,8 @@
     <text name="ChangeAssignee">Change Assignee</text>
     <text name="ChangeStatus">Change Status</text>
     <text name="ObserveVariance">Observe Variance</text>
-    <text name="TrialBalance">Trial Balance</text>
+    <text name="TrialBalance">Trial Balance</text>   
+    <text name="DefaultMonth">Default Month</text>
 
 
 

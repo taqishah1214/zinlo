@@ -58,13 +58,14 @@ export class AppNavigationService {
             new AppMenuItem('Management', 'Pages.Administration.TimeManagements', './assets/media/ClosingCheckList/dot.png', '/app/admin/management'),
             new AppMenuItem('ImportLog', 'Pages.ImportLog', './assets/media/ClosingCheckList/dot.png', '/app/admin/importlog', [ ]),
                 //new AppMenuItem('Languages', 'Pages.Administration.Languages', 'flaticon-tabs', '/app/admin/languages'),
+                new AppMenuItem('Settings', 'Pages.Administration.Host.Settings', './assets/media/ClosingCheckList/dot.png', '/app/admin/hostSettings'),
+                new AppMenuItem('Settings', 'Pages.Administration.Tenant.Settings', './assets/media/ClosingCheckList/dot.png', '/app/admin/tenantSettings'),
                 new AppMenuItem('AuditLogs', 'Pages.Administration.AuditLogs', './assets/media/ClosingCheckList/dot.png', '/app/admin/auditLogs'),
                 //new AppMenuItem('Maintenance', 'Pages.Administration.Host.Maintenance', 'flaticon-lock', '/app/admin/maintenance'),
                 new AppMenuItem('Subscription', 'Pages.Administration.Tenant.SubscriptionManagement', './assets/media/ClosingCheckList/dot.png', '/app/admin/subscription-management'),
                 //new AppMenuItem('VisualSettings', 'Pages.Administration.UiCustomization', 'flaticon-medical', '/app/admin/ui-customization'),
-                new AppMenuItem('Settings', 'Pages.Administration.Host.Settings', './assets/media/ClosingCheckList/dot.png', '/app/admin/hostSettings'),
-                new AppMenuItem('Settings', 'Pages.Administration.Tenant.Settings', './assets/media/ClosingCheckList/dot.png', '/app/admin/tenantSettings'),
-               ///new AppMenuItem('Users', 'Pages.Administration.Tenant.Settings', 'flaticon-settings', '/app/main/users')
+             
+                // new AppMenuItem('Users', 'Pages.Administration.Tenant.Settings', 'flaticon-settings', '/app/main/users')
 
             ]),
             //new AppMenuItem('DemoUiComponents', 'Pages.DemoUiComponents', 'flaticon-shapes', '/app/admin/demo-ui-components')
