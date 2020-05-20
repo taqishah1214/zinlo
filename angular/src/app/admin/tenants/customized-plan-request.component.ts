@@ -43,6 +43,8 @@ export class CustomizedPlanRequestComponent extends AppComponentBase implements 
     approveRequest()
     {
        this.saving=true
+       console.log(this.contactus);
+       debugger;
        this._contectusService.approveRequest(this.contactus).subscribe ((result) => {
         this._router.navigate(['app/admin/custom-tenants']);
         this.saving=false

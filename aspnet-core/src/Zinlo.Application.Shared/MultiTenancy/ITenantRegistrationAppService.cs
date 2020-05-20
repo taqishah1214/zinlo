@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Zinlo.Editions.Dto;
@@ -13,5 +14,6 @@ namespace Zinlo.MultiTenancy
 
         Task<EditionSelectDto> GetEdition(int editionId);
         Task<bool> UnRegisterTenant(int tenantId);
+        Task<bool> SetTenantExpire(int tenantId,DateTime expireDate);
     }
 }

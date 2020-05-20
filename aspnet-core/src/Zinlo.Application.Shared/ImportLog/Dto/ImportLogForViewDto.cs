@@ -14,5 +14,7 @@ namespace Zinlo.ImportLog.Dto
         public DateTime CreationTime { get; set; }
         public bool IsRollBacked { get; set; }
         public string SuccessFilePath { get; set; }
+        public int FileStatus { get; set; }
+
     }
 }

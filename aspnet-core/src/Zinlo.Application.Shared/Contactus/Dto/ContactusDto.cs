@@ -18,5 +18,6 @@ namespace Zinlo.Contactus.Dto
         public bool IsAccepted { get; set; }
         public string TenantName { get; set; }
         public DateTime CreationTime { get; set; }
+        public DateTime ExpireTime { get; set; }
     }
 }

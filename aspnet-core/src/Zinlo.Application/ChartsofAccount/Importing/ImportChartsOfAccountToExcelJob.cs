@@ -75,6 +75,17 @@ namespace Zinlo.ChartsofAccount
             using (CurrentUnitOfWork.SetTenantId(args.TenantId))
             {
                 var accountsList = GetAccountsListFromExcelOrNull(args);
+                var fileUrl = _invalidAccountsExporter.ExportToFile(accountsList);
+                ImportPathDto pathDto = new ImportPathDto();
+                pathDto.FilePath = "";
+                pathDto.SuccessFilePath = fileUrl;
+                pathDto.Type = FileTypes.ChartOfAccounts.ToString();
+                pathDto.TenantId = (int)TenantId;
+                pathDto.CreatorId = UserId;
+                pathDto.FailedRecordsCount = 0;
+                pathDto.SuccessRecordsCount = 0;
+                pathDto.FileStatus = ImportPaths.Dto.Status.InProcess;
+                loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
                 if (accountsList == null || !accountsList.Any())
                 {
                     SendInvalidExcelNotification(args);
@@ -102,18 +113,6 @@ namespace Zinlo.ChartsofAccount
             var invalidRecords = new List<ChartsOfAccountsExcellImportDto>();
             var validRecords = new List<ChartsOfAccountsExcellImportDto>();
             var fileUrl = _invalidAccountsExporter.ExportToFile(accounts);
-            #region|Log intial info|
-            ImportPathDto pathDto = new ImportPathDto();
-            pathDto.FilePath = "";
-            pathDto.SuccessFilePath = fileUrl;
-            pathDto.Type = FileTypes.ChartOfAccounts.ToString();
-            pathDto.TenantId = (int)TenantId;
-            pathDto.CreatorId = UserId;
-            pathDto.FailedRecordsCount = 0;
-            pathDto.SuccessRecordsCount = 0;
-            loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
-            #endregion
-
             foreach (var account in accounts)
             {
                 if (account.CanBeImported())
@@ -160,7 +159,8 @@ namespace Zinlo.ChartsofAccount
             pathDtoUpdate.CreatorId = UserId;
             pathDtoUpdate.FailedRecordsCount = 0;
             pathDtoUpdate.SuccessRecordsCount = 0;
-          _importPathsAppService.UpdateFilePath(pathDtoUpdate);
+            pathDtoUpdate.FileStatus = ImportPaths.Dto.Status.InProcess;
+            _importPathsAppService.UpdateFilePath(pathDtoUpdate);
             #endregion
 
             foreach (var item in validRecords)
@@ -219,6 +219,7 @@ namespace Zinlo.ChartsofAccount
                 pathDto.FilePath = url;
                 pathDto.FailedRecordsCount = invalidAccounts.Count;
                 pathDto.SuccessRecordsCount = SuccessRecordsCount;
+                pathDto.FileStatus = ImportPaths.Dto.Status.Completed;
                 await _importPathsAppService.UpdateFilePath(pathDto);
                 #endregion
 
@@ -235,6 +236,7 @@ namespace Zinlo.ChartsofAccount
                 pathDto.FilePath = "";
                 pathDto.FailedRecordsCount = invalidAccounts.Count;
                 pathDto.SuccessRecordsCount = SuccessRecordsCount;
+                pathDto.FileStatus = ImportPaths.Dto.Status.Completed;
                 await _importPathsAppService.UpdateFilePath(pathDto);
                 #endregion
 

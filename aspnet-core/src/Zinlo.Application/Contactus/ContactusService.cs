@@ -24,12 +24,14 @@ namespace Zinlo.Contactus
         private readonly IRepository<ContactUs, long> _contactusRepository;
         private readonly IUserEmailer _userEmailer;
         private readonly IRepository<Tenant> _tenantRepository;
+        private readonly ITenantRegistrationAppService _tenantRegistrationAppService;
         public IAppUrlService AppUrlService { get; set; }
         public ContactusService(
             IRepository<ContactUs, long> contactusRepository,
               IUserEmailer userEmailer,
                IRepository<Tenant> tenantRepository,
-               ICurrentUnitOfWorkProvider unitOfWorkProvider
+               ICurrentUnitOfWorkProvider unitOfWorkProvider,
+                ITenantRegistrationAppService tenantRegistrationAppService
             )
         {
             _contactusRepository = contactusRepository;
@@ -37,19 +39,23 @@ namespace Zinlo.Contactus
             _tenantRepository = tenantRepository;
             _unitOfWorkProvider = unitOfWorkProvider;
             AppUrlService = NullAppUrlService.Instance;
+            _tenantRegistrationAppService = tenantRegistrationAppService;
         }
 
         public async Task<bool> ApproveRequest(ContactusDto contactus)
         {
-            
-            
+
+            await _tenantRegistrationAppService.SetTenantExpire(contactus.TenantId, contactus.ExpireTime);
             var response = _contactusRepository.GetAll().FirstOrDefault(x => x.TenantId == contactus.TenantId);
             response.Pricing = contactus.Pricing;
             response.IsAccepted = true;
             response.Commitment = contactus.Commitment;
             await _contactusRepository.UpdateAsync(response);
             var res = _tenantRepository.FirstOrDefault(x => x.Id == response.TenantId);
-            await _userEmailer.SendCustomPlaEmail(response.Email, "" + response.Pricing, AppUrlService.CreateCustomPlanUrlFormat(response.TenantId), response.TenantId, res.EditionId.Value, 4, 0,response.Commitment);
+            //i have to set the tent expire date
+
+            await _userEmailer.SendCustomPlaEmail(response.Email, "" + response.Pricing, AppUrlService.CreateCustomPlanUrlFormat(response.TenantId), response.TenantId, res.EditionId.Value, 4, 0, response.Commitment);
+
             return true;
         }
 
@@ -106,7 +112,7 @@ namespace Zinlo.Contactus
                 CreationTime = response.CreationTime
             };
         }
-       
+
 
         public async Task<PagedResultDto<ContactusDto>> GetContectus(GetContactusListInput input)
         {

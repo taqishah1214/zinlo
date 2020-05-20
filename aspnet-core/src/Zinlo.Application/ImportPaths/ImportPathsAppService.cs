@@ -30,6 +30,7 @@ namespace Zinlo.ImportPaths
             importsPath.UserId = input.CreatorId;
             importsPath.IsRollBacked = false;
             importsPath.CreationTime = DateTime.UtcNow;
+            importsPath.FileStatus = (Zinlo.ImportsPaths.Status)input.FileStatus;
           return  _importPathsRepository.InsertAndGetId(importsPath);          
 
         }
@@ -41,7 +42,8 @@ namespace Zinlo.ImportPaths
             {
                 output.FilePath = input.FilePath;
                 output.FailedRecordsCount = input.FailedRecordsCount;
-                output.SuccessRecordsCount = input.SuccessRecordsCount;             
+                output.SuccessRecordsCount = input.SuccessRecordsCount;
+                output.FileStatus = (Zinlo.ImportsPaths.Status)input.FileStatus;
                 await _importPathsRepository.UpdateAsync(output);
 
             }

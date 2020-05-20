@@ -40,6 +40,10 @@ ul{
 span{
     display: inline-block;
 }
+
+::ng-deep table.days.weeks th:first-child, ::ng-deep table.days.weeks td:first-child {
+    display: none;
+}
 .border-bottom-grey{
     border-bottom:1px solid #EBEDF2;
 }

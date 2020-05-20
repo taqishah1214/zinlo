@@ -313,8 +313,8 @@
                                         </td>
                                         <td style="width: 120px">
                                             <a *ngIf="!record.isRollBacked && record.type == 'TrialBalance'" class="btn"
-                                                href="javascript:;" (click)="rollBack(record.id)">
-                                                <img src="../../../../assets/img/edit.svg"></a>
+                                                href="javascript:;" data-toggle="tooltip" title="Delete" (click)="rollBack(record.id)">
+                                                <img src="../../../../assets/img/del.svg"></a>
                                         </td>
                                     </tr>
 
