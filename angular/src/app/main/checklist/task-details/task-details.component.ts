@@ -302,9 +302,24 @@ setTaskNameHistoryParam(item){
     this.getTaskDetails(this.recordId);
   }
   onComment(): void {
-    console.log(this.comment.body);
+    
     if(this.comment.body){
-    this.saveComments();}
+      var index=this.comment.body.indexOf("</p>");
+    }
+    console.log(index,this.comment.body);
+    var i;
+    for (i=3;i<index;i++)
+    {
+      if(this.comment.body[i]==' ')
+      {
+      }
+      else{
+        break;
+      }
+    }
+    if(i!=index && this.comment.body){
+      this.saveComments();
+    }
   }
   saveComments(): void {
     this.comment.typeId = this.recordId;
