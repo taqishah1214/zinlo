@@ -17,7 +17,7 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
     usingDefaultTimeZone = false;
     initialTimeZone: string = null;
     testEmailAddress: string = undefined;
-
+    selectedDefaultDate : any;
     isMultiTenancyEnabled: boolean = this.multiTenancy.isEnabled;
     showTimezoneSelection: boolean = abp.clock.provider.supportsMultipleTimezone;
     activeTabIndex: number = (abp.clock.provider.supportsMultipleTimezone) ? 0 : 1;
@@ -57,6 +57,12 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
                 }
             });
     }
+    onOpenCalendar(container) {
+        container.monthSelectHandler = (event: any): void => {
+          container._store.dispatch(container._actions.select(event.date));
+        };
+        container.setViewMode('month');
+      }
 
     initUploaders(): void {
         this.logoUploader = this.createUploader(
