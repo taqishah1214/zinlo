@@ -87,7 +87,7 @@
     <text name="TenantIsNotActive">Tenant {0} is not active.</text>
     <text name="UserIsNotActiveAndCanNotLogin">User {0} is not active and can not log in.</text>
     <text name="PleaseEnterLoginInformation">Please enter login information</text>
-    <text name="TenancyName">Tenancy name</text>
+    <text name="TenancyName">Tenancy Name</text>
     <text name="UserNameOrEmail">User name or email</text>
     <text name="Password">Password</text>
     <text name="RememberMe">Remember me</text>
@@ -140,11 +140,11 @@
     <text name="TenantsHeaderInfo">Manage your tenants.</text>
     <text name="CreateNewTenant">Create new tenant</text>
     <text name="TenancyCodeName">Tenancy code name</text>
-    <text name="TenantName">Tenant name</text>
+    <text name="TenantName">Tenant Name</text>
     <text name="TenantDeleteWarningMessage">Tenant {0} will be deleted.</text>
-    <text name="AdminEmailAddress">admin email</text>
-    <text name="AdminPassword">admin password</text>
-    <text name="AdminPasswordRepeat">admin password (repeat)</text>
+    <text name="AdminEmailAddress">Admin Email</text>
+    <text name="AdminPassword">Admin Password</text>
+    <text name="AdminPasswordRepeat">Admin Password (repeat)</text>
     <text name="EditTenant">Edit tenant</text>
     <text name="ChangingPermissions">Changing permissions</text>
     <text name="EditingUser">Editing user</text>
@@ -195,9 +195,9 @@
     <text name="LoginFailed">Login failed!</text>
     <text name="InvalidEmailConfirmationCode">Invalid email confirmation code</text>
     <text name="InvalidEmailConfirmationCode_Detail">Please be sure you entered this page by clicking the link sent to your email. If this does not solve the problem, you can re-try to request a new confirmation code.</text>
-    <text name="YourEmailIsConfirmedMessage">Your email address is successfully confirmed.</text>
-    <text name="ShouldChangePasswordOnNextLogin">Should change password on next login.</text>
-    <text name="SetRandomPassword">Set random password.</text>
+    <text name="YourEmailIsConfirmedMessage">Your email address is successfully confirmed</text>
+    <text name="ShouldChangePasswordOnNextLogin">Require password change on next login</text>
+    <text name="SetRandomPassword">Random password</text>
     <text name="EmailActivation">Email activation</text>
     <text name="SendEmailActivationLink_Information">A link will be sent to your email to activate your email address. If you don't get an email within a few minutes, please re-try.</text>
     <text name="SendActivationEmail">Send activation email.</text>
@@ -455,7 +455,7 @@
     <text name="ResizedProfilePicture_Warn_SizeLimit">Resized picture size must be smaller than {0}KB. Please resize down and try again.</text>
     <text name="RegisterFormUserNameInvalidMessage">Please do not enter an email address for username.</text>
     <text name="UseHostDatabase">Use host database</text>
-    <text name="DatabaseConnectionString">Database connection string</text>
+    <text name="DatabaseConnectionString">Database Connection String</text>
     <text name="TenantDatabaseConnectionStringChangeWarningMessage">Notice: Before changing the database connection string for a tenant, you should move the tenant database to the new location. Changing connection string does not move the tenant database.</text>
     <text name="Timezone">Timezone</text>
     <text name="HasOwnDatabase">Has own database</text>
