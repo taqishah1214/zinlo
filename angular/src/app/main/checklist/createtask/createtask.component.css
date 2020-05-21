@@ -58,11 +58,7 @@ label{
 .dueOn{
     margin-bottom: 6px;
 }
-::ng-deep .bs-datepicker-head button.current{
-    position:absolute;
-    left:50%;
-    transform: translateX(-50%);
-}
+
 
 ::ng-deep table.days.weeks th:first-child, ::ng-deep table.days.weeks td:first-child {
     display: none;
