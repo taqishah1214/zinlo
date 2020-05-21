@@ -115,11 +115,10 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   }
 
   editAmortizedItem() : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,monthStatus:this.monthStatus,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : this.amortrizedItemId, netAmount : this.netAmount, accuredAmount : this.accuredAmount , selectedDate :  history.state.data.selectedDate}} });
+    this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,monthStatus:this.monthStatus,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : this.amortrizedItemId, netAmount : this.netAmount, accuredAmount : this.accuredAmount , selectedDate :  history.state.data.selectedDate , linkedAccountNo: history.state.data.linkedAccountNo , linkedAccountName : history.state.data.linkedAccountName}} });
   }
-
   BackToList() : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo , selectedDate :  history.state.data.selectedDate}} });
+    this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo , selectedDate :  history.state.data.selectedDate , linkedAccountNo: history.state.data.linkedAccountNo , linkedAccountName : history.state.data.linkedAccountName}} });
   }
   
   

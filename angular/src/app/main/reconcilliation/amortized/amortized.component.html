@@ -20,10 +20,13 @@
                                         <span>{{"Amortized List" | localize}}</span>
                                     </h3>
                                     <h6 class="ml-3 mb-0 form-group">
-                                        <label>{{"Account No" | localize}}</label>
+                                        <label>{{"Acc No" | localize}}</label>
                                         <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountNo}}</span>
-                                        <label>{{"Account Name" | localize}}</label>
+                                        <label>{{"Acc Name" | localize}}</label>
                                         <span class="bg-lightgrey badge badge-secondary bagesTextColor">{{accountName}}</span>
+                                        <label *ngIf="linkAccountCheck" >{{"Link Acc Name" | localize}}</label>
+                                        <span *ngIf="linkAccountCheck" class="bg-lightgrey badge badge-secondary bagesTextColor">{{linkedAccountName}}</span>
+                                        
                                     </h6>
 
                                 </div>

@@ -76,7 +76,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     }   
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net,selectedDate : this.selectedDate }} });
+    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net,selectedDate : this.selectedDate ,linkedAccountNo: history.state.data.linkedAccountNo , linkedAccountName : history.state.data.linkedAccountName }} });
   }
   uploadCommentFile($event) {
     this.commentFiles.push($event.target.files[0]);
@@ -276,7 +276,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
         this.RedirectToDetails(this.amortrizedItemId,this.accuredAmount,this.netAmount)
       }
       else{
-        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo, selectedDate : this.selectedDate}} });
+        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo, selectedDate : this.selectedDate,linkedAccountNo: history.state.data.linkedAccountNo , linkedAccountName : history.state.data.linkedAccountName}} });
       } 
   }
   settings: UppyConfig = {

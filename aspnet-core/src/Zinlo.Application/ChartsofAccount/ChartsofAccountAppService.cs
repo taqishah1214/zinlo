@@ -156,7 +156,10 @@ namespace Zinlo.ChartsofAccount
                                        MonthStatus = MonthStatus,
                                        AccountReconciliationCheck = CheckAccountReconciledofSelectedMonth(o.Id,input.SelectedMonth),
                                        AccountBalanceId = getTheAccountBalanceId(o.Id, input.SelectedMonth),
-                                       TrialBalance = GetTheTrialBalanceofSelectedMonth(o.Id, input.SelectedMonth)
+                                       TrialBalance = GetTheTrialBalanceofSelectedMonth(o.Id, input.SelectedMonth),
+                                       LinkedAccountId = getLinkedAccountId(o.Id),
+                                       LinkedAccountNumber = getLinkedAccountNumber(o.Id),
+                                       LinkedAccountName = getLinkedAccountName(o.Id)
                                    };
 
                 return new PagedResultDto<ChartsofAccoutsForViewDto>(
@@ -168,12 +171,68 @@ namespace Zinlo.ChartsofAccount
 
         }
 
+        protected virtual string getLinkedAccountNumber(long accountId)
+        {
+            var account = _chartsofAccountRepository.FirstOrDefault(p => p.Id == accountId);
+            if (account.LinkedAccountNumber == null)
+            {
+                return "";
+            }
+            else
+            {
+                if (account.Reconciled == ChartofAccounts.Reconciled.AccruedAmount)
+                {
+                    var LinkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == account.LinkedAccountNumber);
+                    return LinkedAccount.AccountNumber;
+                }
+                else if (account.Reconciled == ChartofAccounts.Reconciled.BeginningAmount)
+                {
+                    return account.AccountNumber;
+                }
+                return "";
+            }
+        }
+
+        protected virtual string getLinkedAccountName(long accountId)
+        {
+            var account = _chartsofAccountRepository.FirstOrDefault(p => p.Id == accountId);
+            if (account.LinkedAccountNumber == null)
+            {
+                return "";
+            }
+            else
+            {     
+                    var LinkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == account.LinkedAccountNumber);
+                    return LinkedAccount.AccountName;
+            }
+        }
         protected virtual long getTheAccountBalanceId(long accountId, DateTime SelectedMonth)
         {
             long result = 0;
             var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
             result = accountInformation == null ? 0 : accountInformation.Id;
             return result;
+        }
+        protected virtual long getLinkedAccountId(long accountId)
+        {
+            var account = _chartsofAccountRepository.FirstOrDefault(p=> p.Id == accountId);
+            if (account.LinkedAccountNumber == null)
+            {
+                return 0;
+            }
+            else
+            {
+                if (account.Reconciled == ChartofAccounts.Reconciled.AccruedAmount)
+                {
+                    var LinkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == account.LinkedAccountNumber);
+                    return LinkedAccount.Id;
+                }
+                else if (account.Reconciled == ChartofAccounts.Reconciled.BeginningAmount)
+                {
+                    return account.Id;
+                }
+                return 0;
+            }
         }
 
         private string GetRoleName()
@@ -196,9 +255,32 @@ namespace Zinlo.ChartsofAccount
         protected virtual double GetTheAccountBalanceofSelectedMonth (long accountId,DateTime SelectedMonth)
         {
             double result = 0;
-            var accountInformation =   _accountBalanceRepository.FirstOrDefault(p =>p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
-            result = accountInformation != null ? accountInformation.Balance :  0;
-            return result;
+            var account = _chartsofAccountRepository.FirstOrDefault(p => p.Id == accountId);
+            if (account.LinkedAccountNumber == null)
+            {
+                var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
+                result = accountInformation != null ? accountInformation.Balance : 0;
+                return result;
+            }
+            else
+            {
+                if (account.Reconciled == ChartofAccounts.Reconciled.AccruedAmount)
+                {
+                    var LinkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == account.LinkedAccountNumber);
+                    var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == LinkedAccount.Id);
+                    result = accountInformation != null ? accountInformation.Balance : 0;
+                    return result;
+                }
+                else 
+                {
+
+                    var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
+                    result = accountInformation != null ? accountInformation.Balance : 0;
+                    return result;
+                }
+                
+            }
+            
         }
         protected virtual double GetTheTrialBalanceofSelectedMonth(long accountId, DateTime SelectedMonth)
         {

@@ -20641,6 +20641,9 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
     accountReconciliationCheck!: boolean;
     accountBalanceId!: number;
     trialBalance!: number;
+    linkedAccountId!: number;
+    linkedAccountNumber!: string | undefined;
+    linkedAccountName!: string | undefined;
 
     constructor(data?: IChartsofAccoutsForViewDto) {
         if (data) {
@@ -20673,6 +20676,9 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
             this.accountReconciliationCheck = data["accountReconciliationCheck"];
             this.accountBalanceId = data["accountBalanceId"];
             this.trialBalance = data["trialBalance"];
+            this.linkedAccountId = data["linkedAccountId"];
+            this.linkedAccountNumber = data["linkedAccountNumber"];
+            this.linkedAccountName = data["linkedAccountName"];
         }
     }
 
@@ -20705,6 +20711,9 @@ export class ChartsofAccoutsForViewDto implements IChartsofAccoutsForViewDto {
         data["accountReconciliationCheck"] = this.accountReconciliationCheck;
         data["accountBalanceId"] = this.accountBalanceId;
         data["trialBalance"] = this.trialBalance;
+        data["linkedAccountId"] = this.linkedAccountId;
+        data["linkedAccountNumber"] = this.linkedAccountNumber;
+        data["linkedAccountName"] = this.linkedAccountName;
         return data; 
     }
 }
@@ -20726,6 +20735,9 @@ export interface IChartsofAccoutsForViewDto {
     accountReconciliationCheck: boolean;
     accountBalanceId: number;
     trialBalance: number;
+    linkedAccountId: number;
+    linkedAccountNumber: string | undefined;
+    linkedAccountName: string | undefined;
 }
 
 export class PagedResultDtoOfChartsofAccoutsForViewDto implements IPagedResultDtoOfChartsofAccoutsForViewDto {
