@@ -64,7 +64,9 @@ export class AmortizedComponent extends AppComponentBase {
   buttonColorForHistory : any = "bg-lightgrey"
   accountSubypeList : any  = []
   monthStatus : boolean;
-
+  linkedAccountNo : any = 0;
+  linkedAccountName : any = 0;
+  linkAccountCheck : boolean = false;
   constructor(
     injector: Injector,
     private _router: Router,
@@ -95,15 +97,24 @@ export class AmortizedComponent extends AppComponentBase {
     this.accountName = history.state.data.accountName
     this.accountNo = history.state.data.accountNo
     this.commantBox = true;
+
+    
+    if (history.state.data.linkedAccountNo !== 0)
+    {
+      this.linkedAccountNo  = history.state.data.linkedAccountNo;
+      this.linkedAccountName = history.state.data.linkedAccountName;
+      this.linkAccountCheck = true;
+    }
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net ,  selectedDate : this.monthFilter}} });
+    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net ,  selectedDate : this.monthFilter , linkedAccountNo:  this.linkedAccountNo , linkedAccountName : this.linkedAccountName }} });
   }
   RedirectToAddNewItem()
   {
-      this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : 0 , selectedDate : this.monthFilter}} });
+      this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : 0 , selectedDate : this.monthFilter , linkedAccountNo:  this.linkedAccountNo , linkedAccountName : this.linkedAccountName }} });
+     
   }
 
   getAllAmortizedList(event?: LazyLoadEvent){

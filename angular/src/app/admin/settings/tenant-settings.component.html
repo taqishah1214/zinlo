@@ -473,6 +473,24 @@
                                 </label>
                             </div>
                         </tab>
+                        <tab heading="{{'DefaultMonth' | localize}}" *ngIf="showTimezoneSelection"
+                        [active]="activeTabIndex == 0">
+                        <div class="form-group" *ngIf="showTimezoneSelection">                            
+                            <div class="form-group col-xl-3" style="height: 40px !important;">
+                                <div class="month-calender">
+                                   <form class="input-arrow">
+                                       <input [(ngModel)]="selectedDefaultDate"  required="required"
+                                           autocomplete="off" class="form-control" name="date" bsDatepicker 
+                                           placeholder="Select Default Month" class="form-control" name="date"
+                                           bsDatepicker
+                                           [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                           (onShown)="onOpenCalendar($event)">
+                                   </form>                
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+
                     </tabset>
                 </div>
             </div>

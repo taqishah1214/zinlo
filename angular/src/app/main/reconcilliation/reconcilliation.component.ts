@@ -222,16 +222,25 @@ debugger;
     }
   }
 
-  reDirectToItemizedAmotized (reconciliationTypeId,accountId,accountNo,accountName,accountBalanceId){
-     
+  reDirectToItemizedAmotized (linkedAccountName,linkedAccountId,linkedAccountNo,reconciliationTypeId,accountId,accountNo,accountName,accountBalanceId){
+    
+    if (linkedAccountId ==  0)
+    {
       if (reconciliationTypeId == 1)
       {
         this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : accountId, accountName :accountName ,accountNo: accountNo,accountBalanceId : accountBalanceId , selectedDate : this.selectedDate }} });
     
       }
       else if (reconciliationTypeId == 2) {
-        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo , accountBalanceId : accountBalanceId, selectedDate : this.selectedDate}} });
+        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo , accountBalanceId : accountBalanceId, selectedDate : this.selectedDate, linkedAccountNo : 0, linkedAccountName : 0}} });
       }
+    }
+    else {
+      if (reconciliationTypeId == 2) {
+        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : linkedAccountId , accountName : accountName ,accountNo: accountNo , accountBalanceId : accountBalanceId, selectedDate : this.selectedDate, linkedAccountNo : linkedAccountNo , linkedAccountName : linkedAccountName}} });
+      }
+    }
+      
  
   }
 

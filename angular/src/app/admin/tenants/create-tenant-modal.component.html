@@ -17,52 +17,67 @@
                 </div>
 
                 <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="TenancyName">{{"TenancyName" | localize}} *</label>
+                                <input id="TenancyName" #tenancyNameInput="ngModel" class="form-control" type="text"
+                                    [ngClass]="{'edited':tenant.tenancyName}" name="tenancyName"
+                                    [(ngModel)]="tenant.tenancyName" #tenancyName="ngModel"autocomplete="off" required maxlength="64"
+                                    pattern="^[a-zA-Z][a-zA-Z0-9_-]{1,}$">
+                                <validation-messages [formCtrl]="tenancyNameInput"></validation-messages>
+                                <div>
+                                    <span class="form-control-feedback"
+                                        *ngIf="!tenancyName.valid && !tenancyName.pristine">{{"TenantName_Regex_Description" | localize}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Name">{{"TenantName" | localize}} *</label>
+                                <input id="Name" #nameInput="ngModel" type="text" name="Name" autocomplete="off"class="form-control"
+                                    [ngClass]="{'edited':tenant.name}" [(ngModel)]="tenant.name" required maxlength="128">
+                                <validation-messages [formCtrl]="nameInput"></validation-messages>
+                            </div>
+                        </div>
+                        <!-- <div class="kt-checkbox-list">
+                            <label class="kt-checkbox">
+                                <input id="CreateTenant_UseHostDb" type="checkbox" name="UseHostDb" [(ngModel)]="useHostDb">
+                                {{"UseHostDatabase" | localize}}
+                                <span></span>
+                            </label>
+                        </div> -->
 
-                    <div class="form-group">
-                        <label for="TenancyName">{{"TenancyName" | localize}} *</label>
-                        <input id="TenancyName" #tenancyNameInput="ngModel" class="form-control" type="text"
-                            [ngClass]="{'edited':tenant.tenancyName}" name="tenancyName"
-                            [(ngModel)]="tenant.tenancyName" #tenancyName="ngModel"autocomplete="off" required maxlength="64"
-                            pattern="^[a-zA-Z][a-zA-Z0-9_-]{1,}$">
-                        <validation-messages [formCtrl]="tenancyNameInput"></validation-messages>
+                        <div class="form-group" *ngIf="!useHostDb">
+                            <label for="DatabaseConnectionString">{{"DatabaseConnectionString" | localize}} *</label>
+                            <input id="DatabaseConnectionString" #connectionStringInput="ngModel" autocomplete="off" type="text"
+                                name="ConnectionString" class="form-control" [(ngModel)]="tenant.connectionString"
+                                [ngClass]="{'edited':tenant.connectionString}" required maxlength="1024">
+                            <validation-messages [formCtrl]="connectionStringInput"></validation-messages>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="AdminEmailAddress">{{"AdminEmailAddress" | localize}} *</label>
+                                <input id="AdminEmailAddress" #adminEmailAddressInput="ngModel" autocomplete="off" type="email"
+                                    name="AdminEmailAddress" class="form-control" [(ngModel)]="tenant.adminEmailAddress"
+                                    [ngClass]="{'edited':tenant.adminEmailAddress}" required
+                                    pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" maxlength="256">
+                                <validation-messages [formCtrl]="adminEmailAddressInput"></validation-messages>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="edition">{{"Edition" | localize}}</label>
+                                <select id="edition" name="edition" class="form-control" [(ngModel)]="tenant.editionId"
+                                    (change)="onEditionChange($event)">
+                                    <option *ngFor="let edition of editions" [value]="edition.value">{{edition.displayText}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <span class="form-control-feedback"
-                            *ngIf="!tenancyName.valid && !tenancyName.pristine">{{"TenantName_Regex_Description" | localize}}</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Name">{{"TenantName" | localize}} *</label>
-                        <input id="Name" #nameInput="ngModel" type="text" name="Name" autocomplete="off"class="form-control"
-                            [ngClass]="{'edited':tenant.name}" [(ngModel)]="tenant.name" required maxlength="128">
-                        <validation-messages [formCtrl]="nameInput"></validation-messages>
-                    </div>
-
-                    <!-- <div class="kt-checkbox-list">
-                        <label class="kt-checkbox">
-                            <input id="CreateTenant_UseHostDb" type="checkbox" name="UseHostDb" [(ngModel)]="useHostDb">
-                            {{"UseHostDatabase" | localize}}
-                            <span></span>
-                        </label>
-                    </div> -->
-
-                    <div class="form-group" *ngIf="!useHostDb">
-                        <label for="DatabaseConnectionString">{{"DatabaseConnectionString" | localize}} *</label>
-                        <input id="DatabaseConnectionString" #connectionStringInput="ngModel" autocomplete="off" type="text"
-                            name="ConnectionString" class="form-control" [(ngModel)]="tenant.connectionString"
-                            [ngClass]="{'edited':tenant.connectionString}" required maxlength="1024">
-                        <validation-messages [formCtrl]="connectionStringInput"></validation-messages>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="AdminEmailAddress">{{"AdminEmailAddress" | localize}} *</label>
-                        <input id="AdminEmailAddress" #adminEmailAddressInput="ngModel" autocomplete="off" type="email"
-                            name="AdminEmailAddress" class="form-control" [(ngModel)]="tenant.adminEmailAddress"
-                            [ngClass]="{'edited':tenant.adminEmailAddress}" required
-                            pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" maxlength="256">
-                        <validation-messages [formCtrl]="adminEmailAddressInput"></validation-messages>
-                    </div>
-
                     <div class="kt-checkbox-list">
                         <label class="kt-checkbox">
                             <input id="CreateTenant_SetRandomPassword" type="checkbox" name="SetRandomPassword"
@@ -71,79 +86,74 @@
                             <span></span>
                         </label>
                     </div>
-
-                    <div class="form-group" *ngIf="!setRandomPassword">
-                        <label for="AdminPassword">{{"AdminPassword" | localize}}</label>
-                        <input id="AdminPassword" type="password"autocomplete="off" name="adminPassword" class="form-control"
-                            id="adminPassword" [(ngModel)]="tenant.adminPassword"
-                            [ngClass]="{'edited':tenant.adminPassword}" [required]="!setRandomPassword"
-                            #adminPassword="ngModel" validateEqual="adminPasswordRepeat" reverse="true" maxlength="32"
-                            [requireDigit]="passwordComplexitySetting.requireDigit"
-                            [requireLowercase]="passwordComplexitySetting.requireLowercase"
-                            [requireUppercase]="passwordComplexitySetting.requireUppercase"
-                            [requireNonAlphanumeric]="passwordComplexitySetting.requireNonAlphanumeric"
-                            [requiredLength]="passwordComplexitySetting.requiredLength">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" *ngIf="!setRandomPassword">
+                                <label for="AdminPassword">{{"AdminPassword" | localize}}</label>
+                                <input id="AdminPassword" type="password"autocomplete="off" name="adminPassword" class="form-control"
+                                    id="adminPassword" [(ngModel)]="tenant.adminPassword"
+                                    [ngClass]="{'edited':tenant.adminPassword}" [required]="!setRandomPassword"
+                                    #adminPassword="ngModel" validateEqual="adminPasswordRepeat" reverse="true" maxlength="32"
+                                    [requireDigit]="passwordComplexitySetting.requireDigit"
+                                    [requireLowercase]="passwordComplexitySetting.requireLowercase"
+                                    [requireUppercase]="passwordComplexitySetting.requireUppercase"
+                                    [requireNonAlphanumeric]="passwordComplexitySetting.requireNonAlphanumeric"
+                                    [requiredLength]="passwordComplexitySetting.requiredLength">
+                                    <div [hidden]="tenantCreateForm.form.valid || tenantCreateForm.form.pristine">
+                                        <ul class="help-block text-danger"
+                                            *ngIf="tenantCreateForm.controls['adminPassword'] && tenantCreateForm.controls['adminPassword'].errors">
+                                            <li [hidden]="!tenantCreateForm.controls['adminPassword'].errors.requireDigit">
+                                                {{"PasswordComplexity_RequireDigit_Hint" | localize}}</li>
+                                            <li [hidden]="!tenantCreateForm.controls['adminPassword'].errors.requireLowercase">
+                                                {{"PasswordComplexity_RequireLowercase_Hint" | localize}}</li>
+                                            <li [hidden]="!tenantCreateForm.controls['adminPassword'].errors.requireUppercase">
+                                                {{"PasswordComplexity_RequireUppercase_Hint" | localize}}</li>
+                                            <li [hidden]="!tenantCreateForm.controls['adminPassword'].errors.requireNonAlphanumeric">
+                                                {{"PasswordComplexity_RequireNonAlphanumeric_Hint" | localize}}</li>
+                                            <li [hidden]="!tenantCreateForm.controls['adminPassword'].errors.requiredLength">
+                                                {{"PasswordComplexity_RequiredLength_Hint" | localize:passwordComplexitySetting.requiredLength}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group" *ngIf="!setRandomPassword">
+                                <label for="AdminPasswordRepeat">{{"AdminPasswordRepeat" | localize}}</label>
+                                <input id="AdminPasswordRepeat" type="password" autocomplete="off" name="adminPasswordRepeat" class="form-control"
+                                    [(ngModel)]="tenantAdminPasswordRepeat" [ngClass]="{'edited':adminPasswordRepeat}"
+                                    [required]="!setRandomPassword" #adminPasswordRepeat="ngModel"
+                                    [requireDigit]="passwordComplexitySetting.requireDigit"
+                                    [requireLowercase]="passwordComplexitySetting.requireLowercase"
+                                    [requireUppercase]="passwordComplexitySetting.requireUppercase"
+                                    [requireNonAlphanumeric]="passwordComplexitySetting.requireNonAlphanumeric"
+                                    [requiredLength]="passwordComplexitySetting.requiredLength" validateEqual="adminPassword"
+                                    maxlength="32">
+                                    <div [hidden]="tenantCreateForm.form.valid || tenantCreateForm.form.pristine">
+                                        <ul class="help-block text-danger"
+                                            *ngIf="tenantCreateForm.controls['adminPasswordRepeat'] && tenantCreateForm.controls['adminPasswordRepeat'].errors">
+                                            <li [hidden]="!tenantCreateForm.controls['adminPasswordRepeat'].errors.requireDigit">
+                                                {{"PasswordComplexity_RequireDigit_Hint" | localize}}</li>
+                                            <li [hidden]="!tenantCreateForm.controls['adminPasswordRepeat'].errors.requireLowercase">
+                                                {{"PasswordComplexity_RequireLowercase_Hint" | localize}}</li>
+                                            <li [hidden]="!tenantCreateForm.controls['adminPasswordRepeat'].errors.requireUppercase">
+                                                {{"PasswordComplexity_RequireUppercase_Hint" | localize}}</li>
+                                            <li
+                                                [hidden]="!tenantCreateForm.controls['adminPasswordRepeat'].errors.requireNonAlphanumeric">
+                                                {{"PasswordComplexity_RequireNonAlphanumeric_Hint" | localize}}</li>
+                                            <li [hidden]="!tenantCreateForm.controls['adminPasswordRepeat'].errors.requiredLength">
+                                                {{"PasswordComplexity_RequiredLength_Hint" | localize:passwordComplexitySetting.requiredLength}}
+                                            </li>
+                                            <li [hidden]="tenantCreateForm.controls['adminPasswordRepeat'].valid">
+                                                {{"PasswordsDontMatch" | localize}}</li>
+                                        </ul>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <div [hidden]="tenantCreateForm.form.valid || tenantCreateForm.form.pristine">
-                        <ul class="help-block text-danger"
-                            *ngIf="tenantCreateForm.controls['adminPassword'] && tenantCreateForm.controls['adminPassword'].errors">
-                            <li [hidden]="!tenantCreateForm.controls['adminPassword'].errors.requireDigit">
-                                {{"PasswordComplexity_RequireDigit_Hint" | localize}}</li>
-                            <li [hidden]="!tenantCreateForm.controls['adminPassword'].errors.requireLowercase">
-                                {{"PasswordComplexity_RequireLowercase_Hint" | localize}}</li>
-                            <li [hidden]="!tenantCreateForm.controls['adminPassword'].errors.requireUppercase">
-                                {{"PasswordComplexity_RequireUppercase_Hint" | localize}}</li>
-                            <li [hidden]="!tenantCreateForm.controls['adminPassword'].errors.requireNonAlphanumeric">
-                                {{"PasswordComplexity_RequireNonAlphanumeric_Hint" | localize}}</li>
-                            <li [hidden]="!tenantCreateForm.controls['adminPassword'].errors.requiredLength">
-                                {{"PasswordComplexity_RequiredLength_Hint" | localize:passwordComplexitySetting.requiredLength}}
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="form-group" *ngIf="!setRandomPassword">
-                        <label for="AdminPasswordRepeat">{{"AdminPasswordRepeat" | localize}}</label>
-                        <input id="AdminPasswordRepeat" type="password" autocomplete="off" name="adminPasswordRepeat" class="form-control"
-                            [(ngModel)]="tenantAdminPasswordRepeat" [ngClass]="{'edited':adminPasswordRepeat}"
-                            [required]="!setRandomPassword" #adminPasswordRepeat="ngModel"
-                            [requireDigit]="passwordComplexitySetting.requireDigit"
-                            [requireLowercase]="passwordComplexitySetting.requireLowercase"
-                            [requireUppercase]="passwordComplexitySetting.requireUppercase"
-                            [requireNonAlphanumeric]="passwordComplexitySetting.requireNonAlphanumeric"
-                            [requiredLength]="passwordComplexitySetting.requiredLength" validateEqual="adminPassword"
-                            maxlength="32">
-                    </div>
-
-                    <div [hidden]="tenantCreateForm.form.valid || tenantCreateForm.form.pristine">
-                        <ul class="help-block text-danger"
-                            *ngIf="tenantCreateForm.controls['adminPasswordRepeat'] && tenantCreateForm.controls['adminPasswordRepeat'].errors">
-                            <li [hidden]="!tenantCreateForm.controls['adminPasswordRepeat'].errors.requireDigit">
-                                {{"PasswordComplexity_RequireDigit_Hint" | localize}}</li>
-                            <li [hidden]="!tenantCreateForm.controls['adminPasswordRepeat'].errors.requireLowercase">
-                                {{"PasswordComplexity_RequireLowercase_Hint" | localize}}</li>
-                            <li [hidden]="!tenantCreateForm.controls['adminPasswordRepeat'].errors.requireUppercase">
-                                {{"PasswordComplexity_RequireUppercase_Hint" | localize}}</li>
-                            <li
-                                [hidden]="!tenantCreateForm.controls['adminPasswordRepeat'].errors.requireNonAlphanumeric">
-                                {{"PasswordComplexity_RequireNonAlphanumeric_Hint" | localize}}</li>
-                            <li [hidden]="!tenantCreateForm.controls['adminPasswordRepeat'].errors.requiredLength">
-                                {{"PasswordComplexity_RequiredLength_Hint" | localize:passwordComplexitySetting.requiredLength}}
-                            </li>
-                            <li [hidden]="tenantCreateForm.controls['adminPasswordRepeat'].valid">
-                                {{"PasswordsDontMatch" | localize}}</li>
-                        </ul>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="edition">{{"Edition" | localize}}</label>
-                        <select id="edition" name="edition" class="form-control" [(ngModel)]="tenant.editionId"
-                            (change)="onEditionChange($event)">
-                            <option *ngFor="let edition of editions" [value]="edition.value">{{edition.displayText}}
-                            </option>
-                        </select>
-                    </div>
-
+                    
+                    
                     <div [hidden]="!isSubscriptionFieldsVisible" class="kt-checkbox-list">
                         <label for="CreateTenant_IsUnlimited" class="kt-checkbox">
                             <input id="CreateTenant_IsUnlimited" type="checkbox" name="IsUnlimited"

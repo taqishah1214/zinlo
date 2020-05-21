@@ -23,6 +23,9 @@ namespace Zinlo.ChartsofAccount.Dtos
         public bool AccountReconciliationCheck { get; set; }
         public long  AccountBalanceId { get; set; }
         public double TrialBalance { get; set; }
+        public long LinkedAccountId { get; set; }
+        public string LinkedAccountNumber { get; set; }
+        public string LinkedAccountName { get; set; }
 
 
 
