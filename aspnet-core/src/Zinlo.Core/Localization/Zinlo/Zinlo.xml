@@ -1191,7 +1191,8 @@
     <text name="ChangeStatus">Change Status</text>
     <text name="ObserveVariance">Observe Variance</text>
     <text name="TrialBalance">Trial Balance</text>   
-    <text name="DefaultMonth">Default Month</text>
+    <text name="DefaultMonth">Default Month</text>  
+    <text name="Create plan">Create Plan</text>
 
 
 
