@@ -13,6 +13,7 @@ import { add, subtract } from 'add-subtract-date';
 import * as moment from 'moment';
 import { HttpRequest, HttpClient } from '@angular/common/http';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-createtask',
@@ -33,6 +34,31 @@ public quickTools: object = {
     image: [
         'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
 };
+  htmlContent = '';
+  name : string = "Moeen Hmad";
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '300px',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [
+      ['undo',
+      'redo','strikeThrough',
+      'subscript',
+      'superscript', 'indent',
+      'outdent','insertVideo',
+      'insertHorizontalRule',
+      'removeFormat',
+      'toggleEditorMode',
+      'link',
+      'unlink',
+      'insertImage','fontSize']
+      ],
+  };
+
   commentFiles:File[]=[];
   instructionFiles:File[]=[];
   saving = false;

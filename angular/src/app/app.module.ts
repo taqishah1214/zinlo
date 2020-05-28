@@ -60,7 +60,8 @@ import { ScrollTopComponent } from './shared/layout/scroll-top.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 @NgModule({
@@ -95,7 +96,9 @@ import { environment } from '../environments/environment';
     ],
     imports: [
         ngCommon.CommonModule,
+        ReactiveFormsModule,
         FormsModule,
+        AngularEditorModule,
         HttpClientModule,
         HttpClientJsonpModule,
         ModalModule.forRoot(),

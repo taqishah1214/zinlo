@@ -52,12 +52,14 @@ import { TrialbalanceReportsComponent } from './reports/trialbalance-reports/tri
 import { ObserveVarianceComponent } from './reports/observe-variance/observe-variance.component';
 
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
 @NgModule({
         imports: [
+                AngularEditorModule,
                 RichTextEditorAllModule,
                 FileUploadModule,
                 AutoCompleteModule,
