@@ -27,7 +27,7 @@
                                 <button class="btn arrow-btn left-arrow-btn btn-square"  (click)="filterByMonth(-1)">
                                     <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
                                 </button>
-                                <h5  style="cursor: default;">{{selectedDate | momentFormat:'MMMM YYYY'}}</h5>
+                                <h5  style="cursor: default;">{{selectedDate | date:'MMMM yyyy'}}</h5>
                                 <button class="btn arrow-btn right-arrow-btn btn-square ml-2" (click)="filterByMonth(1)">
                                     <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
                                 </button>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Injector } from '@angular/core';
+import { Component, OnInit, ViewChild, Injector, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto, CategoriesServiceProxy, NameValueDtoOfInt64 } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -57,31 +57,40 @@ export class Checklist extends AppComponentBase implements OnInit {
   monthStatus: boolean;
   remainingUserForHeader: any = [];
   category: NameValueDtoOfInt64[] = [];
-  selectedDate = new Date();
+  selectedDate = new Date ();
   changeAssigneePermission: boolean;
+  defaultMonth : any;
+
   constructor(private _router: Router,
     private _categoryService: CategoriesServiceProxy,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector, private userDate: StoreDateService) {
     super(injector)
     this.FilterBoxOpen = false;
   }
-  ngOnInit() {
-    // VERSION WITH BOOTSTRAP 4 : https://codepen.io/seltix/pen/XRPrwM
+  
+  async ngOnInit() {
 
+    this.userDate.defaultgMonth.subscribe(defaultMonth => {
+      this.defaultMonth = defaultMonth
+      if (this.defaultMonth.id != 0) {
+        this.selectedDate = new Date (this.defaultMonth.month);
+      } 
+      });
     $(document).ready(function () {
-      // Show hide popover
       $(".dropdown-menu").on('click', function (e) {
         e.stopPropagation();
       });
     });
-    debugger;
     this.changeAssigneePermission = this.isGranted("Pages.Tasks.Change.Assignee");
-
+    
 
     this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.initializePageParameters();
     this.loadCategories();
   }
+
+
+
   initializePageParameters(): void {
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
@@ -130,7 +139,7 @@ export class Checklist extends AppComponentBase implements OnInit {
       this.filterText,
       this.categoryFilter,
       this.statusFilter,
-      moment(this.dateFilter),
+      moment(this.dateFilter ),
       this.getTaskWithAssigneeId,
       undefined,
       undefined,

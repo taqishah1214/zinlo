@@ -261,7 +261,6 @@
                                         </th>
                                         <th style="width: 220px"> {{l('User')}} </th>
                                         <th style="width: 80px">{{l('Record')}}</th>
-                                        <th style="width: 120px"> {{l('Action')}} </th>
                                     </tr>
 
                                     <tr *ngIf="compareTable">
@@ -310,11 +309,6 @@
                                         <td style="width: 80px">
                                             <span class="ui-column-title"> {{l('Record')}}</span>
                                             {{record.records}}
-                                        </td>
-                                        <td style="width: 120px">
-                                            <a *ngIf="!record.isRollBacked && record.type == 'TrialBalance'" class="btn"
-                                                href="javascript:;" data-toggle="tooltip" title="Delete" (click)="rollBack(record.id)">
-                                                <img src="../../../../assets/img/del.svg"></a>
                                         </td>
                                     </tr>
 

@@ -131,6 +131,7 @@ namespace Zinlo.ClosingChecklist
         {
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
+                input.DateFilter = input.DateFilter.AddDays(2);
                 //if (input.DateFilter < DateTime.Now.AddMonths(1))
                 //    return new PagedResultDto<TasksGroup>();
                 var query = _closingChecklistManager.GetAll()

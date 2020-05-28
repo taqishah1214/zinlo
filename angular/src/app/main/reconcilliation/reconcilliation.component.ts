@@ -52,7 +52,8 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   getAccountWithAssigneeId : number = 0;
   monthStatus : boolean = false;
   users : any;
-  selectedDate = new Date();
+  selectedDate : any = new Date ();
+  defaultMonth : any;
   changeAssigneePermission : boolean;
   changeStatusPermission : boolean;
   constructor(private _router: Router,
@@ -66,6 +67,15 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this.changeStatusPermission = this.isGranted("Pages.Reconciliation.Change.Status");
 
     this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
+    this.userDate.defaultgMonth.subscribe(defaultMonth => {
+      this.defaultMonth = defaultMonth
+      if (this.defaultMonth.id != 0) {
+        this.selectedDate = new Date (this.defaultMonth.month);
+      } 
+      });
+    
+   
+
     this.AssigniInputBox = false;
     this.AssigniBoxView = true;
     this.collapsibleRow = false;
@@ -74,12 +84,6 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this.loadAccountSubType();
   }
 
-  // accountTypeClick(id,name) : void {
-  //   this.accountType = name
-  //   this.accountTypeFilter = id
-  //   this.updateAssigneeOnHeader = false
-  //   this.getAllAccounts()
-  // }
   accountTypeClick(event): void {
     
       this.accountTypeFilter = parseInt(event.target.value)
@@ -116,7 +120,6 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     }
 
     this.primengTableHelper.getMaxResultCount(this.paginator, event)
-debugger;
     this.primengTableHelper.showLoadingIndicator();
     this._chartOfAccountService.getAll(
       this.filterText,
