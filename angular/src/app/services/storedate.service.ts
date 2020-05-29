@@ -19,7 +19,8 @@ export class StoreDateService {
   private defaultMonth = new BehaviorSubject({id : 0 , month : new Date});
   defaultgMonth = this.defaultMonth.asObservable();
   
-
+  private reload = new BehaviorSubject({lock : false });
+  reloadLock = this.reload.asObservable();
 
   constructor() { 
   }
@@ -37,5 +38,9 @@ export class StoreDateService {
   setDefaultMonth(any) {
     this.defaultMonth.next(any)
   }
+
+  setReloadLock (any) {
+    this.reload.next(any)
+   }
 
 }

@@ -156,7 +156,7 @@
                             <!--<Primeng-TurboTable-Start>-->
                             <div class="task-table" [busyIf]="primengTableHelper.isLoading">
                                 <p-table #dataTable class=" record-table"
-                                    (onLazyLoad)="getClosingCheckListAllTasks($event)"
+                                    (onLazyLoad)="selectedDate && getClosingCheckListAllTasks($event)"
                                     [value]="primengTableHelper.records"
                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                     [lazy]="true" [scrollable]="true" ScrollWidth="100%"

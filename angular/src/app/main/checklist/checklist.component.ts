@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Injector, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, Injector, OnChanges, SimpleChanges, AfterViewInit, DoCheck, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto, CategoriesServiceProxy, NameValueDtoOfInt64 } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -16,7 +16,7 @@ import * as $ from 'jquery';
   templateUrl: './checklist.component.html',
   styleUrls: ['./checklist.component.css']
 })
-export class Checklist extends AppComponentBase implements OnInit {
+export class Checklist extends AppComponentBase implements OnInit  {
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
@@ -57,24 +57,32 @@ export class Checklist extends AppComponentBase implements OnInit {
   monthStatus: boolean;
   remainingUserForHeader: any = [];
   category: NameValueDtoOfInt64[] = [];
-  selectedDate = new Date ();
+  selectedDate ;
   changeAssigneePermission: boolean;
   defaultMonth : any;
-
-  constructor(private _router: Router,
+  reload : any;
+  constructor(private _router: Router, private cds : ChangeDetectorRef,
     private _categoryService: CategoriesServiceProxy,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector, private userDate: StoreDateService) {
     super(injector)
     this.FilterBoxOpen = false;
   }
   
-  async ngOnInit() {
+  
+   ngOnInit() {
 
     this.userDate.defaultgMonth.subscribe(defaultMonth => {
       this.defaultMonth = defaultMonth
       if (this.defaultMonth.id != 0) {
-        this.selectedDate = new Date (this.defaultMonth.month);
-      } 
+        this.selectedDate = new Date (this.defaultMonth.month); 
+        this.userDate.reloadLock.subscribe(reload => this.reload = reload) 
+        if (this.reload.lock == false){
+          this.getClosingCheckListAllTasks();
+          this.reload.lock = true;
+          this.userDate.setReloadLock(this.reload);
+        }
+        } 
+     
       });
     $(document).ready(function () {
       $(".dropdown-menu").on('click', function (e) {
