@@ -93,7 +93,7 @@
                                     </div>
                                     <div class="date-picker">
                                         <input id="monthValue" (ngModelChange)="filterByMonth($event)"
-                                            class="date-field" name="monthValue" [(ngModel)]="selectedDate"
+                                            class="date-field form-control m-input" name="monthValue" [(ngModel)]="selectedDate"
                                             [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                             (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
                                     </div>
@@ -106,7 +106,7 @@
                                         <div class="form-group">
                                             <input type="text" autoFocus (input)="getClosingCheckListAllTasks()"
                                                 [(ngModel)]="filterText" name="filterText"
-                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
+                                                [placeholder]="l('SearchWithThreeDot')" class="form-control m-input">
                                         </div>
                                     </form>
                                 </div>
