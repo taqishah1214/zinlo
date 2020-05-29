@@ -76,7 +76,27 @@ label{
     max-height: 10rem;
     overflow: auto;
   }
-
+  ::ng-deep .angular-editor-toolbar .angular-editor-toolbar-set {
+      padding-top: 5px !important;
+  }
+::ng-deep .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button{
+    vertical-align: middle;
+    border: none !important;
+    background-color: transparent !important;
+    min-width: 2rem;
+    font-size: 16px;
+    float: left;
+}
+::ng-deep .angular-editor-toolbar .angular-editor-toolbar-set .select-heading .ae-font .ae-picker-label{
+    cursor: pointer;
+    border:none;
+    
+}
+::ng-deep .angular-editor-toolbar .angular-editor-toolbar-set .select-font .ae-font .ae-picker-label{
+    cursor: pointer;
+    border:none;
+    
+}
 ::ng-deep table.days.weeks th:first-child, ::ng-deep table.days.weeks td:first-child {
     display: none;
 }
