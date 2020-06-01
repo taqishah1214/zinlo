@@ -39,8 +39,9 @@
                         </a>
                     </div>
                 </div>
-                <form #taskForm="ngForm" id="taskform" >
+                
                 <div class="kt-portlet__body">
+                    <form #taskForm="ngForm" id="taskform" >
                     <div class="row pb-0">
                         <div class="col-md-7 pb-0">
                             <div class="row">
@@ -164,7 +165,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row drag_drop_box ">
+                    </form>
+                    <div class="row">
                         <div class="col-md-7">
                             <div class="row">
                                 <div class="col-md-12">
@@ -194,9 +196,8 @@
                                     <div class="form-group">
                                         <label class="bg-color">{{"Instruction" | localize}}</label>
                                         <div class="form-group">
-                                                <angular-editor [(ngModel)]="htmlContent" [config]="config"></angular-editor>    
+                                                <angular-editor [(ngModel)]="checklist.instruction" [config]="config"></angular-editor>    
                                         </div>
-            
                                     </div>
 
                                 </div>
@@ -270,7 +271,6 @@
                         </button>
                     </div>
                 </div>
-            </form>
             </div>
         </div>
 </div>

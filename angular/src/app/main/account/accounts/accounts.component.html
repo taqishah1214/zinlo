@@ -307,7 +307,7 @@
                                         <select class="form-control border-grey" name="categoryFilter"
                                             [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
                                             id="exampleFormControlSelect2">
-                                            <option value="0">All</option>
+                                            <option class="form-control m-input" value="0">All</option>
                                             <option *ngFor="let item of accountTypeList;" [value]="item.id">
                                                 {{item.name}}
                                             </option>
@@ -322,7 +322,7 @@
                                         <div class="form-group">
                                             <input type="text" autoFocus (input)="searchWithName()"
                                                 [(ngModel)]="filterText" name="filterText"
-                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
+                                                [placeholder]="l('SearchWithThreeDot')" class="form-control m-input">
                                                
                                         </div>
                                     </form>

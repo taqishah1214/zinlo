@@ -22,28 +22,21 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
     providers: [ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService]
 })
 export class CreatetaskComponent extends AppComponentBase implements OnInit {
-  public tools: object = {
-    items: [
-        'Formats','FontName', 'FontSize', '|',
-        'Bold', 'Italic', 'Underline',  '|','FontColor', 'BackgroundColor', '|',
-         'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
-        'Image',]
-};
-public height: number = 330;
-public quickTools: object = {
-    image: [
-        'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
-};
-  htmlContent = '';
-  name : string = "Moeen Hmad";
+
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '300px',
+    height: '224px',
     placeholder: 'Enter text here...',
     translate: 'no',
     defaultParagraphSeparator: 'p',
-    defaultFontName: 'Arial',
+    defaultFontName: '',
+    fonts: [
+      {class: 'arial', name: 'Arial'},
+      {class: 'times-new-roman', name: 'Times New Roman'},
+      {class: 'calibri', name: 'Calibri'},
+      {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+    ],
     toolbarHiddenButtons: [
       ['undo',
       'redo','strikeThrough',
@@ -54,9 +47,8 @@ public quickTools: object = {
       'removeFormat',
       'toggleEditorMode',
       'link',
-      'unlink',
-      'insertImage','fontSize']
-      ],
+      'unlink','fontSize','fontName']
+      ]
   };
 
   commentFiles:File[]=[];
