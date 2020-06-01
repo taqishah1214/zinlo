@@ -58,12 +58,45 @@ label{
 .dueOn{
     margin-bottom: 6px;
 }
-::ng-deep .bs-datepicker-head button.current{
-    position:absolute;
-    left:50%;
-    transform: translateX(-50%);
+.header {  
+    margin-top: 100px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .html-header {
+    margin: 15px 0 5px;
+  }
+  
+  .html {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.5rem;
+    background-color: #f1f1f1;
+    min-height: 20px;
+    max-height: 10rem;
+    overflow: auto;
+  }
+  ::ng-deep .angular-editor-toolbar .angular-editor-toolbar-set {
+      padding-top: 5px !important;
+  }
+::ng-deep .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button{
+    vertical-align: middle;
+    border: none !important;
+    background-color: transparent !important;
+    min-width: 2rem;
+    font-size: 16px;
+    float: left;
 }
-
+::ng-deep .angular-editor-toolbar .angular-editor-toolbar-set .select-heading .ae-font .ae-picker-label{
+    cursor: pointer;
+    border:none;
+    
+}
+::ng-deep .angular-editor-toolbar .angular-editor-toolbar-set .select-font .ae-font .ae-picker-label{
+    cursor: pointer;
+    border:none;
+    
+}
 ::ng-deep table.days.weeks th:first-child, ::ng-deep table.days.weeks td:first-child {
     display: none;
 }

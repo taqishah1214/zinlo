@@ -16,6 +16,12 @@ export class StoreDateService {
   private categoriesList = new BehaviorSubject([]);
   allCategories = this.categoriesList.asObservable();
 
+  private defaultMonth = new BehaviorSubject({id : 0 , month : new Date});
+  defaultgMonth = this.defaultMonth.asObservable();
+  
+  private reload = new BehaviorSubject({lock : false });
+  reloadLock = this.reload.asObservable();
+
   constructor() { 
   }
   setUserList(users:[]) {
@@ -29,5 +35,12 @@ export class StoreDateService {
   setCategoriesList(categories:[]) {
     this.categoriesList.next(categories)
   }
+  setDefaultMonth(any) {
+    this.defaultMonth.next(any)
+  }
+
+  setReloadLock (any) {
+    this.reload.next(any)
+   }
 
 }

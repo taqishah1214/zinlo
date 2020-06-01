@@ -25,6 +25,7 @@ namespace Zinlo.EntityFrameworkCore
     public class ZinloDbContext : AbpZeroDbContext<Tenant, Role, User, ZinloDbContext>, IAbpPersistedGrantDbContext
     {
         public virtual DbSet<TimeManagement> TimeManagements { get; set; }
+        public virtual DbSet<SystemSettings.SystemSettings> SystemSettings { get; set; }
 
         public virtual DbSet<Attachment.Attachment> Attachments { get; set; }
         public virtual DbSet<AccountBalance> AccountBalance { get; set; }

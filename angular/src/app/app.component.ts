@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AppConsts } from '@shared/AppConsts';
 import { UrlHelper } from '@shared/helpers/UrlHelper';
-import { SubscriptionStartType } from '@shared/service-proxies/service-proxies';
+import { SubscriptionStartType, SystemSettingServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ChatSignalrService } from 'app/shared/layout/chat/chat-signalr.service';
 import * as moment from 'moment';
 import { AppComponentBase } from 'shared/common/app-component-base';
@@ -28,6 +28,7 @@ export class AppComponent extends AppComponentBase implements OnInit {
     userList :any = []
     categoriesList :any = []
     accountSubTypeList :any = []
+    defaultMonth : any;
     @ViewChild('loginAttemptsModal', {static: true}) loginAttemptsModal: LoginAttemptsModalComponent;
     @ViewChild('linkedAccountsModal', {static: false}) linkedAccountsModal: LinkedAccountsModalComponent;
     @ViewChild('changePasswordModal', {static: true}) changePasswordModal: ChangePasswordModalComponent;
@@ -43,25 +44,14 @@ export class AppComponent extends AppComponentBase implements OnInit {
         private _chatSignalrService: ChatSignalrService,
         private _userNotificationHelper: UserNotificationHelper,
         private storeData: StoreDateService,private _userService: UserServiceProxy,private _categoryService: CategoriesServiceProxy, private _accountSubtypeService :AccountSubTypeServiceProxy,
-        private updates: SwUpdate
+        private updates: SwUpdate,
+        private _systemSettingsService: SystemSettingServiceProxy
     ) {
         super(injector);
     }
 
     ngOnInit(): void {
-        this.realoadApp();
-        this._userService.getAllUsers().subscribe(result => { 
-            this.userList = result
-            this.storeData.setUserList(this.userList)
-        })  
-        this._categoryService.categoryDropDown().subscribe(result => { 
-            this.categoriesList = result
-            this.storeData.setCategoriesList(this.categoriesList)
-        })  
-        this._accountSubtypeService.accountSubTypeDropDown().subscribe(result => { 
-            this.accountSubTypeList = result
-            this.storeData.setAccountSubTypeList(this.accountSubTypeList)
-        })  
+        this.realoadApp();      
         this._userNotificationHelper.settingsModal = this.notificationSettingsModal;
         this.theme = abp.setting.get('App.UiManagement.Theme').toLocaleLowerCase();
         this.installationMode = UrlHelper.isInstallUrl(location.href);
@@ -75,6 +65,22 @@ export class AppComponent extends AppComponentBase implements OnInit {
 
     realoadApp() {
         this.updates.activateUpdate().then(() => document.location.reload());
+        this._systemSettingsService.getDefaultMonth().subscribe(result => { 
+            this.defaultMonth = result
+            this.storeData.setDefaultMonth(this.defaultMonth)
+        })  
+        this._userService.getAllUsers().subscribe(result => { 
+            this.userList = result
+            this.storeData.setUserList(this.userList)
+        })  
+        this._categoryService.categoryDropDown().subscribe(result => { 
+            this.categoriesList = result
+            this.storeData.setCategoriesList(this.categoriesList)
+        })  
+        this._accountSubtypeService.accountSubTypeDropDown().subscribe(result => { 
+            this.accountSubTypeList = result
+            this.storeData.setAccountSubTypeList(this.accountSubTypeList)
+        })  
       }
     subscriptionStatusBarVisible(): boolean {
         return this.appSession.tenantId > 0 &&

@@ -67,7 +67,7 @@ namespace Zinlo.ChartsofAccount
             
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
-
+                input.SelectedMonth = input.SelectedMonth.AddDays(2);
                 var query = _chartsofAccountRepository.GetAll().Where(x => x.IsDeleted == input.AllOrActive).Include(p => p.AccountSubType).Include(p => p.Assignee)
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
                         .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))

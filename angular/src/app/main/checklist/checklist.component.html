@@ -29,7 +29,7 @@
                                 <button class="btn arrow-btn left-arrow-btn btn-square" (click)="filterByMonth(-1)">
                                     <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
                                 </button>
-                                <h5 style="cursor: default;">{{selectedDate | momentFormat:'MMMM YYYY'}}</h5>
+                                <h5 style="cursor: default;">{{selectedDate | date:'MMMM yyyy'}}</h5>
                                 <button class="btn arrow-btn right-arrow-btn btn-square ml-2" (click)="filterByMonth(1)">
                                     <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
                                 </button>
@@ -93,7 +93,7 @@
                                     </div>
                                     <div class="date-picker">
                                         <input id="monthValue" (ngModelChange)="filterByMonth($event)"
-                                            class="date-field" name="monthValue" [(ngModel)]="selectedDate"
+                                            class="date-field form-control m-input" name="monthValue" [(ngModel)]="selectedDate"
                                             [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                             (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
                                     </div>
@@ -106,7 +106,7 @@
                                         <div class="form-group">
                                             <input type="text" autoFocus (input)="getClosingCheckListAllTasks()"
                                                 [(ngModel)]="filterText" name="filterText"
-                                                [placeholder]="l('SearchWithThreeDot')" class="border-grey">
+                                                [placeholder]="l('SearchWithThreeDot')" class="form-control m-input">
                                         </div>
                                     </form>
                                 </div>
@@ -156,7 +156,7 @@
                             <!--<Primeng-TurboTable-Start>-->
                             <div class="task-table" [busyIf]="primengTableHelper.isLoading">
                                 <p-table #dataTable class=" record-table"
-                                    (onLazyLoad)="getClosingCheckListAllTasks($event)"
+                                    (onLazyLoad)="selectedDate && getClosingCheckListAllTasks($event)"
                                     [value]="primengTableHelper.records"
                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                     [lazy]="true" [scrollable]="true" ScrollWidth="100%"

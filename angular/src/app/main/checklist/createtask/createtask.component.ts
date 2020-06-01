@@ -13,6 +13,7 @@ import { add, subtract } from 'add-subtract-date';
 import * as moment from 'moment';
 import { HttpRequest, HttpClient } from '@angular/common/http';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-createtask',
@@ -21,18 +22,35 @@ import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickTool
     providers: [ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService]
 })
 export class CreatetaskComponent extends AppComponentBase implements OnInit {
-  public tools: object = {
-    items: [
-        'Formats','FontName', 'FontSize', '|',
-        'Bold', 'Italic', 'Underline',  '|','FontColor', 'BackgroundColor', '|',
-         'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
-        'Image',]
-};
-public height: number = 330;
-public quickTools: object = {
-    image: [
-        'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
-};
+
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '224px',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: '',
+    fonts: [
+      {class: 'arial', name: 'Arial'},
+      {class: 'times-new-roman', name: 'Times New Roman'},
+      {class: 'calibri', name: 'Calibri'},
+      {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+    ],
+    toolbarHiddenButtons: [
+      ['undo',
+      'redo','strikeThrough',
+      'subscript',
+      'superscript', 'indent',
+      'outdent','insertVideo',
+      'insertHorizontalRule',
+      'removeFormat',
+      'toggleEditorMode',
+      'link',
+      'unlink','fontSize','fontName']
+      ]
+  };
+
   commentFiles:File[]=[];
   instructionFiles:File[]=[];
   saving = false;

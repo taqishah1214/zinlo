@@ -4,9 +4,12 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { AppConsts } from '@shared/AppConsts';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { SettingScopes, SendTestEmailInput, TenantSettingsEditDto, TenantSettingsServiceProxy } from '@shared/service-proxies/service-proxies';
+import { SettingScopes, SendTestEmailInput, TenantSettingsEditDto, TenantSettingsServiceProxy,SystemSettingServiceProxy, CreateOrEditDefaultMonthDto } from '@shared/service-proxies/service-proxies';
 import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
 import { finalize } from 'rxjs/operators';
+import * as moment from 'moment';
+import { StoreDateService } from '@app/services/storedate.service';
+import { add, subtract } from 'add-subtract-date';
 
 @Component({
     templateUrl: './tenant-settings.component.html',
@@ -23,10 +26,12 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
     activeTabIndex: number = (abp.clock.provider.supportsMultipleTimezone) ? 0 : 1;
     loading = false;
     settings: TenantSettingsEditDto = undefined;
-
+    defaultMonthDto : CreateOrEditDefaultMonthDto = new CreateOrEditDefaultMonthDto()
     logoUploader: FileUploader;
     customCssUploader: FileUploader;
-
+    selectedDate : any = new Date ();
+    defaultMonth : any;
+    selectedDateId = 0;
     remoteServiceBaseUrl = AppConsts.remoteServiceBaseUrl;
 
     defaultTimezoneScope: SettingScopes = SettingScopes.Tenant;
@@ -34,7 +39,10 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
     constructor(
         injector: Injector,
         private _tenantSettingsService: TenantSettingsServiceProxy,
-        private _tokenService: TokenService
+        private _tokenService: TokenService,
+        private _systemSettingsService: SystemSettingServiceProxy,
+        private storeData: StoreDateService
+
     ) {
         super(injector);
     }
@@ -43,6 +51,15 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
         this.testEmailAddress = this.appSession.user.emailAddress;
         this.getSettings();
         this.initUploaders();
+
+        this.storeData.defaultgMonth.subscribe(defaultMonth => {
+            this.defaultMonth = defaultMonth
+            if (this.defaultMonth.id != 0) {
+                this.selectedDate = new Date (this.defaultMonth.month);
+                this.selectedDateId = this.defaultMonth.id;
+            }
+            });
+
     }
 
     getSettings(): void {
@@ -148,6 +165,18 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
     }
 
     saveAll(): void {
+
+        this.defaultMonthDto.id = this.selectedDateId; 
+        this.defaultMonthDto.month = moment(this.selectedDate);
+        ; 
+        this._systemSettingsService.setDefaultMonth(this.defaultMonthDto).subscribe(() => {
+            this._systemSettingsService.getDefaultMonth().subscribe(result => { 
+                this.storeData.setDefaultMonth(result)
+                this.notify.info(this.l('SavedSuccessfully'));
+
+            }) 
+
+        });
         this._tenantSettingsService.updateAllSettings(this.settings).subscribe(() => {
             this.notify.info(this.l('SavedSuccessfully'));
 

@@ -6,6 +6,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { UserInformation } from '@app/main/CommonFunctions/UserInformation';
 import { AppConsts } from '@shared/AppConsts';
 import { StoreDateService } from "../../../services/storedate.service";
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 
 @Component({
@@ -14,6 +15,28 @@ import { StoreDateService } from "../../../services/storedate.service";
   styleUrls: ['./task-details.component.css']
 })
 export class TaskDetailsComponent extends AppComponentBase implements OnInit {
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '300px',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [
+      ['undo',
+      'redo','strikeThrough',
+      'subscript',
+      'superscript', 'indent',
+      'outdent','insertVideo',
+      'insertHorizontalRule',
+      'removeFormat',
+      'toggleEditorMode',
+      'link',
+      'unlink',
+      'insertImage','fontSize']
+      ],
+  };
   taskObject: any;
   taskDetailObject: DetailsClosingCheckListDto = new DetailsClosingCheckListDto();
   recordId: number = 0;
