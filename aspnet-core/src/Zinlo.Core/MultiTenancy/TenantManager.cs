@@ -105,7 +105,7 @@ namespace Zinlo.MultiTenancy
             using (var uow = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
             {
                 //Create tenant
-                var tenant = new Tenant(tenancyName, name)
+                var tenant = new Tenant(tenancyName.ToLower(), name)
                 {
                     IsActive = isActive,
                     EditionId = editionId,

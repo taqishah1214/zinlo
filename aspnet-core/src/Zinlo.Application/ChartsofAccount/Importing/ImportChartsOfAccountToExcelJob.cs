@@ -37,6 +37,7 @@ namespace Zinlo.ChartsofAccount
         private readonly IAppNotifier _appNotifier;
         private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly ILocalizationSource _localizationSource;
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public UserManager userManager { get; set; }
         public long TenantId = 0;
@@ -52,7 +53,9 @@ namespace Zinlo.ChartsofAccount
              IAppNotifier appNotifier,
             IBinaryObjectManager binaryObjectManager,
             ILocalizationManager localizationManager,
-            IImportPathsAppService importPathsAppService
+            IImportPathsAppService importPathsAppService,
+            IUnitOfWorkManager unitOfWorkManager
+
 
             )
         {
@@ -64,6 +67,7 @@ namespace Zinlo.ChartsofAccount
             _binaryObjectManager = binaryObjectManager;
             _localizationSource = localizationManager.GetSource(ZinloConsts.LocalizationSourceName);
             _importPathsAppService = importPathsAppService;
+            _unitOfWorkManager = unitOfWorkManager;
         }
 
         [UnitOfWork]
@@ -163,10 +167,14 @@ namespace Zinlo.ChartsofAccount
             _importPathsAppService.UpdateFilePath(pathDtoUpdate);
             #endregion
 
-            foreach (var item in validRecords)
+            using (var unitOfWork = _unitOfWorkManager.Begin())
             {
-                AsyncHelper.RunSync(() => CreateOrUpdateAccounts(item));
-            }
+                foreach (var item in validRecords)
+                {
+                    AsyncHelper.RunSync(() => CreateOrUpdateAccounts(item));
+                }
+                unitOfWork.Complete();
+            } 
             AsyncHelper.RunSync(() => ProcessImportAccountsResultAsync(args, invalidRecords));
         }
 

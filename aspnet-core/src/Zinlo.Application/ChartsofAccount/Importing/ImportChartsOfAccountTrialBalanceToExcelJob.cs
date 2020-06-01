@@ -29,7 +29,7 @@ namespace Zinlo.ChartsofAccount.Importing
         private readonly IAppNotifier _appNotifier;
         private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly ILocalizationSource _localizationSource;
-        private readonly IObjectMapper _objectMapper;
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
         public UserManager userManager { get; set; }
         private readonly IInvalidAccountsTrialBalanceExporter _invalidAccountsTrialBalanceExporter;
         private readonly IImportPathsAppService _importPathsAppService;
@@ -46,18 +46,18 @@ namespace Zinlo.ChartsofAccount.Importing
         IAppNotifier appNotifier,
             IBinaryObjectManager binaryObjectManager,
             ILocalizationManager localizationManager,
-            IObjectMapper objectMapper,
-            IImportPathsAppService importPathsAppService
+            IImportPathsAppService importPathsAppService,
+            IUnitOfWorkManager unitOfWorkManager
             )
         {
             _chartsOfAccontTrialBalanceListExcelDataReader = chartsOfAccontTrialBalanceListExcelDataReader;
             _appNotifier = appNotifier;
             _binaryObjectManager = binaryObjectManager;
-            _objectMapper = objectMapper;
             _localizationSource = localizationManager.GetSource(ZinloConsts.LocalizationSourceName);
             _chartsofAccountAppService = chartsofAccountAppService;
             _invalidAccountsTrialBalanceExporter = invalidAccountsTrialBalanceExporter;
             _importPathsAppService = importPathsAppService;
+            _unitOfWorkManager = unitOfWorkManager;
         }
 
         [UnitOfWork]
@@ -187,10 +187,14 @@ namespace Zinlo.ChartsofAccount.Importing
                   "Insertion started",
                   Abp.Notifications.NotificationSeverity.Success);
             #endregion
-            foreach (var item in list)
+            using(var unitOfWork = _unitOfWorkManager.Begin())
             {
+                foreach (var item in list)
+                {
+                    AsyncHelper.RunSync(() => CreateChartsOfAccountTrialBalanceAsync(item, args.selectedMonth));
 
-                AsyncHelper.RunSync(() => CreateChartsOfAccountTrialBalanceAsync(item,args.selectedMonth));
+                }
+                unitOfWork.Complete();
             }
             AsyncHelper.RunSync(() => ProcessImportAccountsTrialBalanceResultAsync(args, invalidAccounts));
         }
