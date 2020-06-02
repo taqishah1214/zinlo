@@ -22,19 +22,28 @@ namespace Zinlo.SystemSettings
         public async Task<CreateOrEditDefaultMonthDto> GetDefaultMonth()
         {
             CreateOrEditDefaultMonthDto obj = new CreateOrEditDefaultMonthDto();
-            var tenantId = (int)AbpSession.TenantId;
-            var result =  _systemSettingsRepositry.GetAll().Where(p => p.TenantId == tenantId && p.SettingType == SettingType.DefaultMonth).ToList();
-            if (result.Count == 0)
+            var tenantId = CurrentUnitOfWork.GetTenantId();
+            if (tenantId != 0)
+            {
+                var result = _systemSettingsRepositry.GetAll().Where(p => p.TenantId == tenantId && p.SettingType == SettingType.DefaultMonth).ToList();
+                if (result.Count == 0)
+                {
+                    obj.id = 0;
+                    return obj;
+                }
+                else
+                {
+                    obj.id = result[0].Id;
+                    obj.Month = result[0].Month;
+                    return obj;
+                }
+            }
+            else
             {
                 obj.id = 0;
                 return obj;
             }
-            else
-            {
-                obj.id = result[0].Id;
-                obj.Month = result[0].Month;
-                return obj;
-            }
+           
         }
 
         public async Task SetDefaultMonth(CreateOrEditDefaultMonthDto input)
