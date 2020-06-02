@@ -20,7 +20,6 @@ using NUglify.Helpers;
 
 namespace Zinlo.TimeManagements
 {
-    [AbpAuthorize(AppPermissions.Pages_Administration_TimeManagements)]
     public class TimeManagementsAppService : ZinloAppServiceBase, ITimeManagementsAppService
     {
         private readonly TimeManagementManager _timeManagementManager;

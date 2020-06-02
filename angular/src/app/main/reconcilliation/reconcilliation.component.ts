@@ -184,7 +184,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     if (selectedStatusId == 3)
     {
       if (accountReconciliationCheck) {
-        this._chartOfAccountService.changeStatus(accountId,selectedStatusId, moment(this.selectedDate)).subscribe(result => {
+        this._chartOfAccountService.changeStatus(accountId,selectedStatusId, moment(new Date(add(this.selectedDate, 2, "day")))).subscribe(result => {
           this.notify.success(this.l('Status Successfully Updated.'));
     
         })
@@ -194,7 +194,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       }
     }
     else{
-      this._chartOfAccountService.changeStatus(accountId,selectedStatusId, moment(this.selectedDate)).subscribe(result => {     
+      this._chartOfAccountService.changeStatus(accountId,selectedStatusId, moment(new Date(add(this.selectedDate, 2, "day")))).subscribe(result => {     
         this.notify.success(this.l('Status Successfully Updated.'));
   
       })
