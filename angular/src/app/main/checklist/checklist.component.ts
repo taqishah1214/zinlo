@@ -57,7 +57,7 @@ export class Checklist extends AppComponentBase implements OnInit  {
   monthStatus: boolean;
   remainingUserForHeader: any = [];
   category: NameValueDtoOfInt64[] = [];
-  selectedDate ;
+  selectedDate = new Date ();
   changeAssigneePermission: boolean;
   defaultMonth : any;
   reload : any;
