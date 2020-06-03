@@ -10,18 +10,11 @@
                 {{"Task Reports" | localize}}
             </span>
         </div>
-        <div class="kt-subheader__wrapper pt-3">
-            <div class="dropdown border-grey " style="cursor: pointer;"
-                data-toggle="dropdown" >
-                <img src="../../../../assets/img/download.png" width='20px' height="25px">
-            </div>
-            <div class="dropdown-menu">
-                <div  class="dropdown-item">
-                    <label>
-                         <span id="ExportUsersToExcelButton" style="cursor: pointer;" (click)="exportToExcel()"> {{"Download" | localize}}</span>
-                     </label>
+        <div class="kt-subheader__wrapper pt-3">    
+                <div class="kt-subheader__wrapper">
+                    <button data-toggle="modal" data-target="#kt_modal_6"
+                        class="btn btn-brand btn-width pl-4" (click)="exportToExcel()">{{"Download" | localize}}</button>
                 </div>
-            </div>
         </div>
     </div>
 </div>
