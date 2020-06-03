@@ -282,6 +282,7 @@
     <text name="Refresh">Refresh</text>
     <text name="ErrorState">Error state</text>
     <text name="All">All</text>
+    <text name="Show Deleted">Show Deleted</text>
     <text name="HasError">Has error</text>
     <text name="ShowAdvancedFilters">Show advanced filters</text>
     <text name="HideAdvancedFilters">Hide advanced filters</text>

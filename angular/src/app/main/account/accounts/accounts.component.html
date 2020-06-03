@@ -240,7 +240,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary btn-width"
                                                 data-dismiss="modal">{{"Close" | localize}}</button>
-                                            <button type="button" class="btn btn-primary btn-width"  data-dismiss="modal" (click)="SaveChanges()" [disabled]="activeSaveButton" >Save changes</button>
+                                            <button type="button" class="btn btn-primary btn-width"  data-dismiss="modal" (click)="SaveChanges()" [disabled]="activeSaveButton" >{{"Save changes" | localize}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -304,10 +304,10 @@
                                         </div>
                                     </div>
                                     <div class="block-btn mr-1">
-                                        <select class="form-control border-grey" name="categoryFilter"
+                                        <select class="form-control" name="categoryFilter"
                                             [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
                                             id="exampleFormControlSelect2">
-                                            <option class="form-control m-input" value="0">All</option>
+                                            <option  value="0">{{"All" | localize}}</option>
                                             <option *ngFor="let item of accountTypeList;" [value]="item.id">
                                                 {{item.name}}
                                             </option>
@@ -380,7 +380,7 @@
                                                             <input  type="checkbox"  [(checked)]="AllOrActive"  (change)="changeToggleValue()">
                                                             <span></span>
                                                         </label>
-                                                        Show Deleted 
+                                                        {{"Show Deleted" | localize}} 
                                                     </div>
                                                 </div>
                                             </th>
