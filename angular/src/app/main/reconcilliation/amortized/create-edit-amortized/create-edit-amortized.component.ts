@@ -51,7 +51,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   }
   ngOnInit() {   
     if (history.state.navigationId == 1){
-      this._router.navigate(['/app/main/reconcilliation']);
+      this._router.navigate(['/app/main/reconciliation']);
     }
     this.selectedDate = history.state.data.selectedDate
     this.accountId = history.state.data.accountId
@@ -76,7 +76,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
     }   
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net,selectedDate : this.selectedDate ,linkedAccountNo: history.state.data.linkedAccountNo , linkedAccountName : history.state.data.linkedAccountName }} });
+    this._router.navigate(['/app/main/reconciliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net,selectedDate : this.selectedDate ,linkedAccountNo: history.state.data.linkedAccountNo , linkedAccountName : history.state.data.linkedAccountName }} });
   }
   uploadCommentFile($event) {
     this.commentFiles.push($event.target.files[0]);
@@ -276,7 +276,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
         this.RedirectToDetails(this.amortrizedItemId,this.accuredAmount,this.netAmount)
       }
       else{
-        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo, selectedDate : this.selectedDate,linkedAccountNo: history.state.data.linkedAccountNo , linkedAccountName : history.state.data.linkedAccountName}} });
+        this._router.navigate(['/app/main/reconciliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo, selectedDate : this.selectedDate,linkedAccountNo: history.state.data.linkedAccountNo , linkedAccountName : history.state.data.linkedAccountName}} });
       } 
   }
   settings: UppyConfig = {

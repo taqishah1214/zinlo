@@ -113,10 +113,10 @@
                                 <div *ngIf="FilterBoxOpen" class="lower-content">
                                     <form>
                                         <div class="form-group">
-                                            <select class="form-control border-grey" [(ngModel)]="filterStatus"
+                                            <select class="form-control m-input" [(ngModel)]="filterStatus"
                                                 (change)="filterByStatus($event)" id="exampleFormControlSelect1"
                                                 name="filterStatus">
-                                                <option value="0">{{"AllStatuses" | localize}}</option>
+                                                <option value="0" style="border: 1px solid green !important;">{{"AllStatuses" | localize}}</option>
                                                 <option value="1">{{"NotStarted" | localize}}</option>
                                                 <option value="2">{{"InProcess" | localize}}</option>
                                                 <option value="3">{{"OnHold" | localize}}</option>
