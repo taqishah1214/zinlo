@@ -11,14 +11,14 @@
             </span>
         </div>
         <div class="kt-subheader__wrapper pt-3">
-            <div class="dropdown border-grey px-1 py-1" style="background-color: #F0F8FF;"
+            <div class="dropdown border-grey " style="cursor: pointer;"
                 data-toggle="dropdown" >
-                <i class="fas fa-plus" style="color: cornflowerblue;"></i>
+                <img src="../../../../assets/img/download.png" width='20px' height="25px">
             </div>
             <div class="dropdown-menu">
                 <div  class="dropdown-item">
                     <label>
-                         <span id="ExportUsersToExcelButton" (click)="exportToExcel()"> Download</span>
+                         <span id="ExportUsersToExcelButton" style="cursor: pointer;" (click)="exportToExcel()"> {{"Download" | localize}}</span>
                      </label>
                 </div>
             </div>
