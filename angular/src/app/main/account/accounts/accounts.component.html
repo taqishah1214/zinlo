@@ -367,7 +367,7 @@
                                                 {{"Assignee" | localize}}
                                                 <p-sortIcon field="AssigneeId"></p-sortIcon>
                                             </th>
-                                            <th *ngIf="'Pages.ChartsofAccounts.Edit' | permission" class="action-cell" scope="col">
+                                            <th *ngIf="actionButtonPermission && monthStatus" class="action-cell" scope="col">
                                                 {{"Action" | localize}}
                                             </th>
                                             <th class="delete-cell">
@@ -442,7 +442,7 @@
                                                 </app-user-list-component>
                                             </div>
                                         </td>
-                                        <td *ngIf="'Pages.ChartsofAccounts.Edit' | permission" class="action-cell">
+                                        <td *ngIf="actionButtonPermission && monthStatus" class="action-cell">
                                             <div class="btn-group">
                                                 <a [ngClass]="{'disabled':!monthStatus}" *ngIf="'Pages.Categories.Edit' | permission" class="btn"
                                                     href="javascript:;" data-toggle="tooltip" title="Edit"
@@ -498,7 +498,7 @@
                                                             userId={{item.assigneeId}}></app-user-list-component>
                                                     </div>
                                                 </li>
-                                                <li *ngIf="'Pages.ChartsofAccounts.Edit' | permission" class="action-cell-item collapsable-cell">
+                                                <li *ngIf="actionButtonPermission && monthStatus" class="action-cell-item collapsable-cell">
                                                     <div class="thead-box"><b>{{"Action" | localize}} : </b></div>
                                                     <div class="tdata-box">
                                                         <div class="btn-group">
