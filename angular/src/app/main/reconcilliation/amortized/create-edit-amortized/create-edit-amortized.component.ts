@@ -230,17 +230,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   }
 
   validationCheck() {
-    if(this.amortizationDto.inoviceNo == null)
-     {
-      this.notify.error("Select the Invoice Number")
-      return false;
-     }
-     else if(this.amortizationDto.journalEntryNo == null)
-     {
-      this.notify.error("Select the Journal Entry Number")
-      return false;
-     }
-     else if(this.amortizationDto.startDate == null)
+     if(this.amortizationDto.startDate == null)
      {
       this.notify.error("Select the Start Date")
       return false;

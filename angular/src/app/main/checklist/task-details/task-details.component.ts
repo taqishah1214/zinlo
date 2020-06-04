@@ -19,6 +19,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
     editable: true,
     spellcheck: true,
     height: '300px',
+    width: '400px',
     placeholder: 'Enter text here...',
     translate: 'no',
     defaultParagraphSeparator: 'p',

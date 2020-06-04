@@ -102,17 +102,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
     }
   }
   validationCheck() {
-    if(this.itemizedDto.inoviceNo == null)
-     {
-      this.notify.error("Select the Invoice Number")
-      return false;
-     }
-     else if(this.itemizedDto.journalEntryNo == null)
-     {
-      this.notify.error("Select the Journal Entry Number")
-      return false;
-     }
-     else if(this.itemizedDto.date == null)
+    if(this.itemizedDto.date == null)
      {
       this.notify.error("Select Date")
       return false;
