@@ -81,7 +81,7 @@ export class ItemizedComponent extends AppComponentBase {
   }
   ngOnInit() {
     if (history.state.navigationId == 1){
-      this._router.navigate(['/app/main/reconcilliation']);
+      this._router.navigate(['/app/main/reconciliation']);
     }
     $(document).ready(function(){
       // Show hide popover
@@ -102,10 +102,10 @@ export class ItemizedComponent extends AppComponentBase {
 
   }
   RedirectToAddNew() : void {
-    this._router.navigate(['/app/main/reconcilliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : 0 , selectedDate : this.monthValue }} });
+    this._router.navigate(['/app/main/reconciliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : 0 , selectedDate : this.monthValue }} });
   }
   RedirectToDetail(ItemizedItemId) : void {   
-      this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId ,selectedDate :this.monthValue }} });
+      this._router.navigate(['/app/main/reconciliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId ,selectedDate :this.monthValue }} });
   }
   getAllItemizedList(event?: LazyLoadEvent){
     this.primeNgEvent = event;
@@ -163,7 +163,7 @@ collapsibleRowClick(id) {
 } 
 
 BackToReconcileList() {
-  this._router.navigate(['/app/main/reconcilliation']);
+  this._router.navigate(['/app/main/reconciliation']);
 
 }
 
@@ -211,7 +211,7 @@ BackToReconcileList() {
             
             this._chartOfAccountService.checkAsReconciliedMonthly(this.accountId,moment(this.monthValue)).subscribe(resp => {
               this.notify.success(this.l('Variance is equal to 0, hence the account is reconciled.'));
-              this._router.navigate(['/app/main/reconcilliation']);
+              this._router.navigate(['/app/main/reconciliation']);
             })
           }
         }

@@ -82,7 +82,7 @@ export class AmortizedComponent extends AppComponentBase {
   }
   ngOnInit() {
     if (history.state.navigationId == 1){
-      this._router.navigate(['/app/main/reconcilliation']);
+      this._router.navigate(['/app/main/reconciliation']);
     }
       $(document).ready(function(){
         // Show hide popover
@@ -109,11 +109,11 @@ export class AmortizedComponent extends AppComponentBase {
     this.userName = this.appSession.user.name.toString();
   }
   RedirectToDetails(amortizedItemId,accured,net) : void {
-    this._router.navigate(['/app/main/reconcilliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net ,  selectedDate : this.monthFilter , linkedAccountNo:  this.linkedAccountNo , linkedAccountName : this.linkedAccountName }} });
+    this._router.navigate(['/app/main/reconciliation/amortized/amortized-details'],{ state: { data: { monthStatus : this.monthStatus , accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : amortizedItemId,accuredAmount: accured,netAmount:net ,  selectedDate : this.monthFilter , linkedAccountNo:  this.linkedAccountNo , linkedAccountName : this.linkedAccountName }} });
   }
   RedirectToAddNewItem()
   {
-      this._router.navigate(['/app/main/reconcilliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : 0 , selectedDate : this.monthFilter , linkedAccountNo:  this.linkedAccountNo , linkedAccountName : this.linkedAccountName }} });
+      this._router.navigate(['/app/main/reconciliation/amortized/create-edit-amortized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,amortrizedItemId : 0 , selectedDate : this.monthFilter , linkedAccountNo:  this.linkedAccountNo , linkedAccountName : this.linkedAccountName }} });
      
   }
 
@@ -228,7 +228,7 @@ collapsibleRowClick(id) {
 } 
 
 BackToReconcileList() {
-  this._router.navigate(['/app/main/reconcilliation']);
+  this._router.navigate(['/app/main/reconciliation']);
 
 }
 
@@ -274,7 +274,7 @@ BackToReconcileList() {
             
             this._chartOfAccountService.checkAsReconciliedMonthly(this.accountId,moment(this.monthValue)).subscribe(resp => {
               this.notify.success(this.l('Variance is equal to 0, hence the account is reconciled.'));
-              this._router.navigate(['/app/main/reconcilliation']);
+              this._router.navigate(['/app/main/reconciliation']);
             })
           }
         }

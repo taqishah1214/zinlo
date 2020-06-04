@@ -51,7 +51,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   }
   ngOnInit() {  
     if (history.state.navigationId == 1){
-      this._router.navigate(['/app/main/reconcilliation']);
+      this._router.navigate(['/app/main/reconciliation']);
     }
     this.accountId = history.state.data.accountId
     this.userName = this.appSession.user.name.toString();
@@ -74,7 +74,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   
   }
   RedirectToDetail(ItemizedItemId) : void {   
-    this._router.navigate(['/app/main/reconcilliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId , selectedDate :history.state.data.selectedDate}} });
+    this._router.navigate(['/app/main/reconciliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId , selectedDate :history.state.data.selectedDate}} });
   }
   commentClick(): void {
     this.commantModal = true;
@@ -134,7 +134,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
       this.RedirectToDetail(this.ItemizedItemId)
     }
     else{
-      this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo ,selectedDate :history.state.data.selectedDate}} });
+      this._router.navigate(['/app/main/reconciliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo ,selectedDate :history.state.data.selectedDate}} });
     }   
   }
   settings: UppyConfig = {

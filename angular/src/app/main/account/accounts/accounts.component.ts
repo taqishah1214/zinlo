@@ -314,7 +314,7 @@ RedirectToCreateAccount(): void {
     this.updateAssigneeOnHeader = false;
     this.getAccountWithAssigneeId = 0;
     this.getAllAccounts()
-    this.notify.success(this.l('Assigni Successfully Updated.'));
+    this.notify.success(this.l('Assignee Successfully Updated.'));
   }
 
   settings: UppyConfig = {
