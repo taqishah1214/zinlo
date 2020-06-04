@@ -72,7 +72,7 @@
 
 
                                         <th
-                                            [hidden]="!(['Pages.Categories.Edit', 'Pages.Categories.Delete'] | permissionAny)">
+                                        *ngIf="actionButtonPermission && monthStatus">
                                             {{"Actions" | localize}}</th>
                                     </tr>
 
@@ -115,7 +115,7 @@
                                             </span>
                                         </td>
                                         <td
-                                            [hidden]="!(['Pages.Categories.Edit', 'Pages.Categories.Delete'] | permissionAny)">
+                                        *ngIf="actionButtonPermission && monthStatus">
                                             <div class="btn-group">
 
                                                 <a *ngIf="'Pages.Categories.Edit' | permission" class="btn"

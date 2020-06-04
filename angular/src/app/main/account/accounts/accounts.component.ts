@@ -71,7 +71,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   selectedDate : any
   checkActiveMonth:boolean=true;
   activeSaveButton:boolean=true;
-
+  actionButtonPermission;
 
   uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
   uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsTrialBalanceFromExcel';
@@ -105,6 +105,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     }
  }
   ngOnInit() {
+    this.actionButtonPermission = this.isGranted('Pages.ChartsofAccounts.Edit');
+    debugger
     $(document).ready(function(){
         // Show hide popover
             $(".dropdown-menu").on('click', function (e) {
@@ -312,7 +314,7 @@ RedirectToCreateAccount(): void {
     this.updateAssigneeOnHeader = false;
     this.getAccountWithAssigneeId = 0;
     this.getAllAccounts()
-    this.notify.success(this.l('Assigni Successfully Updated.'));
+    this.notify.success(this.l('Assignee Successfully Updated.'));
   }
 
   settings: UppyConfig = {

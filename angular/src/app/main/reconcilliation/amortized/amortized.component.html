@@ -111,7 +111,7 @@
                                                         <input  type="checkbox" [(checked)]="AllOrActive"  (change)="changeToggleValue()">
                                                         <span></span>
                                                     </label>
-                                                    Show Deleted 
+                                                    {{"Show Deleted" | localize}}
                                                 </div>
                                             </div>
                                         </th>
@@ -299,9 +299,9 @@
 
                             <div class="form-group " [ngClass]="{'disabled':!monthStatus}">
                                 <label>{{"Comments" | localize}}</label>      
-                                <div class="border-left border-bottom border-right rounded">
+                                <div>
                                     <p-editor [(ngModel)]="comment" name="HtmlEditorInput" 
-                                                [style]="{'height':'230px','border':'none'}">
+                                                [style]="{'height':'230px'}">
                                                 <p-header>
                                                     <span class="ql-formats">
                                                         <select class="ql-size" data-toggle="tooltip" title="Font Size"style="width:75px">
@@ -351,29 +351,29 @@
                                     <thead>
                                         <tr>
                                             <th></th>
-                                            <th class="text-navyblue big">{{"Beginning Amount" | localize}}</th>
-                                            <th class="text-navyblue big">{{"Accrued Amortization" | localize}}</th>
-                                            <th class="text-navyblue big">{{"Net Amount" | localize}}</th>
+                                            <th *ngIf="reconciliedBase !== 1" class="text-navyblue big">{{"Beginning Amount" | localize}}</th>
+                                            <th *ngIf="reconciliedBase !== 1" class="text-navyblue big">{{"Accrued Amortization" | localize}}</th>
+                                            <th *ngIf="reconciliedBase == 1" class="text-navyblue big">{{"Net Amount" | localize}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="text-navyblue big"><label><b>{{"Total" | localize}}:</b></label></td>
-                                            <td class="text-black big"> {{begininngAmount| formater }}</td>
-                                            <td class="text-black big"> {{accuredAmount| formater }}</td>
-                                            <td class="text-black big"> {{netAmount | formater}}</td>
+                                            <td   class="text-navyblue big"><label><b>{{"Total" | localize}}:</b></label></td>
+                                            <td  *ngIf="reconciliedBase !== 1" class="text-black big"> {{begininngAmount| formater }}</td>
+                                            <td   *ngIf="reconciliedBase !== 1"class="text-black big"> {{accuredAmount| formater }}</td>
+                                            <td *ngIf="reconciliedBase == 1" class="text-black big"> {{netAmount | formater}}</td>
                                         </tr>
                                         <tr>
                                             <td class="text-navyblue big"><label><b>{{"Trial Balance" | localize}}:</b></label></td>
-                                            <td class="text-black big"  >{{trialBalanceBeginning | formater}}</td>
-                                            <td class="text-black big"  >{{trialBalanceAccured | formater}}</td>
-                                            <td class="text-black big"  >{{trialBalanceNet | formater}}</td>
+                                            <td  *ngIf="reconciliedBase !== 1" class="text-black big"  >{{trialBalanceBeginning | formater}}</td>
+                                            <td  *ngIf="reconciliedBase !== 1" class="text-black big"  >{{trialBalanceAccured | formater}}</td>
+                                            <td *ngIf="reconciliedBase == 1" class="text-black big"  >{{trialBalanceNet | formater}}</td>
                                         </tr>
                                         <tr>
                                             <td class="text-navyblue big"><label><b>{{"Variance" | localize}}:</b></label></td>
-                                            <td class="text-black big" > {{varianceBeginning | formater}}</td>
-                                            <td class="text-black big" > {{varianceAccured | formater}}</td>
-                                            <td class="text-black big" > {{varianceNet | formater}}</td>
+                                            <td  *ngIf="reconciliedBase !== 1" class="text-black big" > {{varianceBeginning | formater}}</td>
+                                            <td  *ngIf="reconciliedBase !== 1" class="text-black big" > {{varianceAccured | formater}}</td>
+                                            <td *ngIf="reconciliedBase == 1" class="text-black big" > {{varianceNet | formater}}</td>
                                         </tr>
                                     </tbody>
                                 </table>

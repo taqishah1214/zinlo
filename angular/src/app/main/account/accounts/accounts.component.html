@@ -29,11 +29,11 @@
                         <div class="record-card-header-bottom">
 
                             <div class="record-card-header-bottom-inner1">
-                                <button *ngIf="'Pages.ChartsofAccounts.Download' | permission" class="btn btn-images btn-width" data-toggle="modal" data-target="#kt_modal_1">
+                                <button *ngIf="'Pages.ChartsofAccounts.Download' | permission" class="btn btn-images btn-width pt-2" data-toggle="modal" data-target="#kt_modal_1">
                                     <img src="../../../../assets/img/download.png">
                                     {{"Download" | localize}}
                                 </button>
-                                <button *ngIf="'Pages.ChartsofAccounts.Upload' | permission" class="btn btn-images btn-width" data-toggle="modal" data-target="#kt_modal_2">
+                                <button *ngIf="'Pages.ChartsofAccounts.Upload' | permission" class="btn btn-images btn-width pt-2" data-toggle="modal" data-target="#kt_modal_2">
                                     <img src="../../../../assets/img/upload.png">
                                     {{"Upload" | localize}}
                                 </button>
@@ -240,7 +240,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary btn-width"
                                                 data-dismiss="modal">{{"Close" | localize}}</button>
-                                            <button type="button" class="btn btn-primary btn-width"  data-dismiss="modal" (click)="SaveChanges()" [disabled]="activeSaveButton" >Save changes</button>
+                                            <button type="button" class="btn btn-primary btn-width"  data-dismiss="modal" (click)="SaveChanges()" [disabled]="activeSaveButton" >{{"Save changes" | localize}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -304,10 +304,10 @@
                                         </div>
                                     </div>
                                     <div class="block-btn mr-1">
-                                        <select class="form-control border-grey" name="categoryFilter"
+                                        <select class="form-control" name="categoryFilter"
                                             [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
                                             id="exampleFormControlSelect2">
-                                            <option class="form-control m-input" value="0">All</option>
+                                            <option  value="0">{{"All" | localize}}</option>
                                             <option *ngFor="let item of accountTypeList;" [value]="item.id">
                                                 {{item.name}}
                                             </option>
@@ -367,7 +367,7 @@
                                                 {{"Assignee" | localize}}
                                                 <p-sortIcon field="AssigneeId"></p-sortIcon>
                                             </th>
-                                            <th *ngIf="'Pages.ChartsofAccounts.Edit' | permission" class="action-cell" scope="col">
+                                            <th *ngIf="actionButtonPermission && monthStatus" class="action-cell" scope="col">
                                                 {{"Action" | localize}}
                                             </th>
                                             <th class="delete-cell">
@@ -380,7 +380,7 @@
                                                             <input  type="checkbox"  [(checked)]="AllOrActive"  (change)="changeToggleValue()">
                                                             <span></span>
                                                         </label>
-                                                        Show Deleted 
+                                                        {{"Show Deleted" | localize}} 
                                                     </div>
                                                 </div>
                                             </th>
@@ -442,7 +442,7 @@
                                                 </app-user-list-component>
                                             </div>
                                         </td>
-                                        <td *ngIf="'Pages.ChartsofAccounts.Edit' | permission" class="action-cell">
+                                        <td *ngIf="actionButtonPermission && monthStatus" class="action-cell">
                                             <div class="btn-group">
                                                 <a [ngClass]="{'disabled':!monthStatus}" *ngIf="'Pages.Categories.Edit' | permission" class="btn"
                                                     href="javascript:;" data-toggle="tooltip" title="Edit"
@@ -498,7 +498,7 @@
                                                             userId={{item.assigneeId}}></app-user-list-component>
                                                     </div>
                                                 </li>
-                                                <li *ngIf="'Pages.ChartsofAccounts.Edit' | permission" class="action-cell-item collapsable-cell">
+                                                <li *ngIf="actionButtonPermission && monthStatus" class="action-cell-item collapsable-cell">
                                                     <div class="thead-box"><b>{{"Action" | localize}} : </b></div>
                                                     <div class="tdata-box">
                                                         <div class="btn-group">

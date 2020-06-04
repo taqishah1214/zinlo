@@ -6,8 +6,9 @@ import { Table } from 'primeng/components/table/table';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import * as _ from 'lodash';
-import {AccountSubTypeServiceProxy } from '@shared/service-proxies/service-proxies';
+import {AccountSubTypeServiceProxy, TimeManagementsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { StoreDateService } from "../../../services/storedate.service";
+import * as moment from 'moment';
 
 
 @Component({
@@ -31,17 +32,26 @@ export class AccountsubtypeComponent extends AppComponentBase {
     descriptionFilter = '';
     categoriesList: any;
     users: any;
+    actionButtonPermission
+    monthStatus;
+    currentMonth = new Date ();
     public EditRecordId: number = 0;
     constructor(
         injector: Injector,
         private accountSubTypeServiceProxy: AccountSubTypeServiceProxy,
         private _router: Router,
-        private userDate: StoreDateService
+        private userDate: StoreDateService,
+        private _timeManagementsServiceProxy: TimeManagementsServiceProxy
     ) {
         super(injector);
 
     }
     ngOnInit() {
+        this.actionButtonPermission = this.isGranted('Pages.AccountSubType.Edit');
+        this._timeManagementsServiceProxy.getMonthStatus(moment(this.currentMonth)).subscribe(resp =>  {
+            this.monthStatus = resp
+        })
+
         this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
 
     }

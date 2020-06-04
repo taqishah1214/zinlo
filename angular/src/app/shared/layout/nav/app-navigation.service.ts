@@ -42,7 +42,7 @@ export class AppNavigationService {
                 
             ]),
 
-            new AppMenuItem('Reconciliation', 'Pages.Reconciliation', './assets/media/ClosingCheckList/reconcilliation.svg', '/app/main/reconcilliation', [ 
+            new AppMenuItem('Reconciliation', 'Pages.Reconciliation', './assets/media/ClosingCheckList/reconcilliation.svg', '/app/main/reconciliation', [ 
             ]),
             new AppMenuItem('Reports', 'Pages.Reports', './assets/media/ClosingCheckList/MaskGroup30.svg', '', [
                 new AppMenuItem('Task Report', 'Pages.Task.Reports','./assets/media/ClosingCheckList/dot.png','/app/main/task-report'),

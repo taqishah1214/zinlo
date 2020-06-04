@@ -238,16 +238,16 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     {
       if (reconciliationTypeId == 1)
       {
-        this._router.navigate(['/app/main/reconcilliation/itemized'],{ state: { data: { accountId : accountId, accountName :accountName ,accountNo: accountNo,accountBalanceId : accountBalanceId , selectedDate : this.selectedDate }} });
+        this._router.navigate(['/app/main/reconciliation/itemized'],{ state: { data: { accountId : accountId, accountName :accountName ,accountNo: accountNo,accountBalanceId : accountBalanceId , selectedDate : this.selectedDate }} });
     
       }
       else if (reconciliationTypeId == 2) {
-        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo , accountBalanceId : accountBalanceId, selectedDate : this.selectedDate, linkedAccountNo : 0, linkedAccountName : 0}} });
+        this._router.navigate(['/app/main/reconciliation/amortized'],{ state: { data: { accountId : accountId , accountName :accountName ,accountNo: accountNo , accountBalanceId : accountBalanceId, selectedDate : this.selectedDate, linkedAccountNo : 0, linkedAccountName : 0}} });
       }
     }
     else {
       if (reconciliationTypeId == 2) {
-        this._router.navigate(['/app/main/reconcilliation/amortized'],{ state: { data: { accountId : linkedAccountId , accountName : accountName ,accountNo: accountNo , accountBalanceId : accountBalanceId, selectedDate : this.selectedDate, linkedAccountNo : linkedAccountNo , linkedAccountName : linkedAccountName}} });
+        this._router.navigate(['/app/main/reconciliation/amortized'],{ state: { data: { accountId : linkedAccountId , accountName : accountName ,accountNo: accountNo , accountBalanceId : accountBalanceId, selectedDate : this.selectedDate, linkedAccountNo : linkedAccountNo , linkedAccountName : linkedAccountName}} });
       }
     }
       
@@ -274,6 +274,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
           result = i.name
         }
       })
+      debugger
       return result;
      }  
   }
