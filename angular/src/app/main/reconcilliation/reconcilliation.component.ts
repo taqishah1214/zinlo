@@ -266,7 +266,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       })
       return result;
      }
-     else if (key === "reconcilation")
+     else if (key === "reconcillation")
      {
       this.reconcillationTypeList.forEach(i => {
         if  (i.id == id)
@@ -274,6 +274,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
           result = i.name
         }
       })
+      debugger
       return result;
      }  
   }
