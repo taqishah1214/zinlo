@@ -90,7 +90,7 @@ export class AmortizedComponent extends AppComponentBase {
       e.stopPropagation();
       });
     });
-    this.monthFilter = history.state.data.selectedDate
+    this.monthFilter = new Date(add(history.state.data.selectedDate, 2, "day"));
     this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.storeData.allAccountSubTypes.subscribe(accountSubypeList => this.accountSubypeList = accountSubypeList)
     this.accountId = history.state.data.accountId

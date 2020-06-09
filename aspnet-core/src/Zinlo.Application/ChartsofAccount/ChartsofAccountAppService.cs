@@ -575,10 +575,15 @@ namespace Zinlo.ChartsofAccount
         public async Task<double> GetTrialBalanceofAccount(long id,DateTime month)
         {
             double result = 0;
+            var currentAccount = _chartsofAccountRepository.FirstOrDefault(p => p.Id == id);
             var accountBalances = await _accountBalanceRepository.FirstOrDefaultAsync(p => p.AccountId == id && month.Month == p.Month.Month && month.Year == p.Month.Year);
             if (accountBalances != null)
             {
                 result = accountBalances.TrialBalance;
+            }
+            if (currentAccount.AccountType == AccountType.Equity || currentAccount.AccountType == AccountType.Liability)
+            {
+                result = ConvertTrailBalanceIsPositiveOrNegative(result);
             }
             return result;
         }
@@ -652,11 +657,26 @@ namespace Zinlo.ChartsofAccount
                 linkedAccountInfo.TrialBalance = 0;
             }
 
-           
+            if (currentAccount.AccountType == AccountType.Equity || currentAccount.AccountType == AccountType.Liability)
+            {
+                linkedAccountInfo.TrialBalance = ConvertTrailBalanceIsPositiveOrNegative(linkedAccountInfo.TrialBalance);
+            }
+
 
             return linkedAccountInfo;
 
         }
+        public double ConvertTrailBalanceIsPositiveOrNegative(double balance)
+        {
+            if (balance == 0)
+                return balance;
+            else if (balance < 0)
+                return System.Math.Abs(balance);
+            else
+                balance = balance * -1;
+                return balance ;
+        }
+
 
         public async Task CheckAsReconciliedMonthly(long id, DateTime month)
         {
