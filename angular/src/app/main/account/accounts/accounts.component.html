@@ -367,7 +367,7 @@
                                                 {{"Assignee" | localize}}
                                                 <p-sortIcon field="AssigneeId"></p-sortIcon>
                                             </th>
-                                            <th *ngIf="actionButtonPermission && monthStatus" class="action-cell" scope="col">
+                                            <th *ngIf="actionButtonPermission" class="action-cell" scope="col">
                                                 {{"Action" | localize}}
                                             </th>
                                             <th class="delete-cell">
@@ -417,9 +417,9 @@
                                             <span class="">{{item.reconciliationType}}</span>
                                         </td>
 
-                                        <td [ngClass]="{'disabled':!monthStatus}" class="assignee-cell">
+                                        <td class="assignee-cell">
                                             <div *ngIf="item.id != rowid" class="kt-user-card-v2"
-                                                (click)="monthStatus &&  openFieldUpdateAssignee(item.id)">
+                                                (click)="openFieldUpdateAssignee(item.id)">
                                                 <div class="kt-user-card-v2__pic">
                                                     <div *ngIf="item.profilePicture" class="kt-badge kt-badge--xl">
                                                         <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
@@ -442,13 +442,13 @@
                                                 </app-user-list-component>
                                             </div>
                                         </td>
-                                        <td *ngIf="actionButtonPermission && monthStatus" class="action-cell">
+                                        <td *ngIf="actionButtonPermission" class="action-cell">
                                             <div class="btn-group">
-                                                <a [ngClass]="{'disabled':!monthStatus}" *ngIf="'Pages.Categories.Edit' | permission" class="btn"
+                                                <a  class="btn"
                                                     href="javascript:;" data-toggle="tooltip" title="Edit"
                                                     (click)="editAccount(item.id)">
                                                     <img src="../../../../assets/img/edit.svg"></a>
-                                                <a [ngClass]="{'disabled':!monthStatus}" *ngIf="'Pages.Categories.Delete' | permission" class="btn"
+                                                <a  class="btn"
                                                 data-toggle="tooltip" title="Delete" href="javascript:;" (click)="deleteAccount(item.id)">
                                                     <img src="../../../../assets/img/del.svg"></a>
                                             </div>
@@ -475,10 +475,10 @@
                                                         <span class="">{{item.reconciliationType}}</span>
                                                     </div>
                                                 </li>
-                                                <li [ngClass]="{'disabled':!monthStatus}" class="assignee-cell collapsable-cell kt-user-card-v2">
+                                                <li  class="assignee-cell collapsable-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
                                                     <div *ngIf="item.id != rowid"
-                                                        (click)="monthStatus &&  openFieldUpdateAssignee(item.id)" class="tdata-box">
+                                                        (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div *ngIf="item.profilePicture"
                                                                 class="kt-badge kt-badge--xl">
@@ -498,17 +498,17 @@
                                                             userId={{item.assigneeId}}></app-user-list-component>
                                                     </div>
                                                 </li>
-                                                <li *ngIf="actionButtonPermission && monthStatus" class="action-cell-item collapsable-cell">
+                                                <li *ngIf="actionButtonPermission" class="action-cell-item collapsable-cell">
                                                     <div class="thead-box"><b>{{"Action" | localize}} : </b></div>
                                                     <div class="tdata-box">
                                                         <div class="btn-group">
-                                                            <a [ngClass]="{'disabled':!monthStatus}" *ngIf="!item.isDeleted == true" class="btn"
+                                                            <a  *ngIf="!item.isDeleted == true" class="btn"
                                                                 href="javascript:;" (click)="editAccount(item.id)" data-toggle="tooltip" title="Edit">                                                           
                                                                 <img src="../../../../assets/img/edit.svg"></a>
-                                                             <a [ngClass]="{'disabled':!monthStatus}" *ngIf="!item.isDeleted == true" class="btn" href="javascript:;"
+                                                             <a  *ngIf="!item.isDeleted == true" class="btn" href="javascript:;"
                                                                 (click)="deleteAccount(item.id)"data-toggle="tooltip" title="Delete">
                                                                 <img src="../../../../assets/img/del.svg"></a>
-                                                                <a [ngClass]="{'disabled':!monthStatus}" *ngIf="item.isDeleted == true" class="btn" href="javascript:;"
+                                                                <a  *ngIf="item.isDeleted == true" class="btn" href="javascript:;"
                                                                 (click)="restoreAccount(item.id)">
                                                                 <i class="fas fa-trash-restore"></i></a>
                                                         </div>
