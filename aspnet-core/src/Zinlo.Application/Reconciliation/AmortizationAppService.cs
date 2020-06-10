@@ -159,6 +159,10 @@ namespace Zinlo.Reconciliation
                             amortizedListDto.TotalNetAmount = amortizedList.Sum(item => item.NetAmount);
                             amortizedListDto.TotalTrialBalanceAccured = linkedAccountInfo.TrialBalance;
                             await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalBeginningAmount, input.ChartofAccountId,input.SelectedMonth);
+                            if (linkedAccountInfo.LinkedAccountId != 0)
+                            {
+                                await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalAccuredAmortization, linkedAccountInfo.LinkedAccountId, input.SelectedMonth);
+                            }
                             amortizedListDto.VarianceBeginningAmount = amortizedListDto.TotalBeginningAmount - amortizedListDto.TotalTrialBalanceBegininng;
                             amortizedListDto.VarianceAccuredAmount = amortizedListDto.TotalAccuredAmortization - amortizedListDto.TotalTrialBalanceAccured;
                             amortizedListDto.TotalTrialBalanceNet = 0;

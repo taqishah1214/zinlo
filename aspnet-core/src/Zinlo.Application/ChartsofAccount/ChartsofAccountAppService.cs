@@ -150,7 +150,7 @@ namespace Zinlo.ChartsofAccount
                                        ReconciliationTypeId = o.ReconciliationType != 0 ? (int)o.ReconciliationType : 0,
                                        AssigneeId = o.Assignee.Id,
                                        StatusId = GetStatusofSelectedMonth(o.Id, input.SelectedMonth),
-                                       Balance = GetTheAccountBalanceofSelectedMonth(o.Id, input.SelectedMonth),
+                                       Balance = GetTheAccountBalanceofSelectedMonth(o.Id, input.SelectedMonth,o.AccountType),
                                        OverallMonthlyAssignee = getUserWithPictures,
                                        IsDeleted = o.IsDeleted,
                                        MonthStatus = MonthStatus,
@@ -252,35 +252,20 @@ namespace Zinlo.ChartsofAccount
         }
 
 
-        protected virtual double GetTheAccountBalanceofSelectedMonth (long accountId,DateTime SelectedMonth)
+        protected virtual double GetTheAccountBalanceofSelectedMonth (long accountId,DateTime SelectedMonth,AccountType accountType)
         {
             double result = 0;
-            var account = _chartsofAccountRepository.FirstOrDefault(p => p.Id == accountId);
-            if (account.LinkedAccountNumber == null)
-            {
-                var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
-                result = accountInformation != null ? accountInformation.Balance : 0;
-                return result;
-            }
-            else
-            {
-                if (account.Reconciled == ChartofAccounts.Reconciled.AccruedAmount)
-                {
-                    var LinkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == account.LinkedAccountNumber);
-                    var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == LinkedAccount.Id);
-                    result = accountInformation != null ? accountInformation.Balance : 0;
-                    return result;
-                }
-                else 
-                {
+            var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
+            result = accountInformation != null ? accountInformation.Balance : 0;
 
-                    var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
-                    result = accountInformation != null ? accountInformation.Balance : 0;
-                    return result;
-                }
-                
+
+            if (accountType == AccountType.Equity || accountType == AccountType.Liability)
+            {
+                result = ConvertTrailBalanceIsPositiveOrNegative(result);
             }
             
+
+            return result;  
         }
         protected virtual double GetTheTrialBalanceofSelectedMonth(long accountId, DateTime SelectedMonth)
         {
@@ -650,11 +635,13 @@ namespace Zinlo.ChartsofAccount
                 var linkedAccountBalance = await _accountBalanceRepository.FirstOrDefaultAsync(p => p.AccountId == linkedAccount.Id && month.Month == p.Month.Month && month.Year == p.Month.Year);
                 linkedAccountInfo.Balance = linkedAccountBalance == null ? 0 : linkedAccountBalance.Balance;
                 linkedAccountInfo.TrialBalance = linkedAccountBalance == null ? 0 : linkedAccountBalance.TrialBalance;
+                linkedAccountInfo.LinkedAccountId = linkedAccount.Id;
             }
             else
             {
                 linkedAccountInfo.Balance = 0;
                 linkedAccountInfo.TrialBalance = 0;
+                linkedAccountInfo.LinkedAccountId = 0;
             }
 
             if (currentAccount.AccountType == AccountType.Equity || currentAccount.AccountType == AccountType.Liability)
