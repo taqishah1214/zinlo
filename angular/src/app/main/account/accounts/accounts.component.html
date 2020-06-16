@@ -350,18 +350,21 @@
                                                 {{"Account No" |localize}}
                                                 <p-sortIcon field="AccountNumber"></p-sortIcon>
                                             </th>
-                                            <th class="accountName-cell" scope="col">
+                                            <th class="accountName-cell" scope="col"pSortableColumn="AccountName">
                                                 {{"Account Name" | localize}}
+                                                <p-sortIcon field="AccountName"></p-sortIcon>
                                             </th>
                                             <th class="accountType-cell" scope="col" pSortableColumn="AccountType">
                                                 {{"Account Type" | localize}}
                                                 <p-sortIcon field="AccountType"></p-sortIcon>
                                             </th>
-                                            <th class="accountSubtype-cell" scope="col">
+                                            <th class="accountSubtype-cell" scope="col" pSortableColumn="AccountSubType">
                                                 {{"Account Sub type" | localize}}
+                                                <p-sortIcon field="AccountSubType"></p-sortIcon>
                                             </th>
-                                            <th class="reconciliation-cell" scope="col">
+                                            <th class="reconciliation-cell" scope="col" pSortableColumn="ReconciliationType">
                                                 {{"Reconciliation Type" | localize}}
+                                                <p-sortIcon field="ReconciliationType"></p-sortIcon>
                                             </th>
                                             <th class="assignee-cell" scope="col" pSortableColumn="AssigneeId">
                                                 {{"Assignee" | localize}}
