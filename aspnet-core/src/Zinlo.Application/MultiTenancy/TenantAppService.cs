@@ -14,6 +14,7 @@ using Abp.Linq.Extensions;
 using Abp.Runtime.Security;
 using Microsoft.EntityFrameworkCore;
 using Zinlo.Authorization;
+using Zinlo.Contactus;
 using Zinlo.Editions;
 using Zinlo.Editions.Dto;
 using Zinlo.MultiTenancy.Dto;
@@ -26,9 +27,11 @@ namespace Zinlo.MultiTenancy
     {
         public IAppUrlService AppUrlService { get; set; }
         public IEventBus EventBus { get; set; }
+        private readonly IContactusService _contactusService;
 
-        public TenantAppService()
+        public TenantAppService(IContactusService contactusService)
         {
+            _contactusService = contactusService;
             AppUrlService = NullAppUrlService.Instance;
             EventBus = NullEventBus.Instance;
         }
@@ -107,6 +110,7 @@ namespace Zinlo.MultiTenancy
         [AbpAuthorize(AppPermissions.Pages_Tenants_Delete)]
         public async Task DeleteTenant(EntityDto input)
         {
+            await _contactusService.DeteleByTenantId(input.Id);
             var tenant = await TenantManager.GetByIdAsync(input.Id);
             await TenantManager.DeleteAsync(tenant);
         }

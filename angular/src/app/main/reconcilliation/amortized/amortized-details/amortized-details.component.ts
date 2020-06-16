@@ -36,7 +36,7 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   netAmount : any;
   accuredAmount : any;
   postedCommentList : any = [];
-  comment : "";
+  comment : any = ""
   historyOfTask: any = [];
   users : any = [];
   historyList : any =[];
@@ -100,11 +100,27 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     this.getAmortizeDetail();
   }
   onComment(): void {
-    this.commantBox = true;
+    if(this.comment){
+      var index=this.comment.indexOf("</p>");
+    }
+    console.log(index,this.comment);
+    var i;
+    for (i=3;i<index;i++)
+    {
+      if(this.comment[i]==' ')
+      {
+      }
+      else{
+        break;
+      }
+    }
+    if(i!=index && this.comment){
     this.saveComments();
     this.getAmortizeDetail();
+    }
   }
   saveComments(): void {
+    
     this._amortizationService.postComment(this.comment,this.amortrizedItemId,3).subscribe((result)=> {
       this.comment = ""
       this.getAmortizeDetail();

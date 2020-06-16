@@ -254,11 +254,27 @@ BackToReconcileList() {
   }
 
   onComment(): void {
-    this.commantBox = true;
-    this._amortizationService.postComment(this.comment,this.accountId,5).subscribe((result)=> {
-      this.getAllAmortizedList(this.primeNgEvent);
-      this.comment = ""
-    })
+    if(this.comment){
+      var index=this.comment.indexOf("</p>");
+    }
+    console.log(index,this.comment);
+    var i;
+    for (i=3;i<index;i++)
+    {
+      if(this.comment[i]==' ')
+      {
+      }
+      else{
+        break;
+      }
+    }
+    if(i!=index && this.comment){
+      this._amortizationService.postComment(this.comment,this.accountId,5).subscribe((result)=> {
+        this.getAllAmortizedList(this.primeNgEvent);
+        this.comment = ""
+      })
+    }
+    
   }
   onCancelComment(): void {
     this.commantBox = true;

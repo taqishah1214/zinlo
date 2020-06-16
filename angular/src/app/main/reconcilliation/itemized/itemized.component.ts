@@ -189,11 +189,26 @@ BackToReconcileList() {
   }
 
   onComment(): void {
-    this.commantBox = true;
+    if(this.comment){
+    var index=this.comment.indexOf("</p>");
+  }
+  console.log(index,this.comment);
+  var i;
+  for (i=3;i<index;i++)
+  {
+    if(this.comment[i]==' ')
+    {
+    }
+    else{
+      break;
+    }
+  }
+  if(i!=index && this.comment){
     this._itemizedService.postComment(this.comment,this.accountId,4).subscribe((result)=> {
       this.getAllItemizedList(this.primeNgEvent);
       this.comment = ""
     })
+  }
   }
   onCancelComment(): void {
     this.commantBox = true;

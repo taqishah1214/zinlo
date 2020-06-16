@@ -21,7 +21,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   attachments: any;
   commentsData: any = [];
   newAttachmentPaths: any = [];
-  comment:  ""
+  comment:  any=""
   postAttachment: PostAttachmentsPathDto = new PostAttachmentsPathDto();
   userSignInName: any;
   assigneeId: any = 0;
@@ -89,12 +89,26 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   updateDetails(): void {
     this.getItemizeDetail();
   }
-  onComment(): void {
-    this.commantBox = true;
-    this._itemizationService.postComment(this.comment,this.itemizedItemId,2).subscribe((result)=> {
-      this.comment = ""
-      this.getItemizeDetail();
-    })   
+  onComment(): void {if(this.comment){
+    var index=this.comment.indexOf("</p>");
+    }
+    console.log(index,this.comment);
+    var i;
+    for (i=3;i<index;i++)
+    {
+      if(this.comment[i]==' ')
+      {
+      }
+      else{
+        break;
+      }
+    }
+    if(i!=index && this.comment){
+      this._itemizationService.postComment(this.comment,this.itemizedItemId,2).subscribe((result)=> {
+        this.comment = ""
+        this.getItemizeDetail();
+      })   
+    }
   }
  
   onCancelComment(): void {
