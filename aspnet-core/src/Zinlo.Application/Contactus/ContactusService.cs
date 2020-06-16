@@ -74,6 +74,10 @@ namespace Zinlo.Contactus
             }
 
         }
+        public async Task DeteleByTenantId(int tenantId)
+        {
+            await _contactusRepository.DeleteAsync(p => p.TenantId == tenantId);
+        }
         public async Task Create(CreateOrUpdateContactusInput create, int tenantId)
         {
             var response = await _contactusRepository.InsertAsync(new ContactUs

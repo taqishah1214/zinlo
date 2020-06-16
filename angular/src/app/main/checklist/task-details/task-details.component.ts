@@ -65,6 +65,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   buttonColorForHistory : any = "bg-lightgrey"
   categoriesList : any = []
   instructionVersions : any = []
+  selectedFile : any;
 
   constructor(
     injector: Injector,
@@ -119,6 +120,9 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
 
   }
 
+  selectedFileToView(file) {
+    this.selectedFile = file;
+  }
   rollBackInstruction(id) {
     this.recordId;
 
@@ -383,7 +387,7 @@ setTaskNameHistoryParam(item){
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
         element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
         element["attachmentName"] = attachmentName
-        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl + element.attachmentPath
+        element["attachmentUrl"] = AppConsts.remoteServiceBaseUrl+"/"+element.attachmentPath
       });
     })
   }

@@ -16,5 +16,6 @@ namespace Zinlo.Contactus
         Task<ContactusDto> GetContactusByTenantId(GetContactusInput nput);
         Task Create(CreateOrUpdateContactusInput create,int tenantId);
         Task<bool> ApproveRequest(ContactusDto contactus);
+        Task DeteleByTenantId(int tenantId);
     }
 }

@@ -53,12 +53,14 @@ import { ObserveVarianceComponent } from './reports/observe-variance/observe-var
 
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
 @NgModule({
         imports: [
+                NgxDocViewerModule,
                 AngularEditorModule,
                 RichTextEditorAllModule,
                 FileUploadModule,

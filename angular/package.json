@@ -62,6 +62,7 @@
     "ng-recaptcha": "^5.0.0",
     "ng2-file-upload": "^1.4.0",
     "ngx-bootstrap": "^5.2.0",
+    "ngx-doc-viewer": "^1.1.0",
     "ngx-image-cropper": "^1.5.1",
     "ngx-infinite-scroll": "^8.0.1",
     "ngx-perfect-scrollbar": "^8.0.0",
