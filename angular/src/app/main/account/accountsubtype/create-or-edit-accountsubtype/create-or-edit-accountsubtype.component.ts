@@ -40,12 +40,13 @@ export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implem
 
   onSubmit() : void {
     this.saving = true;  
-   this.accountSubTypeServiceProxy.createOrEdit(this.accountsSubType).pipe(finalize(() => { this.saving = false; })).subscribe(result => {
+   this.accountSubTypeServiceProxy.createOrEdit(this.accountsSubType).pipe(finalize(() => {})).subscribe(result => {
     this.notify.success(this.l('SavedSuccessfully'));
     this.accountSubTypeServiceProxy.accountSubTypeDropDown().subscribe(result => { 
       this.accountSubTypeList = result
       this.storeData.setAccountSubTypeList(this.accountSubTypeList)
   })  
+  this.saving = false;
     this.redirect(this.accountsSubType.title,result);
     
    })

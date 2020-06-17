@@ -345,16 +345,19 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
       this.notify.success(this.l('Account Successfully Created.'));
       this.redirectToAccountsList();
     }) 
+    this.saving = false;
   }
 
  
   updateAccount() : void {
     this.saving = true;
-    this._chartOfAccountService.createOrEdit(this.accountDto).pipe(finalize(() => { this.saving = false; }))
+    this._chartOfAccountService.createOrEdit(this.accountDto).pipe(finalize(() => {  }))
     .subscribe(response => {
       this.notify.success(this.l('Account Successfully Updated.'));
+      this.saving = false;
       this.redirectToAccountsList();
     })
+    
   }
 
   redirectToAccountsList () : void {
