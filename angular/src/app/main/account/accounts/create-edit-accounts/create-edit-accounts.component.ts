@@ -42,7 +42,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   linkAccountCheck = false;
   linkAccountNumber
   searchAccount ;
-
+  reconcilliationMessage = false
 
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
@@ -110,8 +110,11 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     this._chartOfAccountService.getAccountForEdit( this.accountId).subscribe(result => {
 
       if (result.reconciledId == 3 || result.reconciledId == 2){
-        this.linkAccountCheck =  true;
         this.linkAccountNumber = result.linkedAccount;
+        if (this.linkAccountNumber != "")
+        {
+          this.linkAccountCheck =  true;
+        }
       }
 
       this.accountDto.creatorUserId = result.creatorUserId; 
@@ -233,6 +236,9 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   recociledClick(id , name) : void {
     this.recociled = name;
     this.accountDto.reconciled = id;
+    if (id == 2 || id == 3){
+      this.reconcilliationMessage = true;
+    }
   }
 
   routeToAddNewAccountSubType(): void {
