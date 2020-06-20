@@ -20,17 +20,96 @@
             <div class="custom-container">
                 <div class="card">
                     <div class="record-card-header">
-                        <div class="record-card-header-bottom">
-
-                            
+                        <div class="record-card-header-bottom">   
                             <div class="record-card-header-bottom-inner1">
                                 <button class="btn arrow-btn left-arrow-btn btn-square"  (click)="filterByMonth(-1)">
                                     <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
                                 </button>
-                                <h5  style="cursor: default;">{{selectedDate | date:'MMMM yyyy'}}</h5>
+                                <h5  style="cursor: default;">{{selectedDate | date:'MMM yyyy'}}</h5>
                                 <button class="btn arrow-btn right-arrow-btn btn-square ml-2" (click)="filterByMonth(1)">
                                     <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
                                 </button>
+
+                                <div class="record-card-header-bottom-inner1">
+                                    <button *ngIf="'Pages.ChartsofAccounts.Upload' | permission" class="btn btn-images btn-width pt-2" data-toggle="modal" data-target="#kt_modal_2">
+                                        <img src="../../../../assets/img/upload.png">
+                                        {{"Upload" | localize}}
+                                    </button>
+                                </div>
+
+                                 <!-- Modal For Upload -->
+                            <div class="modal fade uppy-modal" id="kt_modal_2" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">
+                                            <!--Place model title here-->
+                                        </h5>
+                                        <button type="button" class="close" (click)="onClose()"data-dismiss="modal" aria-label="Close">
+                                        </button>
+                                    </div>
+                                    <div class="modal-body upload-body">
+                                        <p >{{"Upload Trial Balance" | localize}}</p>
+                                        <ng-uppy [config]="settings" 
+                                            (uploadResult)="fileUploadedResponseTrialBalance($event)">
+                                        </ng-uppy>
+                                    <div >
+                                        <div class="row modal-bottom-record">
+                                            <div class="col-md-12">
+                                                <!-- <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a></p> -->
+                                                <div class="row py-0">
+                                                    <div class="col-xl-5 form-group"><label>{{"Trial Balance Format" | localize}} </label><a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a>
+                                                    </div>    
+                                                    <div class="form-group col-xl-3 pt-2">
+                                                        <label>{{"Select Month for Trial Balance" | localize}} </label>
+                                                    </div>
+                                                     <div class="form-group col-xl-3" style="height: 40px !important;">
+                                                         <div class="month-calender">
+                                                            <form class="input-arrow">
+                                                                <input [(ngModel)]="selectedDate" (focusout)="checkMonth()" (ngModelChange)="checkMonthActiveorNot($event)" required="required"
+                                                                autocomplete="off" class="form-control" name="date" bsDatepicker 
+                                                                    placeholder="Select Month" class="form-control" name="date"
+                                                                    bsDatepicker
+                                                                    [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                                    (onShown)="onOpenCalendar($event)">
+                                                            </form>                
+                                                            <span class="form-control-feedback"
+                                                            *ngIf="!checkActiveMonth">{{"ThisMonthIsNotActive" | localize}}</span>
+                                                         </div>
+                                                     </div>
+                                                  </div>
+                                                  
+                                                <div class="inner-col-record border border-default">
+
+                                                    <div class="row">
+                                                        <div class="modal-bottom-row-col">
+                                                            <p>{{"Account Name" | localize}}</p>
+                                                        </div>
+                                                        <div class="modal-bottom-row-col">
+                                                            <p>{{"Account Number" | localize}}</p>
+                                                        </div>
+                                                        <div class="modal-bottom-row-col">
+                                                            <p>{{"Balance" | localize}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-width"
+                                            data-dismiss="modal">{{"Close" | localize}}</button>
+                                        <button type="button" class="btn btn-primary btn-width"  data-dismiss="modal" (click)="SaveChanges()" [disabled]="activeSaveButton" >{{"Save changes" | localize}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                             </div>
 
 

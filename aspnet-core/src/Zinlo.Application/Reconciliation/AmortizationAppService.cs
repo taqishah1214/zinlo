@@ -155,7 +155,7 @@ namespace Zinlo.Reconciliation
                             var linkedAccountInfo = await _chartsofAccountAppService.GetLinkAccountDetails(input.ChartofAccountId, input.SelectedMonth);
                             amortizedListDto.TotalTrialBalanceBegininng = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId, input.SelectedMonth);
                             amortizedListDto.TotalBeginningAmount = amortizedList.Sum(item => item.BeginningAmount);
-                            amortizedListDto.TotalAccuredAmortization = amortizedList.Sum(item => item.AccuredAmortization);
+                            amortizedListDto.TotalAccuredAmortization = await _chartsofAccountAppService.ValidateAccuredAmount(input.ChartofAccountId, amortizedList.Sum(item => item.AccuredAmortization));
                             amortizedListDto.TotalNetAmount = amortizedList.Sum(item => item.NetAmount);
                             amortizedListDto.TotalTrialBalanceAccured = linkedAccountInfo.TrialBalance;
                             await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalBeginningAmount, input.ChartofAccountId,input.SelectedMonth);
@@ -171,7 +171,7 @@ namespace Zinlo.Reconciliation
                             var linkedAccount = await _chartsofAccountAppService.GetLinkAccountDetails(input.ChartofAccountId, input.SelectedMonth);
                             amortizedListDto.TotalTrialBalanceAccured = await _chartsofAccountAppService.GetTrialBalanceofAccount(input.ChartofAccountId, input.SelectedMonth);
                             amortizedListDto.TotalBeginningAmount = amortizedList.Sum(item => item.BeginningAmount);
-                            amortizedListDto.TotalAccuredAmortization = amortizedList.Sum(item => item.AccuredAmortization);
+                            amortizedListDto.TotalAccuredAmortization = await _chartsofAccountAppService.ValidateAccuredAmount(input.ChartofAccountId, amortizedList.Sum(item => item.AccuredAmortization));
                             amortizedListDto.TotalNetAmount = amortizedList.Sum(item => item.NetAmount);
                             amortizedListDto.TotalTrialBalanceBegininng = linkedAccount.TrialBalance;
                             await _chartsofAccountAppService.AddandUpdateBalance(amortizedListDto.TotalAccuredAmortization, input.ChartofAccountId,input.SelectedMonth);

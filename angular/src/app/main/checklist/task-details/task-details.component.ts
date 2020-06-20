@@ -66,7 +66,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   categoriesList : any = []
   instructionVersions : any = []
   selectedFile : any;
-
+  fileType : any = "office";
   constructor(
     injector: Injector,
     private _router: Router,
@@ -120,7 +120,16 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
 
   }
 
-  selectedFileToView(file) {
+  selectedFileToView(file,extension) {
+    console.log("jas",extension)
+    if (extension == "pdf.svg")
+    {
+      this.fileType = "google"
+    }
+    else
+    {
+      this.fileType = "office"
+    }
     this.selectedFile = file;
   }
   rollBackInstruction(id) {

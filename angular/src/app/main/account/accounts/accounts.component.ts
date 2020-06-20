@@ -170,7 +170,6 @@ this.chartsOfAccountList.forEach(element => {
       return;
     }
     this.primengTableHelper.showLoadingIndicator();
-    debugger;
     this._chartOfAccountService.getAll(
       this.filterText,
       this.accountTypeFilter,
@@ -372,7 +371,6 @@ RedirectToCreateAccount(): void {
   }
 
   filterByMonth(event) {
-    debugger
     this._managementService.checkMonthStatus(moment(new Date(add(this.selectedDate, 2, "day")))).subscribe(result => {
     this.checkActiveMonth = result;
     this.activeSaveButton=!this.checkActiveMonth

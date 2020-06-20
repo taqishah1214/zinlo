@@ -252,6 +252,9 @@ namespace Zinlo.Reconciliation
         {
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
+
+
+
                 var item = await _itemizationRepository.FirstOrDefaultAsync(x => x.Id == Id);
                 var output = ObjectMapper.Map<CreateOrEditItemizationDto>(item);
                 output.Attachments = await _attachmentAppService.GetAttachmentsPath(Id, 3);
