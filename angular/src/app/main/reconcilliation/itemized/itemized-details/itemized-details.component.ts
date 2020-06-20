@@ -116,7 +116,7 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   }
 
   editItemizedItem() : void {
-    this._router.navigate(['/app/main/reconciliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,monthStatus:this.monthStatus,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : this.itemizedItemId, selectedDate :history.state.data.selectedDate}} });
+    this._router.navigate(['/app/main/reconciliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,monthStatus:this.monthStatus,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : this.itemizedItemId, selectedDate :history.state.data.selectedDate,amount : history.state.data.amount}} });
   }
   BackToList() : void {
     this._router.navigate(['/app/main/reconciliation/itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo, selectedDate :history.state.data.selectedDate}} });
@@ -126,7 +126,8 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   getItemizeDetail(): void {
     
     this._itemizationService.getEdit(this.itemizedItemId).subscribe(result => {
-      this.itemizationDto = result
+      this.itemizationDto = result;
+      this.itemizationDto.amount = history.state.data.amount;
       this.attachments = result.attachments;
       this.postedCommentList = result.comments
       this.attachments.forEach(element => {

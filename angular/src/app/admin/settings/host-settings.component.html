@@ -30,9 +30,7 @@
                                     defaultTimezoneScope="{{defaultTimezoneScope}}"></timezone-combo>
                             </div>
                         </tab>
-                        <!-- <div *ngIf="true">
-                            <tab heading="{{'TenantManagement' | localize}}" *ngIf="hostSettings.tenantManagement">
-                                <div class="kt-form">
+                         <div *ngIf="true"><div class="kt-form">
                                     <h5>{{"FormBasedRegistration" | localize}}</h5>
                                     <div class="kt-checkbox-list">
                                         <div class="form-group">
@@ -80,9 +78,7 @@
                                         </select>
                                     </div>
                                 </div>
-                            </tab>
-                            <tab heading="{{'UserManagement' | localize}}" *ngIf="hostSettings.userManagement">
-                                <div class="kt-checkbox-list">
+                            <div class="kt-checkbox-list">
                                     <label for="Settings_IsEmailConfirmationRequiredForLogin" class="kt-checkbox">
                                         <input id="Settings_IsEmailConfirmationRequiredForLogin" type="checkbox"
                                             name="IsEmailConfirmationRequiredForLogin"
@@ -138,9 +134,7 @@
                                             [(ngModel)]="hostSettings.userManagement.sessionTimeOutSettings.showTimeOutNotificationSecond">
                                     </div>
                                 </div>
-                            </tab>
-                            <tab heading="{{'Security' | localize}}" *ngIf="hostSettings.security">
-                                <div>
+                                 <div>
                                     <h5>{{"PasswordComplexity" | localize}}</h5>
                                     <label for="Setting_PasswordComplexity_UseDefaultSettings" class="kt-checkbox">
                                         <input id="Setting_PasswordComplexity_UseDefaultSettings" type="checkbox"
@@ -295,8 +289,6 @@
                                         </label>
                                     </div>
                                 </div>
-                            </tab>
-                            <tab heading="{{'EmailSmtp' | localize}}" *ngIf="hostSettings.email">
                                 <div class="form-group">
                                     <label for="DefaultFromAddress">{{"DefaultFromAddress" | localize}}</label>
                                     <input id="DefaultFromAddress" type="email" autocomplete="off"name="DefaultFromAddress"
@@ -365,10 +357,8 @@
                                             (click)="sendTestEmail()">{{"SendTestEmail" | localize}}</button>
                                     </div>
                                 </div>
-                            </tab>
-                            <tab *ngIf="true" heading="{{'Invoice' | localize}}">-->
-                                <!-- *ngIf="true" is a workaround for https://github.com/valor-software/ng2-bootstrap/issues/823 -->
-                               <!-- <h5>{{"InvoiceInformation" | localize}}</h5>
+                               <!-- *ngIf="true" is a workaround for https://github.com/valor-software/ng2-bootstrap/issues/823 -->
+                                <h5>{{"InvoiceInformation" | localize}}</h5>
                                 <div class="form-group">
                                     <label for="LegalName">{{"LegalName" | localize}}</label>
                                     <input id="LegalName" autocomplete="off"type="text" name="legalName" class="form-control"
@@ -381,8 +371,6 @@
                                         [ngClass]="{'edited':hostSettings.billing.address}"
                                         [(ngModel)]="hostSettings.billing.address" maxlength="256"></textarea>
                                 </div>
-                            </tab>
-                            <tab *ngIf="true" heading="{{'OtherSettings' | localize}}">
                                 <div class="kt-checkbox-list">
                                     <h5>{{"QuickThemeSelection" | localize}}</h5>
                                     <label for="Settings_IsQuickThemeSelectEnabled" class="kt-checkbox">
@@ -393,8 +381,7 @@
                                         <span></span>
                                     </label>
                                 </div>
-                            </tab>
-                        </div> -->
+                        </div> 
                    
                     </tabset>
                 </div>

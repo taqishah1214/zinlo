@@ -19,7 +19,6 @@ import {UserInformation} from "../../../CommonFunctions/UserInformation"
 })
 export class CreateEditItemizedComponent extends AppComponentBase implements OnInit  {
   itemizedDto : CreateOrEditItemizationDto = new CreateOrEditItemizationDto();
-  minDate: Date = new Date();
   title = "Add an Item";
   Save  = "Save";
   accountName : any;
@@ -37,6 +36,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   commantBox : Boolean;
   updateLock : Boolean = true; 
   commentFiles:File[]=[];
+  selectedDate : Date  = new Date;
   monthStatus:boolean
   constructor(private _itemizationServiceProxy : ItemizationServiceProxy,
     private _attachmentService : AttachmentsServiceProxy, private _router: Router, injector: Injector, private userInfo: UserInformation) {
@@ -74,7 +74,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   
   }
   RedirectToDetail(ItemizedItemId) : void {   
-    this._router.navigate(['/app/main/reconciliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId , selectedDate :history.state.data.selectedDate}} });
+    this._router.navigate(['/app/main/reconciliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId , selectedDate :history.state.data.selectedDate,amount : history.state.data.amount}} });
   }
   commentClick(): void {
     this.commantModal = true;
@@ -195,6 +195,7 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   getDetailsofItem(id):void{
       this._itemizationServiceProxy.getEdit(id).subscribe(result=>{
       this.itemizedDto = result;
+      this.itemizedDto.amount = history.state.data.amount;
       this.attachments = result.attachments;
       this.attachments.forEach(element => {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));

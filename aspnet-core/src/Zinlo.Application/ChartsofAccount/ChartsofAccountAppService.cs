@@ -353,7 +353,10 @@ namespace Zinlo.ChartsofAccount
 
                 input.IsChange = true;
                 input.Id = 0;
-                return await Create(input);          
+                long newCreatedAccountId = await Create(input);
+                double TrialBalanceofUpdateMonth = await GetTrialBalanceForAccountUpdate(account.Id, DateTime.Today);
+                await AddandUpdateTrialBalanceForUpdate(TrialBalanceofUpdateMonth, newCreatedAccountId, DateTime.Today);
+                return newCreatedAccountId;
             }
             else
             {
@@ -363,10 +366,36 @@ namespace Zinlo.ChartsofAccount
                 var accountId = await _chartsofAccountRepository.InsertOrUpdateAndGetIdAsync(updatedAccount);
                 return accountId;
             }
+        }
+        public async Task AddandUpdateTrialBalanceForUpdate(double trialBalance, long id, DateTime month)
+        {
+            var account = await _accountBalanceRepository.FirstOrDefaultAsync(p => p.AccountId == id && month.Month == p.Month.Month && month.Year == p.Month.Year);
+            if (account != null)
+            {
+                account.Month = month;
+                account.TrialBalance = trialBalance;
+                await _accountBalanceRepository.UpdateAsync(account);
+            }
+            else
+            {
+                AccountBalance accountBalance = new AccountBalance();
+                accountBalance.Month = month;
+                accountBalance.AccountId = id;
+                accountBalance.TrialBalance = trialBalance;
+                await _accountBalanceRepository.InsertAsync(accountBalance);
+            }
+        }
 
-           
-
-
+        public async Task<double> GetTrialBalanceForAccountUpdate(long id, DateTime month)
+        {
+            double result = 0;
+            var currentAccount = _chartsofAccountRepository.FirstOrDefault(p => p.Id == id);
+            var accountBalances = await _accountBalanceRepository.FirstOrDefaultAsync(p => p.AccountId == id && month.Month == p.Month.Month && month.Year == p.Month.Year);
+            if (accountBalances != null)
+            {
+                result = accountBalances.TrialBalance;
+            }
+            return result;
         }
 
         protected virtual async Task<long> Create(CreateOrEditChartsofAccountDto input)
@@ -566,6 +595,17 @@ namespace Zinlo.ChartsofAccount
             {
                 result = accountBalances.TrialBalance;
             }
+            if (currentAccount.AccountType == AccountType.Equity || currentAccount.AccountType == AccountType.Liability)
+            {
+                result = ConvertTrailBalanceIsPositiveOrNegative(result);
+            }
+            return result;
+        }
+
+        public async Task<double> ValidateAccuredAmount(long id, double amount)
+        {
+            double result = amount;
+            var currentAccount = _chartsofAccountRepository.FirstOrDefault(p => p.Id == id);            
             if (currentAccount.AccountType == AccountType.Equity || currentAccount.AccountType == AccountType.Liability)
             {
                 result = ConvertTrailBalanceIsPositiveOrNegative(result);

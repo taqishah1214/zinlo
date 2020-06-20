@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy, TimeManagementsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
@@ -10,6 +10,8 @@ import { UppyConfig } from 'uppy-angular';
 import { StoreDateService } from "../../services/storedate.service";
 import { add, subtract } from 'add-subtract-date';
 import * as moment from 'moment';
+import { HttpClient } from '@angular/common/http';
+import { AppConsts } from '@shared/AppConsts';
 
 
 @Component({
@@ -57,12 +59,21 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   changeAssigneePermission : boolean;
   changeStatusPermission : boolean;
   reload : any;
+  uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsTrialBalanceFromExcel';
+  chartsOfAccountsfileUrlTrialBalance : string = "";
+  checkActiveMonth:boolean=true;
+  activeSaveButton:boolean=true;
+  attachmentPathsTrialBalance: any = [];
+
+
   constructor(private _router: Router,
+    private _managementService: TimeManagementsServiceProxy,
     private _accountSubTypeService: AccountSubTypeServiceProxy, injector: Injector,
-    private _chartOfAccountService: ChartsofAccountServiceProxy,private userDate: StoreDateService) {
+    private _chartOfAccountService: ChartsofAccountServiceProxy,private userDate: StoreDateService,private _httpClient: HttpClient) {
     super(injector)
     this.FilterBoxOpen = false;
   }
+
   ngOnInit() {
     this.changeAssigneePermission = this.isGranted("Pages.Tasks.Change.Assignee");
     this.changeStatusPermission = this.isGranted("Pages.Reconciliation.Change.Status");
@@ -91,6 +102,33 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this.loadAccountSubType();
   }
 
+  onOpenCalendar(container) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+    container.setViewMode('month');
+  }
+
+  fileUploadedResponseTrialBalance(value): void {
+    var response = value.successful
+    response.forEach(i => {
+      this.attachmentPathsTrialBalance.push(i.response.body.result);
+
+    });
+    this.chartsOfAccountsfileUrlTrialBalance = this.attachmentPathsTrialBalance[0].toString();
+
+   // this.uploadAccountsTrialBalanceExcel(url);
+    this.notify.success(this.l('Attachments are Saved Successfully'));
+
+  }
+
+
+  SaveChanges() :void{
+    
+      this.uploadAccountsTrialBalanceExcel(this.chartsOfAccountsfileUrlTrialBalance);
+      this.chartsOfAccountsfileUrlTrialBalance = "";
+  }
+
   accountTypeClick(event): void {
     
       this.accountTypeFilter = parseInt(event.target.value)
@@ -107,6 +145,14 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this.collapsibleRow = !this.collapsibleRow;
   }
   
+  checkMonthActiveorNot(event) {
+    this._managementService.checkMonthStatus(moment(new Date(add(this.selectedDate, 2, "day")))).subscribe(result => {
+    this.checkActiveMonth = result;
+    this.activeSaveButton=!this.checkActiveMonth
+  });
+}
+
+
   filterByMonth(event) {
     if(event===1){
       this.selectedDate =new Date(add(this.selectedDate, 1, "month"));
@@ -177,6 +223,16 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
         this.updateAssigneeOnHeader = false;
       }
     });
+  }
+
+  settings: UppyConfig = {
+    uploadAPI: {
+      endpoint: AppConsts.remoteServiceBaseUrl + '/api/services/app/Attachments/PostAttachmentFile',
+    },
+    plugins: {
+      Webcam: false
+    },
+    allowMultipleUploads : false
   }
 
   ChangeStatus( selectedStatusId, accountId,accountReconciliationCheck) {
@@ -253,6 +309,20 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       
  
   }
+
+  uploadAccountsTrialBalanceExcel(url: string): void {
+    this._httpClient
+      .get<any>(this.uploadBalanceUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url + "&" +"monthSelected="+ this.selectedDate)
+      .subscribe(response => {
+        if (response.success) {
+          this.notify.success(this.l('ImportAccountsTrialBalanceProcessStart'));
+        } else if (response.error != null) {
+          this.notify.error(this.l('ImportAccountsTrialBalanceUploadFailed'));
+        }
+      });
+  }
+
+
 
   getNameofAccountTypeAndReconcillation(id , key ) : string {  
     var result = "" ;

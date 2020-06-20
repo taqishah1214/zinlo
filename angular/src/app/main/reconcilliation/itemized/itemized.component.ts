@@ -104,8 +104,8 @@ export class ItemizedComponent extends AppComponentBase {
   RedirectToAddNew() : void {
     this._router.navigate(['/app/main/reconciliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : 0 , selectedDate : this.monthValue }} });
   }
-  RedirectToDetail(ItemizedItemId) : void {   
-      this._router.navigate(['/app/main/reconciliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId ,selectedDate :this.monthValue }} });
+  RedirectToDetail(ItemizedItemId,amount) : void {   
+      this._router.navigate(['/app/main/reconciliation/itemized/itemized-details'],{ state: { data: { monthStatus : this.monthStatus ,accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : ItemizedItemId ,selectedDate :this.monthValue,amount : amount }} });
   }
   getAllItemizedList(event?: LazyLoadEvent){
     this.primeNgEvent = event;
