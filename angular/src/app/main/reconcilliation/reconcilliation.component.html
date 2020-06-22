@@ -265,7 +265,7 @@
                                             <span class=""> {{item.trialBalance  | formater}}</span>
                                         </td>
                                        
-                                        <td [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}"  class="assignee-cell">
+                                        <td [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}" style="cursor: pointer;" data-toggle="tooltip" title="Chenge Assignee" class="assignee-cell">
                                             <div *ngIf="item.id != rowid" class="kt-user-card-v2"
                                                 (click)="openFieldUpdateAssignee(item.id)">
                                                 <div class="kt-user-card-v2__pic">
@@ -331,7 +331,7 @@
                                                 </li>
                                                 <li [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}" class="assignee-cell collapsable-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
-                                                    <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
+                                                    <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" style="cursor: pointer;" data-toggle="tooltip" title="Chenge Assignee" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div *ngIf="item.profilePicture"
                                                                 class="kt-badge kt-badge--xl">
