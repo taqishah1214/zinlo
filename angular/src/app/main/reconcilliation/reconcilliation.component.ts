@@ -62,7 +62,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsTrialBalanceFromExcel';
   chartsOfAccountsfileUrlTrialBalance : string = "";
   checkActiveMonth:boolean=true;
-  activeSaveButton:boolean=true;
+  activeSaveButton:boolean=false;
   attachmentPathsTrialBalance: any = [];
 
 

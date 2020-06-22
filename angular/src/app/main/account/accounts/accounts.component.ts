@@ -32,8 +32,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   AllOrActive = false;
   advancedFiltersAreShown = false;
-  account:boolean=false;
-  balance:boolean=true;
+  account:boolean=true;
+  balance:boolean=false;
   filterText = '';
   accountTypeFilter: number = 0;
   categoryFilter: number = 0;
@@ -70,7 +70,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   delectedBulkAccounts : any [];
   selectedDate : any
   checkActiveMonth:boolean=true;
-  activeSaveButton:boolean=true;
+  activeSaveButton:boolean=false;
   actionButtonPermission;
 
   uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
