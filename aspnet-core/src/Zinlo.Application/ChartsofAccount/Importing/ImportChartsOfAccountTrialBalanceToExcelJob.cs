@@ -202,7 +202,7 @@ namespace Zinlo.ChartsofAccount.Importing
                 Balance = input.Balance,
                 selectedMonth = selectedMonth
             };
-             _chartsofAccountAppService.AddTrialBalanceInAccount(output).GetAwaiter().GetResult();
+             _chartsofAccountAppService.AddTrialBalanceInAccount(output);
         }
 
 
