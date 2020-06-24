@@ -238,7 +238,7 @@
                                                 </select>
                                             </form>
                                         </td>
-                                        <td  [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}"  class="assignee-cell">
+                                        <td  [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}" style="cursor: pointer;" data-toggle="tooltip" title="Chenge Assignee" class="assignee-cell">
                                             <div *ngIf="j.id != rowid" class="kt-user-card-v2"
                                                 (click)="monthStatus && openFieldUpdateAssignee(j.id)">
                                                 <div class="kt-user-card-v2__pic">
@@ -274,7 +274,7 @@
                                             <ul>
                                                 <li class="assignee-cell-item kt-user-card-v2">
                                                     <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
-                                                    <div class="tdata-box">
+                                                    <div class="tdata-box" style="cursor: pointer;" data-toggle="tooltip" title="Chenge Assignee">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div *ngIf="j.profilePicture" class="kt-badge kt-badge--xl">
                                                                 <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"

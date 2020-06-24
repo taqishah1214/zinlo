@@ -83,13 +83,6 @@ namespace Zinlo.ChartsofAccount.Importing
                 pathDto.FileStatus = Status.InProcess;
                 loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
 
-                //var sumOfAllBalance =  accountsTrialBalance.Sum(p => long.Parse(p.Balance));
-
-                //if (sumOfAllBalance != 0)
-                //{
-                //    throw new UserFriendlyException(L("Sum of All Account Balances is not equal to zero"));
-                //}
-
                 if (accountsTrialBalance == null || !accountsTrialBalance.Any())
                 {
                     SendInvalidExcelNotification(args);
@@ -191,7 +184,7 @@ namespace Zinlo.ChartsofAccount.Importing
             {
                 foreach (var item in list)
                 {
-                    AsyncHelper.RunSync(() => CreateChartsOfAccountTrialBalanceAsync(item, args.selectedMonth));
+                    CreateChartsOfAccountTrialBalanceAsync(item, args.selectedMonth);
 
                 }
                 unitOfWork.Complete();
@@ -199,15 +192,17 @@ namespace Zinlo.ChartsofAccount.Importing
             AsyncHelper.RunSync(() => ProcessImportAccountsTrialBalanceResultAsync(args, invalidAccounts));
         }
 
-        private  async Task CreateChartsOfAccountTrialBalanceAsync(ChartsOfAccountsTrialBalanceExcellImportDto input,DateTime selectedMonth)
+        private void CreateChartsOfAccountTrialBalanceAsync(ChartsOfAccountsTrialBalanceExcellImportDto input,DateTime selectedMonth)
         {
             var tenantId = CurrentUnitOfWork.GetTenantId();
-            var output = new ChartsOfAccountsTrialBalanceExcellImportDto();
-            output.AccountName = input.AccountName;
-            output.AccountNumber = input.AccountNumber;
-            output.Balance = input.Balance;
-            output.selectedMonth = selectedMonth;
-           await _chartsofAccountAppService.AddTrialBalanceInAccount(output);
+            var output = new ChartsOfAccountsTrialBalanceExcellImportDto
+            {
+                AccountName = input.AccountName,
+                AccountNumber = input.AccountNumber,
+                Balance = input.Balance,
+                selectedMonth = selectedMonth
+            };
+             _chartsofAccountAppService.AddTrialBalanceInAccount(output).GetAwaiter().GetResult();
         }
 
 

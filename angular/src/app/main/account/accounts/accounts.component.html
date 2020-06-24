@@ -77,7 +77,7 @@
                                             </button>
                                         </div>
                                         <div class="modal-body upload-body">
-                                            <div class="form-group py-0 my-0">
+                                            <!-- <div class="form-group py-0 my-0">
                                                 <div class="kt-radio py-0 my-0">
                                                     <label class="kt-radio kt-radio--tick kt-radio--success mx-4">
                                                         <input type="radio" name="radio" checked value="Upload Trial Balance" (change)="onBreadChange($event.target.value)"> {{"Upload Trial Balance" | localize}}
@@ -88,7 +88,7 @@
                                                         <span></span>
                                                     </label>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="drag_drop_box uppy-modal-box1">
 
                                                 <p *ngIf="balance">{{"Upload Trial Balance" | localize}}</p>
@@ -420,7 +420,7 @@
                                             <span class="">{{item.reconciliationType}}</span>
                                         </td>
 
-                                        <td class="assignee-cell">
+                                        <td class="assignee-cell" style="cursor: pointer;" data-toggle="tooltip" title="Chenge Assignee">
                                             <div *ngIf="item.id != rowid" class="kt-user-card-v2"
                                                 (click)="openFieldUpdateAssignee(item.id)">
                                                 <div class="kt-user-card-v2__pic">
@@ -481,7 +481,7 @@
                                                 <li  class="assignee-cell collapsable-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
                                                     <div *ngIf="item.id != rowid"
-                                                        (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
+                                                        (click)="openFieldUpdateAssignee(item.id)" class="tdata-box" style="cursor: pointer;" data-toggle="tooltip" title="Chenge Assignee">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div *ngIf="item.profilePicture"
                                                                 class="kt-badge kt-badge--xl">
