@@ -40,6 +40,8 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
   monthStatus : boolean;
   commentFiles:File[]=[]
+  selectedFile : any;
+  fileType : any = "office";
   constructor(
     injector: Injector,
     private _router: Router,
@@ -121,7 +123,18 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   BackToList() : void {
     this._router.navigate(['/app/main/reconciliation/itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo, selectedDate :history.state.data.selectedDate}} });
   }
-  
+  selectedFileToView(file,extension) {
+    console.log("jas",extension)
+    if (extension == "pdf.svg")
+    {
+      this.fileType = "google"
+    }
+    else
+    {
+      this.fileType = "office"
+    }
+    this.selectedFile = file;
+  }
 
   getItemizeDetail(): void {
     

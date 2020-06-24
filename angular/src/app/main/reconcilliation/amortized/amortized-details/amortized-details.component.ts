@@ -42,7 +42,8 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   historyList : any =[];
   AssigniColorBox: any = ["bg-purple", "bg-golden", "bg-sea-green", "bg-gray"," .bg-brown",".bg-blue","bg-magenta"]
   monthStatus : boolean;
-
+  selectedFile : any;
+  fileType : any = "office";
 
 
   constructor(
@@ -118,6 +119,18 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     this.saveComments();
     this.getAmortizeDetail();
     }
+  }
+  selectedFileToView(file,extension) {
+    console.log("jas",extension)
+    if (extension == "pdf.svg")
+    {
+      this.fileType = "google"
+    }
+    else
+    {
+      this.fileType = "office"
+    }
+    this.selectedFile = file;
   }
   saveComments(): void {
     

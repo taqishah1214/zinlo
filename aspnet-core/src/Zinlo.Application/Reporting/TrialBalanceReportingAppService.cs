@@ -72,7 +72,7 @@ namespace Zinlo.Reporting
                                       select new GetTrialBalanceofSpecficMonth()
                                       {
                                           id = o.Id,
-                                          CreationTime = o.UploadMonth,
+                                          CreationTime = o.CreationTime,
                                           Name = o.UploadedFilePath,
                                       };
 
