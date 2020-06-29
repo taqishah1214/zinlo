@@ -561,7 +561,7 @@ namespace Zinlo.ChartsofAccount
         public bool AddTrialBalanceInAccount(ChartsOfAccountsTrialBalanceExcellImportDto input)
         {
 
-            var accountInformation = await _chartsofAccountRepository.FirstOrDefaultAsync(x => x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower()&& x.IsDeleted == false && x.ChangeTime == null);
+            var accountInformation =  _chartsofAccountRepository.FirstOrDefault(x => x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower()&& x.IsDeleted == false && x.ChangeTime == null);
             if (accountInformation != null)
             {
                var TrialBalanceIsExistOrNot =  _accountBalanceRepository.FirstOrDefault(x => x.AccountId == accountInformation.Id && x.Month.Month == input.selectedMonth.Month && x.Month.Year == input.selectedMonth.Year);

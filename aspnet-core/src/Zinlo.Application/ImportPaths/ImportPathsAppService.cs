@@ -31,14 +31,15 @@ namespace Zinlo.ImportPaths
             importsPath.IsRollBacked = false;
             importsPath.CreationTime = DateTime.UtcNow;
             importsPath.FileStatus = (Zinlo.ImportsPaths.Status)input.FileStatus;
-          return  _importPathsRepository.InsertAndGetId(importsPath);          
+            var id = _importPathsRepository.InsertAndGetId(importsPath);
+            return id;
 
         }
 
         public async Task UpdateFilePath(ImportPathDto input)
         {
-            var output =  _importPathsRepository.FirstOrDefault(input.Id);
-            if(output != null)
+            var output = _importPathsRepository.FirstOrDefault(input.Id);
+            if (output != null)
             {
                 output.FilePath = input.FilePath;
                 output.FailedRecordsCount = input.FailedRecordsCount;
