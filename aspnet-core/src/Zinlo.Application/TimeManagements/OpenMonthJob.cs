@@ -55,7 +55,7 @@ namespace Zinlo.TimeManagements
 
                     AsyncHelper.RunSync(() => _appNotifier.SendMessageAsync(
                         args.UserIdentifier,
-                        _localizationSource.GetString("MonthOpenedMessage", args.Month),
+                        _localizationSource.GetString("{0}MonthOpenedMessage", args.Month.ToString("yyyy MMMM")),
                         Abp.Notifications.NotificationSeverity.Success));
                 }
             }

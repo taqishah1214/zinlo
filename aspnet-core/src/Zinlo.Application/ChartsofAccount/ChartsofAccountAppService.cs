@@ -73,8 +73,10 @@ namespace Zinlo.ChartsofAccount
                         .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
                         .WhereIf(input.BeginingAmountCheck, e => (e.Reconciled == ChartofAccounts.Reconciled.BeginningAmount && e.LinkedAccountNumber == null))
                         .WhereIf(GetRoleName().Equals("User"), p => p.AssigneeId == AbpSession.UserId);
-                var MonthStatus = await GetMonthStatus(input.SelectedMonth);
-                var getUserWithPictures = (from o in query.ToList()
+                var monthStatus = await GetMonthStatus(input.SelectedMonth);
+                var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "accountName asc").PageBy(input).ToList();
+                var totalCount = await query.CountAsync();
+                var getUserWithPictures = (from o in pagedAndFilteredAccounts.ToList()
                                            select new GetUserWithPicture()
                                            {
                                                Id = o.AssigneeId,
@@ -82,19 +84,13 @@ namespace Zinlo.ChartsofAccount
                                                Picture = o.Assignee.ProfilePictureId.HasValue ? "data:image/jpeg;base64," + _profileAppService.GetProfilePictureById((Guid)o.Assignee.ProfilePictureId).Result.ProfilePicture : ""
                                            }).ToList();
 
-                var changeItems = query.Where(e => e.IsChange == true);
+                var changeItems = pagedAndFilteredAccounts.Where(e => e.IsChange == true);
                 List<ChartofAccounts.ChartofAccounts> chartsofAccounts = new List<ChartofAccounts.ChartofAccounts>();
-                var query1 =  query.Where(e => !e.IsChange);
+                var query1 = pagedAndFilteredAccounts.Where(e => !e.IsChange);
                 var result = query1.ToList();
 
                 var distinctAccounts = changeItems.DistinctBy(p => new {p.AccountNumber }).ToList();
 
-
-                // selcted month =dec 2018
-                //Creation time feb2019 changetime dec2019
-                //Creation time jan2020 changetime march2020
-                //Creation time april2020 changetime null
-                var changeItemGorup = changeItems.ToList().GroupBy(p => p.AccountNumber);
                 foreach (var item in changeItems)
                 {
                     if (item.ChangeTime != null)
@@ -131,12 +127,10 @@ namespace Zinlo.ChartsofAccount
 
 
                 getUserWithPictures = getUserWithPictures.DistinctBy(p => new { p.Id, p.Name }).ToList();
-                var pagedAndFilteredAccounts = result;
 
+                
 
-                var totalCount = result.Count();
-
-                var accountsList = from o in pagedAndFilteredAccounts.ToList()
+                var accountsList = from o in result
 
                                    select new ChartsofAccoutsForViewDto()
                                    {
@@ -152,13 +146,13 @@ namespace Zinlo.ChartsofAccount
                                        Balance = GetTheAccountBalanceofSelectedMonth(o.Id, input.SelectedMonth,o.AccountType),
                                        OverallMonthlyAssignee = getUserWithPictures,
                                        IsDeleted = o.IsDeleted,
-                                       MonthStatus = MonthStatus,
+                                       MonthStatus = monthStatus,
                                        AccountReconciliationCheck = CheckAccountReconciledofSelectedMonth(o.Id,input.SelectedMonth),
-                                       AccountBalanceId = getTheAccountBalanceId(o.Id, input.SelectedMonth),
+                                       AccountBalanceId = GetTheAccountBalanceId(o.Id, input.SelectedMonth),
                                        TrialBalance = GetTheTrialBalanceofSelectedMonth(o.Id, input.SelectedMonth),
-                                       LinkedAccountId = getLinkedAccountId(o.Id),
-                                       LinkedAccountNumber = getLinkedAccountNumber(o.Id),
-                                       LinkedAccountName = getLinkedAccountName(o.Id)
+                                       LinkedAccountId = GetLinkedAccountId(o.Id),
+                                       LinkedAccountNumber = GetLinkedAccountNumber(o.Id),
+                                       LinkedAccountName = GetLinkedAccountName(o.Id)
                                    };
 
                 return new PagedResultDto<ChartsofAccoutsForViewDto>(
@@ -170,7 +164,7 @@ namespace Zinlo.ChartsofAccount
 
         }
 
-        protected virtual string getLinkedAccountNumber(long accountId)
+        protected virtual string GetLinkedAccountNumber(long accountId)
         {
             var account = _chartsofAccountRepository.FirstOrDefault(p => p.Id == accountId);
             if (account.LinkedAccountNumber == null)
@@ -181,8 +175,8 @@ namespace Zinlo.ChartsofAccount
             {
                 if (account.Reconciled == ChartofAccounts.Reconciled.AccruedAmount)
                 {
-                    var LinkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == account.LinkedAccountNumber);
-                    return LinkedAccount.AccountNumber;
+                    var linkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == account.LinkedAccountNumber);
+                    return linkedAccount.AccountNumber;
                 }
                 else if (account.Reconciled == ChartofAccounts.Reconciled.BeginningAmount)
                 {
@@ -192,46 +186,39 @@ namespace Zinlo.ChartsofAccount
             }
         }
 
-        protected virtual string getLinkedAccountName(long accountId)
+        protected virtual string GetLinkedAccountName(long accountId)
         {
             var account = _chartsofAccountRepository.FirstOrDefault(p => p.Id == accountId);
             if (account.LinkedAccountNumber == null)
             {
                 return "";
             }
-            else
-            {     
-                    var LinkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == account.LinkedAccountNumber);
-                    return LinkedAccount.AccountName;
-            }
+
+            var linkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == account.LinkedAccountNumber);
+            return linkedAccount.AccountName;
         }
-        protected virtual long getTheAccountBalanceId(long accountId, DateTime SelectedMonth)
+        protected virtual long GetTheAccountBalanceId(long accountId, DateTime SelectedMonth)
         {
             long result = 0;
             var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
             result = accountInformation == null ? 0 : accountInformation.Id;
             return result;
         }
-        protected virtual long getLinkedAccountId(long accountId)
+        protected virtual long GetLinkedAccountId(long accountId)
         {
             var account = _chartsofAccountRepository.FirstOrDefault(p=> p.Id == accountId);
             if (account.LinkedAccountNumber == null)
             {
                 return 0;
             }
-            else
+
+            if (account.Reconciled == ChartofAccounts.Reconciled.AccruedAmount)
             {
-                if (account.Reconciled == ChartofAccounts.Reconciled.AccruedAmount)
-                {
-                    var LinkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == account.LinkedAccountNumber);
-                    return LinkedAccount.Id;
-                }
-                else if (account.Reconciled == ChartofAccounts.Reconciled.BeginningAmount)
-                {
-                    return account.Id;
-                }
-                return 0;
+                var linkedAccount = _chartsofAccountRepository.FirstOrDefault(p => p.AccountNumber == account.LinkedAccountNumber);
+                return linkedAccount.Id;
             }
+
+            return account.Reconciled == ChartofAccounts.Reconciled.BeginningAmount ? account.Id : 0;
         }
 
         private string GetRoleName()
@@ -244,7 +231,7 @@ namespace Zinlo.ChartsofAccount
 
         protected virtual bool CheckAccountReconciledofSelectedMonth(long accountId, DateTime SelectedMonth)
         {
-            bool result = false;
+            var result = false;
             var accountInformation = _accountBalanceRepository.FirstOrDefault(p => p.Month.Month == SelectedMonth.Month && p.Month.Year == SelectedMonth.Year && p.AccountId == accountId);
             result = accountInformation != null ? accountInformation.CheckAsReconcilied : false;
             return result;

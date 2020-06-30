@@ -6,7 +6,7 @@
     <text name="SuccessfullyUpdated">Successfully updated.</text>
     <text name="AmortizedRestoredSuccessfully">Amortized Item Restored Successfully!</text>
     <text name="ThisMonthIsNotActive">This month is not active.</text>
-    <text name="MonthOpenedMessage">MonthOpenedMessage.</text>
+    <text name="{0}MonthOpenedMessage">{0} has been opened now.</text>
     <text name="OpenMonthMessage">OpenMonthMessage.</text>
     <text name="TaskReport">Task Report</text>
     <text name="Attachment is successfully removed">Instruction rolled back successfully</text>

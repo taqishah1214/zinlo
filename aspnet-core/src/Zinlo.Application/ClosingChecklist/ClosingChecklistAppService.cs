@@ -374,7 +374,7 @@ namespace Zinlo.ClosingChecklist
             {
                 return;
             }
-            long? instructionId = null;
+            long? instructionId = input.VersionId;
             var task = ObjectMapper.Map<ClosingChecklist>(input);
             if (AbpSession.TenantId != null)
             {
