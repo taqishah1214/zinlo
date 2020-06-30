@@ -15,7 +15,6 @@
 
 <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
     <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid">
-
         <section class="zinlo-records">
             <div class="custom-container">
                 <div class="card">
@@ -50,53 +49,56 @@
                                         </button>
                                     </div>
                                     <div class="modal-body upload-body">
-                                        <p >{{"Upload Trial Balance" | localize}}</p>
+                                        <div class="drag_drop_box uppy-modal-box1">
+
+                                            <p>{{"Upload Trial Balance" | localize}}</p>
+                                        </div>
                                         <ng-uppy [config]="settings" 
                                             (uploadResult)="fileUploadedResponseTrialBalance($event)">
                                         </ng-uppy>
-                                    <div >
-                                        <div class="row modal-bottom-record">
-                                            <div class="col-md-12">
-                                                <!-- <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a></p> -->
-                                                <div class="row py-0">
-                                                    <div class="col-xl-5 form-group"><label>{{"Trial Balance Format" | localize}} </label><a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a>
-                                                    </div>    
-                                                    <div class="form-group col-xl-3 pt-2">
-                                                        <label>{{"Select Month for Trial Balance" | localize}} </label>
+                                        <div >
+                                            <div class="row modal-bottom-record">
+                                                <div class="col-md-12">
+                                                    <!-- <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a></p> -->
+                                                    <div class="row py-0">
+                                                        <div class="col-xl-5 form-group"><label>{{"Trial Balance Format" | localize}} </label><a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a>
+                                                        </div>    
+                                                        <div class="form-group col-xl-3 pt-2">
+                                                            <label>{{"Select Month for Trial Balance" | localize}} </label>
+                                                        </div>
+                                                        <div class="form-group col-xl-3" style="height: 40px !important;">
+                                                            <div class="month-calender">
+                                                                <form class="input-arrow">
+                                                                    <input [(ngModel)]="selectedDate"  (ngModelChange)="checkMonthActiveorNot($event)" required="required"
+                                                                    autocomplete="off" class="form-control" name="date" bsDatepicker 
+                                                                        placeholder="Select Month" class="form-control" name="date"
+                                                                        bsDatepicker
+                                                                        [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                                        (onShown)="onOpenCalendar($event)">
+                                                                </form>                
+                                                                <span class="form-control-feedback"
+                                                                *ngIf="!checkActiveMonth">{{"ThisMonthIsNotActive" | localize}}</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                     <div class="form-group col-xl-3" style="height: 40px !important;">
-                                                         <div class="month-calender">
-                                                            <form class="input-arrow">
-                                                                <input [(ngModel)]="selectedDate"  (ngModelChange)="checkMonthActiveorNot($event)" required="required"
-                                                                autocomplete="off" class="form-control" name="date" bsDatepicker 
-                                                                    placeholder="Select Month" class="form-control" name="date"
-                                                                    bsDatepicker
-                                                                    [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                                                    (onShown)="onOpenCalendar($event)">
-                                                            </form>                
-                                                            <span class="form-control-feedback"
-                                                            *ngIf="!checkActiveMonth">{{"ThisMonthIsNotActive" | localize}}</span>
-                                                         </div>
-                                                     </div>
-                                                  </div>
-                                                  
-                                                <div class="inner-col-record border border-default">
+                                                    
+                                                    <div class="inner-col-record border border-default">
 
-                                                    <div class="row">
-                                                        <div class="modal-bottom-row-col">
-                                                            <p>{{"Account Name" | localize}}</p>
-                                                        </div>
-                                                        <div class="modal-bottom-row-col">
-                                                            <p>{{"Account Number" | localize}}</p>
-                                                        </div>
-                                                        <div class="modal-bottom-row-col">
-                                                            <p>{{"Balance" | localize}}</p>
+                                                        <div class="row">
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>{{"Account Name" | localize}}</p>
+                                                            </div>
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>{{"Account Number" | localize}}</p>
+                                                            </div>
+                                                            <div class="modal-bottom-row-col">
+                                                                <p>{{"Balance" | localize}}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                </div>
+                                    </div>
                                     </div>
 
                                     <div class="modal-footer">
@@ -265,7 +267,7 @@
                                             <span class=""> {{item.trialBalance  | formater}}</span>
                                         </td>
                                        
-                                        <td [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}"  class="assignee-cell">
+                                        <td [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}" style="cursor: pointer;" data-toggle="tooltip" title="Chenge Assignee" class="assignee-cell">
                                             <div *ngIf="item.id != rowid" class="kt-user-card-v2"
                                                 (click)="openFieldUpdateAssignee(item.id)">
                                                 <div class="kt-user-card-v2__pic">
@@ -331,7 +333,7 @@
                                                 </li>
                                                 <li [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}" class="assignee-cell collapsable-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
-                                                    <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" class="tdata-box">
+                                                    <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" style="cursor: pointer;" data-toggle="tooltip" title="Chenge Assignee" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div *ngIf="item.profilePicture"
                                                                 class="kt-badge kt-badge--xl">

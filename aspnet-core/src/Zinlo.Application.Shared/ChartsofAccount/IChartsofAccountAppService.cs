@@ -20,7 +20,7 @@ namespace Zinlo.ChartsofAccount
         Task AddandUpdateBalance(double balance, long id, DateTime month);
         Task<int> CheckReconcilled(long id);
         Task<FileDto> GetChartsofAccountToExcel(long id);
-        Task<bool> AddTrialBalanceInAccount(ChartsOfAccountsTrialBalanceExcellImportDto input);
+        bool AddTrialBalanceInAccount(ChartsOfAccountsTrialBalanceExcellImportDto input);
         Task<double> GetTrialBalanceofAccount(long id, DateTime month);
         Task<bool> CheckAccountNumber(string accountNumber);
         Task<FileDto> LoadChartsofAccountTrialBalanceToExcel();

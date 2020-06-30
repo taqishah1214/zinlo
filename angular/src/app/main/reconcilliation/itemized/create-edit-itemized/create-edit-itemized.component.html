@@ -39,7 +39,6 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-
                                         <div  [ngClass]="{'disabled':!updateLock}" class="form-group category-selector">
                                             <label for="Date">{{"Date" | localize}}</label>
                                             <input [(ngModel)]="itemizedDto.date" required="required"
@@ -48,6 +47,14 @@
                                             bsDatepicker>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <div  class="col-md-6">
+                                            <label for="TaskName">{{"Amount" | localize}}</label>
+                                            <input type="text" name="amount" class="form-control"
+                                            [(ngModel)]="itemizedDto.amount" autocomplete="off">
+                                        </div>
+                                    </div>                                    
                                 </div>
                             </div>
                             <div class="col-md-6">

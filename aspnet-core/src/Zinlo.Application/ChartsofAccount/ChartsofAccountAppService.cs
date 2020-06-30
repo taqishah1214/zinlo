@@ -67,7 +67,6 @@ namespace Zinlo.ChartsofAccount
             
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
-                input.SelectedMonth = input.SelectedMonth.AddDays(2);
                 var query = _chartsofAccountRepository.GetAll().Where(x => x.IsDeleted == input.AllOrActive).Include(p => p.AccountSubType).Include(p => p.Assignee)
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
                         .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
@@ -558,25 +557,25 @@ namespace Zinlo.ChartsofAccount
             return type;
         }
 
-        public async Task<bool> AddTrialBalanceInAccount(ChartsOfAccountsTrialBalanceExcellImportDto input)
+        public bool AddTrialBalanceInAccount(ChartsOfAccountsTrialBalanceExcellImportDto input)
         {
 
-            var accountInformation = await _chartsofAccountRepository.FirstOrDefaultAsync(x => x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower()&& x.IsDeleted == false);
+            var accountInformation =  _chartsofAccountRepository.FirstOrDefault(x => x.AccountNumber.ToLower() == input.AccountNumber.Trim().ToLower()&& x.IsDeleted == false && x.ChangeTime == null);
             if (accountInformation != null)
             {
-               var TrialBalanceIsExistOrNot = await _accountBalanceRepository.FirstOrDefaultAsync(x => x.AccountId == accountInformation.Id && x.Month.Month == input.selectedMonth.Month && x.Month.Year == input.selectedMonth.Year);
+               var TrialBalanceIsExistOrNot =  _accountBalanceRepository.FirstOrDefault(x => x.AccountId == accountInformation.Id && x.Month.Month == input.selectedMonth.Month && x.Month.Year == input.selectedMonth.Year);
                 if (TrialBalanceIsExistOrNot == null)
                 {
                     AccountBalance accountBalance = new AccountBalance();
                     accountBalance.AccountId = accountInformation.Id;
                     accountBalance.TrialBalance = Convert.ToDouble(input.Balance);
                     accountBalance.Month = input.selectedMonth;
-                    await _accountBalanceRepository.InsertAsync(accountBalance);
+                    _accountBalanceRepository.Insert(accountBalance);
                 }
                 else
                 {
                     TrialBalanceIsExistOrNot.TrialBalance = Convert.ToDouble(input.Balance);
-                    await _accountBalanceRepository.UpdateAsync(TrialBalanceIsExistOrNot);
+                     _accountBalanceRepository.Update(TrialBalanceIsExistOrNot);
                 }
 
               
