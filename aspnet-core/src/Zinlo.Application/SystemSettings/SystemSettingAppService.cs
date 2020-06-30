@@ -48,6 +48,7 @@ namespace Zinlo.SystemSettings
 
         public async Task SetDefaultMonth(CreateOrEditDefaultMonthDto input)
         {
+            input.Month = input.Month.AddDays(1);
             if (input.id != 0)
             {
                var result =  await _systemSettingsRepositry.FirstOrDefaultAsync(p => p.TenantId == (int)AbpSession.TenantId && p.Id == input.id && p.SettingType == SettingType.DefaultMonth);
