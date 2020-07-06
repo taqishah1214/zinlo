@@ -92,7 +92,7 @@
                                         </div>
                                     </div>
                                     <div class="date-picker">
-                                        <input id="monthValue" (ngModelChange)="filterByMonth($event)"
+                                        <input id="monthValue" style="width:170px"(ngModelChange)="filterByMonth($event)"
                                             class="date-field form-control m-input" name="monthValue" [(ngModel)]="selectedDate"
                                             [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                             (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
