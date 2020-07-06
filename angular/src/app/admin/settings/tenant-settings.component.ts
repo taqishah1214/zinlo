@@ -33,7 +33,7 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
     defaultMonth : any;
     selectedDateId = 0;
     remoteServiceBaseUrl = AppConsts.remoteServiceBaseUrl;
-
+    reload : any;
     defaultTimezoneScope: SettingScopes = SettingScopes.Tenant;
 
     constructor(
@@ -172,6 +172,8 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
         this._systemSettingsService.setDefaultMonth(this.defaultMonthDto).subscribe(() => {
             this._systemSettingsService.getDefaultMonth().subscribe(result => { 
                 this.storeData.setDefaultMonth(result)
+                this.reload.lock = true;
+               this.storeData.setReloadLock(this.reload);
                 this.notify.info(this.l('SavedSuccessfully'));
 
             }) 
