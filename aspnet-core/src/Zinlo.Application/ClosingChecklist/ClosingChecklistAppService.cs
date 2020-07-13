@@ -449,25 +449,23 @@ namespace Zinlo.ClosingChecklist
             {
                 var task = await _closingChecklistManager.GetDetailById(id);
                 var output = ObjectMapper.Map<DetailsClosingCheckListDto>(task);
-                if (task != null)
-                {
-                    output.Id = task.Id;
-                    output.AssigneeName = task.Assignee.Name;
-                    output.TaskStatus = task.Status.ToString();
-                    output.Status = (StatusDto)task.Status;
-                    output.CategoryName = task.Category.Title;
-                    output.CategoryId = task.CategoryId;
-                    output.InstructionBody = task.Version?.Body ?? string.Empty;
-                    output.Comments = await _commentAppService.GetComments((int)CommentTypeDto.ClosingChecklist, task.Id);
-                    output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
-                    output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue
-                        ? "data:image/jpeg;base64," + _profileAppService
-                              .GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture
-                        : "";
-                    output.MonthStatus = await GetMonthStatus(task.ClosingMonth);
-                    output.DueDate = task.DueDate;
-                    output.IsDeleted = task.IsDeleted;
-                }
+                if (task == null) return output;
+                output.Id = task.Id;
+                output.AssigneeName = task.Assignee.Name;
+                output.TaskStatus = task.Status.ToString();
+                output.Status = (StatusDto)task.Status;
+                output.CategoryName = task.Category.Title;
+                output.CategoryId = task.CategoryId;
+                output.InstructionBody = task.Version?.Body ?? string.Empty;
+                output.Comments = await _commentAppService.GetComments((int)CommentTypeDto.ClosingChecklist, task.Id);
+                output.Attachments = await _attachmentAppService.GetAttachmentsPath(task.Id, 1);
+                output.ProfilePicture = task.Assignee.ProfilePictureId.HasValue
+                    ? "data:image/jpeg;base64," + _profileAppService
+                          .GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture
+                    : "";
+                output.MonthStatus = await GetMonthStatus(task.ClosingMonth);
+                output.DueDate = task.DueDate;
+                output.IsDeleted = task.IsDeleted;
 
                 return output;
             }

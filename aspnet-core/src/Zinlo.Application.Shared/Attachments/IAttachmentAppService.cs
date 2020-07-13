@@ -17,6 +17,7 @@ namespace Zinlo.Attachments
         Task<List<GetAttachmentsDto>> GetAttachmentsPath(long typeId, long type);
 
         Task DeleteAttachmentPath(long id);
+        List<string> GetAttachmentPathById(long typeId, long type);
 
 
 

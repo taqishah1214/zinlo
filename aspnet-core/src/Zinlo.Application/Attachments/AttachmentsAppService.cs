@@ -92,5 +92,12 @@ namespace Zinlo.Attachments
            await _attachment.DeleteAsync(id);
             
         }
+
+        public List<string> GetAttachmentPathById(long typeId, long type)
+        {
+            var attachments =  _attachment.GetAll().Where(x => x.Type == (AttachmentType)type && x.TypeId == typeId).Select(p=>p.FilePath).ToList();
+            return attachments;
+
+        }
     }
 }

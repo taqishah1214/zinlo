@@ -11,6 +11,7 @@ using Abp.Localization.Sources;
 using Abp.Runtime.Session;
 using Abp.Threading;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Zinlo.Attachments;
 using Zinlo.ClosingChecklist;
 using Zinlo.ClosingChecklist.Dtos;
 using Zinlo.Notifications;
@@ -25,16 +26,19 @@ namespace Zinlo.TimeManagements
         private readonly IAbpSession _session;
         private readonly IAppNotifier _appNotifier;
         private readonly ILocalizationSource _localizationSource;
+        private readonly IAttachmentAppService _attachmentAppService;
         public OpenMonthJob(IClosingChecklistAppService checklistService,
                             IAbpSession session,
                             IAppNotifier appNotifier,
                             ILocalizationManager localizationManager,
-                            IUnitOfWorkManager unitOfWorkManager)
+                            IUnitOfWorkManager unitOfWorkManager,
+                            IAttachmentAppService attachmentAppService)
         {
             _checklistService = checklistService;
             _session = session;
             _appNotifier = appNotifier;
             _unitOfWorkManager = unitOfWorkManager;
+            _attachmentAppService = attachmentAppService;
             _localizationSource = localizationManager.GetSource(ZinloConsts.LocalizationSourceName); ;
         }
         [UnitOfWork]
@@ -50,6 +54,8 @@ namespace Zinlo.TimeManagements
                     {
                         task.ClosingMonth = task.ClosingMonth.AddDays(-1);
                         task.Status = StatusDto.NotStarted;
+                        task.AttachmentsPath =
+                            _attachmentAppService.GetAttachmentPathById(task.Id, 1);
                         AsyncHelper.RunSync(() => _checklistService.TaskIteration(task, args.Month, false));
                     }
 
