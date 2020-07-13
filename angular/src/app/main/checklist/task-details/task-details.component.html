@@ -204,7 +204,7 @@
                                         <label>{{"Attachments" | localize}}</label>
                                         <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)">
                                         </ng-uppy>
-                                        <div *ngFor="let item of attachments" class="attachments_section">
+                                        <div *ngFor="let item of attachments" class="attachments_section" style="cursor: pointer;"> 
                                             <a  (click)="selectedFileToView(item.attachmentUrl,item.attachmentExtension)" data-toggle="modal"
                                             data-target="#kt_modal_KTDatatable_local" class="attachement_btn">
                                                 <img src="../../../../assets/media/files/{{item.attachmentExtension}}">
