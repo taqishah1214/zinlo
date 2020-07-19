@@ -16,6 +16,7 @@ import { UserNotificationHelper } from '@app/shared/layout/notifications/UserNot
 import { UserServiceProxy,AccountSubTypeServiceProxy ,CategoriesServiceProxy} from '@shared/service-proxies/service-proxies';
 import { StoreDateService } from './services/storedate.service';
 import { SwUpdate } from '@angular/service-worker'
+
 @Component({
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.less']
