@@ -596,6 +596,11 @@ namespace Zinlo.ChartsofAccount
             {
                 result = ConvertTrailBalanceIsPositiveOrNegative(result);
             }
+            else if (currentAccount.AccountType == AccountType.Asset)
+            {
+                System.Math.Abs(result);
+                result = result * -1;
+            }
             return result;
         }
 

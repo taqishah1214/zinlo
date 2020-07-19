@@ -108,14 +108,17 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   editAccount() : void {
     this.editAccountCheck = true;
     this._chartOfAccountService.getAccountForEdit( this.accountId).subscribe(result => {
-
       if (result.reconciledId == 3 || result.reconciledId == 2){
-        this.linkAccountNumber = result.linkedAccount;
-        if (this.linkAccountNumber != "")
+        if (result.linkedAccount)
         {
+          this.linkAccountNumber = result.linkedAccount;
           this.linkAccountCheck =  true;
         }
+        else if (result.reconciledId == 2) {
+          this.reconcilliationMessage = true
+        }
       }
+  
 
       this.accountDto.creatorUserId = result.creatorUserId; 
       if(history.state.data.userId){
@@ -236,8 +239,11 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   recociledClick(id , name) : void {
     this.recociled = name;
     this.accountDto.reconciled = id;
-    if (id == 2 || id == 3){
+    if (id == 2){
       this.reconcilliationMessage = true;
+    }
+    else{
+      this.reconcilliationMessage = false;
     }
   }
 

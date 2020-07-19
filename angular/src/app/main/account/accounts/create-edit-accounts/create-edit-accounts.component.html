@@ -115,7 +115,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <label *ngIf="reconcilliationMessage" >Setting of linked account is done in the Accrued Amount account</label>
                                     </div>
 
                                     <div class="col-md-6">
@@ -128,7 +127,11 @@
 
                                 </div>
 
-
+                                <div *ngIf="reconcilliationMessage" class="row">
+                                    <div class="col-md-6">
+                                        <label>Setting of linked account is done in the Accrued Amount account</label>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>

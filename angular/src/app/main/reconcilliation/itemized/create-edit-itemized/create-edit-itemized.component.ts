@@ -119,13 +119,8 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
      }
      return true;
     }
-  redirectToItemsList () : void {
-    if(this.ItemizedItemId!=0){
-      this.RedirectToDetail(this.ItemizedItemId)
-    }
-    else{
-      this._router.navigate(['/app/main/reconciliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo ,selectedDate :history.state.data.selectedDate}} });
-    }   
+  redirectToItemsList () : void {  
+      this._router.navigate(['/app/main/reconciliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo ,selectedDate :history.state.data.selectedDate}} }); 
   }
   settings: UppyConfig = {
     uploadAPI: {
