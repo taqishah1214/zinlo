@@ -24,14 +24,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div  [ngClass]="{'disabled':!updateLock}" class="form-group">
-                                            <label for="InvoiceNo">{{"Invoice No" | localize}}.</label>
+                                            <label for="InvoiceNo">{{"Invoice No" | localize}}. *</label>
                                             <input type="text" name="inoviceNo" class="form-control"
                                                 [(ngModel)]="itemizedDto.inoviceNo" autocomplete="off" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div  [ngClass]="{'disabled':!updateLock}" class="form-group">
-                                            <label for="TaskName">{{"Journal Entry No" | localize}}.</label>
+                                            <label for="TaskName">{{"Journal Entry No" | localize}}. *</label>
                                             <input type="text" name="journalEntryNo" class="form-control"
                                                 [(ngModel)]="itemizedDto.journalEntryNo" autocomplete="off">
                                         </div>
@@ -40,7 +40,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div  [ngClass]="{'disabled':!updateLock}" class="form-group category-selector">
-                                            <label for="Date">{{"Date" | localize}}</label>
+                                            <label for="Date">{{"Date" | localize}} *</label>
                                             <input [(ngModel)]="itemizedDto.date" required="required"
                                             class="form-control" name="date" bsDatepicker
                                             placeholder="Select Date" autocomplete="off" class="form-control" name="date"
@@ -50,7 +50,7 @@
 
                                     <div class="col-md-6">
                                         <div  class="col-md-6">
-                                            <label for="TaskName">{{"Amount" | localize}}</label>
+                                            <label for="TaskName">{{"Amount" | localize}} *</label>
                                             <input type="text" name="amount" class="form-control"
                                             [(ngModel)]="itemizedDto.amount" autocomplete="off">
                                         </div>

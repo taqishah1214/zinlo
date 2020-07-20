@@ -51,7 +51,7 @@
                                 
                                 <div class="col-md-6" style="height: 50px !important;">
                                     <div class="form-group">
-                                        <label for="dateOfBirth">{{"ClosingMonth" | localize}}</label>
+                                        <label for="dateOfBirth">{{"ClosingMonth" | localize}} *</label>
                                         <div class="month-calender">
                                             <form class="input-arrow">
                                                 <input [(ngModel)]="checklist.closingMonth" (focusout)="checkMonth()" (ngModelChange)="loadDaysByMonth($event)" required="required"
@@ -70,14 +70,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="taskName"> {{"Task Name" | localize}} </label>
+                                        <label for="taskName"> {{"Task Name" | localize}} *</label>
                                         <input type="text" class="form-control" required  name="taskName" id="taskName" placeholder="Enter Task Name"
                                         autocomplete="off" [(ngModel)]="checklist.taskName">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>{{"Assignee" | localize}}</label>
+                                        <label>{{"Assignee" | localize}} *</label>
                                         <app-user-list-component comingChangeReguest="" userId={{checklist.assigneeId}}>
                                         </app-user-list-component>
                                     </div>
@@ -88,7 +88,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{"Frequency" | localize}}</label>
+                                        <label>{{"Frequency" | localize}} *</label>
                                         <select class="bg-white border form-control input-medium" required id="frequency" name="frequency"
                                             [(ngModel)]="checklist.frequency"
                                             (change)="onChange($event.target.value)">

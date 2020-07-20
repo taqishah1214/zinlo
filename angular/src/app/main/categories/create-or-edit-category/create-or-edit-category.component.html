@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="title">{{"Title" | localize}}</label>
+                                    <label for="title">{{"Title" | localize}} *</label>
                                     <input autofocus type="text" class="form-control" id="title" autocomplete="off" required (focusout)="CheckCategory()" name="title"
                                         [(ngModel)]="categoryobj.title">
                                         <span style="color:red" *ngIf="isCategoryExist">{{"CategorywithsameNamealreadyexist" | localize}}</span>

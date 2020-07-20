@@ -60,7 +60,7 @@
                                     <div class="row my-0 py-0">
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>First Name</label>
+                                                <label>First Name *</label>
                                                 <input formControlName="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
                                                 <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
                                                     <div class="text-danger" *ngIf="firstName.errors.required">
@@ -71,7 +71,7 @@
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Last Name</label>
+                                                <label>Last Name *</label>
                                                 <input formControlName="lastName" type="text" class="form-control" name="lastNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
                                                 <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
                                                     <div class="text-danger" *ngIf="lastName.errors.required">
@@ -91,7 +91,7 @@
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Email</label>
+                                                <label>Email *</label>
                                                 <input formControlName="emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required maxlength="256" email>
                                                 <div *ngIf="emailAddress.invalid && (emailAddress.dirty || emailAddress.touched)">
                                                     <div class="text-danger" *ngIf="emailAddress.errors.required">
@@ -107,7 +107,7 @@
                                     <div class="row py-0">
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Password</label>
+                                                <label>Password *</label>
                                                 <input formControlName="password" type="password" class="form-control" name="passwordOfUser" placeholder="Enter Password" value="">
                                                 <div  *ngIf="password.invalid && (password.dirty || password.touched)"
                                                     class="">
@@ -120,7 +120,7 @@
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Confirm Password</label>
+                                                <label>Confirm Password *</label>
                                                 <input  formControlName="confirmPassword"  class="form-control" type="password" name="passwordOfUser" placeholder="Enter Confirm Password" value="">
                                                 
                                             </div>
@@ -140,7 +140,7 @@
                                     <div class="row pb-1">
                                         <div class="col-xl-12">
                                             <div class="form-group">
-                                                <label>Business Name</label>
+                                                <label>Business Name *</label>
                                                 <input formControlName="businessName" type="text" class="form-control" autocomplete="off" name="businessNameOfUser" placeholder="Enter Business Name" value="" required maxlength="64">
                                                 <div *ngIf="businessName.invalid && (businessName.dirty || businessName.touched)">
                                                     <div class="text-danger" *ngIf="businessName.errors.required">
@@ -152,7 +152,7 @@
                                     </div>
                                     <div class="row pb-4">
                                         <div class="col-xl-6">
-                                            <label><span class="text-dark">Tenant Name</span></label>
+                                            <label><span class="text-dark">Tenant Name *</span></label>
                                             
                                             <div class="input-group">
                                                 <input  formControlName="tenantName" type="text" class="form-control" (focusout)="checkTenant()"autocomplete="off" name="TenantOfUser" placeholder="Enter Tenant Name" value="" required maxlength="64">
@@ -185,7 +185,7 @@
                                     <div class="row">
                                         <div class="col-xl-12">
                                             <div class="form-group">
-                                                <label>Address Line 1</label>
+                                                <label>Address Line 1 *</label>
                                                 <input type="text" formControlName="addressLineOne"class="form-control" name="addressLineOneOfUser" autocomplete="off" placeholder="Enter Address" value="" required maxlength="256">
                                                 <div *ngIf="addressLineOne.invalid && (addressLineOne.dirty || addressLineOne.touched)">
                                                     <div class="text-danger" *ngIf="addressLineOne.errors.required">
@@ -196,7 +196,7 @@
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Address Line 2</label>
+                                                <label>Address Line 2 *</label>
                                                 <input type="text" formControlName="addressLineTwo"class="form-control" autocomplete="off" name="addressLineTwoOfUser" placeholder="Enter Address" value="" maxlength="256">
                                             </div>
                                         </div>
@@ -218,7 +218,7 @@
                                     <div class="row">
                                         <div class="col-xl-4">
                                             <div class="form-group">
-                                                <label>State</label>
+                                                <label>State *</label>
                                                 <select name="state" formControlName="state" class="form-control bg-white border">
                                                     <option value="Alabama">Alabama - AL</option><option value="Alaska">Alaska - AK</option><option value="Arizona">Arizona - AZ</option><option value="Arkansas">Arkansas - AR</option><option value="California">California - CA</option><option value="Colorado">Colorado - CO</option><option value="Connecticut">Connecticut - CT</option><option value="Delaware">Delaware - DE</option><option value="District of Columbia">District of Columbia - DC</option><option value="Florida">Florida - FL</option><option value="Georgia">Georgia - GA</option><option value="Hawaii">Hawaii - HI</option><option value="Idaho">Idaho - ID</option><option value="Illinois">Illinois - IL</option><option value="Indiana">Indiana - IN</option><option value="Iowa">Iowa - IA</option><option value="Kansas">Kansas - KS</option><option value="Kentucky">Kentucky - KY</option><option value="Louisiana">Louisiana - LA</option><option value="Maine">Maine - ME</option><option value="Maryland">Maryland - MD</option><option value="Massachusetts">Massachusetts - MA</option><option value="Michigan">Michigan - MI</option><option value="Minnesota">Minnesota - MN</option><option value="Mississippi">Mississippi - MS</option><option value="Missouri">Missouri - MO</option><option value="Montana">Montana - MT</option><option value="Nebraska">Nebraska - NE</option><option value="Nevada">Nevada - NV</option><option value="New Hampshire">New Hampshire - NH</option><option value="New Jersey">New Jersey - NJ</option><option value="New Mexico">New Mexico - NM</option><option value="New York">New York - NY</option><option value="North Carolina">North Carolina - NC</option><option value="North Dakota">North Dakota - ND</option><option value="Ohio">Ohio - OH</option><option value="Oklahoma">Oklahoma - OK</option><option value="Oregon">Oregon - OR</option><option value="Pennsylvania">Pennsylvania - PA</option><option value="Puerto Rico">Puerto Rico - PR</option><option value="Rhode Island">Rhode Island - RI</option><option value="South Carolina">South Carolina - SC</option><option value="South Dakota">South Dakota - SD</option><option value="Tennessee">Tennessee - TN</option><option value="Texas">Texas - TX</option><option value="Utah">Utah - UT</option><option value="Vermont">Vermont - VT</option><option value="Virginia">Virginia - VA</option><option value="Virgin Islands">Virgin Islands - VI</option><option value="Washington">Washington - WA</option><option value="West Virginia">West Virginia - WV</option><option value="Wisconsin">Wisconsin - WI</option><option value="Wyoming">Wyoming - WY</option>
                                                 </select>    
@@ -226,7 +226,7 @@
                                         </div>
                                         <div class="col-xl-4">
                                             <div class="form-group">
-                                                <label>City</label>
+                                                <label>City *</label>
                                                 <input type="text" formControlName="city" class="form-control" autocomplete="off" name="city" placeholder="Enter city name" value=""required maxlength="64">    
                                                     <div *ngIf="city.invalid && (city.dirty || city.touched)">
                                                         <div class="text-danger" *ngIf="city.errors.required">
@@ -237,7 +237,7 @@
                                         </div>
                                         <div class="col-xl-4">
                                             <div class="form-group">
-                                                <label>ZipCode</label>
+                                                <label>ZipCode *</label>
                                                 <input type="text" formControlName="zipCode" class="form-control" autocomplete="off" name="zipCodeOfUser" placeholder="xxxxx" value=""required maxlength="5">                                                
                                                 <div *ngIf="zipCode.invalid && (zipCode.dirty || zipCode.touched)">
                                                     <div class="text-danger" *ngIf="zipCode.errors.required">
@@ -692,7 +692,7 @@
                                             Payment Details:
                                         </div>
                                         <div class="form-group">
-                                            <label>Card Number</label>
+                                            <label>Card Number *</label>
                                             <input type="text" formControlName="cardNumber" class="form-control" name="cardNumberOfUser" placeholder="xxxx-xxxx-xxxx-xxxx" value="" autocomplete="off" required maxlength="20">
                                             <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)">
                                                 <div class="text-danger" *ngIf="cardNumber.errors.required">
@@ -706,7 +706,7 @@
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>CVV Code</label>
+                                                    <label>CVV Code *</label>
                                                     <input type="text" formControlName="cvvCode"  class="form-control" name="CVVCodeOfUser" placeholder="xxx" value="" autocomplete="off" required maxlength="3">
                                                     <div *ngIf="cvvCode.invalid && (cvvCode.dirty || cvvCode.touched)">
                                                         <div class="text-danger" *ngIf="cvvCode.errors.required">
@@ -720,7 +720,7 @@
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>Expiry Date</label>
+                                                    <label>Expiry Date *</label>
                                                     <input  bsDatepicker formControlName="expiryDate" class="form-control" name="expiryDateOfUser" placeholder="Select Date" bsDatepicker autocomplete="off" required>
                                                     <div *ngIf="expiryDate.invalid && (expiryDate.dirty || expiryDate.touched)">
                                                         <div class="text-danger" *ngIf="expiryDate.errors.required">
@@ -733,7 +733,7 @@
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>Email</label>
+                                                    <label>Email *</label>
                                                     <input type="email" formControlName="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required maxlength="64">
                                                     <div *ngIf="email.invalid && (email.dirty || email.touched)">
                                                         <div class="text-danger" *ngIf="email.errors.required">
@@ -747,7 +747,7 @@
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>Commitment</label>
+                                                    <label>Commitment *</label>
                                                     <select name="Commitment" formControlName="commitment"class="form-control bg-white border">
                                                         <option value="30">Monthly Plan</option>
                                                         <option value="265">Annual Plan</option>
@@ -764,7 +764,7 @@
                                     <div class="row py-4">
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Full Name</label>
+                                                <label>Full Name *</label>
                                                   <input  type="text" class="form-control" formControlName="fullName" name="firstName" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
                                                   <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched)">
                                                     <div class="text-danger" *ngIf="fullName.errors.required">
@@ -775,7 +775,7 @@
                                         </div>
                                        <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Email</label>
+                                                <label>Email *</label>
                                                 <input  type="text" class="form-control" formControlName="contactEmail" name="emailAddress" placeholder="Enter Email" value="" autocomplete="off" required maxlength="64">
                                                 <div *ngIf="contactEmail.invalid && (contactEmail.dirty || contactEmail.touched)">
                                                     <div class="text-danger" *ngIf="contactEmail.errors.required">
@@ -791,7 +791,7 @@
                                     <div class="row">
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Company Name</label>
+                                                <label>Company Name *</label>
                                                 <input  type="text" class="form-control" formControlName="companyName" name="companyName" placeholder="Enter Company Name" value="" autocomplete="off" required maxlength="64">                                    
                                                 <div *ngIf="companyName.invalid && (companyName.dirty || companyName.touched)">
                                                     <div class="text-danger" *ngIf="companyName.errors.required">
@@ -802,7 +802,7 @@
                                         </div>
                                          <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>No. of Users</label>
+                                                <label>No. of Users *</label>
                                                 <input  type="text" class="form-control" formControlName="numberOfUsers" name="noOfUsers" placeholder="Enter No Of Users" value="" autocomplete="off" required maxlength="64">
                                                 <div *ngIf="numberOfUsers.invalid && (numberOfUsers.dirty || numberOfUsers.touched)">
                                                     <div class="text-danger" *ngIf="numberOfUsers.errors.required">
