@@ -23,14 +23,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="TaskName">{{"Account Name" | localize}}</label>
+                                            <label for="TaskName">{{"Account Name" | localize}} *</label>
                                             <input type="text" name="accountName" class="form-control"
                                                 [(ngModel)]="accountDto.accountName" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="TaskName"> {{"Account No" | localize}}.</label>
+                                            <label for="TaskName"> {{"Account No" | localize}}. *</label>
                                             <input type="text" name="accountNumber" (focusout)="CheckAccountNumber()"
                                                 class="form-control" [(ngModel)]="accountDto.accountNumber"
                                                 autocomplete="off">
@@ -43,7 +43,7 @@
                                     <div class="col-md-6">
 
                                         <div class="form-group category-selector">
-                                            <label for="TaskName">{{"Account Type" | localize}}</label>
+                                            <label for="TaskName">{{"Account Type" | localize}} *</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{accountType}}</button>
@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group category-selector">
-                                            <label for="TaskName">{{"Account Sub-Type" | localize}}</label>
+                                            <label for="TaskName">{{"Account Sub-Type" | localize}} *</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{accountSubTypeName}}</button>
@@ -77,14 +77,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-group">
-                                        <label>{{"Assignee" | localize}}</label>
+                                        <label>{{"Assignee" | localize}} *</label>
                                         <app-user-list-component comingChangeReguest="" userId={{selectedUserID}}>
                                         </app-user-list-component>
                                     </div>
                                     <div class="col-md-6">
 
                                         <div class="form-group category-selector">
-                                            <label for="TaskName">{{"Reconciliation Type" | localize}}</label>
+                                            <label for="TaskName">{{"Reconciliation Type" | localize}} *</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{reconcillationType}}</button>
@@ -102,7 +102,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div *ngIf="reconciledBox" class="form-group category-selector">
-                                            <label for="TaskName">{{"Reconciled As" | localize}}</label>
+                                            <label for="TaskName">{{"Reconciled As" | localize}} *</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{recociled}}</button>

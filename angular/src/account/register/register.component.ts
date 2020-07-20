@@ -126,7 +126,9 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this._tenantRegistrationService.getEditionsForSelect()
             .subscribe((result) => {
                 this.editionsSelectOutput = result;
-
+                this.editionsSelectOutput.editionsWithFeatures.slice().reverse()
+                .forEach(function(item) {
+                    });
                 if (!this.editionsSelectOutput.editionsWithFeatures || this.editionsSelectOutput.editionsWithFeatures.length <= 0) {
                    // this._router.navigate(['/account/register-tenant']);
                 }
