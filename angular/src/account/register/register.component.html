@@ -297,16 +297,16 @@
                                                                     <ng-container *ngIf="isTrueFalseFeature(feature)">
                                                                         <i class="la la-check kt-font-success"
                                                                             *ngIf="featureEnabledForEdition(feature,editionWithFeatures)"></i>
-                                                                        <i class="la la-times kt-font-dark"
-                                                                            *ngIf="!featureEnabledForEdition(feature,editionWithFeatures)"></i>
+                                                                        <!-- <i class="la la-times kt-font-dark"
+                                                                            *ngIf="!featureEnabledForEdition(feature,editionWithFeatures)"></i> -->
                                                                     </ng-container>
                                                                     <ng-container *ngIf="isTrueFalseFeature(feature)">{{feature.displayName}}
                                                                     </ng-container>
                                                                     <!--Checbox Feature-->
                                                                     <!--Not Checbox Feature-->
-                                                                    <ng-container *ngIf="!isTrueFalseFeature(feature)">
+                                                                    <!-- <ng-container *ngIf="!isTrueFalseFeature(feature)">
                                                                         <i class="la la-check kt-font-success"></i>
-                                                                    </ng-container>
+                                                                    </ng-container> -->
                                                                     <ng-container *ngIf="!isTrueFalseFeature(feature)">
                                                                         {{feature.displayName}}:{{getFeatureValueForEdition(feature,editionWithFeatures)}}
                                                                     </ng-container>
@@ -721,7 +721,7 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Expiry Date *</label>
-                                                    <input  bsDatepicker formControlName="expiryDate" class="form-control" name="expiryDateOfUser" placeholder="Select Date" bsDatepicker autocomplete="off" required>
+                                                    <input  bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}" formControlName="expiryDate" class="form-control" name="expiryDateOfUser" placeholder="Select Date" bsDatepicker autocomplete="off" required>
                                                     <div *ngIf="expiryDate.invalid && (expiryDate.dirty || expiryDate.touched)">
                                                         <div class="text-danger" *ngIf="expiryDate.errors.required">
                                                             Date is required.
