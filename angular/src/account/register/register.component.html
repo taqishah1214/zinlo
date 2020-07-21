@@ -295,18 +295,18 @@
                                                                 <ng-container *ngFor="let feature of editionsSelectOutput.allFeatures">
                                                                     <!--Checbox Feature-->
                                                                     <ng-container *ngIf="isTrueFalseFeature(feature)">
-                                                                        <i class="la la-check kt-font-success"
-                                                                            *ngIf="featureEnabledForEdition(feature,editionWithFeatures)"></i>
-                                                                        <!-- <i class="la la-times kt-font-dark"
-                                                                            *ngIf="!featureEnabledForEdition(feature,editionWithFeatures)"></i> -->
+                                                                        <!-- <i class="la la-check kt-font-success"
+                                                                            *ngIf="featureEnabledForEdition(feature,editionWithFeatures)"></i> -->
+                                                                         <!-- <i class="la la-times kt-font-dark"
+                                                                            *ngIf="!featureEnabledForEdition(feature,editionWithFeatures)"></i>  -->
                                                                     </ng-container>
-                                                                    <ng-container *ngIf="isTrueFalseFeature(feature)">{{feature.displayName}}
-                                                                    </ng-container>
+                                                                    <!-- <ng-container *ngIf="isTrueFalseFeature(feature)">{{feature.displayName}}
+                                                                    </ng-container> -->
                                                                     <!--Checbox Feature-->
                                                                     <!--Not Checbox Feature-->
-                                                                    <!-- <ng-container *ngIf="!isTrueFalseFeature(feature)">
+                                                                     <!-- <ng-container *ngIf="!isTrueFalseFeature(feature)">
                                                                         <i class="la la-check kt-font-success"></i>
-                                                                    </ng-container> -->
+                                                                    </ng-container>  -->
                                                                     <ng-container *ngIf="!isTrueFalseFeature(feature)">
                                                                         {{feature.displayName}}:{{getFeatureValueForEdition(feature,editionWithFeatures)}}
                                                                     </ng-container>
