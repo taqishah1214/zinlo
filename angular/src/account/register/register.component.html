@@ -721,7 +721,8 @@
                                             <div class="col-xl-6">
                                                 <div class="form-group">
                                                     <label>Expiry Date *</label>
-                                                    <input  bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}" formControlName="expiryDate" class="form-control" name="expiryDateOfUser" placeholder="Select Date" bsDatepicker autocomplete="off" required>
+                                                    <input  bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                    (onShown)="onOpenCalendar($event)" formControlName="expiryDate" class="form-control" name="expiryDateOfUser" placeholder="Select Date" bsDatepicker autocomplete="off" required>
                                                     <div *ngIf="expiryDate.invalid && (expiryDate.dirty || expiryDate.touched)">
                                                         <div class="text-danger" *ngIf="expiryDate.errors.required">
                                                             Date is required.
