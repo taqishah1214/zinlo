@@ -1,13 +1,14 @@
-<div class="kt-login__form" [@routerTransition]>
+<div class="kt-login__form " style="padding:0% 20%" [@routerTransition]>
+    <div class="shadow bg-white py-5 px-5">
     <div class="kt-login__title mb-4">
-        <h3>
+        <h3 class="text-center">
             {{"PaymentInfo" | localize}}
         </h3>
     </div>
 
     <form class="kt-form" method="post">
 
-        <h4 class="text-center mb-4">{{"Edition" | localize}}: {{edition.displayName}}</h4>
+        <h4 class=" mb-4">{{"Edition" | localize}}: {{edition.displayName}}</h4>
 
         <div *ngIf="edition.dailyPrice > 0" class="form-group">
             <label class="kt-radio">
@@ -77,10 +78,10 @@
             </label>
         </div>
 
-        <div class="kt-form__actions mt-4">
+        <div class="kt-form__actions mt-4 text-center">
             <div *ngFor="let paymentGateway of paymentGateways" class="mb-2">
                 <button *ngIf="paymentGateway.supportsRecurringPayments || !recurringPaymentEnabled"
-                    (click)="checkout(paymentGateway.gatewayType)" class="btn btn-success btn-block">
+                    (click)="checkout(paymentGateway.gatewayType)" class="btn btn-success px-5">
                     {{"CheckoutWith" + getPaymentGatewayType(paymentGateway.gatewayType) | localize}}
                 </button>
             </div>
@@ -88,4 +89,5 @@
 
 
     </form>
+    </div>
 </div>

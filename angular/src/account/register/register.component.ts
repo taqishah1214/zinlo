@@ -337,8 +337,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     }
     save() {
         if(!this.custom){
-            if(this.paymentInfoValidations())
-            {
                 this.paymentDetailsDto.cardNumber=this.paymentDetailsForm.value.cardNumber
                 this.paymentDetailsDto.cvvCode=this.paymentDetailsForm.value.cvvCode
                 this.paymentDetailsDto.commitment=this.paymentDetailsForm.value.commitment
@@ -383,7 +381,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                             this._router.navigate(['account/register-tenant-result']);
                         }
                     });
-            }
+            
 
         }
         else{
