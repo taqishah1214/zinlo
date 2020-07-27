@@ -70,31 +70,34 @@ export class Checklist extends AppComponentBase implements OnInit  {
   
   
    ngOnInit() {
-
-    this.userDate.defaultgMonth.subscribe(defaultMonth => {
-      this.defaultMonth = defaultMonth
+    this.userDate.defaultgMonth.subscribe((defaultMonth) => {
+      this.defaultMonth = defaultMonth;
       if (this.defaultMonth.id != 0) {
-        this.selectedDate = new Date (this.defaultMonth.month); 
-        this.userDate.reloadLock.subscribe(reload => this.reload = reload) 
-        if (this.reload.lock == false){
-          this.getClosingCheckListAllTasks();
-          this.reload.lock = true;
-          this.userDate.setReloadLock(this.reload);
-        }
-        } 
-     
+          this.selectedDate = new Date(this.defaultMonth.month);
+          this.userDate.reloadLock.subscribe((reload) => {
+              this.reload = reload;
+              if (this.reload.lock == false) {
+                  this.getClosingCheckListAllTasks();
+                  this.reload.lock = true;
+                  this.userDate.setReloadLock(this.reload);
+              }
+          });
+      }
+  });
+  $(document).ready(function () {
+      $(".dropdown-menu").on("click", function (e) {
+          e.stopPropagation();
       });
-    $(document).ready(function () {
-      $(".dropdown-menu").on('click', function (e) {
-        e.stopPropagation();
-      });
-    });
-    this.changeAssigneePermission = this.isGranted("Pages.Tasks.Change.Assignee");
-    
+  });
+  this.changeAssigneePermission = this.isGranted(
+      "Pages.Tasks.Change.Assignee"
+  );
 
-    this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
-    this.initializePageParameters();
-    this.loadCategories();
+  this.userDate.allUsersInformationofTenant.subscribe(
+      (userList) => (this.users = userList)
+  );
+  this.initializePageParameters();
+  this.loadCategories();
   }
 
 

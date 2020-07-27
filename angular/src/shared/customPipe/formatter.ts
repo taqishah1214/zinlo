@@ -7,6 +7,9 @@ export class Formater implements PipeTransform
 {
     transform(value: any, args: any[]): any {
         if (!value) { return 0; }
-        return new Intl.NumberFormat('en-US').format(value);
+        else {
+          value =  parseFloat(value).toFixed(2)
+          return new Intl.NumberFormat('en-US').format(value);
+        }
       }
 }
