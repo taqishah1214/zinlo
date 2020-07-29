@@ -78,7 +78,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>{{"Assignee" | localize}} *</label>
-                                        <app-user-list-component comingChangeReguest="" userId={{checklist.assigneeId}}>
+                                        <app-user-list-component comingChangeReguest="ClosingCheckList" (callBack)="changeAssignee()" userId={{checklist.assigneeId}}>
                                         </app-user-list-component>
                                     </div>
                                 </div>
@@ -101,7 +101,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group dueOn">
-                                        <label>{{"Dueon" | localize}}</label>
+                                        <label>{{"Dueon" | localize}} *</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
@@ -303,7 +303,7 @@
                     <div class="kt-portlet__head">
                     </div>
                     <div class="btn-create">
-                        <button class="btn btn-brand btn-width" (click)="onCreateTask()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid || !monthStatus">
+                        <button class="btn btn-brand btn-width" (click)="onCreateTask()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid || !monthStatus || !assigneeSelected || !dueOnSelected">
                             <i class="fa fa-save"></i>
                             <span>{{"Create" | localize}}</span>
                         </button>

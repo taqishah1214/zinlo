@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { HttpRequest, HttpClient } from '@angular/common/http';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-createtask',
@@ -73,6 +74,8 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   newAttachementPath: string[] = [];
   public isChecked: boolean = false;
   commentFilesPath:any[]=[];
+  assigneeSelected=false
+  dueOnSelected=false
   days: any;
   users: any;
   checklist: CreateOrEditClosingChecklistDto;
@@ -104,7 +107,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.initializePageParameters();
 
   }
-
   getProfilePicture() {
     this.userInfo.getProfilePicture();
     this.userInfo.profilePicture.subscribe(
@@ -145,6 +147,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.daysBeforeAfter = 1;
     this.checklist.dueOn= 0;
     this.checklist.endOfMonth=true;
+    this.dueOnSelected=true;
     this.isChecked = false;
     this.SelectionMsg = "\xa0"
   }
@@ -166,50 +169,67 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this._router.navigate(['/app/main/checklist']);
   }
 
-
+  createTaskValidations(){
+    if(this.checklist.assigneeId==undefined)
+    {
+      this.notify.error("Assignee is Required")
+      return false
+    }
+    return true;
+  }
+  changeAssignee(){
+    if(this.selectedCategoryId.categoryId!=undefined){
+      this.assigneeSelected=true
+    }
+    else{
+      this.assigneeSelected=false
+    }
+  }
   onCreateTask(): void {
-     if (this.checklist.endOfMonth) {
-      this.checklist.dayBeforeAfter = 1;
-      this.checklist.dueOn = 0;
-    }
-    else {
-      this.checklist.dayBeforeAfter = this.daysBeforeAfter;
-      this.checklist.endOfMonth = false;
-    }
-    this.checklist.dueOn = Number(this.checklist.dueOn);
-    this.checklist.frequency = Number(this.checklist.frequency);
-    this.checklist.status = 1
-   
-    if (this.selectedCategoryId.categoryId != undefined)
-    {
-      this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
-    }
-    if (this.selectedUserId.selectedUserId != undefined)
-    {
-      this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
-    }
-    if (this.attachmentPaths != null) {
-      this.newAttachementPath = [];
-      this.attachmentPaths.forEach(element => {
-        this.newAttachementPath.push(element.toString())
-      });
+    if(this.createTaskValidations()){
+      if (this.checklist.endOfMonth) {
+        this.checklist.dayBeforeAfter = 1;
+        this.checklist.dueOn = 0;
+      }
+      else {
+        this.checklist.dayBeforeAfter = this.daysBeforeAfter;
+        this.checklist.endOfMonth = false;
+      }
+      this.checklist.dueOn = Number(this.checklist.dueOn);
+      this.checklist.frequency = Number(this.checklist.frequency);
+      this.checklist.status = 1
+    
+      if (this.selectedCategoryId.categoryId != undefined)
+      {
+        this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
+      }
+      if (this.selectedUserId.selectedUserId != undefined)
+      {
+        this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
+      }
+      if (this.attachmentPaths != null) {
+        this.newAttachementPath = [];
+        this.attachmentPaths.forEach(element => {
+          this.newAttachementPath.push(element.toString())
+        });
 
-      this.checklist.attachmentsPath = this.newAttachementPath;
+        this.checklist.attachmentsPath = this.newAttachementPath;
+      }
+      if (this.checklist.noOfMonths != undefined && this.checklist.noOfMonths != null) {
+        this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
+      }
+      else {
+        this.checklist.noOfMonths = 0;
+      }
+      this.errorMessage = "";
+      this.saving = true;
+      this._closingChecklistService.createOrEdit(this.checklist)
+      .pipe(finalize(() => { this.saving = false; }))
+      .subscribe(() => {
+        this.redirectToTaskList();
+        this.notify.success(this.l('SavedSuccessfully'));
+      });
     }
-    if (this.checklist.noOfMonths != undefined && this.checklist.noOfMonths != null) {
-      this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
-    }
-    else {
-      this.checklist.noOfMonths = 0;
-    }
-    this.errorMessage = "";
-    this.saving = true;
-    this._closingChecklistService.createOrEdit(this.checklist)
-    .pipe(finalize(() => { this.saving = false; }))
-    .subscribe(() => {
-      this.redirectToTaskList();
-      this.notify.success(this.l('SavedSuccessfully'));
-    });
   }
   commentClick(): void {
     this.commantModal = true;
@@ -240,6 +260,15 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
   }
   onDayChange() {
+    if(this.SelectionMsg == "Days Before"|| this.SelectionMsg == "Days After"){
+      if(this.checklist.dueOn !=0){
+        console.log(this.checklist.dueOn);
+        this.dueOnSelected=true
+      }
+    }
+    else{
+      this.dueOnSelected=false;
+    }
     this.checklist.endOfMonth = false;
     this.isChecked = true;
   }
@@ -247,12 +276,26 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   onDaysClick(value) {
     if (value == 2) {
       this.SelectionMsg = "Days Before";
+      if(this.checklist.dueOn !=0){
+        console.log(this.checklist.dueOn)
+        this.dueOnSelected=true;
+      }
+      else{
+        
+        this.dueOnSelected=false;
+      }
       this.checklist.endOfMonth = false;
       this.isChecked = true;
     }
     else if (value == 3) {
       this.SelectionMsg = "Days After";
       this.checklist.endOfMonth = false;
+      if(this.checklist.dueOn !=0){
+        this.dueOnSelected=true;
+      }else{
+        
+        this.dueOnSelected=false;
+      }
       this.isChecked = true;
     }  
     else if (value == 1) {
