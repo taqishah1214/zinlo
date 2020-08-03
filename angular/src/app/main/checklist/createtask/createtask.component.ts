@@ -51,7 +51,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       'unlink','fontSize','fontName']
       ]
   };
-
+  TaskName:string
   commentFiles:File[]=[];
   instructionFiles:File[]=[];
   saving = false;
@@ -76,6 +76,11 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   commentFilesPath:any[]=[];
   assigneeSelected=false
   dueOnSelected=false
+  TaskCategory:string
+  TaskAssignee:string
+  TaskDate:string
+  TaskFrequency:string
+  TaskDueon:string
   days: any;
   users: any;
   checklist: CreateOrEditClosingChecklistDto;
@@ -150,6 +155,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.dueOnSelected=true;
     this.isChecked = false;
     this.SelectionMsg = "\xa0"
+    this.TaskDueon=null;
   }
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
@@ -168,14 +174,72 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   redirectToTaskList(): void {
     this._router.navigate(['/app/main/checklist']);
   }
-
-  createTaskValidations(){
-    if(this.checklist.assigneeId==undefined)
+  changeValidation(){
+    if(this.checklist.taskName!=undefined)
     {
-      this.notify.error("Assignee is Required")
-      return false
+      this.TaskName=null
     }
-    return true;
+    if(this.selectedCategoryId.categoryId!=undefined)
+    {
+      this.TaskCategory=null
+    }
+    if(this.checklist.frequency!=undefined)
+    {
+      this.TaskFrequency=null
+    }
+    if(this.selectedUserId.selectedUserId!=undefined)
+    {
+      this.TaskAssignee=null
+    }
+    if(this.checklist.closingMonth!=undefined)
+    {
+      this.TaskDate=null
+    }
+    if (!this.checklist.endOfMonth) {
+      if(this.checklist.dayBeforeAfter != undefined && this.checklist.dayBeforeAfter != 1 && this.checklist.dueOn!=0)
+      {
+        this.TaskDueon=null
+      }
+    }
+  }
+  createTaskValidations(){
+    let found=0
+    if(this.checklist.taskName==undefined)
+    {
+      this.TaskName="Task Name is required"
+      found=1
+    }
+    if(this.selectedCategoryId.categoryId==undefined)
+    {
+      this.TaskCategory="Category is required"
+      found=1
+    }
+    if(this.checklist.frequency==undefined)
+    {
+      this.TaskFrequency="Frequency is required"
+      found=1
+    }
+    if(this.selectedUserId.selectedUserId==undefined)
+    {
+      this.TaskAssignee="Assignee is required"
+      found=1
+    }
+    if(this.checklist.closingMonth==undefined)
+    {
+      this.TaskDate="Closing Month is required"
+      found=1
+    }
+    if (!this.checklist.endOfMonth) {
+      if(this.checklist.dayBeforeAfter == undefined ||this.checklist.dayBeforeAfter == 1 || this.checklist.dueOn==0)
+      {
+        this.TaskDueon="Select Both Fields"
+        found=1
+      }
+    }
+    if(found==0 && this.monthStatus){
+      return true
+    }
+    return false;
   }
   changeAssignee(){
     if(this.selectedCategoryId.categoryId!=undefined){
@@ -276,30 +340,19 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   onDaysClick(value) {
     if (value == 2) {
       this.SelectionMsg = "Days Before";
-      if(this.checklist.dueOn !=0){
-        console.log(this.checklist.dueOn)
-        this.dueOnSelected=true;
-      }
-      else{
-        
-        this.dueOnSelected=false;
-      }
+      this.checklist.dayBeforeAfter=2
       this.checklist.endOfMonth = false;
       this.isChecked = true;
     }
     else if (value == 3) {
       this.SelectionMsg = "Days After";
+      this.checklist.dayBeforeAfter=3
       this.checklist.endOfMonth = false;
-      if(this.checklist.dueOn !=0){
-        this.dueOnSelected=true;
-      }else{
-        
-        this.dueOnSelected=false;
-      }
       this.isChecked = true;
     }  
     else if (value == 1) {
       this.SelectionMsg = "\xa0"
+      this.checklist.dayBeforeAfter=1
       this.isChecked = true;
     }
   }
@@ -358,6 +411,11 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this._managementService.checkMonthStatus(moment(new Date(add(this.checklist.closingMonth, 2, "day")))).subscribe(result => {
       this.monthStatus = result;
     });
+    
+    if(this.checklist.closingMonth!=undefined)
+    {
+      this.TaskDate=null
+    }
   }
    getNoOfmonths(date1, date2) {
     var Nomonths;

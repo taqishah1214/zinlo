@@ -22,8 +22,9 @@
                                 <div class="form-group">
                                     <label for="title">{{"Title" | localize}} *</label>
                                     <input autofocus type="text" class="form-control" id="title" name="title"
-                                    autocomplete="off" required (focusout)="CheckAccountSubType()" [(ngModel)]="accountsSubType.title">
+                                    autocomplete="off" required (focusout)="CheckAccountSubType()"(mouseout)="CheckAccountSubType()" [(ngModel)]="accountsSubType.title">
                                     <span style="color:red" *ngIf="accountSubtypeExist">{{"AccountSubtypewithsameNamealreadyexist" | localize}}</span>
+                                    <span style="color:red" *ngIf="!accountSubtypeExist">{{AccountTitle}}</span>
                                 </div>
                             </div>
                         </div>
