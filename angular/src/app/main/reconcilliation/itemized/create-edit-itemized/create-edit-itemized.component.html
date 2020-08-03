@@ -19,40 +19,52 @@
                 </div>
                 <div class="kt-portlet__body">
                     <form  >
-                        <div class="row">
+                        <div class="row form-group">
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div  [ngClass]="{'disabled':!updateLock}" class="form-group">
+                                        <div  [ngClass]="{'disabled':!updateLock}" style="height: 90px !important;">
                                             <label for="InvoiceNo">{{"Invoice No" | localize}}. *</label>
                                             <input type="text" name="inoviceNo" class="form-control"
-                                                [(ngModel)]="itemizedDto.inoviceNo" autocomplete="off" >
+                                                [(ngModel)]="itemizedDto.inoviceNo" (mouseout)="changeValidation()" (focusout)="changeValidation()" autocomplete="off" >
+                                                <span class="form-control-feedback">
+                                                    {{InvoiceNumber}}
+                                                </span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div  [ngClass]="{'disabled':!updateLock}" class="form-group">
+                                        <div  [ngClass]="{'disabled':!updateLock}" style="height: 90px !important;">
                                             <label for="TaskName">{{"Journal Entry No" | localize}}. *</label>
-                                            <input type="text" name="journalEntryNo" class="form-control"
+                                            <input type="text" name="journalEntryNo" (mouseout)="changeValidation()" (focusout)="changeValidation()"class="form-control"
                                                 [(ngModel)]="itemizedDto.journalEntryNo" autocomplete="off">
+                                                <span class="form-control-feedback">
+                                                    {{EntryNo}}
+                                                </span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div  [ngClass]="{'disabled':!updateLock}" class="form-group category-selector">
+                                        <div  [ngClass]="{'disabled':!updateLock}" style="height: 90px !important;"class="category-selector">
                                             <label for="Date">{{"Date" | localize}} *</label>
-                                            <input [(ngModel)]="itemizedDto.date" required="required"
+                                            <input [(ngModel)]="itemizedDto.date" (mouseout)="changeValidation()" (focusout)="changeValidation()"required="required"
                                             class="form-control" name="date" bsDatepicker
                                             placeholder="Select Date" autocomplete="off" class="form-control" name="date"
-                                            bsDatepicker>
+                                            bsDatepicker >
+                                            <span class="form-control-feedback">
+                                                {{StartDate}}
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div  class="col-md-6">
+                                        <div style="height: 90px !important;">
                                             <label for="TaskName">{{"Amount" | localize}} *</label>
                                             <input type="text" name="amount" class="form-control"
-                                            [(ngModel)]="itemizedDto.amount" autocomplete="off">
+                                            [(ngModel)]="itemizedDto.amount" autocomplete="off" (mouseout)="changeValidation()" (focusout)="changeValidation()">
+                                            <span class="form-control-feedback">
+                                                {{Amount}}
+                                            </span>
                                         </div>
                                     </div>                                    
                                 </div>
@@ -60,11 +72,14 @@
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div  [ngClass]="{'disabled':!updateLock}" class="form-group">
+                                        <div  [ngClass]="{'disabled':!updateLock}">
                                             <label for="description">{{"Description" | localize}}</label>
-                                            <textarea class="form-control" style="height: 128px;" required [(ngModel)]="itemizedDto.description"
+                                            <textarea class="form-control" style="height: 128px;" required (mouseout)="changeValidation()" (focusout)="changeValidation()" [(ngModel)]="itemizedDto.description"
                                                 id="description" name="description" 
                                                 autocomplete="off" ></textarea>
+                                                <span class="form-control-feedback">
+                                                    {{Description}}
+                                                </span>
                                         </div>   
                                     </div>
                                 </div>

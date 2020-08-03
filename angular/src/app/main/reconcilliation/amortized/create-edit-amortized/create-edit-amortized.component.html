@@ -37,31 +37,41 @@
                       
                                                     </div>
                                                 </div>   
-                                                <div class="col-md-6">
-                                                    <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <div class="row ">
                                                         <div [ngClass]="{'disabled':!updateLock}" class="col-md-6">
-                                                            <div class="form-group">
+                                                            <div style="height: 90px !important;">
                                                                 <label for="InvoiceNo">{{"Invoice No" | localize}}. *</label>
                                                                 <input type="text" name="inoviceNo" class="form-control"
-                                                                    [(ngModel)]="amortizationDto.inoviceNo" autocomplete="off">
+                                                                    [(ngModel)]="amortizationDto.inoviceNo" autocomplete="off" (mouseout)="changeValidation()" (focusout)="changeValidation()">
+                                                                    
+                                                                <span class="form-control-feedback">
+                                                                    {{InvoiceNumber}}
+                                                                </span>
                                                             </div>
                                                         </div>
                                                         <div [ngClass]="{'disabled':!updateLock}"class="col-md-6">
-                                                            <div class="form-group">
+                                                            <div style="height: 90px !important;">
                                                                 <label for="TaskName">{{"Journal Entry No" | localize}}. *</label>
                                                                 <input type="text" name="accountNumber" class="form-control"
-                                                                    [(ngModel)]="amortizationDto.journalEntryNo" autocomplete="off" >
+                                                                    [(ngModel)]="amortizationDto.journalEntryNo" autocomplete="off" (mouseout)="changeValidation()" (focusout)="changeValidation()">
+                                                                    <span class="form-control-feedback">
+                                                                        {{EntryNo}}
+                                                                    </span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div [ngClass]="{'disabled':!updateLock}" class="col-md-6">
-                                                            <div class="form-group category-selector">
+                                                            <div class="category-selector" style="height: 90px !important;">
                                                                 <label for="Date">{{"Start Date" | localize}} *</label>
                                                                 <input [(ngModel)]="amortizationDto.startDate" required="required"
                                                                 class="form-control " name="startDate" bsDatepicker
-                                                                placeholder="Select Date" class="form-control" autocomplete="off" name="date"
+                                                                placeholder="Select Date" class="form-control" autocomplete="off" name="date" (mouseout)="changeValidation()" (focusout)="changeValidation()"
                                                                 bsDatepicker  >
+                                                                <span class="form-control-feedback">
+                                                                    {{StartDate}}
+                                                                </span>
                                                             </div>
 
 
@@ -69,26 +79,35 @@
                                                         <div class="col-md-6">
                                                            
 
-                                                            <div [ngClass]="{'disabled':!updateLock}" class="form-group category-selector">
+                                                            <div [ngClass]="{'disabled':!updateLock}" class="category-selector" style="height: 90px !important;">
                                                                 <label for="Date">{{"End Date" | localize}} *</label>
                                                                 <input [(ngModel)]="amortizationDto.endDate"  required="required"
                                                                 class="form-control" name="endDate" bsDatepicker
-                                                                placeholder="Select Date" class="form-control" autocomplete="off" name="date"
+                                                                placeholder="Select Date" class="form-control" autocomplete="off" name="date" (mouseout)="changeValidation()" (focusout)="changeValidation()"
                                                                 bsDatepicker  >
+                                                                <span class="form-control-feedback">
+                                                                    {{EndDate}}
+                                                                </span>
                                                             </div>
 
                                                         </div>
                                                     </div>
-                                                    <div class="row form-group">
-                                                        <div [ngClass]="{'disabled':!updateLock}" class="col-md-6">
+                                                    <div class="row">
+                                                        <div [ngClass]="{'disabled':!updateLock}" class="col-md-6" style="height: 90px !important;">
                                                             <label for="TaskName">{{"Amount" | localize}} *</label>
-                                                            <input type="text" name="amount" class="form-control"
+                                                            <input type="text" name="amount" class="form-control" (mouseout)="changeValidation()" (focusout)="changeValidation()"
                                                             [(ngModel)]="amortizationDto.amount" autocomplete="off">
+                                                            <span class="form-control-feedback">
+                                                                {{Amount}}
+                                                            </span>
                                                         </div>
-                                                        <div *ngIf="accumulateAmount" class="col-md-6">
+                                                        <div *ngIf="accumulateAmount" class="col-md-6" style="height: 90px !important;">
                                                             <label for="TaskName">{{"Accumulate Amount" | localize}} *</label>
-                                                            <input type="text" name="accomulateAmount" class="form-control"
+                                                            <input type="text" name="accomulateAmount" class="form-control" (focusout)="changeValidation()" (mouseout)="changeValidation()"
                                                             [(ngModel)]="amortizationDto.accomulateAmount" autocomplete="off">
+                                                            <span class="form-control-feedback">
+                                                                {{AccAmount}}
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>

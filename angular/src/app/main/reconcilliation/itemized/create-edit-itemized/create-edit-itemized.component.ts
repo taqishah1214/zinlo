@@ -8,6 +8,7 @@ import { AppConsts } from '@shared/AppConsts';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import {UserInformation} from "../../../CommonFunctions/UserInformation"
+import { StringMapWithRename } from '@angular/compiler/src/compiler_facade_interface';
 
 
 
@@ -101,23 +102,66 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
       this.UserProfilePicture = "";
     }
   }
+  changeValidation(){
+    if(this.itemizedDto.inoviceNo!= null)
+     {
+      this.InvoiceNumber=null
+     }
+     if(this.itemizedDto.journalEntryNo != null)
+     {
+      this.EntryNo=null
+     }
+    if(this.itemizedDto.date != null)
+     {
+      this.StartDate=null
+     }
+     if(this.itemizedDto.description != null)
+     {
+      this.Description=null
+     }
+      if(this.itemizedDto.amount != null)
+     {
+      this.Amount=null
+    }
+    
+  }
+  StartDate:String
+  Amount:string
+  EntryNo:string
+  InvoiceNumber:string
+  Description:string
+  
   validationCheck() {
+    let found=0
+    if(this.itemizedDto.inoviceNo== null)
+     {
+      this.InvoiceNumber="Invoice No is required"
+      found=1
+     }
+     if(this.itemizedDto.journalEntryNo == null)
+     {
+      this.EntryNo="Entry No is required"
+      found=1
+     }
     if(this.itemizedDto.date == null)
      {
-      this.notify.error("Select Date")
-      return false;
+      this.StartDate="Select Date"
+      found=1
      }
-     else if(this.itemizedDto.description == null)
+     if(this.itemizedDto.description == null)
      {
-      this.notify.error("Select the Description")
-      return false;
+      this.Description="Description is required"
+      found=1
      }
-     else if(this.itemizedDto.amount == null)
+      if(this.itemizedDto.amount == null)
      {
-      this.notify.error("Select the Amount")
+      this.Amount="Amount is required"
+      found=1     
+    }
+      if(found==0){
+        return true;
+      }
       return false;
-     }
-     return true;
     }
   redirectToItemsList () : void {  
       this._router.navigate(['/app/main/reconciliation/itemized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo ,selectedDate :history.state.data.selectedDate}} }); 
