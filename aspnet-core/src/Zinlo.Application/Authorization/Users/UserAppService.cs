@@ -240,13 +240,22 @@ namespace Zinlo.Authorization.Users
 
         public async Task CreateOrUpdateUser(CreateOrUpdateUserInput input)
         {
-            if (input.User.Id.HasValue)
+            try
             {
-                await UpdateUserAsync(input);
+
+                if (input.User.Id.HasValue)
+                {
+                    await UpdateUserAsync(input);
+                }
+                else
+                {
+                    await CreateUserAsync(input);
+                }
             }
-            else
+            catch (Exception e)
             {
-                await CreateUserAsync(input);
+                Logger.Error(e.Message);
+                throw new Exception(e.Message);
             }
         }
 
