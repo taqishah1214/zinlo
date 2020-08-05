@@ -39,49 +39,57 @@ namespace Zinlo.Register_User
 
         public async Task<RegisterTenantOutput> RegisterUserWithTenant(RegisterUserInput registerUser)
         {
-            var registerTenant = await _tenantRegistrationAppService.RegisterTenant(new RegisterTenantInput
+            try
             {
-                AdminEmailAddress = registerUser.PersonalInfo.EmailAddress,
-                Name = registerUser.PersonalInfo.UserName,
-                AdminPassword = registerUser.PersonalInfo.Password,
-                EditionId = registerUser.SubscriptionPlans.EditionId,
-                TenancyName = registerUser.BusinessInfo.TenantName,
-                SubscriptionStartType = (SubscriptionStartType)registerUser.SubscriptionPlans.SubscriptionStartType,
-                CaptchaResponse = ""
-            });
-            if (registerUser.BusinessInfo != null)
-            {
-                 _userBusinessInfoRepository.InsertAsync(new UserBusinessInfo
+                var registerTenant = await _tenantRegistrationAppService.RegisterTenant(new RegisterTenantInput
                 {
-                    BusinessName = registerUser.BusinessInfo.BusinessName,
-                    Website = registerUser.BusinessInfo.Website,
-                    PhoneNumber = registerUser.BusinessInfo.PhoneNumber,
-                    AddressLineOne = registerUser.BusinessInfo.AddressLineOne,
-                    AddressLineTwo = registerUser.BusinessInfo.AddressLineTwo,
-                    City = registerUser.BusinessInfo.City,
-                    State = registerUser.BusinessInfo.State,
-                    ZipCode = registerUser.BusinessInfo.ZipCode,
-                    TenantId = registerTenant.TenantId
-                }).ConfigureAwait(false);
-            }
-            if (registerUser.PaymentDetails != null)
-            {
-                 _userPaymentDetailsRepository.InsertAsync(new UserPaymentDetails
+                    AdminEmailAddress = registerUser.PersonalInfo.EmailAddress,
+                    Name = registerUser.PersonalInfo.UserName,
+                    AdminPassword = registerUser.PersonalInfo.Password,
+                    EditionId = registerUser.SubscriptionPlans.EditionId,
+                    TenancyName = registerUser.BusinessInfo.TenantName,
+                    SubscriptionStartType = (SubscriptionStartType)registerUser.SubscriptionPlans.SubscriptionStartType,
+                    CaptchaResponse = ""
+                });
+                if (registerUser.BusinessInfo != null)
                 {
-                    CardNumber = registerUser.PaymentDetails.CardNumber,
-                    Commitment = registerUser.PaymentDetails.Commitment,
-                    CVVCode = registerUser.PaymentDetails.CVVCode,
-                    Email = registerUser.PaymentDetails.Email,
-                    ExpiryDate = registerUser.PaymentDetails.ExpiryDate,
-                    TenantId = registerTenant.TenantId
-                }).ConfigureAwait(false);
-            }
-            if (registerUser.ContactUs != null)
-            {
-                 _contactusService.Create(registerUser.ContactUs,registerTenant.TenantId).ConfigureAwait(false);
-            }
+                    _userBusinessInfoRepository.InsertAsync(new UserBusinessInfo
+                    {
+                        BusinessName = registerUser.BusinessInfo.BusinessName,
+                        Website = registerUser.BusinessInfo.Website,
+                        PhoneNumber = registerUser.BusinessInfo.PhoneNumber,
+                        AddressLineOne = registerUser.BusinessInfo.AddressLineOne,
+                        AddressLineTwo = registerUser.BusinessInfo.AddressLineTwo,
+                        City = registerUser.BusinessInfo.City,
+                        State = registerUser.BusinessInfo.State,
+                        ZipCode = registerUser.BusinessInfo.ZipCode,
+                        TenantId = registerTenant.TenantId
+                    }).ConfigureAwait(false);
+                }
+                if (registerUser.PaymentDetails != null)
+                {
+                    _userPaymentDetailsRepository.InsertAsync(new UserPaymentDetails
+                    {
+                        CardNumber = registerUser.PaymentDetails.CardNumber,
+                        Commitment = registerUser.PaymentDetails.Commitment,
+                        CVVCode = registerUser.PaymentDetails.CVVCode,
+                        Email = registerUser.PaymentDetails.Email,
+                        ExpiryDate = registerUser.PaymentDetails.ExpiryDate,
+                        TenantId = registerTenant.TenantId
+                    }).ConfigureAwait(false);
+                }
+                if (registerUser.ContactUs != null)
+                {
+                    _contactusService.Create(registerUser.ContactUs, registerTenant.TenantId).ConfigureAwait(false);
+                }
 
-            return registerTenant;
+                return registerTenant;
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e.Message);
+                throw new Exception(e.Message);
+            }
         }
     }
 }
