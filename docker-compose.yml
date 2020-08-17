@@ -1,0 +1,24 @@
+version: "3"
+services:
+  zinlo_api:
+    container_name: zinlo_api
+    build:
+      context: aspnet-core
+      dockerfile: aspnet-core.Dockerfile
+    environment:
+      "ASPNETCORE_ENVIRONMENT": "Production"
+      "ConnectionStrings:Default": ${CONNECTION_STRING}
+      "App:ServerRootAddress": ${SEVER_ROOT_ADDRESS}
+      "App:CorsOrigins": ""
+      "App:DomainFormat": ${DOMAIN_FORMAT}
+      "Authentication:JwtBearer:IsEnabled": "true"
+      "Authentication:JwtBearer:SecurityKey": ${JWT_SECURITY_KEY}
+      "Authentication:JwtBearer:Issuer": ${JWT_ISSUER}
+      "Authentication:JwtBearer:Audience": ${JWT_AUDIENCE}
+    ports:
+      - "8081:80"
+    volumes:
+      - ./tmp-build/api/Logs:/app/App_Data/Logs
+      - ./tmp-build/api/Files:/app/App_Data/FileManager
+      - ./tmp-build/api/aspnet/https:/root/.aspnet/https:ro
+      - ./tmp-build/api/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
