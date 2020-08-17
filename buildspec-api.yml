@@ -9,7 +9,7 @@ phases:
       - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
       - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
       - aws --version
-      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - $(aws ecr get-login --region us-east-2 --no-include-email)
       - REPOSITORY_URI=876741939097.dkr.ecr.us-east-2.amazonaws.com/zinlo/api
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
   build:
@@ -21,5 +21,5 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - $(aws ecr get-login --region us-east-2 --no-include-email)
       - docker push $REPOSITORY_URI:$COMMIT_HASH
