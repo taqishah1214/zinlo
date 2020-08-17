@@ -49,7 +49,7 @@
                     </div>
 
                     <div [hidden]="isUnlimited || !isSubscriptionFieldsVisible" class="form-group" [ngClass]="{'has-error': !subscriptionEndDateUtcIsValid }">
-                        <label for="SubscriptionEndDateUtc">{{"SubscriptionEndDateUtc" | localize}}</label>
+                        <label for="SubscriptionEndDateUtc">{{"SubscriptionEndDateUtc" | localize}} *</label>
                         <input id="SubscriptionEndDateUtc" type="datetime" #SubscriptionEndDateUtc name="SubscriptionEndDateUtc" class="form-control"
                                 bsDatepicker
                                 datePickerMomentModifier

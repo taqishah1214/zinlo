@@ -40,14 +40,14 @@
                     <div class="row">
                         <div class="col-xl-6">
                             <div  class="form-group">
-                                <label >Select Expiry Date</label>
+                                <label >Select Expiry Date *</label>
                                 <input  bsDatepicker formControlName="expireTime" [(ngModel)]="contactus.expireTime" class="form-control" name="expiryDateOfUser" placeholder="Select Date" bsDatepicker autocomplete="off" required>
                                                     
                             </div>
                         </div>
                         <div class="col-xl-6">
                             <div class="form-group">
-                                <label>No. of Users</label>
+                                <label>No. of Users *</label>
                                 <input [(ngModel)]="contactus.numberOfUsers" type="text" class="form-control" name="noOfUsers" placeholder="Enter No Of Users" value="" autocomplete="off" required maxlength="64">
                         
                             </div>
@@ -56,7 +56,7 @@
                     <div class="row">
                         <div class="col-xl-6">
                             <div class="form-group">
-                                <label>Commitment</label>
+                                <label>Commitment *</label>
                                 <select name="Commitment" [(ngModel)]="contactus.commitment" class="form-control bg-white border">
                                     <option value="30">Monthly Plan</option>
                                     <option value="265">Annual Plan</option>
@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-xl-6">
                             <div class="form-group">
-                                <label>Price</label>
+                                <label>Price *</label>
                                 <input [(ngModel)]="contactus.pricing"  type="text" class="form-control" name="price" placeholder="Enter Price" value="" autocomplete="off" required maxlength="64">
                         
                             </div>

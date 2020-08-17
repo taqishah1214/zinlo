@@ -60,7 +60,7 @@
                                     <div class="row my-0 py-0">
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>First Name</label>
+                                                <label>First Name *</label>
                                                 <input formControlName="firstName" type="text" class="form-control" name="firstNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
                                                 <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
                                                     <div class="text-danger" *ngIf="firstName.errors.required">
@@ -71,7 +71,7 @@
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Last Name</label>
+                                                <label>Last Name *</label>
                                                 <input formControlName="lastName" type="text" class="form-control" name="lastNameOfUser" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
                                                 <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
                                                     <div class="text-danger" *ngIf="lastName.errors.required">
@@ -91,7 +91,7 @@
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Email</label>
+                                                <label>Email *</label>
                                                 <input formControlName="emailAddress" type="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required maxlength="256" email>
                                                 <div *ngIf="emailAddress.invalid && (emailAddress.dirty || emailAddress.touched)">
                                                     <div class="text-danger" *ngIf="emailAddress.errors.required">
@@ -107,7 +107,7 @@
                                     <div class="row py-0">
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Password</label>
+                                                <label>Password *</label>
                                                 <input formControlName="password" type="password" class="form-control" name="passwordOfUser" placeholder="Enter Password" value="">
                                                 <div  *ngIf="password.invalid && (password.dirty || password.touched)"
                                                     class="">
@@ -115,14 +115,26 @@
                                                     <div class="text-danger" *ngIf="password.errors.required">
                                                         Password is required.
                                                     </div>
+                                                    <div class="text-danger" *ngIf="password.errors.minlength">
+                                                        Password must be at least 8 characters long.
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Confirm Password</label>
+                                                <label>Confirm Password *</label>
                                                 <input  formControlName="confirmPassword"  class="form-control" type="password" name="passwordOfUser" placeholder="Enter Confirm Password" value="">
-                                                
+                                                <div  *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
+                                                    class="">
+
+                                                    <div class="text-danger" *ngIf="confirmPassword.errors.required">
+                                                        Confirm Password is required.
+                                                    </div>
+                                                    <div class="text-danger" *ngIf="confirmPassword.errors.minlength">
+                                                        Confirm Password must be at least 8 characters long.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -140,7 +152,7 @@
                                     <div class="row pb-1">
                                         <div class="col-xl-12">
                                             <div class="form-group">
-                                                <label>Business Name</label>
+                                                <label>Business Name *</label>
                                                 <input formControlName="businessName" type="text" class="form-control" autocomplete="off" name="businessNameOfUser" placeholder="Enter Business Name" value="" required maxlength="64">
                                                 <div *ngIf="businessName.invalid && (businessName.dirty || businessName.touched)">
                                                     <div class="text-danger" *ngIf="businessName.errors.required">
@@ -152,7 +164,7 @@
                                     </div>
                                     <div class="row pb-4">
                                         <div class="col-xl-6">
-                                            <label><span class="text-dark">Tenant Name</span></label>
+                                            <label><span class="text-dark">Tenant Name *</span></label>
                                             
                                             <div class="input-group">
                                                 <input  formControlName="tenantName" type="text" class="form-control" (focusout)="checkTenant()"autocomplete="off" name="TenantOfUser" placeholder="Enter Tenant Name" value="" required maxlength="64">
@@ -176,16 +188,16 @@
                                             <label><span class="text-dark">Website</span> (Optional)</label>
                                             <div class="input-group">
                                                 <input type="text" formControlName="website" class="form-control"autocomplete="off" name="websiteOfUser" placeholder="Enter Website" value=""maxlength="64">
-                                                <div class="input-group-append">
+                                                <!-- <div class="input-group-append">
                                                     <span class="input-group-text">.com</span>
-                                                </div>   
+                                                </div>    -->
                                             </div>
                                         </div>
                                     </div>  
                                     <div class="row">
                                         <div class="col-xl-12">
                                             <div class="form-group">
-                                                <label>Address Line 1</label>
+                                                <label>Address Line 1 *</label>
                                                 <input type="text" formControlName="addressLineOne"class="form-control" name="addressLineOneOfUser" autocomplete="off" placeholder="Enter Address" value="" required maxlength="256">
                                                 <div *ngIf="addressLineOne.invalid && (addressLineOne.dirty || addressLineOne.touched)">
                                                     <div class="text-danger" *ngIf="addressLineOne.errors.required">
@@ -196,7 +208,7 @@
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Address Line 2</label>
+                                                <label>Address Line 2 *</label>
                                                 <input type="text" formControlName="addressLineTwo"class="form-control" autocomplete="off" name="addressLineTwoOfUser" placeholder="Enter Address" value="" maxlength="256">
                                             </div>
                                         </div>
@@ -218,7 +230,7 @@
                                     <div class="row">
                                         <div class="col-xl-4">
                                             <div class="form-group">
-                                                <label>State</label>
+                                                <label>State *</label>
                                                 <select name="state" formControlName="state" class="form-control bg-white border">
                                                     <option value="Alabama">Alabama - AL</option><option value="Alaska">Alaska - AK</option><option value="Arizona">Arizona - AZ</option><option value="Arkansas">Arkansas - AR</option><option value="California">California - CA</option><option value="Colorado">Colorado - CO</option><option value="Connecticut">Connecticut - CT</option><option value="Delaware">Delaware - DE</option><option value="District of Columbia">District of Columbia - DC</option><option value="Florida">Florida - FL</option><option value="Georgia">Georgia - GA</option><option value="Hawaii">Hawaii - HI</option><option value="Idaho">Idaho - ID</option><option value="Illinois">Illinois - IL</option><option value="Indiana">Indiana - IN</option><option value="Iowa">Iowa - IA</option><option value="Kansas">Kansas - KS</option><option value="Kentucky">Kentucky - KY</option><option value="Louisiana">Louisiana - LA</option><option value="Maine">Maine - ME</option><option value="Maryland">Maryland - MD</option><option value="Massachusetts">Massachusetts - MA</option><option value="Michigan">Michigan - MI</option><option value="Minnesota">Minnesota - MN</option><option value="Mississippi">Mississippi - MS</option><option value="Missouri">Missouri - MO</option><option value="Montana">Montana - MT</option><option value="Nebraska">Nebraska - NE</option><option value="Nevada">Nevada - NV</option><option value="New Hampshire">New Hampshire - NH</option><option value="New Jersey">New Jersey - NJ</option><option value="New Mexico">New Mexico - NM</option><option value="New York">New York - NY</option><option value="North Carolina">North Carolina - NC</option><option value="North Dakota">North Dakota - ND</option><option value="Ohio">Ohio - OH</option><option value="Oklahoma">Oklahoma - OK</option><option value="Oregon">Oregon - OR</option><option value="Pennsylvania">Pennsylvania - PA</option><option value="Puerto Rico">Puerto Rico - PR</option><option value="Rhode Island">Rhode Island - RI</option><option value="South Carolina">South Carolina - SC</option><option value="South Dakota">South Dakota - SD</option><option value="Tennessee">Tennessee - TN</option><option value="Texas">Texas - TX</option><option value="Utah">Utah - UT</option><option value="Vermont">Vermont - VT</option><option value="Virginia">Virginia - VA</option><option value="Virgin Islands">Virgin Islands - VI</option><option value="Washington">Washington - WA</option><option value="West Virginia">West Virginia - WV</option><option value="Wisconsin">Wisconsin - WI</option><option value="Wyoming">Wyoming - WY</option>
                                                 </select>    
@@ -226,7 +238,7 @@
                                         </div>
                                         <div class="col-xl-4">
                                             <div class="form-group">
-                                                <label>City</label>
+                                                <label>City *</label>
                                                 <input type="text" formControlName="city" class="form-control" autocomplete="off" name="city" placeholder="Enter city name" value=""required maxlength="64">    
                                                     <div *ngIf="city.invalid && (city.dirty || city.touched)">
                                                         <div class="text-danger" *ngIf="city.errors.required">
@@ -237,7 +249,7 @@
                                         </div>
                                         <div class="col-xl-4">
                                             <div class="form-group">
-                                                <label>ZipCode</label>
+                                                <label>ZipCode *</label>
                                                 <input type="text" formControlName="zipCode" class="form-control" autocomplete="off" name="zipCodeOfUser" placeholder="xxxxx" value=""required maxlength="5">                                                
                                                 <div *ngIf="zipCode.invalid && (zipCode.dirty || zipCode.touched)">
                                                     <div class="text-danger" *ngIf="zipCode.errors.required">
@@ -295,18 +307,18 @@
                                                                 <ng-container *ngFor="let feature of editionsSelectOutput.allFeatures">
                                                                     <!--Checbox Feature-->
                                                                     <ng-container *ngIf="isTrueFalseFeature(feature)">
-                                                                        <i class="la la-check kt-font-success"
-                                                                            *ngIf="featureEnabledForEdition(feature,editionWithFeatures)"></i>
-                                                                        <i class="la la-times kt-font-dark"
-                                                                            *ngIf="!featureEnabledForEdition(feature,editionWithFeatures)"></i>
+                                                                        <!-- <i class="la la-check kt-font-success"
+                                                                            *ngIf="featureEnabledForEdition(feature,editionWithFeatures)"></i> -->
+                                                                         <!-- <i class="la la-times kt-font-dark"
+                                                                            *ngIf="!featureEnabledForEdition(feature,editionWithFeatures)"></i>  -->
                                                                     </ng-container>
-                                                                    <ng-container *ngIf="isTrueFalseFeature(feature)">{{feature.displayName}}
-                                                                    </ng-container>
+                                                                    <!-- <ng-container *ngIf="isTrueFalseFeature(feature)">{{feature.displayName}}
+                                                                    </ng-container> -->
                                                                     <!--Checbox Feature-->
                                                                     <!--Not Checbox Feature-->
-                                                                    <ng-container *ngIf="!isTrueFalseFeature(feature)">
+                                                                     <!-- <ng-container *ngIf="!isTrueFalseFeature(feature)">
                                                                         <i class="la la-check kt-font-success"></i>
-                                                                    </ng-container>
+                                                                    </ng-container>  -->
                                                                     <ng-container *ngIf="!isTrueFalseFeature(feature)">
                                                                         {{feature.displayName}}:{{getFeatureValueForEdition(feature,editionWithFeatures)}}
                                                                     </ng-container>
@@ -357,314 +369,11 @@
                                 
                         <!--end: Form Wizard Step 3-->
 
-                        <!--begin: Form Wizard Step 4-->
-                        <!-- <div class="kt-wizard-v1__content deliverybody" data-ktwizard-type="step-content" data-ktwizard-state="">
-                            <div class="kt-heading kt-heading--md">Setup Your Delivery Location</div>
-                            <div class="kt-form__section kt-form__section--first">
-                                <div class="kt-wizard-v1__form">
-                                    <div class="form-group">
-                                        <label>Address Line 1</label>
-                                        <input type="text" class="form-control" name="locaddress1" placeholder="Address Line 1" value="Address Line 1">
-                                        <span class="form-text text-muted">Please enter your Address.</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Address Line 2</label>
-                                        <input type="text" class="form-control" name="locaddress2" placeholder="Address Line 2" value="Address Line 2">
-                                        <span class="form-text text-muted">Please enter your Address.</span>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                            <div class="form-group">
-                                                <label>Postcode</label>
-                                                <input type="text" class="form-control" name="locpostcode" placeholder="Postcode" value="3072">
-                                                <span class="form-text text-muted">Please enter your Postcode.</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <div class="form-group">
-                                                <label>City</label>
-                                                <input type="text" class="form-control" name="loccity" placeholder="City" value="Preston">
-                                                <span class="form-text text-muted">Please enter your City.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                      
-                                            <div class="form-group">
-                                                <label>State</label>
-                                                <input type="text" class="form-control" name="locstate" placeholder="State" value="VIC">
-                                                <span class="form-text text-muted">Please enter your Postcode.</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <div class="form-group">
-                                            <label>Country:</label>
-                                            <select name="loccountry" class="form-control">
-                                                <option value="">Select</option>
-                                                <option value="AF">Afghanistan</option>
-                                                <option value="AX">Åland Islands</option>
-                                                <option value="AL">Albania</option>
-                                                <option value="DZ">Algeria</option>
-                                                <option value="AS">American Samoa</option>
-                                                <option value="AD">Andorra</option>
-                                                <option value="AO">Angola</option>
-                                                <option value="AI">Anguilla</option>
-                                                <option value="AQ">Antarctica</option>
-                                                <option value="AG">Antigua and Barbuda</option>
-                                                <option value="AR">Argentina</option>
-                                                <option value="AM">Armenia</option>
-                                                <option value="AW">Aruba</option>
-                                                <option value="AU" selected>Australia</option>
-                                                <option value="AT">Austria</option>
-                                                <option value="AZ">Azerbaijan</option>
-                                                <option value="BS">Bahamas</option>
-                                                <option value="BH">Bahrain</option>
-                                                <option value="BD">Bangladesh</option>
-                                                <option value="BB">Barbados</option>
-                                                <option value="BY">Belarus</option>
-                                                <option value="BE">Belgium</option>
-                                                <option value="BZ">Belize</option>
-                                                <option value="BJ">Benin</option>
-                                                <option value="BM">Bermuda</option>
-                                                <option value="BT">Bhutan</option>
-                                                <option value="BO">Bolivia, Plurinational State of</option>
-                                                <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
-                                                <option value="BA">Bosnia and Herzegovina</option>
-                                                <option value="BW">Botswana</option>
-                                                <option value="BV">Bouvet Island</option>
-                                                <option value="BR">Brazil</option>
-                                                <option value="IO">British Indian Ocean Territory</option>
-                                                <option value="BN">Brunei Darussalam</option>
-                                                <option value="BG">Bulgaria</option>
-                                                <option value="BF">Burkina Faso</option>
-                                                <option value="BI">Burundi</option>
-                                                <option value="KH">Cambodia</option>
-                                                <option value="CM">Cameroon</option>
-                                                <option value="CA">Canada</option>
-                                                <option value="CV">Cape Verde</option>
-                                                <option value="KY">Cayman Islands</option>
-                                                <option value="CF">Central African Republic</option>
-                                                <option value="TD">Chad</option>
-                                                <option value="CL">Chile</option>
-                                                <option value="CN">China</option>
-                                                <option value="CX">Christmas Island</option>
-                                                <option value="CC">Cocos (Keeling) Islands</option>
-                                                <option value="CO">Colombia</option>
-                                                <option value="KM">Comoros</option>
-                                                <option value="CG">Congo</option>
-                                                <option value="CD">Congo, the Democratic Republic of the</option>
-                                                <option value="CK">Cook Islands</option>
-                                                <option value="CR">Costa Rica</option>
-                                                <option value="CI">Côte d'Ivoire</option>
-                                                <option value="HR">Croatia</option>
-                                                <option value="CU">Cuba</option>
-                                                <option value="CW">Curaçao</option>
-                                                <option value="CY">Cyprus</option>
-                                                <option value="CZ">Czech Republic</option>
-                                                <option value="DK">Denmark</option>
-                                                <option value="DJ">Djibouti</option>
-                                                <option value="DM">Dominica</option>
-                                                <option value="DO">Dominican Republic</option>
-                                                <option value="EC">Ecuador</option>
-                                                <option value="EG">Egypt</option>
-                                                <option value="SV">El Salvador</option>
-                                                <option value="GQ">Equatorial Guinea</option>
-                                                <option value="ER">Eritrea</option>
-                                                <option value="EE">Estonia</option>
-                                                <option value="ET">Ethiopia</option>
-                                                <option value="FK">Falkland Islands (Malvinas)</option>
-                                                <option value="FO">Faroe Islands</option>
-                                                <option value="FJ">Fiji</option>
-                                                <option value="FI">Finland</option>
-                                                <option value="FR">France</option>
-                                                <option value="GF">French Guiana</option>
-                                                <option value="PF">French Polynesia</option>
-                                                <option value="TF">French Southern Territories</option>
-                                                <option value="GA">Gabon</option>
-                                                <option value="GM">Gambia</option>
-                                                <option value="GE">Georgia</option>
-                                                <option value="DE">Germany</option>
-                                                <option value="GH">Ghana</option>
-                                                <option value="GI">Gibraltar</option>
-                                                <option value="GR">Greece</option>
-                                                <option value="GL">Greenland</option>
-                                                <option value="GD">Grenada</option>
-                                                <option value="GP">Guadeloupe</option>
-                                                <option value="GU">Guam</option>
-                                                <option value="GT">Guatemala</option>
-                                                <option value="GG">Guernsey</option>
-                                                <option value="GN">Guinea</option>
-                                                <option value="GW">Guinea-Bissau</option>
-                                                <option value="GY">Guyana</option>
-                                                <option value="HT">Haiti</option>
-                                                <option value="HM">Heard Island and McDonald Islands</option>
-                                                <option value="VA">Holy See (Vatican City State)</option>
-                                                <option value="HN">Honduras</option>
-                                                <option value="HK">Hong Kong</option>
-                                                <option value="HU">Hungary</option>
-                                                <option value="IS">Iceland</option>
-                                                <option value="IN">India</option>
-                                                <option value="ID">Indonesia</option>
-                                                <option value="IR">Iran, Islamic Republic of</option>
-                                                <option value="IQ">Iraq</option>
-                                                <option value="IE">Ireland</option>
-                                                <option value="IM">Isle of Man</option>
-                                                <option value="IL">Israel</option>
-                                                <option value="IT">Italy</option>
-                                                <option value="JM">Jamaica</option>
-                                                <option value="JP">Japan</option>
-                                                <option value="JE">Jersey</option>
-                                                <option value="JO">Jordan</option>
-                                                <option value="KZ">Kazakhstan</option>
-                                                <option value="KE">Kenya</option>
-                                                <option value="KI">Kiribati</option>
-                                                <option value="KP">Korea, Democratic People's Republic of</option>
-                                                <option value="KR">Korea, Republic of</option>
-                                                <option value="KW">Kuwait</option>
-                                                <option value="KG">Kyrgyzstan</option>
-                                                <option value="LA">Lao People's Democratic Republic</option>
-                                                <option value="LV">Latvia</option>
-                                                <option value="LB">Lebanon</option>
-                                                <option value="LS">Lesotho</option>
-                                                <option value="LR">Liberia</option>
-                                                <option value="LY">Libya</option>
-                                                <option value="LI">Liechtenstein</option>
-                                                <option value="LT">Lithuania</option>
-                                                <option value="LU">Luxembourg</option>
-                                                <option value="MO">Macao</option>
-                                                <option value="MK">Macedonia, the former Yugoslav Republic of</option>
-                                                <option value="MG">Madagascar</option>
-                                                <option value="MW">Malawi</option>
-                                                <option value="MY">Malaysia</option>
-                                                <option value="MV">Maldives</option>
-                                                <option value="ML">Mali</option>
-                                                <option value="MT">Malta</option>
-                                                <option value="MH">Marshall Islands</option>
-                                                <option value="MQ">Martinique</option>
-                                                <option value="MR">Mauritania</option>
-                                                <option value="MU">Mauritius</option>
-                                                <option value="YT">Mayotte</option>
-                                                <option value="MX">Mexico</option>
-                                                <option value="FM">Micronesia, Federated States of</option>
-                                                <option value="MD">Moldova, Republic of</option>
-                                                <option value="MC">Monaco</option>
-                                                <option value="MN">Mongolia</option>
-                                                <option value="ME">Montenegro</option>
-                                                <option value="MS">Montserrat</option>
-                                                <option value="MA">Morocco</option>
-                                                <option value="MZ">Mozambique</option>
-                                                <option value="MM">Myanmar</option>
-                                                <option value="NA">Namibia</option>
-                                                <option value="NR">Nauru</option>
-                                                <option value="NP">Nepal</option>
-                                                <option value="NL">Netherlands</option>
-                                                <option value="NC">New Caledonia</option>
-                                                <option value="NZ">New Zealand</option>
-                                                <option value="NI">Nicaragua</option>
-                                                <option value="NE">Niger</option>
-                                                <option value="NG">Nigeria</option>
-                                                <option value="NU">Niue</option>
-                                                <option value="NF">Norfolk Island</option>
-                                                <option value="MP">Northern Mariana Islands</option>
-                                                <option value="NO">Norway</option>
-                                                <option value="OM">Oman</option>
-                                                <option value="PK">Pakistan</option>
-                                                <option value="PW">Palau</option>
-                                                <option value="PS">Palestinian Territory, Occupied</option>
-                                                <option value="PA">Panama</option>
-                                                <option value="PG">Papua New Guinea</option>
-                                                <option value="PY">Paraguay</option>
-                                                <option value="PE">Peru</option>
-                                                <option value="PH">Philippines</option>
-                                                <option value="PN">Pitcairn</option>
-                                                <option value="PL">Poland</option>
-                                                <option value="PT">Portugal</option>
-                                                <option value="PR">Puerto Rico</option>
-                                                <option value="QA">Qatar</option>
-                                                <option value="RE">Réunion</option>
-                                                <option value="RO">Romania</option>
-                                                <option value="RU">Russian Federation</option>
-                                                <option value="RW">Rwanda</option>
-                                                <option value="BL">Saint Barthélemy</option>
-                                                <option value="SH">Saint Helena, Ascension and Tristan da Cunha</option>
-                                                <option value="KN">Saint Kitts and Nevis</option>
-                                                <option value="LC">Saint Lucia</option>
-                                                <option value="MF">Saint Martin (French part)</option>
-                                                <option value="PM">Saint Pierre and Miquelon</option>
-                                                <option value="VC">Saint Vincent and the Grenadines</option>
-                                                <option value="WS">Samoa</option>
-                                                <option value="SM">San Marino</option>
-                                                <option value="ST">Sao Tome and Principe</option>
-                                                <option value="SA">Saudi Arabia</option>
-                                                <option value="SN">Senegal</option>
-                                                <option value="RS">Serbia</option>
-                                                <option value="SC">Seychelles</option>
-                                                <option value="SL">Sierra Leone</option>
-                                                <option value="SG">Singapore</option>
-                                                <option value="SX">Sint Maarten (Dutch part)</option>
-                                                <option value="SK">Slovakia</option>
-                                                <option value="SI">Slovenia</option>
-                                                <option value="SB">Solomon Islands</option>
-                                                <option value="SO">Somalia</option>
-                                                <option value="ZA">South Africa</option>
-                                                <option value="GS">South Georgia and the South Sandwich Islands</option>
-                                                <option value="SS">South Sudan</option>
-                                                <option value="ES">Spain</option>
-                                                <option value="LK">Sri Lanka</option>
-                                                <option value="SD">Sudan</option>
-                                                <option value="SR">Suriname</option>
-                                                <option value="SJ">Svalbard and Jan Mayen</option>
-                                                <option value="SZ">Swaziland</option>
-                                                <option value="SE">Sweden</option>
-                                                <option value="CH">Switzerland</option>
-                                                <option value="SY">Syrian Arab Republic</option>
-                                                <option value="TW">Taiwan, Province of China</option>
-                                                <option value="TJ">Tajikistan</option>
-                                                <option value="TZ">Tanzania, United Republic of</option>
-                                                <option value="TH">Thailand</option>
-                                                <option value="TL">Timor-Leste</option>
-                                                <option value="TG">Togo</option>
-                                                <option value="TK">Tokelau</option>
-                                                <option value="TO">Tonga</option>
-                                                <option value="TT">Trinidad and Tobago</option>
-                                                <option value="TN">Tunisia</option>
-                                                <option value="TR">Turkey</option>
-                                                <option value="TM">Turkmenistan</option>
-                                                <option value="TC">Turks and Caicos Islands</option>
-                                                <option value="TV">Tuvalu</option>
-                                                <option value="UG">Uganda</option>
-                                                <option value="UA">Ukraine</option>
-                                                <option value="AE">United Arab Emirates</option>
-                                                <option value="GB">United Kingdom</option>
-                                                <option value="US">United States</option>
-                                                <option value="UM">United States Minor Outlying Islands</option>
-                                                <option value="UY">Uruguay</option>
-                                                <option value="UZ">Uzbekistan</option>
-                                                <option value="VU">Vanuatu</option>
-                                                <option value="VE">Venezuela, Bolivarian Republic of</option>
-                                                <option value="VN">Viet Nam</option>
-                                                <option value="VG">Virgin Islands, British</option>
-                                                <option value="VI">Virgin Islands, U.S.</option>
-                                                <option value="WF">Wallis and Futuna</option>
-                                                <option value="EH">Western Sahara</option>
-                                                <option value="YE">Yemen</option>
-                                                <option value="ZM">Zambia</option>
-                                                <option value="ZW">Zimbabwe</option>
-                                            </select>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-                        <!--end: Form Wizard Step 4-->
-
                         <!--begin: Form Wizard Step 5-->
                         <div class="kt-wizard-v1__content reviewbody" data-ktwizard-type="step-content" data-ktwizard-state="">
                             <div class="row kt-form__section kt-form__section--first">
 
-                                <div *ngIf="!custom" class="col-xl-6 kt-wizard-v1__review">
+                                <div *ngIf="!custom" class="col-xl-12 kt-wizard-v1__review">
                                     <div class="kt-wizard-v1__review-item">
                                         <div class="kt-heading kt-wizard-v1__review-title">
                                             Personal Information
@@ -686,13 +395,13 @@
                                         
                                     </div>
                                 </div>
-                                <div *ngIf="!custom" class="col-xl-6 kt-wizard-v1__review">
+                                <!-- <div *ngIf="!custom" class="col-xl-6 kt-wizard-v1__review">
                                     <form [formGroup]="paymentDetailsForm" class="kt-wizard-v1__review-item">
                                         <div class="kt-heading kt-wizard-v1__review-title">
                                             Payment Details:
                                         </div>
                                         <div class="form-group">
-                                            <label>Card Number</label>
+                                            <label>Card Number *</label>
                                             <input type="text" formControlName="cardNumber" class="form-control" name="cardNumberOfUser" placeholder="xxxx-xxxx-xxxx-xxxx" value="" autocomplete="off" required maxlength="20">
                                             <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)">
                                                 <div class="text-danger" *ngIf="cardNumber.errors.required">
@@ -706,7 +415,7 @@
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>CVV Code</label>
+                                                    <label>CVV Code *</label>
                                                     <input type="text" formControlName="cvvCode"  class="form-control" name="CVVCodeOfUser" placeholder="xxx" value="" autocomplete="off" required maxlength="3">
                                                     <div *ngIf="cvvCode.invalid && (cvvCode.dirty || cvvCode.touched)">
                                                         <div class="text-danger" *ngIf="cvvCode.errors.required">
@@ -720,8 +429,9 @@
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>Expiry Date</label>
-                                                    <input  bsDatepicker formControlName="expiryDate" class="form-control" name="expiryDateOfUser" placeholder="Select Date" bsDatepicker autocomplete="off" required>
+                                                    <label>Expiry Date *</label>
+                                                    <input  bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                    (onShown)="onOpenCalendar($event)" formControlName="expiryDate" class="form-control" name="expiryDateOfUser" placeholder="Select Date" bsDatepicker autocomplete="off" required>
                                                     <div *ngIf="expiryDate.invalid && (expiryDate.dirty || expiryDate.touched)">
                                                         <div class="text-danger" *ngIf="expiryDate.errors.required">
                                                             Date is required.
@@ -733,7 +443,7 @@
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>Email</label>
+                                                    <label>Email *</label>
                                                     <input type="email" formControlName="email" class="form-control" name="emailOfUser" placeholder="Enter Email" value="" autocomplete="off" required maxlength="64">
                                                     <div *ngIf="email.invalid && (email.dirty || email.touched)">
                                                         <div class="text-danger" *ngIf="email.errors.required">
@@ -747,7 +457,7 @@
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="form-group">
-                                                    <label>Commitment</label>
+                                                    <label>Commitment *</label>
                                                     <select name="Commitment" formControlName="commitment"class="form-control bg-white border">
                                                         <option value="30">Monthly Plan</option>
                                                         <option value="265">Annual Plan</option>
@@ -756,7 +466,7 @@
                                             </div>
                                         </div>
                                     </form>
-                                </div>       
+                                </div>        -->
                                 <form [formGroup]="contactUsForm" class="col-lg-6 kt-wizard-v1__review" *ngIf="custom">
                                     <h5 class="kt-portlet__head-title">
                                             <span>Contact Us</span>
@@ -764,7 +474,7 @@
                                     <div class="row py-4">
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Full Name</label>
+                                                <label>Full Name *</label>
                                                   <input  type="text" class="form-control" formControlName="fullName" name="firstName" placeholder="Enter Name" value="" autocomplete="off" required maxlength="64">
                                                   <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched)">
                                                     <div class="text-danger" *ngIf="fullName.errors.required">
@@ -775,7 +485,7 @@
                                         </div>
                                        <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Email</label>
+                                                <label>Email *</label>
                                                 <input  type="text" class="form-control" formControlName="contactEmail" name="emailAddress" placeholder="Enter Email" value="" autocomplete="off" required maxlength="64">
                                                 <div *ngIf="contactEmail.invalid && (contactEmail.dirty || contactEmail.touched)">
                                                     <div class="text-danger" *ngIf="contactEmail.errors.required">
@@ -791,7 +501,7 @@
                                     <div class="row">
                                         <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>Company Name</label>
+                                                <label>Company Name *</label>
                                                 <input  type="text" class="form-control" formControlName="companyName" name="companyName" placeholder="Enter Company Name" value="" autocomplete="off" required maxlength="64">                                    
                                                 <div *ngIf="companyName.invalid && (companyName.dirty || companyName.touched)">
                                                     <div class="text-danger" *ngIf="companyName.errors.required">
@@ -802,7 +512,7 @@
                                         </div>
                                          <div class="col-xl-6">
                                             <div class="form-group">
-                                                <label>No. of Users</label>
+                                                <label>No. of Users *</label>
                                                 <input  type="text" class="form-control" formControlName="numberOfUsers" name="noOfUsers" placeholder="Enter No Of Users" value="" autocomplete="off" required maxlength="64">
                                                 <div *ngIf="numberOfUsers.invalid && (numberOfUsers.dirty || numberOfUsers.touched)">
                                                     <div class="text-danger" *ngIf="numberOfUsers.errors.required">

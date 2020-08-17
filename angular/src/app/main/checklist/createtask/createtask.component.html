@@ -42,16 +42,19 @@
                 
                 <div class="kt-portlet__body">
                     <form #taskForm="ngForm" id="taskform" >
-                    <div class="row pb-0">
+                    <div class="row pb-0 form-group" > 
                         <div class="col-md-7 pb-0">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <app-categorie-drop-down category = {{categoryTitle}}></app-categorie-drop-down>   
+                            <div class="row form-group">
+                                <div class="col-md-6 fixHeight">
+                                        <app-categorie-drop-down category = {{categoryTitle}} (focusout)="changeValidation()"></app-categorie-drop-down>
+                                    
+                                    <span class="form-control-feedback pt-0"
+                                        >{{TaskCategory}}</span>   
                                 </div>
                                 
-                                <div class="col-md-6" style="height: 50px !important;">
-                                    <div class="form-group">
-                                        <label for="dateOfBirth">{{"ClosingMonth" | localize}}</label>
+                                <div class="col-md-6 fixHeight">
+                                    <div class="">
+                                        <label for="dateOfBirth">{{"ClosingMonth" | localize}} *</label>
                                         <div class="month-calender">
                                             <form class="input-arrow">
                                                 <input [(ngModel)]="checklist.closingMonth" (focusout)="checkMonth()" (ngModelChange)="loadDaysByMonth($event)" required="required"
@@ -62,34 +65,41 @@
                                                     (onShown)="onOpenCalendar($event)">
                                             </form>
                                         </div>
+                                        <span *ngIf="monthStatus"class="form-control-feedback">
+                                            {{TaskDate}}
+                                        </span>  
                                         <span class="form-control-feedback"
                                         *ngIf="!monthStatus">{{"ThisMonthIsNotActive" | localize}}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="taskName"> {{"Task Name" | localize}} </label>
-                                        <input type="text" class="form-control" required  name="taskName" id="taskName" placeholder="Enter Task Name"
+                            <div class="row form-group" >
+                                <div class="col-md-6 fixHeight" >
+                                    <div class="">
+                                        <label for="taskName"> {{"Task Name" | localize}} *</label>
+                                        <input type="text" class="form-control" required  name="taskName" (focusout)="changeValidation()" id="taskName" placeholder="Enter Task Name"
                                         autocomplete="off" [(ngModel)]="checklist.taskName">
+                                        <span class="form-control-feedback"
+                                        >{{TaskName}}</span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>{{"Assignee" | localize}}</label>
-                                        <app-user-list-component comingChangeReguest="" userId={{checklist.assigneeId}}>
+                                <div class="col-md-6 fixHeight">
+                                    <div class="">
+                                        <label>{{"Assignee" | localize}} *</label>
+                                        <app-user-list-component comingChangeReguest="ClosingCheckList" (focusout)="changeValidation()" (callBack)="changeAssignee()" userId={{checklist.assigneeId}}>
                                         </app-user-list-component>
+                                        <span class="form-control-feedback"
+                                        >{{TaskAssignee}}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5 pb-0">
-                            <div class="row">
+                            <div class="row ">
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>{{"Frequency" | localize}}</label>
-                                        <select class="bg-white border form-control input-medium" required id="frequency" name="frequency"
+                                    <div class="" style="height: 91px;">
+                                        <label>{{"Frequency" | localize}} *</label>
+                                        <select class="bg-white border form-control input-medium" (focusout)="changeValidation()" required id="frequency" name="frequency"
                                             [(ngModel)]="checklist.frequency"
                                             (change)="onChange($event.target.value)">
                                             <option [ngValue]="undefined" hidden>{{"Criteria" | localize}}</option>
@@ -99,9 +109,23 @@
                                             <option value="3">{{"Annually" | localize}}</option>
                                             <option value="4">{{"EveryXNumberOfMonths" | localize}} </option>
                                         </select>
+                                        <span class="form-control-feedback"
+                                        >{{TaskFrequency}}</span>
                                     </div>
-                                    <div class="form-group dueOn">
-                                        <label>{{"Dueon" | localize}}</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="" style="height: 91px;">
+                                        <label>{{"NoofMonths" | localize}}</label>
+                                        <input type="text" name="noOfMonths" [disabled]="enableValue == false"
+                                            placeholder="Enter Number" class="form-control bsDatepicker" autocomplete="off"
+                                            [(ngModel)]="checklist.noOfMonths">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-md-4">
+                                    <div class=" dueOn">
+                                        <label>{{"Dueon" | localize}} *</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
@@ -112,48 +136,36 @@
                                                 </span>
                                             </div>
                                             <select class="border border-default bg-white form-control input-medium"
-                                            (change)="onDayChange()" name="dueOn" [(ngModel)]="checklist.dueOn">
+                                            (change)="onDayChange()" name="dueOn"(focusout)="changeValidation()" [(ngModel)]="checklist.dueOn">
                                             <option *ngFor="let item of days;" [value]="item.value">
                                                 {{item.name}}
                                             </option>
                                         </select>
                                         </div>
-                                    </div>
-                                    <div class="row"  *ngIf="SelectionMsg != null">
-                                        <div class="col-12">
-                                            <span>{{SelectionMsg}}</span>
-                                        </div>
+                                        
+                                        <span class="form-control-feedback"
+                                        >{{TaskDueon}}</span>
                                     </div>
                                 </div>
+                                
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>{{"NoofMonths" | localize}}</label>
-                                        <input type="text" name="noOfMonths" [disabled]="enableValue == false"
-                                            placeholder="Enter Number" class="form-control bsDatepicker" autocomplete="off"
-                                            [(ngModel)]="checklist.noOfMonths">
-                                    </div>
-                                    <div class="form-group">
+                                    <div class="">
                                         <label>&nbsp;&nbsp;</label>
                                         <select class="bg-white border form-control input-medium"
-                                            (change)="onDaysClick($event.target.value)" [(ngModel)]="daysBeforeAfter" name="daysBeforeAfter">
+                                            (change)="onDaysClick($event.target.value)" [(ngModel)]="daysBeforeAfter" (focusout)="changeValidation()" name="daysBeforeAfter">
                                             <option [value]=1 >{{"None" | localize}}</option>
                                             <option [value]=2>{{"DaysBefore" | localize}}</option>
                                             <option [value]=3>{{"DaysAfter" | localize}}</option>
                                         </select>
+                                        <div *ngIf="SelectionMsg != null">
+                                            <div >
+                                                <span>{{SelectionMsg}}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <!-- <div class="form-group">
-                                        <label>{{"Endson" | localize}}</label>
-                                        <form class="input-arrow">
-                                            <input [disabled]="checklist.frequency==5" [(ngModel)]="checklist.endsOn" required="required"
-                                                autocomplete="off" class="form-control" name="date" bsDatepicker
-                                                placeholder="Month"
-                                                [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                                (onShown)="onOpenCalendar($event)">
-                                        </form>
-                                    </div> -->
-                                    <div class="kt-radio-list eom-radio form-group">
+                                    <div class="kt-radio-list" style="margin-top: 33px;">
                                         <span></span>
                                         <label class="kt-radio kt-radio--brand" name="radio5">
                                             <input type="radio" [(checked)]="checklist.endOfMonth" name="endOfMonth"
@@ -166,7 +178,7 @@
                         </div>
                     </div>
                     </form>
-                    <div class="row">
+                    <div class="row" style="margin-top: -15px;">
                         <div class="col-md-7">
                             <div class="row">
                                 <div class="col-md-12">
@@ -303,7 +315,7 @@
                     <div class="kt-portlet__head">
                     </div>
                     <div class="btn-create">
-                        <button class="btn btn-brand btn-width" (click)="onCreateTask()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" [disabled]="taskForm.form.invalid || !monthStatus">
+                        <button class="btn btn-brand btn-width" (click)="onCreateTask()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                             <i class="fa fa-save"></i>
                             <span>{{"Create" | localize}}</span>
                         </button>

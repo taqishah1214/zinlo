@@ -17,6 +17,12 @@ import { StoreDateService } from "../../../../services/storedate.service";
   styleUrls: ['./create-edit-accounts.component.css']
 })
 export class CreateEditAccountsComponent extends AppComponentBase implements OnInit  {
+  AccountName:string
+  AccountNumber:string
+  AccountType:string
+  ReconcilationTYpe:string
+  AccountAssignee:string
+  AccountSubType:string
   check:boolean=false;
   saving = false;
   users: any;
@@ -108,14 +114,17 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   editAccount() : void {
     this.editAccountCheck = true;
     this._chartOfAccountService.getAccountForEdit( this.accountId).subscribe(result => {
-
       if (result.reconciledId == 3 || result.reconciledId == 2){
-        this.linkAccountNumber = result.linkedAccount;
-        if (this.linkAccountNumber != "")
+        if (result.linkedAccount)
         {
+          this.linkAccountNumber = result.linkedAccount;
           this.linkAccountCheck =  true;
         }
+        else if (result.reconciledId == 2) {
+          this.reconcilliationMessage = true
+        }
       }
+  
 
       this.accountDto.creatorUserId = result.creatorUserId; 
       if(history.state.data.userId){
@@ -214,8 +223,35 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   accountSubTypeClick(id, name): void {
     this.accountSubTypeName = name;
     this.accountDto.accountSubTypeId = id;
+    this.AccountSubType=null
   }
+  changeValidation(){
+    if(this.accountDto.accountName != null)
+     {
+      this.AccountName=null
+     }
+    if (this.accountDto.accountNumber != null)
+     {
+      this.AccountNumber=null
+     }
+    if (this.accountDto.accountType != null)
+     {
+      this.AccountType=null
+     } 
+     if (this.accountDto.accountSubTypeId != null)
+     {
+      this.AccountSubType=null
 
+     }if (this.accountDto.reconciliationType != null)
+     {
+      this.ReconcilationTYpe=null
+     }
+      if (this.selectedUserID!=undefined)
+     {
+      this.AccountAssignee=null
+     }
+
+  }
   reconcillationClick(id, name): void {
     this.reconcillationType = name;
     this.accountDto.reconciliationType = id;
@@ -227,17 +263,22 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
       this.reconciledBox = false
       this.accountDto.reconciled = 0;
     }
+    this.ReconcilationTYpe=null
   }
   accountTypeClick(id, name): void {
     
     this.accountType = name;
     this.accountDto.accountType = id;
+    this.AccountType=null
   }
   recociledClick(id , name) : void {
     this.recociled = name;
     this.accountDto.reconciled = id;
-    if (id == 2 || id == 3){
+    if (id == 2){
       this.reconcilliationMessage = true;
+    }
+    else{
+      this.reconcilliationMessage = false;
     }
   }
 
@@ -294,49 +335,47 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   validationCheck() {
+    let found=0
     if(this.accountDto.accountName == null)
      {
-      this.notify.error("Select the Account Name")
-      return false;
+      this.AccountName="Account Name is required"
+      found=1
      }
-     else if (this.accountDto.accountNumber == null)
+    if (this.accountDto.accountNumber == null)
      {
-      this.notify.error("Select the Account Number")
-      return false;
+      this.AccountNumber="Account Number is required"
+      found=1
      }
-     else if (this.accountDto.accountType == null)
+    if (this.accountDto.accountType == null)
      {
-      this.notify.error("Select the Account Type")
-      return false;
-     }
-     else if (this.accountDto.accountSubTypeId == null)
+      this.AccountType="Select the Account Type"
+      found=1
+     } if (this.accountDto.accountSubTypeId == null)
      {
-      this.notify.error("Select the Account SubType")
-      return false;
+      this.AccountSubType="Select the Account SubType"
+      found=1
 
-     }
-     else if (this.accountDto.reconciliationType == null)
+     }if (this.accountDto.reconciliationType == null)
      {
-      this.notify.error("Select the ReconciliationType")
-      return false;
+      this.ReconcilationTYpe="Select the ReconciliationType"
+      found=1
      }
-     else if (this.isAccountExist)
+      if (this.selectedUserId.selectedUserId ==undefined)
      {
-      this.notify.error("Account Number already exists")
-      return false;
+      this.AccountAssignee="Select an Assignee"
+      found=1
      }
-     else if (this.selectedUserID==undefined)
-     {
-      this.notify.error("Select an Assignee")
-      return false;
-     }
-     return true;
+     if(found==0){
+      return true;
+    }
+    return false
   }
 
   CheckAccountNumber() : void {
     this._chartOfAccountService.checkAccountNumber(this.accountDto.accountNumber).subscribe(response => {
       this.isAccountExist = response
     })
+    this.AccountNumber=null
   }
 
   createAccount():void {

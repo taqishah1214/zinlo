@@ -21,55 +21,55 @@ namespace Zinlo.Features
                 IsVisibleOnPricingTable = true
             };
 
-            #region ######## Example Features - You can delete them #########
+            //#region ######## Example Features - You can delete them #########
 
-            context.Create("TestTenantScopeFeature", "false", L("TestTenantScopeFeature"), scope: FeatureScopes.Tenant);
-            context.Create("TestEditionScopeFeature", "false", L("TestEditionScopeFeature"), scope: FeatureScopes.Edition);
+            //context.Create("TestTenantScopeFeature", "false", L("TestTenantScopeFeature"), scope: FeatureScopes.Tenant);
+            //context.Create("TestEditionScopeFeature", "false", L("TestEditionScopeFeature"), scope: FeatureScopes.Edition);
 
-            context.Create(
-                AppFeatures.TestCheckFeature,
-                defaultValue: "false",
-                displayName: L("TestCheckFeature"),
-                inputType: new CheckboxInputType()
-            )[FeatureMetadata.CustomFeatureKey] = new FeatureMetadata
-            {
-                IsVisibleOnPricingTable = true,
-                TextHtmlColor = value => value == "true" ? "#5cb85c" : "#d9534f"
-            };
+            //context.Create(
+            //    AppFeatures.TestCheckFeature,
+            //    defaultValue: "false",
+            //    displayName: L("TestCheckFeature"),
+            //    inputType: new CheckboxInputType()
+            //)[FeatureMetadata.CustomFeatureKey] = new FeatureMetadata
+            //{
+            //    IsVisibleOnPricingTable = true,
+            //    TextHtmlColor = value => value == "true" ? "#5cb85c" : "#d9534f"
+            //};
 
-            context.Create(
-                AppFeatures.TestCheckFeature2,
-                defaultValue: "true",
-                displayName: L("TestCheckFeature2"),
-                inputType: new CheckboxInputType()
-            )[FeatureMetadata.CustomFeatureKey] = new FeatureMetadata
-            {
-                IsVisibleOnPricingTable = true,
-                TextHtmlColor = value => value == "true" ? "#5cb85c" : "#d9534f"
-            };
+            //context.Create(
+            //    AppFeatures.TestCheckFeature2,
+            //    defaultValue: "true",
+            //    displayName: L("TestCheckFeature2"),
+            //    inputType: new CheckboxInputType()
+            //)[FeatureMetadata.CustomFeatureKey] = new FeatureMetadata
+            //{
+            //    IsVisibleOnPricingTable = true,
+            //    TextHtmlColor = value => value == "true" ? "#5cb85c" : "#d9534f"
+            //};
 
-            #endregion
+            //#endregion
 
-            var chatFeature = context.Create(
-                AppFeatures.ChatFeature,
-                defaultValue: "false",
-                displayName: L("ChatFeature"),
-                inputType: new CheckboxInputType()
-            );
+            //var chatFeature = context.Create(
+            //    AppFeatures.ChatFeature,
+            //    defaultValue: "false",
+            //    displayName: L("ChatFeature"),
+            //    inputType: new CheckboxInputType()
+            //);
 
-            chatFeature.CreateChildFeature(
-                AppFeatures.TenantToTenantChatFeature,
-                defaultValue: "false",
-                displayName: L("TenantToTenantChatFeature"),
-                inputType: new CheckboxInputType()
-            );
+            //chatFeature.CreateChildFeature(
+            //    AppFeatures.TenantToTenantChatFeature,
+            //    defaultValue: "false",
+            //    displayName: L("TenantToTenantChatFeature"),
+            //    inputType: new CheckboxInputType()
+            //);
 
-            chatFeature.CreateChildFeature(
-                AppFeatures.TenantToHostChatFeature,
-                defaultValue: "false",
-                displayName: L("TenantToHostChatFeature"),
-                inputType: new CheckboxInputType()
-            );
+            //chatFeature.CreateChildFeature(
+            //    AppFeatures.TenantToHostChatFeature,
+            //    defaultValue: "false",
+            //    displayName: L("TenantToHostChatFeature"),
+            //    inputType: new CheckboxInputType()
+            //);
         }
 
         private static ILocalizableString L(string name)

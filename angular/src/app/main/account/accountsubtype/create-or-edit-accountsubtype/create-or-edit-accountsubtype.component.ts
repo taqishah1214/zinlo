@@ -14,6 +14,7 @@ import { StoreDateService } from '../../../../services/storedate.service';
 export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implements OnInit {
   accountsSubType : CreateOrEditAccountSubTypeDto = new CreateOrEditAccountSubTypeDto()
   accountSubTypeId : number;
+  AccountTitle:string
   accountSubTypeList :any = []
   accountSubtypeExist : boolean = false
   saving = false;
@@ -35,21 +36,30 @@ export class CreateOrEditAccountsubtypeComponent extends AppComponentBase implem
     this.accountSubTypeServiceProxy.isAccountSubTypeExist(this.accountsSubType.title).subscribe(resp => {
       this.accountSubtypeExist = resp
     })
+    this.AccountTitle=null
     
   }
-
+  validateAccountSubType(){
+    if(this.accountsSubType.title==undefined){
+      this.AccountTitle="Title is required"
+      return false
+    }
+    return true
+  }
   onSubmit() : void {
-    this.saving = true;  
-   this.accountSubTypeServiceProxy.createOrEdit(this.accountsSubType).pipe(finalize(() => {})).subscribe(result => {
-    this.notify.success(this.l('SavedSuccessfully'));
-    this.accountSubTypeServiceProxy.accountSubTypeDropDown().subscribe(result => { 
-      this.accountSubTypeList = result
-      this.storeData.setAccountSubTypeList(this.accountSubTypeList)
-  })  
-  this.saving = false;
-    this.redirect(this.accountsSubType.title,result);
-    
-   })
+  if(this.validateAccountSubType()){
+      this.saving = true;  
+      this.accountSubTypeServiceProxy.createOrEdit(this.accountsSubType).pipe(finalize(() => {})).subscribe(result => {
+        this.notify.success(this.l('SavedSuccessfully'));
+        this.accountSubTypeServiceProxy.accountSubTypeDropDown().subscribe(result => { 
+          this.accountSubTypeList = result
+          this.storeData.setAccountSubTypeList(this.accountSubTypeList)
+      })  
+      this.saving = false;
+        this.redirect(this.accountsSubType.title,result);
+        
+      })
+    }
   }
   redirectToSubAccountsList () : void {
     this.redirect('','')

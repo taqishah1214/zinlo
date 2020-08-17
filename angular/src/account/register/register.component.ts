@@ -89,8 +89,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this.personalInfoForm = new FormGroup({
             firstName: new FormControl('',[Validators.required]),
             lastName: new FormControl('',[Validators.required]),
-            password:new FormControl('',[Validators.required]),
-            confirmPassword:new FormControl(''),
+            password:new FormControl('',[Validators.required,Validators.minLength(8)]),
+            confirmPassword:new FormControl('',[Validators.required,Validators.minLength(8)]),
             emailAddress: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]),
             title: new FormControl('')
         })
@@ -126,7 +126,12 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this._tenantRegistrationService.getEditionsForSelect()
             .subscribe((result) => {
                 this.editionsSelectOutput = result;
-
+                console.log(this.editionsSelectOutput.editionsWithFeatures);
+                this.editionsSelectOutput.editionsWithFeatures.slice().reverse()
+                .forEach(function(item) {
+                    });
+                    
+                console.log(this.editionsSelectOutput.editionsWithFeatures.reverse());
                 if (!this.editionsSelectOutput.editionsWithFeatures || this.editionsSelectOutput.editionsWithFeatures.length <= 0) {
                    // this._router.navigate(['/account/register-tenant']);
                 }
@@ -150,6 +155,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     get emailAddress() { return this.personalInfoForm.get('emailAddress'); }
     get title() { return this.personalInfoForm.get('title'); }
     get password() { return this.personalInfoForm.get('password'); }
+    get confirmPassword() { return this.personalInfoForm.get('confirmPassword'); }
     get tenantName() { return this.businessInfoForm.get('tenantName'); }
     get businessName() { return this.businessInfoForm.get('businessName'); }
     get zipCode() { return this.businessInfoForm.get('zipCode'); }
@@ -331,8 +337,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     }
     save() {
         if(!this.custom){
-            if(this.paymentInfoValidations())
-            {
                 this.paymentDetailsDto.cardNumber=this.paymentDetailsForm.value.cardNumber
                 this.paymentDetailsDto.cvvCode=this.paymentDetailsForm.value.cvvCode
                 this.paymentDetailsDto.commitment=this.paymentDetailsForm.value.commitment
@@ -377,7 +381,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                             this._router.navigate(['account/register-tenant-result']);
                         }
                     });
-            }
+            
 
         }
         else{

@@ -20,30 +20,34 @@
                     <form (ngSubmit)="onSubmit()">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="TaskName">{{"Account Name" | localize}}</label>
+                                <div class="row form-group">
+                                    <div class="col-md-6" >
+                                        <div class="" style="height: 70px !important;">
+                                            <label for="TaskName">{{"Account Name" | localize}} *</label>
                                             <input type="text" name="accountName" class="form-control"
-                                                [(ngModel)]="accountDto.accountName" autocomplete="off">
+                                                [(ngModel)]="accountDto.accountName" (focusout)="changeValidation()" autocomplete="off">
+                                                <span class="form-control-feedback pb-0 mb-0"
+                                                >{{AccountName}}</span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="TaskName"> {{"Account No" | localize}}.</label>
+                                        <div class=""  style="height: 70px !important;">
+                                            <label for="TaskName"> {{"Account No" | localize}}. *</label>
                                             <input type="text" name="accountNumber" (focusout)="CheckAccountNumber()"
                                                 class="form-control" [(ngModel)]="accountDto.accountNumber"
                                                 autocomplete="off">
                                             <span style="color:red"
                                                 *ngIf="isAccountExist">{{"AccountNumberExist" | localize}}</span>
+                                                <span *ngIf="!isAccountExist"class="form-control-feedback"
+                                                >{{AccountNumber}}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row form-group ">
                                     <div class="col-md-6">
 
-                                        <div class="form-group category-selector">
-                                            <label for="TaskName">{{"Account Type" | localize}}</label>
+                                        <div class="category-selector" style="height: 70px !important;">
+                                            <label for="TaskName">{{"Account Type" | localize}} *</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{accountType}}</button>
@@ -54,11 +58,13 @@
                                                     {{item.name}}
                                                 </a>
                                             </div>
+                                            <span class="form-control-feedback"
+                                            >{{AccountType}}</span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group category-selector">
-                                            <label for="TaskName">{{"Account Sub-Type" | localize}}</label>
+                                        <div class="category-selector" style="height: 70px !important;">
+                                            <label for="TaskName">{{"Account Sub-Type" | localize}} *</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{accountSubTypeName}}</button>
@@ -72,19 +78,23 @@
                                                     (click)="routeToAddNewAccountSubType()"><i class="fa fa-plus"></i>
                                                     {{"AddNew" | localize}}</a>
                                             </div>
+                                            <span class="form-control-feedback"
+                                            >{{AccountSubType}}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label>{{"Assignee" | localize}}</label>
-                                        <app-user-list-component comingChangeReguest="" userId={{selectedUserID}}>
+                                <div class="row form-group">
+                                    <div class="col-md-6 "style="height: 70px !important;">
+                                        <label>{{"Assignee" | localize}} *</label>
+                                        <app-user-list-component comingChangeReguest="" (focusout)="changeValidation()"userId={{selectedUserID}}>
                                         </app-user-list-component>
+                                        <span class="form-control-feedback"
+                                        >{{AccountAssignee}}</span>
                                     </div>
                                     <div class="col-md-6">
 
-                                        <div class="form-group category-selector">
-                                            <label for="TaskName">{{"Reconciliation Type" | localize}}</label>
+                                        <div class=" category-selector" style="height: 70px !important;">
+                                            <label for="TaskName">{{"Reconciliation Type" | localize}} *</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{reconcillationType}}</button>
@@ -94,6 +104,8 @@
                                                     (click)="reconcillationClick(item.id,item.name)">
                                                     {{item.name}}</a>
                                             </div>
+                                            <span class="form-control-feedback"
+                                            >{{ReconcilationTYpe}}</span>
                                         </div>
 
                                     </div>
@@ -102,7 +114,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div *ngIf="reconciledBox" class="form-group category-selector">
-                                            <label for="TaskName">{{"Reconciled As" | localize}}</label>
+                                            <label for="TaskName">{{"Reconciled As" | localize}} *</label>
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">{{recociled}}</button>
@@ -115,7 +127,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <label *ngIf="reconcilliationMessage" >Setting of linked account is done in the Accrued Amount account</label>
                                     </div>
 
                                     <div class="col-md-6">
@@ -128,7 +139,11 @@
 
                                 </div>
 
-
+                                <div *ngIf="reconcilliationMessage" class="row">
+                                    <div class="col-md-6">
+                                        <label>Setting of linked account is done in the Accrued Amount account</label>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>

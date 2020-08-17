@@ -113,8 +113,12 @@
 
                             <div class="row" *ngIf="taskDetailObject.instructionBody != null">
                                 <div class="col-md-12">
-
-                                    <div class="custom-text-area" innerHTML="{{taskDetailObject.instructionBody}} "></div>
+                                        <nav class="nav">
+                                            <div class="kt-widget3__body show-comments-inner">
+                                                <p class="kt-widget3__text commentViewBox" innerHTML="{{taskDetailObject.instructionBody}}">
+                                                </p>
+                                            </div>
+                                        </nav>
                                 </div>
                             </div>
                         </div>

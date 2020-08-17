@@ -228,29 +228,78 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
       this.redirectToAmortizedList();
     }) 
   }
-
+  changeValidation(){
+    if(this.amortizationDto.startDate != null)
+     {
+      this.StartDate=null
+     }
+     if(this.amortizationDto.endDate != null)
+     {
+      this.EndDate=null
+    }
+     if(this.amortizationDto.amount != null)
+     {
+      this.Amount=null
+     }
+     if(this.accumulateAmount){
+      if(this.amortizationDto.accomulateAmount != null)
+      {
+        this.AccAmount=null
+      }
+     }
+     if(this.amortizationDto.inoviceNo != null)
+     {
+      this.InvoiceNumber=null
+     }
+     if(this.amortizationDto.journalEntryNo != null)
+     {
+      this.EntryNo=null
+     }
+  }
+  StartDate:string
+  EndDate:string
+  Amount:string
+  AccAmount:string
+  InvoiceNumber:string
+  EntryNo:string
   validationCheck() {
+    let found=0
      if(this.amortizationDto.startDate == null)
      {
-      this.notify.error("Select the Start Date")
-      return false;
+      this.StartDate="Select the Start Date"
+      found=1
      }
-     else if(this.amortizationDto.endDate == null)
+     if(this.amortizationDto.endDate == null)
      {
-      this.notify.error("Select the End Date")
-      return false;
+      this.EndDate="Select the End Date"
+      found=1
      }
-     else if(this.amortizationDto.amount == null)
+     if(this.amortizationDto.amount == null)
      {
-      this.notify.error("Select the Amount")
-      return false;
+      this.Amount="Select the Amount"
+      found=1
      }
-     else if(this.amortizationDto.accomulateAmount == null)
+     if(this.accumulateAmount){
+      if(this.amortizationDto.accomulateAmount == null)
+      {
+        this.AccAmount="Select the Accomulate Amount"
+        found=1
+      }
+    }
+     if(this.amortizationDto.inoviceNo == null)
      {
-      this.notify.error("Select the Accomulate Amount")
-      return false;
+      this.InvoiceNumber="Invoice No is required"
+      found=1
      }
-     return true;
+     if(this.amortizationDto.journalEntryNo == null)
+     {
+      this.EntryNo="Entry No is required"
+      found=1
+     }
+     if(found==0){
+      return true;
+      }
+      return false;
     }
   fileUploadedResponse(value): void {
     var response = value.successful
@@ -261,13 +310,7 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
   }
 
   redirectToAmortizedList () : void {
-    if (this.amortrizedItemId != 0)
-      {
-        this.RedirectToDetails(this.amortrizedItemId,this.accuredAmount,this.netAmount)
-      }
-      else{
         this._router.navigate(['/app/main/reconciliation/amortized'],{ state: { data: { accountId :this.accountId , accountName :this.accountName ,accountNo: this.accountNo, selectedDate : this.selectedDate,linkedAccountNo: history.state.data.linkedAccountNo , linkedAccountName : history.state.data.linkedAccountName}} });
-      } 
   }
   settings: UppyConfig = {
     uploadAPI: {
