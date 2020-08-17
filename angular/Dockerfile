@@ -1,4 +1,4 @@
-FROM node:13 as Builder
+FROM node:13-alpine as Builder
 
 ARG APP_API_URL
 ENV APP_API_URL $APP_API_URL
@@ -7,11 +7,11 @@ WORKDIR /app/
 
 COPY package*.json ./
 
-RUN npm install
+RUN yarn install
 
 COPY . .
 
-RUN npm run publish
+RUN yarn run publish
 
 ######################################################################
 FROM nginx:alpine
