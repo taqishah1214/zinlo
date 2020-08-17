@@ -103,18 +103,18 @@
                                         <td>
                                             <span class="ui-column-title">{{'Price' | localize}}</span>
                                             <span
-                                                *ngIf="record.dailyPrice || record.weeklyPrice || record.monthlyPrice || record.annualPrice">
-                                                {{appSession.application.currencySign}}{{record.dailyPrice}}
+                                                *ngIf=" record.monthlyPrice || record.annualPrice">
+                                                <!-- {{appSession.application.currencySign}}{{record.dailyPrice}}
                                                 {{"Daily" | localize }} /
                                                 {{appSession.application.currencySign}}{{record.weeklyPrice}}
-                                                {{"Weekly" | localize }} /
+                                                {{"Weekly" | localize }} / -->
                                                 {{appSession.application.currencySign}}{{record.monthlyPrice}}
                                                 {{"Monthly" | localize }} /
                                                 {{appSession.application.currencySign}}{{record.annualPrice}}
                                                 {{"Annual" | localize }}
                                             </span>
                                             <span
-                                                *ngIf="!record.dailyPrice && !record.weeklyPrice && !record.monthlyPrice && !record.annualPrice">
+                                                *ngIf="!record.monthlyPrice && !record.annualPrice">
                                                 Custom 
                                             </span>
                                         </td>

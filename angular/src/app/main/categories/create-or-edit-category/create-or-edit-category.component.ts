@@ -23,6 +23,7 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
   redirectPath: any;
   categoriesList :any = []
   isCategoryExist:boolean = false;
+  CategoryTitle:string
   constructor(private _router: Router,
     private _categoriesServiceProxy: CategoriesServiceProxy,
     injector: Injector,
@@ -61,8 +62,17 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
   BackToCategoriesList(): void {
     this.backToRoute("",0);
   }
-
+  validateCategory(){
+    if(this.categoryobj.title==undefined){
+        this.CategoryTitle="Title is required"
+        return false
+    }
+    return true
+  }
   onSubmit(): void {
+    if(!this.validateCategory()){
+        return 
+    }
     if (this.isCategoryExist == false) {
       this.saving = true;
       this._categoriesServiceProxy.createOrEdit(this.categoryobj)
@@ -89,6 +99,8 @@ export class CreateOrEditCategoryComponent extends AppComponentBase implements O
         this.isCategoryExist = result;
       });
     }
+    
+    this.CategoryTitle=null
   
   }
 }

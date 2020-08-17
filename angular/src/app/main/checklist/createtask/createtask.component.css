@@ -1,5 +1,5 @@
 .eom-radio {
-    margin-top: 125px;
+    margin-top: 50px;
 }
 .form-group{
     position: relative;
@@ -12,6 +12,9 @@
     width: 180px;
     height: 170px;
     overflow: auto;
+}
+.fixHeight{
+    height: 65px !important;
 }
 .drag_drop_box {
     margin-top: -50px;

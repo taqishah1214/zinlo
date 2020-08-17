@@ -25,12 +25,20 @@ namespace Zinlo.Authorization.Users.InviteUsers
         [AbpAuthorize(AppPermissions.Pages_Administration_Users_Edit)]
         public async Task Create(CreateOrUpdateInviteUser input)
         {
-            var user=ObjectMapper.Map<InviteUser>(input);
-           user.TenantId= AbpSession.TenantId.Value;
-            var response = await _inviteUserRepostiry.InsertAsync(user);
+            try
+            {
+                var user = ObjectMapper.Map<InviteUser>(input);
+                user.TenantId = AbpSession.TenantId.Value;
+                var response = await _inviteUserRepostiry.InsertAsync(user);
 
-            //send email
-            await _userEmailer.SendInviteUserEmail(response.Email, response.TenantId, AppUrlService.CreateInviteUserUrlFormat(response.TenantId));
+                //send email
+                await _userEmailer.SendInviteUserEmail(response.Email, response.TenantId, AppUrlService.CreateInviteUserUrlFormat(response.TenantId));
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e.Message);
+                throw new Exception(e.Message);
+            }
 
         }
 

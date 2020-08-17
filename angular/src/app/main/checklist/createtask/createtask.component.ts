@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { HttpRequest, HttpClient } from '@angular/common/http';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-createtask',
@@ -50,7 +51,7 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       'unlink','fontSize','fontName']
       ]
   };
-
+  TaskName:string
   commentFiles:File[]=[];
   instructionFiles:File[]=[];
   saving = false;
@@ -73,6 +74,13 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   newAttachementPath: string[] = [];
   public isChecked: boolean = false;
   commentFilesPath:any[]=[];
+  assigneeSelected=false
+  dueOnSelected=false
+  TaskCategory:string
+  TaskAssignee:string
+  TaskDate:string
+  TaskFrequency:string
+  TaskDueon:string
   days: any;
   users: any;
   checklist: CreateOrEditClosingChecklistDto;
@@ -104,7 +112,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.initializePageParameters();
 
   }
-
   getProfilePicture() {
     this.userInfo.getProfilePicture();
     this.userInfo.profilePicture.subscribe(
@@ -145,8 +152,10 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.daysBeforeAfter = 1;
     this.checklist.dueOn= 0;
     this.checklist.endOfMonth=true;
+    this.dueOnSelected=true;
     this.isChecked = false;
     this.SelectionMsg = "\xa0"
+    this.TaskDueon=null;
   }
   onOpenCalendar(container) {
     container.monthSelectHandler = (event: any): void => {
@@ -165,51 +174,126 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   redirectToTaskList(): void {
     this._router.navigate(['/app/main/checklist']);
   }
-
-
+  changeValidation(){
+    if(this.checklist.taskName!=undefined)
+    {
+      this.TaskName=null
+    }
+    if(this.selectedCategoryId.categoryId!=undefined)
+    {
+      this.TaskCategory=null
+    }
+    if(this.checklist.frequency!=undefined)
+    {
+      this.TaskFrequency=null
+    }
+    if(this.selectedUserId.selectedUserId!=undefined)
+    {
+      this.TaskAssignee=null
+    }
+    if(this.checklist.closingMonth!=undefined)
+    {
+      this.TaskDate=null
+    }
+    if (!this.checklist.endOfMonth) {
+      if(this.checklist.dayBeforeAfter != undefined && this.checklist.dayBeforeAfter != 1 && this.checklist.dueOn!=0)
+      {
+        this.TaskDueon=null
+      }
+    }
+  }
+  createTaskValidations(){
+    let found=0
+    if(this.checklist.taskName==undefined)
+    {
+      this.TaskName="Task Name is required"
+      found=1
+    }
+    if(this.selectedCategoryId.categoryId==undefined)
+    {
+      this.TaskCategory="Category is required"
+      found=1
+    }
+    if(this.checklist.frequency==undefined)
+    {
+      this.TaskFrequency="Frequency is required"
+      found=1
+    }
+    if(this.selectedUserId.selectedUserId==undefined)
+    {
+      this.TaskAssignee="Assignee is required"
+      found=1
+    }
+    if(this.checklist.closingMonth==undefined)
+    {
+      this.TaskDate="Closing Month is required"
+      found=1
+    }
+    if (!this.checklist.endOfMonth) {
+      if(this.checklist.dayBeforeAfter == undefined ||this.checklist.dayBeforeAfter == 1 || this.checklist.dueOn==0)
+      {
+        this.TaskDueon="Select Both Fields"
+        found=1
+      }
+    }
+    if(found==0 && this.monthStatus){
+      return true
+    }
+    return false;
+  }
+  changeAssignee(){
+    if(this.selectedCategoryId.categoryId!=undefined){
+      this.assigneeSelected=true
+    }
+    else{
+      this.assigneeSelected=false
+    }
+  }
   onCreateTask(): void {
-     if (this.checklist.endOfMonth) {
-      this.checklist.dayBeforeAfter = 1;
-      this.checklist.dueOn = 0;
-    }
-    else {
-      this.checklist.dayBeforeAfter = this.daysBeforeAfter;
-      this.checklist.endOfMonth = false;
-    }
-    this.checklist.dueOn = Number(this.checklist.dueOn);
-    this.checklist.frequency = Number(this.checklist.frequency);
-    this.checklist.status = 1
-   
-    if (this.selectedCategoryId.categoryId != undefined)
-    {
-      this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
-    }
-    if (this.selectedUserId.selectedUserId != undefined)
-    {
-      this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
-    }
-    if (this.attachmentPaths != null) {
-      this.newAttachementPath = [];
-      this.attachmentPaths.forEach(element => {
-        this.newAttachementPath.push(element.toString())
-      });
+    if(this.createTaskValidations()){
+      if (this.checklist.endOfMonth) {
+        this.checklist.dayBeforeAfter = 1;
+        this.checklist.dueOn = 0;
+      }
+      else {
+        this.checklist.dayBeforeAfter = this.daysBeforeAfter;
+        this.checklist.endOfMonth = false;
+      }
+      this.checklist.dueOn = Number(this.checklist.dueOn);
+      this.checklist.frequency = Number(this.checklist.frequency);
+      this.checklist.status = 1
+    
+      if (this.selectedCategoryId.categoryId != undefined)
+      {
+        this.checklist.categoryId = Number(this.selectedCategoryId.categoryId);
+      }
+      if (this.selectedUserId.selectedUserId != undefined)
+      {
+        this.checklist.assigneeId = Number(this.selectedUserId.selectedUserId);
+      }
+      if (this.attachmentPaths != null) {
+        this.newAttachementPath = [];
+        this.attachmentPaths.forEach(element => {
+          this.newAttachementPath.push(element.toString())
+        });
 
-      this.checklist.attachmentsPath = this.newAttachementPath;
+        this.checklist.attachmentsPath = this.newAttachementPath;
+      }
+      if (this.checklist.noOfMonths != undefined && this.checklist.noOfMonths != null) {
+        this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
+      }
+      else {
+        this.checklist.noOfMonths = 0;
+      }
+      this.errorMessage = "";
+      this.saving = true;
+      this._closingChecklistService.createOrEdit(this.checklist)
+      .pipe(finalize(() => { this.saving = false; }))
+      .subscribe(() => {
+        this.redirectToTaskList();
+        this.notify.success(this.l('SavedSuccessfully'));
+      });
     }
-    if (this.checklist.noOfMonths != undefined && this.checklist.noOfMonths != null) {
-      this.checklist.noOfMonths = Number(this.checklist.noOfMonths);
-    }
-    else {
-      this.checklist.noOfMonths = 0;
-    }
-    this.errorMessage = "";
-    this.saving = true;
-    this._closingChecklistService.createOrEdit(this.checklist)
-    .pipe(finalize(() => { this.saving = false; }))
-    .subscribe(() => {
-      this.redirectToTaskList();
-      this.notify.success(this.l('SavedSuccessfully'));
-    });
   }
   commentClick(): void {
     this.commantModal = true;
@@ -240,6 +324,15 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
   }
   onDayChange() {
+    if(this.SelectionMsg == "Days Before"|| this.SelectionMsg == "Days After"){
+      if(this.checklist.dueOn !=0){
+        console.log(this.checklist.dueOn);
+        this.dueOnSelected=true
+      }
+    }
+    else{
+      this.dueOnSelected=false;
+    }
     this.checklist.endOfMonth = false;
     this.isChecked = true;
   }
@@ -247,16 +340,19 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   onDaysClick(value) {
     if (value == 2) {
       this.SelectionMsg = "Days Before";
+      this.checklist.dayBeforeAfter=2
       this.checklist.endOfMonth = false;
       this.isChecked = true;
     }
     else if (value == 3) {
       this.SelectionMsg = "Days After";
+      this.checklist.dayBeforeAfter=3
       this.checklist.endOfMonth = false;
       this.isChecked = true;
     }  
     else if (value == 1) {
       this.SelectionMsg = "\xa0"
+      this.checklist.dayBeforeAfter=1
       this.isChecked = true;
     }
   }
@@ -315,6 +411,11 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
     this._managementService.checkMonthStatus(moment(new Date(add(this.checklist.closingMonth, 2, "day")))).subscribe(result => {
       this.monthStatus = result;
     });
+    
+    if(this.checklist.closingMonth!=undefined)
+    {
+      this.TaskDate=null
+    }
   }
    getNoOfmonths(date1, date2) {
     var Nomonths;

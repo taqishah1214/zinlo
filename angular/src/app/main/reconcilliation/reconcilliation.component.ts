@@ -83,13 +83,14 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       this.defaultMonth = defaultMonth
       if (this.defaultMonth.id != 0) {
         this.selectedDate = new Date (this.defaultMonth.month);
-        this.userDate.reloadLock.subscribe(reload => this.reload = reload) 
-        if (this.reload.lock == false){
-          this.getAllAccounts();
-          this.reload.lock = true;
-          this.userDate.setReloadLock(this.reload);
-        }
-      } 
+        this.userDate.reloadLock.subscribe((reload) => {
+          this.reload = reload;
+          if (this.reload.lock == false) {
+            this.getAllAccounts();
+              this.reload.lock = true;
+              this.userDate.setReloadLock(this.reload);
+          }
+      });}   
       });
     
    
