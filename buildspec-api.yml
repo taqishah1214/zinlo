@@ -14,7 +14,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image $REPOSITORY_URI:${CODEBUILD_RESOLVED_SOURCE_VERSION}...
-      - docker build -t $REPOSITORY_URI:${CODEBUILD_RESOLVED_SOURCE_VERSION} -f aspnet-core.Dockerfile .
+      - docker build -t $REPOSITORY_URI:${CODEBUILD_RESOLVED_SOURCE_VERSION} -f aspnet-core/api.Dockerfile aspnet-core
   post_build:
     commands:
       - echo Build completed on `date`
