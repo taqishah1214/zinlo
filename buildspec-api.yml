@@ -7,7 +7,7 @@ phases:
       docker: 18
     commands:
       - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
-#      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
       - aws --version
       - $(aws ecr get-login --region us-east-2 --no-include-email)
       - REPOSITORY_URI=876741939097.dkr.ecr.us-east-2.amazonaws.com/zinlo/api
