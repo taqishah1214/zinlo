@@ -1,0 +1,11 @@
+version: "3"
+services:
+  zinlo_web:
+    container_name: zinlo_web
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP_API_URL: "http://mac-arg.mtr-local.com"
+    ports:
+      - "8001:80"
