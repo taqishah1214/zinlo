@@ -4,8 +4,8 @@ services:
     container_name: zinlo_web
     build:
       context: .
+      dockerfile: Dockerfile
       args:
         APP_API_URL: "http://mac-arg.mtr-local.com"
-        IGNORE_API_PREFIX: 0
     ports:
       - "8001:80"
