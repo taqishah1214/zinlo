@@ -4,7 +4,7 @@ services:
     container_name: zinlo_api
     build:
       context: aspnet-core
-      dockerfile: aspnet-core.Dockerfile
+      dockerfile: api.Dockerfile
     environment:
       "ASPNETCORE_ENVIRONMENT": "Production"
       "ConnectionStrings:Default": ${CONNECTION_STRING}
@@ -23,7 +23,7 @@ services:
   zinlo_web:
     container_name: zinlo_web
     build:
-      context: .
+      context: angular
       dockerfile: Dockerfile
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
