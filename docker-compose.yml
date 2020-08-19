@@ -22,3 +22,12 @@ services:
       - ./tmp-build/api/Files:/app/App_Data/FileManager
       - ./tmp-build/api/aspnet/https:/root/.aspnet/https:ro
       - ./tmp-build/api/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+  zinlo_web:
+    container_name: zinlo_web
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP_API_URL: "http://mac-arg.mtr-local.com"
+    ports:
+      - "80:80"
