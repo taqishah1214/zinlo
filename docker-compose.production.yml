@@ -11,10 +11,17 @@ services:
       "App:ServerRootAddress": ${SEVER_ROOT_ADDRESS}
       "App:CorsOrigins": ${CORS_ORIGIN}
       "App:DomainFormat": ${DOMAIN_FORMAT}
+      "AbpZeroLicenseCode": ${AbpZeroLicenseCode}
       "Authentication:JwtBearer:IsEnabled": "true"
       "Authentication:JwtBearer:SecurityKey": ${JWT_SECURITY_KEY}
       "Authentication:JwtBearer:Issuer": ${JWT_ISSUER}
       "Authentication:JwtBearer:Audience": ${JWT_AUDIENCE}
+      "Stripe:IsActive": "true"
+      "Stripe:BaseUrl": "https://api.stripe.com/v1"
+      "Stripe:SecretKey": ${STRIPE_SECRET_KEY}
+      "Stripe:PublishableKey": ${STRIPE_PUBLISH_KEY}
+      "Stripe:WebhookSecret": ""
+      "Stripe:PaymentMethodTypes": ["card"]
     ports:
       - "8080:80"
     volumes:
