@@ -11,6 +11,7 @@ services:
       "App:ServerRootAddress": ${SEVER_ROOT_ADDRESS}
       "App:CorsOrigins": ${CORS_ORIGIN}
       "App:DomainFormat": ${DOMAIN_FORMAT}
+      "App:AllowAnonymousSignalRConnection": "true"
       "AbpZeroLicenseCode": ${AbpZeroLicenseCode}
       "Authentication:JwtBearer:IsEnabled": "true"
       "Authentication:JwtBearer:SecurityKey": ${JWT_SECURITY_KEY}
