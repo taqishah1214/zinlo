@@ -9,7 +9,7 @@ services:
       "ASPNETCORE_ENVIRONMENT": "Production"
       "ConnectionStrings:Default": ${CONNECTION_STRING}
       "App:ServerRootAddress": ${SEVER_ROOT_ADDRESS}
-      "App:CorsOrigins": ""
+      "App:CorsOrigins": ${CORS_ORIGIN}
       "App:DomainFormat": ${DOMAIN_FORMAT}
       "Authentication:JwtBearer:IsEnabled": "true"
       "Authentication:JwtBearer:SecurityKey": ${JWT_SECURITY_KEY}
