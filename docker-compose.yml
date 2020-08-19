@@ -16,7 +16,7 @@ services:
       "Authentication:JwtBearer:Issuer": ${JWT_ISSUER}
       "Authentication:JwtBearer:Audience": ${JWT_AUDIENCE}
     ports:
-      - "8081:80"
+      - "8080:80"
     volumes:
       - ./data-dir/App_Data/Logs:/app/App_Data/Logs
       - ./data-dir/Uploads-Attachments:/app/wwwroot/Uploads-Attachments
@@ -27,5 +27,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/appsettings.production.json:/usr/share/nginx/html/appsettings.production.json
+    depends_on:
+      - zinlo_api
+    links:
+      - zinlo_api:zinlo_api
     ports:
       - "80:80"
