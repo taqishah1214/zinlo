@@ -15,7 +15,7 @@ services:
       "App:IdentityServer:IsEnabled": "false"
       "IdentityServer:IsEnabled": "false"
       "HealthChecks:HealthChecksEnabled": "false"
-      "HealthChecks:HealthChecksUI:": "false"
+      "HealthChecks:HealthChecksUI:HealthChecksUIEnabled": "false"
       "AbpZeroLicenseCode": ${AbpZeroLicenseCode}
       "Authentication:JwtBearer:IsEnabled": "true"
       "Authentication:JwtBearer:SecurityKey": ${JWT_SECURITY_KEY}
