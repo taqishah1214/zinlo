@@ -16,12 +16,12 @@ services:
       "Authentication:JwtBearer:SecurityKey": ${JWT_SECURITY_KEY}
       "Authentication:JwtBearer:Issuer": ${JWT_ISSUER}
       "Authentication:JwtBearer:Audience": ${JWT_AUDIENCE}
-      "Stripe:IsActive": "true"
-      "Stripe:BaseUrl": "https://api.stripe.com/v1"
-      "Stripe:SecretKey": ${STRIPE_SECRET_KEY}
-      "Stripe:PublishableKey": ${STRIPE_PUBLISH_KEY}
-      "Stripe:WebhookSecret": ""
-      "Stripe:PaymentMethodTypes": ["card"]
+      "Payment:Stripe:IsActive": "true"
+      "Payment:Stripe:BaseUrl": "https://api.stripe.com/v1"
+      "Payment:Stripe:SecretKey": ${STRIPE_SECRET_KEY}
+      "Payment:Stripe:PublishableKey": ${STRIPE_PUBLISH_KEY}
+      "Payment:Stripe:WebhookSecret": ""
+      "Payment:Stripe:PaymentMethodTypes:0": "card"
     ports:
       - "8080:80"
     volumes:
