@@ -39,7 +39,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/appsettings.production.json:/usr/share/nginx/html/assets/appsettings.production.json
+      - ./nginx/appconfig.production.json:/usr/share/nginx/html/assets/appconfig.production.json
     depends_on:
       - zinlo_api
     links:
