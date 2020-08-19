@@ -5,7 +5,5 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        APP_API_URL: "http://mac-arg.mtr-local.com"
     ports:
       - "8001:80"

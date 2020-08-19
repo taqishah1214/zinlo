@@ -25,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        APP_API_URL: ${APP_API_URL}
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
     ports:
       - "80:80"
