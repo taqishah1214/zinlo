@@ -18,16 +18,14 @@ services:
     ports:
       - "8081:80"
     volumes:
-      - ./tmp-build/api/Logs:/app/App_Data/Logs
-      - ./tmp-build/api/Files:/app/App_Data/FileManager
-      - ./tmp-build/api/aspnet/https:/root/.aspnet/https:ro
-      - ./tmp-build/api/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+      - ./data-dir/App_Data/Logs:/app/App_Data/Logs
+      - ./data-dir/Uploads-Attachments:/app/wwwroot/Uploads-Attachments
   zinlo_web:
     container_name: zinlo_web
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        APP_API_URL: "http://mac-arg.mtr-local.com"
+        APP_API_URL: ${APP_API_URL}
     ports:
       - "80:80"
