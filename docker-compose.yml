@@ -12,6 +12,8 @@ services:
       "App:CorsOrigins": ${CORS_ORIGIN}
       "App:DomainFormat": ${DOMAIN_FORMAT}
       "App:AllowAnonymousSignalRConnection": "true"
+      "App:IdentityServer:IsEnabled": "false"
+      "IdentityServer:IsEnabled": "false"
       "AbpZeroLicenseCode": ${AbpZeroLicenseCode}
       "Authentication:JwtBearer:IsEnabled": "true"
       "Authentication:JwtBearer:SecurityKey": ${JWT_SECURITY_KEY}
