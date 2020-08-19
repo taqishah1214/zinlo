@@ -27,6 +27,6 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1
 WORKDIR /app
 COPY --from=publish /source/publish .
 
-ENTRYPOINT ["dotnet", "Zinlo.Migrator.dll", "-q"]
+ENTRYPOINT ["dotnet", "Zinlo.Migrator.dll", "-s"]
 
 
