@@ -18,6 +18,11 @@ services:
       "HealthChecks:HealthChecksUI:HealthChecksUIEnabled": "false"
       "AbpZeroLicenseCode": ${AbpZeroLicenseCode}
       "Authentication:JwtBearer:IsEnabled": "true"
+      "Authentication:OpenId:IsEnabled": "false"
+      "Authentication:WsFederation:IsEnabled": "false"
+      "Authentication:Facebook:IsEnabled": "false"
+      "Authentication:Google:IsEnabled": "false"
+      "Authentication:Microsoft:IsEnabled": "false"
       "Authentication:JwtBearer:SecurityKey": ${JWT_SECURITY_KEY}
       "Authentication:JwtBearer:Issuer": ${JWT_ISSUER}
       "Authentication:JwtBearer:Audience": ${JWT_AUDIENCE}
