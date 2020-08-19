@@ -26,6 +26,8 @@ services:
       "Authentication:JwtBearer:SecurityKey": ${JWT_SECURITY_KEY}
       "Authentication:JwtBearer:Issuer": ${JWT_ISSUER}
       "Authentication:JwtBearer:Audience": ${JWT_AUDIENCE}
+      "Recaptcha:SiteKey": "6LfD-wUTAAAAACULAVXvL61K0w02RIsjhI8EyiS-"
+      "Recaptcha:SecretKey": "6LfD-wUTAAAAADm3h7vomd9FtaAlAwexki29BtXC"
       "Payment:Stripe:IsActive": "true"
       "Payment:Stripe:BaseUrl": "https://api.stripe.com/v1"
       "Payment:Stripe:SecretKey": ${STRIPE_SECRET_KEY}
