@@ -24,8 +24,11 @@ FROM build AS publish
 RUN dotnet publish -c release -o /source/publish
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.1-buster-slim
+RUN apt-get update && apt-get install -y libgdiplus
+
 WORKDIR /app
 COPY --from=publish /source/publish .
+
 
 EXPOSE 80
 ENTRYPOINT ["dotnet", "Zinlo.Web.Host.dll"]
