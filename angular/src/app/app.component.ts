@@ -15,7 +15,6 @@ import { NotificationSettingsModalComponent } from '@app/shared/layout/notificat
 import { UserNotificationHelper } from '@app/shared/layout/notifications/UserNotificationHelper';
 import { UserServiceProxy,AccountSubTypeServiceProxy ,CategoriesServiceProxy} from '@shared/service-proxies/service-proxies';
 import { StoreDateService } from './services/storedate.service';
-import { SwUpdate } from '@angular/service-worker'
 
 @Component({
     templateUrl: './app.component.html',
@@ -45,7 +44,6 @@ export class AppComponent extends AppComponentBase implements OnInit {
         private _chatSignalrService: ChatSignalrService,
         private _userNotificationHelper: UserNotificationHelper,
         private storeData: StoreDateService,private _userService: UserServiceProxy,private _categoryService: CategoriesServiceProxy, private _accountSubtypeService :AccountSubTypeServiceProxy,
-        private updates: SwUpdate,
         private _systemSettingsService: SystemSettingServiceProxy
     ) {
         super(injector);
@@ -65,7 +63,6 @@ export class AppComponent extends AppComponentBase implements OnInit {
     }
 
     realoadApp() {
-        this.updates.activateUpdate().then(() => document.location.reload());
         this._systemSettingsService.getDefaultMonth().subscribe(result => { 
             this.defaultMonth = result
             this.storeData.setDefaultMonth(this.defaultMonth)
