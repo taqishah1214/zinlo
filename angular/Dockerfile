@@ -2,7 +2,7 @@ FROM node:13-alpine as Builder
 
 WORKDIR /app/
 
-COPY package*.json ./
+COPY package.json ./
 COPY yarn.lock ./
 
 RUN yarn install
