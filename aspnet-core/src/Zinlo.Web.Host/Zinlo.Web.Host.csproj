@@ -13,6 +13,10 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Zinlo.Web.Host' ">
+    <StartAction>Project</StartAction>
+    <LaunchUrl>http://localhost:5000</LaunchUrl>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="App_Data\**" />
     <Content Remove="App_Data\**" />
@@ -43,6 +47,7 @@
     <PackageReference Include="Abp.Castle.Log4Net" Version="5.1.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="3.0.4" />
     <PackageReference Include="Hangfire.PostgreSql" Version="1.6.4.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="3.1.7" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\swagger\ui\index.html" />
