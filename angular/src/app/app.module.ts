@@ -58,9 +58,6 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MenuSearchBarComponent } from './shared/layout/nav/menu-search-bar/menu-search-bar.component';
 import { NgxSpinnerModule, NgxSpinnerComponent } from 'ngx-spinner';
 import { ScrollTopComponent } from './shared/layout/scroll-top.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
-
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
@@ -124,8 +121,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
         TextMaskModule,
         ImageCropperModule,
         AutoCompleteModule,
-        NgxSpinnerModule,
-        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+        NgxSpinnerModule
         
        
     ],
