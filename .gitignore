@@ -21,3 +21,5 @@ aspnet-core/src/Zinlo.Web.Mvc/healthchecksdb
 **/appconfig.*
 
 robots.txt
+
+.env
