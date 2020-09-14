@@ -7,6 +7,7 @@ export class FileDownloadService {
 
     downloadTempFile(file: FileDto) {
         const url = AppConsts.remoteServiceBaseUrl + '/File/DownloadTempFile?fileType=' + file.fileType + '&fileToken=' + file.fileToken + '&fileName=' + file.fileName;
+        debugger;
         location.href = url; //TODO: This causes reloading of same page in Firefox
     }
 }
