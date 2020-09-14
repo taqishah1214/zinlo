@@ -14,7 +14,7 @@ export class SignalRHelper {
             qs: AppConsts.authorization.encrptedAuthTokenName + '=' + encodeURIComponent(encryptedAuthToken),
             remoteServiceBaseUrl: AppConsts.remoteServiceBaseUrl,
             startConnection: undefined,
-            url: '/sockets/signalr'
+            url: '/signalr'
         };
 
         let script = document.createElement('script');
