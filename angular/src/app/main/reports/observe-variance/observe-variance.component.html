@@ -188,13 +188,13 @@
                                 [resizableColumns]="primengTableHelper.resizableColumns">
                                 <ng-template pTemplate="header">
                                     <tr *ngIf="!compareTable">
-                                        <th style="width: 150px" pSortableColumn="creationTime">
+                                        <th style="width: 150px" pSortableColumn="AccountNumber">
                                             {{l('Account Number')}}
-                                            <p-sortIcon field="record.creationTime"></p-sortIcon>
+                                            <p-sortIcon field="record.AccountNumber"></p-sortIcon>
                                         </th>
-                                        <th style="width: 150px" pSortableColumn="type">
+                                        <th style="width: 150px" pSortableColumn="AccountName">
                                             {{l('Account Name')}}
-                                            <p-sortIcon field="record.type"></p-sortIcon>
+                                            <p-sortIcon field="record.AccountName"></p-sortIcon>
                                         </th>
                                         <th style="width: 220px"> {{l('User')}} </th>
                                     </tr>
