@@ -24,8 +24,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                     {
                         path: 'main',
                         loadChildren: () => import('app/main/main.module').then(m => m.MainModule), //Lazy load main module
-                        data: { preload: true },
-                        pathMatch: 'full'
+                        data: { preload: true }
                     },
                     {
                         path: 'admin',
