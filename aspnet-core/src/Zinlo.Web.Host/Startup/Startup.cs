@@ -247,9 +247,9 @@ namespace Zinlo.Web.Startup
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<AbpCommonHub>("/sockets/signalr");
-                endpoints.MapHub<ChatHub>("/sockets/signalr-chat");
-                endpoints.MapHub<JobHub.JobHub>("/sockets/signalr-job");
+                endpoints.MapHub<AbpCommonHub>("/signalr");
+                endpoints.MapHub<ChatHub>("/signalr-chat");
+                endpoints.MapHub<JobHub.JobHub>("/signalr-job");
 
                 endpoints.MapControllerRoute("defaultWithArea", "{area}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
