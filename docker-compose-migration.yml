@@ -1,0 +1,12 @@
+version: "3"
+services:
+  zinlo_migrator:
+    container_name: zinlo_migrator
+    build:
+      context: aspnet-core
+      dockerfile: migrator.Dockerfile
+    environment:
+      "ASPNETCORE_ENVIRONMENT": "Production"
+      "ConnectionStrings:Default": ${CONNECTION_STRING}
+    volumes:
+      - ./data-dir/App_Data/Logs:/app/App_Data/Logs

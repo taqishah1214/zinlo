@@ -138,7 +138,7 @@ export class ChatSignalrService extends AppComponentBase {
     init(): void {
         this._zone.runOutsideAngular(() => {
             abp.signalr.connect();
-            abp.signalr.startConnection(abp.appPath + 'signalr-chat', connection => {
+            abp.signalr.startConnection(abp.appPath + 'sockets/signalr-chat', connection => {
                 this.configureConnection(connection);
             }).then(() => {
                 abp.event.trigger('app.chat.connected');

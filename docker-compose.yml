@@ -1,0 +1,58 @@
+version: "3"
+services:
+  zinlo_api:
+    container_name: zinlo_api
+    build:
+      context: aspnet-core
+      dockerfile: api.Dockerfile
+    environment:
+      "ASPNETCORE_ENVIRONMENT": "Production"
+      "ConnectionStrings:Default": ${CONNECTION_STRING}
+      "App:ServerRootAddress": ${SEVER_ROOT_ADDRESS}
+      "App:CorsOrigins": ${CORS_ORIGIN}
+      "App:DomainFormat": ${DOMAIN_FORMAT}
+      "Abp:RedisCache:IsEnabled": "false"
+      "Abp:RedisCache:ConnectionString": ${REDIS_CONNECTION_STRING}
+      "Abp:RedisCache:DatabaseId": ${REDIS_DATABASE_ID}
+      "App:AllowAnonymousSignalRConnection": "true"
+      "App:IdentityServer:IsEnabled": "false"
+      "IdentityServer:IsEnabled": "false"
+      "HealthChecks:HealthChecksEnabled": "false"
+      "HealthChecks:HealthChecksUI:HealthChecksUIEnabled": "false"
+      "AbpZeroLicenseCode": ${AbpZeroLicenseCode}
+      "Authentication:JwtBearer:IsEnabled": "true"
+      "Authentication:OpenId:IsEnabled": "false"
+      "Authentication:WsFederation:IsEnabled": "false"
+      "Authentication:Facebook:IsEnabled": "false"
+      "Authentication:Google:IsEnabled": "false"
+      "Authentication:Microsoft:IsEnabled": "false"
+      "Authentication:JwtBearer:SecurityKey": ${JWT_SECURITY_KEY}
+      "Authentication:JwtBearer:Issuer": ${JWT_ISSUER}
+      "Authentication:JwtBearer:Audience": ${JWT_AUDIENCE}
+      "Recaptcha:SiteKey": "6LfD-wUTAAAAACULAVXvL61K0w02RIsjhI8EyiS-"
+      "Recaptcha:SecretKey": "6LfD-wUTAAAAADm3h7vomd9FtaAlAwexki29BtXC"
+      "Payment:Stripe:IsActive": "true"
+      "Payment:Stripe:BaseUrl": "https://api.stripe.com/v1"
+      "Payment:Stripe:SecretKey": ${STRIPE_SECRET_KEY}
+      "Payment:Stripe:PublishableKey": ${STRIPE_PUBLISH_KEY}
+      "Payment:Stripe:WebhookSecret": ""
+      "Payment:Stripe:PaymentMethodTypes:0": "card"
+    ports:
+      - "8080:80"
+    volumes:
+      - ./data-dir/App_Data/Logs:/app/App_Data/Logs
+      - ./data-dir/Uploads-Attachments:/app/wwwroot/Uploads-Attachments
+  zinlo_web:
+    container_name: zinlo_web
+    build:
+      context: angular
+      dockerfile: Dockerfile
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/appconfig.production.json:/usr/share/nginx/html/assets/appconfig.production.json
+    depends_on:
+      - zinlo_api
+    links:
+      - zinlo_api:zinlo_api
+    ports:
+      - "80:80"

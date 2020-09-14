@@ -20,7 +20,7 @@ export class SignalRService {
 	startHubConnection = () => {
 			this.hubConnection = new signalR.HubConnectionBuilder()
 				.withUrl(
-					AppConsts.remoteServiceBaseUrl +"/signalr-job?enc_auth_token="
+					AppConsts.remoteServiceBaseUrl +"/sockets/signalr-job?enc_auth_token="
 				)
 				.configureLogging(signalR.LogLevel.Information)
 				.build();
