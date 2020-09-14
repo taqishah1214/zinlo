@@ -36,7 +36,7 @@ services:
       "Payment:Stripe:SecretKey": ${STRIPE_SECRET_KEY}
       "Payment:Stripe:PublishableKey": ${STRIPE_PUBLISH_KEY}
       "Payment:Stripe:WebhookSecret": ""
-      "Payment:Stripe:PaymentMethodTypes:0": "card",
+      "Payment:Stripe:PaymentMethodTypes:0": "card"
       "Payment:PayPal:IsActive": "false"
     ports:
       - "8080:80"
