@@ -122,6 +122,7 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
 
   selectedFileToView(file,extension) {
     console.log("jas",extension)
+    console.log("file :: ",file)
     if (extension == "pdf.svg")
     {
       this.fileType = "google"
