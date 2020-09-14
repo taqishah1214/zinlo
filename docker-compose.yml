@@ -51,6 +51,7 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/appconfig.production.json:/usr/share/nginx/html/assets/appconfig.production.json
+      - ./data-dir/Uploads-Attachments:/app/Uploads-Attachments
     depends_on:
       - zinlo_api
     links:
