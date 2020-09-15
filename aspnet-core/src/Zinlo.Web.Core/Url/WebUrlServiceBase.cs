@@ -14,9 +14,9 @@ namespace Zinlo.Web.Url
 
         public abstract string ServerRootAddressFormatKey { get; }
 
-        public string WebSiteRootAddressFormat => _appConfiguration["App:ServerRootAddress"] ?? "http://localhost:62114/";
+        public string WebSiteRootAddressFormat => _appConfiguration[WebSiteRootAddressFormatKey] ?? "http://localhost:62114/";
 
-        public string ServerRootAddressFormat => _appConfiguration["App:ServerRootAddress"] ?? "http://localhost:62114/";
+        public string ServerRootAddressFormat => _appConfiguration[ServerRootAddressFormatKey] ?? "http://localhost:62114/";
 
         public bool SupportsTenancyNameInUrl
         {
