@@ -369,15 +369,17 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                             var i = url.indexOf ('://') + 3;
                             var currentURL = url.substring(0, i) + result.tenancyName + "." + url.substring (i, url.length);
                             var newURL = currentURL.replace("register","buy");
-                            this._router.navigate([newURL],
-                                {
-                                    queryParams: {
-                                        tenantId: result.tenantId,
-                                        editionId: userResgister.subscriptionPlans.editionId,
-                                        subscriptionStartType: userResgister.subscriptionPlans.subscriptionStartType,
-                                        editionPaymentType: this.editionPaymentType
-                                    }
-                                });
+                            window.location.href = newURL + "?tenantId=" + result.tenantId + "&editionId=" + userResgister.subscriptionPlans.editionId
+                            + "&subscriptionStartType=" + userResgister.subscriptionPlans.subscriptionStartType + "&editionPaymentType=" + this.editionPaymentType;
+                            // this._router.navigate([newURL],
+                            //     {
+                            //         queryParams: {
+                            //             tenantId: result.tenantId,
+                            //             editionId: userResgister.subscriptionPlans.editionId,
+                            //             subscriptionStartType: userResgister.subscriptionPlans.subscriptionStartType,
+                            //             editionPaymentType: this.editionPaymentType
+                            //         }
+                            //     });
                         } else {
                             this._router.navigate(['account/register-tenant-result']);
                         }
