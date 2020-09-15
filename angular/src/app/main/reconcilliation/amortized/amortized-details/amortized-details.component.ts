@@ -104,7 +104,6 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     if(this.comment){
       var index=this.comment.indexOf("</p>");
     }
-    console.log(index,this.comment);
     var i;
     for (i=3;i<index;i++)
     {
@@ -121,7 +120,6 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
     }
   }
   selectedFileToView(file,extension) {
-    console.log("jas",extension)
     if (extension == "pdf.svg")
     {
       this.fileType = "google"
@@ -282,7 +280,6 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
             element["result"] = this.setHistoryParam(element)
             break;
             default:
-              console.log("not found");
               break;        
         }
         ;

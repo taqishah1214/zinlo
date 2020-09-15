@@ -257,7 +257,6 @@ BackToReconcileList() {
     if(this.comment){
       var index=this.comment.indexOf("</p>");
     }
-    console.log(index,this.comment);
     var i;
     for (i=3;i<index;i++)
     {
@@ -360,7 +359,6 @@ BackToReconcileList() {
             element["result"] = this.setStatusHistoryParam(element)
             break;
             default:
-            console.log("not found");
             break;
         }
         ;

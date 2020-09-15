@@ -192,7 +192,6 @@ BackToReconcileList() {
     if(this.comment){
     var index=this.comment.indexOf("</p>");
   }
-  console.log(index,this.comment);
   var i;
   for (i=3;i<index;i++)
   {
@@ -264,7 +263,6 @@ BackToReconcileList() {
       statusList.push(element)
       break;
       default:
-        console.log("not found");
       }
     })
      
@@ -287,7 +285,6 @@ BackToReconcileList() {
             element["result"] = this.setAccountSubTypeHistoryParam(element)
             break;
             default:
-            console.log("not found");
             break;
         }
         ;

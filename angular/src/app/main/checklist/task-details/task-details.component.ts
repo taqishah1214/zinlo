@@ -111,7 +111,6 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
             element["result"] = this.setVerionIdHistoryParam(element)
             break;
           default:
-            console.log("not found");
             break;
         }
         ;
@@ -121,8 +120,6 @@ export class TaskDetailsComponent extends AppComponentBase implements OnInit {
   }
 
   selectedFileToView(file,extension) {
-    console.log("jas",extension)
-    console.log("file :: ",file)
     if (extension == "pdf.svg")
     {
       this.fileType = "google"
@@ -192,7 +189,6 @@ setVerionIdHistoryParam (item) {
             element["result"] = this.setTaskNameHistoryParam(element)
             break;
           default:
-            console.log("not found");
             break;
         };
       });
@@ -344,7 +340,6 @@ setTaskNameHistoryParam(item){
     if(this.comment.body){
       var index=this.comment.body.indexOf("</p>");
     }
-    console.log(index,this.comment.body);
     var i;
     for (i=3;i<index;i++)
     {
