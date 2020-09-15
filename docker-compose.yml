@@ -9,6 +9,7 @@ services:
       "ASPNETCORE_ENVIRONMENT": "Production"
       "ConnectionStrings:Default": ${CONNECTION_STRING}
       "App:ServerRootAddress": ${SEVER_ROOT_ADDRESS}
+      "App:WebSiteRootAddress":${WEBSITE_URL}
       "App:CorsOrigins": ${CORS_ORIGIN}
       "App:DomainFormat": ${DOMAIN_FORMAT}
       "Abp:RedisCache:IsEnabled": "false"
