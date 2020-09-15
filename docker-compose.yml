@@ -11,7 +11,6 @@ services:
       "App:ServerRootAddress": ${SEVER_ROOT_ADDRESS}
       "App:ClientRootAddress": ${CLIENT_ROOT_ADDRESS}
       "App:CorsOrigins": ${CORS_ORIGIN}
-      "App:DomainFormat": ${DOMAIN_FORMAT}
       "Abp:RedisCache:IsEnabled": "false"
       "Abp:RedisCache:ConnectionString": ${REDIS_CONNECTION_STRING}
       "Abp:RedisCache:DatabaseId": ${REDIS_DATABASE_ID}
