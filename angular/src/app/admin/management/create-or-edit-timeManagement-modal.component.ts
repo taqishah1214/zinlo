@@ -58,7 +58,6 @@ export class CreateOrEditTimeManagementModalComponent extends AppComponentBase {
 
     save(): void {
             this.saving = true;
-            debugger
             this.timeManagement.month = moment(this.month);
             this._timeManagementsServiceProxy.createOrEdit(this.timeManagement)
              .pipe(finalize(() => { this.saving = false;}))

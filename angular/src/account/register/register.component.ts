@@ -126,12 +126,10 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         this._tenantRegistrationService.getEditionsForSelect()
             .subscribe((result) => {
                 this.editionsSelectOutput = result;
-                console.log(this.editionsSelectOutput.editionsWithFeatures);
                 this.editionsSelectOutput.editionsWithFeatures.slice().reverse()
                 .forEach(function(item) {
                     });
                     
-                console.log(this.editionsSelectOutput.editionsWithFeatures.reverse());
                 if (!this.editionsSelectOutput.editionsWithFeatures || this.editionsSelectOutput.editionsWithFeatures.length <= 0) {
                    // this._router.navigate(['/account/register-tenant']);
                 }
@@ -356,8 +354,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                     userResgister.paymentDetails = this.paymentDetailsDto;
                     userResgister.contactUs=null;
                 }
-                console.log(userResgister);
-                debugger;
             this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
             .pipe(finalize(() => { this.saving = false; }))
                     .pipe(catchError((err, caught): any => {
@@ -405,8 +401,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                     userResgister.paymentDetails = this.paymentDetailsDto;
                     userResgister.contactUs=null;
                 }
-                console.log(userResgister);
-                debugger;
             this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
             .pipe(finalize(() => { this.saving = false; }))
                     .pipe(catchError((err, caught): any => {

@@ -14,7 +14,7 @@ namespace Zinlo.Web.Url
 
         public abstract string ServerRootAddressFormatKey { get; }
 
-        public string WebSiteRootAddressFormat => _appConfiguration["App:ServerRootAddress"] ?? "http://localhost:62114/";
+        public string WebSiteRootAddressFormat => _appConfiguration["App:WebSiteRootAddress"] ?? "http://localhost:62114/";
 
         public string ServerRootAddressFormat => _appConfiguration["App:ServerRootAddress"] ?? "http://localhost:62114/";
 
@@ -32,6 +32,7 @@ namespace Zinlo.Web.Url
         public WebUrlServiceBase(IAppConfigurationAccessor configurationAccessor)
         {
             _appConfiguration = configurationAccessor.Configuration;
+            
         }
 
         public string GetSiteRootAddress(string tenancyName = null)

@@ -32,14 +32,12 @@ export class SignalRService {
 					console.log("Error while starting connection: " + err)
 				);
 			this.addBasicListener();
-			// console.log("hub", this.hubConnection);
 		
 	};
 
 	addBasicListener(): any {
 		this.hubConnection.on("chartOfAccount", data => {
 			var dt = data;
-            console.log(dt);
             return data;
         });
         

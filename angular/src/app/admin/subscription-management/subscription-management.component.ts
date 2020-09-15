@@ -69,7 +69,6 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
         this._tenantRegistrationService.getEditionsForSelect()
             .subscribe((result) => {
                 this.editionsSelectOutput = result;
-                console.log(result)
             });
     }
 
@@ -90,7 +89,6 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
             this.loading = false;
             this.user = this.appSession.user;
             this.tenant = this.appSession.tenant;
-            console.log(this.tenant )
             this.application = this.appSession.application;
         });
     }

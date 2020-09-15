@@ -192,7 +192,6 @@ BackToReconcileList() {
     if(this.comment){
     var index=this.comment.indexOf("</p>");
   }
-  console.log(index,this.comment);
   var i;
   for (i=3;i<index;i++)
   {
@@ -264,7 +263,6 @@ BackToReconcileList() {
       statusList.push(element)
       break;
       default:
-        console.log("not found");
       }
     })
      
@@ -287,12 +285,10 @@ BackToReconcileList() {
             element["result"] = this.setAccountSubTypeHistoryParam(element)
             break;
             default:
-            console.log("not found");
             break;
         }
         ;
       });
-      debugger
       statusList.forEach((item,index) => {
         this.historyOfTask.push(item);
       })
@@ -310,7 +306,6 @@ setAccountSubTypeHistoryParam(item){
   array["ChangeOccurUser"] =  this.users[this.findTheUserFromList(item.userId)]; 
   array["NewValue"] =  this.accountSubypeList[this.getAccountSubType(parseInt(item.newValue))]; 
   array["PreviousValue"] = this.accountSubypeList[this.getAccountSubType(parseInt(item.originalValue))]; 
-  debugger
   return array
 
 }

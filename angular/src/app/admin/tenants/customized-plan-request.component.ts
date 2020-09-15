@@ -29,7 +29,6 @@ export class CustomizedPlanRequestComponent extends AppComponentBase implements 
         {
         this._contectusService.getContactusByTenantId(tenantId).subscribe ((result) => {
             this.contactus = result;
-            console.log(this.contactus)
             
         });
         }
@@ -43,8 +42,6 @@ export class CustomizedPlanRequestComponent extends AppComponentBase implements 
     approveRequest()
     {
        this.saving=true
-       console.log(this.contactus);
-       debugger;
        this._contectusService.approveRequest(this.contactus).subscribe ((result) => {
         this._router.navigate(['app/admin/custom-tenants']);
         this.saving=false

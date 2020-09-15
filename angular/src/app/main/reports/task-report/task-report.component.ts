@@ -110,7 +110,6 @@ export class TaskReportComponent extends AppComponentBase implements OnInit {
       this.paginator.changePage(0);
       return;
     }
-    debugger
     this.primengTableHelper.showLoadingIndicator();
     this._closingChecklistService.getReport(
       this.filterText,
