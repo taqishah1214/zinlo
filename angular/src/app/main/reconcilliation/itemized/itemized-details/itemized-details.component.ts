@@ -94,7 +94,6 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   onComment(): void {if(this.comment){
     var index=this.comment.indexOf("</p>");
     }
-    console.log(index,this.comment);
     var i;
     for (i=3;i<index;i++)
     {
@@ -124,7 +123,6 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
     this._router.navigate(['/app/main/reconciliation/itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo, selectedDate :history.state.data.selectedDate}} });
   }
   selectedFileToView(file,extension) {
-    console.log("jas",extension)
     if (extension == "pdf.svg")
     {
       this.fileType = "google"
@@ -228,7 +226,6 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   getAuditLogOfAccount() {
     this._auditLogService.getEntityHistory(this.itemizedItemId, "Zinlo.Reconciliation.Itemization","","").subscribe(resp => {
       this.historyOfTask = resp
-      debugger;
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
             case "Amount":          
@@ -250,10 +247,8 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
             element["result"] = this.setHistoryParam(element)
             break;
             default:
-              console.log("not found");
               break;        
         }
-        debugger
         ;
       });
     })

@@ -36,10 +36,8 @@ export class TenantUserRegisterComponent extends AppComponentBase implements OnI
     if (this._activatedRoute.snapshot.queryParams['c']) {
       var c = this._activatedRoute.snapshot.queryParams['c'];
       this._accountServiceProxy.regsiterLinkResolve(new CustomTenantRequestLinkResolveInput({ c: c })).subscribe((response) => {
-       console.log(response)
        this._inviteUserService.getByEmail(response.email).subscribe((res)=>
         {
-          console.log(res)
           this.personalInfoForm = new FormGroup({
             firstName: new FormControl(''+res.firstName,[Validators.required]),
             lastName: new FormControl(res.lastName,[Validators.required]),

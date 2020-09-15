@@ -73,7 +73,6 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
                 this.copyright=true
             }
         });
-        console.log(this.toggleButton)
         this.currentRouteUrl = this.router.url.split(/[?#]/)[0];
 
         this.router.events

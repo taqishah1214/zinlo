@@ -135,7 +135,6 @@ export class CustomTenantsComponent extends AppComponentBase implements OnInit {
         ).pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator())).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
-            console.log(result.items)
             this.primengTableHelper.hideLoadingIndicator();
         });
 

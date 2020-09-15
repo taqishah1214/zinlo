@@ -326,7 +326,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
   onDayChange() {
     if(this.SelectionMsg == "Days Before"|| this.SelectionMsg == "Days After"){
       if(this.checklist.dueOn !=0){
-        console.log(this.checklist.dueOn);
         this.dueOnSelected=true
       }
     }
@@ -395,7 +394,6 @@ export class CreatetaskComponent extends AppComponentBase implements OnInit {
       reportProgress: true,
     })
     this.http.request(uploadReq).subscribe(event => {
-        console.log(event)
       });
   }
   removeCommentFile(index)

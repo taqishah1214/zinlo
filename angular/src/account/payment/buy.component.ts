@@ -54,7 +54,6 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
         if (this._activatedRoute.snapshot.queryParams['c']) {
             var c = this._activatedRoute.snapshot.queryParams['c'];
             this._accountService.linkResolve(new CustomTenantRequestLinkResolveInput({ c: c })).subscribe((response) => {
-             console.log(response)
                // abp.multiTenancy.setTenantIdCookie(response.tenantId);
                 this.editionPaymentType = response.editionPaymentType;
                 this.editionId = response.editionId;
@@ -97,7 +96,6 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
     }
 
     checkout(gatewayType) {
-        debugger;
         let input = {} as CreatePaymentDto;
         input.editionId = this.editionId;
         input.editionPaymentType =0;// ((this.editionPaymentType) as any);

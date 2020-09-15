@@ -257,7 +257,6 @@ BackToReconcileList() {
     if(this.comment){
       var index=this.comment.indexOf("</p>");
     }
-    console.log(index,this.comment);
     var i;
     for (i=3;i<index;i++)
     {
@@ -360,7 +359,6 @@ BackToReconcileList() {
             element["result"] = this.setStatusHistoryParam(element)
             break;
             default:
-            console.log("not found");
             break;
         }
         ;
@@ -379,7 +377,6 @@ setAccountSubTypeHistoryParam(item){
   array["ChangeOccurUser"] =  this.users[this.findTheUserFromList(item.userId)]; 
   array["NewValue"] =  this.accountSubypeList[this.getAccountSubType(parseInt(item.newValue))]; 
   array["PreviousValue"] = this.accountSubypeList[this.getAccountSubType(parseInt(item.originalValue))]; 
-  debugger
   return array
 
 }

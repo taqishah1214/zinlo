@@ -49,7 +49,6 @@ export class StripePurchaseComponent extends AppComponentBase implements OnInit 
     }
 
     ngOnInit(): void {
-        debugger;
         this.stripeIsLoading = true;
         this.paymentId = this._activatedRoute.snapshot.queryParams['paymentId'];
 
