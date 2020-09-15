@@ -367,9 +367,9 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                         if (parseInt(userResgister.subscriptionPlans.subscriptionStartType.toString()) === SubscriptionStartType.Paid) {
                             var url = window.location.href;
                             var i = url.indexOf ('://') + 3;
-                            var newUrl = url.substring(0, i) + result.tenancyName + "." + url.substring (i, url.length);
-                            window.location.href = newUrl;
-                            this._router.navigate([newUrl],
+                            var currentURL = url.substring(0, i) + result.tenancyName + "." + url.substring (i, url.length);
+                            var newURL = currentURL.replace("register","buy");
+                            this._router.navigate([newURL],
                                 {
                                     queryParams: {
                                         tenantId: result.tenantId,
