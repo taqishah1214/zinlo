@@ -228,7 +228,6 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
   getAuditLogOfAccount() {
     this._auditLogService.getEntityHistory(this.itemizedItemId, "Zinlo.Reconciliation.Itemization","","").subscribe(resp => {
       this.historyOfTask = resp
-      debugger;
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
             case "Amount":          
@@ -253,7 +252,6 @@ export class ItemizedDetailsComponent extends AppComponentBase implements OnInit
               console.log("not found");
               break;        
         }
-        debugger
         ;
       });
     })

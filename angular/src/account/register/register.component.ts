@@ -357,7 +357,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                     userResgister.contactUs=null;
                 }
                 console.log(userResgister);
-                debugger;
             this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
             .pipe(finalize(() => { this.saving = false; }))
                     .pipe(catchError((err, caught): any => {
@@ -406,7 +405,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                     userResgister.contactUs=null;
                 }
                 console.log(userResgister);
-                debugger;
             this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
             .pipe(finalize(() => { this.saving = false; }))
                     .pipe(catchError((err, caught): any => {

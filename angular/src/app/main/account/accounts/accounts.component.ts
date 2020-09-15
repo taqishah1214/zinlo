@@ -106,7 +106,6 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
  }
   ngOnInit() {
     this.actionButtonPermission = this.isGranted('Pages.ChartsofAccounts.Edit');
-    debugger
     $(document).ready(function(){
         // Show hide popover
             $(".dropdown-menu").on('click', function (e) {
@@ -377,7 +376,6 @@ RedirectToCreateAccount(): void {
   });
 }
   uploadAccountsTrialBalanceExcel(url: string): void {
-    debugger;
     this._httpClient
       .get<any>(this.uploadBalanceUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url + "&" +"monthSelected="+ this.selectedDate)
       .subscribe(response => {
@@ -415,7 +413,6 @@ RedirectToCreateAccount(): void {
   downloadExcelFile(): void {
     this._chartOfAccountService.getChartsofAccountToExcel(0)
       .subscribe(result => {
-        debugger
         this._fileDownloadService.downloadTempFile(result);
       });
   }

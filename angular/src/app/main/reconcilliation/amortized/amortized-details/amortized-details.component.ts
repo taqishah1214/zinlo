@@ -158,7 +158,6 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
       this.amortizationDto = result
       this.attachments = result.attachments;
       this.postedCommentList = result.comments
-      debugger;
       this.attachments.forEach(element => {
         var attachmentName = element.attachmentPath.substring(element.attachmentPath.lastIndexOf("/") + 1, element.attachmentPath.lastIndexOf("zinlo"));
         element["attachmentExtension"] = this.getExtensionImagePath(element.attachmentPath)
@@ -253,7 +252,6 @@ export class AmortizedDetailsComponent extends AppComponentBase implements OnIni
   getAuditLogOfAccount() {
     this._auditLogService.getEntityHistory(this.amortrizedItemId.toString(), "Zinlo.Reconciliation.Amortization","","").subscribe(resp => {
       this.historyOfTask = resp
-      debugger;
       this.historyOfTask.forEach((element,index) => {
         switch (element.propertyName) {
           case "AssigneeId":         

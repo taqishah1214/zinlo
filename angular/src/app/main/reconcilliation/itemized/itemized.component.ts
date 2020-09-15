@@ -292,7 +292,6 @@ BackToReconcileList() {
         }
         ;
       });
-      debugger
       statusList.forEach((item,index) => {
         this.historyOfTask.push(item);
       })
@@ -310,7 +309,6 @@ setAccountSubTypeHistoryParam(item){
   array["ChangeOccurUser"] =  this.users[this.findTheUserFromList(item.userId)]; 
   array["NewValue"] =  this.accountSubypeList[this.getAccountSubType(parseInt(item.newValue))]; 
   array["PreviousValue"] = this.accountSubypeList[this.getAccountSubType(parseInt(item.originalValue))]; 
-  debugger
   return array
 
 }

@@ -345,7 +345,6 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
           result = i.name
         }
       })
-      debugger
       return result;
      }  
   }
