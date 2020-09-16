@@ -105,9 +105,10 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
         input.price = this.price;
         input.successUrl = AppConsts.remoteServiceBaseUrl + '/api/services/app/payment/' + this._paymnetHelperService.getEditionPaymentType(this.editionPaymentType) + 'Succeed';
         input.errorUrl = AppConsts.remoteServiceBaseUrl + '/api/services/app/payment/PaymentFailed';
-
+        console.log(input);
         this._paymentAppService.createPayment(input)
             .subscribe((paymentId: number) => {
+                console.log("in subscribe")
                 this._router.navigate(['account/' + this.getPaymentGatewayType(gatewayType).toLocaleLowerCase() + '-purchase'],
                     {
                         queryParams: {
@@ -119,6 +120,7 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
     }
 
     getPaymentGatewayType(gatewayType): string {
+        console.log("payment type" , this._paymnetHelperService.getPaymentGatewayType(gatewayType));
         return this._paymnetHelperService.getPaymentGatewayType(gatewayType);
     }
 
