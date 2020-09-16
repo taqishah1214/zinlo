@@ -26,6 +26,7 @@ export class StripePaymentResultComponent extends AppComponentBase implements On
 
   ngOnInit() {
     console.log("payment result");
+    console.log("tenant id" , abp.multiTenancy.getTenantIdCookie());
     console.log("payment result",this._activatedRoute.snapshot.queryParams['sessionId']);
 
     this.sessionId = this._activatedRoute.snapshot.queryParams['sessionId'];
