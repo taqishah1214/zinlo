@@ -19,7 +19,6 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import * as _ from 'lodash';
 import { TenantRegistrationHelperService } from './tenant-registration-helper.service';
-import { env } from 'process';
 
 
 declare var $: any;
@@ -365,21 +364,15 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                         this._tenantRegistrationHelper.registrationResult = result;
     
                         if (parseInt(userResgister.subscriptionPlans.subscriptionStartType.toString()) === SubscriptionStartType.Paid) {
-                            var url = window.location.href;
-                            var i = url.indexOf ('://') + 3;
-                            var currentURL = url.substring(0, i) + result.tenancyName + "." + url.substring (i, url.length);
-                            var newURL = currentURL.replace("register","buy");
-                            window.location.href = newURL + "?tenantId=" + result.tenantId + "&editionId=" + userResgister.subscriptionPlans.editionId
-                            + "&subscriptionStartType=" + userResgister.subscriptionPlans.subscriptionStartType + "&editionPaymentType=" + this.editionPaymentType;
-                            // this._router.navigate([newURL],
-                            //     {
-                            //         queryParams: {
-                            //             tenantId: result.tenantId,
-                            //             editionId: userResgister.subscriptionPlans.editionId,
-                            //             subscriptionStartType: userResgister.subscriptionPlans.subscriptionStartType,
-                            //             editionPaymentType: this.editionPaymentType
-                            //         }
-                            //     });
+                            this._router.navigate(['account/buy'],
+                                {
+                                    queryParams: {
+                                        tenantId: result.tenantId,
+                                        editionId: userResgister.subscriptionPlans.editionId,
+                                        subscriptionStartType: userResgister.subscriptionPlans.subscriptionStartType,
+                                        editionPaymentType: this.editionPaymentType
+                                    }
+                                });
                         } else {
                             this._router.navigate(['account/register-tenant-result']);
                         }

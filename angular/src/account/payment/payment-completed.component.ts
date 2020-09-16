@@ -9,5 +9,6 @@ export class PaymentCompletedComponent extends AppComponentBase {
   constructor(
     _injector: Injector) {
     super(_injector);
+    abp.multiTenancy.setTenantIdCookie(null);
   }
 }

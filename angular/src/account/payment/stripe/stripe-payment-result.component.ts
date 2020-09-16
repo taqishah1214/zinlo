@@ -25,7 +25,6 @@ export class StripePaymentResultComponent extends AppComponentBase implements On
   maxControlCount = 5;
 
   ngOnInit() {
-    debugger
     this.sessionId = this._activatedRoute.snapshot.queryParams['sessionId'];
     this._stripePaymentService.getPayment(this.sessionId)
       .subscribe(payment => {
