@@ -185,9 +185,8 @@ export class UsersComponent extends AppComponentBase {
             this._userService.getAllUsers().subscribe(result => {
                 this.storeuserList = result
                 this.storeData.setUserList(this.storeuserList)
-            })
-
-        })
+            });
+        });
     }
 
     createUser() {
