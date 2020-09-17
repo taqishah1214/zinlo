@@ -23,18 +23,14 @@ export class PaymentCompletedComponent extends AppComponentBase {
     super(_injector);
   }
   ngOnInit() {
-    debugger
     let searchParams = new URLSearchParams(window.location.search)
-    // this.sessionId = this._activatedRoute.snapshot.queryParams['sessionId'];
     this.sessionId = searchParams.get('sessionId');
     this._stripePaymentService.getPayment(this.sessionId)
       .subscribe(payment => {
-        debugger
         if (this._sessionService.tenantId !== payment.tenantId) {
-          this.paymentResult = true;
-          abp.multiTenancy.setTenantIdCookie(null);
+
+          this._router.navigate(['']);
         }
-        debugger
         this.paymentResult = false;
         this.paymentId = payment.id;
         this.getPaymentResult();
@@ -44,7 +40,9 @@ export class PaymentCompletedComponent extends AppComponentBase {
     this._stripePaymentService.getPaymentResult(this.paymentId).subscribe(
       paymentResult => {
         if (paymentResult.paymentDone) {
-          this._router.navigate(['account/payment-completed']);
+          debugger
+          this.paymentResult = true;
+          abp.multiTenancy.setTenantIdCookie(null);
         } else {
           this.controlAgain();
         }

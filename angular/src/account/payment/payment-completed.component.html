@@ -1,12 +1,12 @@
 <div class="d-flex h-100 align-items-center" style="padding-bottom: 150px !important;">
     <div class="kt-login__form align-middle m-0 text-center">
-        <div *ngIf="paymentResult" class="kt-login__title mb-3">
+        <div *ngIf="!paymentResult" class="kt-login__title mb-3">
             <h3>{{"PleaseWait" | localize}}</h3>
             <p class="text-center">
                 {{"ReceivingPaymentResult" | localize}} {{"PleaseWait" | localize}}
             </p>
         </div>
-        <div *ngIf="!paymentResult" class="kt-login__title mb-3">
+        <div *ngIf="paymentResult" class="kt-login__title mb-3">
             <h3>{{"ThankYou" | localize}}</h3>
             <p class="text-center">
                 {{"YourPaymentHasBeenCompleted" | localize}}
