@@ -96,6 +96,7 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
     }
 
     checkout(gatewayType) {
+        debugger
         let input = {} as CreatePaymentDto;
         input.editionId = this.editionId;
         input.editionPaymentType =0;// ((this.editionPaymentType) as any);
@@ -108,7 +109,6 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
         console.log(input);
         this._paymentAppService.createPayment(input)
             .subscribe((paymentId: number) => {
-                console.log("in subscribe")
                 this._router.navigate(['account/' + this.getPaymentGatewayType(gatewayType).toLocaleLowerCase() + '-purchase'],
                     {
                         queryParams: {
@@ -120,7 +120,6 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
     }
 
     getPaymentGatewayType(gatewayType): string {
-        console.log("payment type" , this._paymnetHelperService.getPaymentGatewayType(gatewayType));
         return this._paymnetHelperService.getPaymentGatewayType(gatewayType);
     }
 
