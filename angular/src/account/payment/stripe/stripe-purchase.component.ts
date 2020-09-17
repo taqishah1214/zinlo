@@ -58,7 +58,7 @@ export class StripePurchaseComponent extends AppComponentBase implements OnInit 
                 .subscribe((config: StripeConfigurationDto) => {
                     this._stripePaymentAppService.createPaymentSession(new StripeCreatePaymentSessionInput({
                         paymentId: this.paymentId,
-                        successUrl: AppConsts.appBaseUrl + '/account/stripe-payment-result',
+                        successUrl: AppConsts.appBaseUrl + '/account/payment-completed',
                         cancelUrl: AppConsts.appBaseUrl + '/account/stripe-cancel-payment'
                     })).subscribe(sessionId => {
                         this._paymentAppService.getPayment(this.paymentId)
