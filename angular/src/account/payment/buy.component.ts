@@ -96,7 +96,6 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
     }
 
     checkout(gatewayType) {
-        debugger
         let input = {} as CreatePaymentDto;
         input.editionId = this.editionId;
         input.editionPaymentType =0;// ((this.editionPaymentType) as any);

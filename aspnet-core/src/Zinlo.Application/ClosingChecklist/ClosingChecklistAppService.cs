@@ -464,7 +464,7 @@ namespace Zinlo.ClosingChecklist
                           .GetProfilePictureById((Guid)task.Assignee.ProfilePictureId).Result.ProfilePicture
                     : "";
                 output.MonthStatus = await GetMonthStatus(task.ClosingMonth);
-                output.DueDate = task.DueDate;
+                output.DueDate = task.DueDate.Date;
                 output.IsDeleted = task.IsDeleted;
 
                 return output;

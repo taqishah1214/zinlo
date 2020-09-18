@@ -126,7 +126,8 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
       }
   
 
-      this.accountDto.creatorUserId = result.creatorUserId; 
+      this.accountDto.creatorUserId = result.creatorUserId;
+      this.selectedUserId.selectedUserId = result.assigniId; 
       if(history.state.data.userId){
         this.accountDto.assigneeId=history.state.data.userId
       }

@@ -268,6 +268,22 @@ namespace Zinlo.MultiTenancy.Payments
             payment.SetAsFailed();
         }
 
+        public async Task<bool> UpdatePaymentStatus(long paymentId, SubscriptionPaymentStatus status)
+        {
+            var getPaymentById = await _subscriptionPaymentRepository.FirstOrDefaultAsync(p => p.Id == paymentId);
+            if (status == SubscriptionPaymentStatus.Completed)
+            {
+                getPaymentById.SetAsCompleted();
+                await _subscriptionPaymentRepository.UpdateAsync(getPaymentById);
+            }
+
+            var tenant = _tenantManager.GetById(getPaymentById.TenantId);
+            tenant.SubscriptionEndDateUtc = DateTime.Now.AddDays(getPaymentById.DayCount);
+            tenant.SubscriptionPaymentType = getPaymentById.IsRecurring ? SubscriptionPaymentType.RecurringAutomatic : SubscriptionPaymentType.Manual;
+            
+            return true;
+        }
+
         private async Task<decimal> CalculateAmountForPaymentAsync(SubscribableEdition targetEdition, PaymentPeriodType? periodType, EditionPaymentType editionPaymentType, Tenant tenant)
         {
             if (editionPaymentType != EditionPaymentType.Upgrade)

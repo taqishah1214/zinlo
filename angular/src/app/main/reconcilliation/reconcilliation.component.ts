@@ -173,7 +173,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       return;
     }
 
-    this.primengTableHelper.getMaxResultCount(this.paginator, event)
+    var maxResultCount =this.primengTableHelper.getMaxResultCount(this.paginator, event) === 0 ? 10 : this.primengTableHelper.getMaxResultCount(this.paginator, event);
     this.primengTableHelper.showLoadingIndicator();
     this._chartOfAccountService.getAll(
       this.filterText,
@@ -184,7 +184,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       false,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
-      this.primengTableHelper.getMaxResultCount(this.paginator, event)
+      maxResultCount
     ).subscribe(result => {
       this.plusUserBadgeForHeader = false;
       this.primengTableHelper.totalRecordsCount = result.totalCount;

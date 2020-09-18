@@ -217,7 +217,7 @@ namespace Zinlo.MultiTenancy.Payments
 
             return new StripePaymentResultOutput
             {
-                PaymentDone = true
+                PaymentDone = false
             };
         }
     }

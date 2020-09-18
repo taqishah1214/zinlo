@@ -144,6 +144,8 @@ export class Checklist extends AppComponentBase implements OnInit  {
       this.paginator.changePage(0);
       return;
     }
+    var maxResultCount =this.primengTableHelper.getMaxResultCount(this.paginator, event) === 0 ? 10 : this.primengTableHelper.getMaxResultCount(this.paginator, event);
+
     this.dateFilter = this.selectedDate;
     this.primengTableHelper.showLoadingIndicator();
     this._closingChecklistService.getAll(
@@ -157,7 +159,8 @@ export class Checklist extends AppComponentBase implements OnInit  {
       this.AllOrActive,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
-      this.primengTableHelper.getMaxResultCount(this.paginator, event)
+      maxResultCount
+      
     ).subscribe(result => {
       this.primengTableHelper.totalRecordsCount = result.totalCount;
       this.primengTableHelper.records = result.items;
