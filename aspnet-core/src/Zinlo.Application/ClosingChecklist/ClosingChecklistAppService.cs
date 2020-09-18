@@ -180,7 +180,7 @@ namespace Zinlo.ClosingChecklist
                 {
                     MonthStatus = status,
                     OverallMonthlyAssignee = getUserWithPictures,
-                    DueDate = x.Key,
+                    DueDate = x.Key.Date,
                     Group = x.Select(y => new ClosingCheckListForViewDto
                     {
                         DueDate = y.DueDate,
@@ -330,6 +330,7 @@ namespace Zinlo.ClosingChecklist
                     task.CategoryId = input.CategoryId;
                     task.AssigneeId = input.AssigneeId;
                     task.TaskName = input.TaskName;
+                    task.DueOn = input.DueOn;
                     task.TaskUpdatedTime = DateTime.UtcNow;
                     if (isDueDatetChanged)
                     {
