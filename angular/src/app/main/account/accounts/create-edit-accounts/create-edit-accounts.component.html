@@ -121,8 +121,10 @@
                                             <div class="dropdown-menu">
                                                 <div class="dropdown-item" style="cursor: pointer;" *ngFor="let item of recociledList"
                                                     (click)="recociledClick(item.id,item.name)">
-                                                    <a *ngIf="item.id == 3" data-toggle="modal"
-                                                        data-target="#kt_modal_KTDatatable_local">{{item.name}}</a>
+                                                    <div style="width: 100%;" *ngIf="item.id == 3" data-toggle="modal"
+                                                    data-target="#kt_modal_KTDatatable_local">
+                                                        <a >{{item.name}}</a>
+                                                    </div>        
                                                     <a *ngIf="item.id != 3">{{item.name}}</a>
                                                 </div>
                                             </div>
