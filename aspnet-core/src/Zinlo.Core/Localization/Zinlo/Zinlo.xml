@@ -449,7 +449,7 @@
     <text name="NewRegisteredTenantsIsActiveByDefault_Hint">If you disable this, new tenants will not be active (and can not login) until admin manually activates the account.</text>
     <text name="TenantSignUp">Tenant SignUp</text>
     <text name="NewTenantRegisteredNotificationDefinition">On a new tenant registered to the application.</text>
-    <text name="NewTenantRegisteredNotificationMessage">A new tenant registered to the application. Tenancy name: {tenancyName}. Please activate this tenant.</text>
+    <text name="NewTenantRegisteredNotificationMessage">A new tenant registered to the application. Tenancy name: {tenancyName}.</text>
     <text name="LoginAttempts">Login attempts</text>
     <text name="Failed">Failed</text>
     <text name="NewTenant">New tenant</text>
@@ -894,7 +894,7 @@
     <text name="You">You</text>
     <text name="Anonymous">Anonymous</text>
     <text name="GoToHomePage">Got to home page</text>
-    <text name="ActivationMessage">Your Tenant has been created. Please wait for the admin activation.</text>
+    <text name="ActivationMessage">Your Tenant has been created and activated as well.</text>
     <text name="Messages">Messages</text>
     <text name="ThisNotificationDoesntBelongToYou">This notification doesn't belong to you.</text>
     <text name="CookieConsent_Message">This website uses cookies to ensure you get the best experience on our website.</text>

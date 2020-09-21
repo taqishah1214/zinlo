@@ -270,6 +270,10 @@ namespace Zinlo.MultiTenancy.Payments
 
         public async Task<bool> UpdatePaymentStatus(long paymentId, SubscriptionPaymentStatus status)
         {
+            if (status == SubscriptionPaymentStatus.Completed)
+            {
+                await TenantManager.Active(true, (int) AbpSession.TenantId);
+            }
             var getPaymentById = await _subscriptionPaymentRepository.FirstOrDefaultAsync(p => p.Id == paymentId);
             if (status == SubscriptionPaymentStatus.Completed)
             {

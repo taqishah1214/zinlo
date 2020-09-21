@@ -272,6 +272,13 @@ namespace Zinlo.MultiTenancy
             return newTenantId;
         }
 
+        public async Task Active(bool active, int tenantId)
+        {
+            var tenant = await FindByIdAsync(tenantId);
+            tenant.IsActive = active;
+            await UpdateAsync(tenant);
+        }
+
         public async Task CheckEditionAsync(int? editionId, bool isInTrialPeriod)
         {
             if (!editionId.HasValue || !isInTrialPeriod)

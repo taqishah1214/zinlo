@@ -24,5 +24,6 @@ namespace Zinlo.MultiTenancy
         Task ResetTenantSpecificFeatures(EntityDto input);
 
         Task UnlockTenantAdmin(EntityDto input);
+        Task Active(bool active, int tenantId);
     }
 }

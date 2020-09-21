@@ -152,5 +152,10 @@ namespace Zinlo.MultiTenancy
                 }
             }
         }
+
+        public async Task Active(bool active, int tenantId)
+        {
+            await TenantManager.Active(active, tenantId);
+        }
     }
 }
