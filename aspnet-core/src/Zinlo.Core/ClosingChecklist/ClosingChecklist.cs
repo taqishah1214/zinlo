@@ -2,6 +2,7 @@
 using Abp.Domain.Entities.Auditing;
 using System;
 using Abp.Auditing;
+using Abp.Timing;
 using Zinlo.Authorization.Users;
 using Zinlo.Categories;
 using Zinlo.InstructionVersions;
@@ -20,6 +21,7 @@ namespace Zinlo.ClosingChecklist
         public virtual long CategoryId { get; set; }
         public User Assignee { get; set; }
         public virtual long AssigneeId { get; set; }
+        [DisableDateTimeNormalization]
         public virtual DateTime ClosingMonth { get; set; }
         public Status Status { get; set; }
         [DisableAuditing]
@@ -29,6 +31,7 @@ namespace Zinlo.ClosingChecklist
         public int NoOfMonths { get; set; }
         public int DueOn { get; set; }
         [DisableAuditing]
+        [DisableDateTimeNormalization]
         public DateTime DueDate { get; set; }
         public DaysBeforeAfter DayBeforeAfter { get; set; }
         public bool EndOfMonth { get; set; }
@@ -36,6 +39,7 @@ namespace Zinlo.ClosingChecklist
         [DisableAuditing]
         public Guid GroupId { get; set; }
         [DisableAuditing]
+        [DisableDateTimeNormalization]
         public DateTime? TaskUpdatedTime { get; set; }
     }
     public enum Status

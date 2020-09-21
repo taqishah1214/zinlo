@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Abp.Timing;
 
 namespace Zinlo.ClosingChecklist.Dtos
 {
@@ -15,6 +16,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public long Id { get; set; }
         public long StatusId { get; set; }
         public long AssigneeId { get; set; }
+        [DisableDateTimeNormalization]
         public DateTime DueDate { get; set; }
        public bool IsDeleted { get; set; }
 

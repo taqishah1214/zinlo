@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Abp.Timing;
 
 namespace Zinlo.ClosingChecklist.Dtos
 {
@@ -15,6 +16,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         
 
         public List<GetUserWithPicture> OverallMonthlyAssignee { get; set; }
+        [DisableDateTimeNormalization]
         public DateTime DueDate { get; set; }
         public IEnumerable<ClosingCheckListForViewDto> Group { get; set; }
         public bool MonthStatus { get; set; }

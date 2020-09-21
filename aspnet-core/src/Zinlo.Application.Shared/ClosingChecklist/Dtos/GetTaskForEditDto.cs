@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Abp.Timing;
 using Zinlo.Attachments.Dtos;
 using Zinlo.Comment.Dtos;
 
 namespace Zinlo.ClosingChecklist.Dtos
 {
+    [DisableDateTimeNormalization]
     public class GetTaskForEditDto
     {
         public long Id { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Abp.Application.Services.Dto;
+using Abp.Timing;
 using Zinlo.Comment.Dtos;
 
 namespace Zinlo.ClosingChecklist.Dtos
@@ -10,6 +11,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public virtual string TaskName { get; set; }
         public virtual long CategoryId { get; set; }
         public virtual long AssigneeId { get; set; }
+        [DisableDateTimeNormalization]
         public virtual DateTime ClosingMonth { get; set; }
         public virtual long? VersionId { get; set; }
         public virtual int TenantId { get; set; }

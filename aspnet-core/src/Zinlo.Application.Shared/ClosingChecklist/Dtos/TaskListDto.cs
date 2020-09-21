@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Abp.Timing;
 
 namespace Zinlo.ClosingChecklist.Dtos
 {
+    [DisableDateTimeNormalization]
     public class TaskListDto
     {
         public string TaskName { get; set; }

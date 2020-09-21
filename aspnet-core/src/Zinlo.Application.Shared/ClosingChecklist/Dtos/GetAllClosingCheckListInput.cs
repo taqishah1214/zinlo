@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Abp.Runtime.Validation;
+using Abp.Timing;
 
 namespace Zinlo.ClosingChecklist.Dtos
 {
+    [DisableDateTimeNormalization]
     public class GetAllClosingCheckListInput : PagedAndSortedResultRequestDto,IGetTaskInput
     {
         public string Filter { get; set; }
@@ -19,7 +21,7 @@ namespace Zinlo.ClosingChecklist.Dtos
 
     }
 
-
+    [DisableDateTimeNormalization]
     public class GetTaskReportInput : PagedAndSortedResultRequestDto, IGetTaskInput
     {
         public string Filter { get; set; }
@@ -29,7 +31,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
     }
-
+    [DisableDateTimeNormalization]
     public class GetTaskToExcelInput : IGetTaskInput
     {
         public string Filter { get; set; }
