@@ -52,7 +52,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
 
         injector: Injector,
         private _tenantRegistrationService: TenantRegistrationServiceProxy,
-        private _subscriptionService: SubscriptionServiceProxy,
         private _userRegistrationServiceProxy: UserRegisterServiceServiceProxy,
         private _tenantRegistrationHelper: TenantRegistrationHelperService,
         private _tenantNameService:AccountServiceProxy,
@@ -461,7 +460,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 if(this.businessInfoValidations()){
                     this.businessInfoDto.businessName=this.businessInfoForm.value.businessName
                     this.businessInfoDto.tenantName=this.businessInfoForm.value.tenantName
-                    this.businessInfoDto.phoneNumber=this.businessInfoForm.value.phoneNumber
+                    this.businessInfoDto.phoneNumber=this.businessInfoForm.value.phone
                     this.businessInfoDto.state=this.businessInfoForm.value.state
                     this.businessInfoDto.city=this.businessInfoForm.value.city
                     this.businessInfoDto.addressLineOne=this.businessInfoForm.value.addressLineOne
