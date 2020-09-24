@@ -47,10 +47,9 @@ export class PaymentCompletedComponent extends AppComponentBase {
           this.paymentResult = true;
           abp.multiTenancy.setTenantIdCookie(null);
           var url = AppConsts.appBaseUrl;
-          console.log("url", url);
           var i = url.indexOf ('://') + 3;
-          var currentURL = url.substring(0, i) + paymentResult.tenancyName + "." + url.substring (i, url.length);
-          console.log("current", currentURL);
+          var tenantURL = url.substring(0, i) + paymentResult.tenancyName + "." + url.substring (i, url.length);
+          window.location.href = tenantURL;
         } else {
           this.controlAgain();
         }
