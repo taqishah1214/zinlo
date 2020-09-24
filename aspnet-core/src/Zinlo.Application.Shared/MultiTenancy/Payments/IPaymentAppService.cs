@@ -33,6 +33,6 @@ namespace Zinlo.MultiTenancy.Payments
         Task ExtendSucceed(long paymentId);
 
         Task PaymentFailed(long paymentId);
-        Task<bool> UpdatePaymentStatus(long paymentId, SubscriptionPaymentStatus status);
+        Task<PaymentResultDto> UpdatePaymentStatus(long paymentId, SubscriptionPaymentStatus status);
     }
 }

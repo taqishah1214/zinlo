@@ -12512,7 +12512,7 @@ export class PaymentServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    updatePaymentStatus(paymentId: number | undefined, body: SubscriptionPaymentStatus | undefined): Observable<boolean> {
+    updatePaymentStatus(paymentId: number | undefined, body: SubscriptionPaymentStatus | undefined): Observable<PaymentResultDto> {
         let url_ = this.baseUrl + "/api/services/app/Payment/UpdatePaymentStatus?";
         if (paymentId === null)
             throw new Error("The parameter 'paymentId' cannot be null.");
@@ -12539,14 +12539,14 @@ export class PaymentServiceProxy {
                 try {
                     return this.processUpdatePaymentStatus(<any>response_);
                 } catch (e) {
-                    return <Observable<boolean>><any>_observableThrow(e);
+                    return <Observable<PaymentResultDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<boolean>><any>_observableThrow(response_);
+                return <Observable<PaymentResultDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processUpdatePaymentStatus(response: HttpResponseBase): Observable<boolean> {
+    protected processUpdatePaymentStatus(response: HttpResponseBase): Observable<PaymentResultDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -12557,7 +12557,7 @@ export class PaymentServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            result200 = PaymentResultDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -12565,7 +12565,7 @@ export class PaymentServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<boolean>(<any>null);
+        return _observableOf<PaymentResultDto>(<any>null);
     }
 
     /**
@@ -29024,6 +29024,46 @@ export interface ISubscriptionPaymentDto {
     errorUrl: string | undefined;
     editionPaymentType: EditionPaymentType;
     id: number;
+}
+
+export class PaymentResultDto implements IPaymentResultDto {
+    tenancyName!: string | undefined;
+    paymentStatus!: boolean;
+
+    constructor(data?: IPaymentResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.tenancyName = data["tenancyName"];
+            this.paymentStatus = data["paymentStatus"];
+        }
+    }
+
+    static fromJS(data: any): PaymentResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tenancyName"] = this.tenancyName;
+        data["paymentStatus"] = this.paymentStatus;
+        return data; 
+    }
+}
+
+export interface IPaymentResultDto {
+    tenancyName: string | undefined;
+    paymentStatus: boolean;
 }
 
 export class PayPalConfigurationDto implements IPayPalConfigurationDto {

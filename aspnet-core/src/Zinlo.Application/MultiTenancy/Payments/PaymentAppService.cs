@@ -268,11 +268,13 @@ namespace Zinlo.MultiTenancy.Payments
             payment.SetAsFailed();
         }
 
-        public async Task<bool> UpdatePaymentStatus(long paymentId, SubscriptionPaymentStatus status)
+        public async Task<PaymentResultDto> UpdatePaymentStatus(long paymentId, SubscriptionPaymentStatus status)
         {
+            var paymentResult = new PaymentResultDto();
             if (status == SubscriptionPaymentStatus.Completed)
             {
-                await TenantManager.Active(true, (int) AbpSession.TenantId);
+                paymentResult.TenancyName = await TenantManager.Active(true, (int) AbpSession.TenantId);
+                paymentResult.PaymentStatus = true;
             }
             var getPaymentById = await _subscriptionPaymentRepository.FirstOrDefaultAsync(p => p.Id == paymentId);
             if (status == SubscriptionPaymentStatus.Completed)
@@ -285,7 +287,7 @@ namespace Zinlo.MultiTenancy.Payments
             tenant.SubscriptionEndDateUtc = DateTime.Now.AddDays(getPaymentById.DayCount);
             tenant.SubscriptionPaymentType = getPaymentById.IsRecurring ? SubscriptionPaymentType.RecurringAutomatic : SubscriptionPaymentType.Manual;
             
-            return true;
+            return paymentResult;
         }
 
         private async Task<decimal> CalculateAmountForPaymentAsync(SubscribableEdition targetEdition, PaymentPeriodType? periodType, EditionPaymentType editionPaymentType, Tenant tenant)

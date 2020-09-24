@@ -893,8 +893,8 @@
     <text name="ReadState">Read state</text>
     <text name="You">You</text>
     <text name="Anonymous">Anonymous</text>
-    <text name="GoToHomePage">Got to home page</text>
-    <text name="ActivationMessage">Your Tenant has been created and activated as well.</text>
+    <text name="GoToHomePage">Go to home page</text>
+    <text name="ActivationMessage">Your tenant has been created and activated.</text>
     <text name="Messages">Messages</text>
     <text name="ThisNotificationDoesntBelongToYou">This notification doesn't belong to you.</text>
     <text name="CookieConsent_Message">This website uses cookies to ensure you get the best experience on our website.</text>
@@ -1066,7 +1066,7 @@
     <text name="ReceivingPaymentResult">Receiving payment result.</text>
     <text name="ThankYou">Thank You</text>
     <text name="PleaseWait">Please Wait</text>
-    <text name="YourPaymentHasBeenCompleted">Your payment has been completed.</text>
+    <text name="YourPaymentHasBeenCompleted">Your payment has been processed.</text>
     <text name="ExternalPaymentId">External Payment Id</text>
     <text name="CostOfProration">Price difference during the period</text>
 

@@ -1,5 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { PaymentServiceProxy, StripePaymentServiceProxy, SubscriptionPaymentStatus, TenantServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AbpSessionService } from 'abp-ng2-module/dist/src/session/abp-session.service';
@@ -42,9 +43,14 @@ export class PaymentCompletedComponent extends AppComponentBase {
   getPaymentResult(): void {
     this._paymentService.updatePaymentStatus(this.paymentId,SubscriptionPaymentStatus.Completed).subscribe(
       paymentResult => {
-        if (paymentResult) {
+        if (paymentResult.paymentStatus) {
           this.paymentResult = true;
           abp.multiTenancy.setTenantIdCookie(null);
+          var url = AppConsts.appBaseUrl;
+          console.log("url", url);
+          var i = url.indexOf ('://') + 3;
+          var currentURL = url.substring(0, i) + paymentResult.tenancyName + "." + url.substring (i, url.length);
+          console.log("current", currentURL);
         } else {
           this.controlAgain();
         }
