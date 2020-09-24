@@ -15,6 +15,7 @@ export class PaymentCompletedComponent extends AppComponentBase {
   paymentResult :boolean;
   controlTimeout = 1000 * 5;
   maxControlCount = 5;
+  tenantUrl :  string;
   constructor(
     _injector: Injector,
     private _paymentService: PaymentServiceProxy,
@@ -48,8 +49,7 @@ export class PaymentCompletedComponent extends AppComponentBase {
           abp.multiTenancy.setTenantIdCookie(null);
           var url = AppConsts.appBaseUrl;
           var i = url.indexOf ('://') + 3;
-          var tenantURL = url.substring(0, i) + paymentResult.tenancyName + "." + url.substring (i, url.length);
-          window.location.href = tenantURL;
+          this.tenantUrl = url.substring(0, i) + paymentResult.tenancyName + "." + url.substring (i, url.length);
         } else {
           this.controlAgain();
         }
@@ -58,6 +58,10 @@ export class PaymentCompletedComponent extends AppComponentBase {
         this.controlAgain();
       }
     );
+  }
+
+  goToHome(){
+    window.location.href = this.tenantUrl;
   }
 
   controlAgain() {

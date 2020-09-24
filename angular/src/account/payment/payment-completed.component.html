@@ -18,7 +18,7 @@
         <div *ngIf="paymentResult" class="my-5">&emsp;
             <i class="fas fa-check fa-4x text-success"></i>
         </div>
-        <a *ngIf="paymentResult" class="btn btn-info" href="">
+        <a *ngIf="paymentResult" class="btn btn-info" (click)="goToHome()">
             {{"GoToHomePage" | localize}}</a>
     </div>
 </div>
