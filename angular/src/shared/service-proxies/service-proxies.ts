@@ -3305,12 +3305,13 @@ export class ChartsofAccountServiceProxy {
      * @param assigneeId (optional) 
      * @param allOrActive (optional) 
      * @param beginingAmountCheck (optional) 
+     * @param includeNotReconciled (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, accountType: number | undefined, selectedMonth: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, beginingAmountCheck: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
+    getAll(filter: string | undefined, accountType: number | undefined, selectedMonth: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, beginingAmountCheck: boolean | undefined, includeNotReconciled: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
         let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -3336,6 +3337,10 @@ export class ChartsofAccountServiceProxy {
             throw new Error("The parameter 'beginingAmountCheck' cannot be null.");
         else if (beginingAmountCheck !== undefined)
             url_ += "BeginingAmountCheck=" + encodeURIComponent("" + beginingAmountCheck) + "&"; 
+        if (includeNotReconciled === null)
+            throw new Error("The parameter 'includeNotReconciled' cannot be null.");
+        else if (includeNotReconciled !== undefined)
+            url_ += "IncludeNotReconciled=" + encodeURIComponent("" + includeNotReconciled) + "&"; 
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)

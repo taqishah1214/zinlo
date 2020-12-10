@@ -1050,3 +1050,10 @@ tr.table-row-collapsible li {
     padding-top: 0px !important;
     margin-top: 0px !important;
 }
+.abc {
+    width: 350px;
+    margin-left: auto;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}

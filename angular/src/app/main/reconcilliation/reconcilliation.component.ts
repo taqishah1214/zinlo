@@ -64,6 +64,8 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   checkActiveMonth:boolean=true;
   activeSaveButton:boolean=false;
   attachmentPathsTrialBalance: any = [];
+  includeNotReconciled: boolean = false;
+  marked = false;
 
 
   constructor(private _router: Router,
@@ -101,6 +103,11 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
     this.accountType = "Account Type"
     this.currentDate = new Date();
     this.loadAccountSubType();
+  }
+
+  includeNotReconciledCheckBoxHandler(e){
+    this.includeNotReconciled= e.target.checked;
+    this.getAllAccounts()
   }
 
   onOpenCalendar(container) {
@@ -182,6 +189,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       this.getAccountWithAssigneeId,
       false,
       false,
+      this.includeNotReconciled,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       maxResultCount
