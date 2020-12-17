@@ -449,6 +449,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
         false,
         true,
         this.reconciliationTypeFilter,
+        false,
         this.primengTableHelper.getSorting(this.dataTable),
         this.primengTableHelper.getSkipCount(this.paginator, event),
         this.primengTableHelper.getMaxResultCount(this.paginator, event)

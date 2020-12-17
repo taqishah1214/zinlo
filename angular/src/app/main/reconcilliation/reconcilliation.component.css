@@ -1052,6 +1052,7 @@ tr.table-row-collapsible li {
 }
 .abc {
     width: 350px;
+    margin-right: 2px;
     margin-left: auto;
     margin-top: 10px;
     display: flex;

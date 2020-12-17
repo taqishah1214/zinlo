@@ -177,6 +177,7 @@ this.chartsOfAccountList.forEach(element => {
       this.AllOrActive,
       false,
       this.reconciliationTypeFilter,
+      false,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event),

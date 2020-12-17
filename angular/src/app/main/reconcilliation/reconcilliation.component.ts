@@ -196,6 +196,7 @@ reconciliationTypeFilterHandler(event) {
       false,
       false,
       this.reconciliationTypeFilter,
+      this.includeNotReconciled,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       maxResultCount
