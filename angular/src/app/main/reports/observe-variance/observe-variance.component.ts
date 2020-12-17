@@ -37,6 +37,7 @@ export class ObserveVarianceComponent extends AppComponentBase {
   firstMonthid = 0;
   secondMonthid = 0;
   compareBalanceList : any = []
+  reconcilitaionTypeFilter: number = 0
   constructor(
     injector: Injector,
     private _trialBalanceServiceProxy: TrialBalanceReportingServiceProxy,private _chartOfAccountService: ChartsofAccountServiceProxy,private  _compareVarianceServiceProxy: CompareVarianceServiceProxy , private userDate: StoreDateService,private _fileDownloadService: FileDownloadService) {
@@ -65,7 +66,7 @@ export class ObserveVarianceComponent extends AppComponentBase {
         0,
         false,
         false,
-        false,
+        this.reconcilitaionTypeFilter,
         this.primengTableHelper.getSorting(this.dataTable),
         this.primengTableHelper.getSkipCount(this.paginator, event),
         this.primengTableHelper.getMaxResultCount(this.paginator, event)

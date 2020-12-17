@@ -72,7 +72,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   checkActiveMonth:boolean=true;
   activeSaveButton:boolean=false;
   actionButtonPermission;
-
+  reconciliationTypeFilter: number = 0
   uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
   uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsTrialBalanceFromExcel';
 
@@ -176,7 +176,7 @@ this.chartsOfAccountList.forEach(element => {
       this.getAccountWithAssigneeId,
       this.AllOrActive,
       false,
-      false,
+      this.reconciliationTypeFilter,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       this.primengTableHelper.getMaxResultCount(this.paginator, event),

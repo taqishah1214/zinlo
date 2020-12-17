@@ -73,7 +73,7 @@ namespace Zinlo.ChartsofAccount
                         .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
                         .WhereIf(input.BeginingAmountCheck, e => (e.Reconciled == ChartofAccounts.Reconciled.BeginningAmount && e.LinkedAccountNumber == null))
                         .WhereIf(GetRoleName().Equals("User"), p => p.AssigneeId == AbpSession.UserId)
-                        .WhereIf(!input.IncludeNotReconciled , e => (e.ReconciliationType == ChartofAccounts.ReconciliationType.Amortization || e.ReconciliationType == ChartofAccounts.ReconciliationType.Itemized));
+                        .WhereIf(input.ReconciliationType != 0, e => (e.ReconciliationType == (ReconciliationType)input.ReconciliationType));
                 var monthStatus = await GetMonthStatus(input.SelectedMonth);
                 var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "accountName asc").PageBy(input).ToList();
                 var totalCount = await query.CountAsync();
