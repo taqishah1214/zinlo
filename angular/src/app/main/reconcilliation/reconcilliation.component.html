@@ -168,7 +168,7 @@
                                         <select class="form-control border-grey" name="categoryFilter"
                                         [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
                                         id="exampleFormControlSelect2">
-                                            <option value="0">All</option>
+                                            <option value="0">Account type</option>
                                             <option *ngFor="let item of accountTypeList;" [value]="item.id">
                                                 {{item.name}}
                                             </option>
@@ -186,10 +186,22 @@
                                 </div>              
                             </div>
                             <div class="w-100">
-                                <div class="abc">
-                                    <input name="includeNotReconciled" type="checkbox" (change)="includeNotReconciledCheckBoxHandler($event)" class="mr-1"/>
-                                     <span>Include Not Reconciled Accounts</span>
-                                </div>
+                                <div class="row abc">
+                                    <div class="form-group category-selector">
+                                        <select class="form-control border-grey" name="reconciliationTypeFilter"
+                                        [(ngModel)]="reconciliationTypeFilter" (change)="reconciliationTypeFilterHandler($event)"
+                                        id="exampleFormControlSelect2">
+                                            <option value="0">Reconciliation type</option>
+                                            <option *ngFor="let item of reconcillationTypeList;" [value]="item.id">
+                                                {{item.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="abc">
+                                        <input name="includeNotReconciled" type="checkbox" (change)="includeNotReconciledCheckBoxHandler($event)" class="mr-1"/>
+                                        <span>Include Not Reconciled Accounts</span>
+                                    </div>
+                                </div>                 
                             </div>
                         </div>
                     </div>

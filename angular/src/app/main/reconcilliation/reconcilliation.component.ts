@@ -47,7 +47,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   accountSubTypes: any = [];
   accountType : any;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Asset" }, { id: 3, name: "Liability" }];
-  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" },,{ id: 3, name: "Not Reconciled" }]
+  reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" },{ id: 3, name: "Not Reconciled" }]
   StatusColorBox: any = ["bg-blue", "bg-sea-green", "bg-gray"]
   updateAssigneeOnHeader: boolean = true;
   currentDate :any 
@@ -66,6 +66,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   attachmentPathsTrialBalance: any = [];
   includeNotReconciled: boolean = false;
   marked = false;
+  reconciliationTypeFilter: number = 0;
 
 
   constructor(private _router: Router,
@@ -160,6 +161,11 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
   });
 }
 
+reconciliationTypeFilterHandler(event) {
+  this.reconciliationTypeFilter = parseInt(event.target.value)
+  this.updateAssigneeOnHeader = false;
+  this.getAllAccounts()
+}
 
   filterByMonth(event) {
     if(event===1){
@@ -189,6 +195,7 @@ export class ReconcilliationComponent extends AppComponentBase implements OnInit
       this.getAccountWithAssigneeId,
       false,
       false,
+      this.reconciliationTypeFilter,
       this.includeNotReconciled,
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),

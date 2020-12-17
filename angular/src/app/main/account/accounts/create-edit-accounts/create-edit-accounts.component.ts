@@ -49,6 +49,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   linkAccountNumber
   searchAccount ;
   reconcilliationMessage = false
+  reconciliationTypeFilter: number = 0
 
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
@@ -447,6 +448,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
         0,
         false,
         true,
+        this.reconciliationTypeFilter,
         false,
         this.primengTableHelper.getSorting(this.dataTable),
         this.primengTableHelper.getSkipCount(this.paginator, event),
