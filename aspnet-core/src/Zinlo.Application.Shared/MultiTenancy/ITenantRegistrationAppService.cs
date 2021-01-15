@@ -10,7 +10,9 @@ namespace Zinlo.MultiTenancy
     {
         Task<RegisterTenantOutput> RegisterTenant(RegisterTenantInput input);
 
-        Task<EditionsSelectOutput> GetEditionsForSelect();
+        Task<string> CheckTheLinkAndReturnEmail(string Link);
+
+        Task<EditionsSelectOutput> GetEditionsForSelect(string Link);
 
         Task<EditionSelectDto> GetEdition(int editionId);
         Task<bool> UnRegisterTenant(int tenantId);

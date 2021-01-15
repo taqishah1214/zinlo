@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Zinlo.MultiTenancy.Payments;
+using System.Text;
+using Abp.Runtime.Caching;
 
 namespace Zinlo.MultiTenancy
 {
@@ -37,6 +39,8 @@ namespace Zinlo.MultiTenancy
         private readonly ILocalizationContext _localizationContext;
         private readonly TenantManager _tenantManager;
         private readonly ISubscriptionPaymentRepository _subscriptionPaymentRepository;
+        private readonly ICacheManager _cacheManager;
+
 
         public TenantRegistrationAppService(
             IMultiTenancyConfig multiTenancyConfig,
@@ -45,7 +49,8 @@ namespace Zinlo.MultiTenancy
             IAppNotifier appNotifier,
             ILocalizationContext localizationContext,
             TenantManager tenantManager,
-            ISubscriptionPaymentRepository subscriptionPaymentRepository)
+            ISubscriptionPaymentRepository subscriptionPaymentRepository,
+            ICacheManager cacheManager)
         {
             _multiTenancyConfig = multiTenancyConfig;
             _recaptchaValidator = recaptchaValidator;
@@ -54,6 +59,7 @@ namespace Zinlo.MultiTenancy
             _localizationContext = localizationContext;
             _tenantManager = tenantManager;
             _subscriptionPaymentRepository = subscriptionPaymentRepository;
+            _cacheManager = cacheManager;
 
             AppUrlService = NullAppUrlService.Instance;
         }
@@ -73,7 +79,7 @@ namespace Zinlo.MultiTenancy
             {
                 CheckTenantRegistrationIsEnabled();
 
-                if (input.CaptchaResponse.Length>0&&UseCaptchaOnRegistration())
+                if (input.CaptchaResponse.Length > 0 && UseCaptchaOnRegistration())
                 {
                     await _recaptchaValidator.ValidateAsync(input.CaptchaResponse);
                 }
@@ -112,11 +118,12 @@ namespace Zinlo.MultiTenancy
                     isInTrialPeriod,
                     AppUrlService.CreateEmailActivationUrlFormat(input.TenancyName)
                 );
+                _cacheManager.GetCache("SpecficEdition").Remove("myCacheKey");
 
                 var tenant = await TenantManager.GetByIdAsync(tenantId);
-                
+
                 await _appNotifier.NewTenantRegisteredAsync(tenant);
-                
+
                 return new RegisterTenantOutput
                 {
                     TenantId = tenant.Id,
@@ -150,7 +157,7 @@ namespace Zinlo.MultiTenancy
             }
         }
 
-        public async Task<EditionsSelectOutput> GetEditionsForSelect()
+        public async Task<EditionsSelectOutput> GetEditionsForSelect(string Link)
         {
             var features = FeatureManager
                 .GetAll()
@@ -169,9 +176,29 @@ namespace Zinlo.MultiTenancy
             var featureDictionary = features.ToDictionary(feature => feature.Name, f => f);
 
             var editionWithFeatures = new List<EditionWithFeaturesDto>();
-            foreach (var edition in editions)
+
+            if (!String.IsNullOrEmpty("hammad@cc.com"))
             {
-                editionWithFeatures.Add(await CreateEditionWithFeaturesDto(edition, featureDictionary));
+                //string email = validateLink(Link);
+                string email = "hammad@cc.com";
+
+                foreach (var edition in editions)
+                {
+                    if (String.Equals(edition.CustomerEmail, email))
+                    {
+                        editionWithFeatures.Add(await CreateEditionWithFeaturesDto(edition, featureDictionary));
+                    }
+                }
+            }
+            else
+            {
+                foreach (var edition in editions)
+                {
+                    if (String.IsNullOrEmpty(edition.CustomerEmail))
+                    {
+                        editionWithFeatures.Add(await CreateEditionWithFeaturesDto(edition, featureDictionary));
+                    }
+                }
             }
 
             if (AbpSession.UserId.HasValue)
@@ -309,6 +336,18 @@ namespace Zinlo.MultiTenancy
             tenant.SubscriptionEndDateUtc = expireDate;
             await _tenantManager.UpdateAsync(tenant).ConfigureAwait(false);
             return true;
+        }
+
+
+        private string validateLink (string Link)
+        {
+            string email = _cacheManager.GetCache("SpecficEdition").Get(Link, cache => cache).ToString();
+            return email;
+        }
+
+        public async Task<string> CheckTheLinkAndReturnEmail(string Link)
+        {
+            return validateLink(Link);
         }
     }
 }

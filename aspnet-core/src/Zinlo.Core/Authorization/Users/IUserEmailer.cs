@@ -23,6 +23,8 @@ namespace Zinlo.Authorization.Users
         /// <param name="user">User</param>
         /// <param name="link">Password reset link (optional)</param>
         Task SendPasswordResetLinkAsync(User user, string link = null);
+        Task SendCustomEditionLinkAsync(string user, string link = null);
+
 
         /// <summary>
         /// Sends an email for unread chat message to user's email.

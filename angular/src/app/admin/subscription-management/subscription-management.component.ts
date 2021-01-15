@@ -66,7 +66,7 @@ export class SubscriptionManagementComponent extends AppComponentBase implements
 
     ngOnInit(): void {
         this.getSettings();
-        this._tenantRegistrationService.getEditionsForSelect()
+        this._tenantRegistrationService.getEditionsForSelect('')
             .subscribe((result) => {
                 this.editionsSelectOutput = result;
             });

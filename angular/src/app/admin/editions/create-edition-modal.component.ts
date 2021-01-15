@@ -34,6 +34,8 @@ export class CreateEditionModalComponent extends AppComponentBase {
     isFree = true;
     isTrialActive = false;
     isWaitingDayActive = false;
+    editionForSpecficCustomer : boolean = false;
+    specficCustomerEmail: string = '';
 
     constructor(
         injector: Injector,
@@ -71,6 +73,10 @@ export class CreateEditionModalComponent extends AppComponentBase {
         this.edition.edition.expiringEditionId = null;
     }
 
+    eventHandlerForSpecficCustomer(e) {
+        this.editionForSpecficCustomer= e.target.checked;
+    }
+
     save(): void {
         if (!this.featureTree.areAllValuesValid()) {
             this.message.warn(this.l('InvalidFeaturesWarning'));
@@ -81,7 +87,8 @@ export class CreateEditionModalComponent extends AppComponentBase {
         this.edition.edition.isCustom = this.isFree;
         input.edition = this.edition.edition;
         input.featureValues = this.featureTree.getGrantedFeatures();
-        
+        input.customerEmail = this.editionForSpecficCustomer ? this.specficCustomerEmail : '';
+
         this.saving = true;
         this._editionService.createEdition(input)
             .pipe(finalize(() => this.saving = false))

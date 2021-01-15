@@ -50,5 +50,10 @@ namespace Zinlo.Url
         {
             throw new NotImplementedException();
         }
+
+        public string CreateEditionForSpecficCustomerUrlFormat(int? tenantId, string link)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

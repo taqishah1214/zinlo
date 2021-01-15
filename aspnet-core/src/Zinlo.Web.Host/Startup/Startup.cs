@@ -200,6 +200,7 @@ namespace Zinlo.Web.Startup
 
             app.UseCors(DefaultCorsPolicyName); //Enable CORS!
 
+
             app.UseAuthentication();
             app.UseJwtTokenMiddleware();
 

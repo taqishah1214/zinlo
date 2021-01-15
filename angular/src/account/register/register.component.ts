@@ -1,7 +1,7 @@
 import { AbpSessionService } from '@abp/session/abp-session.service';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule,FormGroup, FormControl, Validators} from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute  } from '@angular/router';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { finalize, catchError } from 'rxjs/operators';
@@ -44,6 +44,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     saving = false;
     isTenantExist : boolean = false;
     custom=true;
+    specficCustomerLink;
+    specficCustomerLinkExist;
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
@@ -55,7 +57,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         private _userRegistrationServiceProxy: UserRegisterServiceServiceProxy,
         private _tenantRegistrationHelper: TenantRegistrationHelperService,
         private _tenantNameService:AccountServiceProxy,
-        private _router: Router
+        private _router: Router,
+        private _route: ActivatedRoute 
     ) {
         super(injector);
         this.personalInfoDto=new PersonalInfoDto();
@@ -85,6 +88,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         container.setViewMode('month');
       }
     ngOnInit() {
+        this.specficCustomerLink =  this._route.snapshot.paramMap.get('link') || '';
+     
         this.personalInfoForm = new FormGroup({
             firstName: new FormControl('',[Validators.required]),
             lastName: new FormControl('',[Validators.required]),
@@ -121,8 +126,20 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         })
         this.paymentDetailsDto.commitment=0
         this.isUserLoggedIn = abp.session.userId > 0;
+
+        if (this.specficCustomerLink){
+            this._tenantRegistrationService.checkTheLinkAndReturnEmail(this.specficCustomerLink)
+            .subscribe((result) => {
+                this.specficCustomerLinkExist = true;
+                this.personalInfoForm.patchValue({
+                    emailAddress: result
+                  });
+                this.personalInfoForm.get('emailAddress').disable();
+            });
+        }
+
         
-        this._tenantRegistrationService.getEditionsForSelect()
+        this._tenantRegistrationService.getEditionsForSelect(this.specficCustomerLink)
             .subscribe((result) => {
                 this.editionsSelectOutput = result;
                 this.editionsSelectOutput.editionsWithFeatures.slice().reverse()

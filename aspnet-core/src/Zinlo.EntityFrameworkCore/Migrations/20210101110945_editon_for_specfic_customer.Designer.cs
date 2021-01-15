@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Zinlo.EntityFrameworkCore;
@@ -9,9 +10,10 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    partial class ZinloDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210101110945_editon_for_specfic_customer")]
+    partial class editon_for_specfic_customer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2574,7 +2576,7 @@ namespace Zinlo.Migrations
                     b.Property<decimal?>("AnnualPrice")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("CustomerEmail")
+                    b.Property<string>("CustomerName")
                         .HasColumnType("text");
 
                     b.Property<decimal?>("DailyPrice")

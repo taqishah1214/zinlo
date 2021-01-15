@@ -167,6 +167,38 @@ namespace Zinlo.Authorization.Users
             await ReplaceBodyAndSend(user.EmailAddress, L("PasswordResetEmail_Subject"), emailTemplate, mailMessage);
         }
 
+        public async Task SendCustomEditionLinkAsync(string email, string link = null)
+        {
+            if (email.IsNullOrEmpty())
+            {
+                throw new Exception("");
+            }
+
+            var emailTemplate = GetTitleAndSubTitle(0,("Custom subscribetion"), ("PasswordResetEmail_SubTitle"));
+            var mailMessage = new StringBuilder();
+
+            mailMessage.AppendLine("<b>" + L("Email") + "</b>: " + email + " ");
+
+
+            if (!link.IsNullOrEmpty())
+            {
+          
+                link = EncryptQueryParameters(link);
+
+                mailMessage.AppendLine("<br />");
+                mailMessage.AppendLine(("PasswordResetEmail_ClickTheLinkBelowToResetYourPassword") + "<br /><br />");
+                mailMessage.AppendLine("<a style=\"" + _emailButtonStyle + "\" bg-color=\"" + _emailButtonColor + "\" href=\"" + link + "\">" + L("Custom Plan") + "</a>");
+                mailMessage.AppendLine("<br />");
+                mailMessage.AppendLine("<br />");
+                mailMessage.AppendLine("<br />");
+                mailMessage.AppendLine("<span style=\"font-size: 9pt;\">" + L("EmailMessage_CopyTheLinkBelowToYourBrowser") + "</span><br />");
+                mailMessage.AppendLine("<span style=\"font-size: 8pt;\">" + link + "</span>");
+            }
+
+            await ReplaceBodyAndSend(email, L("Custom subscribetion"), emailTemplate, mailMessage);
+        }
+
+
         public async Task TryToSendChatMessageMail(User user, string senderUsername, string senderTenancyName, ChatMessage chatMessage)
         {
             try

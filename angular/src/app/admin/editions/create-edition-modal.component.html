@@ -39,6 +39,20 @@
                                     <span></span>
                                 </label>
                             </div>
+                            <!-- <label>{{"SubscriptionPrice" | localize}}</label> -->
+                            <div class="kt-radio-inline">
+                                <div class="abc" style="margin-top: 15px;margin-bottom: 14px;">
+                                    <input name="includeNotReconciled" (change)="eventHandlerForSpecficCustomer($event)" type="checkbox" class="mr-3"/>
+                                    <span>Is this edition for specfic customer ?</span>
+                                </div>
+                            </div>
+                            <div *ngIf="editionForSpecficCustomer" class="form-group">
+                                <label for="EditionDisplayName">Customer Email</label>
+                                <input #CustomerEmail="ngModel" class="form-control"
+                                    type="text"autocomplete="off" name="CustomerEmail" [(ngModel)]="specficCustomerEmail"
+                                    email required maxlength="64">
+                                <validation-messages [formCtrl]="CustomerEmail"></validation-messages>
+                            </div>
                             <div class="row" *ngIf="!isFree">
                                 <!-- <div class="col-md-6">
                                     <div class="form-group">

@@ -43,5 +43,10 @@ namespace Zinlo.Test.Base.Url
         {
             return "http://test.com/";
         }
+
+        public string CreateEditionForSpecficCustomerUrlFormat(int? tenantId, string link)
+        {
+            return "http://test.com/";
+        }
     }
 }

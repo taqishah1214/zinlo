@@ -42,7 +42,7 @@ export class SelectEditionComponent extends AppComponentBase implements OnInit {
     ngOnInit() {
         this.isUserLoggedIn = abp.session.userId > 0;
 
-        this._tenantRegistrationService.getEditionsForSelect()
+        this._tenantRegistrationService.getEditionsForSelect('')
             .subscribe((result) => {
                 this.editionsSelectOutput = result;
 

@@ -13,6 +13,8 @@ namespace Zinlo.Editions
         /// <summary>
         /// The edition that will assigned after expire date
         /// </summary>
+        public string CustomerEmail { get; set; }
+
         public int? ExpiringEditionId { get; set; }
 
         public decimal? DailyPrice { get; set; }

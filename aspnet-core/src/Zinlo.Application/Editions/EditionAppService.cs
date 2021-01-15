@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Abp;
 using Abp.Application.Editions;
@@ -9,32 +11,47 @@ using Abp.Authorization;
 using Abp.BackgroundJobs;
 using Abp.Collections.Extensions;
 using Abp.Domain.Repositories;
+using Abp.Runtime.Caching;
 using Abp.Runtime.Session;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
 using Zinlo.Authorization;
+using Zinlo.Authorization.Users;
 using Zinlo.Editions.Dto;
 using Zinlo.MultiTenancy;
+using Zinlo.Url;
 
 namespace Zinlo.Editions
 {
     public class EditionAppService : ZinloAppServiceBase, IEditionAppService
     {
+        public IAppUrlService AppUrlService { get; set; }
+
         private readonly EditionManager _editionManager;
         private readonly IRepository<SubscribableEdition> _editionRepository;
         private readonly IRepository<Tenant> _tenantRepository;
         private readonly IBackgroundJobManager _backgroundJobManager;
+        private readonly IUserEmailer _userEmailer;
+        private readonly ICacheManager _cacheManager;
+
+
 
         public EditionAppService(
             EditionManager editionManager,
             IRepository<SubscribableEdition> editionRepository,
             IRepository<Tenant> tenantRepository,
-            IBackgroundJobManager backgroundJobManager)
+            IBackgroundJobManager backgroundJobManager,
+            IUserEmailer userEmailer,
+            ICacheManager cacheManager)
         {
             _editionManager = editionManager;
             _editionRepository = editionRepository;
             _tenantRepository = tenantRepository;
             _backgroundJobManager = backgroundJobManager;
+            _userEmailer = userEmailer;
+            _cacheManager = cacheManager;
+            AppUrlService = NullAppUrlService.Instance;
+
         }
 
         [AbpAuthorize(AppPermissions.Pages_Editions)]
@@ -52,11 +69,11 @@ namespace Zinlo.Editions
             var result = new List<EditionListDto>();
 
             foreach (var edition in editions)
-            {
-                var resultEdition = ObjectMapper.Map<EditionListDto>(edition.Edition);
-                resultEdition.ExpiringEditionDisplayName = edition.expiringEditionDisplayName;
-
-                result.Add(resultEdition);
+            {           
+                    var resultEdition = ObjectMapper.Map<EditionListDto>(edition.Edition);
+                    resultEdition.ExpiringEditionDisplayName = edition.expiringEditionDisplayName;
+                    result.Add(resultEdition);
+                
             }
 
             return new ListResultDto<EditionListDto>(result);
@@ -175,6 +192,19 @@ namespace Zinlo.Editions
         {
             var edition = ObjectMapper.Map<SubscribableEdition>(input.Edition);
 
+            if (!(String.IsNullOrEmpty(input.CustomerEmail)))
+            {
+                edition.CustomerEmail = input.CustomerEmail;
+                Guid guid = Guid.NewGuid();
+                _cacheManager.GetCache("SpecficEdition").Set(
+                    guid.ToString(),
+                    input.CustomerEmail
+                );
+
+                string link = guid.ToString();
+                await _userEmailer.SendCustomEditionLinkAsync(edition.CustomerEmail, AppUrlService.CreateEditionForSpecficCustomerUrlFormat(AbpSession.TenantId, link));
+
+            }
             if (edition.ExpiringEditionId.HasValue)
             {
                 var expiringEdition = (SubscribableEdition)await _editionManager.GetByIdAsync(edition.ExpiringEditionId.Value);

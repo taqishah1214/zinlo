@@ -11,5 +11,8 @@ namespace Zinlo.Editions.Dto
 
         [Required]
         public List<NameValueDto> FeatureValues { get; set; }
+
+        public string CustomerEmail { get; set; }
+
     }
 }

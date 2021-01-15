@@ -26,7 +26,30 @@
                                     </div>
                                 </div>
                             </a>
-                            <a class="kt-wizard-v1__nav-item service" href="javascript:;"  data-ktwizard-type="step" data-ktwizard-state="service" >
+                            <!-- <a *ngIf="!specficCustomerLinkExist" class="kt-wizard-v1__nav-item service" href="javascript:;"  data-ktwizard-type="step" data-ktwizard-state="service" >
+                                <div class="kt-wizard-v1__nav-body">
+                                    <div class="kt-wizard-v1__nav-icon">
+                                        <img src="./assets/media/ClosingCheckList/Subscription_plans.ico" alt="block-btn">
+                                    </div>
+                                    <div class="kt-wizard-v1__nav-label">
+                                        3. Subscription Plans
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="kt-wizard-v1__nav-item review" href="javascript:;"   data-ktwizard-type="step" data-ktwizard-state="review">
+                                <div class="kt-wizard-v1__nav-body">
+                                    <div class="kt-wizard-v1__nav-icon">
+                                        <img src="./assets/media/ClosingCheckList/Summary.ico" alt="block-btn">
+                                    </div>
+                                    <div *ngIf="specficCustomerLinkExist" class="kt-wizard-v1__nav-label">
+                                        3. Summary & Submit
+                                    </div>
+                                    <div *ngIf="!specficCustomerLinkExist" class="kt-wizard-v1__nav-label">
+                                        4. Summary & Submit
+                                    </div>
+                                </div>
+                            </a> -->
+                               <a  class="kt-wizard-v1__nav-item service" href="javascript:;"  data-ktwizard-type="step" data-ktwizard-state="service" >
                                 <div class="kt-wizard-v1__nav-body">
                                     <div class="kt-wizard-v1__nav-icon">
                                         <img src="./assets/media/ClosingCheckList/Subscription_plans.ico" alt="block-btn">

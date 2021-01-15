@@ -15441,10 +15441,15 @@ export class TenantRegistrationServiceProxy {
     }
 
     /**
+     * @param link (optional) 
      * @return Success
      */
-    getEditionsForSelect(): Observable<EditionsSelectOutput> {
-        let url_ = this.baseUrl + "/api/services/app/TenantRegistration/GetEditionsForSelect";
+    getEditionsForSelect(link: string | undefined): Observable<EditionsSelectOutput> {
+        let url_ = this.baseUrl + "/api/services/app/TenantRegistration/GetEditionsForSelect?";
+        if (link === null)
+            throw new Error("The parameter 'link' cannot be null.");
+        else if (link !== undefined)
+            url_ += "Link=" + encodeURIComponent("" + link) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -15662,6 +15667,62 @@ export class TenantRegistrationServiceProxy {
             }));
         }
         return _observableOf<boolean>(<any>null);
+    }
+
+    /**
+     * @param link (optional) 
+     * @return Success
+     */
+    checkTheLinkAndReturnEmail(link: string | undefined): Observable<string> {
+        let url_ = this.baseUrl + "/api/services/app/TenantRegistration/CheckTheLinkAndReturnEmail?";
+        if (link === null)
+            throw new Error("The parameter 'link' cannot be null.");
+        else if (link !== undefined)
+            url_ += "Link=" + encodeURIComponent("" + link) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCheckTheLinkAndReturnEmail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCheckTheLinkAndReturnEmail(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCheckTheLinkAndReturnEmail(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
     }
 }
 
@@ -24468,6 +24529,7 @@ export interface IEditionCreateDto {
 export class CreateEditionDto implements ICreateEditionDto {
     edition!: EditionCreateDto;
     featureValues!: NameValueDto[] | undefined;
+    customerEmail!: string | undefined;
 
     constructor(data?: ICreateEditionDto) {
         if (data) {
@@ -24489,6 +24551,7 @@ export class CreateEditionDto implements ICreateEditionDto {
                 for (let item of data["featureValues"])
                     this.featureValues!.push(NameValueDto.fromJS(item));
             }
+            this.customerEmail = data["customerEmail"];
         }
     }
 
@@ -24507,6 +24570,7 @@ export class CreateEditionDto implements ICreateEditionDto {
             for (let item of this.featureValues)
                 data["featureValues"].push(item.toJSON());
         }
+        data["customerEmail"] = this.customerEmail;
         return data; 
     }
 }
@@ -24514,6 +24578,7 @@ export class CreateEditionDto implements ICreateEditionDto {
 export interface ICreateEditionDto {
     edition: EditionCreateDto;
     featureValues: NameValueDto[] | undefined;
+    customerEmail: string | undefined;
 }
 
 export class UpdateEditionDto implements IUpdateEditionDto {
