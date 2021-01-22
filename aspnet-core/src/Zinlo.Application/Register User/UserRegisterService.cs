@@ -91,7 +91,7 @@ namespace Zinlo.Register_User
 
                 if (!String.IsNullOrEmpty(registerUser.Link))
                 {
-                    _cacheManager.GetCache("SpecficEdition").Remove(registerUser.Link);
+                    _cacheManager.GetCache("SpecficEdition").Clear();
                 }
 
                 return registerTenant;
