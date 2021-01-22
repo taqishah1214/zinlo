@@ -182,7 +182,7 @@ namespace Zinlo.MultiTenancy
 
                 if (!String.IsNullOrEmpty(Link))
                 {
-                    throw new Exception("Invalid link or link is expired.");
+                    throw new UserFriendlyException("Invalid link or link is expired.");
                 }
                 else
                 {
@@ -355,7 +355,7 @@ namespace Zinlo.MultiTenancy
         {
             if (String.IsNullOrEmpty(validateLink(Link)))
             {
-                throw new Exception("Invalid link or link is expired.");
+              throw  new UserFriendlyException("Invalid link or link is expired.");
             }
             return validateLink(Link);
         }
