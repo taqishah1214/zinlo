@@ -180,7 +180,7 @@ namespace Zinlo.MultiTenancy
             {
                 string email = validateLink(Link);
 
-                if (!String.IsNullOrEmpty(Link))
+                if (String.IsNullOrEmpty(Link))
                 {
                     throw new UserFriendlyException("Invalid link or link is expired.");
                 }
