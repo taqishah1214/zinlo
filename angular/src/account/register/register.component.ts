@@ -45,7 +45,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     isTenantExist : boolean = false;
     custom=true;
     specficCustomerLink;
-    specficCustomerLinkExist;
+    specficCustomerLinkExist : boolean = false;
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     subscriptionStartType: typeof SubscriptionStartType = SubscriptionStartType;
     /*you can change your edition icons order within editionIcons variable */
@@ -124,9 +124,10 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
             contactEmail: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]),
             numberOfUsers: new FormControl(0,[Validators.required])
         })
+
         this.paymentDetailsDto.commitment=0
         this.isUserLoggedIn = abp.session.userId > 0;
-
+        
         if (this.specficCustomerLink){
             this._tenantRegistrationService.checkTheLinkAndReturnEmail(this.specficCustomerLink)
             .subscribe((result) => {
@@ -134,7 +135,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 this.personalInfoForm.patchValue({
                     emailAddress: result
                   });
-                this.personalInfoForm.get('emailAddress').disable();
+                //   this.personalInfoForm.get('emailAddress').disable();
             });
         }
 
@@ -370,6 +371,9 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                     userResgister.paymentDetails = this.paymentDetailsDto;
                     userResgister.contactUs=null;
                 }
+                if (this.specficCustomerLinkExist) {
+                    userResgister.link = this.specficCustomerLink;
+                }
             this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
             .pipe(finalize(() => { this.saving = false; }))
                     .pipe(catchError((err, caught): any => {
@@ -418,7 +422,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                     userResgister.paymentDetails = this.paymentDetailsDto;
                     userResgister.contactUs=null;
                 }
-                if (this.specficCustomerLink !== '') {
+                if (this.specficCustomerLinkExist) {
                     userResgister.link = this.specficCustomerLink;
                 }
             this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
