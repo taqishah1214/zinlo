@@ -174,10 +174,10 @@ namespace Zinlo.Authorization.Users
                 throw new Exception("");
             }
 
-            var emailTemplate = GetTitleAndSubTitle(0,("Custom subscribetion"), ("PasswordResetEmail_SubTitle"));
+            var emailTemplate = GetTitleAndSubTitle(0,("Custom subscription"), ("Custom subscription"));
             var mailMessage = new StringBuilder();
 
-            mailMessage.AppendLine("<b>" + L("Email") + "</b>: " + email + " ");
+            mailMessage.AppendLine("<b>" + "Email" + "</b>: " + email + " ");
 
 
             if (!link.IsNullOrEmpty())
@@ -186,8 +186,8 @@ namespace Zinlo.Authorization.Users
                 link = EncryptQueryParameters(link);
 
                 mailMessage.AppendLine("<br />");
-                mailMessage.AppendLine(("PasswordResetEmail_ClickTheLinkBelowToResetYourPassword") + "<br /><br />");
-                mailMessage.AppendLine("<a style=\"" + _emailButtonStyle + "\" bg-color=\"" + _emailButtonColor + "\" href=\"" + link + "\">" + L("Custom Plan") + "</a>");
+                mailMessage.AppendLine(("Click The Link Below To create your tenent") + "<br /><br />");
+                mailMessage.AppendLine("<a style=\"" + _emailButtonStyle + "\" bg-color=\"" + _emailButtonColor + "\" href=\"" + link + "\">" + "Custom Plan" + "</a>");
                 mailMessage.AppendLine("<br />");
                 mailMessage.AppendLine("<br />");
                 mailMessage.AppendLine("<br />");
@@ -195,7 +195,7 @@ namespace Zinlo.Authorization.Users
                 mailMessage.AppendLine("<span style=\"font-size: 8pt;\">" + link + "</span>");
             }
 
-            await ReplaceBodyAndSend(email, L("Custom subscribetion"), emailTemplate, mailMessage);
+            await ReplaceBodyAndSend(email, "Custom subscription", emailTemplate, mailMessage);
         }
 
 

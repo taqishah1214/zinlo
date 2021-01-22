@@ -177,10 +177,9 @@ namespace Zinlo.MultiTenancy
 
             var editionWithFeatures = new List<EditionWithFeaturesDto>();
 
-            if (!String.IsNullOrEmpty("hammad@cc.com"))
+            if (!String.IsNullOrEmpty(Link))
             {
-                //string email = validateLink(Link);
-                string email = "hammad@cc.com";
+                string email = validateLink(Link);
 
                 foreach (var edition in editions)
                 {
