@@ -12,6 +12,8 @@ namespace Zinlo.Register_User.Dto
         public PersonalInfoDto PersonalInfo { get; set; }
         public SubscriptionPlansDto SubscriptionPlans { get; set; }
         public CreateOrUpdateContactusInput ContactUs { get; set; }
+        public string Link { get; set; }
+
 
     }
 }

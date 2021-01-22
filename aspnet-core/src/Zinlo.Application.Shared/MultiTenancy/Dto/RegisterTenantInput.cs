@@ -28,7 +28,6 @@ namespace Zinlo.MultiTenancy.Dto
 
         [DisableAuditing]
         public string CaptchaResponse { get; set; }
-
         public SubscriptionStartType SubscriptionStartType { get; set; }
 
         public int? EditionId { get; set; }

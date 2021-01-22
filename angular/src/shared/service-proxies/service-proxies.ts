@@ -34651,6 +34651,7 @@ export class RegisterUserInput implements IRegisterUserInput {
     personalInfo!: PersonalInfoDto;
     subscriptionPlans!: SubscriptionPlansDto;
     contactUs!: CreateOrUpdateContactusInput;
+    link!: string | undefined;
 
     constructor(data?: IRegisterUserInput) {
         if (data) {
@@ -34668,6 +34669,7 @@ export class RegisterUserInput implements IRegisterUserInput {
             this.personalInfo = data["personalInfo"] ? PersonalInfoDto.fromJS(data["personalInfo"]) : <any>undefined;
             this.subscriptionPlans = data["subscriptionPlans"] ? SubscriptionPlansDto.fromJS(data["subscriptionPlans"]) : <any>undefined;
             this.contactUs = data["contactUs"] ? CreateOrUpdateContactusInput.fromJS(data["contactUs"]) : <any>undefined;
+            this.link = data["link"];
         }
     }
 
@@ -34685,6 +34687,7 @@ export class RegisterUserInput implements IRegisterUserInput {
         data["personalInfo"] = this.personalInfo ? this.personalInfo.toJSON() : <any>undefined;
         data["subscriptionPlans"] = this.subscriptionPlans ? this.subscriptionPlans.toJSON() : <any>undefined;
         data["contactUs"] = this.contactUs ? this.contactUs.toJSON() : <any>undefined;
+        data["link"] = this.link;
         return data; 
     }
 }
@@ -34695,6 +34698,7 @@ export interface IRegisterUserInput {
     personalInfo: PersonalInfoDto;
     subscriptionPlans: SubscriptionPlansDto;
     contactUs: CreateOrUpdateContactusInput;
+    link: string | undefined;
 }
 
 export class GetLatestWebLogsOutput implements IGetLatestWebLogsOutput {

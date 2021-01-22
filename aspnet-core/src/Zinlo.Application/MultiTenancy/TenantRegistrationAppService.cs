@@ -118,8 +118,7 @@ namespace Zinlo.MultiTenancy
                     isInTrialPeriod,
                     AppUrlService.CreateEmailActivationUrlFormat(input.TenancyName)
                 );
-                _cacheManager.GetCache("SpecficEdition").Remove("myCacheKey");
-
+        
                 var tenant = await TenantManager.GetByIdAsync(tenantId);
 
                 await _appNotifier.NewTenantRegisteredAsync(tenant);
@@ -181,13 +180,21 @@ namespace Zinlo.MultiTenancy
             {
                 string email = validateLink(Link);
 
-                foreach (var edition in editions)
+                if (!String.IsNullOrEmpty(Link))
                 {
-                    if (String.Equals(edition.CustomerEmail, email))
+                    throw new Exception("Invalid link or link is expired.");
+                }
+                else
+                {
+                    foreach (var edition in editions)
                     {
-                        editionWithFeatures.Add(await CreateEditionWithFeaturesDto(edition, featureDictionary));
+                        if (String.Equals(edition.CustomerEmail, email))
+                        {
+                            editionWithFeatures.Add(await CreateEditionWithFeaturesDto(edition, featureDictionary));
+                        }
                     }
                 }
+            
             }
             else
             {
@@ -340,12 +347,16 @@ namespace Zinlo.MultiTenancy
 
         private string validateLink (string Link)
         {
-            string email = _cacheManager.GetCache("SpecficEdition").Get(Link, cache => cache).ToString();
-            return email;
+            var email = _cacheManager.GetCache("SpecficEdition").GetOrDefault(Link);
+            return email!=null&&!string.IsNullOrEmpty(email?.ToString()) ? email.ToString() : "";
         }
 
         public async Task<string> CheckTheLinkAndReturnEmail(string Link)
         {
+            if (String.IsNullOrEmpty(validateLink(Link)))
+            {
+                throw new Exception("Invalid link or link is expired.");
+            }
             return validateLink(Link);
         }
     }

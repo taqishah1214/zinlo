@@ -398,6 +398,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         }
         else{
             if(this.contactUsValidations()){
+             
                 this.contactUs.companyName=this.contactUsForm.value.companyName
                 this.contactUs.fullName=this.contactUsForm.value.fullName
                 this.contactUs.email=this.contactUsForm.value.contactEmail
@@ -416,6 +417,9 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 }else{
                     userResgister.paymentDetails = this.paymentDetailsDto;
                     userResgister.contactUs=null;
+                }
+                if (this.specficCustomerLink !== '') {
+                    userResgister.link = this.specficCustomerLink;
                 }
             this._userRegistrationServiceProxy.registerUserWithTenant(userResgister)
             .pipe(finalize(() => { this.saving = false; }))

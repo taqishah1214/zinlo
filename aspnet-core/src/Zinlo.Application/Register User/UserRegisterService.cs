@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Repositories;
+using Abp.Runtime.Caching;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +21,8 @@ namespace Zinlo.Register_User
         private readonly IRepository<UserPaymentDetails, long> _userPaymentDetailsRepository;
         private readonly IContactusService _contactusService;
         private readonly ITenantRegistrationAppService _tenantRegistrationAppService;
+        private readonly ICacheManager _cacheManager;
+
 
 
         public UserRegisterService(
@@ -27,13 +30,16 @@ namespace Zinlo.Register_User
             IRepository<UserBusinessInfo, long> userBusinessInfoRepository,
             IRepository<UserPaymentDetails, long> userPaymentDetailsRepository,
             IContactusService contactusService,
-            ITenantRegistrationAppService tenantRegistrationAppService
+            ITenantRegistrationAppService tenantRegistrationAppService,
+            ICacheManager cacheManager
             )
         {
             _tenantRegistrationAppService = tenantRegistrationAppService;
             _userPaymentDetailsRepository = userPaymentDetailsRepository;
             _userBusinessInfoRepository = userBusinessInfoRepository;
             _contactusService = contactusService;
+            _cacheManager = cacheManager;
+
 
         }
 
@@ -81,6 +87,11 @@ namespace Zinlo.Register_User
                 if (registerUser.ContactUs != null)
                 {
                     _contactusService.Create(registerUser.ContactUs, registerTenant.TenantId).ConfigureAwait(false);
+                }
+
+                if (!String.IsNullOrEmpty(registerUser.Link))
+                {
+                    _cacheManager.GetCache("SpecficEdition").Remove(registerUser.Link);
                 }
 
                 return registerTenant;
