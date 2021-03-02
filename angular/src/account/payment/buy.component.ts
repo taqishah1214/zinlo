@@ -36,7 +36,8 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
     supportsRecurringPayments = false;
     recurringPaymentEnabled = false;
     editionId = 0;
-  price = 0;
+    price = 0;
+    isMonthlyOrYearlyPaymentSelected = true;
 
     constructor(
         injector: Injector,
@@ -61,6 +62,7 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
                 this._tenantRegistrationService.getEdition(this.editionId)
                     .subscribe((result: EditionSelectDto) => {
                         this.edition = result;
+                        this.isMonthlyOrYearlyPaymentSelected = (result.monthlyPrice != null || result.annualPrice != null) ? true : false;
                     });
                     this.selectedPaymentPeriodType = response.commitment;
                 this._paymentAppService.getActiveGateways(undefined)
@@ -100,7 +102,7 @@ export class BuyEditionComponent extends AppComponentBase implements OnInit {
         input.editionId = this.editionId;
         input.editionPaymentType =0;// ((this.editionPaymentType) as any);
         input.paymentPeriodType = ((this.selectedPaymentPeriodType) as any);
-        input.recurringPaymentEnabled = this.recurringPaymentEnabled;
+        input.recurringPaymentEnabled = this.isMonthlyOrYearlyPaymentSelected ? true : this.recurringPaymentEnabled;
         input.subscriptionPaymentGatewayType = gatewayType;
         input.price = this.price;
         input.successUrl = AppConsts.remoteServiceBaseUrl + '/api/services/app/payment/' + this._paymnetHelperService.getEditionPaymentType(this.editionPaymentType) + 'Succeed';
