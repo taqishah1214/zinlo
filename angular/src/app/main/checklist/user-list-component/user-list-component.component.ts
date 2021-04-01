@@ -3,6 +3,7 @@ import { UserServiceProxy, ClosingChecklistServiceProxy, ChangeAssigneeDto, Char
 import { OnChange } from 'ngx-bootstrap';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { StoreDateService } from "../../../services/storedate.service";
+import { debugOutputAstAsTypeScript } from '@angular/compiler';
 
 
 
@@ -21,18 +22,25 @@ export class UserListComponentComponent implements OnInit, OnChanges {
   @Input() userId: any;
   @Input() taskId: any;
   @Input() disable: any;
+  @Input() itemType:string;
+  @Input() isEdit:boolean;
   defaultUser: Array<{ id: number, name: string, picture: string }> = [{ id: -1, name: " Enter the Assignee Name", picture: "../../../../assets/media/files/emptyUser.svg" }];
   @Output() messageEvent = new EventEmitter<string>();
+  @Output() primaryAssigneeSelected= new EventEmitter<any>();
+  @Output() secondaryAssigneeSelected= new EventEmitter<any>();
   @ViewChild(NgSelectComponent, { static: true }) ngSelect: NgSelectComponent;
   @Output("callBack") callBack: EventEmitter<any> = new EventEmitter();
   constructor(private userService: UserServiceProxy,private userDate: StoreDateService,
     private cdf: ChangeDetectorRef,
     private _closingChecklistService: ClosingChecklistServiceProxy,
-    private _chartOfAccountService: ChartsofAccountServiceProxy) { }
+    private _chartOfAccountService: ChartsofAccountServiceProxy,) {}
+
 
 
   ngOnInit() {
-    this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
+    this.userDate.allUsersInformationofTenant.subscribe(userList => {
+      this.users = userList;
+    })
     if (this.disable === "true") {
       this.disable = true
     }  
@@ -47,10 +55,13 @@ export class UserListComponentComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     var change = changes['userId'];
-    if (change.firstChange === false) {
-      this.userId = change.currentValue;
-      this.getSelectedUserIdandPicture()
+    if(change!= undefined){
+      if (change.firstChange === false) {
+        this.userId = change.currentValue;
+        this.getSelectedUserIdandPicture()
+      }
     }
+
   }
 
   getUserDefaultPicture(): void {
@@ -78,7 +89,18 @@ export class UserListComponentComponent implements OnInit, OnChanges {
   }
 
   userOnChange(value): void {
+    debugger;
     this.selectedUserId = value;
+    if(this.itemType === "primary")
+    {
+      this.primaryAssigneeSelected.emit(value);
+      console.log(value);
+    }
+    else if(this.itemType === "secondary")
+    {
+      this.secondaryAssigneeSelected.emit(value);
+      console.log(value);
+    }
     if (this.selectedUserId != undefined ) {
       if (this.selectedUserId != -1) {
         this.messageEvent.emit(this.selectedUserId);

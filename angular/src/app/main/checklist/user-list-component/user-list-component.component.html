@@ -1,10 +1,13 @@
+
 <div class="form-group search-field">
     <ng-select [disabled]="disable" class="auto-grow" bindLabel="name" placeholder="Search users"  [searchable]="true" [clearable]="true"
          [(ngModel)]="input" name="input" (change) = "userOnChange($event)">
-        <ng-option [value]="item.id" *ngFor="let item of users">
-            <img *ngIf="item.picture" class="imagedropdown" src="{{item.picture}}"/>
-            <div *ngIf="!item.picture" class="kt-badge kt-badge--xl kt-badge--primary imagedropdown">{{item.name | firstLetterOfWords}}</div>
-            {{ item.name}}
-        </ng-option>
+         <div *ngFor="let item of users">
+            <ng-option [value]="item.id" >
+                <img *ngIf="item.picture" class="imagedropdown" src="{{item.picture}}"/>
+                <div *ngIf="!item.picture" class="kt-badge kt-badge--xl kt-badge--primary imagedropdown">{{item.name | firstLetterOfWords}}</div>
+                {{ item.name}}
+            </ng-option>
+         </div>
     </ng-select>
 </div>

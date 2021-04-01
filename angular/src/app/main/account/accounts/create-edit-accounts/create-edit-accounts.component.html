@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body">
-                    <form (ngSubmit)="onSubmit()">
+                    <form  (ngSubmit)="onSubmit()">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row form-group">
@@ -84,9 +84,16 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6 "style="height: 70px !important;">
-                                        <label>{{"Assignee" | localize}} *</label>
-                                        <app-user-list-component comingChangeReguest="" (focusout)="changeValidation()"userId={{selectedUserID}}>
+                                    <div *ngIf="editAccountCheck == true" class="col-md-6 "style="height: 70px !important;">
+                                        <label  >{{"Assignee" | localize}} *</label>
+                                        <app-user-list-component [itemType]="'primary'"  (primaryAssigneeSelected)="primarySelectedUserId = $event"  comingChangeReguest="" (focusout)="changeValidation()"userId={{selectedUserID}} >
+                                        </app-user-list-component>
+                                        <span class="form-control-feedback"
+                                        >{{AccountAssignee}}</span>
+                                    </div>
+                                    <div *ngIf="editAccountCheck == false" class="col-md-6 "style="height: 70px !important;">
+                                        <label  >{{"Assignee" | localize}} *</label>
+                                        <app-user-list-component [itemType]="'primary'"  (primaryAssigneeSelected)="primarySelectedUserId = $event" (click)="enableSecondaryAssignee()" comingChangeReguest="" (focusout)="changeValidation()"userId={{selectedUserID}} >
                                         </app-user-list-component>
                                         <span class="form-control-feedback"
                                         >{{AccountAssignee}}</span>
@@ -108,6 +115,24 @@
                                             >{{ReconcilationTYpe}}</span>
                                         </div>
 
+                                    </div>
+                                </div>
+                                <div *ngIf="showSecondAssignee" class="row form-group">
+                                    <div class="col-md-6 "style="height: 70px !important;">
+                                        <label>{{"Secondary Assignee" | localize}} </label>
+                                        <app-user-list-component  [itemType]="'secondary'"  (secondaryAssigneeSelected)="secondarySelectedUserId = $event" comingChangeReguest="" (focusout)="changeValidation()" userId={{secondaryAssignee}} >
+                                        </app-user-list-component>
+                                        <span class="form-control-feedback"
+                                        >{{SecondaryAssignee}}</span>
+                                    </div>
+                                </div>
+                                <div  *ngIf="editAccountCheck == true" class="row form-group">
+                                    <div class="col-md-6 "style="height: 70px !important;">
+                                        <label>{{"Secondary Assignee" | localize}} *</label>
+                                        <app-user-list-component  [itemType]="'secondary'"  (secondaryAssigneeSelected)="secondarySelectedUserId = $event" comingChangeReguest="" (focusout)="changeValidation()" userId={{secondarySelectedUserId}} >
+                                        </app-user-list-component>
+                                        <span class="form-control-feedback"
+                                        >{{SecondaryAssignee}}</span>
                                     </div>
                                 </div>
 
