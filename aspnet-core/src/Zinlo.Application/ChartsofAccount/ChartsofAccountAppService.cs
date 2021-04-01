@@ -75,24 +75,26 @@ namespace Zinlo.ChartsofAccount
             {
                 var itemPermissions = _itemPermission.GetAll().Where(x => x.UserId == AbpSession.UserId ).Select(p => p.ItemId).ToList();
 
-                
+                var querySecond = _chartsofAccountRepository.GetAll().Where(x => itemPermissions.Contains(x.Id)).Include(x => x.Assignee).ToList();
 
                 var query = _chartsofAccountRepository.GetAll().Where(x => x.IsDeleted == input.AllOrActive).Include(p => p.AccountSubType).Include(p => p.Assignee)
-                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
-                         .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
-                         .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
-                         .WhereIf(itemPermissions.Count != 0, e => (itemPermissions.Contains(e.Id)))
-                         .WhereIf(input.BeginingAmountCheck, e => (e.Reconciled == ChartofAccounts.Reconciled.BeginningAmount && e.LinkedAccountNumber == null))
-                         .WhereIf(GetRoleName().Equals("User"), p => p.AssigneeId == AbpSession.UserId)
-                         .WhereIf(input.ReconciliationType != 0, e => (e.ReconciliationType == (ReconciliationType)input.ReconciliationType))
-                         .WhereIf(!input.IncludeNotReconciled, e => (e.ReconciliationType == ChartofAccounts.ReconciliationType.Amortization || e.ReconciliationType == ChartofAccounts.ReconciliationType.Itemized))
-                         ;
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
+                        .WhereIf(input.AccountType != 0, e => (e.AccountType == (AccountType)input.AccountType))
+                        .WhereIf(input.AssigneeId != 0, e => (e.AssigneeId == input.AssigneeId))
+                        .WhereIf(input.BeginingAmountCheck, e => (e.Reconciled == ChartofAccounts.Reconciled.BeginningAmount && e.LinkedAccountNumber == null))
+                        .WhereIf(GetRoleName().Equals("User"), p => p.AssigneeId == AbpSession.UserId)
+                        .WhereIf(input.ReconciliationType != 0, e => (e.ReconciliationType == (ReconciliationType)input.ReconciliationType))
+                        .WhereIf(!input.IncludeNotReconciled, e => (e.ReconciliationType == ChartofAccounts.ReconciliationType.Amortization || e.ReconciliationType == ChartofAccounts.ReconciliationType.Itemized));
 
 
+                var tempList = query.ToList();
+                tempList.AddRange(querySecond.ToList());
+
+                var chartofAccounts = tempList.AsQueryable<ChartofAccounts.ChartofAccounts>();              
 
                 var monthStatus = await GetMonthStatus(input.SelectedMonth);
-                var pagedAndFilteredAccounts = query.OrderBy(input.Sorting ?? "accountName asc").PageBy(input).ToList();
-                var totalCount = await query.CountAsync();
+                var pagedAndFilteredAccounts = chartofAccounts.OrderBy(input.Sorting ?? "accountName asc").PageBy(input).ToList();
+                var totalCount = tempList.Count();
                 var getUserWithPictures = (from o in pagedAndFilteredAccounts.ToList()
                                            select new GetUserWithPicture() 
                                            {
