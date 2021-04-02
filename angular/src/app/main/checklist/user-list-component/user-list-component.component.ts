@@ -4,6 +4,7 @@ import { OnChange } from 'ngx-bootstrap';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { StoreDateService } from "../../../services/storedate.service";
 import { debugOutputAstAsTypeScript } from '@angular/compiler';
+import { convertAbpLocaleToAngularLocale } from 'root.module';
 
 
 
@@ -28,6 +29,7 @@ export class UserListComponentComponent implements OnInit, OnChanges {
   @Output() messageEvent = new EventEmitter<string>();
   @Output() primaryAssigneeSelected= new EventEmitter<any>();
   @Output() secondaryAssigneeSelected= new EventEmitter<any>();
+  @Output() showSecondAssignee= new EventEmitter<boolean>();
   @ViewChild(NgSelectComponent, { static: true }) ngSelect: NgSelectComponent;
   @Output("callBack") callBack: EventEmitter<any> = new EventEmitter();
   constructor(private userService: UserServiceProxy,private userDate: StoreDateService,
@@ -61,7 +63,13 @@ export class UserListComponentComponent implements OnInit, OnChanges {
         this.getSelectedUserIdandPicture()
       }
     }
+  }
 
+  enableSecondaryAssignee(value):void{
+    if(value == undefined)
+      this.showSecondAssignee.emit(false);
+     else
+     this.showSecondAssignee.emit(true);
   }
 
   getUserDefaultPicture(): void {
@@ -89,17 +97,15 @@ export class UserListComponentComponent implements OnInit, OnChanges {
   }
 
   userOnChange(value): void {
-    debugger;
+    this.enableSecondaryAssignee(value);
     this.selectedUserId = value;
     if(this.itemType === "primary")
     {
       this.primaryAssigneeSelected.emit(value);
-      console.log(value);
     }
     else if(this.itemType === "secondary")
     {
-      this.secondaryAssigneeSelected.emit(value);
-      console.log(value);
+      this.secondaryAssigneeSelected.emit(value);   
     }
     if (this.selectedUserId != undefined ) {
       if (this.selectedUserId != -1) {

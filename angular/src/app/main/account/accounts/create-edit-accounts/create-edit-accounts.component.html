@@ -93,7 +93,7 @@
                                     </div>
                                     <div *ngIf="editAccountCheck == false" class="col-md-6 "style="height: 70px !important;">
                                         <label  >{{"Assignee" | localize}} *</label>
-                                        <app-user-list-component [itemType]="'primary'"  (primaryAssigneeSelected)="primarySelectedUserId = $event" (click)="enableSecondaryAssignee()" comingChangeReguest="" (focusout)="changeValidation()"userId={{selectedUserID}} >
+                                        <app-user-list-component [itemType]="'primary'" (showSecondAssignee)="showSecondAssignee($event)"  (primaryAssigneeSelected)="primarySelectedUserId = $event"  comingChangeReguest="" (focusout)="changeValidation()"userId={{selectedUserID}} >
                                         </app-user-list-component>
                                         <span class="form-control-feedback"
                                         >{{AccountAssignee}}</span>
@@ -117,22 +117,22 @@
 
                                     </div>
                                 </div>
-                                <div *ngIf="showSecondAssignee" class="row form-group">
-                                    <div class="col-md-6 "style="height: 70px !important;">
+                                <div class="row form-group" >
+                                    <div *ngIf="enableSecondaryAssignee"class="col-md-6 "style="height: 70px !important;">
                                         <label>{{"Secondary Assignee" | localize}} </label>
                                         <app-user-list-component  [itemType]="'secondary'"  (secondaryAssigneeSelected)="secondarySelectedUserId = $event" comingChangeReguest="" (focusout)="changeValidation()" userId={{secondaryAssignee}} >
                                         </app-user-list-component>
-                                        <span class="form-control-feedback"
-                                        >{{SecondaryAssignee}}</span>
+                                        <span *ngIf="primarySelectedUserId === secondarySelectedUserId" class="form-control-feedback"
+                                        >{{"Assignee and Secondary Assignee cannot be same."}}</span>
                                     </div>
                                 </div>
                                 <div  *ngIf="editAccountCheck == true" class="row form-group">
                                     <div class="col-md-6 "style="height: 70px !important;">
-                                        <label>{{"Secondary Assignee" | localize}} *</label>
+                                        <label>{{"Secondary Assignee" | localize}} </label>
                                         <app-user-list-component  [itemType]="'secondary'"  (secondaryAssigneeSelected)="secondarySelectedUserId = $event" comingChangeReguest="" (focusout)="changeValidation()" userId={{secondarySelectedUserId}} >
                                         </app-user-list-component>
-                                        <span class="form-control-feedback"
-                                        >{{SecondaryAssignee}}</span>
+                                        <span *ngIf="primarySelectedUserId === secondarySelectedUserId" class="form-control-feedback"
+                                        >{{"Assignee and Secondary Assignee cannot be same."}}</span>
                                     </div>
                                 </div>
 

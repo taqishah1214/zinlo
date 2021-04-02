@@ -75,7 +75,7 @@ namespace Zinlo.ChartsofAccount
             {
                 var itemPermissions = _itemPermission.GetAll().Where(x => x.UserId == AbpSession.UserId ).Select(p => p.ItemId).ToList();
 
-                var querySecond = _chartsofAccountRepository.GetAll().Where(x => itemPermissions.Contains(x.Id)).Include(x => x.Assignee).ToList();
+                var querySecond = _chartsofAccountRepository.GetAll().Where(x => itemPermissions.Contains(x.Id)).Include(x => x.Assignee).Include(p => p.AccountSubType) ;
 
                 var query = _chartsofAccountRepository.GetAll().Where(x => x.IsDeleted == input.AllOrActive).Include(p => p.AccountSubType).Include(p => p.Assignee)
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
@@ -85,7 +85,7 @@ namespace Zinlo.ChartsofAccount
                         .WhereIf(GetRoleName().Equals("User"), p => p.AssigneeId == AbpSession.UserId)
                         .WhereIf(input.ReconciliationType != 0, e => (e.ReconciliationType == (ReconciliationType)input.ReconciliationType))
                         .WhereIf(!input.IncludeNotReconciled, e => (e.ReconciliationType == ChartofAccounts.ReconciliationType.Amortization || e.ReconciliationType == ChartofAccounts.ReconciliationType.Itemized));
-
+               
 
                 var tempList = query.ToList();
                 tempList.AddRange(querySecond.ToList());
