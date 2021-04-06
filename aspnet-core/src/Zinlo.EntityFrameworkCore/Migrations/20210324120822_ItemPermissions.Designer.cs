@@ -10,8 +10,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20200508110709_roles list as string")]
-    partial class roleslistasstring
+    [Migration("20210324120822_ItemPermissions")]
+    partial class ItemPermissions
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1780,6 +1780,9 @@ namespace Zinlo.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("LinkedAccountNumber")
+                        .HasColumnType("text");
+
                     b.Property<int>("Reconciled")
                         .HasColumnType("integer");
 
@@ -1796,6 +1799,54 @@ namespace Zinlo.Migrations
                     b.HasIndex("AssigneeId");
 
                     b.ToTable("ChartofAccounts");
+                });
+
+            modelBuilder.Entity("Zinlo.ChartofAccounts.ItemPermissions", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("boolean");
+
+                    b.Property<long>("ItemId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ItemPermissions");
                 });
 
             modelBuilder.Entity("Zinlo.Chat.ChatMessage", b =>
@@ -2031,6 +2082,9 @@ namespace Zinlo.Migrations
 
                     b.Property<string>("FilePath")
                         .HasColumnType("text");
+
+                    b.Property<int>("FileStatus")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsRollBacked")
                         .HasColumnType("boolean");
@@ -2489,6 +2543,48 @@ namespace Zinlo.Migrations
                     b.ToTable("AppBinaryObjects");
                 });
 
+            modelBuilder.Entity("Zinlo.SystemSettings.SystemSettings", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Month")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("SettingType")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemSettings");
+                });
+
             modelBuilder.Entity("Zinlo.TimeManagements.TimeManagement", b =>
                 {
                     b.Property<long>("Id")
@@ -2527,6 +2623,9 @@ namespace Zinlo.Migrations
 
                     b.Property<decimal?>("AnnualPrice")
                         .HasColumnType("numeric");
+
+                    b.Property<string>("CustomerEmail")
+                        .HasColumnType("text");
 
                     b.Property<decimal?>("DailyPrice")
                         .HasColumnType("numeric");

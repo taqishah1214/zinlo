@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Injector } from '@angular/core';
+import { Component, OnInit, ViewChild, Injector, Output } from '@angular/core';
 import { AccountSubTypeServiceProxy, ChartsofAccountServiceProxy, CreateOrEditChartsofAccountDto } from '@shared/service-proxies/service-proxies';
 import { Router } from '@angular/router';
 import { UserListComponentComponent } from '@app/main/checklist/user-list-component/user-list-component.component';
@@ -9,6 +9,9 @@ import { Table } from 'primeng/components/table/table';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { StoreDateService } from "../../../../services/storedate.service";
+import { Input } from '@angular/core';
+import { debugOutputAstAsTypeScript } from '@angular/compiler';
+import { outputs } from '@syncfusion/ej2-angular-richtexteditor/src/rich-text-editor/richtexteditor.component';
 
 
 @Component({
@@ -22,8 +25,8 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   AccountType:string
   ReconcilationTYpe:string
   AccountAssignee:string
+  SecondaryAssignee:string
   AccountSubType:string
-  check:boolean=false;
   saving = false;
   users: any;
   accountSubTypeName: any =  "Select Account Sub Type";
@@ -31,6 +34,11 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   accountType: any = "Select Account Type";
   accountId : number;
   selectedUserID : any;
+  @Input() primarySelectedUserId:any;
+  @Input() secondarySelectedUserId:any;
+  @Input() secondId:any;
+  @Output() primaryAssignee:any;
+  enableSecondaryAssignee:boolean=false;
   editAccountCheck :  boolean = false;
   accountTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Equity" }, { id: 2, name: "Asset" }, { id: 3, name: "Liability" }];
   reconcillationTypeList: Array<{ id: number, name: string }> = [{ id: 1, name: "Itemized" }, { id: 2, name: "Amortized" },{ id: 3, name: "Not Reconcilied" }]
@@ -50,6 +58,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   searchAccount ;
   reconcilliationMessage = false
   reconciliationTypeFilter: number = 0
+  
 
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
@@ -60,8 +69,8 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
     super(injector)
   }
 
-  ngOnInit() {   
-  this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
+  ngOnInit() { 
+   this.userDate.allUsersInformationofTenant.subscribe(userList => this.users = userList)
    this.accountId = history.state.data.id;
    this.accountDto.accountName=history.state.data.name
    this.accountDto.accountNumber=history.state.data.number
@@ -89,6 +98,10 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
       this.createNewAccount();
     }   
   }
+  showSecondAssignee(variable:boolean){
+    this.enableSecondaryAssignee=variable;
+  }
+  
 
   createNewAccount() : void {
     if(history.state.data.userId){
@@ -125,13 +138,14 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
           this.reconcilliationMessage = true
         }
       }
-  
-
+      this.secondId=result.secondaryId;
+      this.primarySelectedUserId=result.assigniId;
+      this.secondarySelectedUserId=result.secondaryId;
       this.accountDto.creatorUserId = result.creatorUserId;
       this.selectedUserId.selectedUserId = result.assigniId; 
       if(history.state.data.userId){
-        this.accountDto.assigneeId=history.state.data.userId
-      }
+        this.accountDto.assigneeId=history.state.data.userId;
+            }
       else if (this.selectedUserId.selectedUserId != undefined)
       {
         this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
@@ -166,10 +180,10 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
       }
       if(!history.state.data.userId){
        this.selectedUserID = result.assigniId;
-       this.accountDto.assigneeId = result.assigniId
+       this.accountDto.assigneeId = result.assigniId;
       }
       else{
-        this.accountDto.assigneeId = history.state.data.userId;       
+        this.accountDto.assigneeId = history.state.data.userId;      
         this.selectedUserID=history.state.data.userId;
       }
       if(!history.state.data.reconciliation){
@@ -250,9 +264,12 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
      }
       if (this.selectedUserID!=undefined)
      {
-      this.AccountAssignee=null
+      this.AccountAssignee=null;
      }
-
+     if(this.SecondaryAssignee!=undefined)
+     {
+      this.SecondaryAssignee=null;
+     }
   }
   reconcillationClick(id, name): void {
     this.reconcillationType = name;
@@ -324,16 +341,15 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   }
 
   onSubmit(): void {
-    
     if (this.validationCheck())
     {
-      if (this.editAccountCheck) {
+      if (this.editAccountCheck) 
+      {
         this.updateAccount()
       }
-      else {
-        this.createAccount()
-      }
-    }   
+      else
+        this.createAccount();
+    }
   }
 
   validationCheck() {
@@ -367,6 +383,10 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
       this.AccountAssignee="Select an Assignee"
       found=1
      }
+     if(this.primarySelectedUserId=== this.secondarySelectedUserId)
+     {
+      found=1
+     }
      if(found==0){
       return true;
     }
@@ -376,6 +396,7 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   CheckAccountNumber() : void {
     this._chartOfAccountService.checkAccountNumber(this.accountDto.accountNumber).subscribe(response => {
       this.isAccountExist = response
+      
     })
     this.AccountNumber=null
   }
@@ -383,10 +404,15 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
   createAccount():void {
     this.saving = true;
     if(history.state.data.userId){
-      this.accountDto.assigneeId=history.state.data.userId
+      this.accountDto.assigneeId=history.state.data.userId  
+      this.accountDto.secondaryId=this.secondarySelectedUserId
     }
     else if (this.selectedUserId.selectedUserId != undefined){
       this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId);
+      if(this.secondarySelectedUserId!= null)
+        this.accountDto.secondaryId=Number(this.secondarySelectedUserId);
+      else
+       this.accountDto.secondaryId=0;
     }
     this._chartOfAccountService.createOrEdit(this.accountDto).subscribe(response => {
       this.notify.success(this.l('Account Successfully Created.'));
@@ -398,6 +424,11 @@ export class CreateEditAccountsComponent extends AppComponentBase implements OnI
  
   updateAccount() : void {
     this.saving = true;
+    if (this.selectedUserId.selectedUserId != undefined){
+      this.accountDto.assigneeId = Number(this.selectedUserId.selectedUserId)}
+     this.accountDto.secondaryId = this.secondarySelectedUserId; 
+     if(this.primarySelectedUserId === this.secondarySelectedUserId)
+      return;
     this._chartOfAccountService.createOrEdit(this.accountDto).pipe(finalize(() => {  }))
     .subscribe(response => {
       this.notify.success(this.l('Account Successfully Updated.'));

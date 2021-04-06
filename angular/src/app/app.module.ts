@@ -51,6 +51,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
 };
 
+
 import { CoreModule } from '@metronic/app/core/core.module';
 import { SessionTimeoutModalComponent } from './shared/common/session-timeout/session-timeout-modal-component';
 import { SessionTimeoutComponent } from './shared/common/session-timeout/session-timeout.component';

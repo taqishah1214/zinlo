@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Zinlo.Migrations
 {
-    public partial class init : Migration
+    public partial class ItemPermissions : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -72,6 +72,7 @@ namespace Zinlo.Migrations
                     Name = table.Column<string>(maxLength: 32, nullable: false),
                     DisplayName = table.Column<string>(maxLength: 64, nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
+                    CustomerEmail = table.Column<string>(nullable: true),
                     ExpiringEditionId = table.Column<int>(nullable: true),
                     DailyPrice = table.Column<decimal>(nullable: true),
                     WeeklyPrice = table.Column<decimal>(nullable: true),
@@ -612,13 +613,38 @@ namespace Zinlo.Migrations
                     Email = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
-                    RoleId = table.Column<int>(nullable: true),
+                    RoleId = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true),
                     ReportingRelationship = table.Column<string>(nullable: true),
                     TenantId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InviteUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ItemPermissions",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    ItemId = table.Column<long>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
+                    IsPrimary = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemPermissions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -644,6 +670,28 @@ namespace Zinlo.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ReconciliationAmounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SystemSettings",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    SettingType = table.Column<int>(nullable: false),
+                    Month = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SystemSettings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1076,7 +1124,8 @@ namespace Zinlo.Migrations
                     IsRollBacked = table.Column<bool>(nullable: false),
                     SuccessFilePath = table.Column<string>(nullable: true),
                     UploadedFilePath = table.Column<string>(nullable: true),
-                    UploadMonth = table.Column<DateTime>(nullable: false)
+                    UploadMonth = table.Column<DateTime>(nullable: false),
+                    FileStatus = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1112,7 +1161,8 @@ namespace Zinlo.Migrations
                     Reconciled = table.Column<int>(nullable: false),
                     IsChange = table.Column<bool>(nullable: false),
                     ChangeTime = table.Column<DateTime>(nullable: true),
-                    IsUserDeleted = table.Column<bool>(nullable: false)
+                    IsUserDeleted = table.Column<bool>(nullable: false),
+                    LinkedAccountNumber = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1919,7 +1969,13 @@ namespace Zinlo.Migrations
                 name: "Itemizations");
 
             migrationBuilder.DropTable(
+                name: "ItemPermissions");
+
+            migrationBuilder.DropTable(
                 name: "ReconciliationAmounts");
+
+            migrationBuilder.DropTable(
+                name: "SystemSettings");
 
             migrationBuilder.DropTable(
                 name: "TimeManagements");

@@ -15,6 +15,7 @@ namespace Zinlo.ChartsofAccount.Dtos
         public bool BeginingAmountCheck { get; set; }
         public int ReconciliationType { get; set; }
         public bool IncludeNotReconciled { get; set; }
+        public string AccountNumber { get; set; }
 
 
     }
