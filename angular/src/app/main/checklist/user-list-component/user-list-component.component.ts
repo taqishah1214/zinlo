@@ -3,8 +3,6 @@ import { UserServiceProxy, ClosingChecklistServiceProxy, ChangeAssigneeDto, Char
 import { OnChange } from 'ngx-bootstrap';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { StoreDateService } from "../../../services/storedate.service";
-import { debugOutputAstAsTypeScript } from '@angular/compiler';
-import { convertAbpLocaleToAngularLocale } from 'root.module';
 
 
 
@@ -28,8 +26,6 @@ export class UserListComponentComponent implements OnInit, OnChanges {
   defaultUser: Array<{ id: number, name: string, picture: string }> = [{ id: -1, name: " Enter the Assignee Name", picture: "../../../../assets/media/files/emptyUser.svg" }];
   @Output() messageEvent = new EventEmitter<string>();
   @Output() primaryAssigneeSelected= new EventEmitter<any>();
-  @Output() secondaryAssigneeSelected= new EventEmitter<any>();
-  @Output() showSecondAssignee= new EventEmitter<boolean>();
   @ViewChild(NgSelectComponent, { static: true }) ngSelect: NgSelectComponent;
   @Output("callBack") callBack: EventEmitter<any> = new EventEmitter();
   constructor(private userService: UserServiceProxy,private userDate: StoreDateService,
@@ -65,13 +61,6 @@ export class UserListComponentComponent implements OnInit, OnChanges {
     }
   }
 
-  enableSecondaryAssignee(value):void{
-    if(value == undefined)
-      this.showSecondAssignee.emit(false);
-     else
-     this.showSecondAssignee.emit(true);
-  }
-
   getUserDefaultPicture(): void {
     this.input = this.defaultUser[0].id;
     let updateLock = false;
@@ -97,16 +86,7 @@ export class UserListComponentComponent implements OnInit, OnChanges {
   }
 
   userOnChange(value): void {
-    this.enableSecondaryAssignee(value);
     this.selectedUserId = value;
-    if(this.itemType === "primary")
-    {
-      this.primaryAssigneeSelected.emit(value);
-    }
-    else if(this.itemType === "secondary")
-    {
-      this.secondaryAssigneeSelected.emit(value);   
-    }
     if (this.selectedUserId != undefined ) {
       if (this.selectedUserId != -1) {
         this.messageEvent.emit(this.selectedUserId);

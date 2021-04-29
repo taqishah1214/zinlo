@@ -28,7 +28,6 @@ namespace Zinlo.ChartsofAccount
     public class ChartsofAccountAppService : ZinloAppServiceBase, IChartsofAccountAppService
     {
         private readonly IRepository<ChartofAccounts.ChartofAccounts, long> _chartsofAccountRepository;
-        private readonly IRepository<ChartofAccounts.ItemPermissions, long> _itemPermission;
         private readonly IProfileAppService _profileAppService;
         private readonly IChartsOfAccountsListExcelExporter _chartsOfAccountsListExcelExporter;
         private readonly IRepository<Amortization, long> _amortizationRepository;
@@ -38,12 +37,13 @@ namespace Zinlo.ChartsofAccount
         private readonly IRepository<TimeManagement, long> _timeManagementRepository;
         private readonly IRepository<AccountBalance, long> _accountBalanceRepository;
         private readonly RoleManager _roleManager;
+        private readonly IRepository<ChartofAccounts.SecondaryUserAssignee, long> _secondaryAssignee;
 
 
         public ChartsofAccountAppService(IRepository<Itemization, long> itemizationRepository,
                                          IRepository<Amortization, long> amortizationRepository,
                                          IRepository<ChartofAccounts.ChartofAccounts, long> chartsofAccountRepository,
-                                          IRepository<ChartofAccounts.ItemPermissions, long> itemPermission,
+                                          IRepository<ChartofAccounts.SecondaryUserAssignee, long> secondaryAssignee,
                                          IProfileAppService profileAppService,
                                          IChartsOfAccountsListExcelExporter chartsOfAccountsListExcelExporter,
                                          IChartsOfAccountsTrialBalanceExcelExporter chartsOfAccountsTrialBalanceExcelExporter,
@@ -55,7 +55,6 @@ namespace Zinlo.ChartsofAccount
             _amortizationRepository = amortizationRepository;
             _itemizationRepository = itemizationRepository;
             _chartsofAccountRepository = chartsofAccountRepository;
-            _itemPermission = itemPermission;
             _profileAppService = profileAppService;
             _chartsOfAccountsListExcelExporter = chartsOfAccountsListExcelExporter;
             _chartsOfAccountsTrialBalanceExcelExporter = chartsOfAccountsTrialBalanceExcelExporter;
@@ -63,6 +62,7 @@ namespace Zinlo.ChartsofAccount
             _timeManagementRepository = timeManagementRepository;
             _accountBalanceRepository = accountBalanceRepository;
             _roleManager = roleManager;
+            _secondaryAssignee = secondaryAssignee;
         }
 
         public bool temp() => true;
@@ -73,9 +73,9 @@ namespace Zinlo.ChartsofAccount
 
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
-                var itemPermissions = _itemPermission.GetAll().Where(x => x.UserId == AbpSession.UserId ).Select(p => p.ItemId).ToList();
-
-                var querySecond = _chartsofAccountRepository.GetAll().Where(x => itemPermissions.Contains(x.Id)).Include(x => x.Assignee).Include(p => p.AccountSubType) ;
+                
+                var secondaryAssignee = _secondaryAssignee.GetAll().Where(x => x.SecondaryId == AbpSession.UserId && x.IsDeleted == false).Select(p => p.PrimaryId).ToList();
+                var getAssignee = _chartsofAccountRepository.GetAll().Where(x => secondaryAssignee.Contains(x.AssigneeId)).Include(x => x.Assignee).Include(p => p.AccountSubType);
 
                 var query = _chartsofAccountRepository.GetAll().Where(x => x.IsDeleted == input.AllOrActive).Include(p => p.AccountSubType).Include(p => p.Assignee)
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => e.AccountName.ToLower().Contains(input.Filter.ToLower()) || e.AccountNumber.ToLower().Contains(input.Filter.ToLower()))
@@ -88,8 +88,7 @@ namespace Zinlo.ChartsofAccount
                
 
                 var tempList = query.ToList();
-                tempList.AddRange(querySecond.ToList());
-
+                tempList.AddRange(getAssignee.ToList());
                 var chartofAccounts = tempList.AsQueryable<ChartofAccounts.ChartofAccounts>();              
 
                 var monthStatus = await GetMonthStatus(input.SelectedMonth);
@@ -369,25 +368,6 @@ namespace Zinlo.ChartsofAccount
                 updatedAccount.ReconciliationType = (ReconciliationType)input.ReconciliationType;
                 updatedAccount.AccountType = (AccountType)input.AccountType;
                 var accountId = await _chartsofAccountRepository.InsertOrUpdateAndGetIdAsync(updatedAccount);
-                if (input.SecondaryId != 0)
-                {
-                    var updatedPermission = _itemPermission.GetAll().Where(x => x.ItemId == input.Id).FirstOrDefault();
-                    if (updatedPermission != null)
-                    {
-                        updatedPermission.UserId = (int)input.SecondaryId;
-                        _itemPermission.Update(updatedPermission); 
-                    }
-                    else
-                    {
-                        ItemPermissions newItem = new ItemPermissions();
-                        newItem.UserId = (int)input.SecondaryId;
-                        newItem.ItemId = input.Id;
-                        newItem.CreationTime = input.CreationTime;
-                        newItem.CreatorUserId = input.CreatorUserId;
-                        newItem.IsDeleted = false;
-                        _itemPermission.Insert(newItem);
-                    }
-                }
                 return accountId;
             }
         }
@@ -425,22 +405,12 @@ namespace Zinlo.ChartsofAccount
         protected virtual async Task<long> Create(CreateOrEditChartsofAccountDto input)
         {
             var account = ObjectMapper.Map<ChartofAccounts.ChartofAccounts>(input);
-            ItemPermissions item = new ItemPermissions();
             account.ChangeTime = null;
             if (AbpSession.TenantId != null)
             {
                 account.TenantId = (int)AbpSession.TenantId;
             }
             var accountId = _chartsofAccountRepository.InsertAndGetId(account);
-            if (input.SecondaryId != 0)
-            {
-                item.UserId = (int)input.SecondaryId;
-                item.ItemId =accountId;
-                item.CreationTime = input.CreationTime;
-                item.CreatorUserId = input.CreatorUserId;
-                item.IsDeleted = false;
-                _itemPermission.Insert(item);
-            }
            
             if (input.Reconciled == Dtos.Reconciled.AccruedAmount)
             {
@@ -460,7 +430,6 @@ namespace Zinlo.ChartsofAccount
         public async Task<GetAccountForEditDto> GetAccountForEdit(long id)
         {
             var account = await _chartsofAccountRepository.GetAll().Where(x => x.Id == id).Include(a => a.Assignee).Include(a => a.AccountSubType).FirstOrDefaultAsync();
-            var item = _itemPermission.GetAll().Where(x => id == x.ItemId).FirstOrDefault();
             var mappedAccount = ObjectMapper.Map<GetAccountForEditDto>(account);
             mappedAccount.AccountSubType = account.AccountSubType.Title;
             mappedAccount.AssigniId = account.Assignee.Id;
@@ -474,7 +443,6 @@ namespace Zinlo.ChartsofAccount
             mappedAccount.CreatorUserId = account.CreatorUserId;
             mappedAccount.CreationTime = account.CreationTime;
             mappedAccount.LinkedAccount = account.LinkedAccountNumber;
-            mappedAccount.SecondaryId = item != null ? item.UserId  : 0 ;
             return mappedAccount;
         }
 

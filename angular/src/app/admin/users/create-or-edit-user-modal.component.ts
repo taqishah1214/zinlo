@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, EventEmitter, Injector, Output, ViewChild,OnInit } from '@angular/core';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { CreateOrUpdateUserInput, OrganizationUnitDto, PasswordComplexitySetting, ProfileServiceProxy, UserEditDto, UserRoleDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -6,28 +6,44 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { IOrganizationUnitsTreeComponentData, OrganizationUnitsTreeComponent } from '../shared/organization-unit-tree.component';
 import * as _ from 'lodash';
 import { finalize } from 'rxjs/operators';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { StoreDateService } from "../../services/storedate.service";
+
 
 @Component({
     selector: 'createOrEditUserModal',
     templateUrl: './create-or-edit-user-modal.component.html',
     styles: [`.user-edit-dialog-profile-image {
              margin-bottom: 20px;
+        }`,`.imagedropdown{
+            width:25px;
+             height:25px;
+             border-radius: 100%;
+             font-size: 10px;
         }`
+        
+
     ]
 })
-export class CreateOrEditUserModalComponent extends AppComponentBase {
+export class CreateOrEditUserModalComponent extends AppComponentBase implements OnInit {
 
     @ViewChild('createOrEditModal', {static: true}) modal: ModalDirective;
     @ViewChild('organizationUnitTree', {static: false}) organizationUnitTree: OrganizationUnitsTreeComponent;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
+    disable: any;
 
     active = false;
     saving = false;
+    userList : any;
+    users: any;
+    userId:any;
+    input: any;
     canChangeUserName = true;
     isTwoFactorEnabled: boolean = this.setting.getBoolean('Abp.Zero.UserManagement.TwoFactorLogin.IsEnabled');
     isLockoutEnabled: boolean = this.setting.getBoolean('Abp.Zero.UserManagement.UserLockOut.IsEnabled');
     passwordComplexitySetting: PasswordComplexitySetting = new PasswordComplexitySetting();
+    defaultUser: Array<{ id: number, name: string, picture: string }> = [{ id: -1, name: " Enter the Assignee Name", picture: "../../../../assets/media/files/emptyUser.svg" }];
 
     user: UserEditDto = new UserEditDto();
     roles: UserRoleDto[];
@@ -43,10 +59,50 @@ export class CreateOrEditUserModalComponent extends AppComponentBase {
     constructor(
         injector: Injector,
         private _userService: UserServiceProxy,
+        private userDate: StoreDateService,
         private _profileService: ProfileServiceProxy
     ) {
         super(injector);
     }
+
+    ngOnInit() {
+        this.userDate.allUsersInformationofTenant.subscribe(userList => {
+          this.users = userList;
+        })
+        if (this.disable === "true") {
+          this.disable = true
+        }  
+        if (this.userId != 0) {
+          this.getSelectedUserIdandPicture()
+        }
+        else {
+          this.getUserDefaultPicture()
+        }
+        
+      }
+      
+
+      getSelectedUserIdandPicture(): void {
+        this.users.forEach(element => {
+          if (element.id == this.userId){
+            this.input = element.id;
+          }
+        });
+      }
+
+      getUserDefaultPicture(): void {
+        this.input = this.defaultUser[0].id;
+        let updateLock = false;
+        this.users.forEach(element => {
+          if (element.id === -1)
+          {
+            updateLock = true
+          }
+        });
+        if (updateLock == false) {
+          this.users.push({ id: -1, name: " Enter the Assignee Name", picture: "../../../../assets/media/files/emptyUser.svg" });
+        }
+      }
 
     show(userId?: number): void {
         if (!userId) {
@@ -136,7 +192,6 @@ export class CreateOrEditUserModalComponent extends AppComponentBase {
 
     save(): void {
         let input = new CreateOrUpdateUserInput();
-
         input.user = this.user;
         input.setRandomPassword = this.setRandomPassword;
         input.sendActivationEmail = this.sendActivationEmail;
@@ -145,8 +200,9 @@ export class CreateOrEditUserModalComponent extends AppComponentBase {
                 _.filter(this.roles, { isAssigned: true, inheritedFromOrganizationUnit: false }), role => role.roleName
             );
 
-        input.organizationUnits = this.organizationUnitTree.getSelectedOrganizations();
 
+        //NEW Code///////////////////////////////////////////
+        input.organizationUnits = this.organizationUnitTree.getSelectedOrganizations();
         this.saving = true;
         this._userService.createOrUpdateUser(input)
             .pipe(finalize(() => { this.saving = false; }))

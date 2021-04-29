@@ -45,6 +45,7 @@ namespace Zinlo.Authorization.Users.Dto
         public virtual bool IsTwoFactorEnabled { get; set; }
 
         public virtual bool IsLockoutEnabled { get; set; }
+        public long [] SecondaryId { get; set; }
 
     }
 }

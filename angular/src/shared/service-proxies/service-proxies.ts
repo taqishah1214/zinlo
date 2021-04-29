@@ -21530,7 +21530,6 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
     changeTime!: moment.Moment;
     isChange!: boolean;
     linkedAccountNumber!: string | undefined;
-    secondaryId!: number;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -21557,7 +21556,6 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
             this.changeTime = data["changeTime"] ? moment(data["changeTime"].toString()) : <any>undefined;
             this.isChange = data["isChange"];
             this.linkedAccountNumber = data["linkedAccountNumber"];
-            this.secondaryId = data["secondaryId"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -21584,7 +21582,6 @@ export class CreateOrEditChartsofAccountDto implements ICreateOrEditChartsofAcco
         data["changeTime"] = this.changeTime ? this.changeTime.toISOString() : <any>undefined;
         data["isChange"] = this.isChange;
         data["linkedAccountNumber"] = this.linkedAccountNumber;
-        data["secondaryId"] = this.secondaryId;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -21604,7 +21601,6 @@ export interface ICreateOrEditChartsofAccountDto {
     changeTime: moment.Moment;
     isChange: boolean;
     linkedAccountNumber: string | undefined;
-    secondaryId: number;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;
@@ -33658,6 +33654,7 @@ export class UserEditDto implements IUserEditDto {
     shouldChangePasswordOnNextLogin!: boolean;
     isTwoFactorEnabled!: boolean;
     isLockoutEnabled!: boolean;
+    secondaryId!: number[] | undefined;
 
     constructor(data?: IUserEditDto) {
         if (data) {
@@ -33681,6 +33678,11 @@ export class UserEditDto implements IUserEditDto {
             this.shouldChangePasswordOnNextLogin = data["shouldChangePasswordOnNextLogin"];
             this.isTwoFactorEnabled = data["isTwoFactorEnabled"];
             this.isLockoutEnabled = data["isLockoutEnabled"];
+            if (Array.isArray(data["secondaryId"])) {
+                this.secondaryId = [] as any;
+                for (let item of data["secondaryId"])
+                    this.secondaryId!.push(item);
+            }
         }
     }
 
@@ -33704,6 +33706,11 @@ export class UserEditDto implements IUserEditDto {
         data["shouldChangePasswordOnNextLogin"] = this.shouldChangePasswordOnNextLogin;
         data["isTwoFactorEnabled"] = this.isTwoFactorEnabled;
         data["isLockoutEnabled"] = this.isLockoutEnabled;
+        if (Array.isArray(this.secondaryId)) {
+            data["secondaryId"] = [];
+            for (let item of this.secondaryId)
+                data["secondaryId"].push(item);
+        }
         return data; 
     }
 }
@@ -33720,6 +33727,7 @@ export interface IUserEditDto {
     shouldChangePasswordOnNextLogin: boolean;
     isTwoFactorEnabled: boolean;
     isLockoutEnabled: boolean;
+    secondaryId: number[] | undefined;
 }
 
 export class UserRoleDto implements IUserRoleDto {
@@ -33996,6 +34004,7 @@ export class CreateOrUpdateUserInput implements ICreateOrUpdateUserInput {
     sendActivationEmail!: boolean;
     setRandomPassword!: boolean;
     organizationUnits!: number[] | undefined;
+    secondaryId!: number[] | undefined;
 
     constructor(data?: ICreateOrUpdateUserInput) {
         if (data) {
@@ -34024,6 +34033,11 @@ export class CreateOrUpdateUserInput implements ICreateOrUpdateUserInput {
                 for (let item of data["organizationUnits"])
                     this.organizationUnits!.push(item);
             }
+            if (Array.isArray(data["secondaryId"])) {
+                this.secondaryId = [] as any;
+                for (let item of data["secondaryId"])
+                    this.secondaryId!.push(item);
+            }
         }
     }
 
@@ -34049,6 +34063,11 @@ export class CreateOrUpdateUserInput implements ICreateOrUpdateUserInput {
             for (let item of this.organizationUnits)
                 data["organizationUnits"].push(item);
         }
+        if (Array.isArray(this.secondaryId)) {
+            data["secondaryId"] = [];
+            for (let item of this.secondaryId)
+                data["secondaryId"].push(item);
+        }
         return data; 
     }
 }
@@ -34059,6 +34078,7 @@ export interface ICreateOrUpdateUserInput {
     sendActivationEmail: boolean;
     setRandomPassword: boolean;
     organizationUnits: number[] | undefined;
+    secondaryId: number[] | undefined;
 }
 
 export class UserListofCurrentTenantDto implements IUserListofCurrentTenantDto {

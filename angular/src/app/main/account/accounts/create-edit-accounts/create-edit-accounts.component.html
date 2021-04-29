@@ -117,24 +117,6 @@
 
                                     </div>
                                 </div>
-                                <div class="row form-group" >
-                                    <div *ngIf="enableSecondaryAssignee"class="col-md-6 "style="height: 70px !important;">
-                                        <label>{{"Secondary Assignee" | localize}} </label>
-                                        <app-user-list-component  [itemType]="'secondary'"  (secondaryAssigneeSelected)="secondarySelectedUserId = $event" comingChangeReguest="" (focusout)="changeValidation()" userId={{secondaryAssignee}} >
-                                        </app-user-list-component>
-                                        <span *ngIf="primarySelectedUserId === secondarySelectedUserId" class="form-control-feedback"
-                                        >{{"Assignee and Secondary Assignee cannot be same."}}</span>
-                                    </div>
-                                </div>
-                                <div  *ngIf="editAccountCheck == true" class="row form-group">
-                                    <div class="col-md-6 "style="height: 70px !important;">
-                                        <label>{{"Secondary Assignee" | localize}} </label>
-                                        <app-user-list-component  [itemType]="'secondary'"  (secondaryAssigneeSelected)="secondarySelectedUserId = $event" comingChangeReguest="" (focusout)="changeValidation()" userId={{secondarySelectedUserId}} >
-                                        </app-user-list-component>
-                                        <span *ngIf="primarySelectedUserId === secondarySelectedUserId" class="form-control-feedback"
-                                        >{{"Assignee and Secondary Assignee cannot be same."}}</span>
-                                    </div>
-                                </div>
 
                                 <div class="row">
                                     <div class="col-md-6">

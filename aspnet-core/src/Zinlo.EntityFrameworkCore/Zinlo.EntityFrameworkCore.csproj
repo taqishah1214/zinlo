@@ -54,6 +54,8 @@
     <Compile Remove="Migrations\20200505165210_auditied_accountBalance.Designer.cs" />
     <Compile Remove="Migrations\20200921111435_Disable_DateTime_Normalization.cs" />
     <Compile Remove="Migrations\20200921111435_Disable_DateTime_Normalization.Designer.cs" />
+    <Compile Remove="Migrations\20210421103647_SecondaryUserAssignee_Added.cs" />
+    <Compile Remove="Migrations\20210421103647_SecondaryUserAssignee_Added.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="28.4.4" />

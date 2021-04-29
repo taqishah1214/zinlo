@@ -83,6 +83,7 @@ import { PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfi
 import { PermissionTreeModalComponent } from './shared/permission-tree-modal.component';
 import { ManagementComponent } from './management/management.component';
 import { AppSharedModule } from '@app/app-shared/app-shared.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
@@ -118,7 +119,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         ImageCropperModule,
         PerfectScrollbarModule,
         DropdownModule,
-        AppSharedModule
+        AppSharedModule,
+        NgSelectModule
     ],
     declarations: [
         ManagementComponent,

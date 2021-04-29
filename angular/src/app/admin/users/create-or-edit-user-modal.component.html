@@ -50,6 +50,19 @@
                                 <validation-messages [formCtrl]="userNameInput"></validation-messages>
                             </div>
 
+                            <div class="form-group">
+                                <label for="secondaryUserList">{{"Secondory Assignee" | localize}} </label>
+                                <ng-select [multiple]="true" [(ngModel)]="user.secondaryId" name="user.secondaryId" class="auto-grow" bindLabel="name" placeholder="Search users"  [searchable]="true" [clearable]="true">
+                                      <ng-option *ngFor="let item of users" [value]="item.id"  >
+                                        <img *ngIf="item.picture" class="imagedropdown" src="{{item.picture}}"/>
+                                        <div *ngIf="!item.picture" class="kt-badge kt-badge--xl kt-badge--primary imagedropdown">
+                                            {{item.name | firstLetterOfWords}}</div>
+                                             {{ item.name}}
+                                    </ng-option>
+                                    
+                                 </ng-select>
+                            </div>
+
                             <div class="kt-checkbox-list">
                                 <label for="EditUser_SetRandomPassword" class="kt-checkbox">
                                     <input id="EditUser_SetRandomPassword" type="checkbox" name="SetRandomPassword" [(ngModel)]="setRandomPassword">

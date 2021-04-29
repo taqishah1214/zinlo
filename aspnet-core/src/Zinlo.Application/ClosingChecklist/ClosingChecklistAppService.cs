@@ -43,6 +43,7 @@ namespace Zinlo.ClosingChecklist
         private readonly IInstructionAppService _instructionVersionsAppService;
         private readonly ITaskExcelExporter _taskExcelExporter;
         private readonly RoleManager _roleManager;
+        private readonly IRepository<ChartofAccounts.SecondaryUserAssignee, long> _secondaryAssignee;
 
         public ClosingChecklistAppService(IProfileAppService profileAppService,
                                           ICommentAppService commentAppService,
@@ -53,7 +54,9 @@ namespace Zinlo.ClosingChecklist
                                           IInstructionAppService instructionVersionsAppService,
                                           ClosingChecklistManager closingChecklistManager,
                                           ITaskExcelExporter taskExcelExporter,
-                                          RoleManager roleManager)
+                                          RoleManager roleManager,
+                                          IRepository<ChartofAccounts.SecondaryUserAssignee, long> secondaryAssignee
+                                          )
         {
             _commentAppService = commentAppService;
             _userRepository = userRepository;
@@ -65,6 +68,7 @@ namespace Zinlo.ClosingChecklist
             _closingChecklistManager = closingChecklistManager;
             _taskExcelExporter = taskExcelExporter;
             _roleManager = roleManager;
+            _secondaryAssignee = secondaryAssignee;
         }
         public async Task<PagedResultDto<TasksGroup>> GetReport(GetTaskReportInput input)
         {
@@ -131,6 +135,10 @@ namespace Zinlo.ClosingChecklist
         {
             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
+
+                var secondaryAssignee = _secondaryAssignee.GetAll().Where(x => x.SecondaryId == AbpSession.UserId && x.IsDeleted == false).Select(p => p.PrimaryId).ToList();
+                var getAssignee = _closingChecklistManager.GetAll().Where(x => secondaryAssignee.Contains(x.AssigneeId)).Include(x => x.Assignee);
+                
                 //if (input.DateFilter < DateTime.Now.AddMonths(1))
                 //    return new PagedResultDto<TasksGroup>();
                 var query = _closingChecklistManager.GetAll()
@@ -144,10 +152,15 @@ namespace Zinlo.ClosingChecklist
                     .WhereIf(input.AssigneeId != 0, e => false || e.AssigneeId == input.AssigneeId)
                     .WhereIf(input.AllOrActive != true, e => (e.IsDeleted == input.AllOrActive))
                     .WhereIf(GetRoleName().Equals("User"), p => p.AssigneeId == AbpSession.UserId);
+
+                var tempList = query.ToList();
+                tempList.AddRange(getAssignee.ToList());
+                var checkList = tempList.AsQueryable<ClosingChecklist>();
+
                 var status = await GetMonthStatus((DateTime)input.DateFilter);
-                var pagedAndFilteredTasks = query.OrderBy(input.Sorting ?? "DueDate asc").PageBy(input);
-                var totalCount = query.Count();
-                var getUserWithPictures = (from o in query.ToList()
+                var pagedAndFilteredTasks = checkList.OrderBy(input.Sorting ?? "DueDate asc").PageBy(input);
+                var totalCount = checkList.Count();
+                var getUserWithPictures = (from o in checkList.ToList()
 
                                            select new GetUserWithPicture()
                                            {
