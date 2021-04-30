@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Zinlo.Migrations
 {
-    public partial class secondary_user_assignee : Migration
+    public partial class SecondaryUserAssignee : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

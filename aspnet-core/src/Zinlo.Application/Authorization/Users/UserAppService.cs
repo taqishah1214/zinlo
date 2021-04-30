@@ -183,7 +183,7 @@ namespace Zinlo.Authorization.Users
             {
                 //Editing an existing user
                 var user = await UserManager.GetUserByIdAsync(input.Id.Value);
-                var secondaryAssignee = _secondaryAssignee.GetAll().Where(x => x.PrimaryId == input.Id && x.IsDeleted == false).Select(p => p.SecondaryId).ToArray();
+                var secondaryAssignee = _secondaryAssignee.GetAll().Where(x => x.PrimaryId == input.Id && x.IsDeleted == false).Select(p => p.SecondaryId).ToList();
 
                 output.User = ObjectMapper.Map<UserEditDto>(user);
                 output.ProfilePictureId = user.ProfilePictureId;
@@ -333,14 +333,14 @@ namespace Zinlo.Authorization.Users
                 await _secondaryAssignee.DeleteAsync(i);
              }
 
-            if (input.SecondaryId != null)
+            if (input.User.SecondaryId != null)
             {
 
-                for ( int i = 0; i < input.SecondaryId.Length; i++)
+                for ( int i = 0; i < input.User.SecondaryId.Count(); i++)
                 {
                     SecondaryUserAssignee secondaryAssignee = new SecondaryUserAssignee();
                     secondaryAssignee.PrimaryId = user.Id;
-                    secondaryAssignee.SecondaryId = input.SecondaryId[i];
+                    secondaryAssignee.SecondaryId = input.User.SecondaryId[i];
                     await _secondaryAssignee.InsertAsync(secondaryAssignee);
 
                 }
@@ -407,13 +407,13 @@ namespace Zinlo.Authorization.Users
                     input.User.Password
                 );
             }
-            if (input.SecondaryId != null)
+            if (input.User.SecondaryId != null)
             {
-                for (int i = 0; i < input.SecondaryId.Length; i++)
+                for (int i = 0; i < input.User.SecondaryId.Count(); i++)
                 {
                     SecondaryUserAssignee secondaryAssignee = new SecondaryUserAssignee();
                     secondaryAssignee.PrimaryId = user.Id;
-                    secondaryAssignee.SecondaryId = input.SecondaryId[i];
+                    secondaryAssignee.SecondaryId = input.User.SecondaryId[i];
                     await _secondaryAssignee.InsertAsync(secondaryAssignee);
 
                 }

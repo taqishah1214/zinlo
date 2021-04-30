@@ -21,6 +21,6 @@ namespace Zinlo.Authorization.Users.Dto
         {
             OrganizationUnits = new List<long>();
         }
-        public long[] SecondaryId { get; set; }
+        public List<long> SecondaryId { get; set; }
     }
 }

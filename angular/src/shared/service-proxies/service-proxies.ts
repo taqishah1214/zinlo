@@ -3364,7 +3364,7 @@ export class ChartsofAccountServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, accountType: number | undefined, selectedMonth: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, beginingAmountCheck: boolean | undefined, reconciliationType: number | undefined, includeNotReconciled: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
+    getAll(filter: string | undefined, accountType: number | undefined, selectedMonth: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, beginingAmountCheck: boolean | undefined, reconciliationType: number | undefined, includeNotReconciled: boolean | undefined,sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
         let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -21617,7 +21617,7 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
     accountSubTypeId!: number;
     reconciledId!: number;
     linkedAccount!: string | undefined;
-    secondaryId!: number;
+    secondaryId!: number[] | undefined;
     creationTime!: moment.Moment;
     creatorUserId!: number | undefined;
     id!: number;
@@ -21643,7 +21643,11 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
             this.accountSubTypeId = data["accountSubTypeId"];
             this.reconciledId = data["reconciledId"];
             this.linkedAccount = data["linkedAccount"];
-            this.secondaryId = data["secondaryId"];
+            if (Array.isArray(data["secondaryId"])) {
+                this.secondaryId = [] as any;
+                for (let item of data["secondaryId"])
+                    this.secondaryId!.push(item);
+            }
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
@@ -21669,7 +21673,11 @@ export class GetAccountForEditDto implements IGetAccountForEditDto {
         data["accountSubTypeId"] = this.accountSubTypeId;
         data["reconciledId"] = this.reconciledId;
         data["linkedAccount"] = this.linkedAccount;
-        data["secondaryId"] = this.secondaryId;
+        if (Array.isArray(this.secondaryId)) {
+            data["secondaryId"] = [];
+            for (let item of this.secondaryId)
+                data["secondaryId"].push(item);
+        }
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["creatorUserId"] = this.creatorUserId;
         data["id"] = this.id;
@@ -21688,7 +21696,7 @@ export interface IGetAccountForEditDto {
     accountSubTypeId: number;
     reconciledId: number;
     linkedAccount: string | undefined;
-    secondaryId: number;
+    secondaryId: number[] | undefined;
     creationTime: moment.Moment;
     creatorUserId: number | undefined;
     id: number;

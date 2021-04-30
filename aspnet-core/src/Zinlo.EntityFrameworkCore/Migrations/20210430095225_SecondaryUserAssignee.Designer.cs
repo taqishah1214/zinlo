@@ -10,8 +10,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20210427063113_secondary_user_assignee")]
-    partial class secondary_user_assignee
+    [Migration("20210430095225_SecondaryUserAssignee")]
+    partial class SecondaryUserAssignee
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1799,54 +1799,6 @@ namespace Zinlo.Migrations
                     b.HasIndex("AssigneeId");
 
                     b.ToTable("ChartofAccounts");
-                });
-
-            modelBuilder.Entity("Zinlo.ChartofAccounts.ItemPermissions", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsPrimary")
-                        .HasColumnType("boolean");
-
-                    b.Property<long>("ItemId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("TenantId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ItemPermissions");
                 });
 
             modelBuilder.Entity("Zinlo.ChartofAccounts.SecondaryUserAssignee", b =>

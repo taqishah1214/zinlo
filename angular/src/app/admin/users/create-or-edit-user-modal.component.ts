@@ -39,6 +39,7 @@ export class CreateOrEditUserModalComponent extends AppComponentBase implements 
     users: any;
     userId:any;
     input: any;
+    AccountAssignee:string
     canChangeUserName = true;
     isTwoFactorEnabled: boolean = this.setting.getBoolean('Abp.Zero.UserManagement.TwoFactorLogin.IsEnabled');
     isLockoutEnabled: boolean = this.setting.getBoolean('Abp.Zero.UserManagement.UserLockOut.IsEnabled');
@@ -72,7 +73,7 @@ export class CreateOrEditUserModalComponent extends AppComponentBase implements 
         if (this.disable === "true") {
           this.disable = true
         }  
-        if (this.userId != 0) {
+        if (this.userId !== 0) {
           this.getSelectedUserIdandPicture()
         }
         else {
@@ -84,7 +85,7 @@ export class CreateOrEditUserModalComponent extends AppComponentBase implements 
 
       getSelectedUserIdandPicture(): void {
         this.users.forEach(element => {
-          if (element.id == this.userId){
+          if (element.id === this.userId){
             this.input = element.id;
           }
         });
@@ -99,7 +100,7 @@ export class CreateOrEditUserModalComponent extends AppComponentBase implements 
             updateLock = true
           }
         });
-        if (updateLock == false) {
+        if (updateLock === false) {
           this.users.push({ id: -1, name: " Enter the Assignee Name", picture: "../../../../assets/media/files/emptyUser.svg" });
         }
       }
@@ -192,7 +193,17 @@ export class CreateOrEditUserModalComponent extends AppComponentBase implements 
 
     save(): void {
         let input = new CreateOrUpdateUserInput();
-        input.user = this.user;
+        if(this.user.secondaryId !== undefined)
+        {
+        for (let i = 0; i < this.user.secondaryId.length; i++) {
+            if(this.user.secondaryId[i] === this.user.id)
+            {
+                this.AccountAssignee=this.user.name+" "+this.user.surname+" cannot select as Secondary Assignee";
+                return;
+            }      
+        }
+    } 
+        input.user = this.user; 
         input.setRandomPassword = this.setRandomPassword;
         input.sendActivationEmail = this.sendActivationEmail;
         input.assignedRoleNames =

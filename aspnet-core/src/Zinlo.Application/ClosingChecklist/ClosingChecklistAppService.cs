@@ -137,7 +137,7 @@ namespace Zinlo.ClosingChecklist
             {
 
                 var secondaryAssignee = _secondaryAssignee.GetAll().Where(x => x.SecondaryId == AbpSession.UserId && x.IsDeleted == false).Select(p => p.PrimaryId).ToList();
-                var getAssignee = _closingChecklistManager.GetAll().Where(x => secondaryAssignee.Contains(x.AssigneeId)).Include(x => x.Assignee);
+                var getAssignee = _closingChecklistManager.GetAll().Where(x => secondaryAssignee.Contains(x.AssigneeId)).Include(x => x.Assignee).Include(rest => rest.Category);
                 
                 //if (input.DateFilter < DateTime.Now.AddMonths(1))
                 //    return new PagedResultDto<TasksGroup>();
