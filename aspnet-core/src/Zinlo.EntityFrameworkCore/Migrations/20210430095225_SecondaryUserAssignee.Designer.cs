@@ -10,8 +10,8 @@ using Zinlo.EntityFrameworkCore;
 namespace Zinlo.Migrations
 {
     [DbContext(typeof(ZinloDbContext))]
-    [Migration("20210406122810_Item_Permission_Added")]
-    partial class Item_Permission_Added
+    [Migration("20210430095225_SecondaryUserAssignee")]
+    partial class SecondaryUserAssignee
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1801,7 +1801,7 @@ namespace Zinlo.Migrations
                     b.ToTable("ChartofAccounts");
                 });
 
-            modelBuilder.Entity("Zinlo.ChartofAccounts.ItemPermissions", b =>
+            modelBuilder.Entity("Zinlo.ChartofAccounts.SecondaryUserAssignee", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -1823,30 +1823,25 @@ namespace Zinlo.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsPrimary")
-                        .HasColumnType("boolean");
-
-                    b.Property<long>("ItemId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("TenantId")
-                        .HasColumnType("integer");
+                    b.Property<long>("PrimaryId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<long>("SecondaryId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ItemPermissions");
+                    b.HasIndex("PrimaryId");
+
+                    b.HasIndex("SecondaryId");
+
+                    b.ToTable("SecondaryUserAssignee");
                 });
 
             modelBuilder.Entity("Zinlo.Chat.ChatMessage", b =>
@@ -2842,6 +2837,21 @@ namespace Zinlo.Migrations
                     b.HasOne("Zinlo.Authorization.Users.User", "Assignee")
                         .WithMany()
                         .HasForeignKey("AssigneeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Zinlo.ChartofAccounts.SecondaryUserAssignee", b =>
+                {
+                    b.HasOne("Zinlo.Authorization.Users.User", "Primary")
+                        .WithMany()
+                        .HasForeignKey("PrimaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Zinlo.Authorization.Users.User", "Secondary")
+                        .WithMany()
+                        .HasForeignKey("SecondaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

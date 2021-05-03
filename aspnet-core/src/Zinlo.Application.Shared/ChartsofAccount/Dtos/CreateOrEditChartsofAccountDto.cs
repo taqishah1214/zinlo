@@ -16,7 +16,6 @@ namespace Zinlo.ChartsofAccount.Dtos
         public DateTime ChangeTime { get; set; }
         public bool IsChange  { get; set; }
         public virtual string LinkedAccountNumber { get; set; }
-        public virtual long SecondaryId { get; set; }
 
 
     }
