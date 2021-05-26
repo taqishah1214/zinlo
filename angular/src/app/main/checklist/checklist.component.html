@@ -56,7 +56,7 @@
                                         </button>
                                     </div>
                                     <ng-uppy [config]="settings" 
-                                    (uploadResult)="fileUploadedResponseTrialBalance($event)">
+                                    (uploadResult)="fileUploadResponse($event)">
                                 </ng-uppy>
                                     <div class="modal-body upload-body">
                                         <div class="drag_drop_box uppy-modal-box1">
@@ -124,7 +124,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary btn-width"
                                             data-dismiss="modal">{{"Close" | localize}}</button>
-                                        <button type="button" class="btn btn-primary btn-width"  data-dismiss="modal" (click)="SaveChanges()" [disabled]="activeSaveButton" >{{"Save changes" | localize}}</button>
+                                        <button type="button" class="btn btn-primary btn-width"  data-dismiss="modal" (click)="start_TheBackgroundJob_ForUploadingChecklist()" [disabled]="activeSaveButton" >{{"Save changes" | localize}}</button>
                                     </div>
                                 </div>
                             </div>
