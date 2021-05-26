@@ -10,6 +10,8 @@ import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
 import { StoreDateService } from "../../services/storedate.service";
 import * as $ from 'jquery';
+import { HttpClient } from '@angular/common/http';
+import { AppConsts } from '@shared/AppConsts';
 
 @Component({
   selector: 'app-tasks',
@@ -61,9 +63,17 @@ export class Checklist extends AppComponentBase implements OnInit  {
   changeAssigneePermission: boolean;
   defaultMonth : any;
   reload : any;
+  chartsOfAccountsfileUrl : string = "";
+  balance:boolean=false;
+  account:boolean=true;
+  attachmentPathsTrialBalance: any = [];
+  attachmentPathsChartsofAccounts: any = [];
+  chartsOfAccountsfileUrlTrialBalance : string = "";
+  uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
+  uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsTrialBalanceFromExcel';
   constructor(private _router: Router, private cds : ChangeDetectorRef,
     private _categoryService: CategoriesServiceProxy,
-    private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector, private userDate: StoreDateService) {
+    private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector, private userDate: StoreDateService,private _httpClient: HttpClient) {
     super(injector)
     this.FilterBoxOpen = false;
   }
@@ -306,7 +316,79 @@ export class Checklist extends AppComponentBase implements OnInit  {
 
   }
 
+  onClose(){
+    this.chartsOfAccountsfileUrl
+  }
 
+  fileUploadOption(value){
+    if(this.balance){
+      this.fileUploadedResponseTrialBalance(value)
+    }
+    else if(this.account){
+      this.fileUploadedResponseChartsOfAccounts(value)
+    }
+  }
 
+  fileUploadedResponseTrialBalance(value): void {
+    var response = value.successful
+    response.forEach(i => {
+      this.attachmentPathsTrialBalance.push(i.response.body.result);
 
+    });
+    this.chartsOfAccountsfileUrlTrialBalance = this.attachmentPathsTrialBalance[0].toString();
+
+   // this.uploadAccountsTrialBalanceExcel(url);
+    this.notify.success(this.l('Attachments are Saved Successfully'));
+
+  }
+
+  fileUploadedResponseChartsOfAccounts(value): void {
+    var response = value.successful
+    response.forEach(i => {
+      this.attachmentPathsChartsofAccounts.push(i.response.body.result);
+    });
+    this.notify.success(this.l('Attachments are SavedSuccessfully Upload'));
+    this.chartsOfAccountsfileUrl = this.attachmentPathsChartsofAccounts[0].toString();
+   // this.uploadaccountExcel(url);
+   
+  }
+
+  SaveChanges() :void{
+    if(this.chartsOfAccountsfileUrl != "")
+    {
+      this.uploadaccountExcel(this.chartsOfAccountsfileUrl);
+      this.chartsOfAccountsfileUrl = "";
+    }
+    if(this.chartsOfAccountsfileUrlTrialBalance != "")
+    {
+      this.uploadAccountsTrialBalanceExcel(this.chartsOfAccountsfileUrlTrialBalance);
+      this.chartsOfAccountsfileUrlTrialBalance = "";
+    }
+    // this._signalRService.startHubConnection();
+    // var file = this._signalRService.addBasicListener();
+  }
+
+  uploadaccountExcel(url: string): void {
+    this._httpClient
+      .get<any>(this.uploadUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url)
+      .subscribe(response => {
+        if (response.success) {
+          this.notify.success(this.l('ImportAccountsProcessStart'));
+        } else if (response.error != null) {
+          this.notify.error(this.l('ImportAccountsUploadFailed'));
+        }
+      });
+  }
+
+  uploadAccountsTrialBalanceExcel(url: string): void {
+    this._httpClient
+      .get<any>(this.uploadBalanceUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url + "&" +"monthSelected="+ this.selectedDate)
+      .subscribe(response => {
+        if (response.success) {
+          this.notify.success(this.l('ImportAccountsTrialBalanceProcessStart'));
+        } else if (response.error != null) {
+          this.notify.error(this.l('ImportAccountsTrialBalanceUploadFailed'));
+        }
+      });
+  }
 }

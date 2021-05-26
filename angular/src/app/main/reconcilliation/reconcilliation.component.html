@@ -19,96 +19,113 @@
             <div class="custom-container">
                 <div class="card">
                     <div class="record-card-header">
-                        <div class="record-card-header-bottom">   
+                        <div class="record-card-header-bottom">
                             <div class="record-card-header-bottom-inner1">
-                                <button class="btn arrow-btn left-arrow-btn btn-square"  (click)="filterByMonth(-1)">
+                                <button class="btn arrow-btn left-arrow-btn btn-square" (click)="filterByMonth(-1)">
                                     <img src="./assets/media/ClosingCheckList/left-arrow.svg" alt="left-arrow">
                                 </button>
-                                <h5  style="cursor: default;">{{selectedDate | date:'MMM yyyy'}}</h5>
-                                <button class="btn arrow-btn right-arrow-btn btn-square ml-2" (click)="filterByMonth(1)">
+                                <h5 style="cursor: default;">{{selectedDate | date:'MMM yyyy'}}</h5>
+                                <button class="btn arrow-btn right-arrow-btn btn-square ml-2"
+                                    (click)="filterByMonth(1)">
                                     <img src="./assets/media/ClosingCheckList/right-arrow.svg" alt="right-arrow">
                                 </button>
 
                                 <div class="record-card-header-bottom-inner1">
-                                    <button *ngIf="'Pages.ChartsofAccounts.Upload' | permission" class="btn btn-images btn-width pt-2" data-toggle="modal" data-target="#kt_modal_2">
+                                    <button *ngIf="'Pages.ChartsofAccounts.Upload' | permission"
+                                        class="btn btn-images btn-width pt-2" data-toggle="modal"
+                                        data-target="#kt_modal_2">
                                         <img src="../../../../assets/img/upload.png">
                                         {{"Upload" | localize}}
                                     </button>
                                 </div>
 
-                                 <!-- Modal For Upload -->
-                            <div class="modal fade uppy-modal" id="kt_modal_2" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">
-                                            <!--Place model title here-->
-                                        </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        </button>
-                                    </div>
-                                    <div class="modal-body upload-body">
-                                        <div class="drag_drop_box uppy-modal-box1">
+                                <!-- Modal For Upload -->
+                                <div class="modal fade uppy-modal" id="kt_modal_2" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                                    <!--Place model title here-->
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                </button>
+                                            </div>
+                                            <div class="modal-body upload-body">
+                                                <div class="drag_drop_box uppy-modal-box1">
 
-                                            <p>{{"Upload Trial Balance" | localize}}</p>
-                                        </div>
-                                        <ng-uppy [config]="settings" 
-                                            (uploadResult)="fileUploadedResponseTrialBalance($event)">
-                                        </ng-uppy>
-                                        <div >
-                                            <div class="row modal-bottom-record">
-                                                <div class="col-md-12">
-                                                    <!-- <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a></p> -->
-                                                    <div class="row py-0">
-                                                        <div class="col-xl-5 form-group"><label>{{"Trial Balance Format" | localize}} </label><a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a>
-                                                        </div>    
-                                                        <div class="form-group col-xl-3 pt-2">
-                                                            <label>{{"Select Month for Trial Balance" | localize}} </label>
-                                                        </div>
-                                                        <div class="form-group col-xl-3" style="height: 40px !important;">
-                                                            <div class="month-calender">
-                                                                <form class="input-arrow">
-                                                                    <input [(ngModel)]="selectedDate"  (ngModelChange)="checkMonthActiveorNot($event)" required="required"
-                                                                    autocomplete="off" class="form-control" name="date" bsDatepicker 
-                                                                        placeholder="Select Month" class="form-control" name="date"
-                                                                        bsDatepicker
-                                                                        [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                                                        (onShown)="onOpenCalendar($event)">
-                                                                </form>                
-                                                                <span class="form-control-feedback"
-                                                                *ngIf="!checkActiveMonth">{{"ThisMonthIsNotActive" | localize}}</span>
+                                                    <p>{{"Upload Trial Balance" | localize}}</p>
+                                                </div>
+                                                <ng-uppy [config]="settings"
+                                                    (uploadResult)="fileUploadedResponseTrialBalance($event)">
+                                                </ng-uppy>
+                                                <div>
+                                                    <div class="row modal-bottom-record">
+                                                        <div class="col-md-12">
+                                                            <!-- <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a></p> -->
+                                                            <div class="row py-0">
+                                                                <div class="col-xl-5 form-group"><label>{{"Trial Balance
+                                                                        Format" | localize}} </label><a
+                                                                        href="../../../../assets/TrailBalance.xlsx"
+                                                                        download="TrailBalance.xlsx"
+                                                                        style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download
+                                                                            Sample File" | localize}}</u></a>
+                                                                </div>
+                                                                <div class="form-group col-xl-3 pt-2">
+                                                                    <label>{{"Select Month for Trial Balance" |
+                                                                        localize}} </label>
+                                                                </div>
+                                                                <div class="form-group col-xl-3"
+                                                                    style="height: 40px !important;">
+                                                                    <div class="month-calender">
+                                                                        <form class="input-arrow">
+                                                                            <input [(ngModel)]="selectedDate"
+                                                                                (ngModelChange)="checkMonthActiveorNot($event)"
+                                                                                required="required" autocomplete="off"
+                                                                                class="form-control" name="date"
+                                                                                bsDatepicker placeholder="Select Month"
+                                                                                class="form-control" name="date"
+                                                                                bsDatepicker
+                                                                                [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                                                (onShown)="onOpenCalendar($event)">
+                                                                        </form>
+                                                                        <span class="form-control-feedback"
+                                                                            *ngIf="!checkActiveMonth">{{"ThisMonthIsNotActive"
+                                                                            | localize}}</span>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="inner-col-record border border-default">
 
-                                                        <div class="row">
-                                                            <div class="modal-bottom-row-col">
-                                                                <p>{{"Account Name" | localize}}</p>
-                                                            </div>
-                                                            <div class="modal-bottom-row-col">
-                                                                <p>{{"Account Number" | localize}}</p>
-                                                            </div>
-                                                            <div class="modal-bottom-row-col">
-                                                                <p>{{"Balance" | localize}}</p>
+                                                            <div class="inner-col-record border border-default">
+
+                                                                <div class="row">
+                                                                    <div class="modal-bottom-row-col">
+                                                                        <p>{{"Account Name" | localize}}</p>
+                                                                    </div>
+                                                                    <div class="modal-bottom-row-col">
+                                                                        <p>{{"Account Number" | localize}}</p>
+                                                                    </div>
+                                                                    <div class="modal-bottom-row-col">
+                                                                        <p>{{"Balance" | localize}}</p>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                    </div>
-                                    </div>
 
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary btn-width"
-                                            data-dismiss="modal">{{"Close" | localize}}</button>
-                                        <button type="button" class="btn btn-primary btn-width"  data-dismiss="modal" (click)="SaveChanges()" [disabled]="activeSaveButton" >{{"Save changes" | localize}}</button>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-width"
+                                                    data-dismiss="modal">{{"Close" | localize}}</button>
+                                                <button type="button" class="btn btn-primary btn-width"
+                                                    data-dismiss="modal" (click)="SaveChanges()"
+                                                    [disabled]="activeSaveButton">{{"Save changes" | localize}}</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
 
 
@@ -119,7 +136,7 @@
                                 <h5>{{currentDate | momentFormat:'MMMM YYYY'}}</h5>
                             </div> -->
                             <div class="record-card-header-bottom-inner2">
-                              
+
                                 <div class="upper-content">
                                     <div class="users-box-parent">
                                         <div class="users-box">
@@ -127,7 +144,7 @@
                                                 class="member-count bg-lightgrey text-blue">
                                                 <span>+{{remainingUserForHeader.length}}</span>
                                                 <div class="member-dropdown">
-                                                    <ul *ngFor="let item of remainingUserForHeader" >
+                                                    <ul *ngFor="let item of remainingUserForHeader">
                                                         <li (click)="GetAssigniSpecficAccounts(item.id)">
                                                             <div class="kt-user-card-v2__pic">
                                                                 <div *ngIf="item.picture"
@@ -166,8 +183,8 @@
                                     </div>
                                     <div class="form-group category-selector">
                                         <select class="form-control border-grey" name="categoryFilter"
-                                        [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
-                                        id="exampleFormControlSelect2">
+                                            [(ngModel)]="accountTypeFilter" (change)="accountTypeClick($event)"
+                                            id="exampleFormControlSelect2">
                                             <option value="0">Account type</option>
                                             <option *ngFor="let item of accountTypeList;" [value]="item.id">
                                                 {{item.name}}
@@ -179,18 +196,20 @@
                                             <div class="form-group">
                                                 <input type="text" autoFocus (input)="getAllAccounts()"
                                                     [(ngModel)]="filterText" name="filterText"
-                                                    [placeholder]="l('SearchWithThreeDot')" class="form-control m-input">
+                                                    [placeholder]="l('SearchWithThreeDot')"
+                                                    class="form-control m-input">
                                             </div>
                                         </form>
                                     </div>
-                                </div>              
+                                </div>
                             </div>
                             <div class="w-100">
                                 <div class="row abc">
                                     <div class="form-group category-selector">
                                         <select class="form-control border-grey" name="reconciliationTypeFilter"
-                                        [(ngModel)]="reconciliationTypeFilter" (change)="reconciliationTypeFilterHandler($event)"
-                                        id="exampleFormControlSelect2">
+                                            [(ngModel)]="reconciliationTypeFilter"
+                                            (change)="reconciliationTypeFilterHandler($event)"
+                                            id="exampleFormControlSelect2">
                                             <option value="0">Reconciliation type</option>
                                             <option *ngFor="let item of reconcillationTypeList;" [value]="item.id">
                                                 {{item.name}}
@@ -198,10 +217,11 @@
                                         </select>
                                     </div>
                                     <div class="abc">
-                                        <input name="includeNotReconciled" type="checkbox" (change)="includeNotReconciledCheckBoxHandler($event)" class="mr-1"/>
+                                        <input name="includeNotReconciled" type="checkbox"
+                                            (change)="includeNotReconciledCheckBoxHandler($event)" class="mr-1" />
                                         <span>Include Not Reconciled Accounts</span>
                                     </div>
-                                </div>                 
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,8 +230,7 @@
 
                             <!--<Primeng-TurboTable-Start>-->
                             <div class="task-table" [busyIf]="primengTableHelper.isLoading">
-                                <p-table #dataTable class=" record-table"
-                                    (onLazyLoad)="getAllAccounts($event)"
+                                <p-table #dataTable class=" record-table" (onLazyLoad)="getAllAccounts($event)"
                                     [value]="primengTableHelper.records"
                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                     [lazy]="true" [scrollable]="true" ScrollWidth="100%"
@@ -231,9 +250,10 @@
                                                 {{"Account Type" | localize}}
                                                 <p-sortIcon field="AccountType"></p-sortIcon>
                                             </th>
-                                            <th class="reconciliation-cell" scope="col" pSortableColumn="ReconciliationType">
-                                                {{"Reconciliation Type" | localize}}  
-                                                <p-sortIcon field="ReconciliationType"></p-sortIcon>  
+                                            <th class="reconciliation-cell" scope="col"
+                                                pSortableColumn="ReconciliationType">
+                                                {{"Reconciliation Type" | localize}}
+                                                <p-sortIcon field="ReconciliationType"></p-sortIcon>
                                             </th>
                                             <th class="reconciliation-cell" scope="col">
                                                 {{"Balance" | localize}}
@@ -260,13 +280,14 @@
                             <!--<Primeng-TurboTable-End> {{i.creationTime | date:'d MMM EEE'}} -->
                             <table class="table record-table">
                                 <tbody *ngFor="let item of chartsOfAccountList">
-                                    <tr  class="task-table-inner table-repeater">
+                                    <tr class="task-table-inner table-repeater">
 
                                         <td class="accountNo-cell">
                                             <span class="">{{item.accountNumber}}</span>
-                                            
+
                                         </td>
-                                        <td class="accountName-cell" (click)="reDirectToItemizedAmotized(item.linkedAccountName,item.linkedAccountId,item.linkedAccountNumber,item.reconciliationTypeId,item.id,item.accountNumber,item.accountName,item.accountBalanceId)">
+                                        <td class="accountName-cell"
+                                            (click)="reDirectToItemizedAmotized(item.linkedAccountName,item.linkedAccountId,item.linkedAccountNumber,item.reconciliationTypeId,item.id,item.accountNumber,item.accountName,item.accountBalanceId)">
                                             <span class="task-box">{{item.accountName}}</span>
                                         </td>
                                         <td class="accountType-cell">
@@ -276,13 +297,15 @@
                                             <span class="">{{item.reconciliationType}}</span>
                                         </td>
                                         <td class="reconciliation-cell">
-                                            <span class=""> {{item.balance  | formater}}</span>
+                                            <span class=""> {{item.balance | formater}}</span>
                                         </td>
                                         <td class="reconciliation-cell">
-                                            <span class=""> {{item.trialBalance  | formater}}</span>
+                                            <span class=""> {{item.trialBalance | formater}}</span>
                                         </td>
-                                       
-                                        <td [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}" style="cursor: pointer;" data-toggle="tooltip" title="Chenge Assignee" class="assignee-cell">
+
+                                        <td [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}"
+                                            style="cursor: pointer;" data-toggle="tooltip" title="Chenge Assignee"
+                                            class="assignee-cell">
                                             <div *ngIf="item.id != rowid" class="kt-user-card-v2"
                                                 (click)="openFieldUpdateAssignee(item.id)">
                                                 <div class="kt-user-card-v2__pic">
@@ -298,14 +321,17 @@
                                                 </div>
                                                 <div class="kt-user-card-v2__details"> <span
                                                         class="kt-user-card-v2__name">
-                                                        {{item.assigneeName}}</span> 
+                                                        {{item.assigneeName}}</span>
                                                 </div>
                                             </div>
                                             <div *ngIf="item.id == rowid">
-                                                <app-user-list-component  (callBack)="refreshGrid()"  taskId = {{item.id}} comingChangeReguest="accounts" userId = {{item.assigneeId}} ></app-user-list-component>
+                                                <app-user-list-component (callBack)="refreshGrid()" taskId={{item.id}}
+                                                    comingChangeReguest="accounts" userId={{item.assigneeId}}>
+                                                </app-user-list-component>
                                             </div>
                                         </td>
-                                        <td [ngClass]="{'disabled':!monthStatus ,disabled :!changeStatusPermission}" class="action-cell">
+                                        <td [ngClass]="{'disabled':!monthStatus ,disabled :!changeStatusPermission}"
+                                            class="action-cell">
                                             <form class="task-report-form">
                                                 <select [disabled]="item.lock" onclick="console.log('test')"
                                                     (change)="ChangeStatus($event.target.value,item.id,item.accountReconciliationCheck)"
@@ -322,12 +348,14 @@
                                             <div (click)="collapsibleRowClick(item.id)" class="taggle-btn"></div>
                                         </td>
                                     </tr>
-                                        <!-- show-collapsible-row -->
-                                    <tr *ngIf="collapsibleRow == true && item.id == collapsibleRowId" class="table-row-collapsible "> 
+                                    <!-- show-collapsible-row -->
+                                    <tr *ngIf="collapsibleRow == true && item.id == collapsibleRowId"
+                                        class="table-row-collapsible ">
                                         <td>
                                             <ul>
                                                 <li class="reconciliation-cell collapsable-cell">
-                                                    <div class="thead-box"><b>{{"Reconciliation" | localize}} : </b></div>
+                                                    <div class="thead-box"><b>{{"Reconciliation" | localize}} : </b>
+                                                    </div>
                                                     <div class="tdata-box">
                                                         <span class="">{{item.reconciliationType}}</span>
                                                     </div>
@@ -336,19 +364,25 @@
 
                                                     <div class="thead-box"><b> {{"Balanace" | localize}} </b></div>
                                                     <div class="tdata-box">
-                                                        <span *ngIf="item.balance" class="">{{item.balance  | formater}}</span>
+                                                        <span *ngIf="item.balance" class="">{{item.balance |
+                                                            formater}}</span>
                                                     </div>
                                                 </li>
                                                 <li class="accountSubtype-cell collapsable-cell">
 
                                                     <div class="thead-box"><b> Trial Balance </b></div>
                                                     <div class="tdata-box">
-                                                        <span *ngIf="item.balance" class="">{{item.trialBalance  | formater}}</span>
+                                                        <span *ngIf="item.balance" class="">{{item.trialBalance |
+                                                            formater}}</span>
                                                     </div>
                                                 </li>
-                                                <li [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}" class="assignee-cell collapsable-cell kt-user-card-v2">
+                                                <li [ngClass]="{'disabled':!monthStatus,disabled :!changeAssigneePermission}"
+                                                    class="assignee-cell collapsable-cell kt-user-card-v2">
                                                     <div class="thead-box"><b>{{"Assignee" | localize}} : </b></div>
-                                                    <div  *ngIf="item.id != rowid" (click)="openFieldUpdateAssignee(item.id)" style="cursor: pointer;" data-toggle="tooltip" title="Chenge Assignee" class="tdata-box">
+                                                    <div *ngIf="item.id != rowid"
+                                                        (click)="openFieldUpdateAssignee(item.id)"
+                                                        style="cursor: pointer;" data-toggle="tooltip"
+                                                        title="Chenge Assignee" class="tdata-box">
                                                         <div class="kt-user-card-v2__pic">
                                                             <div *ngIf="item.profilePicture"
                                                                 class="kt-badge kt-badge--xl">
@@ -363,14 +397,17 @@
                                                         </div>
                                                     </div>
                                                     <div *ngIf="item.id == rowid">
-                                                        <app-user-list-component  (callBack)="refreshGrid()"  taskId = {{item.id}} comingChangeReguest="accounts" userId = {{item.assigneeId}} ></app-user-list-component>
+                                                        <app-user-list-component (callBack)="refreshGrid()"
+                                                            taskId={{item.id}} comingChangeReguest="accounts"
+                                                            userId={{item.assigneeId}}></app-user-list-component>
                                                     </div>
                                                 </li>
-                                                <li [ngClass]="{'disabled':!monthStatus ,disabled :!changeStatusPermission}" class="action-cell-item collapsable-cell">
+                                                <li [ngClass]="{'disabled':!monthStatus ,disabled :!changeStatusPermission}"
+                                                    class="action-cell-item collapsable-cell">
                                                     <div class="thead-box"><b>{{"Status" | localize}} : </b></div>
                                                     <form class="task-report-form">
                                                         <form class="task-report-form">
-                                                            <select  onclick="console.log('test')"
+                                                            <select onclick="console.log('test')"
                                                                 (change)="ChangeStatus($event.target.value,item.id)"
                                                                 class="form-control border-0 {{item.statusBoxColor}} text-white">
                                                                 <option value="" selected disabled hidden>
@@ -385,7 +422,7 @@
                                             </ul>
                                         </td>
                                     </tr>
-                             </tbody>
+                                </tbody>
                             </table>
                             <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
                                 {{'NoData' | localize}}
