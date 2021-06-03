@@ -106,7 +106,6 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
     }
  }
   ngOnInit() {
-    debugger;
     this.actionButtonPermission = this.isGranted('Pages.ChartsofAccounts.Edit');
     this.uploadButtonPermission=this.isGranted('Pages.ChartsofAccounts.Upload');
     
