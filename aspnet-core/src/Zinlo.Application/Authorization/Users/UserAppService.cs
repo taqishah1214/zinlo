@@ -558,5 +558,10 @@ namespace Zinlo.Authorization.Users
                 return userList.ToList();
                        
         }
+
+        public long GetUserIdByUserEmail(string email)
+        {
+            return UserManager.Users.FirstOrDefault(x => x.EmailAddress == email).Id;
+        }
     }
 }

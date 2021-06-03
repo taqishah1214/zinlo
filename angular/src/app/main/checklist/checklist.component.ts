@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector, OnChanges, SimpleChanges, AfterViewInit, DoCheck, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto, CategoriesServiceProxy, NameValueDtoOfInt64 } from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto, CategoriesServiceProxy, NameValueDtoOfInt64, TimeManagementsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
@@ -68,9 +68,12 @@ export class Checklist extends AppComponentBase implements OnInit {
   balance: boolean = false;
   account: boolean = true;
   currentlyUploadedFileURL: string = "";
-  uploadChecklistURL = AppConsts.remoteServiceBaseUrl + '/Upload/Checklist';
+  checkActiveMonth:boolean=true;
+  activeSaveButton:boolean=false;
+  uploadChecklistURL = AppConsts.remoteServiceBaseUrl + '/ChecklistExcel/ImportChecklistFromExcel';
   constructor(private _router: Router, private cds: ChangeDetectorRef,
     private _categoryService: CategoriesServiceProxy,
+    private _managementService: TimeManagementsServiceProxy,
     private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector, private userDate: StoreDateService, private _httpClient: HttpClient) {
     super(injector)
     this.FilterBoxOpen = false;
@@ -350,6 +353,13 @@ export class Checklist extends AppComponentBase implements OnInit {
         }
       });
   }
+
+  checkMonthActiveorNot(event) {
+    this._managementService.checkMonthStatus(moment(new Date(add(this.selectedDate, 2, "day")))).subscribe(result => {
+    this.checkActiveMonth = result;
+    this.activeSaveButton=!this.checkActiveMonth
+  });
+}
 
 
 
