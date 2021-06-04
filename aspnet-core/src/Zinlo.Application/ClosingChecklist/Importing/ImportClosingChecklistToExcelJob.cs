@@ -254,7 +254,7 @@ namespace Zinlo.ClosingChecklist.Importing
                 NoOfMonths = input.NoOfMonths,
                 DueOn = input.DueOn,
                 EndOfMonth = input.EndOfMonth,
-                ClosingMonth = input.selectedMonth,
+                ClosingMonth = input.SelectedMonth,
                 DayBeforeAfter = dayBeforeAfter,
                 Status = status,
                 Instruction = input.Instruction,
@@ -279,7 +279,7 @@ namespace Zinlo.ClosingChecklist.Importing
                 Status = input.Status,
                 EndOfMonth = input.EndOfMonth,
                 Instruction = input.Instruction,
-                selectedMonth = selectedMonth
+                SelectedMonth = selectedMonth
             };
             AddClosingChecklist(output);
         }

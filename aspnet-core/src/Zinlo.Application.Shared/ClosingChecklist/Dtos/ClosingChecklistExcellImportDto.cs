@@ -12,7 +12,7 @@ namespace Zinlo.ClosingChecklist.Dtos
         public int DueOn { get; set; }
         public bool EndOfMonth { get; set; }
         public string Exception { get; set; }
-        public DateTime selectedMonth { get; set; }
+        public DateTime SelectedMonth { get; set; }
         public string DayBeforeAfter { get; set; }
         public string Status { get; set; }
         public string Instruction { get; set; }
