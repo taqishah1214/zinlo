@@ -54,33 +54,46 @@
                                             </div>
                                             <div class="modal-body upload-body">
                                                 <div class="drag_drop_box uppy-modal-box1">
-                                            <p>{{"Upload Trial Balance" | localize}}</p>
-                                        </div>
-                                        <ng-uppy [config]="settings" 
-                                            (uploadResult)="fileUploadedResponseTrialBalance($event)">
-                                        </ng-uppy>
-                                        <div >
-                                            <div class="row modal-bottom-record">
-                                                <div class="col-md-12">
-                                                    <!-- <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a></p> -->
-                                                    <div class="row py-0">
-                                                        <div class="col-xl-5 form-group"><label>{{"Trial Balance Format" | localize}} </label><a href="../../../../assets/TrialBalance.xlsx" download="TrialBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a>
-                                                        </div>    
-                                                        <div class="form-group col-xl-3 pt-2">
-                                                            <label>{{"Select Month for Trial Balance" | localize}} </label>
-                                                        </div>
-                                                        <div class="form-group col-xl-3" style="height: 40px !important;">
-                                                            <div class="month-calender">
-                                                                <form class="input-arrow">
-                                                                    <input [(ngModel)]="selectedDate"  (ngModelChange)="checkMonthActiveorNot($event)" required="required"
-                                                                    autocomplete="off" class="form-control" name="date" bsDatepicker 
-                                                                        placeholder="Select Month" class="form-control" name="date"
-                                                                        bsDatepicker
-                                                                        [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                                                        (onShown)="onOpenCalendar($event)">
-                                                                </form>                
-                                                                <span class="form-control-feedback"
-                                                                *ngIf="!checkActiveMonth">{{"ThisMonthIsNotActive" | localize}}</span>
+                                                    <p>{{"Upload Trial Balance" | localize}}</p>
+                                                </div>
+                                                <ng-uppy [config]="settings"
+                                                    (uploadResult)="fileUploadedResponseTrialBalance($event)">
+                                                </ng-uppy>
+                                                <div>
+                                                    <div class="row modal-bottom-record">
+                                                        <div class="col-md-12">
+                                                            <!-- <p>{{"Trial Balance Format" | localize}} <a href="../../../../assets/TrailBalance.xlsx" download="TrailBalance.xlsx"style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download Sample File" | localize}}</u></a></p> -->
+                                                            <div class="row py-0">
+                                                                <div class="col-xl-5 form-group"><label>{{"Trial Balance
+                                                                        Format" | localize}} </label><a
+                                                                        href="../../../../assets/TrailBalance.xlsx"
+                                                                        download="TrailBalance.xlsx"
+                                                                        style="color:blue;margin-left: 20px;cursor: pointer;"><u>{{"Download
+                                                                            Sample File" | localize}}</u></a>
+                                                                </div>
+                                                                <div class="form-group col-xl-3 pt-2">
+                                                                    <label>{{"Select Month for Trial Balance" |
+                                                                        localize}} </label>
+                                                                </div>
+                                                                <div class="form-group col-xl-3"
+                                                                    style="height: 40px !important;">
+                                                                    <div class="month-calender">
+                                                                        <form class="input-arrow">
+                                                                            <input [(ngModel)]="selectedDate"
+                                                                                (ngModelChange)="checkMonthActiveorNot($event)"
+                                                                                required="required" autocomplete="off"
+                                                                                class="form-control" name="date"
+                                                                                bsDatepicker placeholder="Select Month"
+                                                                                class="form-control" name="date"
+                                                                                bsDatepicker
+                                                                                [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                                                (onShown)="onOpenCalendar($event)">
+                                                                        </form>
+                                                                        <span class="form-control-feedback"
+                                                                            *ngIf="!checkActiveMonth">{{"ThisMonthIsNotActive"
+                                                                            | localize}}</span>
+                                                                    </div>
+                                                                </div>
                                                             </div>
 
                                                             <div class="inner-col-record border border-default">
