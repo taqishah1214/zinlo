@@ -133,7 +133,7 @@ namespace Zinlo.ClosingChecklist
 
         public async Task<PagedResultDto<TasksGroup>> GetAll(GetAllClosingCheckListInput input)
         {
-            using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
+             using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.SoftDelete))
             {
 
                 var secondaryAssignee = _secondaryAssignee.GetAll().Where(x => x.SecondaryId == AbpSession.UserId && x.IsDeleted == false).Select(p => p.PrimaryId).ToList();

@@ -45,6 +45,7 @@ using Zinlo.ChartsofAccount.Importing;
 using Zinlo.ChartsofAccount;
 using Zinlo.AccountSubType;
 using Zinlo.ImportPaths;
+using Zinlo.ClosingChecklist.Importing;
 
 namespace Zinlo.Web.Startup
 {
@@ -73,6 +74,7 @@ namespace Zinlo.Web.Startup
             services.AddSignalR(options => { options.EnableDetailedErrors = true; });
             services.AddTransient<IAttachmentAppService, AttachmentsAppService>();
             services.AddTransient<IChartsOfAccontListExcelDataReader, ChartsOfAccountListExcelDataReader>();
+            services.AddTransient<IClosingChecklistExcelDataReader, ClosingChecklistDataReader>();
             services.AddTransient<IInvalidAccountsExcellExporter, InvalidAccountsExporter>();
             services.AddTransient<IChartsOfAccontTrialBalanceListExcelDataReader, ChartsOfAccountTrialBalanceListDataReader>();
             services.AddTransient<IAccountSubTypeAppService, AccountSubTypeAppService>();
@@ -136,6 +138,7 @@ namespace Zinlo.Web.Startup
                 SiteKey = _appConfiguration["Recaptcha:SiteKey"],
                 SecretKey = _appConfiguration["Recaptcha:SecretKey"]
             });
+
             if (WebConsts.HangfireDashboardEnabled)
             {
                 //Hangfire(Enable to use Hangfire instead of default job manager)
@@ -219,7 +222,6 @@ namespace Zinlo.Web.Startup
                     app.UseAbpRequestLocalization();
                 }
             }
-
             if (WebConsts.HangfireDashboardEnabled)
             {
                 //Hangfire dashboard &server(Enable to use Hangfire instead of default job manager)

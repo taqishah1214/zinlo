@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector, OnChanges, SimpleChanges, AfterViewInit, DoCheck, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto, CategoriesServiceProxy, NameValueDtoOfInt64 } from '@shared/service-proxies/service-proxies';
+import { ClosingChecklistServiceProxy, ChangeStatusDto, NameValueDto, ChangeAssigneeDto, CategoriesServiceProxy, NameValueDtoOfInt64, TimeManagementsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
@@ -10,13 +10,16 @@ import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
 import { StoreDateService } from "../../services/storedate.service";
 import * as $ from 'jquery';
+import { UppyConfig } from 'uppy-angular';
+import { HttpClient } from '@angular/common/http';
+import { AppConsts } from '@shared/AppConsts';
 
 @Component({
   selector: 'app-tasks',
   templateUrl: './checklist.component.html',
   styleUrls: ['./checklist.component.css']
 })
-export class Checklist extends AppComponentBase implements OnInit  {
+export class Checklist extends AppComponentBase implements OnInit {
   @ViewChild(UserListComponentComponent, { static: false }) selectedUserId: UserListComponentComponent;
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
@@ -57,47 +60,55 @@ export class Checklist extends AppComponentBase implements OnInit  {
   monthStatus: boolean;
   remainingUserForHeader: any = [];
   category: NameValueDtoOfInt64[] = [];
-  selectedDate = new Date ();
+  selectedDate = new Date();
   changeAssigneePermission: boolean;
-  defaultMonth : any;
-  reload : any;
-  constructor(private _router: Router, private cds : ChangeDetectorRef,
+  defaultMonth: any;
+  reload: any;
+  chartsOfAccountsfileUrl: string = "";
+  balance: boolean = false;
+  account: boolean = true;
+  currentlyUploadedFileURL: string = "";
+  checkActiveMonth:boolean=true;
+  activeSaveButton:boolean=false;
+  uploadChecklistURL = AppConsts.remoteServiceBaseUrl + '/ChecklistExcel/ImportChecklistFromExcel';
+  constructor(private _router: Router, private cds: ChangeDetectorRef,
     private _categoryService: CategoriesServiceProxy,
-    private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector, private userDate: StoreDateService) {
+    private _managementService: TimeManagementsServiceProxy,
+    private _closingChecklistService: ClosingChecklistServiceProxy, injector: Injector, private userDate: StoreDateService, private _httpClient: HttpClient) {
     super(injector)
     this.FilterBoxOpen = false;
   }
-  
-  
-   ngOnInit() {
+
+
+  ngOnInit() {
     this.userDate.defaultgMonth.subscribe((defaultMonth) => {
       this.defaultMonth = defaultMonth;
       if (this.defaultMonth.id != 0) {
-          this.selectedDate = new Date(this.defaultMonth.month);
-          this.userDate.reloadLock.subscribe((reload) => {
-              this.reload = reload;
-              if (this.reload.lock == false) {
-                  this.getClosingCheckListAllTasks();
-                  this.reload.lock = true;
-                  this.userDate.setReloadLock(this.reload);
-              }
-          });
+        this.selectedDate = new Date(this.defaultMonth.month);
+        this.userDate.reloadLock.subscribe((reload) => {
+          this.reload = reload;
+          if (this.reload.lock == false) {
+            this.getClosingCheckListAllTasks();
+            this.reload.lock = true;
+            this.userDate.setReloadLock(this.reload);
+          }
+        });
       }
-  });
-  $(document).ready(function () {
+    });
+    $(document).ready(function () {
       $(".dropdown-menu").on("click", function (e) {
-          e.stopPropagation();
+        e.stopPropagation();
       });
-  });
-  this.changeAssigneePermission = this.isGranted(
+    });
+    this.changeAssigneePermission = this.isGranted(
       "Pages.Tasks.Change.Assignee"
-  );
+    );
 
-  this.userDate.allUsersInformationofTenant.subscribe(
+    this.userDate.allUsersInformationofTenant.subscribe(
       (userList) => (this.users = userList)
-  );
-  this.initializePageParameters();
-  this.loadCategories();
+    );
+    this.initializePageParameters();
+    this.loadCategories();
   }
 
 
@@ -144,7 +155,7 @@ export class Checklist extends AppComponentBase implements OnInit  {
       this.paginator.changePage(0);
       return;
     }
-    var maxResultCount =this.primengTableHelper.getMaxResultCount(this.paginator, event) === 0 ? 10 : this.primengTableHelper.getMaxResultCount(this.paginator, event);
+    var maxResultCount = this.primengTableHelper.getMaxResultCount(this.paginator, event) === 0 ? 10 : this.primengTableHelper.getMaxResultCount(this.paginator, event);
 
     this.dateFilter = this.selectedDate;
     this.primengTableHelper.showLoadingIndicator();
@@ -152,7 +163,7 @@ export class Checklist extends AppComponentBase implements OnInit  {
       this.filterText,
       this.categoryFilter,
       this.statusFilter,
-      moment(this.dateFilter ),
+      moment(this.dateFilter),
       this.getTaskWithAssigneeId,
       undefined,
       undefined,
@@ -160,7 +171,7 @@ export class Checklist extends AppComponentBase implements OnInit  {
       this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getSkipCount(this.paginator, event),
       maxResultCount
-      
+
     ).subscribe(result => {
       this.primengTableHelper.totalRecordsCount = result.totalCount;
       this.primengTableHelper.records = result.items;
@@ -306,6 +317,49 @@ export class Checklist extends AppComponentBase implements OnInit  {
 
   }
 
+  onClose() {
+    this.chartsOfAccountsfileUrl
+  }
+
+  settings: UppyConfig = {
+    uploadAPI: {
+      endpoint: AppConsts.remoteServiceBaseUrl + '/api/services/app/Attachments/PostAttachmentFile',
+    },
+    plugins: {
+      Webcam: false
+    },
+    allowMultipleUploads: false
+  }
+
+  fileUploadResponse(value): void {
+    var response = value.successful
+    let attachmentPathsTrialBalance = [];
+    response.forEach(i => {
+      attachmentPathsTrialBalance.push(i.response.body.result);
+
+    });
+    this.currentlyUploadedFileURL = attachmentPathsTrialBalance[0].toString();
+    this.notify.success(this.l('Attachments are Saved Successfully'));
+  }
+
+  start_TheBackgroundJob_ForUploadingChecklist(): void {
+    this._httpClient
+      .get<any>(this.uploadChecklistURL + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + this.currentlyUploadedFileURL + "&" + "monthSelected=" + this.selectedDate)
+      .subscribe(response => {
+        if (response.success) {
+          this.notify.success(this.l('Checklist importing process is start.'));
+        } else if (response.error != null) {
+          this.notify.error(this.l('Checklist importing process is failed.'));
+        }
+      });
+  }
+
+  checkMonthActiveorNot(event) {
+    this._managementService.checkMonthStatus(moment(new Date(add(this.selectedDate, 2, "day")))).subscribe(result => {
+    this.checkActiveMonth = result;
+    this.activeSaveButton=!this.checkActiveMonth
+  });
+}
 
 
 

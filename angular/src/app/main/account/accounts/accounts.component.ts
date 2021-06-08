@@ -72,6 +72,7 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
   checkActiveMonth:boolean=true;
   activeSaveButton:boolean=false;
   actionButtonPermission;
+  uploadButtonPermission;
   reconciliationTypeFilter: number = 0
   uploadUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsFromExcel';
   uploadBalanceUrl = AppConsts.remoteServiceBaseUrl + '/AccountsExcel/ImportAccountsTrialBalanceFromExcel';
@@ -106,6 +107,8 @@ export class AccountsComponent extends AppComponentBase implements OnInit {
  }
   ngOnInit() {
     this.actionButtonPermission = this.isGranted('Pages.ChartsofAccounts.Edit');
+    this.uploadButtonPermission=this.isGranted('Pages.ChartsofAccounts.Upload');
+    
     $(document).ready(function(){
         // Show hide popover
             $(".dropdown-menu").on('click', function (e) {

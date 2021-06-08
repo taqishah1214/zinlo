@@ -19,7 +19,6 @@ import { CustomTenantsComponent } from './tenants/custom-tenants.component';
 import { UiCustomizationComponent } from './ui-customization/ui-customization.component';
 import { UsersComponent } from './users/users.component';
 import { ManagementComponent } from './management/management.component';
-import { ImportLogComponent } from '../admin/importlog/importlog.component';
 import { CustomizedPlanRequestComponent } from './tenants/customized-plan-request.component';
 @NgModule({
     imports: [
@@ -49,7 +48,6 @@ import { CustomizedPlanRequestComponent } from './tenants/customized-plan-reques
                     { path: 'install', component: InstallComponent },
                     { path: 'ui-customization', component: UiCustomizationComponent },
                     { path: 'customized-plan-request', component: CustomizedPlanRequestComponent },
-                    { path: 'importlog', component: ImportLogComponent, data: {} },
                     { path: '', redirectTo: 'hostDashboard', pathMatch: 'full' }
                 ]
             }

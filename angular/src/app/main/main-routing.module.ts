@@ -21,6 +21,9 @@ import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized
 import { TaskReportComponent } from './reports/task-report/task-report.component';
 import { TrialbalanceReportsComponent } from './reports/trialbalance-reports/trialbalance-reports.component';
 import { ObserveVarianceComponent } from './reports/observe-variance/observe-variance.component';
+import { ImportLogComponent } from './importlog/importlog.component';
+
+
 
 
 @NgModule({
@@ -41,6 +44,7 @@ import { ObserveVarianceComponent } from './reports/observe-variance/observe-var
                     { path: 'sub', component: AccountsubtypeComponent , data: { permission: 'Pages.AccountSubType' }  },
                     { path: 'account', component: AccountsComponent , data: { permission: 'Pages.ChartsofAccounts' }  },
                     { path: 'account/create-edit-accounts', component: CreateEditAccountsComponent , data: { permission: 'Pages.ChartsofAccounts.Create' }  },
+                    { path: 'importlog', component: ImportLogComponent , data: { permission: 'Pages.ChartsofAccounts.Upload' }  },
                     { path: 'reconciliation', component: ReconcilliationComponent , data: { permission: 'Pages.Reconciliation' }  },
                     { path: 'reconciliation/itemized/create-edit-itemized', component: CreateEditItemizedComponent, data: { permission: 'Pages.Reconciliation.Create' }},
                     { path: 'reconciliation/amortized/create-edit-amortized', component: CreateEditAmortizedComponent, data: { permission: 'Pages.Reconciliation.Create' }},

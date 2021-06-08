@@ -38,8 +38,11 @@ export class AppNavigationService {
             
             new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts', './assets/media/ClosingCheckList/chartofaccount.svg', '', [
                 new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','./assets/media/ClosingCheckList/dot.png','/app/main/account'),
-                new AppMenuItem('Account Sub Type', 'Pages.AccountSubType', './assets/media/ClosingCheckList/dot.png', '/app/main/sub'),
-                
+                new AppMenuItem('Account Sub Type', 'Pages.AccountSubType', './assets/media/ClosingCheckList/dot.png', '/app/main/sub'),                
+            ]),
+
+            new AppMenuItem('Files import logs', 'Pages.ImportLog', './assets/media/ClosingCheckList/MaskGroup30.svg', '', [
+                new AppMenuItem('ImportLog', 'Pages.ImportLog', './assets/media/ClosingCheckList/dot.png', '/app/main/importlog', [ ])                
             ]),
 
             new AppMenuItem('Reconciliation', 'Pages.Reconciliation', './assets/media/ClosingCheckList/reconcilliation.svg', '/app/main/reconciliation', [ 
@@ -56,7 +59,7 @@ export class AppNavigationService {
                 new AppMenuItem('Roles', 'Pages.Administration.Roles', './assets/media/ClosingCheckList/dot.png', '/app/admin/roles'),
                 new AppMenuItem('Users', 'Pages.Administration.Users', './assets/media/ClosingCheckList/dot.png', '/app/admin/users'),
             new AppMenuItem('Management', 'Pages.Administration.TimeManagements', './assets/media/ClosingCheckList/dot.png', '/app/admin/management'),
-            new AppMenuItem('ImportLog', 'Pages.ImportLog', './assets/media/ClosingCheckList/dot.png', '/app/admin/importlog', [ ]),
+            
                 //new AppMenuItem('Languages', 'Pages.Administration.Languages', 'flaticon-tabs', '/app/admin/languages'),
                 new AppMenuItem('Settings', 'Pages.Administration.Host.Settings', './assets/media/ClosingCheckList/dot.png', '/app/admin/hostSettings'),
                 new AppMenuItem('Settings', 'Pages.Administration.Tenant.Settings', './assets/media/ClosingCheckList/dot.png', '/app/admin/tenantSettings'),
