@@ -21,7 +21,7 @@ import { AmortizedDetailsComponent } from './reconcilliation/amortized/amortized
 import { TaskReportComponent } from './reports/task-report/task-report.component';
 import { TrialbalanceReportsComponent } from './reports/trialbalance-reports/trialbalance-reports.component';
 import { ObserveVarianceComponent } from './reports/observe-variance/observe-variance.component';
-import { ImportLogComponent } from './account/importlog/importlog.component';
+import { ImportLogComponent } from './importlog/importlog.component';
 
 
 

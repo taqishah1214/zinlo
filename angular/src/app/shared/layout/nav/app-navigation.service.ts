@@ -38,9 +38,11 @@ export class AppNavigationService {
             
             new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts', './assets/media/ClosingCheckList/chartofaccount.svg', '', [
                 new AppMenuItem('Chart of Accounts', 'Pages.ChartsofAccounts','./assets/media/ClosingCheckList/dot.png','/app/main/account'),
-                new AppMenuItem('Account Sub Type', 'Pages.AccountSubType', './assets/media/ClosingCheckList/dot.png', '/app/main/sub'),
-                new AppMenuItem('ImportLog', 'Pages.ImportLog', './assets/media/ClosingCheckList/dot.png', '/app/admin/importlog', [ ])
-                
+                new AppMenuItem('Account Sub Type', 'Pages.AccountSubType', './assets/media/ClosingCheckList/dot.png', '/app/main/sub'),                
+            ]),
+
+            new AppMenuItem('Files import logs', 'Pages.ImportLog', './assets/media/ClosingCheckList/MaskGroup30.svg', '', [
+                new AppMenuItem('ImportLog', 'Pages.ImportLog', './assets/media/ClosingCheckList/dot.png', '/app/main/importlog', [ ])                
             ]),
 
             new AppMenuItem('Reconciliation', 'Pages.Reconciliation', './assets/media/ClosingCheckList/reconcilliation.svg', '/app/main/reconciliation', [ 

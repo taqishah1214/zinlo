@@ -43,13 +43,8 @@
                                         </th>
 
                                         <th style="width: 90px"> {{l('User')}} </th>
-
-                                        <th style="width: 100px"> {{l('Secondary User')}} </th>
-
                                         <th style="width: 80px">{{l('Record')}}</th>
-
                                         <th style="width: 80px"> {{l('Error Log')}} </th>
-
                                         <th style="width: 70px"> {{l('Action')}} </th>
                                         <th style="width: 80px"> {{l('Status')}} </th>
                                     </tr>
@@ -95,7 +90,7 @@
                                                 <a *ngIf="record.fileStatus == 1"> In Process</a>
                                                 <a *ngIf="record.fileStatus == 2"> Completed</a>
 
-                                            </td>
+                                          </td>
                                     </tr>
                                 </ng-template>
                             </p-table>

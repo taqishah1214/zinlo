@@ -54,7 +54,7 @@ import { ObserveVarianceComponent } from './reports/observe-variance/observe-var
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
-import { ImportLogComponent } from './account/importlog/importlog.component';
+import { ImportLogComponent } from './importlog/importlog.component';
 
 
 
