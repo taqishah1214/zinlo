@@ -9,7 +9,7 @@
                     </h3>
                     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
                     <span *ngIf="createOrDuplicate" class="kt-subheader__desc">
-                       {{"CreateTask" | localize}}
+                        {{"CreateTask" | localize}}
                     </span>
                     <span *ngIf="!createOrDuplicate" class="kt-subheader__desc">
                         {{"DuplicateTask" | localize}}
@@ -25,10 +25,10 @@
             <div class="kt-portlet" id="kt_portlet">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <h3  *ngIf="createOrDuplicate" class="kt-portlet__head-title">
+                        <h3 *ngIf="createOrDuplicate" class="kt-portlet__head-title">
                             {{"CreateTask" | localize}}
                         </h3>
-                        <h3  *ngIf="!createOrDuplicate" class="kt-portlet__head-title">
+                        <h3 *ngIf="!createOrDuplicate" class="kt-portlet__head-title">
                             {{"DuplicateTask" | localize}}
                         </h3>
                     </div>
@@ -39,211 +39,277 @@
                         </a>
                     </div>
                 </div>
-                
+
                 <div class="kt-portlet__body">
-                    <form #taskForm="ngForm" id="taskform" >
-                    <div class="row pb-0 form-group" > 
-                        <div class="col-md-7 pb-0">
-                            <div class="row form-group">
-                                <div class="col-md-6 fixHeight">
-                                        <app-categorie-drop-down category = {{categoryTitle}} (focusout)="changeValidation()"></app-categorie-drop-down>
-                                    
-                                    <span class="form-control-feedback pt-0"
-                                        >{{TaskCategory}}</span>   
-                                </div>
-                                
-                                <div class="col-md-6 fixHeight">
-                                    <div class="">
-                                        <label for="dateOfBirth">{{"ClosingMonth" | localize}} *</label>
-                                        <div class="month-calender">
-                                            <form class="input-arrow">
-                                                <input [(ngModel)]="checklist.closingMonth" (focusout)="checkMonth()" (ngModelChange)="loadDaysByMonth($event)" required="required"
-                                                autocomplete="off" class="form-control" name="date" bsDatepicker 
-                                                    placeholder="Select Month" class="form-control" name="date"
-                                                    bsDatepicker
-                                                    [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                                    (onShown)="onOpenCalendar($event)">
-                                            </form>
-                                        </div>
-                                        <span *ngIf="monthStatus"class="form-control-feedback">
-                                            {{TaskDate}}
-                                        </span>  
-                                        <span class="form-control-feedback"
-                                        *ngIf="!monthStatus">{{"ThisMonthIsNotActive" | localize}}</span>
+                    <form #taskForm="ngForm" id="taskform">
+                        <div class="row pb-0 form-group">
+                            <div class="col-md-7 pb-0">
+                                <div class="row form-group">
+                                    <div class="col-md-6 fixHeight">
+                                        <app-categorie-drop-down category={{categoryTitle}}
+                                            (focusout)="changeValidation()"></app-categorie-drop-down>
+
+                                        <span class="form-control-feedback pt-0">{{TaskCategory}}</span>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row form-group" >
-                                <div class="col-md-6 fixHeight" >
-                                    <div class="">
-                                        <label for="taskName"> {{"Task Name" | localize}} *</label>
-                                        <input type="text" class="form-control" required  name="taskName" (focusout)="changeValidation()" id="taskName" placeholder="Enter Task Name"
-                                        autocomplete="off" [(ngModel)]="checklist.taskName">
-                                        <span class="form-control-feedback"
-                                        >{{TaskName}}</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 fixHeight">
-                                    <div class="">
-                                        <label>{{"Assignee" | localize}} *</label>
-                                        <app-user-list-component comingChangeReguest="ClosingCheckList" (focusout)="changeValidation()" (callBack)="changeAssignee()" userId={{checklist.assigneeId}}>
-                                        </app-user-list-component>
-                                        <span class="form-control-feedback"
-                                        >{{TaskAssignee}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-5 pb-0">
-                            <div class="row ">
-                                <div class="col-md-4">
-                                    <div class="" style="height: 91px;">
-                                        <label>{{"Frequency" | localize}} *</label>
-                                        <select class="bg-white border form-control input-medium" (focusout)="changeValidation()" required id="frequency" name="frequency"
-                                            [(ngModel)]="checklist.frequency"
-                                            (change)="onChange($event.target.value)">
-                                            <option [ngValue]="undefined" hidden>{{"Criteria" | localize}}</option>
-                                            <option value="5">{{"None" | localize}}</option>
-                                            <option value="1">{{"Monthly" | localize}}</option>
-                                            <option value="2">{{"Quarterly" | localize}}</option>
-                                            <option value="3">{{"Annually" | localize}}</option>
-                                            <option value="4">{{"EveryXNumberOfMonths" | localize}} </option>
-                                        </select>
-                                        <span class="form-control-feedback"
-                                        >{{TaskFrequency}}</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="" style="height: 91px;">
-                                        <label>{{"NoofMonths" | localize}}</label>
-                                        <input type="text" name="noOfMonths" [disabled]="enableValue == false"
-                                            placeholder="Enter Number" class="form-control bsDatepicker" autocomplete="off"
-                                            [(ngModel)]="checklist.noOfMonths">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row ">
-                                <div class="col-md-4">
-                                    <div class=" dueOn">
-                                        <label>{{"Dueon" | localize}} *</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <label class="kt-radio kt-radio--single kt-radio--success">
-                                                        <input type="radio" [(checked)]="isChecked" (change)="onDayChange()" name="dueOn">
-                                                        <span></span>
-                                                    </label>
-                                                </span>
+
+                                    <div class="col-md-6 fixHeight">
+                                        <div class="">
+                                            <label for="dateOfBirth">{{"ClosingMonth" | localize}} *</label>
+                                            <div class="month-calender">
+                                                <form class="input-arrow">
+                                                    <input [(ngModel)]="checklist.closingMonth"
+                                                        (focusout)="checkMonth()"
+                                                        (ngModelChange)="loadDaysByMonth($event)" required="required"
+                                                        autocomplete="off" class="form-control" name="date" bsDatepicker
+                                                        placeholder="Select Month" class="form-control" name="date"
+                                                        bsDatepicker [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                        (onShown)="onOpenCalendar($event)">
+                                                </form>
                                             </div>
-                                            <select class="border border-default bg-white form-control input-medium"
-                                            (change)="onDayChange()" name="dueOn"(focusout)="changeValidation()" [(ngModel)]="checklist.dueOn">
-                                            <option *ngFor="let item of days;" [value]="item.value">
-                                                {{item.name}}
-                                            </option>
-                                        </select>
+                                            <span *ngIf="monthStatus" class="form-control-feedback">
+                                                {{TaskDate}}
+                                            </span>
+                                            <span class="form-control-feedback"
+                                                *ngIf="!monthStatus">{{"ThisMonthIsNotActive" | localize}}</span>
                                         </div>
-                                        
-                                        <span class="form-control-feedback"
-                                        >{{TaskDueon}}</span>
                                     </div>
                                 </div>
-                                
-                                <div class="col-md-4">
-                                    <div class="">
-                                        <label>&nbsp;&nbsp;</label>
-                                        <select class="bg-white border form-control input-medium"
-                                            (change)="onDaysClick($event.target.value)" [(ngModel)]="daysBeforeAfter" (focusout)="changeValidation()" name="daysBeforeAfter">
-                                            <option [value]=1 >{{"None" | localize}}</option>
-                                            <option [value]=2>{{"DaysBefore" | localize}}</option>
-                                            <option [value]=3>{{"DaysAfter" | localize}}</option>
-                                        </select>
-                                        <div *ngIf="SelectionMsg != null">
-                                            <div >
-                                                <span>{{SelectionMsg}}</span>
+                                <div class="row form-group">
+                                    <div class="col-md-6 fixHeight">
+                                        <div class="">
+                                            <label for="taskName"> {{"Task Name" | localize}} *</label>
+                                            <input type="text" class="form-control" required name="taskName"
+                                                (focusout)="changeValidation()" id="taskName"
+                                                placeholder="Enter Task Name" autocomplete="off"
+                                                [(ngModel)]="checklist.taskName">
+                                            <span class="form-control-feedback">{{TaskName}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 fixHeight">
+                                        <div class="">
+                                            <label>{{"Assignee" | localize}} *</label>
+                                            <app-user-list-component comingChangeReguest="ClosingCheckList"
+                                                (focusout)="changeValidation()" (callBack)="changeAssignee()"
+                                                userId={{checklist.assigneeId}}>
+                                            </app-user-list-component>
+                                            <span class="form-control-feedback">{{TaskAssignee}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 pb-0">
+                                <div class="row ">
+                                    <div class="col-md-4">
+                                        <div class="" style="height: 91px;">
+                                            <label>{{"Frequency" | localize}} *</label>
+                                            <select class="bg-white border form-control input-medium"
+                                                (focusout)="changeValidation()" required id="frequency" name="frequency"
+                                                [(ngModel)]="checklist.frequency"
+                                                (change)="onChange($event.target.value)">
+                                                <option [ngValue]="undefined" hidden>{{"Criteria" | localize}}</option>
+                                                <option value="5">{{"None" | localize}}</option>
+                                                <option value="1">{{"Monthly" | localize}}</option>
+                                                <option value="2">{{"Quarterly" | localize}}</option>
+                                                <option value="3">{{"Annually" | localize}}</option>
+                                                <option value="4">{{"EveryXNumberOfMonths" | localize}} </option>
+                                            </select>
+                                            <span class="form-control-feedback">{{TaskFrequency}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="" style="height: 91px;">
+                                            <label>{{"NoofMonths" | localize}}</label>
+                                            <input type="text" name="noOfMonths" [disabled]="enableValue == false"
+                                                placeholder="Enter Number" class="form-control bsDatepicker"
+                                                autocomplete="off" [(ngModel)]="checklist.noOfMonths">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row ">
+                                    <div class="col-md-4">
+                                        <div class=" dueOn">
+                                            <label>{{"Dueon" | localize}} *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label class="kt-radio kt-radio--single kt-radio--success">
+                                                            <input type="radio" [(checked)]="isChecked"
+                                                                (change)="onDayChange()" name="dueOn">
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                                <select class="border border-default bg-white form-control input-medium"
+                                                    (change)="onDayChange()" name="dueOn"
+                                                    (focusout)="changeValidation()" [(ngModel)]="checklist.dueOn">
+                                                    <option *ngFor="let item of days;" [value]="item.value">
+                                                        {{item.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <span class="form-control-feedback">{{TaskDueon}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="">
+                                            <label>&nbsp;&nbsp;</label>
+                                            <select class="bg-white border form-control input-medium"
+                                                (change)="onDaysClick($event.target.value)"
+                                                [(ngModel)]="daysBeforeAfter" (focusout)="changeValidation()"
+                                                name="daysBeforeAfter">
+                                                <option [value]=1>{{"None" | localize}}</option>
+                                                <option [value]=2>{{"DaysBefore" | localize}}</option>
+                                                <option [value]=3>{{"DaysAfter" | localize}}</option>
+                                            </select>
+                                            <div *ngIf="SelectionMsg != null">
+                                                <div>
+                                                    <span>{{SelectionMsg}}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="kt-radio-list" style="margin-top: 33px;">
-                                        <span></span>
-                                        <label class="kt-radio kt-radio--brand" name="radio5">
-                                            <input type="radio" [(checked)]="checklist.endOfMonth" name="endOfMonth"
-                                                (click)="handleRadioChange()">{{"Endofmonth" | localize}}
+                                    <div class="col-md-4">
+                                        <div class="kt-radio-list" style="margin-top: 33px;">
                                             <span></span>
-                                        </label>
+                                            <label class="kt-radio kt-radio--brand" name="radio5">
+                                                <input type="radio" [(checked)]="checklist.endOfMonth" name="endOfMonth"
+                                                    (click)="handleRadioChange()">{{"Endofmonth" | localize}}
+                                                <span></span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     </form>
                     <div class="row" style="margin-top: -15px;">
                         <div class="col-md-7">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <!-- <div class="form-group" *ngIf="commantBox">
-                                        <label>{{"Comments" | localize}}</label>
-                                        <div (click)="commentClick()">
-                                            <div class="kt-user-card-v2">
-                                                <div class="kt-user-card-v2__pic">
-                                                    <div *ngIf="UserProfilePicture" class="kt-badge kt-badge--xl">
-                                                        <img class="header-profile-picture m--img-rounded m--marginless m--img-centered"
-                                                            alt="Pic" [src]="UserProfilePicture">
-                                                    </div>
-    
-                                                    <div *ngIf="!UserProfilePicture"
-                                                        class="kt-badge kt-badge--xl kt-badge--primary">
-                                                        {{userName | firstLetterOfWords}}
-                                                    </div>
-                                                </div>
-                                                <div innerHTML="{{checklist.commentBody}}"
-                                                    class="form-control create-comments"></div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-
-                                    
-
                                     <div class="form-group">
                                         <label class="bg-color">{{"Instruction" | localize}}</label>
                                         <div>
-                                            <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput" 
+                                            <p-editor [(ngModel)]="checklist.instruction" name="HtmlEditorInput"
                                                 [style]="{'height':'230px'}">
                                                 <p-header>
                                                     <span class="ql-formats">
-                                                        <select class="ql-size" data-toggle="tooltip" title="Font Size"style="width:75px">
+                                                        <select class="ql-size" data-toggle="tooltip" title="Font Size"
+                                                            style="width:75px">
                                                             <option value="small">small</option>
                                                             <option selected></option>
                                                             <option value="large">large</option>
                                                             <option value="huge">huge</option>
                                                         </select>
-                                                        <select class="ql-font" data-toggle="tooltip" title="Font"style="width:90px">
+                                                        <select class="ql-font" data-toggle="tooltip" title="Font"
+                                                            style="width:90px">
                                                             <option selected></option>
                                                             <option value="serif">Serif</option>
-                                                            
+
                                                             <option value="monospace">Monospace</option>
                                                         </select>
-                                                        <button class="ql-bold compress" data-toggle="tooltip" title="Bold" aria-label="Bold"></button>
-                                                        <button class="ql-italic compress" data-toggle="tooltip" title="Italic" aria-label="Italic"></button>
-                                                        <button class="ql-underline " data-toggle="tooltip" title="Underline" aria-label="Underline"></button>
-                                                        
-                                                        <select title="Text Color" data-toggle="tooltip" title="Font Color"style="margin-top:-2.5px; padding-top:-3px" class="ql-color" defaultValue="rgb(0, 0, 0)">
-                                                            <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
+                                                        <button class="ql-bold compress" data-toggle="tooltip"
+                                                            title="Bold" aria-label="Bold"></button>
+                                                        <button class="ql-italic compress" data-toggle="tooltip"
+                                                            title="Italic" aria-label="Italic"></button>
+                                                        <button class="ql-underline " data-toggle="tooltip"
+                                                            title="Underline" aria-label="Underline"></button>
+
+                                                        <select title="Text Color" data-toggle="tooltip"
+                                                            title="Font Color"
+                                                            style="margin-top:-2.5px; padding-top:-3px" class="ql-color"
+                                                            defaultValue="rgb(0, 0, 0)">
+                                                            <option selected="selected"></option>
+                                                            <option value="#e60000"></option>
+                                                            <option value="#ff9900"></option>
+                                                            <option value="#ffff00"></option>
+                                                            <option value="#008a00"></option>
+                                                            <option value="#0066cc"></option>
+                                                            <option value="#9933ff"></option>
+                                                            <option value="#ffffff"></option>
+                                                            <option value="#facccc"></option>
+                                                            <option value="#ffebcc"></option>
+                                                            <option value="#ffffcc"></option>
+                                                            <option value="#cce8cc"></option>
+                                                            <option value="#cce0f5"></option>
+                                                            <option value="#ebd6ff"></option>
+                                                            <option value="#bbbbbb"></option>
+                                                            <option value="#f06666"></option>
+                                                            <option value="#ffc266"></option>
+                                                            <option value="#ffff66"></option>
+                                                            <option value="#66b966"></option>
+                                                            <option value="#66a3e0"></option>
+                                                            <option value="#c285ff"></option>
+                                                            <option value="#888888"></option>
+                                                            <option value="#a10000"></option>
+                                                            <option value="#b26b00"></option>
+                                                            <option value="#b2b200"></option>
+                                                            <option value="#006100"></option>
+                                                            <option value="#0047b2"></option>
+                                                            <option value="#6b24b2"></option>
+                                                            <option value="#444444"></option>
+                                                            <option value="#5c0000"></option>
+                                                            <option value="#663d00"></option>
+                                                            <option value="#666600"></option>
+                                                            <option value="#003700"></option>
+                                                            <option value="#002966"></option>
+                                                            <option value="#3d1466"></option>
                                                         </select>
-                                                        <select title="Background Color" style="margin-top:-3px; padding-top:-3px" class="ql-background" defaultValue="rgb(255, 255, 255)">
-                                                            <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
+                                                        <select title="Background Color"
+                                                            style="margin-top:-3px; padding-top:-3px"
+                                                            class="ql-background" defaultValue="rgb(255, 255, 255)">
+                                                            <option selected="selected"></option>
+                                                            <option value="#e60000"></option>
+                                                            <option value="#ff9900"></option>
+                                                            <option value="#ffff00"></option>
+                                                            <option value="#008a00"></option>
+                                                            <option value="#0066cc"></option>
+                                                            <option value="#9933ff"></option>
+                                                            <option value="#ffffff"></option>
+                                                            <option value="#facccc"></option>
+                                                            <option value="#ffebcc"></option>
+                                                            <option value="#ffffcc"></option>
+                                                            <option value="#cce8cc"></option>
+                                                            <option value="#cce0f5"></option>
+                                                            <option value="#ebd6ff"></option>
+                                                            <option value="#bbbbbb"></option>
+                                                            <option value="#f06666"></option>
+                                                            <option value="#ffc266"></option>
+                                                            <option value="#ffff66"></option>
+                                                            <option value="#66b966"></option>
+                                                            <option value="#66a3e0"></option>
+                                                            <option value="#c285ff"></option>
+                                                            <option value="#888888"></option>
+                                                            <option value="#a10000"></option>
+                                                            <option value="#b26b00"></option>
+                                                            <option value="#b2b200"></option>
+                                                            <option value="#006100"></option>
+                                                            <option value="#0047b2"></option>
+                                                            <option value="#6b24b2"></option>
+                                                            <option value="#444444"></option>
+                                                            <option value="#5c0000"></option>
+                                                            <option value="#663d00"></option>
+                                                            <option value="#666600"></option>
+                                                            <option value="#003700"></option>
+                                                            <option value="#002966"></option>
+                                                            <option value="#3d1466"></option>
                                                         </select>
-                                                            <button class="ql-list" data-toggle="tooltip" title="Numbered List" value="ordered"></button>
-                                                            <button class="ql-list" value="bullet" data-toggle="tooltip" title="Bullet List"></button>
-                                                        <select title="Text Alignment" data-toggle="tooltip" title="Text Alignment" style="margin-top:-3px; padding-top:-3px" class="ql-align" >
+                                                        <button class="ql-list" data-toggle="tooltip"
+                                                            title="Numbered List" value="ordered"></button>
+                                                        <button class="ql-list" value="bullet" data-toggle="tooltip"
+                                                            title="Bullet List"></button>
+                                                        <select title="Text Alignment" data-toggle="tooltip"
+                                                            title="Text Alignment"
+                                                            style="margin-top:-3px; padding-top:-3px" class="ql-align">
                                                             <option selected>Gauche</option>
                                                             <option value="center" label="Center"></option>
                                                             <option value="right" label="Right"></option>
                                                             <option value="justify" label="Justify"></option>
-                                                        </select>   
-                                                        <button aria-label="Image" data-toggle="tooltip" title="Upload Image" class="ql-image"></button>
-                                                        
+                                                        </select>
+                                                        <button aria-label="Image" data-toggle="tooltip"
+                                                            title="Upload Image" class="ql-image"></button>
+
                                                     </span>
                                                 </p-header>
                                             </p-editor>
@@ -253,69 +319,145 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-5">
-                             <div class="form-group">
-                                <label >{{"Attachments" | localize}}</label>
+                            <div class="form-group">
+                                <label>{{"Attachments" | localize}}</label>
                                 <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponse($event)"></ng-uppy>
                             </div>
                         </div>
                     </div>
-                   
-                        <div *ngIf="CreateOrEdit" class="form-group ">
-                            <label>{{"Comments" | localize}}</label>
-                            <div class="form-group">
-                                <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput" 
-                                    [style]="{'height':'230px'}">
-                                    <p-header>
-                                        
-                                        <span class="ql-formats">
-                                            <select class="ql-size" data-toggle="tooltip" title="Font Size"style="width:75px">
-                                                <option value="small">small</option>
-                                                <option selected></option>
-                                                <option value="large">large</option>
-                                                <option value="huge">huge</option>
-                                            </select>
-                                            <select class="ql-font" data-toggle="tooltip" title="Font"style="width:90px">
-                                                <option selected></option>
-                                                <option value="serif">Serif</option>
-                                                
-                                                <option value="monospace">Monospace</option>
-                                            </select>
-                                            <button class="ql-bold compress" data-toggle="tooltip" title="Bold" aria-label="Bold"></button>
-                                            <button class="ql-italic compress" data-toggle="tooltip" title="Italic" aria-label="Italic"></button>
-                                            <button class="ql-underline " data-toggle="tooltip" title="Underline" aria-label="Underline"></button>
-                                            
-                                            <select title="Text Color" data-toggle="tooltip" title="Font Color"style="margin-top:-2.5px; padding-top:-3px" class="ql-color" defaultValue="rgb(0, 0, 0)">
-                                                <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
-                                            </select>
-                                            <select title="Background Color" style="margin-top:-3px; padding-top:-3px" class="ql-background" defaultValue="rgb(255, 255, 255)">
-                                                <option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>
-                                            </select>
-                                                <button class="ql-list" data-toggle="tooltip" title="Numbered List" value="ordered"></button>
-                                                <button class="ql-list" value="bullet" data-toggle="tooltip" title="Bullet List"></button>
-                                            <select title="Text Alignment" data-toggle="tooltip" title="Text Alignment" style="margin-top:-3px; padding-top:-3px" class="ql-align" >
-                                                <option selected>Gauche</option>
-                                                <option value="center" label="Center"></option>
-                                                <option value="right" label="Right"></option>
-                                                <option value="justify" label="Justify"></option>
-                                            </select>
-                                             
-                                            <button aria-label="Image" data-toggle="tooltip" title="Upload Image" class="ql-image"></button>
-                                        </span>
-                                    </p-header>
-                                </p-editor>
-                            </div>
-                            <!-- <div class="btnMargin" >
-                            <button class="btn btn-brand" (click)="onComment()">{{"Comment" | localize}}</button>
-                            <button class="btn btn-brand" (click)="onCancelComment()">{{"Cancel" | localize}}</button>
-                        </div> -->
+
+                    <div *ngIf="CreateOrEdit" class="form-group ">
+                        <label>{{"Comments" | localize}}</label>
+                        <div class="form-group">
+                            <p-editor [(ngModel)]="checklist.commentBody" name="HtmlEditorInput"
+                                [style]="{'height':'230px'}">
+                                <p-header>
+
+                                    <span class="ql-formats">
+                                        <select class="ql-size" data-toggle="tooltip" title="Font Size"
+                                            style="width:75px">
+                                            <option value="small">small</option>
+                                            <option selected></option>
+                                            <option value="large">large</option>
+                                            <option value="huge">huge</option>
+                                        </select>
+                                        <select class="ql-font" data-toggle="tooltip" title="Font" style="width:90px">
+                                            <option selected></option>
+                                            <option value="serif">Serif</option>
+
+                                            <option value="monospace">Monospace</option>
+                                        </select>
+                                        <button class="ql-bold compress" data-toggle="tooltip" title="Bold"
+                                            aria-label="Bold"></button>
+                                        <button class="ql-italic compress" data-toggle="tooltip" title="Italic"
+                                            aria-label="Italic"></button>
+                                        <button class="ql-underline " data-toggle="tooltip" title="Underline"
+                                            aria-label="Underline"></button>
+
+                                        <select title="Text Color" data-toggle="tooltip" title="Font Color"
+                                            style="margin-top:-2.5px; padding-top:-3px" class="ql-color"
+                                            defaultValue="rgb(0, 0, 0)">
+                                            <option selected="selected"></option>
+                                            <option value="#e60000"></option>
+                                            <option value="#ff9900"></option>
+                                            <option value="#ffff00"></option>
+                                            <option value="#008a00"></option>
+                                            <option value="#0066cc"></option>
+                                            <option value="#9933ff"></option>
+                                            <option value="#ffffff"></option>
+                                            <option value="#facccc"></option>
+                                            <option value="#ffebcc"></option>
+                                            <option value="#ffffcc"></option>
+                                            <option value="#cce8cc"></option>
+                                            <option value="#cce0f5"></option>
+                                            <option value="#ebd6ff"></option>
+                                            <option value="#bbbbbb"></option>
+                                            <option value="#f06666"></option>
+                                            <option value="#ffc266"></option>
+                                            <option value="#ffff66"></option>
+                                            <option value="#66b966"></option>
+                                            <option value="#66a3e0"></option>
+                                            <option value="#c285ff"></option>
+                                            <option value="#888888"></option>
+                                            <option value="#a10000"></option>
+                                            <option value="#b26b00"></option>
+                                            <option value="#b2b200"></option>
+                                            <option value="#006100"></option>
+                                            <option value="#0047b2"></option>
+                                            <option value="#6b24b2"></option>
+                                            <option value="#444444"></option>
+                                            <option value="#5c0000"></option>
+                                            <option value="#663d00"></option>
+                                            <option value="#666600"></option>
+                                            <option value="#003700"></option>
+                                            <option value="#002966"></option>
+                                            <option value="#3d1466"></option>
+                                        </select>
+                                        <select title="Background Color" style="margin-top:-3px; padding-top:-3px"
+                                            class="ql-background" defaultValue="rgb(255, 255, 255)">
+                                            <option selected="selected"></option>
+                                            <option value="#e60000"></option>
+                                            <option value="#ff9900"></option>
+                                            <option value="#ffff00"></option>
+                                            <option value="#008a00"></option>
+                                            <option value="#0066cc"></option>
+                                            <option value="#9933ff"></option>
+                                            <option value="#ffffff"></option>
+                                            <option value="#facccc"></option>
+                                            <option value="#ffebcc"></option>
+                                            <option value="#ffffcc"></option>
+                                            <option value="#cce8cc"></option>
+                                            <option value="#cce0f5"></option>
+                                            <option value="#ebd6ff"></option>
+                                            <option value="#bbbbbb"></option>
+                                            <option value="#f06666"></option>
+                                            <option value="#ffc266"></option>
+                                            <option value="#ffff66"></option>
+                                            <option value="#66b966"></option>
+                                            <option value="#66a3e0"></option>
+                                            <option value="#c285ff"></option>
+                                            <option value="#888888"></option>
+                                            <option value="#a10000"></option>
+                                            <option value="#b26b00"></option>
+                                            <option value="#b2b200"></option>
+                                            <option value="#006100"></option>
+                                            <option value="#0047b2"></option>
+                                            <option value="#6b24b2"></option>
+                                            <option value="#444444"></option>
+                                            <option value="#5c0000"></option>
+                                            <option value="#663d00"></option>
+                                            <option value="#666600"></option>
+                                            <option value="#003700"></option>
+                                            <option value="#002966"></option>
+                                            <option value="#3d1466"></option>
+                                        </select>
+                                        <button class="ql-list" data-toggle="tooltip" title="Numbered List"
+                                            value="ordered"></button>
+                                        <button class="ql-list" value="bullet" data-toggle="tooltip"
+                                            title="Bullet List"></button>
+                                        <select title="Text Alignment" data-toggle="tooltip" title="Text Alignment"
+                                            style="margin-top:-3px; padding-top:-3px" class="ql-align">
+                                            <option selected>Gauche</option>
+                                            <option value="center" label="Center"></option>
+                                            <option value="right" label="Right"></option>
+                                            <option value="justify" label="Justify"></option>
+                                        </select>
+
+                                        <button aria-label="Image" data-toggle="tooltip" title="Upload Image"
+                                            class="ql-image"></button>
+                                    </span>
+                                </p-header>
+                            </p-editor>
                         </div>
-                   
+                    </div>
+
                     <div class="kt-portlet__head">
                     </div>
                     <div class="btn-create">
-                        <button class="btn btn-brand btn-width" (click)="onCreateTask()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                        <button class="btn btn-brand btn-width" (click)="onCreateTask()" [buttonBusy]="saving"
+                            [busyText]="l('SavingWithThreeDot')">
                             <i class="fa fa-save"></i>
                             <span>{{"Create" | localize}}</span>
                         </button>
@@ -323,4 +465,4 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>

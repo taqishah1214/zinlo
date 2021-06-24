@@ -14357,8 +14357,10 @@ export class SystemSettingServiceProxy {
     setDefaultMonth(body: CreateOrEditDefaultMonthDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/SystemSetting/SetDefaultMonth";
         url_ = url_.replace(/[?&]$/, "");
+        
+        var content_={"Id":body.id,"IsWeekEndEnable":body.isWeekEndEnable,"Month":body.month};
 
-        const content_ = JSON.stringify(body);
+      //  const content_ = JSON.stringify(body);
 
         let options_ : any = {
             body: content_,
@@ -30860,6 +30862,7 @@ export interface IStripePaymentResultOutput {
 
 export class CreateOrEditDefaultMonthDto implements ICreateOrEditDefaultMonthDto {
     id!: number;
+    isWeekEndEnable!: boolean;
     month!: moment.Moment;
 
     constructor(data?: ICreateOrEditDefaultMonthDto) {
@@ -30872,8 +30875,10 @@ export class CreateOrEditDefaultMonthDto implements ICreateOrEditDefaultMonthDto
     }
 
     init(data?: any) {
+
         if (data) {
             this.id = data["id"];
+            this.isWeekEndEnable = data["isWeekEndEnable"];
             this.month = data["month"] ? moment(data["month"].toString()) : <any>undefined;
         }
     }
@@ -30895,6 +30900,7 @@ export class CreateOrEditDefaultMonthDto implements ICreateOrEditDefaultMonthDto
 
 export interface ICreateOrEditDefaultMonthDto {
     id: number;
+    isWeekEndEnable: boolean;
     month: moment.Moment;
 }
 

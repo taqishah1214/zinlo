@@ -9,7 +9,6 @@ import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { StoreDateService } from '@app/services/storedate.service';
-import { add, subtract } from 'add-subtract-date';
 
 @Component({
     templateUrl: './tenant-settings.component.html',
@@ -32,6 +31,7 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
     selectedDate : any = new Date ();
     defaultMonth : any;
     selectedDateId = 0;
+    isWeekEndEnable:boolean=false;
     remoteServiceBaseUrl = AppConsts.remoteServiceBaseUrl;
     reload : any;
     defaultTimezoneScope: SettingScopes = SettingScopes.Tenant;
@@ -51,15 +51,20 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
         this.testEmailAddress = this.appSession.user.emailAddress;
         this.getSettings();
         this.initUploaders();
-
+         
         this.storeData.defaultgMonth.subscribe(defaultMonth => {
             this.defaultMonth = defaultMonth
             if (this.defaultMonth.id != 0) {
                 this.selectedDate = new Date (this.defaultMonth.month);
                 this.selectedDateId = this.defaultMonth.id;
+                this.isWeekEndEnable=this.defaultMonth.isWeekEndEnable;
             }
             });
+    }
 
+    onWeekEndChange(isWeekEndEnable:boolean){
+        this.defaultMonthDto.isWeekEndEnable=isWeekEndEnable;
+        this.isWeekEndEnable=isWeekEndEnable;
     }
 
     getSettings(): void {
@@ -68,6 +73,7 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
             .pipe(finalize(() => { this.loading = false; }))
             .subscribe((result: TenantSettingsEditDto) => {
                 this.settings = result;
+              
                 if (this.settings.general) {
                     this.initialTimeZone = this.settings.general.timezone;
                     this.usingDefaultTimeZone = this.settings.general.timezoneForComparison === abp.setting.values['Abp.Timing.TimeZone'];
@@ -165,10 +171,8 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
     }
 
     saveAll(): void {
-
         this.defaultMonthDto.id = this.selectedDateId; 
         this.defaultMonthDto.month = moment(this.selectedDate);
-        ; 
         this._systemSettingsService.setDefaultMonth(this.defaultMonthDto).subscribe(() => {
             this._systemSettingsService.getDefaultMonth().subscribe(result => { 
                 this.storeData.setDefaultMonth(result)
