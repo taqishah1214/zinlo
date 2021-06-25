@@ -181,7 +181,8 @@ button.btn-square{
     width: -webkit-fit-content;
     width: -moz-fit-content;
     width: fit-content;
-    min-width:215px;
+    /* min-width:215px; */
+    min-width:50px;
 }
 .user-image-box {
     width: 35px;

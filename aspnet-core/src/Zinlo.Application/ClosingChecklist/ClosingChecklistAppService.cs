@@ -28,6 +28,7 @@ using Zinlo.ClosingChecklist.Exporting;
 using Zinlo.Dto;
 using Zinlo.InstructionVersions;
 using Zinlo.InstructionVersions.Dto;
+using Zinlo.SystemSettings;
 
 namespace Zinlo.ClosingChecklist
 {
@@ -43,7 +44,9 @@ namespace Zinlo.ClosingChecklist
         private readonly IInstructionAppService _instructionVersionsAppService;
         private readonly ITaskExcelExporter _taskExcelExporter;
         private readonly RoleManager _roleManager;
+        private readonly ISystemSettingsAppService _systemSettingsAppService;
         private readonly IRepository<ChartofAccounts.SecondaryUserAssignee, long> _secondaryAssignee;
+        
 
         public ClosingChecklistAppService(IProfileAppService profileAppService,
                                           ICommentAppService commentAppService,
@@ -51,12 +54,12 @@ namespace Zinlo.ClosingChecklist
                                           IAttachmentAppService attachmentAppService,
                                           TimeManagementManager managementManager,
                                           IUnitOfWorkManager unitOfWorkManager,
+                                          ISystemSettingsAppService systemSettingsAppService,
                                           IInstructionAppService instructionVersionsAppService,
                                           ClosingChecklistManager closingChecklistManager,
                                           ITaskExcelExporter taskExcelExporter,
                                           RoleManager roleManager,
-                                          IRepository<ChartofAccounts.SecondaryUserAssignee, long> secondaryAssignee
-                                          )
+                                          IRepository<ChartofAccounts.SecondaryUserAssignee, long> secondaryAssignee)
         {
             _commentAppService = commentAppService;
             _userRepository = userRepository;
@@ -68,6 +71,7 @@ namespace Zinlo.ClosingChecklist
             _closingChecklistManager = closingChecklistManager;
             _taskExcelExporter = taskExcelExporter;
             _roleManager = roleManager;
+            _systemSettingsAppService = systemSettingsAppService;
             _secondaryAssignee = secondaryAssignee;
         }
         public async Task<PagedResultDto<TasksGroup>> GetReport(GetTaskReportInput input)
@@ -340,6 +344,7 @@ namespace Zinlo.ClosingChecklist
                 var task = taskList.FirstOrDefault(p => p.ClosingMonth.Year == item.Month.Year && p.ClosingMonth.Month == item.Month.Month);
                 if (task != null)
                 {
+                    
                     task.CategoryId = input.CategoryId;
                     task.AssigneeId = input.AssigneeId;
                     task.TaskName = input.TaskName;
@@ -347,7 +352,8 @@ namespace Zinlo.ClosingChecklist
                     task.TaskUpdatedTime = DateTime.UtcNow;
                     if (isDueDatetChanged)
                     {
-                        task.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, task.ClosingMonth, input.DueOn, input.EndOfMonth);
+                        var isWeekDayEnable = await GetSystemSetting();
+                        task.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, task.ClosingMonth, input.DueOn, input.EndOfMonth, isWeekDayEnable);
                     }
                     await Update(task);
                 }
@@ -538,6 +544,7 @@ namespace Zinlo.ClosingChecklist
 
         public async Task TaskIteration(CreateOrEditClosingChecklistDto input, DateTime openingMonth, bool singleIteration)
         {
+            var isWeekDayEnable = await GetSystemSetting();
             Guid? oldGroupId = null;
             var forEdit = false;
             if (input.Id == 0)
@@ -555,7 +562,7 @@ namespace Zinlo.ClosingChecklist
             {
                 case FrequencyDto.None:
                     {
-                        input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth);
+                        input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth, input.DueOn, input.EndOfMonth, isWeekDayEnable);
 
                         var taskExist = CheckTaskExist(input.ClosingMonth, oldGroupId);
                         if (!taskExist)
@@ -576,7 +583,7 @@ namespace Zinlo.ClosingChecklist
                         for (int i = 1; i <= monthDifference; i++)
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
-                                input.DueOn, input.EndOfMonth);
+                                input.DueOn, input.EndOfMonth, isWeekDayEnable);
                             var taskExist = CheckTaskExist(input.ClosingMonth, oldGroupId);
                             if (!taskExist)
                             {
@@ -601,7 +608,7 @@ namespace Zinlo.ClosingChecklist
                         for (int i = 1; i <= monthDifference; i += 3)
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
-                                input.DueOn, input.EndOfMonth);
+                                input.DueOn, input.EndOfMonth, isWeekDayEnable);
                             var taskExist = CheckTaskExist(input.ClosingMonth, oldGroupId);
                             if (!taskExist)
                             {
@@ -625,7 +632,7 @@ namespace Zinlo.ClosingChecklist
                         for (int i = 0; i <= yearDifference; i++)
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
-                                input.DueOn, input.EndOfMonth);
+                                input.DueOn, input.EndOfMonth, isWeekDayEnable);
                             var taskExist = CheckTaskExist(input.ClosingMonth, oldGroupId);
                             if (!taskExist)
                             {
@@ -649,7 +656,7 @@ namespace Zinlo.ClosingChecklist
                         for (int i = 1; i <= monthDifference; i += input.NoOfMonths)
                         {
                             input.DueDate = _closingChecklistManager.GetDueDate((DaysBeforeAfter)input.DayBeforeAfter, input.ClosingMonth,
-                                input.DueOn, input.EndOfMonth);
+                                input.DueOn, input.EndOfMonth,isWeekDayEnable);
                             var taskExist = CheckTaskExist(input.ClosingMonth, oldGroupId);
                             if (input.Id == 0 || !taskExist)
                             {
@@ -665,7 +672,11 @@ namespace Zinlo.ClosingChecklist
                     }
             }
         }
-
+        private async Task<bool> GetSystemSetting()
+        {
+            var getSystemSetting = await _systemSettingsAppService.GetDefaultMonth();
+            return getSystemSetting.IsWeekEndEnable;
+        }
         public async Task<List<CreateOrEditClosingChecklistDto>> GetTaskTimeDuration(DateTime input)
         {
             var lastYear = input.AddYears(-1).AddMonths(-1);

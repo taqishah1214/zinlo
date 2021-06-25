@@ -11,6 +11,7 @@ namespace Zinlo.SystemSettings
         public int TenantId { get; set; }
         public SettingType SettingType { get; set; }
         public DateTime Month { get; set; }
+        public bool IsWeekEndEnable { get; set; }
 
 
 

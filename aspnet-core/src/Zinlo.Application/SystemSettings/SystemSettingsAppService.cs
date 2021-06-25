@@ -8,17 +8,21 @@ using Zinlo.SystemSettings.Dtos;
 
 namespace Zinlo.SystemSettings
 {
-    public class SystemSettingAppService : ZinloAppServiceBase, ISystemSettingsAppService
+    public class SystemSettingsAppService : ZinloAppServiceBase, ISystemSettingsAppService
     {
 
         private readonly IRepository<SystemSettings, long> _systemSettingsRepositry;
        
-        public SystemSettingAppService(IRepository<SystemSettings, long> systemSettingsRepositry)
+        public SystemSettingsAppService(IRepository<SystemSettings, long> systemSettingsRepositry)
         {
             _systemSettingsRepositry = systemSettingsRepositry;
-           
-
         }
+
+        public Task<string> Get()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<CreateOrEditDefaultMonthDto> GetDefaultMonth()
         {
             CreateOrEditDefaultMonthDto obj = new CreateOrEditDefaultMonthDto();
@@ -28,19 +32,20 @@ namespace Zinlo.SystemSettings
                 var result = _systemSettingsRepositry.GetAll().Where(p => p.TenantId == tenantId && p.SettingType == SettingType.DefaultMonth).ToList();
                 if (result.Count == 0)
                 {
-                    obj.id = 0;
+                    obj.Id = 0;
                     return obj;
                 }
                 else
                 {
-                    obj.id = result[0].Id;
+                    obj.Id = result[0].Id;
                     obj.Month = result[0].Month;
+                    obj.IsWeekEndEnable = result[0].IsWeekEndEnable;
                     return obj;
                 }
             }
             else
             {
-                obj.id = 0;
+                obj.Id = 0;
                 return obj;
             }
            
@@ -49,10 +54,11 @@ namespace Zinlo.SystemSettings
         public async Task SetDefaultMonth(CreateOrEditDefaultMonthDto input)
         {
             input.Month = input.Month.AddDays(1);
-            if (input.id != 0)
+            if (input.Id != 0)
             {
-               var result =  await _systemSettingsRepositry.FirstOrDefaultAsync(p => p.TenantId == (int)AbpSession.TenantId && p.Id == input.id && p.SettingType == SettingType.DefaultMonth);
+               var result =  await _systemSettingsRepositry.FirstOrDefaultAsync(p => p.TenantId == (int)AbpSession.TenantId && p.Id == input.Id && p.SettingType == SettingType.DefaultMonth);
                 result.Month = input.Month;
+                result.IsWeekEndEnable = input.IsWeekEndEnable;
                await _systemSettingsRepositry.UpdateAsync(result);
 
 
@@ -62,6 +68,7 @@ namespace Zinlo.SystemSettings
                 SystemSettings systemSettings = new SystemSettings();
                 systemSettings.TenantId = (int)AbpSession.TenantId;
                 systemSettings.Month = input.Month;
+                systemSettings.IsWeekEndEnable = input.IsWeekEndEnable;
                 systemSettings.SettingType = SettingType.DefaultMonth;
                 await _systemSettingsRepositry.InsertAsync(systemSettings);
             }

@@ -7,16 +7,19 @@ using Abp.Application.Services.Dto;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Runtime.Session;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Zinlo.Authorization.Users;
 using Zinlo.TimeManagements;
+using Abp.Domain.Repositories;
+
 
 namespace Zinlo.ClosingChecklist
 {
     public class ClosingChecklistManager : ITransientDependency
     {
-
+        public IAbpSession AbpSession { get; set; }
         private readonly IRepository<ClosingChecklist, long> _closingChecklistRepository;
         private readonly TimeManagementManager _managementManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
@@ -29,6 +32,7 @@ namespace Zinlo.ClosingChecklist
             _closingChecklistRepository = closingChecklistRepository;
             _managementManager = managementManager;
             _unitOfWorkManager = unitOfWorkManager;
+           
         }
 
 
@@ -184,28 +188,74 @@ namespace Zinlo.ClosingChecklist
             return DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
         }
 
-        public DateTime GetDueDate(DaysBeforeAfter daysBeforeAfter, DateTime closingMonth, int numberOfDays,
-            bool endsOfMonth)
+        public  DateTime GetDueDate(DaysBeforeAfter daysBeforeAfter, DateTime closingMonth, int numberOfDays,
+            bool endsOfMonth, bool isWeekEndEnable)
         {
-            var nextDate = closingMonth;
-            if (endsOfMonth)
+
+            if (isWeekEndEnable)
             {
-                nextDate = new DateTime(closingMonth.Year, closingMonth.Month, (GetTotalDaysByMonth(closingMonth)));
-            }
-            else if (daysBeforeAfter == DaysBeforeAfter.DaysBefore)
-            {
-                nextDate = new DateTime(closingMonth.Year, closingMonth.Month,
-                    (GetTotalDaysByMonth(closingMonth) - numberOfDays));
+                var nextDate = closingMonth;
+                if (endsOfMonth)
+                {
+                    nextDate = new DateTime(closingMonth.Year, closingMonth.Month, (GetTotalDaysByMonth(closingMonth)));
+                }
+                else if (daysBeforeAfter == DaysBeforeAfter.DaysBefore)
+                {
+                    nextDate = new DateTime(closingMonth.Year, closingMonth.Month, (GetTotalDaysByMonth(closingMonth)));
+                    while (numberOfDays > 0)
+                    {
+                        nextDate = nextDate.AddDays(-1);
+
+                        if (nextDate.DayOfWeek != DayOfWeek.Saturday && nextDate.DayOfWeek != DayOfWeek.Sunday)
+                        {
+                            numberOfDays -= 1;
+                        }
+                    }
+
+                }
+                else
+                {
+                    nextDate = new DateTime(closingMonth.Year, closingMonth.Month, (GetTotalDaysByMonth(closingMonth)));
+                    while (numberOfDays > 0)
+                    {
+                        nextDate = nextDate.AddDays(1);
+
+                        if (nextDate.DayOfWeek != DayOfWeek.Saturday && nextDate.DayOfWeek != DayOfWeek.Sunday)
+                        {
+                            numberOfDays -= 1;
+                        }
+                    }
+
+
+                }
+
+                return nextDate;
             }
             else
             {
-                nextDate = nextDate.AddDays(-nextDate.Day);
-                var number = GetTotalDaysByMonth(closingMonth) + numberOfDays;
-                nextDate = nextDate.AddDays(number);
+                var nextDate = closingMonth;
+                if (endsOfMonth)
+                {
+                    nextDate = new DateTime(closingMonth.Year, closingMonth.Month, (GetTotalDaysByMonth(closingMonth)));
+
+                }
+                else if (daysBeforeAfter == DaysBeforeAfter.DaysBefore)
+                {
+                    nextDate = new DateTime(closingMonth.Year, closingMonth.Month,
+                        (GetTotalDaysByMonth(closingMonth) - numberOfDays));
+                }
+                else
+                {
+                    nextDate = nextDate.AddDays(-nextDate.Day);
+                    var number = GetTotalDaysByMonth(closingMonth) + numberOfDays;
+                    nextDate = nextDate.AddDays(number);
+                }
+
+                return nextDate;
 
             }
 
-            return nextDate;
+           
 
         }
 
