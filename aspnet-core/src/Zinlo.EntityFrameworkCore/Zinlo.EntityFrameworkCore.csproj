@@ -60,6 +60,8 @@
     <Compile Remove="Migrations\20210421103647_SecondaryUserAssignee_Added.Designer.cs" />
     <Compile Remove="Migrations\20210427063113_secondary_user_assignee.cs" />
     <Compile Remove="Migrations\20210427063113_secondary_user_assignee.Designer.cs" />
+    <Compile Remove="Migrations\20210621113028_Add_IsWeekEndEnable_CreateOrEditDefaultMonthDto.cs" />
+    <Compile Remove="Migrations\20210621113028_Add_IsWeekEndEnable_CreateOrEditDefaultMonthDto.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="28.4.4" />
