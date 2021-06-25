@@ -3358,13 +3358,12 @@ export class ChartsofAccountServiceProxy {
      * @param beginingAmountCheck (optional) 
      * @param reconciliationType (optional) 
      * @param includeNotReconciled (optional) 
-     * @param accountNumber (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filter: string | undefined, accountType: number | undefined, selectedMonth: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, beginingAmountCheck: boolean | undefined, reconciliationType: number | undefined, includeNotReconciled: boolean | undefined,sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
+    getAll(filter: string | undefined, accountType: number | undefined, selectedMonth: moment.Moment | undefined, assigneeId: number | undefined, allOrActive: boolean | undefined, beginingAmountCheck: boolean | undefined, reconciliationType: number | undefined, includeNotReconciled: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfChartsofAccoutsForViewDto> {
         let url_ = this.baseUrl + "/api/services/app/ChartsofAccount/GetAll?";
         if (filter === null)
             throw new Error("The parameter 'filter' cannot be null.");
@@ -14289,7 +14288,7 @@ export class SubscriptionServiceProxy {
 }
 
 @Injectable()
-export class SystemSettingServiceProxy {
+export class SystemSettingsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -14302,8 +14301,59 @@ export class SystemSettingServiceProxy {
     /**
      * @return Success
      */
+    get(): Observable<string> {
+        let url_ = this.baseUrl + "/api/services/app/SystemSettings/Get";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getDefaultMonth(): Observable<CreateOrEditDefaultMonthDto> {
-        let url_ = this.baseUrl + "/api/services/app/SystemSetting/GetDefaultMonth";
+        let url_ = this.baseUrl + "/api/services/app/SystemSettings/GetDefaultMonth";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -14355,12 +14405,10 @@ export class SystemSettingServiceProxy {
      * @return Success
      */
     setDefaultMonth(body: CreateOrEditDefaultMonthDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/SystemSetting/SetDefaultMonth";
+        let url_ = this.baseUrl + "/api/services/app/SystemSettings/SetDefaultMonth";
         url_ = url_.replace(/[?&]$/, "");
-        
-        var content_={"Id":body.id,"IsWeekEndEnable":body.isWeekEndEnable,"Month":body.month};
 
-      //  const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(body);
 
         let options_ : any = {
             body: content_,
@@ -18467,6 +18515,62 @@ export class UserServiceProxy {
             }));
         }
         return _observableOf<GetAllUsersList[]>(<any>null);
+    }
+
+    /**
+     * @param email (optional) 
+     * @return Success
+     */
+    getUserIdByUserEmail(email: string | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/User/GetUserIdByUserEmail?";
+        if (email === null)
+            throw new Error("The parameter 'email' cannot be null.");
+        else if (email !== undefined)
+            url_ += "email=" + encodeURIComponent("" + email) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserIdByUserEmail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserIdByUserEmail(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserIdByUserEmail(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
     }
 }
 
@@ -30875,7 +30979,6 @@ export class CreateOrEditDefaultMonthDto implements ICreateOrEditDefaultMonthDto
     }
 
     init(data?: any) {
-
         if (data) {
             this.id = data["id"];
             this.isWeekEndEnable = data["isWeekEndEnable"];
@@ -30893,6 +30996,7 @@ export class CreateOrEditDefaultMonthDto implements ICreateOrEditDefaultMonthDto
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["isWeekEndEnable"] = this.isWeekEndEnable;
         data["month"] = this.month ? this.month.toISOString() : <any>undefined;
         return data; 
     }

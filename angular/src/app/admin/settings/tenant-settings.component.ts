@@ -4,7 +4,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { AppConsts } from '@shared/AppConsts';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { SettingScopes, SendTestEmailInput, TenantSettingsEditDto, TenantSettingsServiceProxy,SystemSettingServiceProxy, CreateOrEditDefaultMonthDto } from '@shared/service-proxies/service-proxies';
+import { SettingScopes, SendTestEmailInput, TenantSettingsEditDto, TenantSettingsServiceProxy,SystemSettingsServiceProxy, CreateOrEditDefaultMonthDto } from '@shared/service-proxies/service-proxies';
 import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -40,7 +40,7 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
         injector: Injector,
         private _tenantSettingsService: TenantSettingsServiceProxy,
         private _tokenService: TokenService,
-        private _systemSettingsService: SystemSettingServiceProxy,
+        private _systemSettingsService: SystemSettingsServiceProxy,
         private storeData: StoreDateService
 
     ) {
@@ -51,7 +51,6 @@ export class TenantSettingsComponent extends AppComponentBase implements OnInit 
         this.testEmailAddress = this.appSession.user.emailAddress;
         this.getSettings();
         this.initUploaders();
-         
         this.storeData.defaultgMonth.subscribe(defaultMonth => {
             this.defaultMonth = defaultMonth
             if (this.defaultMonth.id != 0) {

@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AppConsts } from '@shared/AppConsts';
 import { UrlHelper } from '@shared/helpers/UrlHelper';
-import { SubscriptionStartType, SystemSettingServiceProxy } from '@shared/service-proxies/service-proxies';
+import { SubscriptionStartType, SystemSettingsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ChatSignalrService } from 'app/shared/layout/chat/chat-signalr.service';
 import * as moment from 'moment';
 import { AppComponentBase } from 'shared/common/app-component-base';
@@ -44,7 +44,7 @@ export class AppComponent extends AppComponentBase implements OnInit {
         private _chatSignalrService: ChatSignalrService,
         private _userNotificationHelper: UserNotificationHelper,
         private storeData: StoreDateService,private _userService: UserServiceProxy,private _categoryService: CategoriesServiceProxy, private _accountSubtypeService :AccountSubTypeServiceProxy,
-        private _systemSettingsService: SystemSettingServiceProxy
+        private _systemSettingsService: SystemSettingsServiceProxy
     ) {
         super(injector);
     }

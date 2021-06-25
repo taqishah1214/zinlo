@@ -23,18 +23,16 @@ namespace Zinlo.ClosingChecklist
         private readonly IRepository<ClosingChecklist, long> _closingChecklistRepository;
         private readonly TimeManagementManager _managementManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        private readonly IRepository<SystemSettings.SystemSettings, long> _systemSettingsRepositry;
 
 
         public ClosingChecklistManager(IRepository<ClosingChecklist, long> closingChecklistRepository,
-            IRepository<SystemSettings.SystemSettings, long> systemSettingsRepositry,
             TimeManagementManager managementManager,
             IUnitOfWorkManager unitOfWorkManager)
         {
             _closingChecklistRepository = closingChecklistRepository;
             _managementManager = managementManager;
             _unitOfWorkManager = unitOfWorkManager;
-            _systemSettingsRepositry = systemSettingsRepositry;
+           
         }
 
 
@@ -191,13 +189,10 @@ namespace Zinlo.ClosingChecklist
         }
 
         public  DateTime GetDueDate(DaysBeforeAfter daysBeforeAfter, DateTime closingMonth, int numberOfDays,
-            bool endsOfMonth)
+            bool endsOfMonth, bool isWeekEndEnable)
         {
-           
-            var result = _systemSettingsRepositry.GetAll().Where(p => p.TenantId == (int)AbpSession.TenantId).ToList();
-            var IsWeekEndEnable = result[0].IsWeekEndEnable;
 
-            if (IsWeekEndEnable==true)
+            if (isWeekEndEnable)
             {
                 var nextDate = closingMonth;
                 if (endsOfMonth)

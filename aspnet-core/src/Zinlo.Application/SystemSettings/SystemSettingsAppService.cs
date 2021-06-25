@@ -8,15 +8,21 @@ using Zinlo.SystemSettings.Dtos;
 
 namespace Zinlo.SystemSettings
 {
-    public class SystemSettingAppService : ZinloAppServiceBase, ISystemSettingsAppService
+    public class SystemSettingsAppService : ZinloAppServiceBase, ISystemSettingsAppService
     {
 
         private readonly IRepository<SystemSettings, long> _systemSettingsRepositry;
        
-        public SystemSettingAppService(IRepository<SystemSettings, long> systemSettingsRepositry)
+        public SystemSettingsAppService(IRepository<SystemSettings, long> systemSettingsRepositry)
         {
             _systemSettingsRepositry = systemSettingsRepositry;
         }
+
+        public Task<string> Get()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<CreateOrEditDefaultMonthDto> GetDefaultMonth()
         {
             CreateOrEditDefaultMonthDto obj = new CreateOrEditDefaultMonthDto();
