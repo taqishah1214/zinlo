@@ -90,6 +90,12 @@ export class AmortizedComponent extends AppComponentBase {
       e.stopPropagation();
       });
     });
+
+    //checking history.state.data & re-routing if undefined        
+    if (!history.state.data) {
+      this._router.navigate(['/app/main/reconciliation']);
+    }
+    
     this.monthFilter = new Date(add(history.state.data.selectedDate, 2, "day"));
     this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.storeData.allAccountSubTypes.subscribe(accountSubypeList => this.accountSubypeList = accountSubypeList)

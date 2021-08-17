@@ -89,6 +89,14 @@ export class ItemizedComponent extends AppComponentBase {
     e.stopPropagation();
     });
     });
+    
+    //checking history.state.data & re-routing if undefined
+        
+    if (!history.state.data) {
+      this._router.navigate(['/app/main/reconciliation']);
+    }
+    //modified
+
     this.monthValue = history.state.data.selectedDate
     this.userSignInName = this.appSession.user.name.toString().toUpperCase();
     this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
@@ -99,7 +107,7 @@ export class ItemizedComponent extends AppComponentBase {
     this.commantBox = true;
     this.getProfilePicture();
     this.userName = this.appSession.user.name.toString();
-
+        
   }
   RedirectToAddNew() : void {
     this._router.navigate(['/app/main/reconciliation/itemized/create-edit-itemized'],{ state: { data: { accountId : this.accountId ,accountName :this.accountName ,accountNo: this.accountNo,ItemizedItemId : 0 , selectedDate : this.monthValue }} });
