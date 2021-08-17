@@ -41,7 +41,7 @@
                                                     <div class="row ">
                                                         <div [ngClass]="{'disabled':!updateLock}" class="col-md-6">
                                                             <div style="height: 90px !important;">
-                                                                <label for="InvoiceNo">{{"Invoice No" | localize}}. *</label>
+                                                                <label for="InvoiceNo">{{"Invoice No" | localize}}.</label>
                                                                 <input type="text" name="inoviceNo" class="form-control"
                                                                     [(ngModel)]="amortizationDto.inoviceNo" autocomplete="off" (mouseout)="changeValidation()" (focusout)="changeValidation()">
                                                                     
@@ -52,7 +52,7 @@
                                                         </div>
                                                         <div [ngClass]="{'disabled':!updateLock}"class="col-md-6">
                                                             <div style="height: 90px !important;">
-                                                                <label for="TaskName">{{"Journal Entry No" | localize}}. *</label>
+                                                                <label for="TaskName">{{"Journal Entry No" | localize}}.</label>
                                                                 <input type="text" name="accountNumber" class="form-control"
                                                                     [(ngModel)]="amortizationDto.journalEntryNo" autocomplete="off" (mouseout)="changeValidation()" (focusout)="changeValidation()">
                                                                     <span class="form-control-feedback">

@@ -285,16 +285,16 @@ export class CreateEditAmortizedComponent extends AppComponentBase implements On
         found=1
       }
     }
-     if(this.amortizationDto.inoviceNo == null)
-     {
-      this.InvoiceNumber="Invoice No is required"
-      found=1
-     }
-     if(this.amortizationDto.journalEntryNo == null)
-     {
-      this.EntryNo="Entry No is required"
-      found=1
-     }
+    //  if(this.amortizationDto.inoviceNo == null)
+    //  {
+    //   this.InvoiceNumber="Invoice No is required"
+    //   found=1
+    //  }
+    //  if(this.amortizationDto.journalEntryNo == null)
+    //  {
+    //   this.EntryNo="Entry No is required"
+    //   found=1
+    //  }
      if(found==0){
       return true;
       }

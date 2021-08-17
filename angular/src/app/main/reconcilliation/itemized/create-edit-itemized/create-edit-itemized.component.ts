@@ -133,16 +133,16 @@ export class CreateEditItemizedComponent extends AppComponentBase implements OnI
   
   validationCheck() {
     let found=0
-    if(this.itemizedDto.inoviceNo== null)
-     {
-      this.InvoiceNumber="Invoice No is required"
-      found=1
-     }
-     if(this.itemizedDto.journalEntryNo == null)
-     {
-      this.EntryNo="Entry No is required"
-      found=1
-     }
+    // if(this.itemizedDto.inoviceNo== null)
+    //  {
+    //   this.InvoiceNumber="Invoice No is required"
+    //   found=1
+    //  }
+    //  if(this.itemizedDto.journalEntryNo == null)
+    //  {
+    //   this.EntryNo="Entry No is required"
+    //   found=1
+    //  }
     if(this.itemizedDto.date == null)
      {
       this.StartDate="Select Date"
