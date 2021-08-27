@@ -2,7 +2,7 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import * as _ from 'lodash';
-import {  ItemizationServiceProxy,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto ,AuditLogServiceProxy, ChartsofAccountServiceProxy} from '@shared/service-proxies/service-proxies';
+import {  ItemizationServiceProxy,TimeManagementsServiceProxy, CreateOrEditTimeManagementDto ,AuditLogServiceProxy, ChartsofAccountServiceProxy, } from '@shared/service-proxies/service-proxies';
 import { UserInformation } from '../../CommonFunctions/UserInformation';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
@@ -11,8 +11,12 @@ import { AppConsts } from '@shared/AppConsts';
 import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
 import { StoreDateService } from "../../../services/storedate.service";
+import { UppyConfig } from 'uppy-angular';
+import { HttpClient } from '@angular/common/http';
+
 
 import * as $ from 'jquery';
+
 @Component({
   selector: 'app-itemized',
   templateUrl: './itemized.component.html',
@@ -42,7 +46,7 @@ export class ItemizedComponent extends AppComponentBase {
   monthFilter = new Date();
   remainingAttachmentList: any = []
   trialBalance : any;
-  variance:any;
+  variance:any; 
   AccountNumber : any  = "";
   CreateTimeManagementDto : CreateOrEditTimeManagementDto = new CreateOrEditTimeManagementDto()
   comment : any = ""
@@ -61,6 +65,16 @@ export class ItemizedComponent extends AppComponentBase {
   accountSubypeList : any  = []
   monthStatus : boolean;
   commentFiles:File[]=[];
+  //
+  selectedDate : any = new Date ();
+  checkActiveMonth:boolean=true;
+  activeSaveButton:boolean=false;
+  attachmentPathsItemized: any = [];
+  itemizedFileUrl : string = "";
+  uploadItemizedUrl = AppConsts.remoteServiceBaseUrl + '/ReconciliationExcel/ImportItemizedItems';
+
+
+
   constructor(
     injector: Injector,
     private _router: Router,
@@ -68,7 +82,9 @@ export class ItemizedComponent extends AppComponentBase {
     private _itemizedService:ItemizationServiceProxy,
     private _auditLogService : AuditLogServiceProxy,
     private storeData: StoreDateService,
-    private _chartOfAccountService: ChartsofAccountServiceProxy
+    private _chartOfAccountService: ChartsofAccountServiceProxy,
+    private _managementService: TimeManagementsServiceProxy,
+    private _httpClient: HttpClient
   ) {
     super(injector);
   }
@@ -247,18 +263,51 @@ BackToReconcileList() {
 
   }
 
+  settings: UppyConfig = {
+    uploadAPI: {
+      endpoint: AppConsts.remoteServiceBaseUrl + '/api/services/app/Attachments/PostAttachmentFile',
+    },
+    plugins: {
+      Webcam: false
+    },
+    allowMultipleUploads : false
+  }
 
+  fileUploadedResponseItemizedAccount(value): void {
+    var response = value.successful
+    response.forEach(i => {
+      this.attachmentPathsItemized.push(i.response.body.result);
 
+    });
+    this.itemizedFileUrl = this.attachmentPathsItemized[0].toString();
 
+   // this.uploadAccountsTrialBalanceExcel(url);
+    this.notify.success(this.l('Attachments are Saved Successfully'));
 
+  }
 
+  checkMonthActiveorNot(event) {
+    this._managementService.checkMonthStatus(moment(new Date(add(this.selectedDate, 2, "day")))).subscribe(result => {
+      this.checkActiveMonth = result;
+      this.activeSaveButton = !this.checkActiveMonth
+    });
+  }
 
-
-
-
-
-
-
+  SaveChanges(): void {
+    this.uploadAccountsItemizedExcel(this.itemizedFileUrl);
+    this.itemizedFileUrl = "";
+  }
+  uploadAccountsItemizedExcel(url: string): void {    
+    this._httpClient
+      .get<any>(this.uploadItemizedUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url + "&" +"monthSelected="+ this.selectedDate+ url + "&" +"chartsOfAccountId="+ this.accountId)
+      .subscribe(response => {
+        if (response.success) {
+          this.notify.success(this.l('ImportItemizedProcessStart'));
+        } else if (response.error != null) {
+          this.notify.error(this.l('ImportItemizedUploadFailed'));
+        }
+      });
+  }
 
 
   getAuditLogOfAccount() {
