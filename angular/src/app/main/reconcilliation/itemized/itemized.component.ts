@@ -11,11 +11,10 @@ import { AppConsts } from '@shared/AppConsts';
 import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
 import { StoreDateService } from "../../../services/storedate.service";
+import * as $ from 'jquery';
 import { UppyConfig } from 'uppy-angular';
 import { HttpClient } from '@angular/common/http';
 
-
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-itemized',

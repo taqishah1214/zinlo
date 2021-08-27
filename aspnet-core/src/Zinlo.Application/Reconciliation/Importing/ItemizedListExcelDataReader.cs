@@ -24,17 +24,12 @@ namespace Zinlo.Reconciliation.Importing
 
         private ItemizedExcelImportDto ProcessExcelRow(ExcelWorksheet worksheet, int row)
         {
-            if (IsRowEmpty(worksheet, row))
-            {
-                return null;
-            }
-
             var exceptionMessage = new StringBuilder();
             var itemized = new ItemizedExcelImportDto();
             try
             {
-                itemized.InoviceNo = GetRequiredValueFromRowOrNull(worksheet, row, 1, nameof(itemized.InoviceNo), exceptionMessage);
-                itemized.JournalEntryNo = GetRequiredValueFromRowOrNull(worksheet, row, 2, nameof(itemized.JournalEntryNo), exceptionMessage);
+                itemized.InoviceNo = GetOptionalValueFromRowOrEmpty(worksheet, row, 1, nameof(itemized.InoviceNo), exceptionMessage);
+                itemized.JournalEntryNo = GetOptionalValueFromRowOrEmpty(worksheet, row, 2, nameof(itemized.JournalEntryNo), exceptionMessage);
                 itemized.Date = GetRequiredValueFromRowOrNull(worksheet, row, 3, nameof(itemized.Date), exceptionMessage);
                 itemized.Amount = GetRequiredValueFromRowOrNull(worksheet, row, 4, nameof(itemized.Amount), exceptionMessage);
                 itemized.Description = GetRequiredValueFromRowOrNull(worksheet, row, 5, nameof(itemized.Description), exceptionMessage);
@@ -59,6 +54,17 @@ namespace Zinlo.Reconciliation.Importing
             return "";
         }
 
+        private string GetOptionalValueFromRowOrEmpty(ExcelWorksheet worksheet, int row, int column, string columnName, StringBuilder exceptionMessage)
+        {
+            var cellValue = worksheet.Cells[row, column].Value;
+
+            if (cellValue != null && !string.IsNullOrWhiteSpace(cellValue.ToString()))
+            {
+                return cellValue.ToString();
+            }
+            else
+                return "";
+        }
         private string GetLocalizedExceptionMessagePart(string parameter)
         {
             return _localizationSource.GetString("{0}IsInvalid", _localizationSource.GetString(parameter)) + "; ";

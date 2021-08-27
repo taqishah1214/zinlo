@@ -1185,9 +1185,9 @@ ul, ul li {
 
     .uppy-modal ::ng-deep .uppy-Dashboard-inner {
         min-height:100px !important;
-        height: 100px !important;
-        min-width: 50% !important;
-        width: 50% !important;
+        height: 200px !important;
+        min-width: 100% !important;
+        width: 100% !important;
     } 
     .uppy-modal .modal-dialog {
         max-width: 1000px;
@@ -1201,12 +1201,13 @@ ul, ul li {
         position: relative;
     }
     .uppy-modal .modal-dialog ::ng-deep .drag-drop-area .uppy-Root {
-        width: 50% !important;
+        width: 100% !important;
+        margin-left: 0% 5% !important;
     }
     .uppy-modal .modal-dialog ::ng-deep .drag-drop-area ::ng-deep .uppy-Root:nth-child(1),
     .download-modal-row .col-md-6:nth-child(1){
         padding-right: 30px !important;
-        border-right: 1px solid #E2E3E5 !important;
+      /*   border-right: 1px solid #E2E3E5 !important; */
     }
     .uppy-modal .modal-dialog ::ng-deep .drag-drop-area ::ng-deep .uppy-Root:nth-child(2),
     .download-modal-row .col-md-6:nth-child(2){

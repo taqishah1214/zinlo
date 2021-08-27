@@ -71,12 +71,12 @@ namespace Zinlo.Reconciliation.Importing
                 pathDto.FilePath = "";
                 pathDto.Type = "Amortized";
                 pathDto.TenantId = (int)TenantId;
-                pathDto.UploadedFilePath = args.Url;//
+                pathDto.UploadedFilePath = args.Url;
                 pathDto.CreatorId = UserId;
                 pathDto.FailedRecordsCount = 0;
                 pathDto.SuccessRecordsCount = 0;
                 pathDto.SuccessFilePath = fileUrl;
-                pathDto.UploadMonth = args.SelectedMonth;//
+                pathDto.UploadMonth = args.SelectedMonth;
                 pathDto.FileStatus = ImportPaths.Dto.Status.InProcess;
                 loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
                 if (accountsList == null || !accountsList.Any())
@@ -210,11 +210,11 @@ namespace Zinlo.Reconciliation.Importing
             ImportPathDto pathDto = new ImportPathDto();
             pathDto.Id = loggedFileId;
             pathDto.FilePath = url;
-            pathDto.UploadedFilePath = args.Url;//
+            pathDto.UploadedFilePath = args.Url;
             pathDto.FailedRecordsCount = invalidAccounts.Count;
             pathDto.SuccessRecordsCount = SuccessRecordsCount;
             pathDto.FileStatus = ImportPaths.Dto.Status.Completed;
-            pathDto.UploadMonth = args.SelectedMonth;//
+            pathDto.UploadMonth = args.SelectedMonth;
             await _importPathsAppService.UpdateFilePath(pathDto);
             #endregion
 
@@ -229,8 +229,8 @@ namespace Zinlo.Reconciliation.Importing
             ImportPathDto pathDto = new ImportPathDto();
             pathDto.Id = loggedFileId;
             pathDto.FilePath = "";
-            pathDto.UploadMonth = args.SelectedMonth;//
-            pathDto.UploadedFilePath = args.Url;//
+            pathDto.UploadMonth = args.SelectedMonth;
+            pathDto.UploadedFilePath = args.Url;
             pathDto.FailedRecordsCount = invalidAccounts.Count;
             pathDto.SuccessRecordsCount = SuccessRecordsCount;
             pathDto.FileStatus = ImportPaths.Dto.Status.Completed;
@@ -254,25 +254,13 @@ namespace Zinlo.Reconciliation.Importing
 
         public AmortizedExcelImportDto CheckErrors(AmortizedExcelImportDto input)
         {
-            bool isInvoiceNo = true;
-            bool isJournalEntryNo = true;
             bool isStartDate = true;
             bool isEndDate = true;
             bool isAmount = true;
             bool isDescription = true;
             bool isCriteria = true;
             string errorMessage = string.Empty;
-
-            if (string.IsNullOrEmpty(input.InvoiceNo))
-            {
-                isInvoiceNo = false;
-                errorMessage += "InvoiceNumber,";
-            }
-            if (string.IsNullOrEmpty(input.JournalEntryNo))
-            {
-                isJournalEntryNo = false;
-                errorMessage += "JournalEntryNumber,";
-            }
+                        
             if (string.IsNullOrEmpty(input.StartDate))
             {
                 isStartDate = false;
@@ -299,7 +287,7 @@ namespace Zinlo.Reconciliation.Importing
                 errorMessage += "Criteria,";
             }
 
-            if (isInvoiceNo == false || isJournalEntryNo == false || isStartDate == false || isEndDate == false || isAmount == false || isDescription == false || isCriteria == false)
+            if (isStartDate == false || isEndDate == false || isAmount == false || isDescription == false || isCriteria == false)
             {
                 input.IsValid = false;
                 input.Exception = errorMessage + _localizationSource.GetString("EmptyValuesError");

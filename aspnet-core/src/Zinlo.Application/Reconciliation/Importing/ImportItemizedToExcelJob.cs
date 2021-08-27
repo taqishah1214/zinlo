@@ -72,12 +72,12 @@ namespace Zinlo.Reconciliation.Importing
                 pathDto.FilePath = "";
                 pathDto.Type = "Itemized";
                 pathDto.TenantId = (int)TenantId;
-                pathDto.UploadedFilePath = args.Url;//
+                pathDto.UploadedFilePath = args.Url;
                 pathDto.CreatorId = UserId;
                 pathDto.FailedRecordsCount = 0;
                 pathDto.SuccessRecordsCount = 0;
                 pathDto.SuccessFilePath = fileUrl;
-                pathDto.UploadMonth = args.SelectedMonth;//
+                pathDto.UploadMonth = args.SelectedMonth;
                 pathDto.FileStatus = ImportPaths.Dto.Status.InProcess;
                 loggedFileId = _importPathsAppService.SaveFilePath(pathDto);
                 if (accountsList == null || !accountsList.Any())
@@ -239,24 +239,12 @@ namespace Zinlo.Reconciliation.Importing
         }
                 
         public ItemizedExcelImportDto CheckErrors(ItemizedExcelImportDto input)
-        {        
-            bool isInvoiceNo = true;
-            bool isJournalEntryNo = true;
+        {            
             bool isDate = true;
             bool isAmount = true;
             bool isDescription = true;
             string errorMessage = string.Empty;
-
-            if (string.IsNullOrEmpty(input.InoviceNo))
-            {
-                isInvoiceNo = false;
-                errorMessage += "InvoiceNumber,";
-            }
-            if (string.IsNullOrEmpty(input.JournalEntryNo))
-            {
-                isJournalEntryNo = false;
-                errorMessage += "JournalEntryNumber,";
-            }
+                        
             if (string.IsNullOrEmpty(input.Date))
             {
                 isDate = false;
@@ -273,7 +261,7 @@ namespace Zinlo.Reconciliation.Importing
                 errorMessage += "Description,";
             }
 
-            if (isAmount == false || isDate == false || isDescription == false || isInvoiceNo == false || isJournalEntryNo == false)
+            if (isAmount == false || isDate == false || isDescription == false)
             {
                 input.isValid = false;
                 input.Exception = errorMessage + _localizationSource.GetString("EmptyValuesError");

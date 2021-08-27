@@ -23,17 +23,12 @@ namespace Zinlo.Reconciliation.Importing
 
         private AmortizedExcelImportDto ProcessExcelRow(ExcelWorksheet worksheet, int row)
         {
-            if (IsRowEmpty(worksheet, row))
-            {
-                return null;
-            }
-
             var exceptionMessage = new StringBuilder();
             var amortized = new AmortizedExcelImportDto();
             try
             {
-                amortized.InvoiceNo = GetRequiredValueFromRowOrNull(worksheet, row, 1, nameof(amortized.InvoiceNo), exceptionMessage);
-                amortized.JournalEntryNo = GetRequiredValueFromRowOrNull(worksheet, row, 2, nameof(amortized.JournalEntryNo), exceptionMessage);
+                amortized.InvoiceNo = GetOptionalValueFromRowOrEmpty(worksheet, row, 1, nameof(amortized.InvoiceNo), exceptionMessage);
+                amortized.JournalEntryNo = GetOptionalValueFromRowOrEmpty(worksheet, row, 2, nameof(amortized.JournalEntryNo), exceptionMessage);
                 amortized.StartDate = GetRequiredValueFromRowOrNull(worksheet, row, 3, nameof(amortized.StartDate), exceptionMessage);
                 amortized.EndDate = GetRequiredValueFromRowOrNull(worksheet, row, 4, nameof(amortized.EndDate), exceptionMessage);
                 amortized.Amount = GetRequiredValueFromRowOrNull(worksheet, row, 5, nameof(amortized.Amount), exceptionMessage);
@@ -57,6 +52,18 @@ namespace Zinlo.Reconciliation.Importing
             }
             exceptionMessage.Append(GetLocalizedExceptionMessagePart(columnName));
             return "";
+        }
+
+        private string GetOptionalValueFromRowOrEmpty(ExcelWorksheet worksheet, int row, int column, string columnName, StringBuilder exceptionMessage)
+        {
+            var cellValue = worksheet.Cells[row, column].Value;
+
+            if (cellValue != null && !string.IsNullOrWhiteSpace(cellValue.ToString()))
+            {
+                return cellValue.ToString();
+            }
+            else
+                return "";
         }
 
         private string GetLocalizedExceptionMessagePart(string parameter)

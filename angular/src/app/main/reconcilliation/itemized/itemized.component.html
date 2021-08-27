@@ -50,22 +50,26 @@
                                 <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
                                     <div class="date-picker">
                                         <input id="monthValue" 
-                                            value="january 2020" style="width:170px"(ngModelChange)="filterByMonth($event)" class="date-field form-control m-input"  name="monthValue"
+                                            value="january 2020" style="width:100%"(ngModelChange)="filterByMonth($event)" class="date-field form-control m-input"  name="monthValue"
                                             [(ngModel)]="monthValue" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
                                             (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <button *ngIf="'Pages.ChartsofAccounts.Upload' | permission"
+                                        class="btn btn-images btn-width pt-2" data-toggle="modal"
+                                        data-target="#kt_modal_2">
+                                        <img src="../../../../assets/img/upload.png">
+                                        {{"Upload" | localize}}
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
                     </form>
                     
                     <div class="record-card-header-bottom-inner1">
-                        <button *ngIf="'Pages.ChartsofAccounts.Upload' | permission"
-                            class="btn btn-images btn-width pt-2" data-toggle="modal"
-                            data-target="#kt_modal_2">
-                            <img src="../../../../assets/img/upload.png">
-                            {{"Upload" | localize}}
-                        </button>
+                       
                     </div>
                     <!-- Modal For Upload -->
                     <div class="modal fade uppy-modal" id="kt_modal_2" tabindex="-1" role="dialog"
