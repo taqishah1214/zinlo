@@ -148,7 +148,7 @@ namespace Zinlo.Reconciliation.Importing
             pathDtoUpdate.FilePath = "";
             pathDtoUpdate.Type = "Amortized";
             pathDtoUpdate.TenantId = (int)TenantId;
-            pathDtoUpdate.UploadedFilePath = args.Url;//
+            pathDtoUpdate.UploadedFilePath = args.Url;
             pathDtoUpdate.CreatorId = UserId;
             pathDtoUpdate.FailedRecordsCount = 0;
             pathDtoUpdate.SuccessRecordsCount = 0;
@@ -259,6 +259,7 @@ namespace Zinlo.Reconciliation.Importing
             bool isAmount = true;
             bool isDescription = true;
             bool isCriteria = true;
+            bool isCriteriaCorrect = true;
             string errorMessage = string.Empty;
                         
             if (string.IsNullOrEmpty(input.StartDate))
@@ -283,11 +284,16 @@ namespace Zinlo.Reconciliation.Importing
             }
             if (string.IsNullOrEmpty(input.Criteria))
             {
-                isStartDate = false;
+                isCriteria = false;
                 errorMessage += "Criteria,";
             }
+            if (!(input.Criteria.ToLower() == "daily" || input.Criteria.ToLower() == "manual" || input.Criteria.ToLower() == "monthly"))
+            {
+                isCriteriaCorrect = false;
+                errorMessage += "Incorrect Criteria,";
+            }
 
-            if (isStartDate == false || isEndDate == false || isAmount == false || isDescription == false || isCriteria == false)
+            if (isStartDate == false || isEndDate == false || isAmount == false || isDescription == false || isCriteria == false || isCriteriaCorrect == false)
             {
                 input.IsValid = false;
                 input.Exception = errorMessage + _localizationSource.GetString("EmptyValuesError");
