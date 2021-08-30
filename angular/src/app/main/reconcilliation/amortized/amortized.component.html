@@ -50,20 +50,131 @@
                             </div>
                         </div>
                     </div>
-                    <form class="kt-form calender-filter">
-                        <div>
-                            <div class="row align-items-center mb-4">
-                                <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
-                                    <div class="date-picker">
-                                        <input id="monthValue" 
-                                            value="january 2020" style="width:170px" (ngModelChange)="filterByMonth($event)" class="date-field form-control m-input"  name="monthValue"
-                                            [(ngModel)]="monthFilter" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
-                                            (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
+
+                    <div class="d-flex flex-wrap align-items-center">
+                        <form class="kt-form calender-filter">
+                            <div>
+                                <div class="row align-items-center mb-4">
+                                    <div class="col-md-6 kt-margin-b-20-tablet-and-mobile">
+                                        <div class="date-picker">
+                                            <input id="monthValue" 
+                                                value="january 2020" style="width:170px" (ngModelChange)="filterByMonth($event)" class="date-field form-control m-input"  name="monthValue"
+                                                [(ngModel)]="monthFilter" [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                (onShown)="onOpenCalendar($event)" type="text" bsDatepicker />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button *ngIf="'Pages.ChartsofAccounts.Upload' | permission"
+                                            class="btn btn-images btn-width pt-2" data-toggle="modal"
+                                            data-target="#kt_modal_2">
+                                            <img src="../../../../assets/img/upload.png">
+                                            {{"Upload" | localize}}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+                        </form>
+                    </div>
+                    
+                       
+                        <!-- Modal for upload -->
+                        <div class="modal fade uppy-modal" id="kt_modal_2" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal"
+                                    aria-label="Close">
+                                </button>
+                            </div>
+                            <div class="modal-body upload-body">
+                                <div class="drag_drop_box uppy-modal-box1">
+                                    <p>{{"Upload Amortized Balance" | localize}}</p>
+                                </div>
+                                <ng-uppy [config]="settings" (uploadResult)="fileUploadedResponseAmortizedAccount($event)"></ng-uppy>
+                                <div>
+                                    <div class="row modal-bottom-record">
+                                        <div class="col-md-12">
+                                            <div class="row py-0">
+                                                <div class="col-xl-5 form-group">
+                                                    <label>{{"Amortized Accounts Format" | localize}} </label>
+                                                    <a
+                                                        href="../../../../assets/amortized.xlsx"
+                                                        download="amortized.xlsx"
+                                                        style="color:blue;margin-left: 20px;cursor: pointer;">
+                                                        <u>{{"Download Sample File" | localize}}</u>
+                                                    </a>
+                                                </div>
+                                                <div class="form-group col-xl-3 pt-2">
+                                                    <label>{{"Select Month for Amortized Account" |
+                                                        localize}} </label>
+                                                </div>
+                                                <div class="form-group col-xl-3"
+                                                    style="height: 40px !important;">
+                                                    <div class="month-calender">
+                                                        <form class="input-arrow">
+                                                            <input [(ngModel)]="selectedDate"
+                                                                (ngModelChange)="checkMonthActiveorNot($event)"
+                                                                required="required" autocomplete="off"
+                                                                class="form-control" name="date"
+                                                                bsDatepicker placeholder="Select Month"
+                                                                class="form-control" name="date"
+                                                                bsDatepicker
+                                                                [bsConfig]="{dateInputFormat: 'MMMM YYYY'}"
+                                                                (onShown)="onOpenCalendar($event)">
+                                                        </form>
+                                                        <span class="form-control-feedback"
+                                                            *ngIf="!checkActiveMonth">{{"ThisMonthIsNotActive"
+                                                            | localize}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="inner-col-record border border-default">
+
+                                                <div class="row">
+                                                    <div class="modal-bottom-row-col">
+                                                        <p>{{"InvoiceNo" | localize}}</p>
+                                                    </div>
+                                                    <div class="modal-bottom-row-col">
+                                                        <p>{{"JournalEntryNo" | localize}}</p>
+                                                    </div>
+                                                    <div class="modal-bottom-row-col">
+                                                        <p>{{"StartDate" | localize}}</p>
+                                                    </div>
+                                                    <div class="modal-bottom-row-col">
+                                                        <p>{{"EndDate" | localize}}</p>
+                                                    </div>
+                                                    <div class="modal-bottom-row-col">
+                                                        <p>{{"Amount" | localize}}</p>
+                                                    </div>
+                                                    <div class="modal-bottom-row-col">
+                                                        <p>{{"Description" | localize}}</p>
+                                                    </div>
+                                                    <div class="modal-bottom-row-col">
+                                                        <p>{{"Criteria" | localize}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-width"
+                                    data-dismiss="modal">{{"Close" | localize}}</button>
+                                <button type="button" class="btn btn-primary btn-width"
+                                    data-dismiss="modal" (click)="SaveChanges()"
+                                    [disabled]="activeSaveButton">{{"Save changes" | localize}}</button>
+                            </div>
                         </div>
-                    </form>
+                    </div>
+                </div>
+                    
+                    
 
                     <div class="primeng-paging-container" style="margin:0px -17px">
                         <div class="table-box">

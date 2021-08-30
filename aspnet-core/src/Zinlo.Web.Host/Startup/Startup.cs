@@ -46,6 +46,8 @@ using Zinlo.ChartsofAccount;
 using Zinlo.AccountSubType;
 using Zinlo.ImportPaths;
 using Zinlo.ClosingChecklist.Importing;
+using Zinlo.Reconciliation.Importing;
+using Zinlo.Reconciliation;
 
 namespace Zinlo.Web.Startup
 {
@@ -74,6 +76,12 @@ namespace Zinlo.Web.Startup
             services.AddSignalR(options => { options.EnableDetailedErrors = true; });
             services.AddTransient<IAttachmentAppService, AttachmentsAppService>();
             services.AddTransient<IChartsOfAccontListExcelDataReader, ChartsOfAccountListExcelDataReader>();
+            services.AddTransient<IItemizedListExcelDataReader, ItemizedListExcelDataReader>();
+            services.AddTransient<IItemizationAppService, ItemizationAppService>();
+            services.AddTransient<IInvalidItemizedExporter,InvalidItemizedListExporter>();
+            services.AddTransient<IAmortizedListExcelDataReader, AmortizedListExcelDataReader>();
+            services.AddTransient<IAmortizationAppService, AmortizationAppService>();
+            services.AddTransient<IInvalidAmortizedExporter, InvalidAmortizedListExporter>();
             services.AddTransient<IClosingChecklistExcelDataReader, ClosingChecklistDataReader>();
             services.AddTransient<IInvalidAccountsExcellExporter, InvalidAccountsExporter>();
             services.AddTransient<IChartsOfAccontTrialBalanceListExcelDataReader, ChartsOfAccountTrialBalanceListDataReader>();

@@ -12,10 +12,14 @@ import * as moment from 'moment';
 import { add, subtract } from 'add-subtract-date';
 import { StoreDateService } from "../../../services/storedate.service";
 import * as $ from 'jquery';
+import { UppyConfig } from 'uppy-angular';
+import { HttpClient } from '@angular/common/http';
+
+
 @Component({
   selector: 'app-amortized',
   templateUrl: './amortized.component.html',
-  styleUrls: ['./amortized.component.css']
+  styleUrls: ['./amortized.component.css']  
 })
 export class AmortizedComponent extends AppComponentBase {
   commentFiles:File[]=[];
@@ -67,6 +71,14 @@ export class AmortizedComponent extends AppComponentBase {
   linkedAccountNo : any = 0;
   linkedAccountName : any = 0;
   linkAccountCheck : boolean = false;
+//
+selectedDate : any = new Date ();
+checkActiveMonth:boolean=true;
+activeSaveButton:boolean=false;
+attachmentPathsAmortized: any = [];
+amortizedFileUrl : string = "";
+uploadAmortizedUrl = AppConsts.remoteServiceBaseUrl + '/ReconciliationExcel/ImportAmortizedItems';
+
   constructor(
     injector: Injector,
     private _router: Router,
@@ -75,7 +87,9 @@ export class AmortizedComponent extends AppComponentBase {
     private _timeManagementsServiceProxy :TimeManagementsServiceProxy,
     private _auditLogService : AuditLogServiceProxy,
     private storeData: StoreDateService,
-    private _chartOfAccountService: ChartsofAccountServiceProxy
+    private _chartOfAccountService: ChartsofAccountServiceProxy,
+    private _httpClient: HttpClient,
+    private _managementService: TimeManagementsServiceProxy,
 
   ) {
     super(injector);
@@ -84,12 +98,18 @@ export class AmortizedComponent extends AppComponentBase {
     if (history.state.navigationId == 1){
       this._router.navigate(['/app/main/reconciliation']);
     }
-      $(document).ready(function(){
-        // Show hide popover
-            $(".dropdown-menu").on('click', function (e) {
-      e.stopPropagation();
+    $(document).ready(function(){
+      // Show hide popover
+      $(".dropdown-menu").on('click', function (e) {
+        e.stopPropagation();
       });
     });
+    
+    //checking history.state.data & re-routing if undefined        
+    if (!history.state.data) {
+      this._router.navigate(['/app/main/reconciliation']);
+    }
+    
     this.monthFilter = new Date(add(history.state.data.selectedDate, 2, "day"));
     this.storeData.allUsersInformationofTenant.subscribe(userList => this.users = userList)
     this.storeData.allAccountSubTypes.subscribe(accountSubypeList => this.accountSubypeList = accountSubypeList)
@@ -469,16 +489,52 @@ setAccountNameHistoryParam(item){
 
   }
 
+  settings: UppyConfig = {
+    uploadAPI: {
+      endpoint: AppConsts.remoteServiceBaseUrl + '/api/services/app/Attachments/PostAttachmentFile',
+    },
+    plugins: {
+      Webcam: false
+    },
+    allowMultipleUploads : false
+  }
 
+  fileUploadedResponseAmortizedAccount(value): void {
+    var response = value.successful
+    response.forEach(i => {
+      this.attachmentPathsAmortized.push(i.response.body.result);
 
+    });
+    this.amortizedFileUrl = this.attachmentPathsAmortized[0].toString();
 
+   // this.uploadAccountsTrialBalanceExcel(url);
+    this.notify.success(this.l('Attachments are Saved Successfully'));
 
+  }
 
+  checkMonthActiveorNot(event) {
+    this._managementService.checkMonthStatus(moment(new Date(add(this.selectedDate, 2, "day")))).subscribe(result => {
+      this.checkActiveMonth = result;
+      this.activeSaveButton = !this.checkActiveMonth
+    });
+  }
 
-
-
-
-
+  SaveChanges(): void {      
+    this.uploadAccountsAmortizedExcel(this.amortizedFileUrl);
+    this.amortizedFileUrl = "";
+  }
+  uploadAccountsAmortizedExcel(url: string): void {  
+    this._httpClient
+      .get<any>(this.uploadAmortizedUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url + "&" +"monthSelected="+ this.selectedDate+ url + "&" +"chartsOfAccountId="+ this.accountId)
+      .subscribe(response => {
+        if (response.success) {
+          this.notify.success(this.l('ImportAmortizedProcessStart'));
+        } else if (response.error != null) {
+          this.notify.error(this.l('ImportAmortizedUploadFailed'));
+        }
+      });
+  }
+  
 
 
 }
