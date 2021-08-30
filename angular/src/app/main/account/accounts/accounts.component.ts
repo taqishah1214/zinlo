@@ -362,8 +362,7 @@ RedirectToCreateAccount(): void {
     this.notify.success(this.l('Attachments are Saved Successfully'));
 
   }
-  uploadaccountExcel(url: string): void {   
-    debugger; 
+  uploadaccountExcel(url: string): void {    
     this._httpClient
       .get<any>(this.uploadUrl + "?url=" + AppConsts.remoteServiceBaseUrl + "/" + url)
       .subscribe(response => {
