@@ -1188,7 +1188,6 @@ ul, ul li {
         height: 200px !important;
         min-width: 100% !important;
         width: 100% !important;
-        margin-left: 14px;
     } 
     .uppy-modal .modal-dialog {
         max-width: 1000px;
@@ -1246,7 +1245,7 @@ ul, ul li {
         width:100%;
     }
     .uppy-modal .modal-dialog .uppy-modal-box1 > p {
-        width: 100%;
+        width: 50%;
         display: inline-block;
         text-align: center;
         color: #0F2757;
@@ -1255,8 +1254,7 @@ ul, ul li {
     }
     .modal-bottom-row-col {
         width: 33.33%;
-        height: 40px;
-        padding-top:9px ;
+        padding: 5px;
     }
     .row.modal-bottom-record {
         margin-top:30px;
@@ -1278,9 +1276,9 @@ ul, ul li {
         border-radius: 5px;
         padding: 10px;
     }
-    /* .modal-bottom-row-col p {
+    .modal-bottom-row-col p {
         font-size: 8px;
-    } */
+    }
     .uppy-modal .modal-footer,
     .download-modal .modal-footer  {
         justify-content: center;
@@ -1289,7 +1287,6 @@ ul, ul li {
     .uppy-modal .modal-header,
     .download-modal .modal-header {
         border: 0;
-        padding: 5px !important;
     }
     .download-modal .modal-dialog {
         max-width: 1000px;
