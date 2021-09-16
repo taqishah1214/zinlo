@@ -1,6 +1,5 @@
 ﻿using Abp.BackgroundJobs;
 using Abp.Dependency;
-using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Localization;
 using Abp.Localization.Sources;
@@ -118,6 +117,7 @@ namespace Zinlo.Reconciliation.Importing
             {
                 if (account.CanBeImported())
                 {
+                    account.isValid = true;
                     try
                     {
                         var result = CheckErrors(account);                        
@@ -149,7 +149,7 @@ namespace Zinlo.Reconciliation.Importing
             pathDtoUpdate.FilePath = "";
             pathDtoUpdate.Type = "Itemized";
             pathDtoUpdate.TenantId = (int)TenantId;
-            pathDtoUpdate.UploadedFilePath = args.Url;//
+            pathDtoUpdate.UploadedFilePath = args.Url;
             pathDtoUpdate.CreatorId = UserId;
             pathDtoUpdate.FailedRecordsCount = 0;
             pathDtoUpdate.SuccessRecordsCount = 0;
@@ -260,7 +260,7 @@ namespace Zinlo.Reconciliation.Importing
                 isDescription = false;
                 errorMessage += "Description,";
             }
-
+            
             if (isAmount == false || isDate == false || isDescription == false)
             {
                 input.isValid = false;
