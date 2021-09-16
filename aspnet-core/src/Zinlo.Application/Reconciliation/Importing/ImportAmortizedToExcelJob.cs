@@ -117,6 +117,7 @@ namespace Zinlo.Reconciliation.Importing
             {
                 if (account.CanBeImported())
                 {
+                    account.IsValid = true;
                     try
                     {
                         var result = CheckErrors(account);

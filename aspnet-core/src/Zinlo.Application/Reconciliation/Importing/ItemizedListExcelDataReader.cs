@@ -24,6 +24,10 @@ namespace Zinlo.Reconciliation.Importing
 
         private ItemizedExcelImportDto ProcessExcelRow(ExcelWorksheet worksheet, int row)
         {
+            if (IsRowEmpty(worksheet,row))
+            {
+                return null;
+            }
             var exceptionMessage = new StringBuilder();
             var itemized = new ItemizedExcelImportDto();
             try
@@ -72,7 +76,14 @@ namespace Zinlo.Reconciliation.Importing
 
         private bool IsRowEmpty(ExcelWorksheet worksheet, int row)
         {
-            return worksheet.Cells[row, 1].Value == null || string.IsNullOrWhiteSpace(worksheet.Cells[row, 1].Value.ToString());
+            bool isDateCellEmpty = (worksheet.Cells[row, 3].Value == null || string.IsNullOrWhiteSpace(worksheet.Cells[row, 3].Value.ToString()));
+            bool isAmountCellEmpty = (worksheet.Cells[row, 4].Value == null || string.IsNullOrWhiteSpace(worksheet.Cells[row, 4].Value.ToString()));
+            bool isDescriptionCellEmpty = (worksheet.Cells[row, 5].Value == null || string.IsNullOrWhiteSpace(worksheet.Cells[row, 5].Value.ToString()));
+
+            if (isDateCellEmpty == true && isAmountCellEmpty == true && isDescriptionCellEmpty == true)
+                return true;
+            else
+                return false;
         }
 
     }
